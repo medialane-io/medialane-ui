@@ -1,16 +1,26 @@
 import { defineConfig } from "tsup";
 
-export default defineConfig({
-  entry: {
-    index: "src/index.ts",
-    "preset/tailwind": "src/preset/tailwind.ts",
+export default defineConfig([
+  // Main components + utils — transpile individually so "use client" directives are preserved
+  {
+    entry: ["src/index.ts", "src/components/*.tsx", "src/utils/*.ts"],
+    format: ["esm", "cjs"],
+    dts: true,
+    sourcemap: true,
+    clean: true,
+    splitting: false,
+    bundle: false,
+    external: ["react", "react-dom", "next", "next-themes", "lucide-react", "tailwind-merge", "clsx"],
+    outDir: "dist",
   },
-  format: ["esm", "cjs"],
-  dts: true,
-  sourcemap: true,
-  clean: true,
-  splitting: false,
-  treeshake: true,
-  external: ["react", "react-dom", "next", "next-themes", "lucide-react", "tailwind-merge", "clsx"],
-  outDir: "dist",
-});
+  // Preset — bundled separately (no React, no "use client" needed)
+  {
+    entry: { "preset/tailwind": "src/preset/tailwind.ts" },
+    format: ["esm", "cjs"],
+    dts: true,
+    sourcemap: true,
+    splitting: false,
+    external: ["tailwindcss"],
+    outDir: "dist",
+  },
+]);
