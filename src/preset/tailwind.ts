@@ -4,11 +4,11 @@ const medialanePreset: Partial<Config> = {
   theme: {
     extend: {
       colors: {
-        "brand-blue": "#3B82F6",
-        "brand-navy": "#1E3A5F",
-        "brand-rose": "#F43F5E",
-        "brand-purple": "#8B5CF6",
-        "brand-orange": "#F97316",
+        "brand-blue": "#2563eb",
+        "brand-navy": "#172554",
+        "brand-rose": "#f43f5e",
+        "brand-purple": "#9333ea",
+        "brand-orange": "#ea580c",
       },
       borderRadius: {
         brand: "11px",
