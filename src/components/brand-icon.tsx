@@ -1,8 +1,5 @@
-"use client";
-
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 
 export interface MedialaneIconProps {
   size?: number;
@@ -11,20 +8,6 @@ export interface MedialaneIconProps {
 }
 
 export function MedialaneIcon({ size = 256, href = "/", className }: MedialaneIconProps) {
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mounted) {
-    return (
-      <Link href={href} className={className}>
-        <div style={{ width: size, height: size }} />
-      </Link>
-    );
-  }
-
   return (
     <Link
       href={href}
