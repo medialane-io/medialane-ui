@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { cn } from "../utils/cn.js";
 
-const CURRENCY_ICONS: Record<string, string> = {
+const CURRENCY_ICON_PATHS: Record<string, string> = {
   USDC: "/usdc.svg",
   USDT: "/usdt.svg",
   ETH: "/eth.svg",
@@ -15,14 +15,19 @@ export interface CurrencyIconProps {
   symbol: string | null | undefined;
   size?: number;
   className?: string;
+  /**
+   * Base path prepended to icon paths. Default: "" (icons served from app's public root).
+   * Example: "https://cdn.medialane.io/icons"
+   */
+  iconsBasePath?: string;
 }
 
-export function CurrencyIcon({ symbol, size = 16, className }: CurrencyIconProps) {
-  const src = symbol ? CURRENCY_ICONS[symbol] : undefined;
-  if (!src) return null;
+export function CurrencyIcon({ symbol, size = 16, className, iconsBasePath = "" }: CurrencyIconProps) {
+  const path = symbol ? CURRENCY_ICON_PATHS[symbol] : undefined;
+  if (!path) return null;
   return (
     <Image
-      src={src}
+      src={`${iconsBasePath}${path}`}
       alt={symbol ?? ""}
       width={size}
       height={size}
@@ -38,6 +43,8 @@ export interface CurrencyAmountProps {
   amountClassName?: string;
   iconSize?: number;
   className?: string;
+  /** Forwarded to CurrencyIcon. */
+  iconsBasePath?: string;
 }
 
 export function CurrencyAmount({
@@ -46,10 +53,11 @@ export function CurrencyAmount({
   amountClassName,
   iconSize = 14,
   className,
+  iconsBasePath,
 }: CurrencyAmountProps) {
   return (
     <span className={cn("inline-flex items-center gap-1", className)}>
-      <CurrencyIcon symbol={symbol} size={iconSize} />
+      <CurrencyIcon symbol={symbol} size={iconSize} iconsBasePath={iconsBasePath} />
       <span className={amountClassName}>{amount}</span>
     </span>
   );

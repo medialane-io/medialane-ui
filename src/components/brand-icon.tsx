@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 
 export interface MedialaneIconProps {
@@ -12,7 +11,6 @@ export interface MedialaneIconProps {
 }
 
 export function MedialaneIcon({ size = 256, href = "/", className }: MedialaneIconProps) {
-  const { resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -33,7 +31,7 @@ export function MedialaneIcon({ size = 256, href = "/", className }: MedialaneIc
       className={`transition-opacity hover:opacity-80 drop-shadow-md ${className ?? ""}`}
     >
       <Image
-        src={resolvedTheme === "dark" ? "/icon.png" : "/icon.png"}
+        src="/icon.png"
         alt="Medialane"
         width={size}
         height={size}

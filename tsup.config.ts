@@ -3,7 +3,7 @@ import { defineConfig } from "tsup";
 export default defineConfig([
   // Main components + utils — transpile individually so "use client" directives are preserved
   {
-    entry: ["src/index.ts", "src/components/*.tsx", "src/utils/*.ts"],
+    entry: ["src/index.ts", "src/components/*.tsx", "src/utils/*.ts", "src/data/*.ts"],
     format: ["esm", "cjs"],
     dts: true,
     sourcemap: true,
