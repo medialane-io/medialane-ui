@@ -23,3 +23,6 @@ export { MedialaneIcon } from "./components/brand-icon.js";
 export type { MedialaneIconProps } from "./components/brand-icon.js";
 export { MedialaneLogoFull } from "./components/brand-logo.js";
 export type { MedialaneLogoFullProps } from "./components/brand-logo.js";
+
+// ── v0.2 additions ────────────────────────────────────────────────────────────
+export { MotionCard, FadeIn, Stagger, StaggerItem, KineticWords, SPRING, EASE_OUT } from "./components/motion-primitives.js";
