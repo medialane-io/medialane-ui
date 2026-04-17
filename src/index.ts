@@ -30,3 +30,5 @@ export { ScrollSection } from "./components/scroll-section.js";
 export type { ScrollSectionProps } from "./components/scroll-section.js";
 export { ShareButton } from "./components/share-button.js";
 export type { ShareButtonProps } from "./components/share-button.js";
+export { CollectionCard, CollectionCardSkeleton } from "./components/collection-card.js";
+export type { CollectionCardProps } from "./components/collection-card.js";
