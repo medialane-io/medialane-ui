@@ -32,3 +32,5 @@ export { ShareButton } from "./components/share-button.js";
 export type { ShareButtonProps } from "./components/share-button.js";
 export { CollectionCard, CollectionCardSkeleton } from "./components/collection-card.js";
 export type { CollectionCardProps } from "./components/collection-card.js";
+export { TokenCard, TokenCardSkeleton } from "./components/token-card.js";
+export type { TokenCardProps, RarityTier } from "./components/token-card.js";
