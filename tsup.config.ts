@@ -10,7 +10,11 @@ export default defineConfig([
     clean: true,
     splitting: false,
     bundle: false,
-    external: ["react", "react-dom", "next", "next-themes", "lucide-react", "tailwind-merge", "clsx"],
+    external: [
+      "react", "react-dom", "next", "next-themes",
+      "lucide-react", "tailwind-merge", "clsx",
+      "framer-motion", "sonner", "@medialane/sdk",
+    ],
     outDir: "dist",
   },
   // Preset — bundled separately (no React, no "use client" needed)
