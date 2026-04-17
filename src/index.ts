@@ -28,3 +28,5 @@ export type { MedialaneLogoFullProps } from "./components/brand-logo.js";
 export { MotionCard, FadeIn, Stagger, StaggerItem, KineticWords, SPRING, EASE_OUT } from "./components/motion-primitives.js";
 export { ScrollSection } from "./components/scroll-section.js";
 export type { ScrollSectionProps } from "./components/scroll-section.js";
+export { ShareButton } from "./components/share-button.js";
+export type { ShareButtonProps } from "./components/share-button.js";
