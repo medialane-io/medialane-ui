@@ -1,4 +1,5 @@
 import { defineConfig } from "tsup";
+import { copyFileSync } from "fs";
 
 export default defineConfig([
   // Main components + utils — transpile individually so "use client" directives are preserved
@@ -16,6 +17,10 @@ export default defineConfig([
       "framer-motion", "sonner", "@medialane/sdk",
     ],
     outDir: "dist",
+    onSuccess: async () => {
+      copyFileSync("src/styles/medialane.css", "dist/medialane.css");
+      console.log("✓ Copied dist/medialane.css");
+    },
   },
   // Preset — bundled separately (no React, no "use client" needed)
   {
