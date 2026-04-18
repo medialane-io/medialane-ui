@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Loader2, Settings2, CheckCircle2, HelpCircle } from "lucide-react";
+import { Loader2, Settings2, HelpCircle } from "lucide-react";
 import { cn } from "../utils/cn.js";
 import { ipfsToHttp } from "../utils/ipfs.js";
 import { formatDisplayPrice } from "../utils/format.js";
@@ -81,9 +81,6 @@ export function CollectionCard({ collection, settingsHref, className }: Collecti
                 style={{ textShadow: "0 1px 6px rgba(0,0,0,0.5)" }}
               >
                 {collection.name ?? "Unnamed Collection"}
-                {collection.isKnown && (
-                  <CheckCircle2 className="inline-block h-3 w-3 text-blue-400 ml-1.5 shrink-0 align-middle" />
-                )}
               </p>
             )}
 
