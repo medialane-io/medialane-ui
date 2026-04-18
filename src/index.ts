@@ -39,3 +39,5 @@ export type { TokenCardProps, RarityTier } from "./components/token-card.js";
 export { timeAgo } from "./utils/time.js";
 export { ACTIVITY_TYPE_CONFIG, TYPE_FILTERS } from "./data/activity.js";
 export type { ActivityTypeConfig } from "./data/activity.js";
+export { HeroSlider, HeroSliderSkeleton } from "./components/hero-slider.js";
+export type { HeroSliderProps } from "./components/hero-slider.js";
