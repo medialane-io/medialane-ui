@@ -45,3 +45,5 @@ export { ActivityTicker } from "./components/activity-ticker.js";
 export type { ActivityTickerProps } from "./components/activity-ticker.js";
 export { ListingCard, ListingCardSkeleton } from "./components/listing-card.js";
 export type { ListingCardProps } from "./components/listing-card.js";
+export { ActivityRow } from "./components/activity-row.js";
+export type { ActivityRowProps } from "./components/activity-row.js";
