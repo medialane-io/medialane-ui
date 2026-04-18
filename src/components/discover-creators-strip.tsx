@@ -13,12 +13,6 @@ export interface DiscoverCreatorsStripProps {
   allCreatorsHref?: string;
 }
 
-function hslGradient(seed: string) {
-  const hue = seed.split("").reduce((acc, c) => acc + c.charCodeAt(0), 0) % 360;
-  const hue2 = (hue + 60) % 360;
-  return `linear-gradient(135deg, hsl(${hue},55%,35%), hsl(${hue2},50%,22%))`;
-}
-
 function CreatorChipSkeleton() {
   return (
     <div className="shrink-0 w-64 aspect-[3/4] rounded-xl bg-muted animate-pulse" />
@@ -38,15 +32,14 @@ function CreatorChip({
   const avatarUrl = creator.avatarImage && !avatarError ? ipfsToHttp(creator.avatarImage) : null;
   const bannerUrl = creator.bannerImage && !bannerError ? ipfsToHttp(creator.bannerImage) : null;
   const displayName = creator.displayName || `@${creator.username}`;
-  const gradient = hslGradient(creator.username ?? "a");
 
   return (
     <a
       href={href}
       className="block shrink-0 w-64 snap-start active:scale-[0.97] transition-transform duration-150 select-none"
     >
-      <div className="relative aspect-[3/4] rounded-xl overflow-hidden">
-        {bannerUrl ? (
+      <div className="relative aspect-[3/4] rounded-xl overflow-hidden bg-muted">
+        {bannerUrl && (
           <img
             src={bannerUrl}
             alt=""
@@ -55,15 +48,10 @@ function CreatorChip({
             className="absolute inset-0 w-full h-full object-cover"
             onError={() => setBannerError(true)}
           />
-        ) : (
-          <div className="absolute inset-0" style={{ background: gradient }} />
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
         <div className="absolute bottom-0 inset-x-0 p-2.5 space-y-1.5">
-          <div
-            className="h-8 w-8 rounded-full ring-2 ring-white/20 overflow-hidden flex items-center justify-center"
-            style={!avatarUrl ? { background: gradient } : {}}
-          >
+          <div className="h-8 w-8 rounded-full ring-2 ring-white/20 overflow-hidden bg-muted flex items-center justify-center">
             {avatarUrl ? (
               <img
                 src={avatarUrl}
@@ -73,7 +61,7 @@ function CreatorChip({
                 onError={() => setAvatarError(true)}
               />
             ) : (
-              <span className="text-xs font-black text-white">
+              <span className="text-xs font-black text-white/60">
                 {(displayName ?? "?").charAt(0).toUpperCase()}
               </span>
             )}
