@@ -1,6 +1,6 @@
 {
   "name": "@medialane/ui",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "description": "Shared UI components for Medialane apps",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -23,26 +23,28 @@
   "publishConfig": {
     "access": "public"
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
     "typecheck": "tsc --noEmit"
   },
   "peerDependencies": {
-    "react": ">=18.0.0",
-    "react-dom": ">=18.0.0",
-    "next": ">=14.0.0",
-    "next-themes": ">=0.3.0",
-    "lucide-react": ">=0.400.0",
-    "tailwind-merge": ">=2.0.0",
+    "@medialane/sdk": ">=0.6.0",
     "clsx": ">=2.0.0",
     "framer-motion": ">=10.0.0",
+    "lucide-react": ">=0.400.0",
+    "next": ">=14.0.0",
+    "next-themes": ">=0.3.0",
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0",
     "sonner": ">=1.0.0",
-    "@medialane/sdk": ">=0.6.0"
+    "tailwind-merge": ">=2.0.0"
   },
   "devDependencies": {
-    "@medialane/sdk": "^0.6.7",
+    "@medialane/sdk": "^0.7.2",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "clsx": "^2.0.0",
