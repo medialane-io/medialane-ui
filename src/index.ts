@@ -34,3 +34,8 @@ export { CollectionCard, CollectionCardSkeleton } from "./components/collection-
 export type { CollectionCardProps } from "./components/collection-card.js";
 export { TokenCard, TokenCardSkeleton } from "./components/token-card.js";
 export type { TokenCardProps, RarityTier } from "./components/token-card.js";
+
+// ── v0.3 additions ────────────────────────────────────────────────────────────
+export { timeAgo } from "./utils/time.js";
+export { ACTIVITY_TYPE_CONFIG, TYPE_FILTERS } from "./data/activity.js";
+export type { ActivityTypeConfig } from "./data/activity.js";
