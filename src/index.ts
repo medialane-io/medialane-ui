@@ -47,3 +47,5 @@ export { ListingCard, ListingCardSkeleton } from "./components/listing-card.js";
 export type { ListingCardProps } from "./components/listing-card.js";
 export { ActivityRow } from "./components/activity-row.js";
 export type { ActivityRowProps } from "./components/activity-row.js";
+export { ActivityFeedShell } from "./components/activity-feed-shell.js";
+export type { ActivityFeedShellProps } from "./components/activity-feed-shell.js";
