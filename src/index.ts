@@ -53,3 +53,15 @@ export { LaunchpadGrid } from "./components/launchpad-grid.js";
 export type { LaunchpadGridProps, FeatureItem } from "./components/launchpad-grid.js";
 export { CtaCardGrid } from "./components/cta-card-grid.js";
 export type { CtaCardGridProps, CtaCardItem } from "./components/cta-card-grid.js";
+
+// ── v0.3.2 additions ─────────────────────────────────────────────────────────
+export { DiscoverHero } from "./components/discover-hero.js";
+export type { DiscoverHeroProps } from "./components/discover-hero.js";
+export { FeaturedCarousel, FeaturedCarouselSkeleton } from "./components/featured-carousel.js";
+export type { FeaturedCarouselProps } from "./components/featured-carousel.js";
+export { DiscoverCollectionsStrip } from "./components/discover-collections-strip.js";
+export type { DiscoverCollectionsStripProps } from "./components/discover-collections-strip.js";
+export { DiscoverCreatorsStrip } from "./components/discover-creators-strip.js";
+export type { DiscoverCreatorsStripProps } from "./components/discover-creators-strip.js";
+export { DiscoverFeedSection } from "./components/discover-feed-section.js";
+export type { DiscoverFeedSectionProps } from "./components/discover-feed-section.js";
