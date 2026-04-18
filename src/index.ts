@@ -49,3 +49,7 @@ export { ActivityRow } from "./components/activity-row.js";
 export type { ActivityRowProps } from "./components/activity-row.js";
 export { ActivityFeedShell } from "./components/activity-feed-shell.js";
 export type { ActivityFeedShellProps } from "./components/activity-feed-shell.js";
+export { LaunchpadGrid } from "./components/launchpad-grid.js";
+export type { LaunchpadGridProps, FeatureItem } from "./components/launchpad-grid.js";
+export { CtaCardGrid } from "./components/cta-card-grid.js";
+export type { CtaCardGridProps, CtaCardItem } from "./components/cta-card-grid.js";
