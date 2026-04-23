@@ -13,6 +13,7 @@ export interface ActivityTickerProps {
   /** Hide ticker if fewer items than this threshold. Default: 3 */
   minItems?: number;
   className?: string;
+  getHref?: (order: ApiOrder) => string;
 }
 
 function ActivityPill({ listing, getHref }: { listing: ApiOrder; getHref: (order: ApiOrder) => string }) {
@@ -52,10 +53,8 @@ function ActivityPill({ listing, getHref }: { listing: ApiOrder; getHref: (order
   );
 }
 
-export function ActivityTicker({ orders, minItems = 3, className }: ActivityTickerProps) {
+export function ActivityTicker({ orders, minItems = 3, className, getHref = (o) => `/asset/${o.nftContract}/${o.nftTokenId}` }: ActivityTickerProps) {
   if (orders.length < minItems) return null;
-
-  const getHref = (order: ApiOrder) => `/asset/${order.nftContract}/${order.nftTokenId}`;
 
   return (
     <div className={cn(className)}>

@@ -5,12 +5,15 @@ import Link from "next/link";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
 import { cn } from "../utils/cn.js";
+import { ipfsToHttp } from "../utils/ipfs.js";
 import type { ApiCollection } from "@medialane/sdk";
 
 export interface HeroSliderProps {
   collections: ApiCollection[];
   isLoading: boolean;
   getHref: (collection: ApiCollection) => string;
+  /** Optional placeholder CTA hrefs — defaults to "/marketplace" and "/create/asset" */
+  placeholderHrefs?: { markets?: string; create?: string };
 }
 
 function formatFloorPrice(price: string | null | undefined): string {
@@ -22,13 +25,7 @@ function formatFloorPrice(price: string | null | undefined): string {
   return n.toPrecision(3);
 }
 
-function ipfsToHttp(uri: string): string {
-  if (!uri) return "";
-  if (uri.startsWith("ipfs://")) return uri.replace("ipfs://", "https://gateway.pinata.cloud/ipfs/");
-  return uri;
-}
-
-function HeroPlaceholder() {
+function HeroPlaceholder({ hrefs }: { hrefs: Required<HeroSliderProps>["placeholderHrefs"] }) {
   return (
     <div className="absolute inset-0 bg-gradient-to-br from-brand-purple/30 via-brand-blue/20 to-brand-navy/50 flex flex-col items-center justify-center gap-4 text-center px-6 overflow-hidden">
       <div className="absolute aurora-purple w-[600px] h-[600px] opacity-20 -top-24 -left-24" />
@@ -38,10 +35,10 @@ function HeroPlaceholder() {
         New monetization revenues for creative works
       </p>
       <div className="flex gap-3 relative z-10">
-        <Link href="/marketplace" className="inline-flex items-center justify-center rounded-[11px] bg-brand-blue px-4 py-2 text-sm font-semibold text-white hover:brightness-110 active:scale-[0.98] transition-all">
+        <Link href={hrefs.markets!} className="inline-flex items-center justify-center rounded-[11px] bg-brand-blue px-4 py-2 text-sm font-semibold text-white hover:brightness-110 active:scale-[0.98] transition-all">
           Markets
         </Link>
-        <Link href="/create/asset" className="inline-flex items-center justify-center rounded-[11px] border border-white/20 bg-background/20 backdrop-blur-sm px-4 py-2 text-sm font-semibold text-white hover:bg-white/10 transition-all">
+        <Link href={hrefs.create!} className="inline-flex items-center justify-center rounded-[11px] border border-white/20 bg-background/20 backdrop-blur-sm px-4 py-2 text-sm font-semibold text-white hover:bg-white/10 transition-all">
           Create
         </Link>
       </div>
@@ -88,7 +85,8 @@ export function HeroSliderSkeleton() {
   return <section className="relative w-full h-[78vw] min-h-[420px] max-h-[768px] sm:h-[72vh] sm:max-h-[816px] bg-muted animate-pulse" />;
 }
 
-export function HeroSlider({ collections, isLoading, getHref }: HeroSliderProps) {
+export function HeroSlider({ collections, isLoading, getHref, placeholderHrefs = {} }: HeroSliderProps) {
+  const hrefs = { markets: "/marketplace", create: "/create/asset", ...placeholderHrefs };
   const [current, setCurrent] = useState(0);
   const count = collections.length;
 
@@ -106,7 +104,7 @@ export function HeroSlider({ collections, isLoading, getHref }: HeroSliderProps)
   return (
     <section className="relative w-full h-[78vw] min-h-[420px] max-h-[768px] sm:h-[72vh] sm:max-h-[816px] overflow-hidden bg-muted">
       {count === 0 ? (
-        <HeroPlaceholder />
+        <HeroPlaceholder hrefs={hrefs} />
       ) : (
         <>
           {collections.map((col, i) => (

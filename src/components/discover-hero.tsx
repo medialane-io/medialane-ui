@@ -10,6 +10,7 @@ export interface DiscoverHeroProps {
   orders: ApiOrder[];
   badgeText?: string;
   headlineText?: string;
+  getTickerHref?: (order: ApiOrder) => string;
 }
 
 export function DiscoverHero({
@@ -17,6 +18,7 @@ export function DiscoverHero({
   orders,
   badgeText = "Creative Works",
   headlineText = "Create, share & explore",
+  getTickerHref,
 }: DiscoverHeroProps) {
   return (
     <div className="space-y-6 pt-2 pb-6 border-b border-border/50">
@@ -67,7 +69,7 @@ export function DiscoverHero({
       )}
 
       {/* Scrolling ticker */}
-      <ActivityTicker orders={orders} />
+      <ActivityTicker orders={orders} getHref={getTickerHref} />
     </div>
   );
 }
