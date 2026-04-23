@@ -31,8 +31,8 @@ function CreatorChip({
   const [avatarError, setAvatarError] = useState(false);
   const [bannerError, setBannerError] = useState(false);
 
-  const bannerSrc = creator.bannerImage ?? creator.collectionImage ?? null;
-  const avatarSrc = creator.avatarImage ?? creator.collectionImage ?? null;
+  const bannerSrc = creator.bannerImage ?? null;
+  const avatarSrc = creator.avatarImage ?? creator.bannerImage ?? null;
 
   const bannerUrl = bannerSrc && !bannerError ? ipfsToHttp(bannerSrc) : null;
   const avatarUrl = avatarSrc && !avatarError ? ipfsToHttp(avatarSrc) : null;
