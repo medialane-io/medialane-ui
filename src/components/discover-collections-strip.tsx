@@ -12,6 +12,8 @@ export interface DiscoverCollectionsStripProps {
   isLoading: boolean;
   getHref: (collection: ApiCollection) => string;
   allCollectionsHref?: string;
+  sectionLabel?: string;
+  title?: string;
 }
 
 function CollectionChipSkeleton() {
@@ -79,16 +81,18 @@ export function DiscoverCollectionsStrip({
   isLoading,
   getHref,
   allCollectionsHref = "/collections",
+  sectionLabel = "NFT",
+  title = "Collections",
 }: DiscoverCollectionsStripProps) {
   return (
     <FadeIn>
       <div className="space-y-3">
         <div className="flex items-center justify-between">
           <div>
-            <p className="section-label">NFT</p>
+            <p className="section-label">{sectionLabel}</p>
             <div className="flex items-center gap-2 mt-0.5">
               <Layers className="h-4 w-4 text-brand-blue" />
-              <h2 className="text-lg font-bold">Collections</h2>
+              <h2 className="text-lg font-bold">{title}</h2>
             </div>
           </div>
           <a

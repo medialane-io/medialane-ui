@@ -11,6 +11,8 @@ export interface DiscoverCreatorsStripProps {
   isLoading: boolean;
   getHref: (creator: ApiCreatorProfile) => string;
   allCreatorsHref?: string;
+  sectionLabel?: string;
+  title?: string;
 }
 
 function CreatorChipSkeleton() {
@@ -88,6 +90,8 @@ export function DiscoverCreatorsStrip({
   isLoading,
   getHref,
   allCreatorsHref = "/creators",
+  sectionLabel = "Creator network",
+  title = "Creators",
 }: DiscoverCreatorsStripProps) {
   if (!isLoading && creators.length === 0) return null;
 
@@ -96,10 +100,10 @@ export function DiscoverCreatorsStrip({
       <div className="space-y-3">
         <div className="flex items-center justify-between">
           <div>
-            <p className="section-label">Creator network</p>
+            <p className="section-label">{sectionLabel}</p>
             <div className="flex items-center gap-2 mt-0.5">
               <Users className="h-4 w-4 text-brand-purple" />
-              <h2 className="text-lg font-bold">Creators</h2>
+              <h2 className="text-lg font-bold">{title}</h2>
             </div>
           </div>
           <a
