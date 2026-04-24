@@ -5,7 +5,7 @@
     "": {
       "name": "@medialane/ui",
       "devDependencies": {
-        "@medialane/sdk": "^0.6.7",
+        "@medialane/sdk": "^0.7.2",
         "@types/react": "^19.0.0",
         "@types/react-dom": "^19.0.0",
         "clsx": "^2.0.0",
@@ -152,7 +152,7 @@
 
     "@jridgewell/trace-mapping": ["@jridgewell/trace-mapping@0.3.31", "", { "dependencies": { "@jridgewell/resolve-uri": "^3.1.0", "@jridgewell/sourcemap-codec": "^1.4.14" } }, "sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw=="],
 
-    "@medialane/sdk": ["@medialane/sdk@0.6.9", "", { "dependencies": { "zod": "^3.23.8" }, "peerDependencies": { "starknet": ">=6.0.0" } }, "sha512-yEZ5W70Wh/1/z0NqbEOWmKn8XkBTdJsEi4M09qwSf4jf/PbYoWHsoGFJQBbOIiCRozkAvZ+Gs+gWRksYnH7ujQ=="],
+    "@medialane/sdk": ["@medialane/sdk@0.7.6", "", { "dependencies": { "zod": "^3.23.8" }, "peerDependencies": { "starknet": ">=6.0.0" } }, "sha512-wzcLNudbRc7g04vC8/BsI5LA7M05clhKKXcU3hSGAKk4wX9BUSf/syENW309iR8JTF9LYfP5CewDs/sj8VPIyw=="],
 
     "@next/env": ["@next/env@15.5.15", "", {}, "sha512-vcmyu5/MyFzN7CdqRHO3uHO44p/QPCZkuTUXroeUmhNP8bL5PHFEhik22JUazt+CDDoD6EpBYRCaS2pISL+/hg=="],
 
