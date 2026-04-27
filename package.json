@@ -44,7 +44,7 @@
     "tailwind-merge": ">=2.0.0"
   },
   "devDependencies": {
-    "@medialane/sdk": "^0.7.2",
+    "@medialane/sdk": "^0.8.2",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "clsx": "^2.0.0",
