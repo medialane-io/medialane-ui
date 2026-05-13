@@ -51,6 +51,13 @@ export function useNavCommandMenu() {
 export function NavCommandMenu({ commands, trigger }: NavCommandMenuProps) {
   const [open, setOpen] = React.useState(false);
   const router = useRouter();
+  const inputRef = React.useRef<HTMLInputElement>(null);
+
+  React.useEffect(() => {
+    if (!open) return;
+    const t = setTimeout(() => inputRef.current?.focus(), 60);
+    return () => clearTimeout(t);
+  }, [open]);
 
   React.useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -124,6 +131,7 @@ export function NavCommandMenu({ commands, trigger }: NavCommandMenuProps) {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.97 }}
               transition={{ duration: 0.15, ease: "easeOut" }}
+              onClick={() => setOpen(false)}
             >
               <div
                 className="w-full max-w-lg bg-background/90 border border-border/40 rounded-2xl overflow-hidden shadow-2xl"
@@ -134,6 +142,7 @@ export function NavCommandMenu({ commands, trigger }: NavCommandMenuProps) {
                   <div className="flex items-center gap-3 px-4 py-3 border-b border-border/40">
                     <Search className="h-4 w-4 text-muted-foreground shrink-0" />
                     <Command.Input
+                      ref={inputRef}
                       placeholder="Type a command or search…"
                       className="flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
                     />
