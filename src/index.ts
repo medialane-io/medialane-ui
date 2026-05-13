@@ -76,4 +76,4 @@ export type { ServiceDefinition, ServiceStatus, ServiceCategory } from "./data/l
 
 // ── v0.5.0 additions ─────────────────────────────────────────────────────────
 export { NavCommandMenu, useNavCommandMenu } from "./components/nav-command-menu.js";
-export type { NavCommand, NavCommandGroup } from "./components/nav-command-menu.js";
+export type { NavCommand, NavCommandGroup, NavCommandMenuProps } from "./components/nav-command-menu.js";

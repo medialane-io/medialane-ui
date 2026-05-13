@@ -24,7 +24,7 @@ export interface NavCommandGroup {
   items: NavCommand[];
 }
 
-interface NavCommandMenuProps {
+export interface NavCommandMenuProps {
   commands: NavCommandGroup[];
   /**
    * Optional trigger element rendered inline at the component's mount point.
@@ -32,6 +32,12 @@ interface NavCommandMenuProps {
    * separate button — that keeps the trigger in the right place in the layout.
    */
   trigger?: React.ReactNode;
+  /**
+   * Optional pinned account/connect area rendered below command results.
+   * Apps own the auth implementation here (Clerk, ChipiPay, wallet connectors,
+   * Privy, Cartridge, etc.) so the shared nav stays framework-agnostic.
+   */
+  accountSlot?: React.ReactNode;
 }
 
 // ── Singleton hook ─────────────────────────────────────────────────────────────
@@ -48,7 +54,7 @@ export function useNavCommandMenu() {
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
-export function NavCommandMenu({ commands, trigger }: NavCommandMenuProps) {
+export function NavCommandMenu({ commands, trigger, accountSlot }: NavCommandMenuProps) {
   const [open, setOpen] = React.useState(false);
   const router = useRouter();
   const inputRef = React.useRef<HTMLInputElement>(null);
@@ -196,6 +202,12 @@ export function NavCommandMenu({ commands, trigger }: NavCommandMenuProps) {
                       </React.Fragment>
                     ))}
                   </Command.List>
+
+                  {accountSlot && (
+                    <div className="border-t border-border/40 bg-background/40 px-3 py-3">
+                      {accountSlot}
+                    </div>
+                  )}
 
                   {/* Footer */}
                   <div className="px-4 py-2.5 border-t border-border/40 flex items-center justify-between">
