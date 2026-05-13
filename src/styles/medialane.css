@@ -88,6 +88,22 @@
 .dark .aurora-rose   { opacity: 0.09; }
 .dark .aurora-orange { opacity: 0.07; }
 
+/* Navigation canvas */
+.nav-canvas-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  backdrop-filter: blur(48px) saturate(1.5);
+  -webkit-backdrop-filter: blur(48px) saturate(1.5);
+}
+.nav-canvas-aurora {
+  position: fixed;
+  inset: 0;
+  z-index: 99;
+  pointer-events: none;
+  overflow: hidden;
+}
+
 /* ── Card primitives ──────────────────────────────────────────────────── */
 .card-base {
   border-radius: calc(var(--radius) * 1.25);
