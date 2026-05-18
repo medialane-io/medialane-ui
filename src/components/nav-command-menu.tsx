@@ -20,7 +20,12 @@ export interface NavCommand {
 }
 
 export interface NavCommandGroup {
-  heading: string;
+  /**
+   * Optional group heading. Omit it for the primary group so its items
+   * read as the top-level menu — they render first, emphasized, with no
+   * label, separated from the headed groups below.
+   */
+  heading?: string;
   items: NavCommand[];
 }
 
@@ -38,6 +43,12 @@ export interface NavCommandMenuProps {
    * Privy, Cartridge, etc.) so the shared nav stays framework-agnostic.
    */
   accountSlot?: React.ReactNode;
+  /**
+   * Optional control rendered in the footer row (e.g. a theme toggle).
+   * Apps own theme state (next-themes etc.) so the shared nav stays
+   * framework-agnostic — same pattern as `accountSlot`.
+   */
+  footerSlot?: React.ReactNode;
 }
 
 // ── Singleton hook ─────────────────────────────────────────────────────────────
@@ -54,7 +65,7 @@ export function useNavCommandMenu() {
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
-export function NavCommandMenu({ commands, trigger, accountSlot }: NavCommandMenuProps) {
+export function NavCommandMenu({ commands, trigger, accountSlot, footerSlot }: NavCommandMenuProps) {
   const [open, setOpen] = React.useState(false);
   const router = useRouter();
   const inputRef = React.useRef<HTMLInputElement>(null);
@@ -145,12 +156,12 @@ export function NavCommandMenu({ commands, trigger, accountSlot }: NavCommandMen
               >
                 <Command shouldFilter label="Medialane navigation">
                   {/* Search bar */}
-                  <div className="flex items-center gap-3 px-4 py-3 border-b border-border/40">
-                    <Search className="h-4 w-4 text-muted-foreground shrink-0" />
+                  <div className="flex items-center gap-3 px-4 py-3.5 border-b border-border/40">
+                    <Search className="h-[18px] w-[18px] text-muted-foreground shrink-0" />
                     <Command.Input
                       ref={inputRef}
                       placeholder="Type a command or search…"
-                      className="flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
+                      className="flex-1 bg-transparent text-[15px] outline-none placeholder:text-muted-foreground"
                     />
                     <button
                       onClick={() => setOpen(false)}
@@ -167,19 +178,24 @@ export function NavCommandMenu({ commands, trigger, accountSlot }: NavCommandMen
                       No results found.
                     </Command.Empty>
 
-                    {commands.map((group, i) => (
-                      <React.Fragment key={group.heading}>
+                    {commands.map((group, i) => {
+                      const primary = !group.heading;
+                      return (
+                      <React.Fragment key={group.heading ?? `__primary-${i}`}>
                         {i > 0 && (
-                          <Command.Separator className="my-1 h-px bg-border/40" />
+                          <Command.Separator className="my-1.5 h-px bg-border/40" />
                         )}
                         <Command.Group
                           heading={group.heading}
                           className={cn(
                             "[&_[cmdk-group-heading]]:px-2",
-                            "[&_[cmdk-group-heading]]:py-1.5",
-                            "[&_[cmdk-group-heading]]:text-xs",
-                            "[&_[cmdk-group-heading]]:font-medium",
-                            "[&_[cmdk-group-heading]]:text-muted-foreground"
+                            "[&_[cmdk-group-heading]]:pt-1.5",
+                            "[&_[cmdk-group-heading]]:pb-1",
+                            "[&_[cmdk-group-heading]]:text-[11px]",
+                            "[&_[cmdk-group-heading]]:font-semibold",
+                            "[&_[cmdk-group-heading]]:uppercase",
+                            "[&_[cmdk-group-heading]]:tracking-wider",
+                            "[&_[cmdk-group-heading]]:text-muted-foreground/70"
                           )}
                         >
                           {group.items.map((item) => (
@@ -188,19 +204,29 @@ export function NavCommandMenu({ commands, trigger, accountSlot }: NavCommandMen
                               value={[item.label, ...(item.keywords ?? [])].join(" ")}
                               onSelect={() => runCommand(item)}
                               className={cn(
-                                "flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm cursor-pointer",
-                                "transition-colors",
-                                "aria-selected:bg-muted/60"
+                                "group/item flex items-center gap-3 rounded-xl cursor-pointer",
+                                "transition-colors duration-150",
+                                "aria-selected:bg-primary/10",
+                                primary
+                                  ? "px-2.5 py-2.5 text-[15px] font-medium"
+                                  : "px-3 py-2 text-sm"
                               )}
                             >
-                              <item.icon className="h-4 w-4 text-muted-foreground shrink-0" />
-                              <span className="flex-1">{item.label}</span>
-                              <ArrowRight className="h-3.5 w-3.5 text-muted-foreground/40 shrink-0" />
+                              {primary ? (
+                                <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-muted/50 group-aria-selected/item:bg-primary/15 transition-colors shrink-0">
+                                  <item.icon className="h-[18px] w-[18px] text-foreground/80 group-aria-selected/item:text-primary transition-colors" />
+                                </span>
+                              ) : (
+                                <item.icon className="h-4 w-4 text-muted-foreground group-aria-selected/item:text-foreground transition-colors shrink-0" />
+                              )}
+                              <span className="flex-1 truncate">{item.label}</span>
+                              <ArrowRight className="h-3.5 w-3.5 text-muted-foreground/30 group-aria-selected/item:text-primary/70 transition-colors shrink-0" />
                             </Command.Item>
                           ))}
                         </Command.Group>
                       </React.Fragment>
-                    ))}
+                      );
+                    })}
                   </Command.List>
 
                   {accountSlot && (
@@ -210,9 +236,11 @@ export function NavCommandMenu({ commands, trigger, accountSlot }: NavCommandMen
                   )}
 
                   {/* Footer */}
-                  <div className="px-4 py-2.5 border-t border-border/40 flex items-center justify-between">
-                    <span className="text-[10px] text-muted-foreground/50">medialane</span>
-                    <kbd className="text-[10px] text-muted-foreground/50 font-mono">⌘K</kbd>
+                  <div className="px-3 py-2 border-t border-border/40 flex items-center justify-between gap-3">
+                    {footerSlot ?? (
+                      <span className="text-[10px] text-muted-foreground/50 pl-1">medialane</span>
+                    )}
+                    <kbd className="text-[10px] text-muted-foreground/50 font-mono shrink-0">⌘K</kbd>
                   </div>
                 </Command>
               </div>
