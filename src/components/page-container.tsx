@@ -27,7 +27,10 @@ export function PageContainer({
     <div
       className={cn(
         variantClass[variant],
-        "px-4 pt-10 pb-16",
+        // Horizontal padding matches the fixed NavTrigger logo offset
+        // (left-4 sm:left-6 lg:left-8) so page content aligns with the
+        // logo at every breakpoint. Keep this responsive, not a flat px.
+        "px-4 sm:px-6 lg:px-8 pt-10 pb-16",
         className
       )}
       {...props}
