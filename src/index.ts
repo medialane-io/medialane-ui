@@ -77,3 +77,14 @@ export type { ServiceDefinition, ServiceStatus, ServiceCategory } from "./data/l
 // ── v0.5.0 additions ─────────────────────────────────────────────────────────
 export { NavCommandMenu, useNavCommandMenu } from "./components/nav-command-menu.js";
 export type { NavCommand, NavCommandGroup, NavCommandMenuProps } from "./components/nav-command-menu.js";
+
+// ── v0.6.0 additions — portfolio subnav + counts ────────────────────────────
+export { PortfolioSubnav } from "./components/portfolio-subnav.js";
+export type {
+  PortfolioSubnavProps,
+  PortfolioNavItem,
+  PortfolioNavGroup,
+  PortfolioBadgeVariant,
+} from "./components/portfolio-subnav.js";
+export { derivePortfolioCounts } from "./utils/portfolio-counts.js";
+export type { PortfolioCounts, CountableOrder } from "./utils/portfolio-counts.js";
