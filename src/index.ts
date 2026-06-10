@@ -71,8 +71,8 @@ export type { DiscoverFeedSectionProps } from "./components/discover-feed-sectio
 // ── v0.4 additions ────────────────────────────────────────────────────────────
 export { LaunchpadServicesGrid } from "./components/launchpad-services.js";
 export type { LaunchpadServicesGridProps, ServiceCardProps } from "./components/launchpad-services.js";
-export { LAUNCHPAD_SERVICE_DEFINITIONS } from "./data/launchpad-services.js";
-export type { ServiceDefinition, ServiceStatus, ServiceCategory } from "./data/launchpad-services.js";
+export { LAUNCHPAD_SERVICE_DEFINITIONS, LAUNCHPAD_SERVICE_GROUPS } from "./data/launchpad-services.js";
+export type { ServiceDefinition, ServiceStatus, ServiceCategory, ServiceGroup, ServiceGroupDefinition } from "./data/launchpad-services.js";
 
 // ── v0.5.0 additions ─────────────────────────────────────────────────────────
 export { NavCommandMenu, useNavCommandMenu } from "./components/nav-command-menu.js";
