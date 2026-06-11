@@ -20,6 +20,7 @@ import {
   LAUNCHPAD_SERVICE_DEFINITIONS,
   LAUNCHPAD_SERVICE_GROUPS,
   type ServiceDefinition,
+  type ServiceGroup,
   type ServiceGroupDefinition,
   type ServiceStatus,
 } from "../data/launchpad-services.js";
@@ -109,7 +110,7 @@ export function LaunchpadServiceCard({ def, override = {}, featured = false }: L
         <Icon className="h-44 w-44" />
       </div>
 
-      <div className="relative flex flex-col flex-1 p-6 gap-4">
+      <div className="relative flex flex-col flex-1 p-6 sm:p-8 gap-4 sm:gap-5">
         <div className="flex items-start justify-between gap-3">
           <div className="relative">
             {live && (
@@ -187,11 +188,20 @@ export function LaunchpadServiceCard({ def, override = {}, featured = false }: L
 
 // ── Group sections ───────────────────────────────────────────────────────────
 
+/** Vivid gradient titles give special sections identity without boxing them in
+ *  (no panels inside panels — color carries the distinction, space does the rest). */
+const GROUP_TITLE_ACCENTS: Partial<Record<ServiceGroup, string>> = {
+  "creator-coins": "bg-gradient-to-r from-yellow-500 via-amber-500 to-orange-500 bg-clip-text text-transparent",
+  "pop-protocol": "bg-gradient-to-r from-emerald-500 to-green-600 bg-clip-text text-transparent",
+};
+
 function GroupHeader({ group }: { group: ServiceGroupDefinition }) {
   return (
-    <div className="space-y-1.5">
-      <h2 className="text-2xl sm:text-3xl font-black tracking-tight">{group.title}</h2>
-      <p className="text-sm sm:text-base text-muted-foreground">{group.tagline}</p>
+    <div className="space-y-2">
+      <h2 className={cn("text-3xl sm:text-4xl font-black tracking-tight", GROUP_TITLE_ACCENTS[group.key])}>
+        {group.title}
+      </h2>
+      <p className="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-2xl">{group.tagline}</p>
     </div>
   );
 }
@@ -223,29 +233,23 @@ export interface LaunchpadGroupedSectionsProps {
  *  LAUNCHPAD_SERVICE_GROUPS; cards from LAUNCHPAD_SERVICE_DEFINITIONS. */
 export function LaunchpadGroupedSections({ overrides, className }: LaunchpadGroupedSectionsProps) {
   return (
-    <div className={cn("space-y-10", className)}>
+    <div className={cn("space-y-16 sm:space-y-24", className)}>
       {LAUNCHPAD_SERVICE_GROUPS.map((group) => {
         const defs = LAUNCHPAD_SERVICE_DEFINITIONS.filter((d) => d.group === group.key);
         if (defs.length === 0) return null;
         if (group.key === "coming-soon") {
           return <ComingSoonStrip key={group.key} group={group} defs={defs} />;
         }
-        // Creator Coins & Memecoins get a distinct yellow/orange panel around the section
-        const isCoins = group.key === "creator-coins";
         return (
           <motion.div
             key={group.key}
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
-            className={cn(
-              "space-y-4",
-              isCoins &&
-                "rounded-3xl border border-yellow-500/20 bg-gradient-to-br from-yellow-500/[0.08] via-orange-500/[0.05] to-transparent p-5 sm:p-6",
-            )}
+            className="space-y-6 sm:space-y-8"
           >
             <GroupHeader group={group} />
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
               {defs.map((def) => (
                 <LaunchpadServiceCard
                   key={def.key}
