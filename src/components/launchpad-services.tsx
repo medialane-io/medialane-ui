@@ -2,17 +2,19 @@
 
 /**
  * Launchpad grouped services — the single source for the /launchpad page UI
- * in medialane-io and medialane-dapp (consolidated 2026-06-10; replaces the
- * old flat LaunchpadServicesGrid).
+ * in medialane-io and medialane-dapp.
  *
- * Apps own: hrefs, button labels, per-app status/badge flips (rollout), and
- * any copy overrides (e.g. the gasless-rail chip wording). Everything else —
- * card design, group order, colors, copy — lives here.
+ * Card philosophy (creator-first redesign, 2026-06-10): the whole card is the
+ * action. One title, one creator-language sentence (def.blurb), one unique hue
+ * per service — no buttons repeating the title, no status badges, no tech
+ * chips, no hover-only effects (mobile first: press states only).
+ *
+ * Apps own: hrefs + per-app rollout status flips. Everything else lives here.
  */
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Lock, ArrowRight } from "lucide-react";
+import { Lock, ArrowUpRight, ArrowRight } from "lucide-react";
 import { cn } from "../utils/cn.js";
 import {
   LAUNCHPAD_SERVICE_DEFINITIONS,
@@ -25,57 +27,44 @@ import {
 // ── Per-app injection points ─────────────────────────────────────────────────
 
 export interface ServiceOverride {
-  /** Primary CTA href — required for live services */
+  /** Primary destination — the whole card links here (required for live services) */
   href?: string;
-  buttonLabel?: string;
   /** Secondary browse link href (pairs with the def's browseLinkLabel) */
   browseHref?: string;
   /** Per-app rollout flips (e.g. coins live on one app first) */
   status?: ServiceStatus;
-  badge?: string;
-  /** Per-app copy overrides (e.g. "Gasless via ChipiPay" vs "Gasless transactions") */
-  features?: string[];
-  description?: string;
-  subtitle?: string;
+  /** Per-app one-liner override (rarely needed) */
+  blurb?: string;
 }
 
 export type ServiceOverrides = Record<string, ServiceOverride>;
 
-// ── Brand color map per service key ──────────────────────────────────────────
+// ── One unique hue per service — never repeated inside a group ───────────────
 
-interface ServiceCardColors {
-  icon: string;
-  button: string;
-  chip: string;
-  gradient: string;
+interface ServiceHue {
+  /** icon + arrow tint (600 for light surfaces, 400 for dark) */
+  text: string;
+  /** soft circle behind the arrow */
+  bg: string;
 }
 
-const DEFAULT_COLORS: ServiceCardColors = {
-  icon: "text-brand-blue",
-  button: "bg-brand-blue",
-  chip: "border-border/50 text-muted-foreground bg-muted/30",
-  gradient: "from-border/40 to-border/20",
+const DEFAULT_HUE: ServiceHue = { text: "text-sky-600 dark:text-sky-400", bg: "bg-sky-500/10" };
+
+export const SERVICE_HUES: Record<string, ServiceHue> = {
+  "mint-ip-asset": { text: "text-sky-600 dark:text-sky-400", bg: "bg-sky-500/10" },
+  "create-collection": { text: "text-violet-600 dark:text-violet-400", bg: "bg-violet-500/10" },
+  "ip-collection-1155": { text: "text-rose-600 dark:text-rose-400", bg: "bg-rose-500/10" },
+  "mint-editions": { text: "text-amber-600 dark:text-amber-400", bg: "bg-amber-500/10" },
+  "creator-coins": { text: "text-pink-600 dark:text-pink-400", bg: "bg-pink-500/10" },
+  "claim-memecoin": { text: "text-teal-600 dark:text-teal-400", bg: "bg-teal-500/10" },
+  "collection-drop": { text: "text-orange-600 dark:text-orange-400", bg: "bg-orange-500/10" },
+  "pop-protocol": { text: "text-emerald-600 dark:text-emerald-400", bg: "bg-emerald-500/10" },
+  "remix-asset": { text: "text-indigo-600 dark:text-indigo-400", bg: "bg-indigo-500/10" },
+  "claim-username": { text: "text-purple-600 dark:text-purple-400", bg: "bg-purple-500/10" },
+  "claim-collection": { text: "text-cyan-600 dark:text-cyan-400", bg: "bg-cyan-500/10" },
 };
 
-export const SERVICE_CARD_COLORS: Record<string, ServiceCardColors> = {
-  "mint-ip-asset": { icon: "text-brand-blue", button: "bg-brand-blue", chip: "border-blue-500/30 text-blue-400 bg-blue-500/10", gradient: "from-blue-500/50 via-cyan-400/20 to-blue-600/30" },
-  "create-collection": { icon: "text-brand-purple", button: "bg-brand-purple", chip: "border-purple-500/30 text-purple-400 bg-purple-500/10", gradient: "from-purple-500/50 via-violet-400/20 to-purple-700/30" },
-  "ip-collection-1155": { icon: "text-brand-rose", button: "bg-brand-rose", chip: "border-rose-500/30 text-rose-400 bg-rose-500/10", gradient: "from-rose-500/50 via-pink-400/20 to-rose-700/30" },
-  "mint-editions": { icon: "text-brand-orange", button: "bg-brand-orange", chip: "border-orange-500/30 text-orange-400 bg-orange-500/10", gradient: "from-orange-500/50 via-amber-400/20 to-orange-700/30" },
-  "remix-asset": { icon: "text-brand-navy", button: "bg-brand-navy", chip: "border-indigo-700/30 text-indigo-300 bg-indigo-900/20", gradient: "from-blue-900/60 via-indigo-700/20 to-blue-800/30" },
-  "pop-protocol": { icon: "text-brand-orange", button: "bg-brand-orange", chip: "border-orange-500/30 text-orange-400 bg-orange-500/10", gradient: "from-orange-500/50 via-amber-400/20 to-orange-700/30" },
-  "collection-drop": { icon: "text-brand-rose", button: "bg-brand-rose", chip: "border-rose-500/30 text-rose-400 bg-rose-500/10", gradient: "from-rose-500/50 via-red-400/20 to-rose-700/30" },
-  "ip-tickets": { icon: "text-brand-blue", button: "bg-brand-blue", chip: "border-blue-500/30 text-blue-400 bg-blue-500/10", gradient: "from-blue-500/50 via-cyan-400/20 to-blue-600/30" },
-  "membership": { icon: "text-brand-purple", button: "bg-brand-purple", chip: "border-purple-500/30 text-purple-400 bg-purple-500/10", gradient: "from-purple-500/50 via-violet-400/20 to-purple-700/30" },
-  "subscriptions": { icon: "text-brand-blue", button: "bg-brand-blue", chip: "border-blue-500/30 text-blue-400 bg-blue-500/10", gradient: "from-blue-500/50 via-cyan-400/20 to-blue-600/30" },
-  "ip-coins": { icon: "text-brand-orange", button: "bg-brand-orange", chip: "border-orange-500/30 text-orange-400 bg-orange-500/10", gradient: "from-orange-500/50 via-amber-400/20 to-orange-700/30" },
-  "creator-coins": { icon: "text-brand-rose", button: "bg-brand-rose", chip: "border-rose-500/30 text-rose-400 bg-rose-500/10", gradient: "from-rose-500/50 via-pink-400/20 to-rose-700/30" },
-  "claim-memecoin": { icon: "text-brand-orange", button: "bg-brand-orange", chip: "border-orange-500/30 text-orange-400 bg-orange-500/10", gradient: "from-orange-500/50 via-amber-400/20 to-orange-700/30" },
-  "claim-username": { icon: "text-brand-purple", button: "bg-brand-purple", chip: "border-purple-500/30 text-purple-400 bg-purple-500/10", gradient: "from-purple-500/50 via-violet-400/20 to-purple-700/30" },
-  "claim-collection": { icon: "text-brand-blue", button: "bg-brand-blue", chip: "border-blue-500/30 text-blue-400 bg-blue-500/10", gradient: "from-blue-500/50 via-cyan-400/20 to-blue-600/30" },
-};
-
-// ── Service card ─────────────────────────────────────────────────────────────
+// ── Service card — the whole card is the action ─────────────────────────────
 
 export interface LaunchpadServiceCardProps {
   def: ServiceDefinition;
@@ -83,137 +72,56 @@ export interface LaunchpadServiceCardProps {
 }
 
 export function LaunchpadServiceCard({ def, override = {} }: LaunchpadServiceCardProps) {
-  const { key, icon: Icon, browseLinkLabel } = def;
+  const { key, icon: Icon, title, browseLinkLabel } = def;
   const status = override.status ?? def.status;
-  const badge = override.badge ?? def.badge;
-  const subtitle = override.subtitle ?? def.subtitle;
-  const description = override.description ?? def.description;
-  const features = override.features ?? def.features;
-  const { href, buttonLabel, browseHref } = override;
+  const blurb = override.blurb ?? def.blurb;
+  const { href, browseHref } = override;
 
   const live = status === "live";
-  const building = status === "building";
-  const active = live || building;
-  const colors = SERVICE_CARD_COLORS[key] ?? DEFAULT_COLORS;
+  const hue = SERVICE_HUES[key] ?? DEFAULT_HUE;
 
-  const card = (
+  return (
     <div
       className={cn(
-        "relative rounded-[15px] bg-card flex flex-col overflow-hidden",
-        "transition-all duration-200 flex-1",
-        !active && "opacity-80",
+        "relative rounded-2xl border border-border/60 bg-card p-5 sm:p-6",
+        "flex flex-col gap-3 transition-transform",
+        live ? "active:scale-[0.99]" : "opacity-60",
       )}
     >
-      {/* Atmospheric wash — per-service color, fades to nothing */}
-      <div
-        aria-hidden
-        className={cn(
-          "absolute inset-0 bg-gradient-to-br pointer-events-none",
-          colors.gradient,
-          active ? "opacity-[0.13]" : "opacity-[0.05]",
-        )}
-      />
-      <div className="relative flex flex-col flex-1 p-6 gap-4">
-        {/* Icon (soft glow) + status badge */}
-        <div className="flex items-start justify-between">
-          <div className="relative">
-            {active && (
-              <div aria-hidden className={cn("absolute -inset-3 rounded-full blur-2xl opacity-30", colors.button)} />
-            )}
-            <Icon className={cn("relative h-10 w-10 transition-transform duration-300", active ? colors.icon : "text-muted-foreground/45")} />
-          </div>
-          <span
-            className={cn(
-              "text-[10px] font-semibold tracking-widest uppercase rounded-full px-2.5 py-1 flex items-center gap-1.5",
-              live
-                ? "text-emerald-500 bg-emerald-500/10"
-                : building
-                  ? "text-amber-500 bg-amber-500/10"
-                  : "text-muted-foreground/40 bg-muted/30",
-            )}
-          >
-            {live && <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />}
-            {!active && <Lock className="h-2.5 w-2.5" />}
-            {badge}
+      <div className="flex items-start justify-between gap-3">
+        <Icon className={cn("h-7 w-7 shrink-0", live ? hue.text : "text-muted-foreground/50")} />
+        {live ? (
+          <span className={cn("h-9 w-9 shrink-0 rounded-full flex items-center justify-center", hue.bg)}>
+            <ArrowUpRight className={cn("h-4 w-4", hue.text)} />
           </span>
-        </div>
-
-        {/* Title + subtitle */}
-        <div className="space-y-1">
-          <p className={cn("text-2xl font-bold leading-snug tracking-tight", !active && "text-foreground/60")}>
-            {def.title}
-          </p>
-          <p className={cn("text-[13px] leading-relaxed", active ? "text-muted-foreground" : "text-muted-foreground/50")}>
-            {subtitle}
-          </p>
-        </div>
-
-        {/* Description */}
-        <div className="space-y-2">
-          <p className={cn("text-sm leading-relaxed", active ? "text-muted-foreground" : "text-muted-foreground/50")}>
-            {description}
-          </p>
-          {def.example && active && (
-            <p className="text-xs text-muted-foreground/60 italic">{def.example}</p>
-          )}
-        </div>
-
-        {/* Feature chips */}
-        <div className="flex flex-wrap gap-1.5">
-          {features.map((f) => (
-            <span
-              key={f}
-              className={cn(
-                "text-[11px] px-2.5 py-1 rounded-full border font-medium",
-                active ? colors.chip : "bg-muted/10 border-border/15 text-muted-foreground/45",
-              )}
-            >
-              {f}
-            </span>
-          ))}
-        </div>
-
-        {/* CTA — pinned to the card bottom */}
-        {live && href ? (
-          <div className="space-y-2 mt-auto pt-2">
-            <Link
-              href={href}
-              className={cn(
-                "flex items-center justify-between w-full h-10 px-4 rounded-xl",
-                "text-sm font-semibold text-white",
-                "transition-all hover:brightness-110 active:scale-[0.98]",
-                colors.button,
-              )}
-            >
-              {buttonLabel ?? "Get started"}
-              <ArrowRight className="h-3.5 w-3.5" />
-            </Link>
-            {browseHref && browseLinkLabel && (
-              <Link
-                href={browseHref}
-                className="flex items-center justify-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors py-1"
-              >
-                {browseLinkLabel}
-                <ArrowRight className="h-3 w-3" />
-              </Link>
-            )}
-          </div>
         ) : (
-          <div className="flex items-center gap-2 h-10 mt-auto pt-2 text-sm text-muted-foreground/50 font-medium">
-            <Lock className="h-3.5 w-3.5" />
-            {building ? "In development" : "Coming soon"}
-          </div>
+          <span className="flex items-center gap-1 text-[11px] font-medium text-muted-foreground/60 pt-1">
+            <Lock className="h-3 w-3" />
+            Coming soon
+          </span>
         )}
       </div>
-    </div>
-  );
 
-  return live ? (
-    <div className={cn("p-[1px] rounded-2xl bg-gradient-to-br", colors.gradient, "transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-black/25 flex flex-col")}>
-      {card}
+      <div className="space-y-1">
+        <h3 className="text-lg font-bold tracking-tight leading-snug">{title}</h3>
+        <p className={cn("text-sm leading-relaxed", live ? "text-muted-foreground" : "text-muted-foreground/60")}>
+          {blurb}
+        </p>
+      </div>
+
+      {/* Stretched link — makes the whole card the action without nesting anchors */}
+      {live && href && <Link href={href} aria-label={title} className="absolute inset-0 z-10 rounded-2xl" />}
+
+      {live && browseHref && browseLinkLabel && (
+        <Link
+          href={browseHref}
+          className="relative z-20 mt-auto self-start inline-flex items-center gap-1 text-xs font-medium text-muted-foreground active:text-foreground"
+        >
+          {browseLinkLabel}
+          <ArrowRight className="h-3 w-3" />
+        </Link>
+      )}
     </div>
-  ) : (
-    <div className="rounded-2xl border border-border/25 flex flex-col">{card}</div>
   );
 }
 
@@ -222,14 +130,7 @@ export function LaunchpadServiceCard({ def, override = {} }: LaunchpadServiceCar
 function GroupHeader({ group }: { group: ServiceGroupDefinition }) {
   return (
     <div className="space-y-1">
-      <div className="flex items-center gap-2">
-        <h2 className="text-xl font-bold tracking-tight">{group.title}</h2>
-        {group.badge ? (
-          <span className="text-[10px] font-semibold tracking-widest uppercase rounded-full px-2 py-0.5 bg-muted/40 text-muted-foreground">
-            {group.badge}
-          </span>
-        ) : null}
-      </div>
+      <h2 className="text-xl font-bold tracking-tight">{group.title}</h2>
       <p className="text-sm text-muted-foreground">{group.tagline}</p>
     </div>
   );
@@ -237,15 +138,14 @@ function GroupHeader({ group }: { group: ServiceGroupDefinition }) {
 
 function ComingSoonStrip({ group, defs }: { group: ServiceGroupDefinition; defs: ServiceDefinition[] }) {
   return (
-    <div className="rounded-2xl border border-border/25 p-5">
-      <p className="section-label">{group.title}</p>
-      <p className="text-sm text-muted-foreground mt-1">{group.tagline}</p>
+    <div className="rounded-2xl border border-border/40 p-5">
+      <p className="font-semibold text-sm">{group.title}</p>
+      <p className="text-sm text-muted-foreground mt-0.5">{group.tagline}</p>
       <div className="flex flex-wrap gap-2 mt-4">
-        {defs.map(({ key, icon: Icon, title, subtitle }) => (
+        {defs.map(({ key, icon: Icon, title }) => (
           <div key={key} className="flex items-center gap-2 px-3 py-2 rounded-full bg-muted/30 border border-border/25">
             <Icon className="h-3.5 w-3.5 text-muted-foreground/60" />
-            <span className="text-xs font-semibold text-muted-foreground">{title}</span>
-            <span className="hidden sm:inline text-xs text-muted-foreground/50">— {subtitle}</span>
+            <span className="text-xs font-medium text-muted-foreground">{title}</span>
           </div>
         ))}
       </div>
@@ -254,7 +154,7 @@ function ComingSoonStrip({ group, defs }: { group: ServiceGroupDefinition; defs:
 }
 
 export interface LaunchpadGroupedSectionsProps {
-  /** Per-app hrefs / labels / rollout flips / copy overrides, keyed by service key. */
+  /** Per-app hrefs / rollout flips, keyed by service key. */
   overrides: ServiceOverrides;
   className?: string;
 }
@@ -279,7 +179,7 @@ export function LaunchpadGroupedSections({ overrides, className }: LaunchpadGrou
             className="space-y-4"
           >
             <GroupHeader group={group} />
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {defs.map((def) => (
                 <LaunchpadServiceCard key={def.key} def={def} override={overrides[def.key]} />
               ))}

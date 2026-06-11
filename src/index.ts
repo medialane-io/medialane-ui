@@ -67,7 +67,7 @@ export { DiscoverFeedSection } from "./components/discover-feed-section.js";
 export type { DiscoverFeedSectionProps } from "./components/discover-feed-section.js";
 
 // ── Launchpad (grouped sections — single page-UI source since 0.8.0) ─────────
-export { LaunchpadGroupedSections, LaunchpadServiceCard, SERVICE_CARD_COLORS } from "./components/launchpad-services.js";
+export { LaunchpadGroupedSections, LaunchpadServiceCard, SERVICE_HUES } from "./components/launchpad-services.js";
 export type { LaunchpadGroupedSectionsProps, LaunchpadServiceCardProps, ServiceOverride, ServiceOverrides } from "./components/launchpad-services.js";
 export { LAUNCHPAD_SERVICE_DEFINITIONS, LAUNCHPAD_SERVICE_GROUPS } from "./data/launchpad-services.js";
 export type { ServiceDefinition, ServiceStatus, ServiceCategory, ServiceGroup, ServiceGroupDefinition } from "./data/launchpad-services.js";
