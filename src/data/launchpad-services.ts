@@ -90,6 +90,8 @@ export interface ServiceDefinition {
   status: ServiceStatus;
   category: ServiceCategory;
   group: ServiceGroup;
+  /** Concrete usage example shown on active cards (italic line). */
+  example?: string;
   /** Secondary browse link label — injected app adds the href */
   browseLinkLabel?: string;
 }
@@ -98,11 +100,13 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
   // ── Create ────────────────────────────────────────────────────────────────
   {
     key: "mint-ip-asset",
-    title: "Mint IP NFT",
-    subtitle: "Publish any creative work on Starknet",
+    title: "Mint singular NFT",
+    subtitle: "Publish your creative work onchain",
     description:
-      "Turn any photo, video, or audio file into a programmable IP NFT. Gasless, permanent, and immediately tradeable on Medialane.",
-    features: ["Gasless via ChipiPay", "IPFS metadata", "Programmable licensing"],
+      "Upload any photo, video, audio, or document and mint it as an IP NFT — with licensing, provenance, and ownership all locked on-chain.",
+    // Apps may override features[0] with their gasless-rail wording (ChipiPay/AVNU).
+    features: ["Gasless transactions", "IPFS metadata", "Programmable licensing"],
+    example: "e.g. A song, a photo, an ebook, a short film",
     icon: ImagePlus,
     gradient: "from-blue-500/10 via-sky-400/4 to-transparent",
     borderColor: "border-blue-500/20",
@@ -115,11 +119,12 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
   },
   {
     key: "create-collection",
-    title: "Create Collection",
+    title: "Create NFT Collection",
     subtitle: "Group your NFTs under a shared identity",
     description:
-      "Deploy a branded ERC-721 collection with its own page, metadata, and on-chain identity — ready to populate with assets at any time.",
+      "Deploy a branded ERC-721 collection with its own page and on-chain identity. Add assets to it at any time and share it with collectors.",
     features: ["Factory-deployed ERC-721", "Branded collection page", "Add assets at any time"],
+    example: "e.g. A photography portfolio, a music catalog, a comic series",
     icon: Layers,
     gradient: "from-violet-500/10 via-purple-400/4 to-transparent",
     borderColor: "border-violet-500/20",
@@ -132,11 +137,12 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
   },
   {
     key: "ip-collection-1155",
-    title: "Edition Collection",
+    title: "Limited Editions Collections",
     subtitle: "Deploy a contract for multi-copy NFT releases",
     description:
-      "Launch a collection for music tracks, art prints, or any IP you want to release in multiples. Each edition token is numbered and tradeable on Medialane.",
-    features: ["Multi-edition ERC-1155", "Immutable provenance", "Tradeable on Medialane"],
+      "Create a collection built for editions — release music tracks, art prints, or any IP in numbered multiples. Each edition token is tradeable on Medialane.",
+    features: ["Multi-edition ERC-1155", "Numbered tokens", "Tradeable on Medialane"],
+    example: "e.g. 50 copies of a limited print, a music EP released in 100 editions",
     icon: Layers,
     gradient: "from-violet-500/10 via-purple-400/4 to-transparent",
     borderColor: "border-violet-500/20",
@@ -149,11 +155,12 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
   },
   {
     key: "mint-editions",
-    title: "Mint NFT Editions",
+    title: "Mint Limited Edition",
     subtitle: "Add new editions to an existing collection",
     description:
-      "Select one of your Edition Collection contracts and mint new token editions into it — set supply, upload artwork, and release to collectors.",
+      "Pick one of your Limited Edition contracts, upload artwork, set the supply, and release to collectors — all in a few clicks.",
     features: ["Choose any edition collection", "Set edition supply", "IPFS metadata"],
+    example: "e.g. Drop 25 numbered prints from your art series",
     icon: PlusCircle,
     gradient: "from-fuchsia-500/10 via-violet-400/4 to-transparent",
     borderColor: "border-fuchsia-500/20",
@@ -169,8 +176,9 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     title: "Remix Asset",
     subtitle: "Derivative works with on-chain attribution",
     description:
-      "Create a licensed derivative of any IP asset with full provenance and attribution flowing back to the original creator.",
+      "Create a licensed derivative of any digital asset with full provenance and attribution flowing back to the original creator on-chain.",
     features: ["On-chain attribution", "License-enforced at mint", "Royalties to original creator"],
+    example: "e.g. A remix of a song, a derivative artwork inspired by an original",
     icon: GitBranch,
     gradient: "from-rose-500/10 via-pink-400/4 to-transparent",
     borderColor: "border-rose-500/20",
@@ -188,8 +196,9 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     title: "POP Protocol",
     subtitle: "Proof-of-participation for events & communities",
     description:
-      "Give every attendee proof they were there. Issue soulbound credentials to your community — one non-transferable badge per wallet, permanently on-chain. Works for bootcamps, hackathons, and conferences.",
+      "Issue soulbound credentials to your community — one non-transferable badge per wallet, permanently on-chain. No transferring, no faking.",
     features: ["Soulbound · non-transferable", "One credential per wallet", "Optional allowlist gating"],
+    example: "e.g. Hackathon attendance badge, community membership, conference pass",
     icon: Award,
     gradient: "from-emerald-500/10 via-green-400/4 to-transparent",
     borderColor: "border-emerald-500/20",
@@ -204,10 +213,11 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
   {
     key: "collection-drop",
     title: "Collection Drop",
-    subtitle: "Limited-edition timed releases",
+    subtitle: "Timed NFT releases with mint windows",
     description:
-      "Launch a fixed-supply ERC-721 drop with a defined mint window and per-wallet limit. Set your open date and let your community race to collect.",
-    features: ["Fixed supply cap", "Timed mint window", "Free or paid mint"],
+      "Launch a time-gated mint campaign — set a price, supply cap, start and end time, and let collectors mint directly from your drop page.",
+    features: ["Timed mint window", "Price + supply cap", "Branded drop page"],
+    example: "e.g. A 48-hour drop of 200 NFTs at 5 USDC each",
     icon: Package,
     gradient: "from-orange-500/10 via-amber-400/4 to-transparent",
     borderColor: "border-orange-500/20",

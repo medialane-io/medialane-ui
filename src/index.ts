@@ -51,8 +51,6 @@ export { ActivityRow } from "./components/activity-row.js";
 export type { ActivityRowProps } from "./components/activity-row.js";
 export { ActivityFeedShell } from "./components/activity-feed-shell.js";
 export type { ActivityFeedShellProps } from "./components/activity-feed-shell.js";
-export { LaunchpadGrid } from "./components/launchpad-grid.js";
-export type { LaunchpadGridProps, FeatureItem } from "./components/launchpad-grid.js";
 export { CtaCardGrid } from "./components/cta-card-grid.js";
 export type { CtaCardGridProps, CtaCardItem } from "./components/cta-card-grid.js";
 
@@ -68,9 +66,9 @@ export type { DiscoverCreatorsStripProps } from "./components/discover-creators-
 export { DiscoverFeedSection } from "./components/discover-feed-section.js";
 export type { DiscoverFeedSectionProps } from "./components/discover-feed-section.js";
 
-// ── v0.4 additions ────────────────────────────────────────────────────────────
-export { LaunchpadServicesGrid } from "./components/launchpad-services.js";
-export type { LaunchpadServicesGridProps, ServiceCardProps } from "./components/launchpad-services.js";
+// ── Launchpad (grouped sections — single page-UI source since 0.8.0) ─────────
+export { LaunchpadGroupedSections, LaunchpadServiceCard, SERVICE_CARD_COLORS } from "./components/launchpad-services.js";
+export type { LaunchpadGroupedSectionsProps, LaunchpadServiceCardProps, ServiceOverride, ServiceOverrides } from "./components/launchpad-services.js";
 export { LAUNCHPAD_SERVICE_DEFINITIONS, LAUNCHPAD_SERVICE_GROUPS } from "./data/launchpad-services.js";
 export type { ServiceDefinition, ServiceStatus, ServiceCategory, ServiceGroup, ServiceGroupDefinition } from "./data/launchpad-services.js";
 
