@@ -14,7 +14,7 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Lock, ArrowUpRight, ArrowRight } from "lucide-react";
+import { Lock, ArrowRight } from "lucide-react";
 import { cn } from "../utils/cn.js";
 import {
   LAUNCHPAD_SERVICE_DEFINITIONS,
@@ -42,32 +42,35 @@ export type ServiceOverrides = Record<string, ServiceOverride>;
 // ── One unique hue per service — never repeated inside a group ───────────────
 
 interface ServiceHue {
-  /** icon + link tint (600 for light surfaces, 400 for dark) */
+  /** icon tint (600 for light surfaces, 400 for dark) */
   text: string;
-  /** solid fill — the arrow action + icon glow */
+  /** solid fill — icon glow */
   solid: string;
-  /** gradient ring around live cards */
-  ring: string;
+  /** thin card border tint */
+  border: string;
+  /** vivid two-stop gradient for the action pill (asset-page button language) */
+  pill: string;
 }
 
 const DEFAULT_HUE: ServiceHue = {
   text: "text-sky-600 dark:text-sky-400",
   solid: "bg-sky-500",
-  ring: "from-sky-500/60 via-sky-400/15 to-sky-600/40",
+  border: "border-sky-500/25",
+  pill: "bg-gradient-to-r from-sky-500 to-blue-600",
 };
 
 export const SERVICE_HUES: Record<string, ServiceHue> = {
-  "mint-ip-asset": { text: "text-sky-600 dark:text-sky-400", solid: "bg-sky-500", ring: "from-sky-500/60 via-sky-400/15 to-sky-600/40" },
-  "create-collection": { text: "text-violet-600 dark:text-violet-400", solid: "bg-violet-500", ring: "from-violet-500/60 via-violet-400/15 to-violet-600/40" },
-  "ip-collection-1155": { text: "text-rose-600 dark:text-rose-400", solid: "bg-rose-500", ring: "from-rose-500/60 via-rose-400/15 to-rose-600/40" },
-  "mint-editions": { text: "text-amber-600 dark:text-amber-400", solid: "bg-amber-500", ring: "from-amber-500/60 via-amber-400/15 to-amber-600/40" },
-  "creator-coins": { text: "text-pink-600 dark:text-pink-400", solid: "bg-pink-500", ring: "from-pink-500/60 via-pink-400/15 to-pink-600/40" },
-  "claim-memecoin": { text: "text-teal-600 dark:text-teal-400", solid: "bg-teal-500", ring: "from-teal-500/60 via-teal-400/15 to-teal-600/40" },
-  "collection-drop": { text: "text-orange-600 dark:text-orange-400", solid: "bg-orange-500", ring: "from-orange-500/60 via-orange-400/15 to-orange-600/40" },
-  "pop-protocol": { text: "text-emerald-600 dark:text-emerald-400", solid: "bg-emerald-500", ring: "from-emerald-500/60 via-emerald-400/15 to-emerald-600/40" },
-  "remix-asset": { text: "text-indigo-600 dark:text-indigo-400", solid: "bg-indigo-500", ring: "from-indigo-500/60 via-indigo-400/15 to-indigo-600/40" },
-  "claim-username": { text: "text-purple-600 dark:text-purple-400", solid: "bg-purple-500", ring: "from-purple-500/60 via-purple-400/15 to-purple-600/40" },
-  "claim-collection": { text: "text-cyan-600 dark:text-cyan-400", solid: "bg-cyan-500", ring: "from-cyan-500/60 via-cyan-400/15 to-cyan-600/40" },
+  "mint-ip-asset": { text: "text-sky-600 dark:text-sky-400", solid: "bg-sky-500", border: "border-sky-500/25", pill: "bg-gradient-to-r from-sky-500 to-blue-600" },
+  "create-collection": { text: "text-violet-600 dark:text-violet-400", solid: "bg-violet-500", border: "border-violet-500/25", pill: "bg-gradient-to-r from-violet-500 to-purple-600" },
+  "ip-collection-1155": { text: "text-rose-600 dark:text-rose-400", solid: "bg-rose-500", border: "border-rose-500/25", pill: "bg-gradient-to-r from-rose-500 to-red-600" },
+  "mint-editions": { text: "text-amber-600 dark:text-amber-400", solid: "bg-amber-500", border: "border-amber-500/25", pill: "bg-gradient-to-r from-amber-500 to-orange-600" },
+  "creator-coins": { text: "text-pink-600 dark:text-pink-400", solid: "bg-pink-500", border: "border-pink-500/25", pill: "bg-gradient-to-r from-pink-500 to-rose-600" },
+  "claim-memecoin": { text: "text-teal-600 dark:text-teal-400", solid: "bg-teal-500", border: "border-teal-500/25", pill: "bg-gradient-to-r from-teal-500 to-cyan-600" },
+  "collection-drop": { text: "text-orange-600 dark:text-orange-400", solid: "bg-orange-500", border: "border-orange-500/25", pill: "bg-gradient-to-r from-orange-500 to-red-500" },
+  "pop-protocol": { text: "text-emerald-600 dark:text-emerald-400", solid: "bg-emerald-500", border: "border-emerald-500/25", pill: "bg-gradient-to-r from-emerald-500 to-green-600" },
+  "remix-asset": { text: "text-indigo-600 dark:text-indigo-400", solid: "bg-indigo-500", border: "border-indigo-500/25", pill: "bg-gradient-to-r from-indigo-500 to-blue-600" },
+  "claim-username": { text: "text-purple-600 dark:text-purple-400", solid: "bg-purple-500", border: "border-purple-500/25", pill: "bg-gradient-to-r from-purple-500 to-fuchsia-600" },
+  "claim-collection": { text: "text-cyan-600 dark:text-cyan-400", solid: "bg-cyan-500", border: "border-cyan-500/25", pill: "bg-gradient-to-r from-cyan-500 to-sky-600" },
 };
 
 // ── Service card — the whole card is the action ─────────────────────────────
@@ -86,20 +89,16 @@ export function LaunchpadServiceCard({ def, override = {} }: LaunchpadServiceCar
   const live = status === "live";
   const hue = SERVICE_HUES[key] ?? DEFAULT_HUE;
 
-  const card = (
+  return (
     <div
       className={cn(
-        "relative rounded-[15px] bg-card overflow-hidden flex flex-col flex-1 min-h-[210px]",
+        "relative rounded-2xl border bg-card overflow-hidden flex flex-col flex-1 min-h-[210px]",
         "transition-transform",
-        live ? "active:scale-[0.99]" : "opacity-70",
+        live ? cn(hue.border, "active:scale-[0.99]") : "border-border/30 opacity-70",
       )}
     >
-      {/* Soft hue tint — same language as the Drop Pages panel */}
-      {live && (
-        <div aria-hidden className={cn("absolute inset-0 pointer-events-none bg-gradient-to-br to-transparent opacity-[0.07]", hue.solid.replace("bg-", "from-"))} />
-      )}
-      {/* Giant watermark icon, ghosted in the corner */}
-      <div aria-hidden className="absolute -right-8 -bottom-10 opacity-[0.05] select-none pointer-events-none">
+      {/* Giant watermark icon, ghosted in the corner (Drop-Pages-panel language) */}
+      <div aria-hidden className="absolute -right-8 -bottom-10 opacity-[0.04] select-none pointer-events-none">
         <Icon className="h-44 w-44" />
       </div>
 
@@ -121,15 +120,15 @@ export function LaunchpadServiceCard({ def, override = {} }: LaunchpadServiceCar
 
         <div className="space-y-1.5">
           <h3 className="text-2xl font-bold tracking-tight leading-snug">{title}</h3>
-          <p className={cn("text-[15px] leading-relaxed max-w-[34ch]", live ? "text-muted-foreground" : "text-muted-foreground/60")}>
+          <p className={cn("text-[15px] leading-relaxed max-w-[36ch]", live ? "text-muted-foreground" : "text-muted-foreground/60")}>
             {blurb}
           </p>
         </div>
 
-        {/* Stretched link — the whole card is the action, no title-repeating button */}
-        {live && href && <Link href={href} aria-label={title} className="absolute inset-0 z-10" />}
+        {/* Stretched link — the whole card is the action; the pill is the visual cue */}
+        {live && href && <Link href={href} aria-label={`${def.cta} — ${title}`} className="absolute inset-0 z-10" />}
 
-        <div className="mt-auto pt-1 flex items-end justify-between">
+        <div className="mt-auto pt-1 flex items-end justify-between gap-3">
           {live && browseHref && browseLinkLabel ? (
             <Link
               href={browseHref}
@@ -142,21 +141,20 @@ export function LaunchpadServiceCard({ def, override = {} }: LaunchpadServiceCar
             <span />
           )}
           {live && (
-            <span className={cn("h-11 w-11 shrink-0 rounded-full flex items-center justify-center shadow-lg shadow-black/20", hue.solid)}>
-              <ArrowUpRight className="h-5 w-5 text-white" />
+            <span
+              className={cn(
+                "inline-flex items-center gap-2 h-10 px-5 rounded-full",
+                "text-sm font-semibold text-white shadow-lg shadow-black/25",
+                hue.pill,
+              )}
+            >
+              {def.cta}
+              <ArrowRight className="h-4 w-4" />
             </span>
           )}
         </div>
       </div>
     </div>
-  );
-
-  return live ? (
-    <div className={cn("p-[1px] rounded-2xl bg-gradient-to-br flex flex-col", hue.ring)}>
-      {card}
-    </div>
-  ) : (
-    <div className="rounded-2xl border border-border/30 flex flex-col">{card}</div>
   );
 }
 

@@ -90,6 +90,8 @@ export interface ServiceDefinition {
   group: ServiceGroup;
   /** The ONE creator-language sentence the card shows (no jargon). */
   blurb: string;
+  /** Single-verb action label for the card's gradient pill (never repeats the title). */
+  cta: string;
   /** Concrete usage example (legacy long-card layout; unused by the 0.9.0 card). */
   example?: string;
   /** Secondary browse link label — injected app adds the href */
@@ -100,6 +102,7 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
   // ── Create ────────────────────────────────────────────────────────────────
   {
     key: "mint-ip-asset",
+    cta: "Mint",
     blurb: "Upload a song, a photo, a video \u2014 any file \u2014 and publish it as yours, free, in minutes.",
     title: "Mint singular NFT",
     subtitle: "Publish your creative work onchain",
@@ -120,6 +123,7 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
   },
   {
     key: "create-collection",
+    cta: "Create",
     blurb: "Give your works a home of their own, with its own page and name.",
     title: "Create NFT Collection",
     subtitle: "Group your NFTs under a shared identity",
@@ -139,6 +143,7 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
   },
   {
     key: "ip-collection-1155",
+    cta: "Create",
     blurb: "Set up a collection made for numbered copies of your work.",
     title: "Limited Editions Collections",
     subtitle: "Deploy a contract for multi-copy NFT releases",
@@ -158,6 +163,7 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
   },
   {
     key: "mint-editions",
+    cta: "Mint",
     blurb: "Release a new piece in as many copies as you choose.",
     title: "Mint Limited Edition",
     subtitle: "Add new editions to an existing collection",
@@ -177,6 +183,7 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
   },
   {
     key: "remix-asset",
+    cta: "Browse",
     blurb: "Create from another work \u2014 credit and royalties are handled for you.",
     title: "Remix Asset",
     subtitle: "Derivative works with on-chain attribution",
@@ -198,6 +205,7 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
   // ── Launch ────────────────────────────────────────────────────────────────
   {
     key: "pop-protocol",
+    cta: "Create",
     blurb: "Hand out badges your attendees keep forever.",
     title: "POP Protocol",
     subtitle: "Proof-of-participation for events & communities",
@@ -218,6 +226,7 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
   },
   {
     key: "collection-drop",
+    cta: "Launch",
     blurb: "Set a price, a window, and a limited run \u2014 then open the doors.",
     title: "Collection Drop",
     subtitle: "Timed NFT releases with mint windows",
@@ -238,6 +247,7 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
   },
   {
     key: "ip-tickets",
+    cta: "Sell",
     blurb: "Sell tickets to your shows and events.",
     title: "IP Tickets",
     subtitle: "Gate real-world experiences with NFTs",
@@ -255,6 +265,7 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
   },
   {
     key: "membership",
+    cta: "Create",
     blurb: "Passes that unlock more for your closest fans.",
     title: "Membership",
     subtitle: "Token-gated access passes",
@@ -274,6 +285,7 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
   // ── Monetize ─────────────────────────────────────────────────────────────
   {
     key: "subscriptions",
+    cta: "Start",
     blurb: "Recurring support from your audience.",
     title: "Subscriptions",
     subtitle: "Recurring on-chain revenue",
@@ -291,6 +303,7 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
   },
   {
     key: "ip-coins",
+    cta: "Launch",
     blurb: "Let fans own a piece of your catalog.",
     title: "IP Coins",
     subtitle: "Fractional ownership of intellectual property",
@@ -308,6 +321,7 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
   },
   {
     key: "creator-coins",
+    cta: "Launch",
     blurb: "Launch your coin in a few clicks \u2014 and stay in control of it.",
     title: "Creator Coin",
     subtitle: "Your own coin, your liquidity",
@@ -328,6 +342,7 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
   // ── Claims ────────────────────────────────────────────────────────────────
   {
     key: "claim-memecoin",
+    cta: "Claim",
     blurb: "Already launched a coin? Add it to your Medialane profile.",
     title: "Claim Memecoin",
     subtitle: "Bring your Starknet coin to Medialane",
@@ -346,6 +361,7 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
   },
   {
     key: "claim-username",
+    cta: "Claim",
     blurb: "Reserve your name and get your own creator page.",
     title: "Claim Username",
     subtitle: "Reserve your creator page URL",
@@ -364,6 +380,7 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
   },
   {
     key: "claim-collection",
+    cta: "Claim",
     blurb: "Made a collection somewhere else? Bring it to your profile.",
     title: "Claim Collection",
     subtitle: "Import an existing Starknet collection",
