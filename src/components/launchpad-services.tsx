@@ -99,7 +99,8 @@ export function LaunchpadServiceCard({ def, override = {}, featured = false }: L
   return (
     <div
       className={cn(
-        "relative rounded-2xl border bg-card overflow-hidden flex flex-col flex-1 min-h-[210px]",
+        // dark surfaces stay close to the canvas — the hue border does the talking
+        "relative rounded-2xl border bg-card dark:bg-white/[0.02] overflow-hidden flex flex-col flex-1 min-h-[210px]",
         "transition-transform",
         live ? cn(hue.border, "active:scale-[0.99]") : "border-border/30 opacity-70",
         featured && "sm:col-span-2",
@@ -206,6 +207,31 @@ function GroupHeader({ group }: { group: ServiceGroupDefinition }) {
   );
 }
 
+/** POP Protocol companion column — open how-it-works steps, no extra panel. */
+const POP_STEPS = [
+  { title: "Create your event badge", body: "Name it, add your artwork, and set who can claim — ready in minutes." },
+  { title: "Share the claim link", body: "Your community claims for free — one badge per person, no faking." },
+  { title: "It stays with them forever", body: "Badges can't be sold or transferred — lasting proof they were there." },
+];
+
+function PopHowItWorks() {
+  return (
+    <div className="flex flex-col justify-center gap-5 sm:gap-6 px-2 py-4 sm:py-0 sm:pl-6">
+      {POP_STEPS.map((step, i) => (
+        <div key={step.title} className="flex gap-4">
+          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-sm font-bold">
+            {i + 1}
+          </span>
+          <div className="space-y-0.5">
+            <p className="font-semibold">{step.title}</p>
+            <p className="text-sm text-muted-foreground leading-relaxed">{step.body}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 function ComingSoonStrip({ group, defs }: { group: ServiceGroupDefinition; defs: ServiceDefinition[] }) {
   return (
     <div className="rounded-2xl border border-border/40 p-5">
@@ -251,13 +277,9 @@ export function LaunchpadGroupedSections({ overrides, className }: LaunchpadGrou
             <GroupHeader group={group} />
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
               {defs.map((def) => (
-                <LaunchpadServiceCard
-                  key={def.key}
-                  def={def}
-                  override={overrides[def.key]}
-                  featured={group.key === "pop-protocol"}
-                />
+                <LaunchpadServiceCard key={def.key} def={def} override={overrides[def.key]} />
               ))}
+              {group.key === "pop-protocol" && <PopHowItWorks />}
             </div>
           </motion.div>
         );

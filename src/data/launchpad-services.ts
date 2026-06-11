@@ -211,13 +211,7 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     subtitle: "Proof-of-participation for events & communities",
     description:
       "Issue soulbound credentials to your community — one non-transferable badge per wallet, permanently on-chain. No transferring, no faking.",
-    features: [
-      "Badges stay with attendees forever",
-      "One badge per person — no faking",
-      "Free for your community to claim",
-      "Invite-list gating optional",
-      "Branded event page to share",
-    ],
+    features: ["Free for your community to claim", "Invite-list gating optional", "Branded event page to share"],
     example: "Hackathon attendance badge, community membership, conference pass",
     icon: Award,
     gradient: "from-emerald-500/10 via-green-400/4 to-transparent",
