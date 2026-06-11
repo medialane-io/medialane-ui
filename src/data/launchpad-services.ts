@@ -4,7 +4,7 @@ import {
   Award, Package, PlusCircle,
   Ticket, Users,
   RefreshCw, Coins, TrendingUp,
-  AtSign, FolderInput,
+  AtSign, FolderInput, Link2,
 } from "lucide-react";
 
 export type ServiceStatus = "live" | "building" | "soon";
@@ -43,8 +43,8 @@ export const LAUNCHPAD_SERVICE_GROUPS: ServiceGroupDefinition[] = [
   },
   {
     key: "creator-coins",
-    title: "Creator Coins",
-    tagline: "Launch your own coin and let your community back you.",
+    title: "Creator Coins & Memecoins",
+    tagline: "Launch your own coin — or bring one you already made — and let your community back you.",
   },
   {
     key: "collection-drop",
@@ -109,8 +109,8 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     description:
       "Upload any photo, video, audio, or document and mint it as an IP NFT — with licensing, provenance, and ownership all locked on-chain.",
     // Apps may override features[0] with their gasless-rail wording (ChipiPay/AVNU).
-    features: ["Gasless transactions", "IPFS metadata", "Programmable licensing"],
-    example: "e.g. A song, a photo, an ebook, a short film",
+    features: ["Free to publish", "Your file, stored forever", "You set the license terms"],
+    example: "A song, a photo, an ebook, a short film",
     icon: ImagePlus,
     gradient: "from-blue-500/10 via-sky-400/4 to-transparent",
     borderColor: "border-blue-500/20",
@@ -129,8 +129,8 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     subtitle: "Group your NFTs under a shared identity",
     description:
       "Deploy a branded ERC-721 collection with its own page and on-chain identity. Add assets to it at any time and share it with collectors.",
-    features: ["Factory-deployed ERC-721", "Branded collection page", "Add assets at any time"],
-    example: "e.g. A photography portfolio, a music catalog, a comic series",
+    features: ["Your own branded page", "Add new work anytime", "One link to share with fans"],
+    example: "A photography portfolio, a music catalog, a comic series",
     icon: Layers,
     gradient: "from-violet-500/10 via-purple-400/4 to-transparent",
     borderColor: "border-violet-500/20",
@@ -149,8 +149,8 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     subtitle: "Deploy a contract for multi-copy NFT releases",
     description:
       "Create a collection built for editions — release music tracks, art prints, or any IP in numbered multiples. Each edition token is tradeable on Medialane.",
-    features: ["Multi-edition ERC-1155", "Numbered tokens", "Tradeable on Medialane"],
-    example: "e.g. 50 copies of a limited print, a music EP released in 100 editions",
+    features: ["Numbered copies, set by you", "Fans collect and trade", "One home for every release"],
+    example: "50 copies of a limited print, a music EP in 100 editions",
     icon: Layers,
     gradient: "from-violet-500/10 via-purple-400/4 to-transparent",
     borderColor: "border-violet-500/20",
@@ -169,8 +169,8 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     subtitle: "Add new editions to an existing collection",
     description:
       "Pick one of your Limited Edition contracts, upload artwork, set the supply, and release to collectors — all in a few clicks.",
-    features: ["Choose any edition collection", "Set edition supply", "IPFS metadata"],
-    example: "e.g. Drop 25 numbered prints from your art series",
+    features: ["You choose how many copies", "Numbered automatically", "Ready to sell right away"],
+    example: "Drop 25 numbered prints from your art series",
     icon: PlusCircle,
     gradient: "from-fuchsia-500/10 via-violet-400/4 to-transparent",
     borderColor: "border-fuchsia-500/20",
@@ -189,8 +189,8 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     subtitle: "Derivative works with on-chain attribution",
     description:
       "Create a licensed derivative of any digital asset with full provenance and attribution flowing back to the original creator on-chain.",
-    features: ["On-chain attribution", "License-enforced at mint", "Royalties to original creator"],
-    example: "e.g. A remix of a song, a derivative artwork inspired by an original",
+    features: ["Credit handled automatically", "Royalties flow to the original", "License respected at mint"],
+    example: "A remix of a song, an artwork inspired by an original",
     icon: GitBranch,
     gradient: "from-rose-500/10 via-pink-400/4 to-transparent",
     borderColor: "border-rose-500/20",
@@ -211,8 +211,14 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     subtitle: "Proof-of-participation for events & communities",
     description:
       "Issue soulbound credentials to your community — one non-transferable badge per wallet, permanently on-chain. No transferring, no faking.",
-    features: ["Soulbound · non-transferable", "One credential per wallet", "Optional allowlist gating"],
-    example: "e.g. Hackathon attendance badge, community membership, conference pass",
+    features: [
+      "Badges stay with attendees forever",
+      "One badge per person — no faking",
+      "Free for your community to claim",
+      "Invite-list gating optional",
+      "Branded event page to share",
+    ],
+    example: "Hackathon attendance badge, community membership, conference pass",
     icon: Award,
     gradient: "from-emerald-500/10 via-green-400/4 to-transparent",
     borderColor: "border-emerald-500/20",
@@ -232,8 +238,8 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     subtitle: "Timed NFT releases with mint windows",
     description:
       "Launch a time-gated mint campaign — set a price, supply cap, start and end time, and let collectors mint directly from your drop page.",
-    features: ["Timed mint window", "Price + supply cap", "Branded drop page"],
-    example: "e.g. A 48-hour drop of 200 NFTs at 5 USDC each",
+    features: ["You set price and supply", "Opens and closes on your schedule", "Branded drop page to share"],
+    example: "A 48-hour drop of 200 pieces at 5 USDC each",
     icon: Package,
     gradient: "from-orange-500/10 via-amber-400/4 to-transparent",
     borderColor: "border-orange-500/20",
@@ -327,7 +333,8 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     subtitle: "Your own coin, your liquidity",
     description:
       "Launch a standard ERC-20 coin tied to your creative work, paired with a public Ekubo liquidity pool. You set the supply and allocation — and you stay in control of the liquidity.",
-    features: ["Standard ERC-20", "Public Ekubo pool", "You control the liquidity"],
+    features: ["Launch in a few clicks", "You keep control of the liquidity", "Traded on a public pool"],
+    example: "A fan coin for your channel, a coin for your music project",
     icon: TrendingUp,
     gradient: "from-pink-500/6 via-rose-400/2 to-transparent",
     borderColor: "border-pink-500/20",
@@ -348,7 +355,8 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     subtitle: "Bring your Starknet coin to Medialane",
     description:
       "Already launched a coin on Starknet (unrug or partner)? Claim it to add it to Medialane — reviewed by our team, then live on the Coins page and your profile.",
-    features: ["unrug & partner coins", "Team reviewed", "Lists on /coins"],
+    features: ["Bring a coin you already launched", "Reviewed by our team", "Featured on the Coins page"],
+    example: "Your unrug memecoin, listed on your creator profile",
     icon: Coins,
     gradient: "from-orange-500/10 via-amber-400/4 to-transparent",
     borderColor: "border-orange-500/20",
@@ -368,6 +376,7 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     description:
       "Claim your unique username and get a shareable creator page — your public portfolio at a clean, memorable URL. Free, and yours.",
     features: ["Free claim", "Shareable creator page", "Your public portfolio"],
+    example: "medialane.io/your-name — your portfolio at your own name",
     icon: AtSign,
     gradient: "from-violet-500/10 via-purple-400/4 to-transparent",
     borderColor: "border-violet-500/20",
@@ -386,12 +395,32 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     subtitle: "Import an existing Starknet collection",
     description:
       "Already deployed an ERC-721 collection on Starknet? Claim it to link it to your Medialane profile and give it a branded collection page.",
-    features: ["Import existing ERC-721", "Linked to your profile", "Branded collection page"],
+    features: ["Bring an existing collection", "Linked to your profile", "Branded collection page"],
+    example: "A collection you deployed elsewhere joins your profile",
     icon: FolderInput,
     gradient: "from-blue-500/10 via-sky-400/4 to-transparent",
     borderColor: "border-blue-500/20",
     iconColor: "text-blue-500",
     buttonColor: "bg-brand-blue hover:bg-brand-blue/90",
+    badge: "Claim",
+    status: "live",
+    category: "create",
+    group: "claims",
+  },
+  {
+    key: "claim-collection-name",
+    cta: "Claim",
+    blurb: "Give your collection a clean, memorable web address of its own.",
+    title: "Claim Collection Name",
+    subtitle: "Reserve your collection page URL",
+    description:
+      "Claim a custom name for your collection page — a clean, shareable URL your fans can remember, instead of a long contract address.",
+    features: ["Free claim", "Clean shareable URL", "Easy to remember and share"],
+    example: "medialane.io/collections/your-collection",
+    icon: Link2,
+    gradient: "from-pink-500/10 via-rose-400/4 to-transparent",
+    borderColor: "border-pink-500/20",
+    iconColor: "text-pink-500",
     badge: "Claim",
     status: "live",
     category: "create",
