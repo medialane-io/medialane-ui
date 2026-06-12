@@ -7,6 +7,18 @@ export { ipfsToHttp } from "./utils/ipfs.js";
 // ── Data (server-safe — no React, safe in Server Components) ──────────────────
 export { IP_TYPE_DATA, IP_TYPE_DATA_MAP } from "./data/ip-types.js";
 export type { IpTypeData } from "./data/ip-types.js";
+export {
+  IP_TYPES, LICENSE_TYPES, GEOGRAPHIC_SCOPES, AI_POLICIES,
+  DERIVATIVES_OPTIONS, LICENSE_TRAIT_TYPES,
+} from "./data/ip.js";
+export type { IPType, LicenseType } from "./data/ip.js";
+export {
+  IP_TEMPLATES, EMBED_PLATFORM_META, SOCIAL_PLATFORM_META, TEMPLATE_TRAIT_TYPES,
+} from "./data/ip-templates.js";
+export type { EmbedPlatform, SocialPlatform, TraitSuggestion, IPTemplate } from "./data/ip-templates.js";
+export { IPTypeDisplay } from "./components/ip-type-display.js";
+export { AssetOverviewContent } from "./components/asset-overview-content.js";
+export { AssetMarketsTab } from "./components/asset-markets-tab.js";
 export { BRAND } from "./data/brand.js";
 
 // ── Components (client-only — all have "use client") ─────────────────────────
@@ -38,7 +50,7 @@ export { TokenCard, TokenCardSkeleton } from "./components/token-card.js";
 export type { TokenCardProps, RarityTier } from "./components/token-card.js";
 
 // ── v0.3 additions ────────────────────────────────────────────────────────────
-export { timeAgo } from "./utils/time.js";
+export { timeAgo, timeUntil } from "./utils/time.js";
 export { ACTIVITY_TYPE_CONFIG, TYPE_FILTERS } from "./data/activity.js";
 export type { ActivityTypeConfig } from "./data/activity.js";
 export { HeroSlider, HeroSliderSkeleton } from "./components/hero-slider.js";
