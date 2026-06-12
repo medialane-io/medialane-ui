@@ -13,9 +13,9 @@ export {
 } from "./data/ip.js";
 export type { IPType, LicenseType } from "./data/ip.js";
 export {
-  IP_TEMPLATES, EMBED_PLATFORM_META, SOCIAL_PLATFORM_META, TEMPLATE_TRAIT_TYPES,
+  IP_TEMPLATES, EMBED_PLATFORM_META, SOCIAL_PLATFORM_META, TEMPLATE_TRAIT_TYPES, DOC_UPLOAD,
 } from "./data/ip-templates.js";
-export type { EmbedPlatform, SocialPlatform, TraitSuggestion, IPTemplate } from "./data/ip-templates.js";
+export type { EmbedPlatform, SocialPlatform, TraitSuggestion, IPTemplate, DocUploadConfig } from "./data/ip-templates.js";
 export { IPTypeDisplay } from "./components/ip-type-display.js";
 export { AssetOverviewContent } from "./components/asset-overview-content.js";
 export { AssetMarketsTab } from "./components/asset-markets-tab.js";

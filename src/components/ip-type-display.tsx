@@ -7,7 +7,8 @@ import {
   SOCIAL_PLATFORM_META,
   type EmbedPlatform,
 } from "../data/ip-templates.js";
-import { ExternalLink } from "lucide-react";
+import { ipfsToHttp } from "../utils/ipfs.js";
+import { ExternalLink, FileText, ShieldCheck } from "lucide-react";
 
 interface Attr {
   trait_type?: string | null;
@@ -135,10 +136,38 @@ export function IPTypeDisplay({ attributes }: IPTypeDisplayProps) {
     return value ? [{ platform, meta, value }] : [];
   });
 
-  if (embeds.length === 0 && socials.length === 0) return null;
+  const docUri = template.docUpload ? getAttr(template.docUpload.traitType) : null;
+
+  if (embeds.length === 0 && socials.length === 0 && !docUri) return null;
 
   return (
     <div className="space-y-5">
+      {/* Document pinned to IPFS — immutable, timestamped copy of the work */}
+      {docUri && (
+        <div className="space-y-1.5">
+          <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+            Document
+          </p>
+          <a
+            href={docUri.startsWith("ipfs://") ? ipfsToHttp(docUri) : docUri}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-3 rounded-xl border border-border bg-muted/20 px-4 py-3 transition-colors hover:border-primary/40 group"
+          >
+            <FileText className="h-5 w-5 text-primary shrink-0" />
+            <div className="min-w-0 flex-1">
+              <p className="text-sm font-semibold group-hover:text-primary transition-colors">
+                View document
+              </p>
+              <p className="text-xs text-muted-foreground flex items-center gap-1 mt-0.5">
+                <ShieldCheck className="h-3 w-3 shrink-0" />
+                Stored on IPFS — immutable, timestamped copy of the original
+              </p>
+            </div>
+            <ExternalLink className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
+          </a>
+        </div>
+      )}
       {embeds.map(({ platform, meta, value }) => {
         const src = getEmbedSrc(platform, value);
         if (src) {

@@ -47,6 +47,16 @@ export interface TraitSuggestion {
   options?: string[];
 }
 
+export interface DocUploadConfig {
+  /** Stored trait_type carrying the ipfs:// URI of the uploaded document */
+  traitType: string;
+  /** File-input accept list */
+  accept: string;
+  maxMb: number;
+  /** Creator-facing explanation shown under the upload field */
+  hint: string;
+}
+
 export interface IPTemplate {
   type: IPType;
   label: string;
@@ -56,7 +66,19 @@ export interface IPTemplate {
   embeds?: EmbedPlatform[];
   socials?: SocialPlatform[];
   traitSuggestions?: TraitSuggestion[];
+  /** Document/PDF upload to IPFS (Documents, Patents, Publications, Software) */
+  docUpload?: DocUploadConfig;
 }
+
+/** The document itself, pinned to immutable IPFS — a timestamped copy of the
+ *  work that stands as proof of authorship (Berne Convention: protection
+ *  exists from fixation; an immutable dated copy is the evidence). */
+export const DOC_UPLOAD: DocUploadConfig = {
+  traitType: "Document File",
+  accept: ".pdf,.doc,.docx,.txt,.md,.rtf,.odt",
+  maxMb: 20,
+  hint: "Stored permanently on IPFS — an immutable, timestamped copy of your work (proof of authorship under the Berne Convention).",
+};
 
 export const IP_TEMPLATES: Record<IPType, IPTemplate> = {
   Audio: {
@@ -124,6 +146,7 @@ export const IP_TEMPLATES: Record<IPType, IPTemplate> = {
     description: "Books, journals, magazines, academic papers",
     icon: BookOpen,
     color: { bg: "bg-indigo-500/10", text: "text-indigo-400", border: "border-indigo-500/20" },
+    docUpload: DOC_UPLOAD,
     socials: ["x", "instagram", "website"],
     traitSuggestions: [
       { key: "Author" }, { key: "Publisher" }, { key: "Language", placeholder: "English" }, { key: "Edition" },
@@ -135,6 +158,7 @@ export const IP_TEMPLATES: Record<IPType, IPTemplate> = {
     description: "Contracts, reports, whitepapers, legal documents",
     icon: FileText,
     color: { bg: "bg-zinc-500/10", text: "text-zinc-400", border: "border-zinc-500/20" },
+    docUpload: DOC_UPLOAD,
     traitSuggestions: [
       { key: "Author" }, { key: "Category" }, { key: "Language", placeholder: "English" },
     ],
@@ -145,6 +169,7 @@ export const IP_TEMPLATES: Record<IPType, IPTemplate> = {
     description: "Patents, inventions, technical innovations",
     icon: Award,
     color: { bg: "bg-amber-500/10", text: "text-amber-400", border: "border-amber-500/20" },
+    docUpload: DOC_UPLOAD,
     traitSuggestions: [
       { key: "Inventor" }, { key: "Field" }, { key: "Status" },
     ],
@@ -155,6 +180,7 @@ export const IP_TEMPLATES: Record<IPType, IPTemplate> = {
     description: "Applications, scripts, algorithms, code libraries",
     icon: Code2,
     color: { bg: "bg-violet-500/10", text: "text-violet-400", border: "border-violet-500/20" },
+    docUpload: DOC_UPLOAD,
     socials: ["website"],
     traitSuggestions: [
       { key: "Language", placeholder: "TypeScript" }, { key: "License" }, { key: "Platform" },
@@ -198,6 +224,7 @@ export const IP_TEMPLATES: Record<IPType, IPTemplate> = {
  */
 export const TEMPLATE_TRAIT_TYPES = new Set<string>([
   "IP Type",
+  DOC_UPLOAD.traitType,
   ...Object.values(EMBED_PLATFORM_META).map((m) => m.traitKey),
   ...Object.values(SOCIAL_PLATFORM_META).map((m) => m.traitKey),
   ...Object.values(IP_TEMPLATES).flatMap((t) => (t.traitSuggestions ?? []).map((s) => s.key)),
