@@ -11,6 +11,12 @@ import { formatDisplayPrice } from "../utils/format.js";
 import { cn } from "../utils/cn.js";
 import type { ApiActivity } from "@medialane/sdk";
 
+/** ui's pinned SDK lags the apps — extend structurally for fields newer SDKs carry. */
+type ActivityWithEnrichment = ApiActivity & {
+  token?: { name: string | null; image: string | null } | null;
+  amount?: string;
+};
+
 export const ACTIVITY_MESSAGES: Record<string, (actor: string | null) => string> = {
   mint:      (actor) => actor ? `Minted by ${actor}` : "Newly minted",
   listing:   (actor) => actor ? `Listed by ${actor}` : "Listed for sale",
@@ -41,9 +47,10 @@ export interface ActivityCardProps {
 /** Card-shaped activity item for horizontal carousels (Discover Community strip).
  *  Same data as ActivityRow, presented like a collection/listing card. */
 export function ActivityCard({
-  activity,
+  activity: rawActivity,
   getAssetHref = (c, t) => `/asset/${c}/${t}`,
 }: ActivityCardProps) {
+  const activity = rawActivity as ActivityWithEnrichment;
   const config = ACTIVITY_TYPE_CONFIG[activity.type] ?? {
     label: activity.type,
     variant: "outline" as const,
