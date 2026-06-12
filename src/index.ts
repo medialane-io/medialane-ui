@@ -65,6 +65,8 @@ export { DiscoverCreatorsStrip } from "./components/discover-creators-strip.js";
 export type { DiscoverCreatorsStripProps } from "./components/discover-creators-strip.js";
 export { DiscoverFeedSection } from "./components/discover-feed-section.js";
 export type { DiscoverFeedSectionProps } from "./components/discover-feed-section.js";
+export { ActivityCard, ActivityCardSkeleton, ACTIVITY_MESSAGES } from "./components/activity-card.js";
+export type { ActivityCardProps } from "./components/activity-card.js";
 
 // ── Launchpad (grouped sections — single page-UI source since 0.8.0) ─────────
 export { LaunchpadGroupedSections, LaunchpadServiceCard, SERVICE_HUES } from "./components/launchpad-services.js";
