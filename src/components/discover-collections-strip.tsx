@@ -103,7 +103,7 @@ export function DiscoverCollectionsStrip({
           </a>
         </div>
         <div className="overflow-x-auto scrollbar-hide snap-x snap-mandatory -mx-4 px-4 md:mx-0 md:px-0">
-          <div className="flex gap-3 w-max pb-1">
+          <div className="flex gap-5 sm:gap-6 w-max pb-2">
             {isLoading
               ? Array.from({ length: 6 }).map((_, i) => <CollectionChipSkeleton key={i} />)
               : collections.map((col) => (
