@@ -192,6 +192,12 @@ input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
 input[type="number"] { -moz-appearance: textfield; }
 
+/* ── Wrapper that adds a 2px animated gradient border around a .card-base card ── */
+.card-exclusive-wrapper {
+  padding: 2px;
+  border-radius: calc(var(--radius) * 1.25 + 2px);
+}
+
 /* ── Animated gradient border (marketplace buy button) ────────────────── */
 .btn-border-animated {
   background: linear-gradient(270deg, #2563eb, #9333ea, #f43f5e, #ea580c, #2563eb);

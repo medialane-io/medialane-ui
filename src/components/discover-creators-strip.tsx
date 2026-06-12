@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Users, ArrowRight, AtSign } from "lucide-react";
+import { Users, ArrowRight } from "lucide-react";
 import { FadeIn } from "./motion-primitives.js";
 import { ipfsToHttp } from "../utils/ipfs.js";
 import type { ApiCreatorProfile } from "@medialane/sdk";
@@ -28,16 +28,14 @@ function CreatorChip({
   creator: ApiCreatorProfile;
   href: string;
 }) {
-  const [avatarError, setAvatarError] = useState(false);
   const [bannerError, setBannerError] = useState(false);
 
-  const bannerSrc = creator.bannerImage ?? null;
-  const avatarSrc = creator.avatarImage ?? creator.bannerImage ?? null;
-
-  const bannerUrl = bannerSrc && !bannerError ? ipfsToHttp(bannerSrc) : null;
-  const avatarUrl = avatarSrc && !avatarError ? ipfsToHttp(avatarSrc) : null;
-
-  const displayName = creator.displayName || `@${creator.username}`;
+  // bannerImage with collectionImage fallback — io-approved big-username design
+  const rawSrc =
+    creator.bannerImage ||
+    (creator as ApiCreatorProfile & { collectionImage?: string | null }).collectionImage ||
+    null;
+  const bannerUrl = rawSrc && !bannerError ? ipfsToHttp(rawSrc) : null;
 
   return (
     <a
@@ -55,30 +53,8 @@ function CreatorChip({
             onError={() => setBannerError(true)}
           />
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
-        <div className="absolute bottom-0 inset-x-0 p-2.5 space-y-1.5">
-          <div className="h-8 w-8 rounded-full ring-2 ring-white/20 overflow-hidden bg-muted flex items-center justify-center">
-            {avatarUrl ? (
-              <img
-                src={avatarUrl}
-                alt={displayName ?? ""}
-                loading="lazy"
-                className="h-full w-full object-cover"
-                onError={() => setAvatarError(true)}
-              />
-            ) : (
-              <span className="text-xs font-black text-white/60">
-                {(displayName ?? "?").charAt(0).toUpperCase()}
-              </span>
-            )}
-          </div>
-          <div>
-            <p className="font-bold text-white text-xs truncate">{displayName}</p>
-            <p className="text-[10px] text-white/55 flex items-center gap-0.5">
-              <AtSign className="h-2 w-2 shrink-0" />
-              <span className="truncate">{creator.username}</span>
-            </p>
-          </div>
+        <div className="absolute bottom-0 inset-x-0 px-3 py-3">
+          <p className="font-bold text-2xl text-white truncate">{creator.username}</p>
         </div>
       </div>
     </a>
@@ -90,7 +66,7 @@ export function DiscoverCreatorsStrip({
   isLoading,
   getHref,
   allCreatorsHref = "/creators",
-  sectionLabel = "Creator network",
+  sectionLabel = "Explore",
   title = "Creators",
 }: DiscoverCreatorsStripProps) {
   if (!isLoading && creators.length === 0) return null;
