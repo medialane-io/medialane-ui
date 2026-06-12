@@ -70,6 +70,8 @@ export type { ActivityCardProps } from "./components/activity-card.js";
 
 // ── Launchpad (grouped sections — single page-UI source since 0.8.0) ─────────
 export { LaunchpadGroupedSections, LaunchpadServiceCard, SERVICE_HUES } from "./components/launchpad-services.js";
+export { LaunchpadStrip } from "./components/launchpad-strip.js";
+export type { LaunchpadStripProps } from "./components/launchpad-strip.js";
 export type { LaunchpadGroupedSectionsProps, LaunchpadServiceCardProps, ServiceOverride, ServiceOverrides } from "./components/launchpad-services.js";
 export { LAUNCHPAD_SERVICE_DEFINITIONS, LAUNCHPAD_SERVICE_GROUPS } from "./data/launchpad-services.js";
 export type { ServiceDefinition, ServiceStatus, ServiceCategory, ServiceGroup, ServiceGroupDefinition } from "./data/launchpad-services.js";
