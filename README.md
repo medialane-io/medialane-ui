@@ -173,16 +173,37 @@ import {
 
 ---
 
-### v0.4 — Launchpad Services
+### Launchpad (single page-UI source since v0.8)
 
 ```ts
-import { LaunchpadServicesGrid, LAUNCHPAD_SERVICE_DEFINITIONS } from "@medialane/ui";
+import { LaunchpadGroupedSections, LaunchpadStrip, LAUNCHPAD_SERVICE_DEFINITIONS, SERVICE_HUES } from "@medialane/ui";
 ```
 
 | Export | Description |
 |---|---|
-| `<LaunchpadServicesGrid services={LAUNCHPAD_SERVICE_DEFINITIONS} />` | Launchpad services grid with live/coming-soon badges |
-| `LAUNCHPAD_SERVICE_DEFINITIONS` | Pre-built service definitions for all launchpad products |
+| `<LaunchpadGroupedSections overrides={...} />` | The full grouped launchpad page UI — apps inject only hrefs / per-app rollout flips |
+| `<LaunchpadStrip hrefs={...} />` | Homepage launchpad carousel — cards derive from the shared service definitions |
+| `LAUNCHPAD_SERVICE_DEFINITIONS` / `SERVICE_HUES` | Canonical service copy (titles, blurbs, examples) + one unique hue per service |
+
+### Asset page modules (v0.13+)
+
+```ts
+import { AssetOverviewContent, AssetMarketsTab, AssetMediaColumn, AssetHeaderBlock, ParentAttributionBanner, IPTypeDisplay } from "@medialane/ui";
+```
+
+Shared presentation modules for the asset detail pages — both apps re-export
+them as shims at their original paths and inject wallet hooks/dialogs locally.
+
+### IP data layer (v0.13+)
+
+```ts
+import { IP_TYPES, LICENSE_TYPES, IP_TEMPLATES, DOC_UPLOAD, TEMPLATE_TRAIT_TYPES } from "@medialane/ui";
+```
+
+Canonical IP types, license presets, and per-type templates (embeds, socials,
+trait suggestions, and the `docUpload` config powering the document/PDF-to-IPFS
+upload on Documents / Patents / Publications / Software). The apps' `types/ip`
+and `lib/ip-templates` are re-export shims of this layer — edit here, never there.
 
 ---
 
@@ -212,7 +233,12 @@ The package uses [tsup](https://tsup.egoist.dev/) and outputs ESM + CJS + type d
 
 | Version | Added |
 |---|---|
-| **v0.4.0** | `LaunchpadServicesGrid`, `LAUNCHPAD_SERVICE_DEFINITIONS` |
+| **v0.14.0** | `docUpload` template config + `DOC_UPLOAD` (document/PDF → IPFS for Documents/Patents/Publications/Software), `IPTypeDisplay` document card |
+| **v0.13.x** | Asset-page modules lifted: `AssetOverviewContent`, `AssetMarketsTab`, `AssetMediaColumn`/`AssetHeaderBlock`, `ParentAttributionBanner`, `IPTypeDisplay`; IP data layer (`data/ip`, `data/ip-templates`); `timeUntil` |
+| **v0.12.x** | `LaunchpadStrip` (homepage carousel from service defs); Discover strips restyled to the approved design; `CollectionCard` gated-content border + currency floor |
+| **v0.11.x** | `DiscoverFeedSection` rebuilt as carousels; `ActivityCard`; coins live in shared service defaults |
+| **v0.8–0.10** | `LaunchpadGroupedSections` + creator-first card redesign (chips, examples, gradient section titles); `PageContainer`, `NavCommandMenu`, `PortfolioSubnav` |
+| **v0.4.0** | `LaunchpadServicesGrid` (removed in v0.8), `LAUNCHPAD_SERVICE_DEFINITIONS` |
 | **v0.3.2** | `DiscoverHero`, `FeaturedCarousel`, `DiscoverCollectionsStrip`, `DiscoverCreatorsStrip`, `DiscoverFeedSection` |
 | **v0.3.0** | `ActivityRow`, `ActivityFeedShell`, `ActivityTicker`, `HeroSlider`, `ListingCard`, `LaunchpadGrid`, `CtaCardGrid`, `timeAgo`, `ACTIVITY_TYPE_CONFIG` |
 | **v0.2.0** | `MotionCard`, `FadeIn`, `Stagger`, `StaggerItem`, `KineticWords`, `ScrollSection`, `ShareButton`, `CollectionCard`, `TokenCard` |
