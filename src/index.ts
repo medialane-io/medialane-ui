@@ -51,6 +51,16 @@ export { CollectionCard, CollectionCardSkeleton } from "./components/collection-
 export type { CollectionCardProps } from "./components/collection-card.js";
 export { TokenCard, TokenCardSkeleton } from "./components/token-card.js";
 export type { TokenCardProps, RarityTier } from "./components/token-card.js";
+// ── Coin discovery (chain-agnostic; price/data/href injected by the app) ─────
+export {
+  coinKind, formatCoinPrice, formatFdv,
+  type CoinKind, type CoinCollectionLike, type CoinPriceLike,
+} from "./data/coins.js";
+export { CoinCard, CoinRow, CoinCardSkeleton, type UseCoinPrice, type CoinTileProps } from "./components/coin-card.js";
+export {
+  CoinsExplorer,
+  type CoinsExplorerProps, type CoinFilter, type CoinSort, type UseCoins,
+} from "./components/coins-explorer.js";
 
 // ── v0.3 additions ────────────────────────────────────────────────────────────
 export { timeAgo, timeUntil } from "./utils/time.js";
