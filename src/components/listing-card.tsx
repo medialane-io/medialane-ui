@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { ShoppingCart, Check, Zap } from "lucide-react";
+import { ShoppingCart, Check, Zap, ArrowUpRight } from "lucide-react";
 import { MotionCard } from "./motion-primitives.js";
 import { CurrencyIcon } from "./currency-icon.js";
 import { cn } from "../utils/cn.js";
@@ -29,7 +29,9 @@ export function ListingCard({ order, inCart = false, onBuy, onCart, overflowMenu
   const image = order.token?.image ? ipfsToHttp(order.token.image) : null;
   const assetHref = `/asset/${order.nftContract}/${order.nftTokenId}`;
 
-  const showActionBar = isListing && (onBuy || onCart || overflowMenu);
+  // Show the action bar for listings (Buy/View) and for offers (View asset),
+  // whenever the host wired any action or an overflow menu.
+  const showActionBar = !!(onBuy || onCart || overflowMenu);
 
   // ─── Compact variant ──────────────────────────────────────────────────────
   if (compact) {
@@ -48,8 +50,9 @@ export function ListingCard({ order, inCart = false, onBuy, onCart, overflowMenu
           <div className="p-2.5 space-y-0.5">
             <p className="text-xs font-semibold truncate">{name}</p>
             {order.price?.formatted && (
-              <p className="text-[11px] font-bold price-value">
-                {formatDisplayPrice(order.price.formatted)} <span className="text-muted-foreground font-normal">{order.price.currency}</span>
+              <p className="text-[11px] font-bold price-value inline-flex items-center gap-1">
+                {order.price.currency && <CurrencyIcon symbol={order.price.currency} size={11} />}
+                {formatDisplayPrice(order.price.formatted)}
               </p>
             )}
             <p className="text-[10px] text-muted-foreground">{timeAgo(order.createdAt)}</p>
@@ -73,36 +76,60 @@ export function ListingCard({ order, inCart = false, onBuy, onCart, overflowMenu
           )}
         </div>
 
-        <div className="p-4 space-y-3">
-          <div>
-            <p className="font-semibold text-base truncate leading-snug">{name}</p>
-            {order.token?.description ? (
-              <p className="text-[11px] text-muted-foreground line-clamp-1 leading-snug mt-0.5">{order.token.description}</p>
-            ) : (
-              <p className="text-[11px] text-muted-foreground">#{order.nftTokenId}</p>
-            )}
+        <div className="p-3.5 space-y-3">
+          <div className="min-w-0">
+            <p className="font-semibold text-[15px] truncate leading-snug">{name}</p>
+            <p className="text-[11px] text-muted-foreground truncate leading-snug mt-0.5">
+              {order.token?.description ? order.token.description : `#${order.nftTokenId}`}
+            </p>
           </div>
 
+          {/* Price / Offer + age */}
           {order.price?.formatted && (
-            <div className="flex items-center gap-1.5">
-              {order.price.currency && <CurrencyIcon symbol={order.price.currency} size={14} />}
-              <p className="text-lg font-bold price-value leading-none">
-                {formatDisplayPrice(order.price.formatted)} <span className="text-muted-foreground font-normal text-sm">{order.price.currency}</span>
+            <div className="flex items-end justify-between gap-2">
+              <div className="min-w-0">
+                <p className="text-[10px] uppercase tracking-widest text-muted-foreground/55 leading-none">
+                  {isListing ? "Price" : "Offer"}
+                </p>
+                <p className="text-lg font-bold price-value leading-none inline-flex items-center gap-1.5 mt-1.5">
+                  {order.price.currency && <CurrencyIcon symbol={order.price.currency} size={18} />}
+                  {formatDisplayPrice(order.price.formatted)}
+                  <span className="sr-only">{order.price.currency}</span>
+                </p>
+              </div>
+              <p className="text-[10px] text-muted-foreground/60 whitespace-nowrap shrink-0">
+                {timeAgo(order.createdAt)}
               </p>
             </div>
           )}
 
           {showActionBar && (
             <div className="flex items-center gap-1.5">
-              {onBuy && (
-                <div className="btn-border-animated p-[1.5px] rounded-[10px] flex-1 h-9">
-                  <button
-                    className="w-full h-full rounded-[9px] bg-background flex items-center justify-center gap-1.5 text-xs font-semibold text-foreground hover:bg-muted/60 transition-all active:scale-[0.98]"
-                    onClick={(e) => { e.preventDefault(); onBuy(order); }}
+              {isListing ? (
+                onBuy ? (
+                  <div className="btn-border-animated p-[1.5px] rounded-[10px] flex-1 h-9">
+                    <button
+                      className="w-full h-full rounded-[9px] bg-background flex items-center justify-center gap-1.5 text-xs font-semibold text-foreground hover:bg-muted/60 transition-all active:scale-[0.98]"
+                      onClick={(e) => { e.preventDefault(); onBuy(order); }}
+                    >
+                      <Zap className="h-3.5 w-3.5 shrink-0" /> Buy
+                    </button>
+                  </div>
+                ) : (
+                  <Link
+                    href={assetHref}
+                    className="flex-1 h-9 inline-flex items-center justify-center gap-1.5 rounded-[9px] border border-border bg-background text-xs font-semibold text-foreground hover:bg-muted/60 transition-all active:scale-[0.98]"
                   >
-                    <Zap className="h-3.5 w-3.5 shrink-0" /> Buy
-                  </button>
-                </div>
+                    <ArrowUpRight className="h-3.5 w-3.5 shrink-0" /> View
+                  </Link>
+                )
+              ) : (
+                <Link
+                  href={assetHref}
+                  className="flex-1 h-9 inline-flex items-center justify-center gap-1.5 rounded-[9px] border border-border bg-background text-xs font-semibold text-foreground hover:bg-muted/60 transition-all active:scale-[0.98]"
+                >
+                  <ArrowUpRight className="h-3.5 w-3.5 shrink-0" /> View asset
+                </Link>
               )}
               {onCart && (
                 <button
