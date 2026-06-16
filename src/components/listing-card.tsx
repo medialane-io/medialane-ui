@@ -19,10 +19,17 @@ export interface ListingCardProps {
   onCart?: (order: ApiOrder) => void;
   /** App passes a fully constructed <DropdownMenu> here */
   overflowMenu?: React.ReactNode;
+  /**
+   * Optional flex-1 primary control for listings, replacing the default
+   * Buy/View button — lets a host inject its own action (e.g. an owner
+   * "Cancel" with an app-specific, auth-coupled handler) while keeping this
+   * card's layout. Ignored for offers (which always render "View asset").
+   */
+  primaryAction?: React.ReactNode;
   compact?: boolean;
 }
 
-export function ListingCard({ order, inCart = false, onBuy, onCart, overflowMenu, compact = false }: ListingCardProps) {
+export function ListingCard({ order, inCart = false, onBuy, onCart, overflowMenu, primaryAction, compact = false }: ListingCardProps) {
   const [imgError, setImgError] = useState(false);
   const isListing = order.offer.itemType === "ERC721" || order.offer.itemType === "ERC1155";
   const name = order.token?.name ?? `Token #${order.nftTokenId}`;
@@ -31,7 +38,7 @@ export function ListingCard({ order, inCart = false, onBuy, onCart, overflowMenu
 
   // Show the action bar for listings (Buy/View) and for offers (View asset),
   // whenever the host wired any action or an overflow menu.
-  const showActionBar = !!(onBuy || onCart || overflowMenu);
+  const showActionBar = !!(onBuy || onCart || overflowMenu || primaryAction);
 
   // ─── Compact variant ──────────────────────────────────────────────────────
   if (compact) {
@@ -106,7 +113,9 @@ export function ListingCard({ order, inCart = false, onBuy, onCart, overflowMenu
           {showActionBar && (
             <div className="flex items-center gap-1.5">
               {isListing ? (
-                onBuy ? (
+                primaryAction ? (
+                  primaryAction
+                ) : onBuy ? (
                   <div className="btn-border-animated p-[1.5px] rounded-[10px] flex-1 h-9">
                     <button
                       className="w-full h-full rounded-[9px] bg-background flex items-center justify-center gap-1.5 text-xs font-semibold text-foreground hover:bg-muted/60 transition-all active:scale-[0.98]"
