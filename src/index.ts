@@ -3,6 +3,7 @@ export { cn } from "./utils/cn.js";
 export { formatDisplayPrice } from "./utils/format.js";
 export { shortenAddress } from "./utils/address.js";
 export { ipfsToHttp } from "./utils/ipfs.js";
+export { licenseSummary } from "./utils/license-summary.js";
 
 // ── Data (server-safe — no React, safe in Server Components) ──────────────────
 export { IP_TYPE_DATA, IP_TYPE_DATA_MAP } from "./data/ip-types.js";
@@ -18,6 +19,7 @@ export {
 export type { EmbedPlatform, SocialPlatform, TraitSuggestion, IPTemplate, DocUploadConfig } from "./data/ip-templates.js";
 export { IPTypeDisplay } from "./components/ip-type-display.js";
 export { AssetOverviewContent } from "./components/asset-overview-content.js";
+export { AssetLicenseSummary } from "./components/asset-license-summary.js";
 export { AssetMarketsTab } from "./components/asset-markets-tab.js";
 export { ParentAttributionBanner } from "./components/parent-attribution-banner.js";
 export type { ParentBannerProps } from "./components/parent-attribution-banner.js";
