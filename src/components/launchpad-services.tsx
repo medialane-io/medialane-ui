@@ -2,7 +2,7 @@
 
 /**
  * Launchpad grouped services — the single source for the /launchpad page UI
- * in medialane-io and medialane-dapp.
+ * in medialane-io and medialane-starknet.
  *
  * Card philosophy (creator-first redesign, 2026-06-10): the whole card is the
  * action. One title, one creator-language sentence (def.blurb), one unique hue
