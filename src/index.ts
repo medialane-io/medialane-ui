@@ -53,6 +53,8 @@ export { CollectionCard, CollectionCardSkeleton } from "./components/collection-
 export type { CollectionCardProps } from "./components/collection-card.js";
 export { TokenCard, TokenCardSkeleton } from "./components/token-card.js";
 export type { TokenCardProps, RarityTier } from "./components/token-card.js";
+export { AssetCard, AssetCardSkeleton } from "./components/asset-card.js";
+export type { AssetCardProps, AssetCardPrice } from "./components/asset-card.js";
 // ── Coin discovery (chain-agnostic; price/data/href injected by the app) ─────
 export {
   coinKind, formatCoinPrice, formatFdv,
