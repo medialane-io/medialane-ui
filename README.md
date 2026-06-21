@@ -1,6 +1,6 @@
 # @medialane/ui
 
-Shared UI component library for Medialane apps. Used by `medialane-dapp`, `medialane-io`, and `medialane-portal`.
+Shared UI component library for Medialane apps. Used by `medialane-starknet`, `medialane-io`, and `medialane-portal`.
 
 [![npm version](https://img.shields.io/npm/v/@medialane/ui)](https://www.npmjs.com/package/@medialane/ui)
 
