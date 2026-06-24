@@ -119,3 +119,12 @@ export type {
 } from "./components/portfolio-subnav.js";
 export { derivePortfolioCounts } from "./utils/portfolio-counts.js";
 export type { PortfolioCounts, CountableOrder } from "./utils/portfolio-counts.js";
+
+// ── v0.22.0 additions — launchpad/claim form template primitives ─────────────
+// Pure-presentation header + rail shared by every launchpad/claim form. The
+// app supplies its own gate, back button, and form logic. Requires the
+// `.btn-border-animated` class (in @medialane/ui/styles) for the form shell.
+export { ServiceHeader } from "./components/service-header.js";
+export type { ServiceHeaderProps } from "./components/service-header.js";
+export { ClaimRail } from "./components/claim-rail.js";
+export type { ClaimRailProps } from "./components/claim-rail.js";
