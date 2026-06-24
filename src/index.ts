@@ -128,3 +128,9 @@ export { ServiceHeader } from "./components/service-header.js";
 export type { ServiceHeaderProps } from "./components/service-header.js";
 export { ClaimRail } from "./components/claim-rail.js";
 export type { ClaimRailProps } from "./components/claim-rail.js";
+
+// ── v0.23.0 additions — slot-based form shell ────────────────────────────────
+// Pure layout (back slot + header + animated-border compartment + 8/4 bento).
+// No auth/router — the app injects its own gate (around children) + back button.
+export { ServiceFormShell } from "./components/service-form-shell.js";
+export type { ServiceFormShellProps } from "./components/service-form-shell.js";
