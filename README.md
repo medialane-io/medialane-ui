@@ -233,6 +233,8 @@ The package uses [tsup](https://tsup.egoist.dev/) and outputs ESM + CJS + type d
 
 | Version | Added |
 |---|---|
+| **v0.25.0** | `CoinsExplorer`/`CoinCard` refined: kind label over the artwork (brand hues, not red), quote-currency icon on price, marketplace-style Filters dialog; dropped the Verified badge / FDV / holders / per-card glow / Trade button |
+| **v0.24.0** | Art-forward `CoinCard` redesign — the coin's cover artwork becomes the hero of the tile |
 | **v0.14.0** | `docUpload` template config + `DOC_UPLOAD` (document/PDF → IPFS for Documents/Patents/Publications/Software), `IPTypeDisplay` document card |
 | **v0.13.x** | Asset-page modules lifted: `AssetOverviewContent`, `AssetMarketsTab`, `AssetMediaColumn`/`AssetHeaderBlock`, `ParentAttributionBanner`, `IPTypeDisplay`; IP data layer (`data/ip`, `data/ip-templates`); `timeUntil` |
 | **v0.12.x** | `LaunchpadStrip` (homepage carousel from service defs); Discover strips restyled to the approved design; `CollectionCard` gated-content border + currency floor |
