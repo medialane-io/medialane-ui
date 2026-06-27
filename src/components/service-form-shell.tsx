@@ -24,7 +24,9 @@ export interface ServiceFormShellProps {
  *  @medialane/ui/styles). With an `aside` it lays out an 8/4 bento (form left,
  *  rail right); without, a single centered column. */
 export function ServiceFormShell({ icon, title, subtitle, headerAccessory, backSlot, aside, children }: ServiceFormShellProps) {
-  const header = <ServiceHeader icon={icon} title={title} subtitle={subtitle} headerAccessory={headerAccessory} />;
+  // Plain header: the form below already carries the animated gradient border,
+  // so the header drops its gradient frame to keep a single focal accent.
+  const header = <ServiceHeader plain icon={icon} title={title} subtitle={subtitle} headerAccessory={headerAccessory} />;
 
   // The form is the focus: animated gradient border around the dark card.
   const form = aside ? (

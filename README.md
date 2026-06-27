@@ -233,6 +233,7 @@ The package uses [tsup](https://tsup.egoist.dev/) and outputs ESM + CJS + type d
 
 | Version | Added |
 |---|---|
+| **v0.27.0** | `ServiceHeader` gains a `plain` variant (neutral border, no brand gradient); `ServiceFormShell` renders the header `plain` so create/mint form pages carry the gradient border only on the form, not the header. Standalone headers (browse pages, coin page, `/claim` hub) keep the gradient |
 | **v0.26.0** | `LaunchpadServiceCard` "living color cards" high-fidelity pass: per-hue aurora light-leaks, gradient icon tile, hairline gradient frame that ignites on interaction, staggered entrance reveal, press/hover microinteractions, animated CTA arrow; roomier grid gaps + section rhythm. Touch-first, reduced-motion safe |
 | **v0.25.0** | `CoinsExplorer`/`CoinCard` refined: kind label over the artwork (brand hues, not red), quote-currency icon on price, marketplace-style Filters dialog; dropped the Verified badge / FDV / holders / per-card glow / Trade button |
 | **v0.24.0** | Art-forward `CoinCard` redesign — the coin's cover artwork becomes the hero of the tile |
