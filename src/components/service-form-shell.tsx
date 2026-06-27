@@ -13,6 +13,9 @@ export interface ServiceFormShellProps {
   backSlot?: ReactNode;
   /** Right-rail panels (e.g. <ClaimRail/>). When present, lays out an 8/4 bento. */
   aside?: ReactNode;
+  /** Rendered in the left column between the header and the form — e.g. a
+   *  <StepNav/> for multi-step flows. Only used in the aside (8/4) layout. */
+  aboveForm?: ReactNode;
   /** The form. **Already gated by the app** — wrap it in your own auth/wallet
    *  gate before passing. This component stays presentation-only (no auth,
    *  no router) so both apps can share it. */
@@ -23,7 +26,7 @@ export interface ServiceFormShellProps {
  *  form inside the animated full-spectrum border (`.btn-border-animated`, from
  *  @medialane/ui/styles). With an `aside` it lays out an 8/4 bento (form left,
  *  rail right); without, a single centered column. */
-export function ServiceFormShell({ icon, title, subtitle, headerAccessory, backSlot, aside, children }: ServiceFormShellProps) {
+export function ServiceFormShell({ icon, title, subtitle, headerAccessory, backSlot, aside, aboveForm, children }: ServiceFormShellProps) {
   // Plain header: the form below already carries the animated gradient border,
   // so the header drops its gradient frame to keep a single focal accent.
   const header = <ServiceHeader plain icon={icon} title={title} subtitle={subtitle} headerAccessory={headerAccessory} />;
@@ -44,9 +47,10 @@ export function ServiceFormShell({ icon, title, subtitle, headerAccessory, backS
         <div className="grid gap-4 lg:grid-cols-12 lg:items-start">
           <div className="space-y-4 lg:col-span-8">
             {header}
+            {aboveForm}
             {form}
           </div>
-          <div className="space-y-4 lg:col-span-4">{aside}</div>
+          <div className="space-y-4 lg:col-span-4 lg:sticky lg:top-24">{aside}</div>
         </div>
       ) : (
         <div className="space-y-6">

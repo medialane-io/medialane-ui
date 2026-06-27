@@ -134,3 +134,5 @@ export type { ClaimRailProps } from "./components/claim-rail.js";
 // No auth/router — the app injects its own gate (around children) + back button.
 export { ServiceFormShell } from "./components/service-form-shell.js";
 export type { ServiceFormShellProps } from "./components/service-form-shell.js";
+export { StepNav } from "./components/step-nav.js";
+export type { StepNavProps, StepNavStep } from "./components/step-nav.js";
