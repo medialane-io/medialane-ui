@@ -4,16 +4,20 @@
  * Launchpad grouped services — the single source for the /launchpad page UI
  * in medialane-io and medialane-starknet.
  *
- * Card philosophy (creator-first redesign, 2026-06-10): the whole card is the
- * action. One title, one creator-language sentence (def.blurb), one unique hue
- * per service — no buttons repeating the title, no status badges, no tech
- * chips, no hover-only effects (mobile first: press states only).
+ * Card philosophy (creator-first redesign 2026-06-10; "living color cards"
+ * high-fidelity pass 2026-06-27): the whole card is the action. One title, one
+ * creator-language sentence (def.blurb), one unique hue per service. The hue is
+ * not locked in a thin border — it saturates the whole card as ambient light:
+ * an aurora glow behind a gradient icon tile, a hairline gradient frame that
+ * ignites on interaction, a staggered entrance reveal, and press/hover
+ * microinteractions. Touch-first (press states are primary; hover is desktop
+ * polish, gated to sm+ and degraded under reduced-motion).
  *
  * Apps own: hrefs + per-app rollout status flips. Everything else lives here.
  */
 
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { Lock, ArrowRight, Check } from "lucide-react";
 import { cn } from "../utils/cn.js";
 import {
@@ -85,105 +89,151 @@ export interface LaunchpadServiceCardProps {
   override?: ServiceOverride;
   /** Showcase layout — spans the full grid width (e.g. POP Protocol) */
   featured?: boolean;
+  /** Grid position — drives the staggered entrance reveal. */
+  index?: number;
 }
 
-export function LaunchpadServiceCard({ def, override = {}, featured = false }: LaunchpadServiceCardProps) {
+export function LaunchpadServiceCard({ def, override = {}, featured = false, index = 0 }: LaunchpadServiceCardProps) {
   const { key, icon: Icon, title, browseLinkLabel, features, example } = def;
   const status = override.status ?? def.status;
   const blurb = override.blurb ?? def.blurb;
   const { href, browseHref } = override;
+  const reduceMotion = useReducedMotion();
 
   const live = status === "live";
   const hue = SERVICE_HUES[key] ?? DEFAULT_HUE;
 
   return (
-    <div
-      className={cn(
-        // dark surfaces stay close to the canvas — the hue border does the talking
-        "relative rounded-2xl border bg-card dark:bg-white/[0.02] overflow-hidden flex flex-col flex-1 min-h-[210px]",
-        "transition-transform",
-        live ? cn(hue.border, "active:scale-[0.99]") : "border-border/30 opacity-70",
-        featured && "sm:col-span-2",
-      )}
+    <motion.div
+      initial={{ opacity: 0, y: reduceMotion ? 0 : 16 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-40px" }}
+      transition={{ duration: 0.45, delay: index * 0.06, ease: [0.25, 0.46, 0.45, 0.94] }}
+      className={cn("flex", featured && "sm:col-span-2")}
     >
-      {/* Giant watermark icon, ghosted in the corner (Drop-Pages-panel language) */}
-      <div aria-hidden className="absolute -right-8 -bottom-10 opacity-[0.04] select-none pointer-events-none">
-        <Icon className="h-44 w-44" />
-      </div>
-
-      <div className="relative flex flex-col flex-1 p-6 sm:p-8 gap-4 sm:gap-5">
-        <div className="flex items-start justify-between gap-3">
-          <div className="relative">
-            {live && (
-              <div aria-hidden className={cn("absolute -inset-3 rounded-full blur-2xl opacity-30", hue.solid)} />
+      <div
+        className={cn(
+          "group relative flex flex-1 rounded-2xl transition-transform duration-300 ease-out",
+          // the hue gradient frame lives in the 1px padding; press + lift are the interaction
+          live && "p-px active:scale-[0.985] sm:hover:-translate-y-1 motion-reduce:transform-none motion-reduce:transition-none",
+        )}
+      >
+        {/* Hue gradient frame — a quiet hairline that ignites on interaction (live only) */}
+        {live && (
+          <span
+            aria-hidden
+            className={cn(
+              "absolute inset-0 rounded-2xl opacity-40 sm:group-hover:opacity-100 transition-opacity duration-500 pointer-events-none",
+              hue.pill,
             )}
-            <Icon className={cn("relative h-9 w-9 shrink-0", live ? hue.text : "text-muted-foreground/50")} />
-          </div>
-          {!live && (
-            <span className="flex items-center gap-1 text-[11px] font-medium text-muted-foreground/60 pt-1">
-              <Lock className="h-3 w-3" />
-              Coming soon
-            </span>
-          )}
-        </div>
-
-        <div className="space-y-2">
-          <h3 className="text-2xl sm:text-3xl font-black tracking-tight leading-snug">{title}</h3>
-          <p className={cn("text-[15px] leading-relaxed", live ? "text-muted-foreground" : "text-muted-foreground/60", !featured && "max-w-[36ch]")}>
-            {blurb}
-          </p>
-          {live && example && (
-            <p className="text-[13px] leading-relaxed text-muted-foreground/70 italic">
-              e.g. {example}
-            </p>
-          )}
-        </div>
-
-        {/* Feature showcase — plain-language chips */}
-        {live && features.length > 0 && (
-          <div className="flex flex-wrap gap-1.5">
-            {features.map((feature) => (
-              <span
-                key={feature}
-                className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-muted/40 border border-border/30 text-xs font-medium text-muted-foreground"
-              >
-                <Check className={cn("h-3 w-3 shrink-0", hue.text)} />
-                {feature}
-              </span>
-            ))}
-          </div>
+          />
         )}
 
-        {/* Stretched link — the whole card is the action; the pill is the visual cue */}
-        {live && href && <Link href={href} aria-label={`${def.cta} — ${title}`} className="absolute inset-0 z-10" />}
-
-        <div className="mt-auto pt-1 flex items-end justify-between gap-3">
-          {live && browseHref && browseLinkLabel ? (
-            <Link
-              href={browseHref}
-              className="relative z-20 inline-flex items-center gap-1 text-xs font-medium text-muted-foreground active:text-foreground"
-            >
-              {browseLinkLabel}
-              <ArrowRight className="h-3 w-3" />
-            </Link>
-          ) : (
-            <span />
+        {/* Inner surface */}
+        <div
+          className={cn(
+            "relative flex flex-1 flex-col overflow-hidden min-h-[240px]",
+            live ? "rounded-[15px] bg-card" : "rounded-2xl border border-border/30 bg-card dark:bg-white/[0.02] opacity-75",
           )}
+        >
+          {/* Aurora light-leaks — the hue saturates the whole card as ambient light */}
           {live && (
-            <span
-              className={cn(
-                "inline-flex items-center gap-2 h-10 px-5 rounded-full",
-                "text-sm font-semibold text-white shadow-lg shadow-black/25",
-                hue.pill,
-              )}
-            >
-              {def.cta}
-              <ArrowRight className="h-4 w-4" />
-            </span>
+            <>
+              <span aria-hidden className={cn("absolute -top-16 -left-12 h-48 w-48 rounded-full blur-3xl opacity-[0.18] sm:group-hover:opacity-30 transition-opacity duration-500 pointer-events-none", hue.solid)} />
+              <span aria-hidden className={cn("absolute -bottom-24 -right-16 h-56 w-56 rounded-full blur-3xl opacity-[0.10] sm:group-hover:opacity-20 transition-opacity duration-500 pointer-events-none", hue.solid)} />
+            </>
           )}
+
+          {/* Giant watermark icon, ghosted in the corner — drifts on hover */}
+          <div
+            aria-hidden
+            className={cn(
+              "absolute -right-8 -bottom-10 select-none pointer-events-none transition-all duration-500",
+              live ? "opacity-[0.05] sm:group-hover:opacity-[0.09] sm:group-hover:-translate-y-1 motion-reduce:transform-none" : "opacity-[0.03]",
+            )}
+          >
+            <Icon className={cn("h-44 w-44", live ? hue.text : "text-muted-foreground")} />
+          </div>
+
+          <div className="relative flex flex-col flex-1 p-6 sm:p-8 gap-4 sm:gap-5">
+            <div className="flex items-start justify-between gap-3">
+              {live ? (
+                <div className="relative">
+                  <span aria-hidden className={cn("absolute -inset-2 rounded-2xl blur-xl opacity-40 sm:group-hover:opacity-60 transition-opacity duration-500", hue.solid)} />
+                  <span className={cn("relative flex h-14 w-14 items-center justify-center rounded-2xl text-white shadow-lg shadow-black/25 transition-transform duration-300 sm:group-hover:scale-105 motion-reduce:transform-none", hue.pill)}>
+                    <Icon className="h-7 w-7" />
+                  </span>
+                </div>
+              ) : (
+                <Icon className="h-9 w-9 shrink-0 text-muted-foreground/50" />
+              )}
+              {!live && (
+                <span className="flex items-center gap-1 text-[11px] font-medium text-muted-foreground/60 pt-1">
+                  <Lock className="h-3 w-3" />
+                  Coming soon
+                </span>
+              )}
+            </div>
+
+            <div className="space-y-2">
+              <h3 className="text-2xl sm:text-3xl font-black tracking-tight leading-snug">{title}</h3>
+              <p className={cn("text-[15px] leading-relaxed", live ? "text-muted-foreground" : "text-muted-foreground/60", !featured && "max-w-[36ch]")}>
+                {blurb}
+              </p>
+              {live && example && (
+                <p className="text-[13px] leading-relaxed text-muted-foreground/70 italic">
+                  e.g. {example}
+                </p>
+              )}
+            </div>
+
+            {/* Feature showcase — plain-language chips */}
+            {live && features.length > 0 && (
+              <div className="flex flex-wrap gap-1.5">
+                {features.map((feature) => (
+                  <span
+                    key={feature}
+                    className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-muted/40 border border-border/30 text-xs font-medium text-muted-foreground"
+                  >
+                    <Check className={cn("h-3 w-3 shrink-0", hue.text)} />
+                    {feature}
+                  </span>
+                ))}
+              </div>
+            )}
+
+            {/* Stretched link — the whole card is the action; the pill is the visual cue */}
+            {live && href && <Link href={href} aria-label={`${def.cta} — ${title}`} className="absolute inset-0 z-10" />}
+
+            <div className="mt-auto pt-1 flex items-end justify-between gap-3">
+              {live && browseHref && browseLinkLabel ? (
+                <Link
+                  href={browseHref}
+                  className="relative z-20 inline-flex items-center gap-1 text-xs font-medium text-muted-foreground active:text-foreground sm:hover:text-foreground transition-colors"
+                >
+                  {browseLinkLabel}
+                  <ArrowRight className="h-3 w-3" />
+                </Link>
+              ) : (
+                <span />
+              )}
+              {live && (
+                <span
+                  className={cn(
+                    "inline-flex items-center gap-2 h-10 px-5 rounded-full",
+                    "text-sm font-semibold text-white shadow-lg shadow-black/25",
+                    hue.pill,
+                  )}
+                >
+                  {def.cta}
+                  <ArrowRight className="h-4 w-4 transition-transform duration-300 sm:group-hover:translate-x-0.5 motion-reduce:transform-none" />
+                </span>
+              )}
+            </div>
+          </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
 
@@ -259,7 +309,7 @@ export interface LaunchpadGroupedSectionsProps {
  *  LAUNCHPAD_SERVICE_GROUPS; cards from LAUNCHPAD_SERVICE_DEFINITIONS. */
 export function LaunchpadGroupedSections({ overrides, className }: LaunchpadGroupedSectionsProps) {
   return (
-    <div className={cn("space-y-16 sm:space-y-24", className)}>
+    <div className={cn("space-y-20 sm:space-y-28", className)}>
       {LAUNCHPAD_SERVICE_GROUPS.map((group) => {
         const defs = LAUNCHPAD_SERVICE_DEFINITIONS.filter((d) => d.group === group.key);
         if (defs.length === 0) return null;
@@ -272,12 +322,12 @@ export function LaunchpadGroupedSections({ overrides, className }: LaunchpadGrou
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
-            className="space-y-6 sm:space-y-8"
+            className="space-y-7 sm:space-y-10"
           >
             <GroupHeader group={group} />
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-              {defs.map((def) => (
-                <LaunchpadServiceCard key={def.key} def={def} override={overrides[def.key]} />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-7">
+              {defs.map((def, i) => (
+                <LaunchpadServiceCard key={def.key} def={def} override={overrides[def.key]} index={i} />
               ))}
               {group.key === "pop-protocol" && <PopHowItWorks />}
             </div>
