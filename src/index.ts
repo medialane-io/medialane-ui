@@ -1,6 +1,6 @@
 // ── Utils ─────────────────────────────────────────────────────────────────────
 export { cn } from "./utils/cn.js";
-export { formatDisplayPrice } from "./utils/format.js";
+export { formatDisplayPrice, parsePriceDisplay } from "./utils/format.js";
 export { shortenAddress } from "./utils/address.js";
 export { ipfsToHttp } from "./utils/ipfs.js";
 export { licenseSummary } from "./utils/license-summary.js";
@@ -24,6 +24,10 @@ export { AssetMarketsTab } from "./components/asset-markets-tab.js";
 export { ParentAttributionBanner } from "./components/parent-attribution-banner.js";
 export type { ParentBannerProps } from "./components/parent-attribution-banner.js";
 export { AssetMediaColumn, AssetHeaderBlock, buildEditionStats } from "./components/asset-top-sections.js";
+export { AssetCollectionBar } from "./components/asset-collection-bar.js";
+export type { AssetCollectionBarProps, AssetCollectionBarSibling } from "./components/asset-collection-bar.js";
+export { AssetMarketplacePanel } from "./components/asset-marketplace-panel.js";
+export type { AssetMarketplacePanelProps, ApiOrderLike } from "./components/asset-marketplace-panel.js";
 export { BRAND } from "./data/brand.js";
 
 // ── Components (client-only — all have "use client") ─────────────────────────
