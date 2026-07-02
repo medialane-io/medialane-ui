@@ -273,9 +273,9 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     buttonColor: "bg-teal-600 hover:bg-teal-700",
     badge: "Launch",
     browseLinkLabel: "Browse tickets",
-    // Flip to "live" only after Phase 3/4 mainnet deploy — see
-    // medialane-core/docs/plans/2026-07-02-launchpad-tickets-club-sponsorship-plan.md
-    status: "building",
+    // Deployed to Starknet mainnet 2026-07-02 — see
+    // medialane-core/docs/deployments.md
+    status: "live",
     category: "launch",
     group: "ip-tickets",
   },
@@ -295,7 +295,9 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     buttonColor: "bg-indigo-600 hover:bg-indigo-700",
     badge: "Launch",
     browseLinkLabel: "Browse clubs",
-    status: "building",
+    // Deployed to Starknet mainnet 2026-07-02 — see
+    // medialane-core/docs/deployments.md
+    status: "live",
     category: "launch",
     group: "ip-club",
   },
