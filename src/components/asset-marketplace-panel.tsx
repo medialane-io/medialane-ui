@@ -15,7 +15,7 @@ export interface ApiOrderLike {
   orderHash: string;
   offerer: string;
   endTime: string;
-  price: { formatted: string; currency: string | null };
+  price: { formatted: string | null; currency: string | null };
 }
 
 interface ActionButtonProps {
