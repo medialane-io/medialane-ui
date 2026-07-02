@@ -24,6 +24,8 @@ export { AssetMarketsTab } from "./components/asset-markets-tab.js";
 export { ParentAttributionBanner } from "./components/parent-attribution-banner.js";
 export type { ParentBannerProps } from "./components/parent-attribution-banner.js";
 export { AssetMediaColumn, AssetHeaderBlock, buildEditionStats } from "./components/asset-top-sections.js";
+export { AssetCollectionBar } from "./components/asset-collection-bar.js";
+export type { AssetCollectionBarProps, AssetCollectionBarSibling } from "./components/asset-collection-bar.js";
 export { BRAND } from "./data/brand.js";
 
 // ── Components (client-only — all have "use client") ─────────────────────────
