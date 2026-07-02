@@ -2,8 +2,8 @@ import type { LucideIcon } from "lucide-react";
 import {
   ImagePlus, Layers, GitBranch,
   Award, Package, PlusCircle,
-  Ticket, Users,
-  RefreshCw, Coins, TrendingUp,
+  Ticket, Users, Handshake,
+  Coins, TrendingUp,
   AtSign, FolderInput, Link2,
 } from "lucide-react";
 
@@ -17,6 +17,7 @@ export type ServiceGroup =
   | "collection-drop"
   | "pop-protocol"
   | "ip-tickets"
+  | "ip-sponsorship"
   | "ip-club"
   | "licensing-remix"
   | "claims"
@@ -62,6 +63,11 @@ export const LAUNCHPAD_SERVICE_GROUPS: ServiceGroupDefinition[] = [
     key: "ip-tickets",
     title: "IP Tickets",
     tagline: "Sell tickets to your shows and events, verifiable on-chain.",
+  },
+  {
+    key: "ip-sponsorship",
+    title: "IP Sponsorship",
+    tagline: "Let sponsors back your work directly, in exchange for a license.",
   },
   {
     key: "ip-club",
@@ -301,44 +307,31 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     category: "launch",
     group: "ip-club",
   },
+  {
+    key: "ip-sponsorship",
+    cta: "Browse",
+    blurb: "Let a sponsor back your work directly, for a license in return.",
+    title: "IP Sponsorship",
+    subtitle: "Direct sponsorship offers, settled asset-to-asset",
+    description:
+      "Create a sponsorship offer on an asset you own — sponsors bid, you accept, they receive a license. No escrow: settlement is direct, sponsor to author.",
+    features: ["No escrow — direct settlement", "Owner-verified on-chain", "Open bidding or one invited sponsor"],
+    example: "Sponsor a song, an artwork, or a patent for a license",
+    icon: Handshake,
+    gradient: "from-rose-500/10 via-pink-400/4 to-transparent",
+    borderColor: "border-rose-500/20",
+    iconColor: "text-rose-500",
+    buttonColor: "bg-brand-rose hover:bg-brand-rose/90",
+    badge: "Launch",
+    browseLinkLabel: "Browse offers",
+    // Deployed to Starknet mainnet 2026-07-02 — see
+    // medialane-core/docs/deployments.md
+    status: "live",
+    category: "launch",
+    group: "ip-sponsorship",
+  },
 
   // ── Monetize ─────────────────────────────────────────────────────────────
-  {
-    key: "subscriptions",
-    cta: "Start",
-    blurb: "Recurring support from your audience.",
-    title: "Subscriptions",
-    subtitle: "Recurring on-chain revenue",
-    description:
-      "Monthly licensing, creator support tiers, and access passes — all auto-renewed without intermediaries.",
-    features: ["Recurring revenue", "Auto-renewal protocol", "No middlemen"],
-    icon: RefreshCw,
-    gradient: "from-sky-500/6 via-blue-400/2 to-transparent",
-    borderColor: "border-sky-500/10",
-    iconColor: "text-sky-400",
-    badge: "Soon",
-    status: "soon",
-    category: "monetize",
-    group: "coming-soon",
-  },
-  {
-    key: "ip-coins",
-    cta: "Launch",
-    blurb: "Let fans own a piece of your catalog.",
-    title: "IP Coins",
-    subtitle: "Fractional ownership of intellectual property",
-    description:
-      "Tokenize your IP catalog as fungible tokens. Enable fractional ownership and liquid markets around your creative work.",
-    features: ["Fungible IP tokens", "Fractional ownership", "Liquid secondary markets"],
-    icon: Coins,
-    gradient: "from-amber-500/6 via-yellow-400/2 to-transparent",
-    borderColor: "border-amber-500/10",
-    iconColor: "text-amber-400",
-    badge: "Soon",
-    status: "soon",
-    category: "monetize",
-    group: "coming-soon",
-  },
   {
     key: "creator-coins",
     cta: "Launch",
