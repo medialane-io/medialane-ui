@@ -52,15 +52,15 @@ function ActionButton({ label, icon, onClick, tone, disabled = false, helpConten
   );
 }
 
-export interface AssetMarketplacePanelProps {
-  cheapest?: ApiOrderLike;
+export interface AssetMarketplacePanelProps<T extends ApiOrderLike = ApiOrderLike> {
+  cheapest?: T;
   isOwner: boolean;
   isSignedIn: boolean;
   isProcessing: boolean;
   isERC1155: boolean;
   isMarketLoading?: boolean;
-  myListing: ApiOrderLike | null;
-  activeBids: ApiOrderLike[];
+  myListing: T | null;
+  activeBids: T[];
   walletAddress?: string | null;
   remixEnabled?: boolean;
   showDealOption?: boolean;
@@ -71,11 +71,11 @@ export interface AssetMarketplacePanelProps {
   renderAuthAction: (label: string) => ReactNode;
   /** Renders an inline help/info affordance for the given tooltip text. */
   renderHelp: (content: string) => ReactNode;
-  onCancelClick: (order: ApiOrderLike) => void;
-  onAcceptBid: (order: ApiOrderLike) => void;
+  onCancelClick: (order: T) => void;
+  onAcceptBid: (order: T) => void;
   onOpenListing: () => void;
   onOpenTransfer: () => void;
-  onOpenPurchase: (order: ApiOrderLike) => void;
+  onOpenPurchase: (order: T) => void;
   onOpenOffer: () => void;
   onOpenRemix?: () => void;
   onProposeDeal?: () => void;
@@ -107,7 +107,7 @@ function StatRow({ floorPriceRaw, lastSaleRaw }: { floorPriceRaw?: string | null
   );
 }
 
-export function AssetMarketplacePanel({
+export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
   cheapest,
   isOwner,
   isSignedIn,
@@ -131,7 +131,7 @@ export function AssetMarketplacePanel({
   onOpenOffer,
   onOpenRemix,
   onProposeDeal,
-}: AssetMarketplacePanelProps) {
+}: AssetMarketplacePanelProps<T>) {
   const myBid = !isOwner && walletAddress
     ? activeBids.find((bid) => bid.offerer.toLowerCase() === walletAddress.toLowerCase()) ?? null
     : null;
