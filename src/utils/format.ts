@@ -24,3 +24,21 @@ export function formatDisplayPrice(price: string | number | null | undefined): s
   });
   return currencyPart ? `${formatted} ${currencyPart}` : formatted;
 }
+
+/**
+ * Parse a backend price string like "0.000012000000 WBTC" into a clean display + symbol.
+ * Strips trailing zeros ("1.500000" → "1.50"); guards against raw-wei values (> 1e12 → "—").
+ */
+export function parsePriceDisplay(raw: string | null | undefined): { numStr: string; symbol: string | null } {
+  if (!raw) return { numStr: "—", symbol: null };
+  const parts = raw.trim().split(" ");
+  const sym = parts.length > 1 ? parts[parts.length - 1] : null;
+  const numericPart = sym ? parts.slice(0, -1).join(" ") : raw;
+  const num = Number(numericPart);
+  if (isNaN(num)) return { numStr: "—", symbol: sym };
+  if (num > 1e12) return { numStr: "—", symbol: null };
+  const formatted = formatDisplayPrice(numericPart);
+  if (!formatted || formatted === "—") return { numStr: "—", symbol: sym };
+  const clean = formatted.replace(/(\.\d*?)0+$/, "$1").replace(/\.$/, "");
+  return { numStr: clean || "—", symbol: sym };
+}

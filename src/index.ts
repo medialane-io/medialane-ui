@@ -1,6 +1,6 @@
 // ── Utils ─────────────────────────────────────────────────────────────────────
 export { cn } from "./utils/cn.js";
-export { formatDisplayPrice } from "./utils/format.js";
+export { formatDisplayPrice, parsePriceDisplay } from "./utils/format.js";
 export { shortenAddress } from "./utils/address.js";
 export { ipfsToHttp } from "./utils/ipfs.js";
 export { licenseSummary } from "./utils/license-summary.js";
