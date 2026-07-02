@@ -16,6 +16,8 @@ export type ServiceGroup =
   | "creator-coins"
   | "collection-drop"
   | "pop-protocol"
+  | "ip-tickets"
+  | "ip-club"
   | "licensing-remix"
   | "claims"
   | "coming-soon";
@@ -55,6 +57,16 @@ export const LAUNCHPAD_SERVICE_GROUPS: ServiceGroupDefinition[] = [
     key: "pop-protocol",
     title: "POP Protocol",
     tagline: "Give your community proof they were part of the moment.",
+  },
+  {
+    key: "ip-tickets",
+    title: "IP Tickets",
+    tagline: "Sell tickets to your shows and events, verifiable on-chain.",
+  },
+  {
+    key: "ip-club",
+    title: "IP Club",
+    tagline: "Give your closest fans a membership card that unlocks more.",
   },
   {
     key: "licensing-remix",
@@ -255,31 +267,37 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
       "Distribute tickets for concerts, workshops, and events. Each ticket is verifiable on-chain proof of attendance.",
     features: ["NFT-based event gating", "Proof of attendance", "Transferable or soulbound"],
     icon: Ticket,
-    gradient: "from-teal-500/7 via-cyan-400/3 to-transparent",
-    borderColor: "border-teal-500/15",
+    gradient: "from-teal-500/10 via-cyan-400/4 to-transparent",
+    borderColor: "border-teal-500/20",
     iconColor: "text-teal-500",
-    badge: "Soon",
+    buttonColor: "bg-teal-600 hover:bg-teal-700",
+    badge: "Launch",
+    browseLinkLabel: "Browse tickets",
+    // Flip to "live" only after Phase 3/4 mainnet deploy — see
+    // medialane-core/docs/plans/2026-07-02-launchpad-tickets-club-sponsorship-plan.md
     status: "building",
     category: "launch",
-    group: "coming-soon",
+    group: "ip-tickets",
   },
   {
-    key: "membership",
+    key: "ip-club",
     cta: "Create",
     blurb: "Passes that unlock more for your closest fans.",
-    title: "Membership",
-    subtitle: "Token-gated access passes",
+    title: "IP Club",
+    subtitle: "Membership passes with an on-chain card",
     description:
-      "Create tiered membership passes that unlock exclusive content, private communities, and experiences for your most loyal fans.",
-    features: ["Token-gated content", "Tiered access levels", "Community alignment"],
+      "Create a membership club backed by an on-chain NFT membership card. Set an entry fee, a member cap, and open or close joining anytime.",
+    features: ["On-chain membership card", "Optional entry fee", "Open or close joining anytime"],
     icon: Users,
-    gradient: "from-indigo-500/6 via-violet-400/2 to-transparent",
-    borderColor: "border-indigo-500/10",
+    gradient: "from-indigo-500/10 via-violet-400/4 to-transparent",
+    borderColor: "border-indigo-500/20",
     iconColor: "text-indigo-400",
-    badge: "Soon",
-    status: "soon",
+    buttonColor: "bg-indigo-600 hover:bg-indigo-700",
+    badge: "Launch",
+    browseLinkLabel: "Browse clubs",
+    status: "building",
     category: "launch",
-    group: "coming-soon",
+    group: "ip-club",
   },
 
   // ── Monetize ─────────────────────────────────────────────────────────────
