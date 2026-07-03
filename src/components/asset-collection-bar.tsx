@@ -3,21 +3,20 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight, ExternalLink, Flag } from "lucide-react";
-import { IpTypeBadge } from "./ip-type-badge.js";
 import { ShareButton } from "./share-button.js";
-import { ipfsToHttp } from "../utils/ipfs.js";
 import { cn } from "../utils/cn.js";
 
 export interface AssetCollectionBarSibling {
   tokenId: string;
+  /** Already-resolved, ready-to-render src (e.g. via the caller's ipfsToHttp). `null` renders a placeholder. */
   image: string | null;
 }
 
 export interface AssetCollectionBarProps {
   collectionName: string;
+  /** Already-resolved, ready-to-render src (e.g. via the caller's ipfsToHttp). */
   collectionImage?: string | null;
   collectionHref: string;
-  ipType?: string | null;
   contractExplorerHref: string;
   shareTitle: string;
   onReportClick: () => void;
@@ -27,17 +26,17 @@ export interface AssetCollectionBarProps {
 }
 
 /**
- * Consolidated collection identity bar: avatar+name, IP-type pill, and
+ * Consolidated collection identity bar: avatar+name and
  * explorer/share/report utility icons on one row, with a filmstrip of
  * collection siblings on a second row for browsing (replaces plain-text
  * Prev/Next). Soft `bg-card/40` surface, no hard border — matches the
  * aurora-glow design language instead of an OpenSea-style boxed panel.
+ * IP-type is asset-level, not collection-level — it lives in `AssetHeaderBlock`.
  */
 export function AssetCollectionBar({
   collectionName,
   collectionImage,
   collectionHref,
-  ipType,
   contractExplorerHref,
   shareTitle,
   onReportClick,
@@ -57,13 +56,12 @@ export function AssetCollectionBar({
         <Link href={collectionHref} className="flex items-center gap-3 min-w-0 group">
           <div className="relative h-10 w-10 rounded-xl overflow-hidden shrink-0 bg-gradient-to-br from-primary/20 to-purple-500/20 ring-1 ring-border/60 group-hover:ring-primary/40 transition">
             {collectionImage ? (
-              <Image src={ipfsToHttp(collectionImage)} alt="" fill className="object-cover" unoptimized />
+              <Image src={collectionImage} alt="" fill className="object-cover" unoptimized />
             ) : null}
           </div>
           <p className="text-sm font-semibold truncate group-hover:text-primary transition-colors">
             {collectionName}
           </p>
-          {ipType ? <IpTypeBadge ipType={ipType} size="sm" /> : null}
         </Link>
 
         <div className="flex items-center gap-1 shrink-0 text-muted-foreground">
@@ -112,7 +110,7 @@ export function AssetCollectionBar({
                   )}
                 >
                   {sibling.image ? (
-                    <Image src={ipfsToHttp(sibling.image)} alt="" fill className="object-cover" unoptimized />
+                    <Image src={sibling.image} alt="" fill className="object-cover" unoptimized />
                   ) : (
                     <div className="h-full w-full bg-muted" />
                   )}

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { AddressDisplay } from "./address-display.js";
 import { ParentAttributionBanner } from "./parent-attribution-banner.js";
+import { IpTypeBadge } from "./ip-type-badge.js";
 import { Layers, Users } from "lucide-react";
 
 interface AssetMediaColumnProps {
@@ -75,6 +76,7 @@ export function AssetMediaColumn({
 interface AssetHeaderBlockProps {
   name: string;
   description?: string | null;
+  ipType?: string | null;
   showMultiEditionBadge?: boolean;
   parentContract?: string | null;
   parentTokenId?: string | null;
@@ -84,6 +86,7 @@ interface AssetHeaderBlockProps {
 export function AssetHeaderBlock({
   name,
   description,
+  ipType,
   showMultiEditionBadge = false,
   parentContract,
   parentTokenId,
@@ -100,14 +103,6 @@ export function AssetHeaderBlock({
           />
         </div>
       ) : null}
-      {showMultiEditionBadge ? (
-        <div className="flex items-center gap-2 flex-wrap mb-2">
-          <span className="inline-flex items-center gap-1 text-[11px] font-semibold px-2.5 py-1 rounded-full border border-violet-500/30 bg-violet-500/10 text-violet-500">
-            <Layers className="h-3 w-3" />
-            Multi-edition
-          </span>
-        </div>
-      ) : null}
       {ownerAddress ? (
         <div className="mb-1 flex items-center gap-1.5 text-xs text-muted-foreground">
           <span className="font-semibold uppercase tracking-wider">Owner</span>
@@ -120,6 +115,17 @@ export function AssetHeaderBlock({
         </div>
       ) : null}
       <h1 className="text-3xl lg:text-5xl font-bold">{name}</h1>
+      {ipType || showMultiEditionBadge ? (
+        <div className="flex items-center gap-2 flex-wrap mt-2">
+          {ipType ? <IpTypeBadge ipType={ipType} size="md" /> : null}
+          {showMultiEditionBadge ? (
+            <span className="inline-flex items-center gap-1 text-[11px] font-semibold px-2.5 py-1 rounded-full border border-violet-500/30 bg-violet-500/10 text-violet-500">
+              <Layers className="h-3 w-3" />
+              Multi-edition
+            </span>
+          ) : null}
+        </div>
+      ) : null}
       {description ? (
         <p className="text-sm text-muted-foreground leading-relaxed mt-1">{description}</p>
       ) : null}
