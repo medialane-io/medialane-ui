@@ -242,8 +242,8 @@ export function LaunchpadServiceCard({ def, override = {}, featured = false, ind
 /** Vivid gradient titles give special sections identity without boxing them in
  *  (no panels inside panels — color carries the distinction, space does the rest). */
 const GROUP_TITLE_ACCENTS: Partial<Record<ServiceGroup, string>> = {
-  "creator-coins": "bg-gradient-to-r from-yellow-500 via-amber-500 to-orange-500 bg-clip-text text-transparent",
-  "pop-protocol": "bg-gradient-to-r from-emerald-500 to-green-600 bg-clip-text text-transparent",
+  "coins": "bg-gradient-to-r from-yellow-500 via-amber-500 to-orange-500 bg-clip-text text-transparent",
+  "community": "bg-gradient-to-r from-emerald-500 to-green-600 bg-clip-text text-transparent",
 };
 
 function GroupHeader({ group }: { group: ServiceGroupDefinition }) {

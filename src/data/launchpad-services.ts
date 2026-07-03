@@ -9,8 +9,8 @@ import {
 import { hasCapability } from "@medialane/sdk";
 
 const TICKETS_TRANSFERABLE_FEATURE = hasCapability("ip-tickets", "transfer")
-  ? "Transferable ERC-721"
-  : "Non-transferable, soulbound to your wallet";
+  ? "Freely transferable"
+  : "Stays with the original holder";
 
 export type ServiceStatus = "live" | "building" | "soon";
 export type ServiceCategory = "create" | "launch" | "monetize";
@@ -18,13 +18,8 @@ export type ServiceCategory = "create" | "launch" | "monetize";
 export type ServiceGroup =
   | "single-edition"
   | "limited-editions"
-  | "creator-coins"
-  | "collection-drop"
-  | "pop-protocol"
-  | "ip-tickets"
-  | "ip-sponsorship"
-  | "ip-club"
-  | "licensing-remix"
+  | "coins"
+  | "community"
   | "claims"
   | "coming-soon";
 
@@ -41,8 +36,8 @@ export interface ServiceGroupDefinition {
 export const LAUNCHPAD_SERVICE_GROUPS: ServiceGroupDefinition[] = [
   {
     key: "single-edition",
-    title: "Single Editions",
-    tagline: "Publish one-of-a-kind pieces \u2014 a song, a photo, a film \u2014 under your own name.",
+    title: "Single Edition",
+    tagline: "Publish one-of-a-kind pieces \u2014 a song, a photo, a film, a timed drop, or a remix \u2014 under your own name.",
   },
   {
     key: "limited-editions",
@@ -50,39 +45,14 @@ export const LAUNCHPAD_SERVICE_GROUPS: ServiceGroupDefinition[] = [
     tagline: "Release your work in numbered copies your fans can collect and trade.",
   },
   {
-    key: "creator-coins",
-    title: "Creator Coins & Memecoins",
-    tagline: "Launch your own coin — or bring one you already made — and let your community back you.",
+    key: "coins",
+    title: "Coins",
+    tagline: "Launch your own coin \u2014 or bring one you already made \u2014 and let your community back you.",
   },
   {
-    key: "collection-drop",
-    title: "Collection Drop",
-    tagline: "Schedule a release and let your audience mint while the window is open.",
-  },
-  {
-    key: "pop-protocol",
-    title: "POP Protocol",
-    tagline: "Give your community proof they were part of the moment.",
-  },
-  {
-    key: "ip-tickets",
-    title: "IP Tickets",
-    tagline: "Sell tickets to your shows and events, verifiable on-chain.",
-  },
-  {
-    key: "ip-sponsorship",
-    title: "IP Sponsorship",
-    tagline: "Let sponsors back your work directly, in exchange for a license.",
-  },
-  {
-    key: "ip-club",
-    title: "IP Club",
-    tagline: "Give your closest fans a membership card that unlocks more.",
-  },
-  {
-    key: "licensing-remix",
-    title: "Licensing & Remix",
-    tagline: "Let others build on your work \u2014 with credit and royalties flowing back to you.",
+    key: "community",
+    title: "Community",
+    tagline: "Connect with the people who show up for you \u2014 badges, tickets, memberships, and direct sponsorship.",
   },
   {
     key: "claims",
@@ -222,7 +192,7 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     badge: "Create",
     status: "live",
     category: "create",
-    group: "licensing-remix",
+    group: "single-edition",
   },
 
   // ── Launch ────────────────────────────────────────────────────────────────
@@ -245,7 +215,7 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     browseLinkLabel: "Browse events",
     status: "live",
     category: "launch",
-    group: "pop-protocol",
+    group: "community",
   },
   {
     key: "collection-drop",
@@ -266,7 +236,7 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     browseLinkLabel: "Browse drops",
     status: "live",
     category: "launch",
-    group: "collection-drop",
+    group: "single-edition",
   },
   {
     key: "ip-tickets",
@@ -288,7 +258,7 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     // medialane-core/docs/deployments.md
     status: "live",
     category: "launch",
-    group: "ip-tickets",
+    group: "community",
   },
   {
     key: "ip-club",
@@ -310,7 +280,7 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     // medialane-core/docs/deployments.md
     status: "live",
     category: "launch",
-    group: "ip-club",
+    group: "community",
   },
   {
     key: "ip-sponsorship",
@@ -333,7 +303,7 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     // medialane-core/docs/deployments.md
     status: "live",
     category: "launch",
-    group: "ip-sponsorship",
+    group: "community",
   },
 
   // ── Monetize ─────────────────────────────────────────────────────────────
@@ -355,7 +325,7 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     badge: "Launch",
     status: "live",
     category: "monetize",
-    group: "creator-coins",
+    group: "coins",
   },
 
   // ── Claims ────────────────────────────────────────────────────────────────
@@ -377,7 +347,7 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     badge: "Claim",
     status: "live",
     category: "monetize",
-    group: "creator-coins",
+    group: "coins",
   },
   {
     key: "claim-username",
