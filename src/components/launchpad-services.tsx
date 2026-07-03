@@ -310,7 +310,6 @@ export interface LaunchpadGroupedSectionsProps {
 export function LaunchpadGroupedSections({ overrides, className }: LaunchpadGroupedSectionsProps) {
   const [query, setQuery] = useState("");
   const [activeGroups, setActiveGroups] = useState<Set<ServiceGroup>>(new Set());
-  const [showComingSoon, setShowComingSoon] = useState(false);
 
   const filterableGroups = LAUNCHPAD_SERVICE_GROUPS.filter((g) => g.key !== "coming-soon");
 
@@ -325,7 +324,7 @@ export function LaunchpadGroupedSections({ overrides, className }: LaunchpadGrou
 
   const matches = (def: ServiceDefinition): boolean => {
     if (activeGroups.size > 0 && !activeGroups.has(def.group)) return false;
-    if (!showComingSoon && def.status !== "live") return false;
+    if (def.status !== "live") return false;
     if (query.trim() === "") return true;
     const haystack = `${def.title} ${def.blurb} ${def.subtitle}`.toLowerCase();
     return haystack.includes(query.trim().toLowerCase());
@@ -334,21 +333,24 @@ export function LaunchpadGroupedSections({ overrides, className }: LaunchpadGrou
   const totalMatches = useMemo(
     () => LAUNCHPAD_SERVICE_DEFINITIONS.filter(matches).length,
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [query, activeGroups, showComingSoon],
+    [query, activeGroups],
   );
 
   return (
     <div className={cn("space-y-8 sm:space-y-10", className)}>
-      <LaunchpadFilterBar
-        query={query}
-        onQueryChange={setQuery}
-        groups={filterableGroups}
-        activeGroups={activeGroups}
-        onToggleGroup={toggleGroup}
-        showComingSoon={showComingSoon}
-        onToggleComingSoon={setShowComingSoon}
-        resultCount={totalMatches}
-      />
+      <div className="pt-6 sm:pt-8 border-t border-border/40 space-y-3">
+        <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+          Browse services
+        </p>
+        <LaunchpadFilterBar
+          query={query}
+          onQueryChange={setQuery}
+          groups={filterableGroups}
+          activeGroups={activeGroups}
+          onToggleGroup={toggleGroup}
+          resultCount={totalMatches}
+        />
+      </div>
 
       {totalMatches === 0 ? (
         <div className="text-center py-16 space-y-3">
@@ -367,8 +369,15 @@ export function LaunchpadGroupedSections({ overrides, className }: LaunchpadGrou
           <AnimatePresence>
             {LAUNCHPAD_SERVICE_GROUPS.map((group) => {
               if (group.key === "coming-soon") {
+                // Coming-soon items are never "live" by definition, so they can't
+                // go through matches() (which requires status === "live") — only
+                // the group/search filters apply here, not the live-status gate.
+                const inActiveGroup = (d: ServiceDefinition) => activeGroups.size === 0 || activeGroups.has(d.group);
+                const inSearch = (d: ServiceDefinition) =>
+                  query.trim() === "" ||
+                  `${d.title} ${d.blurb} ${d.subtitle}`.toLowerCase().includes(query.trim().toLowerCase());
                 const comingSoonDefs = LAUNCHPAD_SERVICE_DEFINITIONS.filter(
-                  (d) => d.group === group.key && matches(d),
+                  (d) => d.group === group.key && inActiveGroup(d) && inSearch(d),
                 );
                 if (comingSoonDefs.length === 0) return null;
                 return <ComingSoonStrip key={group.key} group={group} defs={comingSoonDefs} />;

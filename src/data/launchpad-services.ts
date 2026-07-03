@@ -37,7 +37,7 @@ export const LAUNCHPAD_SERVICE_GROUPS: ServiceGroupDefinition[] = [
   {
     key: "single-edition",
     title: "Single Edition",
-    tagline: "Publish one-of-a-kind pieces \u2014 a song, a photo, a film, a timed drop, or a remix \u2014 under your own name.",
+    tagline: "Publish one-of-a-kind pieces \u2014 a song, a photo, a film, a timed drop, or a remix.",
   },
   {
     key: "limited-editions",
@@ -47,17 +47,17 @@ export const LAUNCHPAD_SERVICE_GROUPS: ServiceGroupDefinition[] = [
   {
     key: "coins",
     title: "Coins",
-    tagline: "Launch your own coin \u2014 or bring one you already made \u2014 and let your community back you.",
+    tagline: "Launch your own coin \u2014 or bring one you already made.",
   },
   {
     key: "community",
     title: "Community",
-    tagline: "Connect with the people who show up for you \u2014 badges, tickets, memberships, and direct sponsorship.",
+    tagline: "Badges, tickets, memberships, and direct sponsorship.",
   },
   {
     key: "claims",
     title: "Claims",
-    tagline: "Quick wins \u2014 claim your name and bring in work you have already made.",
+    tagline: "Quick wins \u2014 reserve your username, your collection's name, or bring in a collection you already deployed elsewhere.",
   },
   {
     key: "coming-soon",
