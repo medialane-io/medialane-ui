@@ -6,6 +6,11 @@ import {
   Coins, TrendingUp,
   AtSign, FolderInput, Link2,
 } from "lucide-react";
+import { hasCapability } from "@medialane/sdk";
+
+const TICKETS_TRANSFERABLE_FEATURE = hasCapability("ip-tickets", "transfer")
+  ? "Transferable ERC-721"
+  : "Non-transferable, soulbound to your wallet";
 
 export type ServiceStatus = "live" | "building" | "soon";
 export type ServiceCategory = "create" | "launch" | "monetize";
@@ -271,7 +276,7 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     subtitle: "Gate real-world experiences with NFTs",
     description:
       "Distribute tickets for concerts, workshops, and events. Each ticket is verifiable on-chain proof of attendance.",
-    features: ["NFT-based event gating", "Proof of attendance", "Transferable or soulbound"],
+    features: ["NFT-based event gating", "Proof of attendance", TICKETS_TRANSFERABLE_FEATURE],
     icon: Ticket,
     gradient: "from-teal-500/10 via-cyan-400/4 to-transparent",
     borderColor: "border-teal-500/20",
