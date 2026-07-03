@@ -94,7 +94,7 @@ export interface LaunchpadServiceCardProps {
 }
 
 export function LaunchpadServiceCard({ def, override = {}, featured = false, index = 0 }: LaunchpadServiceCardProps) {
-  const { key, icon: Icon, title, browseLinkLabel, features, example } = def;
+  const { key, icon: Icon, title, browseLinkLabel, features } = def;
   const status = override.status ?? def.status;
   const blurb = override.blurb ?? def.blurb;
   const { href, browseHref } = override;
@@ -132,7 +132,7 @@ export function LaunchpadServiceCard({ def, override = {}, featured = false, ind
         {/* Inner surface */}
         <div
           className={cn(
-            "relative flex flex-1 flex-col overflow-hidden min-h-[240px]",
+            "relative flex flex-1 flex-col overflow-hidden min-h-[200px]",
             live ? "rounded-[15px] bg-card" : "rounded-2xl border border-border/30 bg-card dark:bg-white/[0.02] opacity-75",
           )}
         >
@@ -152,20 +152,20 @@ export function LaunchpadServiceCard({ def, override = {}, featured = false, ind
               live ? "opacity-[0.05] sm:group-hover:opacity-[0.09] sm:group-hover:-translate-y-1 motion-reduce:transform-none" : "opacity-[0.03]",
             )}
           >
-            <Icon className={cn("h-44 w-44", live ? hue.text : "text-muted-foreground")} />
+            <Icon className={cn("h-32 w-32", live ? hue.text : "text-muted-foreground")} />
           </div>
 
-          <div className="relative flex flex-col flex-1 p-6 sm:p-8 gap-4 sm:gap-5">
+          <div className="relative flex flex-col flex-1 p-5 sm:p-6 gap-3 sm:gap-4">
             <div className="flex items-start justify-between gap-3">
               {live ? (
                 <div className="relative">
                   <span aria-hidden className={cn("absolute -inset-2 rounded-2xl blur-xl opacity-40 sm:group-hover:opacity-60 transition-opacity duration-500", hue.solid)} />
-                  <span className={cn("relative flex h-14 w-14 items-center justify-center rounded-2xl text-white shadow-lg shadow-black/25 transition-transform duration-300 sm:group-hover:scale-105 motion-reduce:transform-none", hue.pill)}>
-                    <Icon className="h-7 w-7" />
+                  <span className={cn("relative flex h-12 w-12 items-center justify-center rounded-2xl text-white shadow-lg shadow-black/25 transition-transform duration-300 sm:group-hover:scale-105 motion-reduce:transform-none", hue.pill)}>
+                    <Icon className="h-6 w-6" />
                   </span>
                 </div>
               ) : (
-                <Icon className="h-9 w-9 shrink-0 text-muted-foreground/50" />
+                <Icon className="h-8 w-8 shrink-0 text-muted-foreground/50" />
               )}
               {!live && (
                 <span className="flex items-center gap-1 text-[11px] font-medium text-muted-foreground/60 pt-1">
@@ -175,22 +175,17 @@ export function LaunchpadServiceCard({ def, override = {}, featured = false, ind
               )}
             </div>
 
-            <div className="space-y-2">
-              <h3 className="text-2xl sm:text-3xl font-black tracking-tight leading-snug">{title}</h3>
-              <p className={cn("text-[15px] leading-relaxed", live ? "text-muted-foreground" : "text-muted-foreground/60", !featured && "max-w-[36ch]")}>
+            <div className="space-y-1.5">
+              <h3 className="text-xl sm:text-2xl font-black tracking-tight leading-snug">{title}</h3>
+              <p className={cn("text-sm leading-relaxed", live ? "text-muted-foreground" : "text-muted-foreground/60", !featured && "max-w-[36ch]")}>
                 {blurb}
               </p>
-              {live && example && (
-                <p className="text-[13px] leading-relaxed text-muted-foreground/70 italic">
-                  e.g. {example}
-                </p>
-              )}
             </div>
 
-            {/* Feature showcase — plain-language chips */}
+            {/* Feature showcase — plain-language chips, capped at 2 for card density */}
             {live && features.length > 0 && (
               <div className="flex flex-wrap gap-1.5">
-                {features.map((feature) => (
+                {features.slice(0, 2).map((feature) => (
                   <span
                     key={feature}
                     className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-muted/40 border border-border/30 text-xs font-medium text-muted-foreground"
@@ -325,11 +320,11 @@ export function LaunchpadGroupedSections({ overrides, className }: LaunchpadGrou
             className="space-y-7 sm:space-y-10"
           >
             <GroupHeader group={group} />
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-7">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
               {defs.map((def, i) => (
                 <LaunchpadServiceCard key={def.key} def={def} override={overrides[def.key]} index={i} />
               ))}
-              {group.key === "pop-protocol" && <PopHowItWorks />}
+              {group.key === "community" && <PopHowItWorks />}
             </div>
           </motion.div>
         );
