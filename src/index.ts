@@ -26,6 +26,8 @@ export type { ParentBannerProps } from "./components/parent-attribution-banner.j
 export { AssetMediaColumn, AssetHeaderBlock, buildEditionStats } from "./components/asset-top-sections.js";
 export { AssetCollectionBar } from "./components/asset-collection-bar.js";
 export type { AssetCollectionBarProps, AssetCollectionBarSibling } from "./components/asset-collection-bar.js";
+export { AssetUtilityIcons } from "./components/asset-utility-icons.js";
+export type { AssetUtilityIconsProps } from "./components/asset-utility-icons.js";
 export { AssetMarketplacePanel } from "./components/asset-marketplace-panel.js";
 export type { AssetMarketplacePanelProps, ApiOrderLike } from "./components/asset-marketplace-panel.js";
 export { BRAND } from "./data/brand.js";

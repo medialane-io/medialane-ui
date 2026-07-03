@@ -2,8 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { ChevronLeft, ChevronRight, ExternalLink, Flag } from "lucide-react";
-import { ShareButton } from "./share-button.js";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "../utils/cn.js";
 
 export interface AssetCollectionBarSibling {
@@ -17,29 +16,23 @@ export interface AssetCollectionBarProps {
   /** Already-resolved, ready-to-render src (e.g. via the caller's ipfsToHttp). */
   collectionImage?: string | null;
   collectionHref: string;
-  contractExplorerHref: string;
-  shareTitle: string;
-  onReportClick: () => void;
   currentTokenId: string;
   siblingTokens: AssetCollectionBarSibling[];
   onNavigate: (tokenId: string) => void;
 }
 
 /**
- * Consolidated collection identity bar: avatar+name and
- * explorer/share/report utility icons on one row, with a filmstrip of
+ * Collection identity bar: centered avatar+name, with a filmstrip of
  * collection siblings on a second row for browsing (replaces plain-text
  * Prev/Next). Soft `bg-card/40` surface, no hard border — matches the
  * aurora-glow design language instead of an OpenSea-style boxed panel.
- * IP-type is asset-level, not collection-level — it lives in `AssetHeaderBlock`.
+ * Asset-level concerns (IP-type, explorer/share/report) live elsewhere
+ * (`AssetHeaderBlock`, `AssetUtilityIcons`) — this bar is collection-only.
  */
 export function AssetCollectionBar({
   collectionName,
   collectionImage,
   collectionHref,
-  contractExplorerHref,
-  shareTitle,
-  onReportClick,
   currentTokenId,
   siblingTokens,
   onNavigate,
@@ -52,39 +45,16 @@ export function AssetCollectionBar({
 
   return (
     <div className="rounded-2xl bg-card/40 px-4 py-3 space-y-3">
-      <div className="flex items-center justify-between gap-3">
-        <Link href={collectionHref} className="flex items-center gap-3 min-w-0 group">
-          <div className="relative h-10 w-10 rounded-xl overflow-hidden shrink-0 bg-gradient-to-br from-primary/20 to-purple-500/20 ring-1 ring-border/60 group-hover:ring-primary/40 transition">
-            {collectionImage ? (
-              <Image src={collectionImage} alt="" fill className="object-cover" unoptimized />
-            ) : null}
-          </div>
-          <p className="text-sm font-semibold truncate group-hover:text-primary transition-colors">
-            {collectionName}
-          </p>
-        </Link>
-
-        <div className="flex items-center gap-1 shrink-0 text-muted-foreground">
-          <a
-            href={contractExplorerHref}
-            target="_blank"
-            rel="noopener noreferrer"
-            title="View contract"
-            className="inline-flex h-9 w-9 items-center justify-center rounded-lg hover:bg-muted/50 hover:text-foreground transition-colors"
-          >
-            <ExternalLink className="h-4 w-4" />
-          </a>
-          <ShareButton title={shareTitle} variant="ghost" size="icon" />
-          <button
-            type="button"
-            title="Report this asset"
-            onClick={onReportClick}
-            className="inline-flex h-9 w-9 items-center justify-center rounded-lg hover:bg-muted/50 hover:text-foreground transition-colors"
-          >
-            <Flag className="h-4 w-4" />
-          </button>
+      <Link href={collectionHref} className="flex items-center justify-center gap-3 min-w-0 group">
+        <div className="relative h-10 w-10 rounded-xl overflow-hidden shrink-0 bg-gradient-to-br from-primary/20 to-purple-500/20 ring-1 ring-border/60 group-hover:ring-primary/40 transition">
+          {collectionImage ? (
+            <Image src={collectionImage} alt="" fill className="object-cover" unoptimized />
+          ) : null}
         </div>
-      </div>
+        <p className="text-sm font-semibold truncate group-hover:text-primary transition-colors">
+          {collectionName}
+        </p>
+      </Link>
 
       {showFilmstrip ? (
         <div className="flex items-center gap-1.5">
