@@ -16,8 +16,9 @@
  * Apps own: hrefs + per-app rollout status flips. Everything else lives here.
  */
 
+import { useMemo, useState } from "react";
 import Link from "next/link";
-import { motion, useReducedMotion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Lock, ArrowRight, Check } from "lucide-react";
 import { cn } from "../utils/cn.js";
 import {
@@ -28,6 +29,7 @@ import {
   type ServiceGroupDefinition,
   type ServiceStatus,
 } from "../data/launchpad-services.js";
+import { LaunchpadFilterBar } from "./launchpad-filter-bar.js";
 
 // ── Per-app injection points ─────────────────────────────────────────────────
 
@@ -105,8 +107,10 @@ export function LaunchpadServiceCard({ def, override = {}, featured = false, ind
 
   return (
     <motion.div
+      layout={!reduceMotion}
       initial={{ opacity: 0, y: reduceMotion ? 0 : 16 }}
       whileInView={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0 }}
       viewport={{ once: true, margin: "-40px" }}
       transition={{ duration: 0.45, delay: index * 0.06, ease: [0.25, 0.46, 0.45, 0.94] }}
       className={cn("flex", featured && "sm:col-span-2")}
@@ -301,34 +305,103 @@ export interface LaunchpadGroupedSectionsProps {
 }
 
 /** The full grouped launchpad services block — section order comes from
- *  LAUNCHPAD_SERVICE_GROUPS; cards from LAUNCHPAD_SERVICE_DEFINITIONS. */
+ *  LAUNCHPAD_SERVICE_GROUPS; cards from LAUNCHPAD_SERVICE_DEFINITIONS.
+ *  Owns the search/filter state so the grid can react to it live. */
 export function LaunchpadGroupedSections({ overrides, className }: LaunchpadGroupedSectionsProps) {
+  const [query, setQuery] = useState("");
+  const [activeGroups, setActiveGroups] = useState<Set<ServiceGroup>>(new Set());
+  const [showComingSoon, setShowComingSoon] = useState(false);
+
+  const filterableGroups = LAUNCHPAD_SERVICE_GROUPS.filter((g) => g.key !== "coming-soon");
+
+  const toggleGroup = (key: ServiceGroup) => {
+    setActiveGroups((prev) => {
+      const next = new Set(prev);
+      if (next.has(key)) next.delete(key);
+      else next.add(key);
+      return next;
+    });
+  };
+
+  const matches = (def: ServiceDefinition): boolean => {
+    if (activeGroups.size > 0 && !activeGroups.has(def.group)) return false;
+    if (!showComingSoon && def.status !== "live") return false;
+    if (query.trim() === "") return true;
+    const haystack = `${def.title} ${def.blurb} ${def.subtitle}`.toLowerCase();
+    return haystack.includes(query.trim().toLowerCase());
+  };
+
+  const totalMatches = useMemo(
+    () => LAUNCHPAD_SERVICE_DEFINITIONS.filter(matches).length,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [query, activeGroups, showComingSoon],
+  );
+
   return (
-    <div className={cn("space-y-20 sm:space-y-28", className)}>
-      {LAUNCHPAD_SERVICE_GROUPS.map((group) => {
-        const defs = LAUNCHPAD_SERVICE_DEFINITIONS.filter((d) => d.group === group.key);
-        if (defs.length === 0) return null;
-        if (group.key === "coming-soon") {
-          return <ComingSoonStrip key={group.key} group={group} defs={defs} />;
-        }
-        return (
-          <motion.div
-            key={group.key}
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
-            className="space-y-7 sm:space-y-10"
+    <div className={cn("space-y-8 sm:space-y-10", className)}>
+      <LaunchpadFilterBar
+        query={query}
+        onQueryChange={setQuery}
+        groups={filterableGroups}
+        activeGroups={activeGroups}
+        onToggleGroup={toggleGroup}
+        showComingSoon={showComingSoon}
+        onToggleComingSoon={setShowComingSoon}
+        resultCount={totalMatches}
+      />
+
+      {totalMatches === 0 ? (
+        <div className="text-center py-16 space-y-3">
+          <p className="text-lg font-semibold">No services match</p>
+          <p className="text-sm text-muted-foreground">Try a different search or clear your filters.</p>
+          <button
+            type="button"
+            onClick={() => { setQuery(""); setActiveGroups(new Set()); }}
+            className="inline-flex items-center h-9 px-4 rounded-full text-sm font-semibold bg-primary text-primary-foreground"
           >
-            <GroupHeader group={group} />
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
-              {defs.map((def, i) => (
-                <LaunchpadServiceCard key={def.key} def={def} override={overrides[def.key]} index={i} />
-              ))}
-              {group.key === "community" && <PopHowItWorks />}
-            </div>
-          </motion.div>
-        );
-      })}
+            Clear filters
+          </button>
+        </div>
+      ) : (
+        <div className="space-y-20 sm:space-y-28">
+          <AnimatePresence>
+            {LAUNCHPAD_SERVICE_GROUPS.map((group) => {
+              if (group.key === "coming-soon") {
+                const comingSoonDefs = LAUNCHPAD_SERVICE_DEFINITIONS.filter(
+                  (d) => d.group === group.key && matches(d),
+                );
+                if (comingSoonDefs.length === 0) return null;
+                return <ComingSoonStrip key={group.key} group={group} defs={comingSoonDefs} />;
+              }
+
+              const defs = LAUNCHPAD_SERVICE_DEFINITIONS.filter((d) => d.group === group.key && matches(d));
+              if (defs.length === 0) return null;
+
+              const showPopHowItWorks = group.key === "community" && defs.some((d) => d.key === "pop-protocol");
+
+              return (
+                <motion.div
+                  key={group.key}
+                  layout
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
+                  className="space-y-7 sm:space-y-10"
+                >
+                  <GroupHeader group={group} />
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+                    {defs.map((def, i) => (
+                      <LaunchpadServiceCard key={def.key} def={def} override={overrides[def.key]} index={i} />
+                    ))}
+                    {showPopHowItWorks && <PopHowItWorks />}
+                  </div>
+                </motion.div>
+              );
+            })}
+          </AnimatePresence>
+        </div>
+      )}
     </div>
   );
 }
