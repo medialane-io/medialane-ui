@@ -144,3 +144,19 @@ export { ServiceFormShell } from "./components/service-form-shell.js";
 export type { ServiceFormShellProps } from "./components/service-form-shell.js";
 export { StepNav } from "./components/step-nav.js";
 export type { StepNavProps, StepNavStep } from "./components/step-nav.js";
+
+// Rewards score kit (v0.36.0)
+export { LevelBadge } from "./components/rewards/level-badge.js";
+export type { LevelBadgeProps } from "./components/rewards/level-badge.js";
+export { XpProgress } from "./components/rewards/xp-progress.js";
+export type { XpProgressProps } from "./components/rewards/xp-progress.js";
+export { BadgeShelf } from "./components/rewards/badge-shelf.js";
+export type { BadgeShelfProps, BadgeShelfBadge } from "./components/rewards/badge-shelf.js";
+export { ScoreSummaryCard } from "./components/rewards/score-summary-card.js";
+export type { ScoreSummaryCardProps } from "./components/rewards/score-summary-card.js";
+export { LeaderboardTable, LeaderboardWidget } from "./components/rewards/leaderboard-table.js";
+export type { LeaderboardTableProps, LeaderboardWidgetProps, LeaderboardEntryLike } from "./components/rewards/leaderboard-table.js";
+export { LevelLadder } from "./components/rewards/level-ladder.js";
+export type { LevelLadderProps } from "./components/rewards/level-ladder.js";
+export { XpToastContent } from "./components/rewards/xp-toast-content.js";
+export type { XpToastContentProps } from "./components/rewards/xp-toast-content.js";
