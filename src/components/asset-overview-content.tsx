@@ -22,7 +22,7 @@ interface AssetOverviewContentProps {
 const isAddressLike = (v?: unknown): boolean =>
   typeof v === "string" && /^0x[0-9a-fA-F]{16,}$/.test(v.trim());
 
-/** A standard bento square: a brand-tinted icon, an uppercase label, a bold value.
+/** A standard bento square: a brand-tinted icon, a plain label, a bold value.
  *  `wide` stretches it across two columns for an emphasized detail. */
 function Cell({
   icon,
@@ -43,7 +43,7 @@ function Cell({
     >
       {icon ? <span className="text-primary/70">{icon}</span> : null}
       <div className="space-y-0.5">
-        <p className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground truncate" title={label}>
+        <p className="text-[10px] font-medium text-muted-foreground truncate" title={label}>
           {label}
         </p>
         <div className="text-sm font-bold text-foreground truncate">{value}</div>
@@ -93,7 +93,7 @@ export function AssetOverviewContent({
 
       {hasLicenseData ? (
         <section className="space-y-3">
-          <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Rights</h3>
+          <h3 className="text-sm font-semibold text-muted-foreground">Rights</h3>
           <div className="relative">
             {/* soft brand light-leak behind the lattice */}
             <div
@@ -125,7 +125,7 @@ export function AssetOverviewContent({
 
       {displayAttributes.length > 0 ? (
         <section className="space-y-3">
-          <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Details</h3>
+          <h3 className="text-sm font-semibold text-muted-foreground">Details</h3>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 [grid-auto-flow:dense] auto-rows-[minmax(6rem,auto)]">
             {displayAttributes.map((attribute, index) => (
               <Cell

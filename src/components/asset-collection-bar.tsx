@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { AddressDisplay } from "./address-display.js";
 import { cn } from "../utils/cn.js";
 
 export interface AssetCollectionBarSibling {
@@ -19,15 +20,20 @@ export interface AssetCollectionBarProps {
   currentTokenId: string;
   siblingTokens: AssetCollectionBarSibling[];
   onNavigate: (tokenId: string) => void;
+  /** Single-owner identity (ERC-721) — rendered under the collection name so
+   *  "who owns it" and "where it lives" sit together. Omit for ERC-1155
+   *  editions (multiple owners; use `AssetOwnersPanel` instead). */
+  ownerAddress?: string | null;
+  ownerHref?: string;
 }
 
 /**
- * Collection identity bar: centered avatar+name, with a filmstrip of
- * collection siblings on a second row for browsing (replaces plain-text
- * Prev/Next). Soft `bg-card/40` surface, no hard border — matches the
- * aurora-glow design language instead of an OpenSea-style boxed panel.
- * Asset-level concerns (IP-type, explorer/share/report) live elsewhere
- * (`AssetHeaderBlock`, `AssetUtilityIcons`) — this bar is collection-only.
+ * Collection identity bar: centered avatar+name (+ owner, when given), with
+ * a filmstrip of collection siblings on a second row for browsing (replaces
+ * plain-text Prev/Next). Soft `bg-card/40` surface, no hard border — matches
+ * the aurora-glow design language instead of an OpenSea-style boxed panel.
+ * Other asset-level concerns (IP-type, explorer/share/report) still live
+ * elsewhere (`AssetHeaderBlock`, `AssetUtilityIcons`).
  */
 export function AssetCollectionBar({
   collectionName,
@@ -36,6 +42,8 @@ export function AssetCollectionBar({
   currentTokenId,
   siblingTokens,
   onNavigate,
+  ownerAddress,
+  ownerHref,
 }: AssetCollectionBarProps) {
   const currentIndex = siblingTokens.findIndex((t) => String(t.tokenId) === String(currentTokenId));
   const prevToken = currentIndex > 0 ? siblingTokens[currentIndex - 1] : null;
@@ -55,6 +63,15 @@ export function AssetCollectionBar({
           {collectionName}
         </p>
       </Link>
+
+      {ownerAddress && ownerHref ? (
+        <div className="flex items-center justify-center gap-1.5 text-xs text-muted-foreground -mt-1.5">
+          <span>Owner</span>
+          <Link href={ownerHref} className="hover:text-primary transition-colors font-medium">
+            <AddressDisplay address={ownerAddress} />
+          </Link>
+        </div>
+      ) : null}
 
       {showFilmstrip ? (
         <div className="flex items-center gap-1.5">

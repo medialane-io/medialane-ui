@@ -53,7 +53,7 @@ export function AssetMarketsTab({
   return (
     <div className="mt-4 space-y-6">
       <div>
-        <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2">Listings</p>
+        <p className="text-xs font-semibold text-muted-foreground mb-2">Listings</p>
         {activeListings.length === 0 ? (
           <p className="text-sm text-muted-foreground py-4 text-center">No active listings.</p>
         ) : (
@@ -90,7 +90,7 @@ export function AssetMarketsTab({
       </div>
 
       <div>
-        <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2">Offers</p>
+        <p className="text-xs font-semibold text-muted-foreground mb-2">Offers</p>
         {activeBids.length === 0 ? (
           <p className="text-sm text-muted-foreground py-4 text-center">No active offers.</p>
         ) : (

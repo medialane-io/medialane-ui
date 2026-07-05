@@ -1,9 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import { motion } from "framer-motion";
-import { AddressDisplay } from "./address-display.js";
 import { ParentAttributionBanner } from "./parent-attribution-banner.js";
 import { IpTypeBadge } from "./ip-type-badge.js";
 import { Layers, Users } from "lucide-react";
@@ -80,9 +78,11 @@ interface AssetHeaderBlockProps {
   showMultiEditionBadge?: boolean;
   parentContract?: string | null;
   parentTokenId?: string | null;
-  ownerAddress?: string | null;
 }
 
+/** Owner identity moved out of this block (2026-07-05) — it now renders next
+ *  to the collection bar (`AssetCollectionBar`'s `ownerAddress` prop) instead
+ *  of floating above the title, pairing "who owns it" with "where it lives". */
 export function AssetHeaderBlock({
   name,
   description,
@@ -90,7 +90,6 @@ export function AssetHeaderBlock({
   showMultiEditionBadge = false,
   parentContract,
   parentTokenId,
-  ownerAddress,
 }: AssetHeaderBlockProps) {
   return (
     <div>
@@ -112,17 +111,6 @@ export function AssetHeaderBlock({
             parentTokenId={parentTokenId}
             parentName={`Token #${parentTokenId}`}
           />
-        </div>
-      ) : null}
-      {ownerAddress ? (
-        <div className="mb-1 flex items-center gap-1.5 text-xs text-muted-foreground">
-          <span className="font-semibold uppercase tracking-wider">Owner</span>
-          <Link
-            href={`/creator/${ownerAddress}`}
-            className="hover:text-primary transition-colors font-medium"
-          >
-            <AddressDisplay address={ownerAddress} />
-          </Link>
         </div>
       ) : null}
       <h1 className="text-3xl lg:text-5xl font-bold">{name}</h1>

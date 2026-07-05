@@ -81,28 +81,27 @@ export interface AssetMarketplacePanelProps<T extends ApiOrderLike = ApiOrderLik
   onProposeDeal?: () => void;
 }
 
+/** Floor + last-sale stats — each hides itself when its data is absent
+ *  (no dangling "—" placeholders), and the whole row disappears when
+ *  neither is available. */
 function StatRow({ floorPriceRaw, lastSaleRaw }: { floorPriceRaw?: string | null; lastSaleRaw?: string | null }) {
-  if (!floorPriceRaw && !lastSaleRaw) return null;
   const floor = floorPriceRaw ? parsePriceDisplay(floorPriceRaw) : null;
   const lastSale = lastSaleRaw ? parsePriceDisplay(lastSaleRaw) : null;
+  if (!floor?.symbol && !lastSale?.symbol) return null;
   return (
-    <div className="flex items-center gap-4 text-xs text-muted-foreground">
-      <span className="flex items-center gap-1.5">
-        <span className="uppercase tracking-wider font-semibold">Floor</span>
-        {floor && floor.symbol ? (
+    <div className="flex items-center gap-4 text-sm text-muted-foreground">
+      {floor?.symbol && (
+        <span className="flex items-center gap-1.5">
+          <span>Floor</span>
           <CurrencyAmount amount={floor.numStr} symbol={floor.symbol} iconSize={12} amountClassName="text-foreground font-semibold" />
-        ) : (
-          <span className="text-foreground font-semibold">—</span>
-        )}
-      </span>
-      <span className="flex items-center gap-1.5">
-        <span className="uppercase tracking-wider font-semibold">Last sale</span>
-        {lastSale && lastSale.symbol ? (
+        </span>
+      )}
+      {lastSale?.symbol && (
+        <span className="flex items-center gap-1.5">
+          <span>Last sale</span>
           <CurrencyAmount amount={lastSale.numStr} symbol={lastSale.symbol} iconSize={12} amountClassName="text-foreground font-semibold" />
-        ) : (
-          <span className="text-foreground font-semibold">—</span>
-        )}
-      </span>
+        </span>
+      )}
     </div>
   );
 }
@@ -160,17 +159,18 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
       <div className="relative space-y-4">
         {cheapest ? (
           <div className="space-y-4">
-            <div className="flex items-baseline gap-2">
-              <CurrencyIcon symbol={cheapest.price.currency ?? ""} size={26} />
-              <span className="text-4xl font-bold tracking-tight">
-                {formatDisplayPrice(cheapest.price.formatted)}
-              </span>
-              {renderHelp(
-                `${isOwner && !canBuyMore ? "Your listing" : "Current price"} · Expires ${timeUntil(cheapest.endTime)}`
-              )}
+            <div className="flex flex-wrap items-baseline gap-x-5 gap-y-1.5">
+              <div className="flex items-baseline gap-2">
+                <CurrencyIcon symbol={cheapest.price.currency ?? ""} size={26} />
+                <span className="text-4xl font-bold tracking-tight">
+                  {formatDisplayPrice(cheapest.price.formatted)}
+                </span>
+                {renderHelp(
+                  `${isOwner && !canBuyMore ? "Your listing" : "Current price"} · Expires ${timeUntil(cheapest.endTime)}`
+                )}
+              </div>
+              <StatRow floorPriceRaw={floorPriceRaw} lastSaleRaw={lastSaleRaw} />
             </div>
-
-            <StatRow floorPriceRaw={floorPriceRaw} lastSaleRaw={lastSaleRaw} />
 
             {isOwner ? (
               <div className="space-y-2">
@@ -312,7 +312,7 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
 
         {isOwner && activeBids.length > 0 ? (
           <div className="rounded-xl bg-card/40 p-5 space-y-3">
-            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+            <p className="text-xs font-semibold text-muted-foreground">
               Incoming offers ({activeBids.length})
             </p>
             <div className="space-y-2">
