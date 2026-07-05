@@ -4,6 +4,9 @@ import { shortenAddress } from "../../utils/address.js";
 import { LevelBadge } from "./level-badge.js";
 
 export interface LeaderboardEntryLike {
+  /** Kept for API compatibility with the backend's ordered response — not
+   *  rendered. This is a scoreboard, not a ranking: no "#1/#2/#3", no podium
+   *  colors. Order in the array is still the sort order the caller gets. */
   rank: number;
   address: string;
   publicId?: string | null;
@@ -22,19 +25,12 @@ export interface LeaderboardTableProps {
   className?: string;
 }
 
-function rankAccent(rank: number): string | null {
-  if (rank === 1) return "#f59e0b";
-  if (rank === 2) return "#94a3b8";
-  if (rank === 3) return "#b45309";
-  return null;
-}
-
-/** Full leaderboard rows: rank, address, level chip, XP. */
+/** Scoreboard rows: address, level chip, points. No position number or
+ *  podium coloring — this celebrates participation, not competition. */
 export function LeaderboardTable({ entries, highlightAddress, renderAddress, className }: LeaderboardTableProps) {
   return (
     <div className={cn("overflow-hidden rounded-xl border border-border", className)}>
       {entries.map((e) => {
-        const accent = rankAccent(e.rank);
         const isViewer = highlightAddress != null && e.address === highlightAddress;
         return (
           <div
@@ -44,18 +40,12 @@ export function LeaderboardTable({ entries, highlightAddress, renderAddress, cla
               isViewer && "bg-primary/10"
             )}
           >
-            <span
-              className="w-8 shrink-0 text-center text-sm font-black tabular-nums"
-              style={accent ? { color: accent } : undefined}
-            >
-              {e.rank}
-            </span>
             <span className="min-w-0 flex-1 truncate text-sm font-medium">
               {renderAddress ? renderAddress(e.address) : shortenAddress(e.address)}
               {isViewer && <span className="ml-1.5 text-xs text-muted-foreground">(you)</span>}
             </span>
             <LevelBadge level={e.currentLevel} name={e.currentLevelName} badgeColor={e.badgeColor} size="sm" className="hidden sm:inline-flex" />
-            <span className="shrink-0 text-sm font-semibold tabular-nums">{e.totalXp.toLocaleString()} XP</span>
+            <span className="shrink-0 text-sm font-semibold tabular-nums">{e.totalXp.toLocaleString()} pts</span>
           </div>
         );
       })}
@@ -66,14 +56,14 @@ export function LeaderboardTable({ entries, highlightAddress, renderAddress, cla
 export interface LeaderboardWidgetProps {
   entries: LeaderboardEntryLike[];
   title?: string;
-  /** Link to the full leaderboard ("/rewards"). */
+  /** Link to the full scoreboard ("/rewards"). */
   href?: string;
   renderAddress?: (address: string) => ReactNode;
   className?: string;
 }
 
-/** Compact top-N card for homepage/discover rails. */
-export function LeaderboardWidget({ entries, title = "Top Creators", href, renderAddress, className }: LeaderboardWidgetProps) {
+/** Compact card for homepage/discover rails — same no-ranking scoreboard rows. */
+export function LeaderboardWidget({ entries, title = "Community Rewards", href, renderAddress, className }: LeaderboardWidgetProps) {
   if (entries.length === 0) return null;
   return (
     <section className={cn("rounded-xl border border-border bg-card p-4 sm:p-5", className)}>
@@ -81,19 +71,13 @@ export function LeaderboardWidget({ entries, title = "Top Creators", href, rende
         <h2 className="text-base font-black">{title}</h2>
         {href && (
           <a href={href} className="text-xs font-semibold text-muted-foreground active:opacity-70">
-            View leaderboard →
+            View scoreboard →
           </a>
         )}
       </div>
       <ol className="space-y-2.5">
         {entries.map((e) => (
           <li key={e.address} className="flex items-center gap-2.5">
-            <span
-              className="w-5 shrink-0 text-center text-sm font-black tabular-nums"
-              style={rankAccent(e.rank) ? { color: rankAccent(e.rank)! } : undefined}
-            >
-              {e.rank}
-            </span>
             <span className="min-w-0 flex-1 truncate text-sm font-medium">
               {renderAddress ? renderAddress(e.address) : shortenAddress(e.address)}
             </span>
