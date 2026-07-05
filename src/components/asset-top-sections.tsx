@@ -1,7 +1,9 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { motion } from "framer-motion";
+import { AddressDisplay } from "./address-display.js";
 import { ParentAttributionBanner } from "./parent-attribution-banner.js";
 import { IpTypeBadge } from "./ip-type-badge.js";
 import { Layers, Users } from "lucide-react";
@@ -80,9 +82,6 @@ interface AssetHeaderBlockProps {
   parentTokenId?: string | null;
 }
 
-/** Owner identity moved out of this block (2026-07-05) — it now renders next
- *  to the collection bar (`AssetCollectionBar`'s `ownerAddress` prop) instead
- *  of floating above the title, pairing "who owns it" with "where it lives". */
 export function AssetHeaderBlock({
   name,
   description,
@@ -117,6 +116,26 @@ export function AssetHeaderBlock({
       {description ? (
         <p className="text-sm text-muted-foreground leading-relaxed mt-1">{description}</p>
       ) : null}
+    </div>
+  );
+}
+
+export interface AssetOwnerRowProps {
+  ownerAddress: string;
+  ownerHref: string;
+}
+
+/** Single-owner identity (ERC-721) — its own sibling row, not nested inside
+ *  the collection bar (that reads as if ownership were a collection
+ *  attribute, 2026-07-05 feedback). ERC-1155 editions use `AssetOwnersPanel`
+ *  instead (multiple owners). */
+export function AssetOwnerRow({ ownerAddress, ownerHref }: AssetOwnerRowProps) {
+  return (
+    <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+      <span>Owner</span>
+      <Link href={ownerHref} className="hover:text-primary transition-colors font-medium">
+        <AddressDisplay address={ownerAddress} />
+      </Link>
     </div>
   );
 }
