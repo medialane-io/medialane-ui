@@ -72,8 +72,65 @@ function StripShell({
   );
 }
 
-/** Discover feed — Markets activity + Community as horizontal carousels,
- *  matching the Collections/Creators explore-by-scrolling model. */
+export interface DiscoverActivityStripProps {
+  orders: ApiOrder[];
+  isLoading: boolean;
+  marketplaceHref?: string;
+  onBuyOrder?: (order: ApiOrder) => void;
+  isOwnOrder?: (order: ApiOrder) => boolean;
+}
+
+/** Markets — recent listings carousel. Standalone (2026-07-05) so a page can
+ *  place other sections (e.g. Browse by Type) between this and Community. */
+export function DiscoverActivityStrip({
+  orders,
+  isLoading,
+  marketplaceHref = "/marketplace",
+  onBuyOrder,
+  isOwnOrder,
+}: DiscoverActivityStripProps) {
+  return (
+    <FadeIn>
+      <StripShell
+        icon={<Tag className="h-3.5 w-3.5 text-white" />}
+        iconBg="bg-gradient-to-br from-rose-500 to-pink-600 shadow-md shadow-rose-500/20"
+        title="Activity"
+        href={marketplaceHref}
+        linkLabel="View all"
+      >
+        {isLoading
+          ? Array.from({ length: 8 }).map((_, i) => (
+              <div key={i} className="w-72 snap-start shrink-0">
+                <ListingCardSkeleton />
+              </div>
+            ))
+          : orders.length === 0
+          ? (
+              <p className="text-sm text-muted-foreground py-4">No active listings yet.</p>
+            )
+          : orders.map((order) => {
+              const own = isOwnOrder?.(order) ?? false;
+              return (
+                <div key={order.orderHash} className="w-72 snap-start shrink-0">
+                  <ListingCard
+                    order={order}
+                    onBuy={onBuyOrder && !own ? () => onBuyOrder(order) : undefined}
+                  />
+                </div>
+              );
+            })}
+      </StripShell>
+    </FadeIn>
+  );
+}
+
+/**
+ * @deprecated Kept for apps still on the combined layout (e.g. medialane-io,
+ * pending its own migration). New pages should use `DiscoverActivityStrip`
+ * directly and build their own Community section — see medialane-starknet's
+ * discover community-section.tsx for the 2-column activities+leaderboard
+ * replacement of the old carousel below.
+ */
 export function DiscoverFeedSection({
   orders,
   isLoading,
@@ -88,38 +145,13 @@ export function DiscoverFeedSection({
 }: DiscoverFeedSectionProps) {
   return (
     <div className="space-y-14 sm:space-y-20">
-      {/* Markets — recent listings carousel */}
-      <FadeIn>
-        <StripShell
-          icon={<Tag className="h-3.5 w-3.5 text-white" />}
-          iconBg="bg-gradient-to-br from-rose-500 to-pink-600 shadow-md shadow-rose-500/20"
-          title="Activity"
-          href={marketplaceHref}
-          linkLabel="View all"
-        >
-          {isLoading
-            ? Array.from({ length: 8 }).map((_, i) => (
-                <div key={i} className="w-72 snap-start shrink-0">
-                  <ListingCardSkeleton />
-                </div>
-              ))
-            : orders.length === 0
-            ? (
-                <p className="text-sm text-muted-foreground py-4">No active listings yet.</p>
-              )
-            : orders.map((order) => {
-                const own = isOwnOrder?.(order) ?? false;
-                return (
-                  <div key={order.orderHash} className="w-72 snap-start shrink-0">
-                    <ListingCard
-                      order={order}
-                      onBuy={onBuyOrder && !own ? () => onBuyOrder(order) : undefined}
-                    />
-                  </div>
-                );
-              })}
-        </StripShell>
-      </FadeIn>
+      <DiscoverActivityStrip
+        orders={orders}
+        isLoading={isLoading}
+        marketplaceHref={marketplaceHref}
+        onBuyOrder={onBuyOrder}
+        isOwnOrder={isOwnOrder}
+      />
 
       {/* Community — recent on-chain activity carousel */}
       <FadeIn delay={0.08}>
