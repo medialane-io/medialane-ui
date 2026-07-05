@@ -160,3 +160,7 @@ export { LevelLadder } from "./components/rewards/level-ladder.js";
 export type { LevelLadderProps } from "./components/rewards/level-ladder.js";
 export { XpToastContent } from "./components/rewards/xp-toast-content.js";
 export type { XpToastContentProps } from "./components/rewards/xp-toast-content.js";
+
+// ── v0.37.0 additions — infinite-scroll trigger ──────────────────────────────
+export { LoadMoreSentinel } from "./components/load-more-sentinel.js";
+export type { LoadMoreSentinelProps } from "./components/load-more-sentinel.js";
