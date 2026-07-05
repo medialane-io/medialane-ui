@@ -29,7 +29,7 @@ interface StripCard {
   blurb: string;
   example?: string;
   cta: string;
-  hue: { text: string; solid: string; border: string; pill: string };
+  hue: { text: string; solid: string; border: string; tint: string };
 }
 
 const DEF_BY_KEY = Object.fromEntries(LAUNCHPAD_SERVICE_DEFINITIONS.map((d) => [d.key, d]));
@@ -46,9 +46,9 @@ const STRIP_ORDER = [
 
 const MARKETPLACE_HUE = {
   text: "text-indigo-600 dark:text-indigo-400",
-  solid: "bg-indigo-500",
-  border: "border-indigo-500/25",
-  pill: "bg-gradient-to-r from-indigo-500 to-blue-600",
+  solid: "bg-indigo-600",
+  border: "border-indigo-500/30 dark:border-indigo-400/25",
+  tint: "bg-indigo-500/10",
 };
 
 function ServiceCard({ card }: { card: StripCard }) {
@@ -62,16 +62,10 @@ function ServiceCard({ card }: { card: StripCard }) {
         hue.border,
       )}
     >
-      {/* Ghosted watermark icon (launchpad card language) */}
-      <div aria-hidden className="absolute -right-7 -bottom-9 opacity-[0.04] select-none pointer-events-none">
-        <Icon className="h-36 w-36" />
-      </div>
-
       <div className="relative flex flex-col flex-1 p-6 gap-3.5">
-        <div className="relative w-fit">
-          <div aria-hidden className={cn("absolute -inset-3 rounded-full blur-2xl opacity-30", hue.solid)} />
-          <Icon className={cn("relative h-8 w-8", hue.text)} />
-        </div>
+        <span className={cn("flex h-11 w-11 items-center justify-center rounded-xl", hue.tint)}>
+          <Icon className={cn("h-6 w-6", hue.text)} />
+        </span>
 
         <div className="space-y-1.5">
           <h3 className="text-xl font-black tracking-tight leading-snug">{title}</h3>
@@ -85,8 +79,8 @@ function ServiceCard({ card }: { card: StripCard }) {
           <span
             className={cn(
               "inline-flex items-center gap-2 h-9 px-4 rounded-full",
-              "text-sm font-semibold text-white shadow-lg shadow-black/25",
-              hue.pill,
+              "text-sm font-semibold text-white",
+              hue.solid,
             )}
           >
             {cta}

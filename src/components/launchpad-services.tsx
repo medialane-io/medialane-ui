@@ -4,14 +4,20 @@
  * Launchpad grouped services — the single source for the /launchpad page UI
  * in medialane-io and medialane-starknet.
  *
- * Card philosophy (creator-first redesign 2026-06-10; "living color cards"
- * high-fidelity pass 2026-06-27): the whole card is the action. One title, one
- * creator-language sentence (def.blurb), one unique hue per service. The hue is
- * not locked in a thin border — it saturates the whole card as ambient light:
- * an aurora glow behind a gradient icon tile, a hairline gradient frame that
- * ignites on interaction, a staggered entrance reveal, and press/hover
- * microinteractions. Touch-first (press states are primary; hover is desktop
- * polish, gated to sm+ and degraded under reduced-motion).
+ * Card philosophy (creator-first redesign 2026-06-10; flat card pass
+ * 2026-07-05): the whole card is the action. One title, one creator-language
+ * sentence (def.blurb), one unique hue per service. The hue lives in a soft
+ * icon-tile tint and a static border — no ambient aurora glow, no blurred
+ * light-leaks, no gradient wash behind the card. Those read as washed-out
+ * noise on light backgrounds and don't match the rest of the design system
+ * (flat surfaces, solid accents). A staggered entrance reveal and a quiet
+ * border/lift microinteraction on hover are still here; hover is desktop
+ * polish only (gated to sm+, degraded under reduced-motion).
+ *
+ * Filter state (search + group pills) lives in `useLaunchpadFilter()` so a
+ * page can render `LaunchpadFilterBar` wherever it wants (e.g. right under
+ * the h1) while `LaunchpadGroupedSections` — now fully controlled — renders
+ * only the grid reacting to that same state.
  *
  * Apps own: hrefs + per-app rollout status flips. Everything else lives here.
  */
@@ -29,7 +35,6 @@ import {
   type ServiceGroupDefinition,
   type ServiceStatus,
 } from "../data/launchpad-services.js";
-import { LaunchpadFilterBar } from "./launchpad-filter-bar.js";
 
 // ── Per-app injection points ─────────────────────────────────────────────────
 
@@ -49,39 +54,39 @@ export type ServiceOverrides = Record<string, ServiceOverride>;
 // ── One unique hue per service — never repeated inside a group ───────────────
 
 interface ServiceHue {
-  /** icon tint (600 for light surfaces, 400 for dark) */
+  /** icon glyph tint (600 for light surfaces, 400 for dark) */
   text: string;
-  /** solid fill — icon glow */
+  /** solid fill — CTA button background */
   solid: string;
-  /** thin card border tint */
+  /** static card border (visible on both themes, not just on hover) */
   border: string;
-  /** vivid two-stop gradient for the action pill (asset-page button language) */
-  pill: string;
+  /** soft icon-tile background (10% tint, both themes) */
+  tint: string;
 }
 
 const DEFAULT_HUE: ServiceHue = {
   text: "text-sky-600 dark:text-sky-400",
-  solid: "bg-sky-500",
-  border: "border-sky-500/25",
-  pill: "bg-gradient-to-r from-sky-500 to-blue-600",
+  solid: "bg-sky-600",
+  border: "border-sky-500/30 dark:border-sky-400/25",
+  tint: "bg-sky-500/10",
 };
 
 export const SERVICE_HUES: Record<string, ServiceHue> = {
   // Single Editions — blue + green
-  "mint-ip-asset": { text: "text-blue-600 dark:text-blue-400", solid: "bg-blue-500", border: "border-blue-500/25", pill: "bg-gradient-to-r from-blue-500 to-sky-600" },
-  "create-collection": { text: "text-green-600 dark:text-green-400", solid: "bg-green-500", border: "border-green-500/25", pill: "bg-gradient-to-r from-green-500 to-emerald-600" },
+  "mint-ip-asset": { text: "text-blue-600 dark:text-blue-400", solid: "bg-blue-600", border: "border-blue-500/30 dark:border-blue-400/25", tint: "bg-blue-500/10" },
+  "create-collection": { text: "text-green-600 dark:text-green-400", solid: "bg-green-600", border: "border-green-500/30 dark:border-green-400/25", tint: "bg-green-500/10" },
   // Limited Editions — purple + red
-  "ip-collection-1155": { text: "text-purple-600 dark:text-purple-400", solid: "bg-purple-500", border: "border-purple-500/25", pill: "bg-gradient-to-r from-purple-500 to-violet-600" },
-  "mint-editions": { text: "text-red-600 dark:text-red-400", solid: "bg-red-500", border: "border-red-500/25", pill: "bg-gradient-to-r from-red-500 to-rose-600" },
+  "ip-collection-1155": { text: "text-purple-600 dark:text-purple-400", solid: "bg-purple-600", border: "border-purple-500/30 dark:border-purple-400/25", tint: "bg-purple-500/10" },
+  "mint-editions": { text: "text-red-600 dark:text-red-400", solid: "bg-red-600", border: "border-red-500/30 dark:border-red-400/25", tint: "bg-red-500/10" },
   // Creator Coins & Memecoins — yellow + orange
-  "creator-coins": { text: "text-yellow-600 dark:text-yellow-400", solid: "bg-yellow-500", border: "border-yellow-500/25", pill: "bg-gradient-to-r from-yellow-500 to-amber-500" },
-  "claim-memecoin": { text: "text-orange-600 dark:text-orange-400", solid: "bg-orange-500", border: "border-orange-500/25", pill: "bg-gradient-to-r from-orange-500 to-amber-600" },
-  "collection-drop": { text: "text-orange-600 dark:text-orange-400", solid: "bg-orange-500", border: "border-orange-500/25", pill: "bg-gradient-to-r from-orange-500 to-red-500" },
-  "pop-protocol": { text: "text-emerald-600 dark:text-emerald-400", solid: "bg-emerald-500", border: "border-emerald-500/25", pill: "bg-gradient-to-r from-emerald-500 to-green-600" },
-  "remix-asset": { text: "text-indigo-600 dark:text-indigo-400", solid: "bg-indigo-500", border: "border-indigo-500/25", pill: "bg-gradient-to-r from-indigo-500 to-blue-600" },
-  "claim-username": { text: "text-violet-600 dark:text-violet-400", solid: "bg-violet-500", border: "border-violet-500/25", pill: "bg-gradient-to-r from-violet-500 to-fuchsia-600" },
-  "claim-collection": { text: "text-cyan-600 dark:text-cyan-400", solid: "bg-cyan-500", border: "border-cyan-500/25", pill: "bg-gradient-to-r from-cyan-500 to-sky-600" },
-  "claim-collection-name": { text: "text-pink-600 dark:text-pink-400", solid: "bg-pink-500", border: "border-pink-500/25", pill: "bg-gradient-to-r from-pink-500 to-rose-600" },
+  "creator-coins": { text: "text-yellow-600 dark:text-yellow-400", solid: "bg-yellow-600", border: "border-yellow-500/30 dark:border-yellow-400/25", tint: "bg-yellow-500/10" },
+  "claim-memecoin": { text: "text-orange-600 dark:text-orange-400", solid: "bg-orange-600", border: "border-orange-500/30 dark:border-orange-400/25", tint: "bg-orange-500/10" },
+  "collection-drop": { text: "text-orange-600 dark:text-orange-400", solid: "bg-orange-600", border: "border-orange-500/30 dark:border-orange-400/25", tint: "bg-orange-500/10" },
+  "pop-protocol": { text: "text-emerald-600 dark:text-emerald-400", solid: "bg-emerald-600", border: "border-emerald-500/30 dark:border-emerald-400/25", tint: "bg-emerald-500/10" },
+  "remix-asset": { text: "text-indigo-600 dark:text-indigo-400", solid: "bg-indigo-600", border: "border-indigo-500/30 dark:border-indigo-400/25", tint: "bg-indigo-500/10" },
+  "claim-username": { text: "text-violet-600 dark:text-violet-400", solid: "bg-violet-600", border: "border-violet-500/30 dark:border-violet-400/25", tint: "bg-violet-500/10" },
+  "claim-collection": { text: "text-cyan-600 dark:text-cyan-400", solid: "bg-cyan-600", border: "border-cyan-500/30 dark:border-cyan-400/25", tint: "bg-cyan-500/10" },
+  "claim-collection-name": { text: "text-pink-600 dark:text-pink-400", solid: "bg-pink-600", border: "border-pink-500/30 dark:border-pink-400/25", tint: "bg-pink-500/10" },
 };
 
 // ── Service card — the whole card is the action ─────────────────────────────
@@ -117,57 +122,18 @@ export function LaunchpadServiceCard({ def, override = {}, featured = false, ind
     >
       <div
         className={cn(
-          "group relative flex flex-1 rounded-2xl transition-transform duration-300 ease-out",
-          // the hue gradient frame lives in the 1px padding; press + lift are the interaction
-          live && "p-px active:scale-[0.985] sm:hover:-translate-y-1 motion-reduce:transform-none motion-reduce:transition-none",
+          "group relative flex flex-1 flex-col overflow-hidden min-h-[200px] rounded-2xl border bg-card transition-all duration-300 ease-out",
+          live
+            ? cn("active:scale-[0.985] sm:hover:-translate-y-1 motion-reduce:transform-none motion-reduce:transition-none", hue.border, "sm:hover:shadow-md sm:hover:shadow-black/5 dark:sm:hover:shadow-black/20")
+            : "border-border/30 opacity-75",
         )}
       >
-        {/* Hue gradient frame — a quiet hairline that ignites on interaction (live only) */}
-        {live && (
-          <span
-            aria-hidden
-            className={cn(
-              "absolute inset-0 rounded-2xl opacity-40 sm:group-hover:opacity-100 transition-opacity duration-500 pointer-events-none",
-              hue.pill,
-            )}
-          />
-        )}
-
-        {/* Inner surface */}
-        <div
-          className={cn(
-            "relative flex flex-1 flex-col overflow-hidden min-h-[200px]",
-            live ? "rounded-[15px] bg-card" : "rounded-2xl border border-border/30 bg-card dark:bg-white/[0.02] opacity-75",
-          )}
-        >
-          {/* Aurora light-leaks — the hue saturates the whole card as ambient light */}
-          {live && (
-            <>
-              <span aria-hidden className={cn("absolute -top-16 -left-12 h-48 w-48 rounded-full blur-3xl opacity-[0.18] sm:group-hover:opacity-30 transition-opacity duration-500 pointer-events-none", hue.solid)} />
-              <span aria-hidden className={cn("absolute -bottom-24 -right-16 h-56 w-56 rounded-full blur-3xl opacity-[0.10] sm:group-hover:opacity-20 transition-opacity duration-500 pointer-events-none", hue.solid)} />
-            </>
-          )}
-
-          {/* Giant watermark icon, ghosted in the corner — drifts on hover */}
-          <div
-            aria-hidden
-            className={cn(
-              "absolute -right-8 -bottom-10 select-none pointer-events-none transition-all duration-500",
-              live ? "opacity-[0.05] sm:group-hover:opacity-[0.09] sm:group-hover:-translate-y-1 motion-reduce:transform-none" : "opacity-[0.03]",
-            )}
-          >
-            <Icon className={cn("h-32 w-32", live ? hue.text : "text-muted-foreground")} />
-          </div>
-
           <div className="relative flex flex-col flex-1 p-5 sm:p-6 gap-3 sm:gap-4">
             <div className="flex items-start justify-between gap-3">
               {live ? (
-                <div className="relative">
-                  <span aria-hidden className={cn("absolute -inset-2 rounded-2xl blur-xl opacity-40 sm:group-hover:opacity-60 transition-opacity duration-500", hue.solid)} />
-                  <span className={cn("relative flex h-12 w-12 items-center justify-center rounded-2xl text-white shadow-lg shadow-black/25 transition-transform duration-300 sm:group-hover:scale-105 motion-reduce:transform-none", hue.pill)}>
-                    <Icon className="h-6 w-6" />
-                  </span>
-                </div>
+                <span className={cn("flex h-12 w-12 items-center justify-center rounded-xl", hue.tint)}>
+                  <Icon className={cn("h-6 w-6", hue.text)} />
+                </span>
               ) : (
                 <Icon className="h-8 w-8 shrink-0 text-muted-foreground/50" />
               )}
@@ -201,7 +167,7 @@ export function LaunchpadServiceCard({ def, override = {}, featured = false, ind
               </div>
             )}
 
-            {/* Stretched link — the whole card is the action; the pill is the visual cue */}
+            {/* Stretched link — the whole card is the action; the button is the visual cue */}
             {live && href && <Link href={href} aria-label={`${def.cta} — ${title}`} className="absolute inset-0 z-10" />}
 
             <div className="mt-auto pt-1 flex items-end justify-between gap-3">
@@ -220,8 +186,8 @@ export function LaunchpadServiceCard({ def, override = {}, featured = false, ind
                 <span
                   className={cn(
                     "inline-flex items-center gap-2 h-10 px-5 rounded-full",
-                    "text-sm font-semibold text-white shadow-lg shadow-black/25",
-                    hue.pill,
+                    "text-sm font-semibold text-white",
+                    hue.solid,
                   )}
                 >
                   {def.cta}
@@ -230,7 +196,6 @@ export function LaunchpadServiceCard({ def, override = {}, featured = false, ind
               )}
             </div>
           </div>
-        </div>
       </div>
     </motion.div>
   );
@@ -298,16 +263,13 @@ function ComingSoonStrip({ group, defs }: { group: ServiceGroupDefinition; defs:
   );
 }
 
-export interface LaunchpadGroupedSectionsProps {
-  /** Per-app hrefs / rollout flips, keyed by service key. */
-  overrides: ServiceOverrides;
-  className?: string;
-}
-
-/** The full grouped launchpad services block — section order comes from
- *  LAUNCHPAD_SERVICE_GROUPS; cards from LAUNCHPAD_SERVICE_DEFINITIONS.
- *  Owns the search/filter state so the grid can react to it live. */
-export function LaunchpadGroupedSections({ overrides, className }: LaunchpadGroupedSectionsProps) {
+/**
+ * Owns the search + group-filter state for the launchpad page. A page renders
+ * `LaunchpadFilterBar` wherever it wants (e.g. right under the h1) wired to
+ * this hook's fields, then passes `query`/`activeGroups` straight through to
+ * `LaunchpadGroupedSections` so the grid reacts to the same state.
+ */
+export function useLaunchpadFilter() {
   const [query, setQuery] = useState("");
   const [activeGroups, setActiveGroups] = useState<Set<ServiceGroup>>(new Set());
 
@@ -336,29 +298,50 @@ export function LaunchpadGroupedSections({ overrides, className }: LaunchpadGrou
     [query, activeGroups],
   );
 
+  const clear = () => { setQuery(""); setActiveGroups(new Set()); };
+
+  return { query, setQuery, activeGroups, toggleGroup, filterableGroups, totalMatches, clear };
+}
+
+export interface LaunchpadGroupedSectionsProps {
+  /** Per-app hrefs / rollout flips, keyed by service key. */
+  overrides: ServiceOverrides;
+  /** Current search query — from `useLaunchpadFilter()`. */
+  query: string;
+  /** Current active group filters — from `useLaunchpadFilter()`. */
+  activeGroups: Set<ServiceGroup>;
+  /** Reset both — from `useLaunchpadFilter()`. */
+  onClearFilters: () => void;
+  className?: string;
+}
+
+/** The full grouped launchpad services grid — section order comes from
+ *  LAUNCHPAD_SERVICE_GROUPS; cards from LAUNCHPAD_SERVICE_DEFINITIONS.
+ *  Fully controlled by `useLaunchpadFilter()` state passed in from the page. */
+export function LaunchpadGroupedSections({ overrides, query, activeGroups, onClearFilters, className }: LaunchpadGroupedSectionsProps) {
+  const matches = (def: ServiceDefinition): boolean => {
+    if (activeGroups.size > 0 && !activeGroups.has(def.group)) return false;
+    if (def.status !== "live") return false;
+    if (query.trim() === "") return true;
+    const haystack = `${def.title} ${def.blurb} ${def.subtitle}`.toLowerCase();
+    return haystack.includes(query.trim().toLowerCase());
+  };
+
+  const totalMatches = useMemo(
+    () => LAUNCHPAD_SERVICE_DEFINITIONS.filter(matches).length,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [query, activeGroups],
+  );
+
   return (
     <div className={cn("space-y-8 sm:space-y-10", className)}>
-      <div className="pt-6 sm:pt-8 border-t border-border/40 space-y-3">
-        <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
-          Browse services
-        </p>
-        <LaunchpadFilterBar
-          query={query}
-          onQueryChange={setQuery}
-          groups={filterableGroups}
-          activeGroups={activeGroups}
-          onToggleGroup={toggleGroup}
-          resultCount={totalMatches}
-        />
-      </div>
-
       {totalMatches === 0 ? (
         <div className="text-center py-16 space-y-3">
           <p className="text-lg font-semibold">No services match</p>
           <p className="text-sm text-muted-foreground">Try a different search or clear your filters.</p>
           <button
             type="button"
-            onClick={() => { setQuery(""); setActiveGroups(new Set()); }}
+            onClick={onClearFilters}
             className="inline-flex items-center h-9 px-4 rounded-full text-sm font-semibold bg-primary text-primary-foreground"
           >
             Clear filters
