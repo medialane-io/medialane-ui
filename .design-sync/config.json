@@ -1,0 +1,19 @@
+{
+  "projectId": "1b29ca75-55e7-42eb-977f-39a4add480d7",
+  "shape": "package",
+  "pkg": "@medialane/ui",
+  "globalName": "MedialaneUI",
+  "buildCmd": "bun run build",
+  "cssEntry": "./.design-sync/base.css",
+  "overrides": {
+    "ActionDialog": { "cardMode": "single", "primaryStory": "Open" },
+    "AssetCard": { "cardMode": "column" },
+    "Aurora": { "cardMode": "column" },
+    "CollectionCard": { "cardMode": "column" },
+    "FeaturedCarousel": { "cardMode": "column" },
+    "HeroSlider": { "cardMode": "column" },
+    "LaunchpadServiceCard": { "cardMode": "column" },
+    "StatTile": { "cardMode": "column" },
+    "TokenCard": { "cardMode": "column" }
+  }
+}
