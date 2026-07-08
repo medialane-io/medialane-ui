@@ -165,3 +165,7 @@ export type { XpToastContentProps } from "./components/rewards/xp-toast-content.
 // ── v0.37.0 additions — infinite-scroll trigger ──────────────────────────────
 export { LoadMoreSentinel } from "./components/load-more-sentinel.js";
 export type { LoadMoreSentinelProps } from "./components/load-more-sentinel.js";
+
+// ── v0.47.0 additions — community rewards section ────────────────────────────
+export { CommunityRewardsSection } from "./components/community-rewards-section.js";
+export type { CommunityRewardsSectionProps, CommunityRewardsEntry } from "./components/community-rewards-section.js";
