@@ -41,7 +41,7 @@ export function CommunityRewardsSection({
       {/* Left — info panel */}
       <div className="bg-card px-7 py-8 flex flex-col gap-6">
         <div className="flex items-center gap-2.5">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-brand-blue to-brand-purple text-white shrink-0">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-brand-rose to-brand-orange text-white shrink-0">
             <Sparkles className="h-4 w-4" />
           </div>
           <h2 className="text-base font-black">Community Rewards</h2>
@@ -79,7 +79,7 @@ export function CommunityRewardsSection({
 
         <Link
           href={rewardsHref}
-          className="mt-auto inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-brand-blue to-brand-purple px-5 py-2.5 text-sm font-semibold text-white hover:opacity-90 transition-opacity"
+          className="mt-auto inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-brand-rose to-brand-orange px-5 py-2.5 text-sm font-semibold text-white hover:opacity-90 transition-opacity"
         >
           Start earning XP
           <ArrowRight className="h-3.5 w-3.5" />
@@ -97,7 +97,7 @@ export function CommunityRewardsSection({
                 className="group relative rounded-xl border border-border/40 bg-muted/20 hover:bg-muted/40 hover:border-border/70 overflow-hidden transition-all flex flex-col justify-between p-4"
               >
                 {/* Brand gradient top rule */}
-                <div className="absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r from-brand-blue to-brand-purple" />
+                <div className="absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r from-brand-rose to-brand-orange" />
 
                 {/* XP — hero number */}
                 <div className="space-y-0.5 pt-1">
