@@ -1,6 +1,4 @@
 import { cn } from "../../utils/cn.js";
-import { LevelBadge } from "./level-badge.js";
-import { XpProgress } from "./xp-progress.js";
 import { BadgeShelf, type BadgeShelfBadge } from "./badge-shelf.js";
 
 export interface ScoreSummaryCardProps {
@@ -25,42 +23,39 @@ export function ScoreSummaryCard({
   levelName,
   badgeColor,
   totalXp,
-  levelXp,
   nextLevel,
   topBadges,
   href,
   className,
 }: ScoreSummaryCardProps) {
   const body = (
-    <div className={cn("rounded-xl border border-border bg-card p-4 sm:p-5", className)}>
-      <div className="flex items-center gap-3">
-        <div className="relative flex items-center justify-center">
-          <XpProgress
-            variant="ring"
-            size={52}
-            totalXp={totalXp}
-            levelXp={levelXp}
-            nextLevelXp={nextLevel?.xpRequired ?? null}
-            badgeColor={badgeColor}
-          />
-          <span className="absolute text-sm font-black" style={{ color: badgeColor }}>
+    <div className={cn("rounded-xl border border-border bg-card p-4 sm:p-5 space-y-4", className)}>
+      <div className="flex items-center justify-between gap-4">
+        <div className="flex items-center gap-3 min-w-0">
+          <div
+            className="h-12 w-12 rounded-xl shrink-0 flex items-center justify-center text-xl font-black text-white"
+            style={{ backgroundColor: badgeColor }}
+          >
             {level}
-          </span>
+          </div>
+          <div className="min-w-0">
+            <p className="text-sm font-bold leading-tight text-foreground truncate">{levelName}</p>
+            <p className="text-xs text-muted-foreground">Level {level}</p>
+          </div>
         </div>
-        <div className="min-w-0 flex-1">
-          <LevelBadge level={level} name={levelName} badgeColor={badgeColor} size="md" />
-          <p className="mt-1 text-sm text-muted-foreground">
-            <span className="font-semibold text-foreground">{totalXp.toLocaleString()} XP</span>
-            {nextLevel && (
-              <>
-                {" · "}
-                {(nextLevel.xpRequired - totalXp).toLocaleString()} XP to Lv.{nextLevel.level} {nextLevel.name}
-              </>
-            )}
-          </p>
+        <div className="text-right shrink-0">
+          <p className="text-2xl font-black text-foreground tabular-nums">{totalXp.toLocaleString()}</p>
+          <p className="text-xs uppercase tracking-widest text-muted-foreground">XP</p>
         </div>
       </div>
-      {topBadges && topBadges.length > 0 && <BadgeShelf badges={topBadges} className="mt-3" />}
+      {nextLevel && (
+        <p className="text-xs text-muted-foreground border-t border-border/50 pt-3">
+          {(nextLevel.xpRequired - totalXp).toLocaleString()} XP to Level {nextLevel.level} · {nextLevel.name}
+        </p>
+      )}
+      {topBadges && topBadges.length > 0 && (
+        <BadgeShelf badges={topBadges} className={!nextLevel ? "border-t border-border/50 pt-3" : undefined} />
+      )}
     </div>
   );
 

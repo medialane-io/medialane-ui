@@ -185,7 +185,7 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
                       renderHelp={renderHelp}
                     />
                   ) : null}
-                  <ActionButton label="List" icon={<Tag className="h-4 w-4" />} onClick={onOpenListing} tone="blue" renderHelp={renderHelp} />
+                  <ActionButton label="List on Marketplace" icon={<Tag className="h-4 w-4" />} onClick={onOpenListing} tone="blue" renderHelp={renderHelp} />
                   <ActionButton label="Transfer" icon={<ArrowRightLeft className="h-4 w-4" />} onClick={onOpenTransfer} tone="orange" renderHelp={renderHelp} />
                   {remixEnabled && onOpenRemix ? (
                     <ActionButton
@@ -250,7 +250,7 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
             <StatRow floorPriceRaw={floorPriceRaw} lastSaleRaw={lastSaleRaw} />
             {isOwner ? (
               <div className="grid grid-cols-2 gap-2">
-                <ActionButton label="List" icon={<Tag className="h-4 w-4" />} onClick={onOpenListing} tone="transparent" renderHelp={renderHelp} />
+                <ActionButton label="List on Marketplace" icon={<Tag className="h-4 w-4" />} onClick={onOpenListing} tone="transparent" renderHelp={renderHelp} />
                 <ActionButton label="Transfer" icon={<ArrowRightLeft className="h-4 w-4" />} onClick={onOpenTransfer} tone="orange" renderHelp={renderHelp} />
                 {remixEnabled && onOpenRemix ? (
                   <ActionButton

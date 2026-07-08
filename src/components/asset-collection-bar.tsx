@@ -77,7 +77,7 @@ export function AssetCollectionBar({
                   type="button"
                   onClick={() => onNavigate(sibling.tokenId)}
                   className={cn(
-                    "relative h-11 w-11 shrink-0 rounded-lg overflow-hidden ring-2 transition",
+                    "relative h-20 w-20 shrink-0 rounded-xl overflow-hidden ring-2 transition",
                     isCurrent ? "ring-primary" : "ring-transparent hover:ring-border"
                   )}
                 >
