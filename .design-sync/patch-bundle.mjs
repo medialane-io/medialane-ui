@@ -2,10 +2,12 @@
 // Patches _ds_bundle.js for browser IIFE context:
 // 1. Prepends a process shim (Next.js uses process.env.* not available in browsers)
 // 2. Stubs next/link, next/image, next/navigation (they require app router context)
+// 3. Appends Tailwind utility CSS to _ds_bundle.css (scanned from src/ components)
 // Run after package-build.mjs, before package-validate.mjs.
-import { readFileSync, writeFileSync } from 'fs';
+import { readFileSync, writeFileSync, existsSync } from 'fs';
 import { createHash } from 'crypto';
-import { join } from 'path';
+import { join, dirname } from 'path';
+import { execSync } from 'child_process';
 
 const out = process.argv[2] ?? './ds-bundle';
 const bundleJs = join(out, '_ds_bundle.js');
@@ -92,3 +94,73 @@ const sync = JSON.parse(readFileSync(syncJson, 'utf8'));
 sync.bundleSha12 = newSha;
 writeFileSync(syncJson, JSON.stringify(sync, null, 2) + '\n');
 console.error(`  patch-bundle: done, bundleSha12 → ${newSha}`);
+
+// Append Tailwind utility classes to _ds_bundle.css.
+// The library ships only a Tailwind preset — consuming apps run Tailwind against
+// their own content. For Claude Design we must generate utilities ourselves so
+// cards render with the correct dark theme, spacing, colors, etc.
+const bundleCss = join(out, '_ds_bundle.css');
+const repoRoot = join(dirname(new URL(import.meta.url).pathname), '..');
+const twBin = join(repoRoot, 'node_modules', '.bin', 'tailwindcss');
+const twConfig = join(dirname(new URL(import.meta.url).pathname), 'tw.config.cjs');
+
+if (!existsSync(twConfig)) {
+  // Write the Tailwind config on first run (scans the library's own src/).
+  const twConfigContent = `module.exports = {
+  content: [${JSON.stringify(join(repoRoot, 'src/**/*.{tsx,ts,jsx,js}'))}],
+  darkMode: 'class',
+  theme: {
+    extend: {
+      colors: {
+        background: 'hsl(var(--background))',
+        foreground: 'hsl(var(--foreground))',
+        card: { DEFAULT: 'hsl(var(--card))', foreground: 'hsl(var(--card-foreground))' },
+        popover: { DEFAULT: 'hsl(var(--popover))', foreground: 'hsl(var(--popover-foreground))' },
+        primary: { DEFAULT: 'hsl(var(--primary))', foreground: 'hsl(var(--primary-foreground))' },
+        secondary: { DEFAULT: 'hsl(var(--secondary))', foreground: 'hsl(var(--secondary-foreground))' },
+        muted: { DEFAULT: 'hsl(var(--muted))', foreground: 'hsl(var(--muted-foreground))' },
+        accent: { DEFAULT: 'hsl(var(--accent))', foreground: 'hsl(var(--accent-foreground))' },
+        destructive: { DEFAULT: 'hsl(var(--destructive))', foreground: 'hsl(var(--destructive-foreground))' },
+        border: 'hsl(var(--border))',
+        input: 'hsl(var(--input))',
+        ring: 'hsl(var(--ring))',
+        price: 'hsl(var(--price))',
+        'brand-blue': '#3b7bff', 'brand-electric': '#1a17ff', 'brand-indigo': '#5b4ce6',
+        'brand-purple': '#8a5cf6', 'brand-rose': '#f6608f', 'brand-orange': '#fb8b46',
+        'brand-price': '#f97316', 'brand-navy': '#0a0e1f',
+      },
+      borderRadius: { lg: 'var(--radius)', md: 'calc(var(--radius) - 2px)', sm: 'calc(var(--radius) - 4px)', brand: '11px' },
+      keyframes: {
+        shimmer: { '0%': { backgroundPosition: '-200% 0' }, '100%': { backgroundPosition: '200% 0' } },
+        'fade-in': { from: { opacity: '0', transform: 'translateY(8px)' }, to: { opacity: '1', transform: 'translateY(0)' } },
+        'slide-in': { from: { opacity: '0', transform: 'translateX(-8px)' }, to: { opacity: '1', transform: 'translateX(0)' } },
+      },
+      animation: {
+        shimmer: 'shimmer 2s linear infinite',
+        'fade-in': 'fade-in 0.4s ease-out',
+        'slide-in': 'slide-in 0.3s ease-out',
+      },
+    },
+  },
+  plugins: [],
+};`;
+  writeFileSync(twConfig, twConfigContent);
+  console.error('  patch-bundle: wrote .design-sync/tw.config.cjs');
+}
+
+const twInput = '@tailwind base;\n@tailwind components;\n@tailwind utilities;\n';
+const twInputFile = join(dirname(new URL(import.meta.url).pathname), '_tw_input.css');
+writeFileSync(twInputFile, twInput);
+
+try {
+  execSync(`"${twBin}" --config "${twConfig}" --input "${twInputFile}" --content "${join(repoRoot, 'src/**/*.{tsx,ts,jsx,js}')}" --output /dev/stdout --minify 2>/dev/null`, { encoding: 'utf8' });
+  const twCss = execSync(`"${twBin}" --config "${twConfig}" --input "${twInputFile}" --output /dev/stdout --minify 2>/dev/null`, { encoding: 'utf8', cwd: repoRoot });
+  const existing = readFileSync(bundleCss, 'utf8');
+  // Strip any previously appended Tailwind block (marked by a sentinel comment).
+  const sentinel = '\n/* tw-utilities */\n';
+  const base = existing.includes(sentinel) ? existing.slice(0, existing.indexOf(sentinel)) : existing;
+  writeFileSync(bundleCss, base + sentinel + twCss);
+  console.error(`  patch-bundle: appended Tailwind utilities to _ds_bundle.css (${twCss.length} bytes)`);
+} catch (e) {
+  console.error(`  patch-bundle: WARNING — Tailwind generation failed: ${e.message}`);
+}

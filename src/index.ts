@@ -169,3 +169,19 @@ export type { LoadMoreSentinelProps } from "./components/load-more-sentinel.js";
 // ── v0.47.0 additions — community rewards section ────────────────────────────
 export { CommunityRewardsSection } from "./components/community-rewards-section.js";
 export type { CommunityRewardsSectionProps, CommunityRewardsEntry } from "./components/community-rewards-section.js";
+
+// ── Design system primitives — action-focus pattern, tokens, data display ────
+export { ActionButton } from "./components/action-button.js";
+export type { ActionButtonProps, ActionKey, ToneKey } from "./components/action-button.js";
+
+export { Aurora } from "./components/aurora.js";
+export type { AuroraProps } from "./components/aurora.js";
+
+export { TokenGlyph, TokenAmount } from "./components/token-glyph.js";
+export type { TokenGlyphProps, TokenAmountProps, TokenSymbol } from "./components/token-glyph.js";
+
+export { StatTile, StatPill } from "./components/stat-tile.js";
+export type { StatTileProps, StatPillProps } from "./components/stat-tile.js";
+
+export { ActionDialog } from "./components/action-dialog.js";
+export type { ActionDialogProps } from "./components/action-dialog.js";

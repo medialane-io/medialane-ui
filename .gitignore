@@ -9,3 +9,5 @@ ds-bundle/
 .design-sync/.cache/
 .design-sync/learnings/
 .design-sync/node_modules/
+.design-sync/tw.config.cjs
+.design-sync/_tw_input.css
