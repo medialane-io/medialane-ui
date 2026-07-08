@@ -21,16 +21,6 @@ export interface AssetCollectionBarProps {
   onNavigate: (tokenId: string) => void;
 }
 
-/**
- * Collection identity bar: centered avatar+name, with a filmstrip of
- * collection siblings on a second row for browsing (replaces plain-text
- * Prev/Next). Soft `bg-card/40` surface, no hard border — matches the
- * aurora-glow design language instead of an OpenSea-style boxed panel.
- * Collection-only: putting Owner inside this card reads as if ownership were
- * a collection attribute (2026-07-05 feedback) — it lives in `AssetOwnerRow`
- * as a sibling instead. Other asset-level concerns (IP-type, explorer/share/
- * report) still live elsewhere (`AssetHeaderBlock`, `AssetUtilityIcons`).
- */
 export function AssetCollectionBar({
   collectionName,
   collectionImage,
@@ -46,29 +36,43 @@ export function AssetCollectionBar({
   const showFilmstrip = siblingTokens.length > 1;
 
   return (
-    <div className="rounded-2xl bg-card/40 px-4 py-3 space-y-3">
-      <Link href={collectionHref} className="flex items-center justify-center gap-3 min-w-0 group">
-        <div className="relative h-10 w-10 rounded-xl overflow-hidden shrink-0 bg-gradient-to-br from-primary/20 to-purple-500/20 ring-1 ring-border/60 group-hover:ring-primary/40 transition">
+    <div className="space-y-3">
+      {/* Collection identity — left-aligned, compact */}
+      <Link
+        href={collectionHref}
+        className="flex items-center gap-2.5 group min-w-0"
+      >
+        <div className="relative h-8 w-8 rounded-lg overflow-hidden shrink-0 bg-muted ring-1 ring-border/50 group-hover:ring-border transition-all">
           {collectionImage ? (
             <Image src={collectionImage} alt="" fill className="object-cover" unoptimized />
           ) : null}
         </div>
-        <p className="text-sm font-semibold truncate group-hover:text-primary transition-colors">
-          {collectionName}
-        </p>
+        <div className="min-w-0 flex-1">
+          <p className="text-xs text-muted-foreground leading-none mb-0.5">Collection</p>
+          <p className="text-sm font-semibold truncate leading-tight group-hover:text-primary transition-colors">
+            {collectionName}
+          </p>
+        </div>
+        {siblingTokens.length > 0 && (
+          <span className="shrink-0 text-xs text-muted-foreground tabular-nums">
+            {siblingTokens.length}
+          </span>
+        )}
       </Link>
 
+      {/* Filmstrip */}
       {showFilmstrip ? (
-        <div className="flex items-center gap-1.5">
+        <div className="flex items-center gap-1">
           <button
             type="button"
             disabled={!prevToken}
             onClick={() => prevToken && onNavigate(prevToken.tokenId)}
-            className="shrink-0 inline-flex h-7 w-7 items-center justify-center rounded-md text-muted-foreground transition hover:text-foreground active:scale-95 disabled:opacity-30 disabled:pointer-events-none"
+            className="shrink-0 inline-flex h-6 w-6 items-center justify-center rounded-md text-muted-foreground transition hover:text-foreground active:scale-95 disabled:opacity-25 disabled:pointer-events-none"
           >
-            <ChevronLeft className="h-4 w-4" />
+            <ChevronLeft className="h-3.5 w-3.5" />
           </button>
-          <div className="flex items-center gap-2 overflow-x-auto scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+
+          <div className="flex items-center gap-1.5 overflow-x-auto scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden py-0.5">
             {siblingTokens.map((sibling) => {
               const isCurrent = String(sibling.tokenId) === String(currentTokenId);
               return (
@@ -77,8 +81,10 @@ export function AssetCollectionBar({
                   type="button"
                   onClick={() => onNavigate(sibling.tokenId)}
                   className={cn(
-                    "relative h-20 w-20 shrink-0 rounded-xl overflow-hidden ring-2 transition",
-                    isCurrent ? "ring-primary" : "ring-transparent hover:ring-border"
+                    "relative h-16 w-16 shrink-0 rounded-xl overflow-hidden transition-all duration-200",
+                    isCurrent
+                      ? "opacity-100 scale-100 shadow-sm"
+                      : "opacity-50 hover:opacity-80 scale-95 hover:scale-100"
                   )}
                 >
                   {sibling.image ? (
@@ -90,13 +96,14 @@ export function AssetCollectionBar({
               );
             })}
           </div>
+
           <button
             type="button"
             disabled={!nextToken}
             onClick={() => nextToken && onNavigate(nextToken.tokenId)}
-            className="shrink-0 inline-flex h-7 w-7 items-center justify-center rounded-md text-muted-foreground transition hover:text-foreground active:scale-95 disabled:opacity-30 disabled:pointer-events-none"
+            className="shrink-0 inline-flex h-6 w-6 items-center justify-center rounded-md text-muted-foreground transition hover:text-foreground active:scale-95 disabled:opacity-25 disabled:pointer-events-none"
           >
-            <ChevronRight className="h-4 w-4" />
+            <ChevronRight className="h-3.5 w-3.5" />
           </button>
         </div>
       ) : null}
