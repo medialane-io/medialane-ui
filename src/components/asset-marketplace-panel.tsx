@@ -150,12 +150,7 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
 
   return (
     <div className="relative">
-      {/* soft brand light-leak behind the trade zone — no hard border, per §III */}
-      <div
-        aria-hidden
-        className="aurora-purple pointer-events-none"
-        style={{ position: "absolute", width: 280, height: 280, top: -60, left: "20%" }}
-      />
+
       <div className="relative space-y-4">
         {cheapest ? (
           <div className="space-y-4">

@@ -23,7 +23,7 @@ Package manager: **Bun** for everything except `npm publish`.
    - starknet: `npm install` → `npx tsc --noEmit` (must pass; build hits env-var error on PRIVY_APP_ID locally — that's expected; compilation success is the gate)
 6. Commit + push all three repos
 
-Current version: **0.50.0**
+Current version: **0.50.1**
 
 ## Package shape
 
@@ -69,12 +69,11 @@ Custom classes (no `@apply` — pure CSS only):
 
 - `.glass` / `.glass-light` — backdrop blur panels (dark/light)
 - `.gradient-text` / `.gradient-text-warm` / `.gradient-text-full` / `.gradient-text-gold` — text gradients via `background-clip`
-- `.aurora-purple/blue/rose/orange` — blurred glow blobs (position absolute, use inside a `relative` container)
 - `.card-base` / `.bento-cell` — rounded bordered card primitives
 - `.ml-gbtn` — animated gradient border via `::before` mask (set `--ml-grad` CSS var on the element)
 - `.btn-border-animated` — full-spectrum animated border (marketplace buy button)
 - `.price-value` / `.section-label` / `.pill-badge` — typography utilities
-- `.animate-float` / `.animate-blob` / `.animate-blob-slow` / `.animate-pulse-glow` / `.animate-spin-slow` / `.animate-kenburns`
+- `.animate-float` / `.animate-pulse-glow` / `.animate-spin-slow` / `.animate-kenburns`
 
 ## Theme variables
 
@@ -85,9 +84,9 @@ Dark (`.dark`): deep navy background (`224 50% 4%`), near-white foreground (`210
 
 Source of truth: `medialane-io/src/app/globals.css`
 
-## Component inventory (v0.50.0, 79 components)
+## Component inventory (v0.50.1, 78 components)
 
-**General:** ActionButton, ActionDialog, ActivityCard, ActivityCardSkeleton, ActivityFeedShell, ActivityRow, ActivityTicker, AddressDisplay, AssetCard, AssetCardSkeleton, AssetCollectionBar, AssetHeaderBlock, AssetLicenseSummary, AssetMarketplacePanel, AssetMarketsTab, AssetMediaColumn, AssetOverviewContent, AssetOwnerRow, AssetUtilityIcons, Aurora, ClaimRail, CoinCard, CoinCardSkeleton, CoinRow, CoinsExplorer, CollectionCard, CollectionCardSkeleton, CommunityRewardsSection, CtaCardGrid, CurrencyAmount, CurrencyIcon, DiscoverActivityStrip, DiscoverCollectionsStrip, DiscoverCreatorsStrip, DiscoverFeedSection, DiscoverHero, FadeIn, FeaturedCarousel, FeaturedCarouselSkeleton, HeroSlider, HeroSliderSkeleton, IPTypeDisplay, IpTypeBadge, KineticWords, LaunchpadFilterBar, LaunchpadGroupedSections, LaunchpadServiceCard, LaunchpadStrip, LeaderboardWidget, ListingCard, ListingCardSkeleton, LoadMoreSentinel, MedialaneIcon, MedialaneLogoFull, MotionCard, NavCommandMenu, PageContainer, ParentAttributionBanner, PortfolioSubnav, ScrollSection, ServiceFormShell, ServiceHeader, ShareButton, Stagger, StaggerItem, StatPill, StatTile, StepNav, TokenAmount, TokenCard, TokenCardSkeleton, TokenGlyph
+**General:** ActionButton, ActionDialog, ActivityCard, ActivityCardSkeleton, ActivityFeedShell, ActivityRow, ActivityTicker, AddressDisplay, AssetCard, AssetCardSkeleton, AssetCollectionBar, AssetHeaderBlock, AssetLicenseSummary, AssetMarketplacePanel, AssetMarketsTab, AssetMediaColumn, AssetOverviewContent, AssetOwnerRow, AssetUtilityIcons, ClaimRail, CoinCard, CoinCardSkeleton, CoinRow, CoinsExplorer, CollectionCard, CollectionCardSkeleton, CommunityRewardsSection, CtaCardGrid, CurrencyAmount, CurrencyIcon, DiscoverActivityStrip, DiscoverCollectionsStrip, DiscoverCreatorsStrip, DiscoverFeedSection, DiscoverHero, FadeIn, FeaturedCarousel, FeaturedCarouselSkeleton, HeroSlider, HeroSliderSkeleton, IPTypeDisplay, IpTypeBadge, KineticWords, LaunchpadFilterBar, LaunchpadGroupedSections, LaunchpadServiceCard, LaunchpadStrip, LeaderboardWidget, ListingCard, ListingCardSkeleton, LoadMoreSentinel, MedialaneIcon, MedialaneLogoFull, MotionCard, NavCommandMenu, PageContainer, ParentAttributionBanner, PortfolioSubnav, ScrollSection, ServiceFormShell, ServiceHeader, ShareButton, Stagger, StaggerItem, StatPill, StatTile, StepNav, TokenAmount, TokenCard, TokenCardSkeleton, TokenGlyph
 
 **Rewards:** BadgeShelf, LeaderboardTable, LevelBadge, LevelLadder, ScoreSummaryCard, XpProgress, XpToastContent
 

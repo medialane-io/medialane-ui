@@ -174,9 +174,6 @@ export type { CommunityRewardsSectionProps, CommunityRewardsEntry } from "./comp
 export { ActionButton } from "./components/action-button.js";
 export type { ActionButtonProps, ActionKey, ToneKey } from "./components/action-button.js";
 
-export { Aurora } from "./components/aurora.js";
-export type { AuroraProps } from "./components/aurora.js";
-
 export { TokenGlyph, TokenAmount } from "./components/token-glyph.js";
 export type { TokenGlyphProps, TokenAmountProps, TokenSymbol } from "./components/token-glyph.js";
 

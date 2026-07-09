@@ -95,12 +95,7 @@ export function AssetOverviewContent({
         <section className="space-y-3">
           <h3 className="text-sm font-semibold text-muted-foreground">Rights</h3>
           <div className="relative">
-            {/* soft brand light-leak behind the lattice */}
-            <div
-              aria-hidden
-              className="aurora-purple pointer-events-none"
-              style={{ position: "absolute", width: 260, height: 260, top: -40, left: "30%" }}
-            />
+
             <div className="relative grid grid-cols-2 sm:grid-cols-4 gap-3 [grid-auto-flow:dense] auto-rows-[minmax(6rem,auto)]">
               {/* emphasized cell — the license summary, stretched 2×2 */}
               <div className="col-span-2 sm:row-span-2 flex flex-col justify-between gap-4 rounded-2xl bg-gradient-to-br from-primary/10 via-primary/5 to-accent/10 ring-1 ring-primary/15 p-5">

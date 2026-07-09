@@ -113,24 +113,6 @@ export function NavCommandMenu({ commands, trigger, accountSlot, footerSlot }: N
       <AnimatePresence>
         {open && (
           <>
-            {/* Aurora blobs — vivid intensity */}
-            <motion.div
-              className="nav-canvas-aurora"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
-            >
-              <div className="aurora-purple animate-blob w-[60vw] h-[60vw] -top-[10vw] -left-[10vw]"
-                   style={{ opacity: 0.25 }} />
-              <div className="aurora-blue animate-blob-slow w-[50vw] h-[50vw] -top-[5vw] -right-[10vw]"
-                   style={{ opacity: 0.2 }} />
-              <div className="aurora-rose animate-blob w-[45vw] h-[45vw] bottom-[5vw] -left-[5vw]"
-                   style={{ opacity: 0.15 }} />
-              <div className="aurora-orange animate-blob-slow w-[40vw] h-[40vw] -bottom-[5vw] -right-[5vw]"
-                   style={{ opacity: 0.15 }} />
-            </motion.div>
-
             {/* Backdrop blur */}
             <motion.div
               className="nav-canvas-overlay"

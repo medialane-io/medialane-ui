@@ -84,16 +84,6 @@
   color: hsl(var(--primary));
 }
 
-/* ── Aurora blobs ─────────────────────────────────────────────────────── */
-.aurora-purple { position: absolute; border-radius: 9999px; background: #8a5cf6; filter: blur(100px); opacity: 0.07; }
-.aurora-blue   { position: absolute; border-radius: 9999px; background: #3b7bff; filter: blur(120px); opacity: 0.06; }
-.aurora-rose   { position: absolute; border-radius: 9999px; background: #f6608f; filter: blur(100px); opacity: 0.05; }
-.aurora-orange { position: absolute; border-radius: 9999px; background: #fb8b46; filter: blur(110px); opacity: 0.04; }
-.dark .aurora-purple { opacity: 0.15; }
-.dark .aurora-blue   { opacity: 0.11; }
-.dark .aurora-rose   { opacity: 0.09; }
-.dark .aurora-orange { opacity: 0.07; }
-
 /* Navigation canvas */
 .nav-canvas-overlay {
   position: fixed;
@@ -102,14 +92,6 @@
   backdrop-filter: blur(48px) saturate(1.5);
   -webkit-backdrop-filter: blur(48px) saturate(1.5);
 }
-.nav-canvas-aurora {
-  position: fixed;
-  inset: 0;
-  z-index: 99;
-  pointer-events: none;
-  overflow: hidden;
-}
-
 /* ── Card primitives ──────────────────────────────────────────────────── */
 .card-base {
   border-radius: calc(var(--radius) * 1.25);
@@ -143,14 +125,6 @@
   0%, 100% { transform: translateY(0px); }
   50% { transform: translateY(-10px); }
 }
-@keyframes blob-pulse {
-  0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.07; }
-  50% { transform: scale(1.15) rotate(10deg); opacity: 0.14; }
-}
-@keyframes blob-pulse-slow {
-  0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.05; }
-  50% { transform: scale(1.2) rotate(-8deg); opacity: 0.11; }
-}
 @keyframes shimmer {
   0%   { background-position: -200% 0; }
   100% { background-position: 200% 0; }
@@ -179,8 +153,6 @@
 
 /* ── Animation utilities ──────────────────────────────────────────────── */
 .animate-float      { animation: float 5s ease-in-out infinite; }
-.animate-blob       { animation: blob-pulse 7s ease-in-out infinite; }
-.animate-blob-slow  { animation: blob-pulse-slow 9s ease-in-out infinite 2s; }
 .animate-pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }
 .animate-spin-slow  { animation: spin-slow 24s linear infinite; }
 .animate-sparkle    { animation: pulse-glow 2.5s ease-in-out infinite; }
@@ -188,9 +160,8 @@
 
 /* ── Reduced motion ───────────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
-  .animate-float, .animate-blob, .animate-blob-slow,
-  .animate-pulse-glow, .animate-spin-slow, .animate-sparkle,
-  .animate-kenburns { animation: none; }
+  .animate-float, .animate-pulse-glow, .animate-spin-slow,
+  .animate-sparkle, .animate-kenburns { animation: none; }
 }
 
 /* ── Input spinners (price inputs use custom suffix) ──────────────────── */
