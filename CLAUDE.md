@@ -1,0 +1,115 @@
+# CLAUDE.md — medialane-ui
+
+`@medialane/ui` is the shared component library consumed by `medialane-io` and `medialane-starknet`. It ships as a dual-format npm package (ESM + CJS) with a Tailwind preset, CSS stylesheet, and typed exports.
+
+## Commands
+
+```bash
+bun run build        # Build dist/ (tsup — ESM + CJS + .d.ts)
+bun run typecheck    # tsc --noEmit
+npm publish          # Publish to npm (bump version in package.json first)
+```
+
+Package manager: **Bun** for everything except `npm publish`.
+
+## Publish workflow
+
+1. Edit `src/` — components, styles, data, utils
+2. Bump `version` in `package.json` (semver)
+3. `bun run build` — must complete with no errors
+4. `npm publish` — publishes to npm as `@medialane/ui@<version>`
+5. Bump consumers (`medialane-io`, `medialane-starknet`) in lock-step:
+   - io: `bun install` → `bun run build` (must pass)
+   - starknet: `npm install` → `npx tsc --noEmit` (must pass; build hits env-var error on PRIVY_APP_ID locally — that's expected; compilation success is the gate)
+6. Commit + push all three repos
+
+Current version: **0.50.0**
+
+## Package shape
+
+```
+dist/
+  index.js / index.cjs      ← main barrel (all exports)
+  components/*.js/.cjs      ← one file per component
+  data/*.js/.cjs            ← data modules (brand, ip, launchpad-services, …)
+  utils/*.js/.cjs           ← utility functions
+  preset/tailwind.js        ← Tailwind CSS preset
+  medialane.css             ← shared stylesheet (no @tailwind — apps own that)
+src/
+  components/               ← source components (TSX)
+  styles/medialane.css      ← CSS source (compiled to dist/medialane.css)
+  preset/tailwind.ts        ← Tailwind preset source
+  data/                     ← static data (brand tokens, IP types, launchpad services)
+  utils/                    ← shared utilities
+  index.ts                  ← public API barrel
+```
+
+## Brand tokens (Tailwind + CSS)
+
+Defined in `src/preset/tailwind.ts` and `src/data/brand.ts`. Current palette:
+
+| Token | Hex | Use |
+|---|---|---|
+| `brand-blue` | `#3b7bff` | Primary actions, gradients |
+| `brand-electric` | `#1a17ff` | High-contrast accent |
+| `brand-indigo` | `#5b4ce6` | Mid-tone gradient stop |
+| `brand-purple` | `#8a5cf6` | Secondary, gradient |
+| `brand-rose` | `#f6608f` | Warm accent, coins |
+| `brand-orange` | `#fb8b46` | Highlights, CTAs |
+| `brand-price` | `#f97316` | Price values |
+| `brand-navy` | `#0a0e1f` | Depth, dark backgrounds |
+
+Primary gradient: `from-brand-blue via-brand-purple to-brand-rose`
+Warm gradient: `from-brand-rose via-brand-orange to-brand-price`
+Full-spectrum: `from-brand-blue via-brand-purple via-brand-rose to-brand-orange`
+
+## CSS conventions (`src/styles/medialane.css`)
+
+Custom classes (no `@apply` — pure CSS only):
+
+- `.glass` / `.glass-light` — backdrop blur panels (dark/light)
+- `.gradient-text` / `.gradient-text-warm` / `.gradient-text-full` / `.gradient-text-gold` — text gradients via `background-clip`
+- `.aurora-purple/blue/rose/orange` — blurred glow blobs (position absolute, use inside a `relative` container)
+- `.card-base` / `.bento-cell` — rounded bordered card primitives
+- `.ml-gbtn` — animated gradient border via `::before` mask (set `--ml-grad` CSS var on the element)
+- `.btn-border-animated` — full-spectrum animated border (marketplace buy button)
+- `.price-value` / `.section-label` / `.pill-badge` — typography utilities
+- `.animate-float` / `.animate-blob` / `.animate-blob-slow` / `.animate-pulse-glow` / `.animate-spin-slow` / `.animate-kenburns`
+
+## Theme variables
+
+Dual-theme — light and dark both first-class, **no default theme**. Apps apply `.dark` class to switch. Variables live in app `globals.css` (not in this package); `dist/medialane.css` has no `:root` block.
+
+Light (`:root`): near-white background (`0 0% 99%`), navy foreground (`224 47% 11%`)
+Dark (`.dark`): deep navy background (`224 50% 4%`), near-white foreground (`210 20% 95%`)
+
+Source of truth: `medialane-io/src/app/globals.css`
+
+## Component inventory (v0.50.0, 79 components)
+
+**General:** ActionButton, ActionDialog, ActivityCard, ActivityCardSkeleton, ActivityFeedShell, ActivityRow, ActivityTicker, AddressDisplay, AssetCard, AssetCardSkeleton, AssetCollectionBar, AssetHeaderBlock, AssetLicenseSummary, AssetMarketplacePanel, AssetMarketsTab, AssetMediaColumn, AssetOverviewContent, AssetOwnerRow, AssetUtilityIcons, Aurora, ClaimRail, CoinCard, CoinCardSkeleton, CoinRow, CoinsExplorer, CollectionCard, CollectionCardSkeleton, CommunityRewardsSection, CtaCardGrid, CurrencyAmount, CurrencyIcon, DiscoverActivityStrip, DiscoverCollectionsStrip, DiscoverCreatorsStrip, DiscoverFeedSection, DiscoverHero, FadeIn, FeaturedCarousel, FeaturedCarouselSkeleton, HeroSlider, HeroSliderSkeleton, IPTypeDisplay, IpTypeBadge, KineticWords, LaunchpadFilterBar, LaunchpadGroupedSections, LaunchpadServiceCard, LaunchpadStrip, LeaderboardWidget, ListingCard, ListingCardSkeleton, LoadMoreSentinel, MedialaneIcon, MedialaneLogoFull, MotionCard, NavCommandMenu, PageContainer, ParentAttributionBanner, PortfolioSubnav, ScrollSection, ServiceFormShell, ServiceHeader, ShareButton, Stagger, StaggerItem, StatPill, StatTile, StepNav, TokenAmount, TokenCard, TokenCardSkeleton, TokenGlyph
+
+**Rewards:** BadgeShelf, LeaderboardTable, LevelBadge, LevelLadder, ScoreSummaryCard, XpProgress, XpToastContent
+
+## Claude Design sync
+
+Project: `1b29ca75-55e7-42eb-977f-39a4add480d7` (https://claude.ai/design/p/1b29ca75-55e7-42eb-977f-39a4add480d7)
+
+Full re-sync command (run from `medialane-ui/` root after `bun run build`):
+
+```bash
+# 1. Re-sync bundle + component files
+node .ds-sync/resync.mjs \
+  --config .design-sync/config.json \
+  --node-modules node_modules \
+  --out ds-bundle \
+  --remote ds-bundle/_ds_sync.json \
+  --entry dist/index.js
+
+# 2. Patch browser shims + regenerate Tailwind utilities
+node .design-sync/patch-bundle.mjs ds-bundle
+
+# 3. Push _ds_bundle.js + _ds_bundle.css + _ds_sync.json via DesignSync tool
+```
+
+See `.design-sync/NOTES.md` for known limitations (CurrencyIcon/MedialaneIcon broken image paths, next/link renders as `<a>`, Tailwind must be re-appended after every resync).
