@@ -29,12 +29,14 @@ type CollectionWithProfile = ApiCollection & {
 
 export interface CollectionCardProps {
   collection: ApiCollection;
+  /** Override the card link destination. Defaults to /collections/:contractAddress. */
+  href?: string;
   /** Shows settings gear icon linking to this path — used in portfolio pages */
   settingsHref?: string;
   className?: string;
 }
 
-export function CollectionCard({ collection, settingsHref, className }: CollectionCardProps) {
+export function CollectionCard({ collection, href, settingsHref, className }: CollectionCardProps) {
   const [imgError, setImgError] = useState(false);
   const imageUrl = collection.image ? ipfsToHttp(collection.image) : null;
   const showImage = imageUrl && !imgError;
@@ -56,7 +58,7 @@ export function CollectionCard({ collection, settingsHref, className }: Collecti
           </Link>
         )}
 
-        <Link href={`/collections/${collection.contractAddress}`} className="block relative h-full">
+        <Link href={href ?? `/collections/${collection.contractAddress}`} className="block relative h-full">
           <div className="relative aspect-[3/4] w-full overflow-hidden bg-muted">
             {showImage ? (
               <Image
