@@ -23,7 +23,9 @@ Package manager: **Bun** for everything except `npm publish`.
    - starknet: `npm install` → `npx tsc --noEmit` (must pass; build hits env-var error on PRIVY_APP_ID locally — that's expected; compilation success is the gate)
 6. Commit + push all three repos
 
-Current version: **0.56.0** (`CoinLaunchPreview` lifted from the apps and redesigned — quiet borderless panel, warm rose→orange coin gradient only as avatar ring + allocation bar, brand tokens replace stock pinks, display-face name, tabular numerals, market cap in `brand-price`; app files are re-export shims)
+Current version: **0.57.0** (`AssetCard` redesigned — inset 4:5 gallery artwork with hairline ring (echoes MedialaneCollectionCard), display-face title, `price-value` price, brand-gradient placeholder; skeleton matched)
+
+Prior 0.56.0: (`CoinLaunchPreview` lifted from the apps and redesigned — quiet borderless panel, warm rose→orange coin gradient only as avatar ring + allocation bar, brand tokens replace stock pinks, display-face name, tabular numerals, market cap in `brand-price`; app files are re-export shims)
 
 Prior 0.55.1: (`MedialaneCollectionCard` — the branded collectors-card preview: self-contained dark collectible, brand-spectrum frame, inset artwork on foil-tinted material, pointer-tracked 3D tilt + at-rest holographic sheen, display-face name, serial pill, Medialane maker's mark; empty image = clean gradient placeholder (no monogram); fluid width, pure presentation. Used as the live preview atop every launchpad create-form rail in both apps)
 

@@ -45,7 +45,8 @@ export interface AssetCardProps {
  * browse grids and carousels fast even when many cards render. Surfaces that
  * need owner/marketplace actions use the richer `TokenCard` / `ListingCard`.
  *
- * Layout: square image → title → optional subtitle → footer row with the
+ * Layout: inset 4:5 artwork (gallery ratio, echoing the Medialane Collection
+ * Card) → display-face title → optional subtitle → footer row with the
  * (optional) ipType icon on the left and the (optional) price on the right.
  */
 export function AssetCard({
@@ -72,9 +73,9 @@ export function AssetCard({
         className
       )}
     >
-      {/* Image */}
-      <Link href={href} className="block">
-        <div className="relative aspect-square bg-muted overflow-hidden">
+      {/* Artwork — inset with a gallery 4:5 ratio, like the Collection Card */}
+      <Link href={href} className="block p-1.5 pb-0">
+        <div className="relative aspect-[4/5] rounded-[12px] bg-muted overflow-hidden ring-1 ring-border/50">
           {resolved && !imgError ? (
             <Image
               src={resolved}
@@ -86,8 +87,8 @@ export function AssetCard({
               onError={() => setImgError(true)}
             />
           ) : (
-            <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-brand-purple/15 to-brand-blue/15">
-              <span className="text-2xl font-mono text-muted-foreground">
+            <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-brand-blue/25 via-brand-purple/25 to-brand-rose/25">
+              <span className="text-sm font-semibold text-muted-foreground tabular-nums">
                 #{fallbackId ?? "?"}
               </span>
             </div>
@@ -105,7 +106,12 @@ export function AssetCard({
       {/* Body */}
       <div className="flex flex-col gap-1.5 px-3 py-3">
         <Link href={href} className="block min-w-0">
-          <p className="text-sm font-bold line-clamp-1 leading-snug">{name}</p>
+          <p
+            className="text-[15px] font-bold line-clamp-1 leading-snug"
+            style={{ fontFamily: "var(--font-display, inherit)" }}
+          >
+            {name}
+          </p>
           {subtitle && (
             <p className="text-xs text-muted-foreground line-clamp-1 leading-snug">
               {subtitle}
@@ -121,7 +127,7 @@ export function AssetCard({
               <span />
             )}
             {hasPrice && (
-              <span className="inline-flex shrink-0 items-center gap-1 text-sm font-bold leading-none">
+              <span className="inline-flex shrink-0 items-center gap-1 text-sm leading-none price-value">
                 {price!.currency && <CurrencyIcon symbol={price!.currency} size={12} />}
                 {formatDisplayPrice(price!.formatted!)}
               </span>
@@ -136,7 +142,9 @@ export function AssetCard({
 export function AssetCardSkeleton() {
   return (
     <div className="card-base flex flex-col w-full">
-      <div className="aspect-square w-full animate-pulse bg-muted" />
+      <div className="p-1.5 pb-0">
+        <div className="aspect-[4/5] w-full animate-pulse bg-muted rounded-[12px]" />
+      </div>
       <div className="px-3 py-3 space-y-1.5">
         <div className="h-4 w-3/4 rounded-md animate-pulse bg-muted" />
         <div className="h-3.5 w-2/5 rounded-md animate-pulse bg-muted" />
