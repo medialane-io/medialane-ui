@@ -23,7 +23,7 @@ Package manager: **Bun** for everything except `npm publish`.
    - starknet: `npm install` → `npx tsc --noEmit` (must pass; build hits env-var error on PRIVY_APP_ID locally — that's expected; compilation success is the gate)
 6. Commit + push all three repos
 
-Current version: **0.55.0** (`MedialaneCollectionCard` refined — inset artwork on foil-tinted material, at-rest holo sheen, serial pill, brand glow — the branded collectors-card preview: self-contained dark collectible, brand-spectrum frame, pointer-tracked 3D tilt + holographic sheen, display-face name, Medialane maker's mark; fluid width, pure presentation. First used as the live preview atop the /create/collection rail in io)
+Current version: **0.55.1** (`MedialaneCollectionCard` — the branded collectors-card preview: self-contained dark collectible, brand-spectrum frame, inset artwork on foil-tinted material, pointer-tracked 3D tilt + at-rest holographic sheen, display-face name, serial pill, Medialane maker's mark; empty image = clean gradient placeholder (no monogram); fluid width, pure presentation. Used as the live preview atop every launchpad create-form rail in both apps)
 
 Prior 0.53.1: (borderless launchpad panels — `ServiceFormShell` form card and `ClaimRail` have no border and no shadow; the panel surface is `bg-muted/50` in light / `bg-card` in dark, so it separates from the app background in both themes with zero token changes. Typography: Geist Mono removed everywhere (`tabular-nums` on the body face instead); `font-display` preset token + `h1–h3 { font-family: var(--font-display) }` in medialane.css — apps load Urbanist via next/font as `--font-display`, Inter stays the body face)
 

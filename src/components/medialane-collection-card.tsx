@@ -4,7 +4,7 @@ import { useRef } from "react";
 import { cn } from "../utils/cn.js";
 
 export interface MedialaneCollectionCardProps {
-  /** Resolved, browser-loadable image URL. Empty → branded monogram placeholder. */
+  /** Resolved, browser-loadable image URL. Empty → brand-gradient placeholder. */
   image?: string | null;
   /** Asset or collection name. */
   name?: string;
@@ -65,7 +65,6 @@ export function MedialaneCollectionCard({
   };
 
   const displayName = name?.trim() || "Untitled";
-  const monogram = displayName[0]?.toUpperCase() ?? "M";
 
   return (
     <div className={cn("group", className)} style={{ perspective: "1000px" }}>
@@ -93,16 +92,9 @@ export function MedialaneCollectionCard({
                 <img src={image} alt={displayName} className="h-full w-full object-cover" />
               ) : (
                 <div
-                  className="h-full w-full flex items-center justify-center"
+                  className="h-full w-full"
                   style={{ background: FRAME_GRADIENT, opacity: 0.9 }}
-                >
-                  <span
-                    className="text-7xl font-black text-white/90"
-                    style={{ fontFamily: "var(--font-display, inherit)" }}
-                  >
-                    {monogram}
-                  </span>
-                </div>
+                />
               )}
               {/* Bottom scrim for depth against the meta block */}
               <div
