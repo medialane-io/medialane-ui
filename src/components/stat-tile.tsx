@@ -35,10 +35,9 @@ export function StatTile({
       </span>
       {value != null && (
         <span
-          className="font-semibold leading-none tracking-tight"
+          className="font-semibold leading-none tracking-tight tabular-nums"
           style={{
             fontSize: big ? 22 : 16,
-            fontFamily: '"Geist Mono", ui-monospace, SFMono-Regular, monospace',
             color: accent,
           }}
         >
@@ -64,10 +63,7 @@ export function StatPill({ value, label, className }: StatPillProps) {
     <div
       className={`inline-flex items-baseline gap-2 px-4 py-2 rounded-full bg-muted ${className ?? ''}`}
     >
-      <span
-        className="text-[15px] font-bold text-foreground"
-        style={{ fontFamily: '"Geist Mono", ui-monospace, SFMono-Regular, monospace' }}
-      >
+      <span className="text-[15px] font-bold text-foreground tabular-nums">
         {value}
       </span>
       <span className="text-[13px] text-muted-foreground">{label}</span>

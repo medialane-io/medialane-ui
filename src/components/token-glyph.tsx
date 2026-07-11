@@ -1,8 +1,6 @@
 // Inline SVG token glyphs — self-contained, no external asset dependency.
 // Covers the five tokens active on the platform: STRK, ETH, USDC, USDT, WBTC.
 
-const PRICE_FONT = '"Geist Mono", ui-monospace, SFMono-Regular, monospace';
-
 export type TokenSymbol = 'strk' | 'eth' | 'usdc' | 'usdt' | 'wbtc';
 
 export interface TokenGlyphProps {
@@ -85,7 +83,7 @@ export function TokenAmount({
       <TokenGlyph token={token} size={size} />
       <span
         style={{
-          fontFamily: PRICE_FONT,
+          fontVariantNumeric: 'tabular-nums',
           fontWeight: bold ? 700 : 500,
           fontSize: size * 0.92,
           color: color ?? '#f97316',

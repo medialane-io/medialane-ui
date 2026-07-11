@@ -13,15 +13,13 @@ export interface ClaimRailProps {
   trustIcon?: LucideIcon;
 }
 
-const MONO = '"Geist Mono", ui-monospace, SFMono-Regular, monospace';
-
-/** Right-rail for launchpad/claim pages — one quiet sectioned card
+/** Right-rail for launchpad/claim pages — one quiet borderless sectioned card
  *  (What's included · How it works · trust). The brand spectrum appears only
  *  as tints: blue benefit chips → purple step numerals → orange trust glyph.
  *  Pure presentation; the consuming app passes the per-surface content. */
 export function ClaimRail({ included, steps, trustLead, trust, trustIcon: TrustIcon = ShieldCheck }: ClaimRailProps) {
   return (
-    <div className="rounded-2xl border border-border/60 bg-card divide-y divide-border/60 overflow-hidden">
+    <div className="rounded-2xl bg-card divide-y divide-border/60 overflow-hidden">
       {included && included.length > 0 && (
         <section className="p-5">
           <p className="section-label">What&apos;s included</p>
@@ -46,10 +44,7 @@ export function ClaimRail({ included, steps, trustLead, trust, trustIcon: TrustI
         <ol className="mt-4 space-y-3">
           {steps.map((label, i) => (
             <li key={label} className="flex items-center gap-3">
-              <span
-                className="h-8 w-8 rounded-lg bg-brand-purple/10 text-brand-purple flex items-center justify-center shrink-0 text-[13px] font-bold"
-                style={{ fontFamily: MONO }}
-              >
+              <span className="h-8 w-8 rounded-lg bg-brand-purple/10 text-brand-purple flex items-center justify-center shrink-0 text-[13px] font-bold tabular-nums">
                 {i + 1}
               </span>
               <span className="text-sm text-foreground/90">{label}</span>

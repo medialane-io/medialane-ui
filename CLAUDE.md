@@ -23,7 +23,7 @@ Package manager: **Bun** for everything except `npm publish`.
    - starknet: `npm install` → `npx tsc --noEmit` (must pass; build hits env-var error on PRIVY_APP_ID locally — that's expected; compilation success is the gate)
 6. Commit + push all three repos
 
-Current version: **0.52.0** (launchpad form template redesigned — `ServiceFormShell` uses a quiet hairline form card + `bare` ServiceHeader variant (no card); `ClaimRail` is one sectioned quiet card with brand-tint accents (blue chips → purple mono step numerals → orange trust glyph); the animated gradient now belongs only to the form's ActionButton)
+Current version: **0.53.0** (borderless panels — `ServiceFormShell` form card and `ClaimRail` drop their hairline borders; surface color alone separates panels, which requires the apps' light theme to use an off-white `--background` vs pure-white `--card`. Typography: Geist Mono removed everywhere (`tabular-nums` on the body face instead); new `font-display` preset token + `h1–h3 { font-family: var(--font-display) }` in medialane.css — apps load Urbanist via next/font as `--font-display`, Inter stays the body face)
 
 ## Package shape
 

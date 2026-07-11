@@ -16,6 +16,11 @@ const medialanePreset: Partial<Config> = {
       borderRadius: {
         brand: "11px",
       },
+      fontFamily: {
+        // Brand display face (headings). Apps define --font-display via
+        // next/font (Urbanist); falls back to the body face when unset.
+        display: ["var(--font-display)", "Urbanist", "Inter", "system-ui", "sans-serif"],
+      },
     },
   },
 };

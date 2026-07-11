@@ -26,6 +26,13 @@
   border: 1px solid rgba(255, 255, 255, 0.5);
 }
 
+/* ── Display face ─────────────────────────────────────────────────────── */
+/* Headings render in the brand display face (Urbanist). Apps set
+   --font-display via next/font; unset, headings inherit the body face. */
+h1, h2, h3 {
+  font-family: var(--font-display, inherit);
+}
+
 /* ── Typography gradients ─────────────────────────────────────────────── */
 .gradient-text {
   background: linear-gradient(135deg, #8a5cf6 0%, #5b4ce6 40%, #3b7bff 100%);

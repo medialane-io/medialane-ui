@@ -23,15 +23,16 @@ export interface ServiceFormShellProps {
 }
 
 /** Shared launchpad/claim form layout: back slot + bare header (no card), then
- *  the form in a quiet hairline card. With an `aside` it lays out an 8/4 bento
- *  (form left, rail right); without, a single centered column. The brand
- *  gradient belongs to the form's action button, not to any container. */
+ *  the form in a quiet borderless card — the surface color alone separates it
+ *  from the page. With an `aside` it lays out an 8/4 bento (form left, rail
+ *  right); without, a single centered column. The brand gradient belongs to
+ *  the form's action button, not to any container. */
 export function ServiceFormShell({ icon, title, subtitle, headerAccessory, backSlot, aside, aboveForm, children }: ServiceFormShellProps) {
   // Bare header: the form card is the page's only panel.
   const header = <ServiceHeader bare icon={icon} title={title} subtitle={subtitle} headerAccessory={headerAccessory} />;
 
   const form = aside ? (
-    <div className="rounded-2xl border border-border/60 bg-card p-5 sm:p-6">{children}</div>
+    <div className="rounded-2xl bg-card p-5 sm:p-6">{children}</div>
   ) : (
     children
   );
