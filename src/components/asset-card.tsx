@@ -47,8 +47,8 @@ export interface AssetCardProps {
  *
  * Layout: inset 4:5 artwork (gallery ratio, echoing the Medialane Collection
  * Card) with the price as a glass pill on the artwork (the collection cards'
- * Floor-pill vocabulary) → display-face title → optional subtitle → optional
- * ipType badge.
+ * Floor-pill vocabulary) → one body row: display-face title + optional
+ * subtitle, with the optional ipType badge inline on the right.
  */
 export function AssetCard({
   href,
@@ -112,9 +112,9 @@ export function AssetCard({
         </div>
       </Link>
 
-      {/* Body */}
-      <div className="flex flex-col gap-1.5 px-3 py-3">
-        <Link href={href} className="block min-w-0">
+      {/* Body — one tight block: title (+ optional ipType badge inline) and subtitle */}
+      <div className="flex items-start justify-between gap-2 px-3 py-3">
+        <Link href={href} className="block min-w-0 flex-1">
           <p
             className="text-[15px] font-bold line-clamp-1 leading-snug"
             style={{ fontFamily: "var(--font-display, inherit)" }}
@@ -129,7 +129,7 @@ export function AssetCard({
         </Link>
 
         {ipType && (
-          <div className="flex items-center">
+          <div className="shrink-0 mt-0.5">
             <IpTypeBadge ipType={ipType} size="sm" baseUrl={ipTypeBaseUrl} />
           </div>
         )}
