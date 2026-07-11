@@ -22,20 +22,16 @@ export interface ServiceFormShellProps {
   children: ReactNode;
 }
 
-/** Shared launchpad/claim form layout: back slot + gradient header, then the
- *  form inside the animated full-spectrum border (`.btn-border-animated`, from
- *  @medialane/ui/styles). With an `aside` it lays out an 8/4 bento (form left,
- *  rail right); without, a single centered column. */
+/** Shared launchpad/claim form layout: back slot + bare header (no card), then
+ *  the form in a quiet hairline card. With an `aside` it lays out an 8/4 bento
+ *  (form left, rail right); without, a single centered column. The brand
+ *  gradient belongs to the form's action button, not to any container. */
 export function ServiceFormShell({ icon, title, subtitle, headerAccessory, backSlot, aside, aboveForm, children }: ServiceFormShellProps) {
-  // Plain header: the form below already carries the animated gradient border,
-  // so the header drops its gradient frame to keep a single focal accent.
-  const header = <ServiceHeader plain icon={icon} title={title} subtitle={subtitle} headerAccessory={headerAccessory} />;
+  // Bare header: the form card is the page's only panel.
+  const header = <ServiceHeader bare icon={icon} title={title} subtitle={subtitle} headerAccessory={headerAccessory} />;
 
-  // The form is the focus: animated gradient border around the dark card.
   const form = aside ? (
-    <div className="btn-border-animated p-[1.5px] rounded-2xl">
-      <div className="rounded-[15px] bg-card p-5 sm:p-6">{children}</div>
-    </div>
+    <div className="rounded-2xl border border-border/60 bg-card p-5 sm:p-6">{children}</div>
   ) : (
     children
   );
