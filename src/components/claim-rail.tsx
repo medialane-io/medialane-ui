@@ -19,7 +19,7 @@ export interface ClaimRailProps {
  *  Pure presentation; the consuming app passes the per-surface content. */
 export function ClaimRail({ included, steps, trustLead, trust, trustIcon: TrustIcon = ShieldCheck }: ClaimRailProps) {
   return (
-    <div className="rounded-2xl bg-card divide-y divide-border/60 overflow-hidden">
+    <div className="rounded-2xl bg-muted/50 dark:bg-card divide-y divide-border/60 overflow-hidden">
       {included && included.length > 0 && (
         <section className="p-5">
           <p className="section-label">What&apos;s included</p>

@@ -32,7 +32,7 @@ export function ServiceFormShell({ icon, title, subtitle, headerAccessory, backS
   const header = <ServiceHeader bare icon={icon} title={title} subtitle={subtitle} headerAccessory={headerAccessory} />;
 
   const form = aside ? (
-    <div className="rounded-2xl bg-card p-5 sm:p-6">{children}</div>
+    <div className="rounded-2xl bg-muted/50 dark:bg-card p-5 sm:p-6">{children}</div>
   ) : (
     children
   );
