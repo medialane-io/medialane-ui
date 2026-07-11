@@ -27,13 +27,20 @@ export interface ListingCardProps {
    */
   primaryAction?: React.ReactNode;
   compact?: boolean;
+  /**
+   * Pre-resolved, browser-loadable image URL. When provided (including null),
+   * overrides the card's internal ipfsToHttp resolution — apps that proxy or
+   * resize images (e.g. a same-origin /api/ipfs?w= proxy) pass it here.
+   * Omit for the default gateway resolution; null renders the no-image fallback.
+   */
+  imageUrl?: string | null;
 }
 
-export function ListingCard({ order, inCart = false, onBuy, onCart, overflowMenu, primaryAction, compact = false }: ListingCardProps) {
+export function ListingCard({ order, inCart = false, onBuy, onCart, overflowMenu, primaryAction, compact = false, imageUrl }: ListingCardProps) {
   const [imgError, setImgError] = useState(false);
   const isListing = order.offer.itemType === "ERC721" || order.offer.itemType === "ERC1155";
   const name = order.token?.name ?? `Token #${order.nftTokenId}`;
-  const image = order.token?.image ? ipfsToHttp(order.token.image) : null;
+  const image = imageUrl !== undefined ? imageUrl : (order.token?.image ? ipfsToHttp(order.token.image) : null);
   const assetHref = `/asset/${order.nftContract}/${order.nftTokenId}`;
 
   // Show the action bar for listings (Buy/View) and for offers (View asset),
