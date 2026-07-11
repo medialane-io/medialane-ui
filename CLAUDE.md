@@ -23,7 +23,7 @@ Package manager: **Bun** for everything except `npm publish`.
    - starknet: `npm install` → `npx tsc --noEmit` (must pass; build hits env-var error on PRIVY_APP_ID locally — that's expected; compilation success is the gate)
 6. Commit + push all three repos
 
-Current version: **0.57.0** (`AssetCard` redesigned — inset 4:5 gallery artwork with hairline ring (echoes MedialaneCollectionCard), display-face title, `price-value` price, brand-gradient placeholder; skeleton matched)
+Current version: **0.57.1** (`AssetCard` redesigned — inset 4:5 gallery artwork with hairline ring (echoes MedialaneCollectionCard), display-face title, price as a glass pill on the artwork (the collection cards' Floor-pill vocabulary), brand-gradient placeholder; skeleton matched)
 
 Prior 0.56.0: (`CoinLaunchPreview` lifted from the apps and redesigned — quiet borderless panel, warm rose→orange coin gradient only as avatar ring + allocation bar, brand tokens replace stock pinks, display-face name, tabular numerals, market cap in `brand-price`; app files are re-export shims)
 
