@@ -46,8 +46,9 @@ export interface AssetCardProps {
  * need owner/marketplace actions use the richer `TokenCard` / `ListingCard`.
  *
  * Layout: inset 4:5 artwork (gallery ratio, echoing the Medialane Collection
- * Card) → display-face title → optional subtitle → footer row with the
- * (optional) ipType icon on the left and the (optional) price on the right.
+ * Card) with the price as a glass pill on the artwork (the collection cards'
+ * Floor-pill vocabulary) → display-face title → optional subtitle → optional
+ * ipType badge.
  */
 export function AssetCard({
   href,
@@ -64,7 +65,6 @@ export function AssetCard({
   const [imgError, setImgError] = useState(false);
   const resolved = image ? ipfsToHttp(image) : null;
   const hasPrice = !!price?.formatted;
-  const showFooter = !!ipType || hasPrice;
 
   return (
     <div
@@ -94,6 +94,15 @@ export function AssetCard({
             </div>
           )}
 
+          {/* Price pill — anchored on the artwork, same glass chip as the
+              collection cards' Floor pill */}
+          {hasPrice && !indexing && (
+            <span className="absolute bottom-2 right-2 inline-flex items-center gap-1 text-xs font-bold text-white/95 backdrop-blur-md bg-black/40 rounded-full px-2.5 py-1 tabular-nums">
+              {price!.currency && <CurrencyIcon symbol={price!.currency} size={12} />}
+              {formatDisplayPrice(price!.formatted!)}
+            </span>
+          )}
+
           {indexing && (
             <div className="absolute bottom-0 inset-x-0 flex items-center justify-center gap-1.5 bg-black/50 backdrop-blur-sm py-1.5">
               <Loader2 className="h-3 w-3 animate-spin text-white/70" />
@@ -119,19 +128,9 @@ export function AssetCard({
           )}
         </Link>
 
-        {showFooter && (
-          <div className="flex items-center justify-between gap-2">
-            {ipType ? (
-              <IpTypeBadge ipType={ipType} size="sm" baseUrl={ipTypeBaseUrl} />
-            ) : (
-              <span />
-            )}
-            {hasPrice && (
-              <span className="inline-flex shrink-0 items-center gap-1 text-sm leading-none price-value">
-                {price!.currency && <CurrencyIcon symbol={price!.currency} size={12} />}
-                {formatDisplayPrice(price!.formatted!)}
-              </span>
-            )}
+        {ipType && (
+          <div className="flex items-center">
+            <IpTypeBadge ipType={ipType} size="sm" baseUrl={ipTypeBaseUrl} />
           </div>
         )}
       </div>
