@@ -174,6 +174,8 @@ export type { CommunityRewardsSectionProps, CommunityRewardsEntry } from "./comp
 export { ActionButton } from "./components/action-button.js";
 export type { ActionButtonProps, ActionKey, ToneKey } from "./components/action-button.js";
 
+export { MedialaneCollectionCard } from "./components/medialane-collection-card.js";
+export type { MedialaneCollectionCardProps } from "./components/medialane-collection-card.js";
 export { TokenGlyph, TokenAmount } from "./components/token-glyph.js";
 export type { TokenGlyphProps, TokenAmountProps, TokenSymbol } from "./components/token-glyph.js";
 
