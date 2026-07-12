@@ -20,7 +20,7 @@ Package manager: **Bun** for everything except `npm publish`.
 4. `npm publish` — publishes to npm as `@medialane/ui@<version>`
 5. Bump consumers (`medialane-io`, `medialane-starknet`) in lock-step:
    - io: `bun install` → `bun run build` (must pass)
-   - starknet: `npm install` → `npx tsc --noEmit` (must pass; build hits env-var error on PRIVY_APP_ID locally — that's expected; compilation success is the gate)
+   - starknet: `npm install` + `bun install` (bun.lock is the tracked lockfile) → `npx tsc --noEmit` (must pass; `npm run build` also works env-less since the 2026-07-11 lazy Privy-server fix)
 6. Commit + push all three repos
 
 Current version: **0.58.0** (`ListingCard` gained an optional `imageUrl` override prop — when passed (including `null`) it replaces the card's internal `ipfsToHttp` resolution, so apps can route artwork through their own resizing proxy; omitted = unchanged behavior)
