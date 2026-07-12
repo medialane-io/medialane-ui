@@ -4,7 +4,7 @@
 // 2. Stubs next/link, next/image, next/navigation (they require app router context)
 // 3. Appends Tailwind utility CSS to _ds_bundle.css (scanned from src/ components)
 // Run after package-build.mjs, before package-validate.mjs.
-import { readFileSync, writeFileSync, existsSync } from 'fs';
+import { readFileSync, writeFileSync, existsSync, unlinkSync } from 'fs';
 import { createHash } from 'crypto';
 import { join, dirname } from 'path';
 import { execSync } from 'child_process';
@@ -58,11 +58,12 @@ const headerEnd = body.indexOf('\n') + 1;
 const header = body.slice(0, headerEnd);
 let rest = body.slice(headerEnd);
 
+// The Tailwind append (below) is independent of the JS patch and runs either way —
+// stamping the JS while the CSS step failed used to leave a bundle without utilities
+// that "already patched" then refused to repair.
 if (rest.startsWith(PROCESS_SHIM)) {
-  console.error('  patch-bundle: already patched, skipping');
-  process.exit(0);
-}
-
+  console.error('  patch-bundle: bundle JS already patched, skipping to Tailwind append');
+} else {
 // Apply stubs before prepending the process shim so the shim check stays idempotent.
 let patched = header + PROCESS_SHIM + rest;
 
@@ -94,6 +95,7 @@ const sync = JSON.parse(readFileSync(syncJson, 'utf8'));
 sync.bundleSha12 = newSha;
 writeFileSync(syncJson, JSON.stringify(sync, null, 2) + '\n');
 console.error(`  patch-bundle: done, bundleSha12 → ${newSha}`);
+}
 
 // Append Tailwind utility classes to _ds_bundle.css.
 // The library ships only a Tailwind preset — consuming apps run Tailwind against
@@ -152,9 +154,14 @@ const twInput = '@tailwind base;\n@tailwind components;\n@tailwind utilities;\n'
 const twInputFile = join(dirname(new URL(import.meta.url).pathname), '_tw_input.css');
 writeFileSync(twInputFile, twInput);
 
+// Single invocation to a temp file (stdout capture hit execSync buffer/tty quirks).
+// A failure here is fatal: a bundle without utilities renders every card unstyled.
+const twOut = join(out, '_tw_utilities.tmp.css');
 try {
-  execSync(`"${twBin}" --config "${twConfig}" --input "${twInputFile}" --content "${join(repoRoot, 'src/**/*.{tsx,ts,jsx,js}')}" --output /dev/stdout --minify 2>/dev/null`, { encoding: 'utf8' });
-  const twCss = execSync(`"${twBin}" --config "${twConfig}" --input "${twInputFile}" --output /dev/stdout --minify 2>/dev/null`, { encoding: 'utf8', cwd: repoRoot });
+  execSync(`"${twBin}" --config "${twConfig}" --input "${twInputFile}" --output "${twOut}" --minify`, { stdio: ['ignore', 'ignore', 'pipe'], cwd: repoRoot });
+  const twCss = readFileSync(twOut, 'utf8');
+  unlinkSync(twOut);
+  if (twCss.length < 1000) throw new Error(`suspiciously small utilities output (${twCss.length} bytes)`);
   const existing = readFileSync(bundleCss, 'utf8');
   // Strip any previously appended Tailwind block (marked by a sentinel comment).
   const sentinel = '\n/* tw-utilities */\n';
@@ -162,5 +169,6 @@ try {
   writeFileSync(bundleCss, base + sentinel + twCss);
   console.error(`  patch-bundle: appended Tailwind utilities to _ds_bundle.css (${twCss.length} bytes)`);
 } catch (e) {
-  console.error(`  patch-bundle: WARNING — Tailwind generation failed: ${e.message}`);
+  console.error(`  patch-bundle: FATAL — Tailwind generation failed: ${e.message}`);
+  process.exit(1);
 }

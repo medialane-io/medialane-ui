@@ -43,8 +43,6 @@ export type { IpTypeBadgeProps, IpTypeConfig } from "./components/ip-type-badge.
 export { AddressDisplay } from "./components/address-display.js";
 export type { AddressDisplayProps } from "./components/address-display.js";
 
-export { MedialaneIcon } from "./components/brand-icon.js";
-export type { MedialaneIconProps } from "./components/brand-icon.js";
 export { MedialaneLogoFull } from "./components/brand-logo.js";
 export type { MedialaneLogoFullProps } from "./components/brand-logo.js";
 

@@ -7,6 +7,7 @@ import { cn } from "../utils/cn.js";
 // ── Header buttons ────────────────────────────────────────────────────────────
 
 export interface NavBrandButtonProps {
+  /** Defaults to opening the nav command menu (`ml:nav-open`). */
   onClick?: () => void;
   className?: string;
   "aria-label"?: string;
@@ -17,12 +18,13 @@ export interface NavBrandButtonProps {
 /**
  * The main header trigger: brand mark + menu glyph in one quiet glass pill.
  * Mobile-first — a single ≥44px tap target instead of two small adjacent icons.
+ * With no `onClick`, it opens the NavCommandMenu mounted elsewhere in the app.
  */
 export function NavBrandButton({ onClick, className, iconSrc = "/icon.png", ...rest }: NavBrandButtonProps) {
   return (
     <button
       type="button"
-      onClick={onClick}
+      onClick={onClick ?? (() => document.dispatchEvent(new CustomEvent(ML_NAV_OPEN)))}
       aria-label={rest["aria-label"] ?? "Open navigation"}
       className={cn(
         "group flex h-11 items-center gap-2 rounded-full",
