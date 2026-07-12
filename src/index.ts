@@ -118,14 +118,26 @@ export type { ServiceDefinition, ServiceStatus, ServiceCategory, ServiceGroup, S
 export { NavCommandMenu, useNavCommandMenu } from "./components/nav-command-menu.js";
 export type { NavCommand, NavCommandGroup, NavCommandMenuProps } from "./components/nav-command-menu.js";
 
-// ── v0.6.0 additions — portfolio subnav + counts ────────────────────────────
-export { PortfolioSubnav } from "./components/portfolio-subnav.js";
+// ── v0.59.0 — portfolio shell (two-level nav + header + overview) ────────────
+export { PortfolioNav } from "./components/portfolio-nav.js";
 export type {
-  PortfolioSubnavProps,
-  PortfolioNavItem,
-  PortfolioNavGroup,
+  PortfolioNavProps,
+  PortfolioNavSection,
+  PortfolioNavChild,
   PortfolioBadgeVariant,
-} from "./components/portfolio-subnav.js";
+} from "./components/portfolio-nav.js";
+export { PortfolioHeader } from "./components/portfolio-header.js";
+export type {
+  PortfolioHeaderProps,
+  PortfolioHeaderStat,
+  PortfolioHeaderScore,
+} from "./components/portfolio-header.js";
+export { PortfolioOverview } from "./components/portfolio-overview.js";
+export type {
+  PortfolioOverviewProps,
+  PortfolioOverviewStat,
+  PortfolioAttentionItem,
+} from "./components/portfolio-overview.js";
 export { derivePortfolioCounts } from "./utils/portfolio-counts.js";
 export type { PortfolioCounts, CountableOrder } from "./utils/portfolio-counts.js";
 

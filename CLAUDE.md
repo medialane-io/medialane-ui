@@ -23,7 +23,9 @@ Package manager: **Bun** for everything except `npm publish`.
    - starknet: `npm install` + `bun install` (bun.lock is the tracked lockfile) → `npx tsc --noEmit` (must pass; `npm run build` also works env-less since the 2026-07-11 lazy Privy-server fix)
 6. Commit + push all three repos
 
-Current version: **0.58.0** (`ListingCard` gained an optional `imageUrl` override prop — when passed (including `null`) it replaces the card's internal `ipfsToHttp` resolution, so apps can route artwork through their own resizing proxy; omitted = unchanged behavior)
+Current version: **0.59.0** (portfolio shell redesign — `PortfolioNav` (two-level: top-level underline tabs Overview/Items/Trading/Activity/Settings + segmented pill row for the active section's children; badge counts roll up onto the top-level tab), `PortfolioHeader` (compact single block: eyebrow + address, stat chips, level/XP score chip), `PortfolioOverview` (landing-page layout: needs-attention panel, clickable StatTile row, recent assets/activity slots, first-run empty state). `PortfolioSubnav` removed — both apps migrated in lock-step; all inner portfolio routes unchanged)
+
+Prior 0.58.0: (`ListingCard` gained an optional `imageUrl` override prop — when passed (including `null`) it replaces the card's internal `ipfsToHttp` resolution, so apps can route artwork through their own resizing proxy; omitted = unchanged behavior)
 
 Prior 0.57.2: (`AssetCard` redesigned — inset 4:5 gallery artwork with hairline ring (echoes MedialaneCollectionCard), display-face title, price as a glass pill on the artwork (the collection cards' Floor-pill vocabulary), ipType badge inline with the title row, brand-gradient placeholder; skeleton matched)
 
