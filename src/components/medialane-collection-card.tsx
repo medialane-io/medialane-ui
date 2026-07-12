@@ -119,10 +119,7 @@ export function MedialaneCollectionCard({
           {/* Meta */}
           <div className="relative px-4 pt-3 pb-4">
             <div className="flex items-start gap-2">
-              <p
-                className="min-w-0 flex-1 text-[18px] font-bold leading-snug truncate"
-                style={{ fontFamily: "var(--font-display, inherit)" }}
-              >
+              <p className="min-w-0 flex-1 text-[18px] font-bold leading-snug truncate">
                 {displayName}
               </p>
               {serial && (

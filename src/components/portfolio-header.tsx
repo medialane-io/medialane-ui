@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Briefcase, Sparkles } from "lucide-react";
+import { Briefcase } from "lucide-react";
 import { cn } from "../utils/cn.js";
 import { AddressDisplay } from "./address-display.js";
 
@@ -31,19 +31,14 @@ export function PortfolioHeader({
   className,
 }: PortfolioHeaderProps) {
   const scoreChip = score && (
-    <div className="btn-border-animated p-[1.5px] rounded-2xl">
-      <div className="rounded-[14px] bg-card px-4 py-2.5 flex items-center gap-3">
-        <div className="h-8 w-8 rounded-full shrink-0 flex items-center justify-center bg-gradient-to-br from-brand-blue via-brand-purple to-brand-rose">
-          <Sparkles className="h-4 w-4 text-white" />
-        </div>
-        <div className="min-w-0 leading-tight">
-          <p className="text-sm font-bold gradient-text-full truncate">
-            {score.levelName}
-          </p>
-          <p className="text-[11px] text-muted-foreground tabular-nums">
-            {score.totalXp.toLocaleString()} XP
-          </p>
-        </div>
+    <div className="btn-border-animated p-[1.5px] rounded-full">
+      <div className="rounded-full bg-card px-3.5 py-1.5 flex items-baseline gap-2 whitespace-nowrap">
+        <span className="text-sm font-semibold text-foreground">
+          {score.levelName}
+        </span>
+        <span className="text-xs text-muted-foreground tabular-nums">
+          {score.totalXp.toLocaleString()} XP
+        </span>
       </div>
     </div>
   );

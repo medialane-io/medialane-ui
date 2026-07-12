@@ -1,9 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, BellRing, Plus } from "lucide-react";
+import { ArrowRight, BellRing } from "lucide-react";
 import { cn } from "../utils/cn.js";
-import { StatTile } from "./stat-tile.js";
 
 export interface PortfolioAttentionItem {
   /** e.g. "2 offers received" — caller composes count + label. */
@@ -137,45 +136,56 @@ export function PortfolioOverview({
         </section>
       )}
 
-      {stats && stats.length > 0 && (
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-          {stats.map((stat) =>
-            stat.href ? (
-              <Link key={stat.label} href={stat.href} className="active:opacity-80">
-                <StatTile
-                  label={stat.label}
-                  value={stat.value ?? "—"}
-                  sub={stat.sub}
-                  big
-                  className="h-full"
-                />
-              </Link>
-            ) : (
-              <StatTile
-                key={stat.label}
-                label={stat.label}
-                value={stat.value ?? "—"}
-                sub={stat.sub}
-                big
-                className="h-full"
-              />
-            ),
+      {((stats && stats.length > 0) || (quickActions && quickActions.length > 0)) && (
+        <div className="space-y-3">
+          {stats && stats.length > 0 && (
+            <div className="flex items-center gap-2 flex-wrap">
+              {stats.map((stat) => {
+                if (stat.value == null) {
+                  return (
+                    <span
+                      key={stat.label}
+                      className="bg-muted rounded-full px-3 py-1.5 w-20 h-7 animate-pulse inline-block"
+                    />
+                  );
+                }
+                const pill = (
+                  <span className="inline-flex items-baseline gap-1.5 rounded-full bg-muted px-3 py-1.5 text-[13px] whitespace-nowrap">
+                    <span className="font-semibold text-foreground tabular-nums">
+                      {stat.value}
+                    </span>
+                    <span className="text-muted-foreground">{stat.label}</span>
+                    {stat.sub && (
+                      <span className="text-muted-foreground/70">
+                        · {stat.sub}
+                      </span>
+                    )}
+                  </span>
+                );
+                return stat.href ? (
+                  <Link key={stat.label} href={stat.href} className="active:opacity-80">
+                    {pill}
+                  </Link>
+                ) : (
+                  <span key={stat.label}>{pill}</span>
+                );
+              })}
+            </div>
           )}
-        </div>
-      )}
 
-      {quickActions && quickActions.length > 0 && (
-        <div className="flex items-center gap-2 flex-wrap">
-          {quickActions.map((action) => (
-            <Link
-              key={action.href}
-              href={action.href}
-              className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-4 py-2 text-[13px] font-medium text-foreground active:opacity-80 hover:border-primary/40 transition-colors"
-            >
-              <Plus className="h-3.5 w-3.5 text-primary" />
-              {action.label}
-            </Link>
-          ))}
+          {quickActions && quickActions.length > 0 && (
+            <div className="flex items-center gap-2 flex-wrap">
+              {quickActions.map((action) => (
+                <Link
+                  key={action.href}
+                  href={action.href}
+                  className="inline-flex items-center rounded-full border border-border bg-card px-4 py-1.5 text-[13px] font-medium text-foreground active:opacity-80 hover:border-primary/40 transition-colors"
+                >
+                  {action.label}
+                </Link>
+              ))}
+            </div>
+          )}
         </div>
       )}
 

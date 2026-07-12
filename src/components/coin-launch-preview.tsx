@@ -50,10 +50,7 @@ export function CoinLaunchPreview({ data, className }: { data: CoinPreviewData; 
             </div>
           </div>
           <div className="min-w-0 flex-1">
-            <p
-              className={cn("font-bold text-lg leading-snug truncate", !name && "text-muted-foreground/50")}
-              style={{ fontFamily: "var(--font-display, inherit)" }}
-            >
+            <p className={cn("font-bold text-lg leading-snug truncate", !name && "text-muted-foreground/50")}>
               {name || "Your coin"}
             </p>
             <p className="text-sm text-muted-foreground tabular-nums">{symbol ? `$${symbol}` : "$SYMBOL"}</p>

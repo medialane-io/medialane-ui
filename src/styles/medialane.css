@@ -27,9 +27,10 @@
 }
 
 /* ── Display face ─────────────────────────────────────────────────────── */
-/* Headings render in the brand display face (Urbanist). Apps set
-   --font-display via next/font; unset, headings inherit the body face. */
-h1, h2, h3 {
+/* Only the page main header renders in the brand display face (Urbanist);
+   everything else stays on the body face. Apps set --font-display via
+   next/font; unset, h1 inherits the body face. */
+h1 {
   font-family: var(--font-display, inherit);
 }
 

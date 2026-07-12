@@ -115,10 +115,7 @@ export function AssetCard({
       {/* Body — one tight block: title (+ optional ipType badge inline) and subtitle */}
       <div className="flex items-start justify-between gap-2 px-3 py-3">
         <Link href={href} className="block min-w-0 flex-1">
-          <p
-            className="text-[15px] font-bold line-clamp-1 leading-snug"
-            style={{ fontFamily: "var(--font-display, inherit)" }}
-          >
+          <p className="text-[15px] font-bold line-clamp-1 leading-snug">
             {name}
           </p>
           {subtitle && (
