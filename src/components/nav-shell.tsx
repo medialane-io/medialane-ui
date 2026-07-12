@@ -25,7 +25,7 @@ export function NavBrandButton({ onClick, className, iconSrc = "/icon.png", ...r
       onClick={onClick}
       aria-label={rest["aria-label"] ?? "Open navigation"}
       className={cn(
-        "group flex h-11 items-center gap-2 rounded-full border border-border/40",
+        "group flex h-11 items-center gap-2 rounded-full",
         "bg-background/10 pl-1.5 pr-3 backdrop-blur-xl backdrop-saturate-150",
         "transition-colors hover:bg-background/20 active:scale-[0.97]",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60",
@@ -62,7 +62,7 @@ export function NavIconButton({ onClick, className, indicator, children, ...rest
       onClick={onClick}
       aria-label={rest["aria-label"]}
       className={cn(
-        "relative flex h-11 w-11 items-center justify-center rounded-full border border-border/40",
+        "relative flex h-11 w-11 items-center justify-center rounded-full",
         "bg-background/10 text-muted-foreground backdrop-blur-xl backdrop-saturate-150",
         "transition-colors hover:bg-background/20 hover:text-foreground active:scale-[0.97]",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60",
