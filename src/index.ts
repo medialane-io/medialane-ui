@@ -118,6 +118,21 @@ export type { ServiceDefinition, ServiceStatus, ServiceCategory, ServiceGroup, S
 export { NavCommandMenu, useNavCommandMenu } from "./components/nav-command-menu.js";
 export type { NavCommand, NavCommandGroup, NavCommandMenuProps } from "./components/nav-command-menu.js";
 
+// ── v0.62.0 — nav shell (brand mark trigger + header buttons + account sheet) ─
+export {
+  MedialaneMark,
+  NavBrandButton,
+  NavIconButton,
+  NavAccountSheet,
+  useNavAccountSheet,
+} from "./components/nav-shell.js";
+export type {
+  MedialaneMarkProps,
+  NavBrandButtonProps,
+  NavIconButtonProps,
+  NavAccountSheetProps,
+} from "./components/nav-shell.js";
+
 // ── v0.59.0 — portfolio shell (two-level nav + header + overview) ────────────
 export { PortfolioNav } from "./components/portfolio-nav.js";
 export type {
