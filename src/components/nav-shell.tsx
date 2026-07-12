@@ -4,57 +4,21 @@ import * as React from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { cn } from "../utils/cn.js";
 
-// ── Brand mark ────────────────────────────────────────────────────────────────
-
-export interface MedialaneMarkProps {
-  size?: number;
-  className?: string;
-}
-
-/**
- * The Medialane symbol as an inline SVG — electric-blue squircle, sparkle,
- * twin bars, rose→orange dot. Replaces `<img src="/icon.png">` triggers so the
- * mark renders crisp at any size, in any host, with no asset path to break.
- */
-export function MedialaneMark({ size = 32, className }: MedialaneMarkProps) {
-  const gradId = React.useId();
-  return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 32 32"
-      fill="none"
-      className={className}
-      aria-hidden="true"
-    >
-      <defs>
-        <linearGradient id={gradId} x1="20" y1="20" x2="27" y2="27" gradientUnits="userSpaceOnUse">
-          <stop offset="0" stopColor="#f6608f" />
-          <stop offset="1" stopColor="#fb8b46" />
-        </linearGradient>
-      </defs>
-      <rect x="2" y="2" width="28" height="28" rx="9" fill="#1a17ff" />
-      <path d="M9 6.2 9.9 8.4 12.1 9.3 9.9 10.2 9 12.4 8.1 10.2 5.9 9.3 8.1 8.4Z" fill="#fff" />
-      <rect x="14.1" y="4.5" width="1.9" height="23" rx="0.9" fill="#fff" />
-      <rect x="17.3" y="4.5" width="1.9" height="23" rx="0.9" fill="#fff" />
-      <circle cx="23.4" cy="22.6" r="2.7" fill={`url(#${gradId})`} />
-    </svg>
-  );
-}
-
 // ── Header buttons ────────────────────────────────────────────────────────────
 
 export interface NavBrandButtonProps {
   onClick?: () => void;
   className?: string;
   "aria-label"?: string;
+  /** Path to the brand icon image (the app's real icon asset). */
+  iconSrc?: string;
 }
 
 /**
  * The main header trigger: brand mark + menu glyph in one quiet glass pill.
  * Mobile-first — a single ≥44px tap target instead of two small adjacent icons.
  */
-export function NavBrandButton({ onClick, className, ...rest }: NavBrandButtonProps) {
+export function NavBrandButton({ onClick, className, iconSrc = "/icon.png", ...rest }: NavBrandButtonProps) {
   return (
     <button
       type="button"
@@ -62,13 +26,14 @@ export function NavBrandButton({ onClick, className, ...rest }: NavBrandButtonPr
       aria-label={rest["aria-label"] ?? "Open navigation"}
       className={cn(
         "group flex h-11 items-center gap-2 rounded-full border border-border/40",
-        "bg-background/70 pl-1.5 pr-3 backdrop-blur-xl backdrop-saturate-150 shadow-sm",
-        "transition-colors hover:bg-background/90 active:scale-[0.97]",
+        "bg-background/10 pl-1.5 pr-3 backdrop-blur-xl backdrop-saturate-150",
+        "transition-colors hover:bg-background/20 active:scale-[0.97]",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60",
         className
       )}
     >
-      <MedialaneMark size={30} className="shrink-0" />
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={iconSrc} alt="Medialane" width={30} height={30} className="h-[30px] w-[30px] shrink-0" />
       <span className="flex flex-col gap-[5px]" aria-hidden="true">
         <span className="h-[1.5px] w-4 rounded-full bg-muted-foreground transition-all group-hover:w-4 group-hover:bg-foreground" />
         <span className="h-[1.5px] w-2.5 rounded-full bg-muted-foreground transition-all group-hover:w-4 group-hover:bg-foreground" />
@@ -98,8 +63,8 @@ export function NavIconButton({ onClick, className, indicator, children, ...rest
       aria-label={rest["aria-label"]}
       className={cn(
         "relative flex h-11 w-11 items-center justify-center rounded-full border border-border/40",
-        "bg-background/70 text-muted-foreground backdrop-blur-xl backdrop-saturate-150 shadow-sm",
-        "transition-colors hover:bg-background/90 hover:text-foreground active:scale-[0.97]",
+        "bg-background/10 text-muted-foreground backdrop-blur-xl backdrop-saturate-150",
+        "transition-colors hover:bg-background/20 hover:text-foreground active:scale-[0.97]",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60",
         className
       )}
@@ -182,13 +147,13 @@ export function NavAccountSheet({ children, title = "Account" }: NavAccountSheet
             onClick={() => setOpen(false)}
           />
           <motion.div
-            className="fixed inset-x-0 bottom-0 z-[101] sm:inset-auto sm:right-4 sm:top-4 sm:w-[360px] lg:right-8"
+            className="fixed inset-x-3 bottom-3 z-[101] sm:inset-auto sm:right-4 sm:top-4 sm:w-[360px] lg:right-8"
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 24 }}
             transition={{ duration: 0.18, ease: "easeOut" }}
           >
-            <div className="overflow-hidden rounded-t-[20px] border border-border/40 bg-background/90 shadow-2xl backdrop-blur-2xl backdrop-saturate-150 sm:rounded-[20px]">
+            <div className="overflow-hidden rounded-[20px] border border-border/40 bg-background/90 shadow-2xl backdrop-blur-2xl backdrop-saturate-150">
               <div className="flex justify-center pt-2.5 sm:hidden" aria-hidden="true">
                 <span className="h-1 w-9 rounded-full bg-muted-foreground/30" />
               </div>

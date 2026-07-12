@@ -236,7 +236,7 @@ export function NavCommandMenu({ commands, trigger, accountSlot, footerSlot }: N
 
             {/* Command panel — centered on desktop, bottom sheet on mobile */}
             <motion.div
-              className="fixed inset-0 z-[101] flex items-end justify-center sm:items-center sm:p-4"
+              className="fixed inset-0 z-[101] flex items-end justify-center p-3 pb-4 sm:items-center sm:p-4"
               initial={{ opacity: 0, y: 24, scale: 1 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 24 }}
@@ -245,8 +245,7 @@ export function NavCommandMenu({ commands, trigger, accountSlot, footerSlot }: N
             >
               <div
                 className={cn(
-                  "flex w-full max-h-[88dvh] flex-col overflow-hidden sm:max-h-[min(680px,88dvh)] sm:max-w-[620px]",
-                  "rounded-t-[20px] sm:rounded-[20px]",
+                  "flex w-full max-h-[85dvh] flex-col overflow-hidden rounded-[20px] sm:max-h-[min(680px,88dvh)] sm:max-w-[620px]",
                   "border border-border/40 bg-background/90 shadow-2xl backdrop-blur-2xl backdrop-saturate-150"
                 )}
                 onClick={(e) => e.stopPropagation()}
