@@ -129,7 +129,6 @@ export type {
 export { PortfolioHeader } from "./components/portfolio-header.js";
 export type {
   PortfolioHeaderProps,
-  PortfolioHeaderStat,
   PortfolioHeaderScore,
 } from "./components/portfolio-header.js";
 export { PortfolioOverview } from "./components/portfolio-overview.js";
@@ -137,6 +136,7 @@ export type {
   PortfolioOverviewProps,
   PortfolioOverviewStat,
   PortfolioAttentionItem,
+  PortfolioQuickAction,
 } from "./components/portfolio-overview.js";
 export { derivePortfolioCounts } from "./utils/portfolio-counts.js";
 export type { PortfolioCounts, CountableOrder } from "./utils/portfolio-counts.js";

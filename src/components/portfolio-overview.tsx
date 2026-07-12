@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, BellRing } from "lucide-react";
+import { ArrowRight, BellRing, Plus } from "lucide-react";
 import { cn } from "../utils/cn.js";
 import { StatTile } from "./stat-tile.js";
 
@@ -23,10 +23,17 @@ export interface PortfolioOverviewStat {
   href?: string;
 }
 
+export interface PortfolioQuickAction {
+  label: string;
+  href: string;
+}
+
 export interface PortfolioOverviewProps {
   /** Pending items needing action. The panel renders only when a count > 0. */
   attention?: PortfolioAttentionItem[];
   stats?: PortfolioOverviewStat[];
+  /** Shortcut row under the stat tiles ("Create asset", …). */
+  quickActions?: PortfolioQuickAction[];
   /** Recent-assets cards, rendered by the app. */
   assetsSlot?: React.ReactNode;
   assetsHref?: string;
@@ -79,6 +86,7 @@ function SectionHeading({
 export function PortfolioOverview({
   attention,
   stats,
+  quickActions,
   assetsSlot,
   assetsHref,
   activitySlot,
@@ -153,6 +161,21 @@ export function PortfolioOverview({
               />
             ),
           )}
+        </div>
+      )}
+
+      {quickActions && quickActions.length > 0 && (
+        <div className="flex items-center gap-2 flex-wrap">
+          {quickActions.map((action) => (
+            <Link
+              key={action.href}
+              href={action.href}
+              className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-4 py-2 text-[13px] font-medium text-foreground active:opacity-80 hover:border-primary/40 transition-colors"
+            >
+              <Plus className="h-3.5 w-3.5 text-primary" />
+              {action.label}
+            </Link>
+          ))}
         </div>
       )}
 
