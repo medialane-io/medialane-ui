@@ -31,7 +31,7 @@ function ActivityPill({ listing, getHref }: { listing: ApiOrder; getHref: (order
             src={image}
             alt=""
             loading="lazy"
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+            className="w-full h-full object-cover"
             onError={() => setImgError(true)}
           />
         ) : (
