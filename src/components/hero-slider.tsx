@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "../utils/cn.js";
 import { ipfsToHttp } from "../utils/ipfs.js";
 import type { ApiCollection } from "@medialane/sdk";
@@ -64,17 +64,13 @@ function HeroSlide({ collection, active, getHref }: { collection: ApiCollection;
       )}
       <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/30 to-black/0" />
       <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-10 flex flex-col gap-3">
-        <h2 className="text-4xl lg:text-5xl font-semibold text-white leading-tight">{name}</h2>
+        <Link href={getHref(collection)} className="hover:opacity-90 transition-opacity">
+          <h2 className="text-4xl lg:text-5xl font-semibold text-white leading-tight">{name}</h2>
+        </Link>
         <div className="flex items-center gap-4 text-sm text-white/70">
           {supply != null && <span>{supply.toLocaleString()} items</span>}
           {floor && <span className="text-white font-semibold">Floor {formatFloorPrice(floor)}</span>}
         </div>
-        <Link
-          href={getHref(collection)}
-          className="self-start mt-2 inline-flex items-center gap-1.5 bg-white text-black hover:bg-white/90 font-semibold px-4 py-2 rounded-[11px] text-sm transition-all active:scale-[0.98]"
-        >
-          View Collection <ArrowRight className="h-4 w-4" />
-        </Link>
       </div>
     </div>
   );
