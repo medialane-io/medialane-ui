@@ -22,7 +22,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { Lock, ArrowRight } from "lucide-react";
+import { Lock, ArrowRight, Check } from "lucide-react";
 import { cn } from "../utils/cn.js";
 import {
   LAUNCHPAD_SERVICE_DEFINITIONS,
@@ -50,28 +50,53 @@ export type ServiceOverrides = Record<string, ServiceOverride>;
 
 // ── Group accents — the grid's only color voice ─────────────────────────────
 
-interface GroupAccent {
-  /** icon glyph + tag text tint */
-  text: string;
-  /** soft icon-tile background */
-  tint: string;
+/** The deck is the brand spectrum: each group owns one slice of the Medialane
+ *  gradient (blue → indigo → purple → rose → orange), so the grid read in
+ *  group order draws the full spectrum across the launchpad. The slice colors
+ *  the icon chip, the use-case markers, and the desktop hover border — never
+ *  text labels. */
+interface GroupSlice {
+  /** icon chip fill — a two-stop slice of the brand gradient */
+  chip: string;
+  /** use-case marker tint */
+  marker: string;
   /** card border tint on desktop hover (polish only) */
   hoverBorder: string;
 }
 
-const DEFAULT_ACCENT: GroupAccent = {
-  text: "text-muted-foreground",
-  tint: "bg-muted/60",
+const DEFAULT_SLICE: GroupSlice = {
+  chip: "bg-gradient-to-br from-muted to-muted",
+  marker: "text-muted-foreground/60",
   hoverBorder: "sm:hover:border-border",
 };
 
-export const GROUP_ACCENTS: Record<ServiceGroup, GroupAccent> = {
-  "nfts": { text: "text-brand-blue", tint: "bg-brand-blue/10", hoverBorder: "sm:hover:border-brand-blue/40" },
-  "limited-editions": { text: "text-brand-purple", tint: "bg-brand-purple/10", hoverBorder: "sm:hover:border-brand-purple/40" },
-  "community": { text: "text-emerald-600 dark:text-emerald-400", tint: "bg-emerald-500/10", hoverBorder: "sm:hover:border-emerald-500/40" },
-  "coins": { text: "text-brand-orange", tint: "bg-brand-orange/10", hoverBorder: "sm:hover:border-brand-orange/40" },
-  "claims": { text: "text-brand-rose", tint: "bg-brand-rose/10", hoverBorder: "sm:hover:border-brand-rose/40" },
-  "coming-soon": DEFAULT_ACCENT,
+export const GROUP_SLICES: Record<ServiceGroup, GroupSlice> = {
+  "nfts": {
+    chip: "bg-gradient-to-br from-brand-blue to-brand-indigo",
+    marker: "text-brand-blue",
+    hoverBorder: "sm:hover:border-brand-blue/50",
+  },
+  "limited-editions": {
+    chip: "bg-gradient-to-br from-brand-indigo to-brand-purple",
+    marker: "text-brand-indigo",
+    hoverBorder: "sm:hover:border-brand-indigo/50",
+  },
+  "coins": {
+    chip: "bg-gradient-to-br from-brand-purple to-brand-rose",
+    marker: "text-brand-purple",
+    hoverBorder: "sm:hover:border-brand-purple/50",
+  },
+  "community": {
+    chip: "bg-gradient-to-br from-brand-rose to-brand-orange",
+    marker: "text-brand-rose",
+    hoverBorder: "sm:hover:border-brand-rose/50",
+  },
+  "claims": {
+    chip: "bg-gradient-to-br from-brand-orange to-brand-price",
+    marker: "text-brand-orange",
+    hoverBorder: "sm:hover:border-brand-orange/50",
+  },
+  "coming-soon": DEFAULT_SLICE,
 };
 
 /** Legacy per-service hue table — kept for LaunchpadStrip (homepage). The grid
@@ -113,20 +138,21 @@ export interface LaunchpadServiceCardProps {
 }
 
 export function LaunchpadServiceCard({ def, override = {}, index = 0 }: LaunchpadServiceCardProps) {
-  const { icon: Icon, title, group } = def;
+  const { icon: Icon, title, group, features, cta } = def;
   const status = override.status ?? def.status;
   const blurb = override.blurb ?? def.blurb;
   const { href } = override;
   const reduceMotion = useReducedMotion();
 
   const live = status === "live";
-  const accent = GROUP_ACCENTS[group] ?? DEFAULT_ACCENT;
+  const slice = GROUP_SLICES[group] ?? DEFAULT_SLICE;
 
   const body = (
     <>
+      {/* Icon chip — the group's slice of the brand spectrum */}
       <div className="flex items-start justify-between gap-3">
-        <span className={cn("flex h-12 w-12 items-center justify-center rounded-2xl", live ? accent.tint : "bg-muted/40")}>
-          <Icon className={cn("h-6 w-6", live ? accent.text : "text-muted-foreground/50")} />
+        <span className={cn("flex h-14 w-14 items-center justify-center rounded-2xl shadow-sm", live ? slice.chip : "bg-muted/40")}>
+          <Icon className={cn("h-7 w-7", live ? "text-white" : "text-muted-foreground/50")} />
         </span>
         {!live && (
           <span className="flex items-center gap-1 text-[11px] font-medium text-muted-foreground/60 pt-1">
@@ -135,26 +161,46 @@ export function LaunchpadServiceCard({ def, override = {}, index = 0 }: Launchpa
           </span>
         )}
       </div>
-      <div className="space-y-1.5 mt-auto">
-        <h3 className="flex items-center gap-1.5 text-xl font-bold tracking-tight leading-snug">
-          {title}
-          {live && (
-            <ArrowRight className="h-4 w-4 shrink-0 text-muted-foreground/40 transition-transform duration-200 sm:group-hover:translate-x-0.5 motion-reduce:transform-none" />
-          )}
-        </h3>
+
+      {/* Title + one sentence */}
+      <div className="mt-auto space-y-2 pt-6">
+        <h3 className="text-2xl font-bold tracking-tight leading-tight">{title}</h3>
         <p className={cn("text-sm leading-relaxed", live ? "text-muted-foreground" : "text-muted-foreground/60")}>
           {blurb}
         </p>
       </div>
+
+      {/* Use cases */}
+      {live && features.length > 0 && (
+        <ul className="space-y-1.5 pt-4">
+          {features.slice(0, 3).map((feature) => (
+            <li key={feature} className="flex items-start gap-2 text-xs text-muted-foreground leading-relaxed">
+              <Check className={cn("h-3.5 w-3.5 shrink-0 mt-px", slice.marker)} />
+              {feature}
+            </li>
+          ))}
+        </ul>
+      )}
+
+      {/* The action — one vivid full-spectrum pill, identical on every card */}
+      {live && (
+        <div className="pt-5">
+          <span className="inline-flex items-center gap-2 h-10 px-5 rounded-full text-sm font-semibold text-white bg-gradient-to-r from-brand-blue via-brand-purple to-brand-rose">
+            {cta}
+            <ArrowRight className="h-4 w-4 transition-transform duration-200 sm:group-hover:translate-x-0.5 motion-reduce:transform-none" />
+          </span>
+        </div>
+      )}
     </>
   );
 
   return (
     <motion.div
       layout={!reduceMotion}
-      initial={{ opacity: 0, y: reduceMotion ? 0 : 12 }}
+      initial={{ opacity: 0, y: reduceMotion ? 0 : 16 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0 }}
+      whileTap={live ? { scale: 0.97 } : undefined}
       transition={{ duration: 0.35, delay: index * 0.04, ease: [0.25, 0.46, 0.45, 0.94] }}
       className="flex"
     >
@@ -162,15 +208,15 @@ export function LaunchpadServiceCard({ def, override = {}, index = 0 }: Launchpa
         <Link
           href={href}
           className={cn(
-            "group flex flex-1 flex-col gap-5 rounded-2xl border border-border/60 bg-card p-6 min-h-[200px]",
-            "transition-colors duration-200 active:scale-[0.99] motion-reduce:transform-none",
-            accent.hoverBorder,
+            "group flex flex-1 flex-col rounded-3xl border border-border/60 bg-card p-6 sm:aspect-[4/5]",
+            "transition-colors duration-200",
+            slice.hoverBorder,
           )}
         >
           {body}
         </Link>
       ) : (
-        <div className="flex flex-1 flex-col gap-5 rounded-2xl border border-border/30 bg-card p-6 min-h-[200px] opacity-75">
+        <div className="flex flex-1 flex-col rounded-3xl border border-border/30 bg-card p-6 sm:aspect-[4/5] opacity-75">
           {body}
         </div>
       )}
@@ -331,7 +377,7 @@ export function LaunchpadGroupedSections({ overrides, query, activeGroups, onCle
         </div>
       ) : (
         <>
-          <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
+          <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 sm:gap-6">
             <AnimatePresence mode="popLayout">
               {liveDefs.map((def, i) => (
                 <LaunchpadServiceCard key={def.key} def={def} override={overrides[def.key]} index={i} />
