@@ -1,7 +1,7 @@
 import type { LucideIcon } from "lucide-react";
 import {
   ImagePlus, Layers, GitBranch,
-  Award, Package, PlusCircle,
+  Award, Package,
   Ticket, Users, Handshake,
   Coins, TrendingUp,
   AtSign, FolderInput, Link2,
@@ -16,7 +16,7 @@ export type ServiceStatus = "live" | "building" | "soon";
 export type ServiceCategory = "create" | "launch" | "monetize";
 
 export type ServiceGroup =
-  | "single-edition"
+  | "nfts"
   | "limited-editions"
   | "coins"
   | "community"
@@ -32,22 +32,22 @@ export interface ServiceGroupDefinition {
   badge?: string;
 }
 
-/** Ordered — launchpad pages render sections in this order. */
+/** Ordered — drives the filter pills and the grid's tag order. */
 export const LAUNCHPAD_SERVICE_GROUPS: ServiceGroupDefinition[] = [
   {
-    key: "single-edition",
-    title: "Single Edition",
-    tagline: "Publish one-of-a-kind pieces \u2014 a song, a photo, a film, a timed drop, or a remix.",
+    key: "nfts",
+    title: "NFTs",
+    tagline: "Singular works, your own collections, timed drops, and remixes.",
   },
   {
     key: "limited-editions",
     title: "Limited Editions",
-    tagline: "Release your work in numbered copies your fans can collect and trade.",
+    tagline: "Numbered copies of your work.",
   },
   {
     key: "coins",
     title: "Coins",
-    tagline: "Launch your own coin \u2014 or bring one you already made.",
+    tagline: "Launch your own coin, or bring one you already made.",
   },
   {
     key: "community",
@@ -57,7 +57,7 @@ export const LAUNCHPAD_SERVICE_GROUPS: ServiceGroupDefinition[] = [
   {
     key: "claims",
     title: "Claims",
-    tagline: "Quick wins \u2014 reserve your username, your collection's name, or bring in a collection you already deployed elsewhere.",
+    tagline: "Reserve your username, your collection's name, or bring in a collection you already made.",
   },
   {
     key: "coming-soon",
@@ -94,15 +94,14 @@ export interface ServiceDefinition {
 export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
   // ── Create ────────────────────────────────────────────────────────────────
   {
-    key: "mint-ip-asset",
-    cta: "Mint",
-    blurb: "Upload a song, a photo, a video \u2014 any file \u2014 and publish it as yours, free, in minutes.",
-    title: "Mint singular NFT",
-    subtitle: "Publish your creative work onchain",
+    key: "nfts",
+    cta: "Create",
+    blurb: "Publish one-of-a-kind works and keep them in collections of your own.",
+    title: "NFTs",
+    subtitle: "Singular works and your own collections",
     description:
-      "Upload any photo, video, audio, or document and mint it as an IP NFT — with licensing, provenance, and ownership all locked on-chain.",
-    // Apps may override features[0] with their gasless-rail wording (ChipiPay/AVNU).
-    features: ["Free to publish", "Your file, stored forever", "You set the license terms"],
+      "Publish any photo, video, audio, or document as a one-of-a-kind work inside a collection you own. Licensing, provenance, and ownership live on-chain.",
+    features: ["One-of-a-kind works", "Your own branded collections", "You set the license terms"],
     example: "A song, a photo, an ebook, a short film",
     icon: ImagePlus,
     gradient: "from-blue-500/10 via-sky-400/4 to-transparent",
@@ -112,18 +111,18 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     badge: "Create",
     status: "live",
     category: "create",
-    group: "single-edition",
+    group: "nfts",
   },
   {
-    key: "create-collection",
-    cta: "Create",
-    blurb: "Give your works a home of their own, with its own page and name.",
-    title: "Create NFT Collection",
-    subtitle: "Group your NFTs under a shared identity",
+    key: "limited-editions",
+    cta: "Mint",
+    blurb: "Release your work in numbered copies that can be collected and traded.",
+    title: "Limited Editions",
+    subtitle: "Numbered copies from a collection you own",
     description:
-      "Deploy a branded ERC-721 collection with its own page and on-chain identity. Add assets to it at any time and share it with collectors.",
-    features: ["Your own branded page", "Add new work anytime", "One link to share with fans"],
-    example: "A photography portfolio, a music catalog, a comic series",
+      "Create an editions collection and release each work in as many numbered copies as you choose.",
+    features: ["Numbered copies, set by you", "Fans collect and trade", "One home for every release"],
+    example: "50 copies of a limited print, a music EP in 100 editions",
     icon: Layers,
     gradient: "from-violet-500/10 via-purple-400/4 to-transparent",
     borderColor: "border-violet-500/20",
@@ -132,56 +131,16 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     badge: "Create",
     status: "live",
     category: "create",
-    group: "single-edition",
-  },
-  {
-    key: "ip-collection-1155",
-    cta: "Create",
-    blurb: "Set up a collection made for numbered copies of your work.",
-    title: "Limited Editions Collections",
-    subtitle: "Deploy a contract for multi-copy NFT releases",
-    description:
-      "Create a collection built for editions — release music tracks, art prints, or any IP in numbered multiples. Each edition token is tradeable on Medialane.",
-    features: ["Numbered copies, set by you", "Fans collect and trade", "One home for every release"],
-    example: "50 copies of a limited print, a music EP in 100 editions",
-    icon: Layers,
-    gradient: "from-violet-500/10 via-purple-400/4 to-transparent",
-    borderColor: "border-violet-500/20",
-    iconColor: "text-violet-500",
-    buttonColor: "bg-violet-600 hover:bg-violet-700",
-    badge: "Create",
-    status: "live",
-    category: "create",
-    group: "limited-editions",
-  },
-  {
-    key: "mint-editions",
-    cta: "Mint",
-    blurb: "Release a new piece in as many copies as you choose.",
-    title: "Mint Limited Edition",
-    subtitle: "Add new editions to an existing collection",
-    description:
-      "Pick one of your Limited Edition contracts, upload artwork, set the supply, and release to collectors — all in a few clicks.",
-    features: ["You choose how many copies", "Numbered automatically", "Ready to sell right away"],
-    example: "Drop 25 numbered prints from your art series",
-    icon: PlusCircle,
-    gradient: "from-fuchsia-500/10 via-violet-400/4 to-transparent",
-    borderColor: "border-fuchsia-500/20",
-    iconColor: "text-fuchsia-500",
-    buttonColor: "bg-fuchsia-600 hover:bg-fuchsia-700",
-    badge: "Create",
-    status: "live",
-    category: "create",
     group: "limited-editions",
   },
   {
     key: "remix-asset",
     cta: "Browse",
-    blurb: "Create from another work \u2014 credit and royalties are handled for you.",
+    blurb: "Create from another work. Credit and royalties are handled automatically.",
     title: "Remix Asset",
     subtitle: "Derivative works with on-chain attribution",
     description:
-      "Create a licensed derivative of any digital asset with full provenance and attribution flowing back to the original creator on-chain.",
+      "Create a licensed derivative of another work. Attribution and provenance flow back to the original creator.",
     features: ["Credit handled automatically", "Royalties flow to the original", "License respected at mint"],
     example: "A remix of a song, an artwork inspired by an original",
     icon: GitBranch,
@@ -192,19 +151,19 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     badge: "Create",
     status: "live",
     category: "create",
-    group: "single-edition",
+    group: "nfts",
   },
 
   // ── Launch ────────────────────────────────────────────────────────────────
   {
     key: "pop-protocol",
     cta: "Create",
-    blurb: "Hand out badges your attendees keep forever.",
+    blurb: "Badges your community claims and keeps forever.",
     title: "POP Protocol",
-    subtitle: "Proof-of-participation for events & communities",
+    subtitle: "Proof-of-participation badges for your community",
     description:
-      "Issue soulbound credentials to your community — one non-transferable badge per wallet, permanently on-chain. No transferring, no faking.",
-    features: ["Free for your community to claim", "Invite-list gating optional", "Branded event page to share"],
+      "Give out permanent badges. Each person can claim one, and it cannot be transferred or faked.",
+    features: ["Free for your community to claim", "Invite-list gating optional", "Branded claim page to share"],
     example: "Hackathon attendance badge, community membership, conference pass",
     icon: Award,
     gradient: "from-emerald-500/10 via-green-400/4 to-transparent",
@@ -212,7 +171,7 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     iconColor: "text-emerald-500",
     buttonColor: "bg-green-600 hover:bg-green-700",
     badge: "Launch",
-    browseLinkLabel: "Browse events",
+    browseLinkLabel: "Browse badges",
     status: "live",
     category: "launch",
     group: "community",
@@ -220,11 +179,11 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
   {
     key: "collection-drop",
     cta: "Launch",
-    blurb: "Set a price, a window, and a limited run \u2014 then open the doors.",
+    blurb: "Release a limited run at a set price and time window.",
     title: "Collection Drop",
     subtitle: "Timed NFT releases with mint windows",
     description:
-      "Launch a time-gated mint campaign — set a price, supply cap, start and end time, and let collectors mint directly from your drop page.",
+      "Set a price, a supply, and a start and end time. Collectors mint directly from your drop page.",
     features: ["You set price and supply", "Opens and closes on your schedule", "Branded drop page to share"],
     example: "A 48-hour drop of 200 pieces at 5 USDC each",
     icon: Package,
@@ -236,7 +195,7 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     browseLinkLabel: "Browse drops",
     status: "live",
     category: "launch",
-    group: "single-edition",
+    group: "nfts",
   },
   {
     key: "ip-tickets",
@@ -263,11 +222,11 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
   {
     key: "ip-club",
     cta: "Create",
-    blurb: "Passes that unlock more for your closest fans.",
+    blurb: "Membership passes for your community.",
     title: "IP Club",
     subtitle: "Membership passes with an on-chain card",
     description:
-      "Create a membership club backed by an on-chain NFT membership card. Set an entry fee, a member cap, and open or close joining anytime.",
+      "Create a club with an on-chain membership card. Set an entry fee and a member cap, and open or close joining anytime.",
     features: ["On-chain membership card", "Optional entry fee", "Open or close joining anytime"],
     icon: Users,
     gradient: "from-indigo-500/10 via-violet-400/4 to-transparent",
@@ -289,8 +248,8 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     title: "IP Sponsorship",
     subtitle: "Direct sponsorship offers, settled asset-to-asset",
     description:
-      "Create a sponsorship offer on an asset you own — sponsors bid, you accept, they receive a license. No escrow: settlement is direct, sponsor to author.",
-    features: ["No escrow — direct settlement", "Owner-verified on-chain", "Open bidding or one invited sponsor"],
+      "Create a sponsorship offer on an asset you own. Sponsors bid, you accept, and they receive a license. Payment settles directly between sponsor and author.",
+    features: ["Direct settlement", "Owner-verified on-chain", "Open bidding or one invited sponsor"],
     example: "Sponsor a song, an artwork, or a patent for a license",
     icon: Handshake,
     gradient: "from-rose-500/10 via-pink-400/4 to-transparent",
@@ -310,11 +269,11 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
   {
     key: "creator-coins",
     cta: "Launch",
-    blurb: "Launch your coin in a few clicks \u2014 and stay in control of it.",
+    blurb: "Launch your coin in a few clicks and stay in control of it.",
     title: "Creator Coin",
     subtitle: "Your own coin, your liquidity",
     description:
-      "Launch a standard ERC-20 coin tied to your creative work, paired with a public Ekubo liquidity pool. You set the supply and allocation — and you stay in control of the liquidity.",
+      "Launch your own coin with a public trading pool. You set the supply and allocation and stay in control of the liquidity.",
     features: ["Launch in a few clicks", "You keep control of the liquidity", "Traded on a public pool"],
     example: "A fan coin for your channel, a coin for your music project",
     icon: TrendingUp,
@@ -332,11 +291,11 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
   {
     key: "claim-memecoin",
     cta: "Claim",
-    blurb: "Already launched a coin? Add it to your Medialane profile.",
+    blurb: "Add a coin you already launched to your profile.",
     title: "Claim Memecoin",
-    subtitle: "Bring your Starknet coin to Medialane",
+    subtitle: "Bring a coin you already launched",
     description:
-      "Already launched a coin on Starknet (unrug or partner)? Claim it to add it to Medialane — reviewed by our team, then live on the Coins page and your profile.",
+      "Claim a coin you already launched to list it on the Coins page and your profile. Claims are reviewed before going live.",
     features: ["Bring a coin you already launched", "Reviewed by our team", "Featured on the Coins page"],
     example: "Your unrug memecoin, listed on your creator profile",
     icon: Coins,
@@ -374,11 +333,11 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     cta: "Claim",
     blurb: "Made a collection somewhere else? Bring it to your profile.",
     title: "Claim Collection",
-    subtitle: "Import an existing Starknet collection",
+    subtitle: "Bring a collection you already made",
     description:
-      "Already deployed an ERC-721 collection on Starknet? Claim it to link it to your Medialane profile and give it a branded collection page.",
+      "Claim a collection you made elsewhere to link it to your profile and give it a branded collection page.",
     features: ["Bring an existing collection", "Linked to your profile", "Branded collection page"],
-    example: "A collection you deployed elsewhere joins your profile",
+    example: "A collection you made elsewhere joins your profile",
     icon: FolderInput,
     gradient: "from-blue-500/10 via-sky-400/4 to-transparent",
     borderColor: "border-blue-500/20",
@@ -396,7 +355,7 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     title: "Claim Collection Name",
     subtitle: "Reserve your collection page URL",
     description:
-      "Claim a custom name for your collection page — a clean, shareable URL your fans can remember, instead of a long contract address.",
+      "Claim a custom name for your collection page and get a clean, shareable URL instead of a long technical address.",
     features: ["Free claim", "Clean shareable URL", "Easy to remember and share"],
     example: "medialane.io/collections/your-collection",
     icon: Link2,

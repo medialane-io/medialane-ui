@@ -2,7 +2,11 @@
 
 import { Search, X } from "lucide-react";
 import { cn } from "../utils/cn.js";
-import type { ServiceGroup, ServiceGroupDefinition } from "../data/launchpad-services.js";
+import {
+  LAUNCHPAD_SERVICE_DEFINITIONS,
+  type ServiceGroup,
+  type ServiceGroupDefinition,
+} from "../data/launchpad-services.js";
 
 export interface LaunchpadFilterBarProps {
   query: string;
@@ -14,10 +18,10 @@ export interface LaunchpadFilterBarProps {
 }
 
 /**
- * Search + group-filter bar sitting above the grouped launchpad sections.
- * Fully controlled — all state (query, active groups) lives in the caller
- * (`LaunchpadGroupedSections`) so the grid below can react to the same
- * state without prop-drilling through this component.
+ * Search + group-filter bar above the launchpad grid. Fully controlled — all
+ * state (query, active groups) lives in the caller so the grid below reacts
+ * to the same state. Each pill shows the live count of services it matches
+ * under the current search query.
  */
 export function LaunchpadFilterBar({
   query,
@@ -27,6 +31,15 @@ export function LaunchpadFilterBar({
   onToggleGroup,
   resultCount,
 }: LaunchpadFilterBarProps) {
+  const countFor = (key: ServiceGroup) =>
+    LAUNCHPAD_SERVICE_DEFINITIONS.filter(
+      (d) =>
+        d.group === key &&
+        d.status === "live" &&
+        (query.trim() === "" ||
+          `${d.title} ${d.blurb} ${d.subtitle}`.toLowerCase().includes(query.trim().toLowerCase())),
+    ).length;
+
   return (
     <div className="flex flex-col sm:flex-row gap-3 sm:items-center">
       <div className="relative flex-1 sm:max-w-xs">
@@ -53,6 +66,7 @@ export function LaunchpadFilterBar({
       <div className="flex flex-wrap gap-2 flex-1">
         {groups.map((group) => {
           const active = activeGroups.has(group.key);
+          const count = countFor(group.key);
           return (
             <button
               key={group.key}
@@ -60,13 +74,16 @@ export function LaunchpadFilterBar({
               onClick={() => onToggleGroup(group.key)}
               aria-pressed={active}
               className={cn(
-                "h-8 px-3.5 rounded-full text-xs font-semibold transition-colors border",
+                "h-8 px-3.5 rounded-full text-xs font-semibold transition-colors border inline-flex items-center gap-1.5",
                 active
                   ? "bg-gradient-to-r from-brand-purple to-brand-blue text-white border-transparent shadow-sm"
                   : "bg-card text-muted-foreground border-border active:bg-muted/60 sm:hover:bg-muted/40",
               )}
             >
               {group.title}
+              <span className={cn("tabular-nums", active ? "text-white/70" : "text-muted-foreground/60")}>
+                {count}
+              </span>
             </button>
           );
         })}

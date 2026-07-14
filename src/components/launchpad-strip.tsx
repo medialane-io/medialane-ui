@@ -36,12 +36,12 @@ const DEF_BY_KEY = Object.fromEntries(LAUNCHPAD_SERVICE_DEFINITIONS.map((d) => [
 
 /** Display order on the homepage strip */
 const STRIP_ORDER = [
-  "mint-ip-asset",
-  "create-collection",
-  "ip-collection-1155",
-  "mint-editions",
+  "nfts",
+  "limited-editions",
   "collection-drop",
   "pop-protocol",
+  "ip-tickets",
+  "creator-coins",
 ];
 
 const MARKETPLACE_HUE = {
