@@ -240,13 +240,13 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
   },
   {
     key: "ip-tickets",
-    cta: "Sell",
-    blurb: "Sell tickets to your shows and events.",
+    cta: "Create",
+    blurb: "Create on-chain tickets your audience can hold and trade.",
     title: "IP Tickets",
-    subtitle: "Gate real-world experiences with NFTs",
+    subtitle: "Verifiable tickets, held in the wallet",
     description:
-      "Distribute tickets for concerts, workshops, and events. Each ticket is verifiable on-chain proof of attendance.",
-    features: ["NFT-based event gating", "Proof of attendance", TICKETS_TRANSFERABLE_FEATURE],
+      "Create tickets with their own supply and validity window, then mint them to attendees. Every ticket is verifiable on-chain.",
+    features: ["Verifiable at the door", "Supply and validity you set", TICKETS_TRANSFERABLE_FEATURE],
     icon: Ticket,
     gradient: "from-teal-500/10 via-cyan-400/4 to-transparent",
     borderColor: "border-teal-500/20",
