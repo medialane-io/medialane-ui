@@ -13,7 +13,6 @@ const TICKETS_TRANSFERABLE_FEATURE = hasCapability("ip-tickets", "transfer")
   : "Stays with the original holder";
 
 export type ServiceStatus = "live" | "building" | "soon";
-export type ServiceCategory = "create" | "launch" | "monetize";
 
 export type ServiceGroup =
   | "nfts"
@@ -66,6 +65,9 @@ export const LAUNCHPAD_SERVICE_GROUPS: ServiceGroupDefinition[] = [
   },
 ];
 
+/** All colors on launchpad surfaces come from the design system: the group
+ *  accents in `GROUP_SLICES` / `SERVICE_HUES` (brand tokens only). Service
+ *  definitions carry NO style fields — content only. */
 export interface ServiceDefinition {
   key: string;
   title: string;
@@ -73,19 +75,13 @@ export interface ServiceDefinition {
   description: string;
   features: string[];
   icon: LucideIcon;
-  gradient: string;
-  borderColor: string;
-  iconColor: string;
-  buttonColor?: string;
-  badge: string;
   status: ServiceStatus;
-  category: ServiceCategory;
   group: ServiceGroup;
   /** The ONE creator-language sentence the card shows (no jargon). */
   blurb: string;
-  /** Single-verb action label for the card's gradient pill (never repeats the title). */
+  /** Single-verb action label (never repeats the title). */
   cta: string;
-  /** Concrete usage example (legacy long-card layout; unused by the 0.9.0 card). */
+  /** Concrete usage example (legacy long-card layout; unused by the current card). */
   example?: string;
   /** Secondary browse link label — injected app adds the href */
   browseLinkLabel?: string;
@@ -96,21 +92,15 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
   {
     key: "nfts",
     cta: "Create",
-    blurb: "Publish one-of-a-kind works and keep them in collections of your own.",
-    title: "NFTs",
-    subtitle: "Singular works and your own collections",
+    blurb: "Publish each work as a single copy in a collection you own.",
+    title: "Single Editions",
+    subtitle: "Each work is minted once",
     description:
-      "Publish any photo, video, audio, or document as a one-of-a-kind work inside a collection you own. Licensing, provenance, and ownership live on-chain.",
-    features: ["One-of-a-kind works", "Your own branded collections", "You set the license terms"],
+      "Publish any photo, video, audio, or document, minted once inside your collection. Licensing, provenance, and ownership live on-chain.",
+    features: ["One mint per work", "Collections with their own page and name", "You set the license terms"],
     example: "A song, a photo, an ebook, a short film",
     icon: ImagePlus,
-    gradient: "from-blue-500/10 via-sky-400/4 to-transparent",
-    borderColor: "border-blue-500/20",
-    iconColor: "text-blue-500",
-    buttonColor: "bg-brand-blue hover:bg-brand-blue/90",
-    badge: "Create",
     status: "live",
-    category: "create",
     group: "nfts",
   },
   {
@@ -124,13 +114,7 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     features: ["Numbered copies, set by you", "Fans collect and trade", "One home for every release"],
     example: "50 copies of a limited print, a music EP in 100 editions",
     icon: Layers,
-    gradient: "from-violet-500/10 via-purple-400/4 to-transparent",
-    borderColor: "border-violet-500/20",
-    iconColor: "text-violet-500",
-    buttonColor: "bg-brand-purple hover:bg-brand-purple/90",
-    badge: "Create",
     status: "live",
-    category: "create",
     group: "limited-editions",
   },
   {
@@ -144,13 +128,7 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     features: ["Credit handled automatically", "Royalties flow to the original", "License respected at mint"],
     example: "A remix of a song, an artwork inspired by an original",
     icon: GitBranch,
-    gradient: "from-rose-500/10 via-pink-400/4 to-transparent",
-    borderColor: "border-rose-500/20",
-    iconColor: "text-rose-500",
-    buttonColor: "bg-brand-rose hover:bg-brand-rose/90",
-    badge: "Create",
     status: "live",
-    category: "create",
     group: "nfts",
   },
 
@@ -166,14 +144,8 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     features: ["Free for your community to claim", "Invite-list gating optional", "Branded claim page to share"],
     example: "Hackathon attendance badge, community membership, conference pass",
     icon: Award,
-    gradient: "from-emerald-500/10 via-green-400/4 to-transparent",
-    borderColor: "border-emerald-500/20",
-    iconColor: "text-emerald-500",
-    buttonColor: "bg-green-600 hover:bg-green-700",
-    badge: "Launch",
     browseLinkLabel: "Browse badges",
     status: "live",
-    category: "launch",
     group: "community",
   },
   {
@@ -187,14 +159,8 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     features: ["You set price and supply", "Opens and closes on your schedule", "Branded drop page to share"],
     example: "A 48-hour drop of 200 pieces at 5 USDC each",
     icon: Package,
-    gradient: "from-orange-500/10 via-amber-400/4 to-transparent",
-    borderColor: "border-orange-500/20",
-    iconColor: "text-orange-500",
-    buttonColor: "bg-orange-600 hover:bg-orange-700",
-    badge: "Launch",
     browseLinkLabel: "Browse drops",
     status: "live",
-    category: "launch",
     group: "nfts",
   },
   {
@@ -207,16 +173,10 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
       "Create tickets with their own supply and validity window, then mint them to attendees. Every ticket is verifiable on-chain.",
     features: ["Verifiable at the door", "Supply and validity you set", TICKETS_TRANSFERABLE_FEATURE],
     icon: Ticket,
-    gradient: "from-teal-500/10 via-cyan-400/4 to-transparent",
-    borderColor: "border-teal-500/20",
-    iconColor: "text-teal-500",
-    buttonColor: "bg-teal-600 hover:bg-teal-700",
-    badge: "Launch",
     browseLinkLabel: "Browse tickets",
     // Deployed to Starknet mainnet 2026-07-02 — see
     // medialane-core/docs/deployments.md
     status: "live",
-    category: "launch",
     group: "community",
   },
   {
@@ -229,16 +189,10 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
       "Create a club with an on-chain membership card. Set an entry fee and a member cap, and open or close joining anytime.",
     features: ["On-chain membership card", "Optional entry fee", "Open or close joining anytime"],
     icon: Users,
-    gradient: "from-indigo-500/10 via-violet-400/4 to-transparent",
-    borderColor: "border-indigo-500/20",
-    iconColor: "text-indigo-400",
-    buttonColor: "bg-indigo-600 hover:bg-indigo-700",
-    badge: "Launch",
     browseLinkLabel: "Browse clubs",
     // Deployed to Starknet mainnet 2026-07-02 — see
     // medialane-core/docs/deployments.md
     status: "live",
-    category: "launch",
     group: "community",
   },
   {
@@ -252,16 +206,10 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     features: ["Direct settlement", "Owner-verified on-chain", "Open bidding or one invited sponsor"],
     example: "Sponsor a song, an artwork, or a patent for a license",
     icon: Handshake,
-    gradient: "from-rose-500/10 via-pink-400/4 to-transparent",
-    borderColor: "border-rose-500/20",
-    iconColor: "text-rose-500",
-    buttonColor: "bg-brand-rose hover:bg-brand-rose/90",
-    badge: "Launch",
     browseLinkLabel: "Browse offers",
     // Deployed to Starknet mainnet 2026-07-02 — see
     // medialane-core/docs/deployments.md
     status: "live",
-    category: "launch",
     group: "community",
   },
 
@@ -277,13 +225,7 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     features: ["Launch in a few clicks", "You keep control of the liquidity", "Traded on a public pool"],
     example: "A fan coin for your channel, a coin for your music project",
     icon: TrendingUp,
-    gradient: "from-pink-500/6 via-rose-400/2 to-transparent",
-    borderColor: "border-pink-500/20",
-    iconColor: "text-pink-400",
-    buttonColor: "bg-brand-rose hover:bg-brand-rose/90",
-    badge: "Launch",
     status: "live",
-    category: "monetize",
     group: "coins",
   },
 
@@ -299,13 +241,7 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     features: ["Bring a coin you already launched", "Reviewed by our team", "Featured on the Coins page"],
     example: "Your unrug memecoin, listed on your creator profile",
     icon: Coins,
-    gradient: "from-orange-500/10 via-amber-400/4 to-transparent",
-    borderColor: "border-orange-500/20",
-    iconColor: "text-orange-500",
-    buttonColor: "bg-orange-600 hover:bg-orange-700",
-    badge: "Claim",
     status: "live",
-    category: "monetize",
     group: "coins",
   },
   {
@@ -315,17 +251,11 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     title: "Claim Username",
     subtitle: "Reserve your creator page URL",
     description:
-      "Claim your unique username and get a shareable creator page — your public portfolio at a clean, memorable URL. Free, and yours.",
+      "Claim your username to get a shareable creator page, your public portfolio at a clean, memorable URL.",
     features: ["Free claim", "Shareable creator page", "Your public portfolio"],
     example: "medialane.io/your-name — your portfolio at your own name",
     icon: AtSign,
-    gradient: "from-violet-500/10 via-purple-400/4 to-transparent",
-    borderColor: "border-violet-500/20",
-    iconColor: "text-violet-500",
-    buttonColor: "bg-brand-purple hover:bg-brand-purple/90",
-    badge: "Claim",
     status: "live",
-    category: "create",
     group: "claims",
   },
   {
@@ -339,13 +269,7 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     features: ["Bring an existing collection", "Linked to your profile", "Branded collection page"],
     example: "A collection you made elsewhere joins your profile",
     icon: FolderInput,
-    gradient: "from-blue-500/10 via-sky-400/4 to-transparent",
-    borderColor: "border-blue-500/20",
-    iconColor: "text-blue-500",
-    buttonColor: "bg-brand-blue hover:bg-brand-blue/90",
-    badge: "Claim",
     status: "live",
-    category: "create",
     group: "claims",
   },
   {
@@ -359,12 +283,7 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     features: ["Free claim", "Clean shareable URL", "Easy to remember and share"],
     example: "medialane.io/collections/your-collection",
     icon: Link2,
-    gradient: "from-pink-500/10 via-rose-400/4 to-transparent",
-    borderColor: "border-pink-500/20",
-    iconColor: "text-pink-500",
-    badge: "Claim",
     status: "live",
-    category: "create",
     group: "claims",
   },
 ];

@@ -89,18 +89,20 @@ interface ServiceHue {
   tint: string;
 }
 
+/** Brand tokens only ([[brand-tokens-only]]) — one hue per service, drawn from
+ *  the brand spectrum. */
 export const SERVICE_HUES: Record<string, ServiceHue> = {
-  "nfts": { text: "text-blue-600 dark:text-blue-400", solid: "bg-blue-600", border: "border-blue-500/30 dark:border-blue-400/25", tint: "bg-blue-500/10" },
-  "limited-editions": { text: "text-purple-600 dark:text-purple-400", solid: "bg-purple-600", border: "border-purple-500/30 dark:border-purple-400/25", tint: "bg-purple-500/10" },
-  "creator-coins": { text: "text-yellow-600 dark:text-yellow-400", solid: "bg-yellow-600", border: "border-yellow-500/30 dark:border-yellow-400/25", tint: "bg-yellow-500/10" },
-  "claim-memecoin": { text: "text-orange-600 dark:text-orange-400", solid: "bg-orange-600", border: "border-orange-500/30 dark:border-orange-400/25", tint: "bg-orange-500/10" },
-  "collection-drop": { text: "text-orange-600 dark:text-orange-400", solid: "bg-orange-600", border: "border-orange-500/30 dark:border-orange-400/25", tint: "bg-orange-500/10" },
-  "pop-protocol": { text: "text-emerald-600 dark:text-emerald-400", solid: "bg-emerald-600", border: "border-emerald-500/30 dark:border-emerald-400/25", tint: "bg-emerald-500/10" },
-  "ip-tickets": { text: "text-teal-600 dark:text-teal-400", solid: "bg-teal-600", border: "border-teal-500/30 dark:border-teal-400/25", tint: "bg-teal-500/10" },
-  "remix-asset": { text: "text-indigo-600 dark:text-indigo-400", solid: "bg-indigo-600", border: "border-indigo-500/30 dark:border-indigo-400/25", tint: "bg-indigo-500/10" },
-  "claim-username": { text: "text-violet-600 dark:text-violet-400", solid: "bg-violet-600", border: "border-violet-500/30 dark:border-violet-400/25", tint: "bg-violet-500/10" },
-  "claim-collection": { text: "text-cyan-600 dark:text-cyan-400", solid: "bg-cyan-600", border: "border-cyan-500/30 dark:border-cyan-400/25", tint: "bg-cyan-500/10" },
-  "claim-collection-name": { text: "text-pink-600 dark:text-pink-400", solid: "bg-pink-600", border: "border-pink-500/30 dark:border-pink-400/25", tint: "bg-pink-500/10" },
+  "nfts": { text: "text-brand-blue", solid: "bg-brand-blue", border: "border-brand-blue/30", tint: "bg-brand-blue/10" },
+  "limited-editions": { text: "text-brand-indigo", solid: "bg-brand-indigo", border: "border-brand-indigo/30", tint: "bg-brand-indigo/10" },
+  "creator-coins": { text: "text-brand-price", solid: "bg-brand-price", border: "border-brand-price/30", tint: "bg-brand-price/10" },
+  "claim-memecoin": { text: "text-brand-orange", solid: "bg-brand-orange", border: "border-brand-orange/30", tint: "bg-brand-orange/10" },
+  "collection-drop": { text: "text-brand-purple", solid: "bg-brand-purple", border: "border-brand-purple/30", tint: "bg-brand-purple/10" },
+  "pop-protocol": { text: "text-brand-rose", solid: "bg-brand-rose", border: "border-brand-rose/30", tint: "bg-brand-rose/10" },
+  "ip-tickets": { text: "text-brand-orange", solid: "bg-brand-orange", border: "border-brand-orange/30", tint: "bg-brand-orange/10" },
+  "remix-asset": { text: "text-brand-indigo", solid: "bg-brand-indigo", border: "border-brand-indigo/30", tint: "bg-brand-indigo/10" },
+  "claim-username": { text: "text-brand-purple", solid: "bg-brand-purple", border: "border-brand-purple/30", tint: "bg-brand-purple/10" },
+  "claim-collection": { text: "text-brand-blue", solid: "bg-brand-blue", border: "border-brand-blue/30", tint: "bg-brand-blue/10" },
+  "claim-collection-name": { text: "text-brand-rose", solid: "bg-brand-rose", border: "border-brand-rose/30", tint: "bg-brand-rose/10" },
 };
 
 const GROUP_TITLE_BY_KEY = Object.fromEntries(

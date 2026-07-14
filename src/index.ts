@@ -110,7 +110,7 @@ export { LaunchpadStrip } from "./components/launchpad-strip.js";
 export type { LaunchpadStripProps } from "./components/launchpad-strip.js";
 export type { LaunchpadGroupedSectionsProps, LaunchpadServiceCardProps, ServiceOverride, ServiceOverrides } from "./components/launchpad-services.js";
 export { LAUNCHPAD_SERVICE_DEFINITIONS, LAUNCHPAD_SERVICE_GROUPS } from "./data/launchpad-services.js";
-export type { ServiceDefinition, ServiceStatus, ServiceCategory, ServiceGroup, ServiceGroupDefinition } from "./data/launchpad-services.js";
+export type { ServiceDefinition, ServiceStatus, ServiceGroup, ServiceGroupDefinition } from "./data/launchpad-services.js";
 
 // ── v0.5.0 additions ─────────────────────────────────────────────────────────
 export { NavCommandMenu, useNavCommandMenu } from "./components/nav-command-menu.js";

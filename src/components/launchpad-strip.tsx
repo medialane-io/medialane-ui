@@ -45,10 +45,10 @@ const STRIP_ORDER = [
 ];
 
 const MARKETPLACE_HUE = {
-  text: "text-indigo-600 dark:text-indigo-400",
-  solid: "bg-indigo-600",
-  border: "border-indigo-500/30 dark:border-indigo-400/25",
-  tint: "bg-indigo-500/10",
+  text: "text-brand-indigo",
+  solid: "bg-brand-indigo",
+  border: "border-brand-indigo/30",
+  tint: "bg-brand-indigo/10",
 };
 
 function ServiceCard({ card }: { card: StripCard }) {
