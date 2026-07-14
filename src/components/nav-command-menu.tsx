@@ -65,30 +65,6 @@ export function useNavCommandMenu() {
   };
 }
 
-// ── Recents (localStorage) ─────────────────────────────────────────────────────
-
-const RECENT_KEY = "ml.nav.recent";
-const RECENT_MAX = 3;
-
-function readRecents(): string[] {
-  try {
-    const raw = localStorage.getItem(RECENT_KEY);
-    const ids = raw ? (JSON.parse(raw) as unknown) : [];
-    return Array.isArray(ids) ? ids.filter((x): x is string => typeof x === "string") : [];
-  } catch {
-    return [];
-  }
-}
-
-function pushRecent(id: string) {
-  try {
-    const next = [id, ...readRecents().filter((x) => x !== id)].slice(0, RECENT_MAX);
-    localStorage.setItem(RECENT_KEY, JSON.stringify(next));
-  } catch {
-    /* storage unavailable — recents are a nicety, never an error */
-  }
-}
-
 // ── Small primitives ──────────────────────────────────────────────────────────
 
 function Kbd({ children, className }: { children: React.ReactNode; className?: string }) {
@@ -166,14 +142,12 @@ const GROUP_HEADING_CLASSES = cn(
 export function NavCommandMenu({ commands, trigger, accountSlot, footerSlot }: NavCommandMenuProps) {
   const [open, setOpen] = React.useState(false);
   const [query, setQuery] = React.useState("");
-  const [recentIds, setRecentIds] = React.useState<string[]>([]);
   const router = useRouter();
   const inputRef = React.useRef<HTMLInputElement>(null);
 
   React.useEffect(() => {
     if (!open) return;
     setQuery("");
-    setRecentIds(readRecents());
     const t = setTimeout(() => inputRef.current?.focus(), 60);
     return () => clearTimeout(t);
   }, [open]);
@@ -201,21 +175,12 @@ export function NavCommandMenu({ commands, trigger, accountSlot, footerSlot }: N
 
   const runCommand = React.useCallback(
     (cmd: NavCommand) => {
-      pushRecent(cmd.id);
       setOpen(false);
       if (cmd.href) router.push(cmd.href);
       else cmd.action?.();
     },
     [router]
   );
-
-  // Recents only render while the query is empty (search results replace them).
-  const recentItems = React.useMemo(() => {
-    if (recentIds.length === 0) return [];
-    const all = new Map(commands.flatMap((g) => g.items.map((it) => [it.id, it] as const)));
-    return recentIds.map((id) => all.get(id)).filter((it): it is NavCommand => Boolean(it));
-  }, [recentIds, commands]);
-  const showRecents = query === "" && recentItems.length > 0;
 
   return (
     <>
@@ -287,24 +252,11 @@ export function NavCommandMenu({ commands, trigger, accountSlot, footerSlot }: N
                       No results found.
                     </Command.Empty>
 
-                    {showRecents && (
-                      <Command.Group heading="Recent" className={GROUP_HEADING_CLASSES}>
-                        {recentItems.map((item) => (
-                          <CommandRow
-                            key={`recent-${item.id}`}
-                            item={item}
-                            primary={false}
-                            onSelect={() => runCommand(item)}
-                          />
-                        ))}
-                      </Command.Group>
-                    )}
-
                     {commands.map((group, i) => {
                       const primary = !group.heading;
                       return (
                       <React.Fragment key={group.heading ?? `__primary-${i}`}>
-                        {(i > 0 || showRecents) && (
+                        {i > 0 && (
                           <Command.Separator className="my-1.5 h-px bg-border/40" />
                         )}
                         <Command.Group heading={group.heading} className={GROUP_HEADING_CLASSES}>

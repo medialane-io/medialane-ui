@@ -19,7 +19,7 @@
  * Apps own: hrefs + per-app rollout status flips. Everything else lives here.
  */
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Lock, ArrowRight } from "lucide-react";
@@ -101,6 +101,8 @@ const GROUP_TITLE_BY_KEY = Object.fromEntries(
   LAUNCHPAD_SERVICE_GROUPS.map((g) => [g.key, g.title]),
 ) as Record<ServiceGroup, string>;
 
+const GROUP_KEYS = new Set(LAUNCHPAD_SERVICE_GROUPS.map((g) => g.key));
+
 // ── Service card — one link, one accent, title + one sentence ────────────────
 
 export interface LaunchpadServiceCardProps {
@@ -122,23 +124,19 @@ export function LaunchpadServiceCard({ def, override = {}, index = 0 }: Launchpa
 
   const body = (
     <>
-      <div className="flex items-center justify-between gap-3">
-        <span className={cn("flex h-10 w-10 items-center justify-center rounded-xl", live ? accent.tint : "bg-muted/40")}>
-          <Icon className={cn("h-5 w-5", live ? accent.text : "text-muted-foreground/50")} />
+      <div className="flex items-start justify-between gap-3">
+        <span className={cn("flex h-12 w-12 items-center justify-center rounded-2xl", live ? accent.tint : "bg-muted/40")}>
+          <Icon className={cn("h-6 w-6", live ? accent.text : "text-muted-foreground/50")} />
         </span>
-        {live ? (
-          <span className={cn("text-[10px] font-semibold uppercase tracking-widest", accent.text)}>
-            {GROUP_TITLE_BY_KEY[group]}
-          </span>
-        ) : (
-          <span className="flex items-center gap-1 text-[11px] font-medium text-muted-foreground/60">
+        {!live && (
+          <span className="flex items-center gap-1 text-[11px] font-medium text-muted-foreground/60 pt-1">
             <Lock className="h-3 w-3" />
             Coming soon
           </span>
         )}
       </div>
-      <div className="space-y-1">
-        <h3 className="flex items-center gap-1.5 text-lg font-bold tracking-tight leading-snug">
+      <div className="space-y-1.5 mt-auto">
+        <h3 className="flex items-center gap-1.5 text-xl font-bold tracking-tight leading-snug">
           {title}
           {live && (
             <ArrowRight className="h-4 w-4 shrink-0 text-muted-foreground/40 transition-transform duration-200 sm:group-hover:translate-x-0.5 motion-reduce:transform-none" />
@@ -164,7 +162,7 @@ export function LaunchpadServiceCard({ def, override = {}, index = 0 }: Launchpa
         <Link
           href={href}
           className={cn(
-            "group flex flex-1 flex-col gap-3 rounded-2xl border border-border/60 bg-card p-5",
+            "group flex flex-1 flex-col gap-5 rounded-2xl border border-border/60 bg-card p-6 min-h-[200px]",
             "transition-colors duration-200 active:scale-[0.99] motion-reduce:transform-none",
             accent.hoverBorder,
           )}
@@ -172,7 +170,7 @@ export function LaunchpadServiceCard({ def, override = {}, index = 0 }: Launchpa
           {body}
         </Link>
       ) : (
-        <div className="flex flex-1 flex-col gap-3 rounded-2xl border border-border/30 bg-card p-5 opacity-75">
+        <div className="flex flex-1 flex-col gap-5 rounded-2xl border border-border/30 bg-card p-6 min-h-[200px] opacity-75">
           {body}
         </div>
       )}
@@ -201,23 +199,65 @@ function ComingSoonStrip({ group, defs }: { group: ServiceGroupDefinition; defs:
 
 // ── Filter state ─────────────────────────────────────────────────────────────
 
+/** Shared search predicate — group titles count as search terms so a query
+ *  like "editions" or "community" finds the whole group. */
+export function serviceMatchesQuery(def: ServiceDefinition, query: string): boolean {
+  if (query.trim() === "") return true;
+  const haystack = `${def.title} ${def.blurb} ${def.subtitle} ${GROUP_TITLE_BY_KEY[def.group] ?? ""}`.toLowerCase();
+  return haystack.includes(query.trim().toLowerCase());
+}
+
+/** Sync filter state into the URL (?q=…&groups=…) via replaceState — the
+ *  filtered launchpad becomes shareable and survives reload, without touching
+ *  the router (this package is router-agnostic). */
+function syncFilterUrl(query: string, groups: Set<ServiceGroup>) {
+  if (typeof window === "undefined") return;
+  const params = new URLSearchParams(window.location.search);
+  if (query.trim()) params.set("q", query.trim());
+  else params.delete("q");
+  if (groups.size > 0) params.set("groups", [...groups].join(","));
+  else params.delete("groups");
+  const qs = params.toString();
+  window.history.replaceState(null, "", qs ? `${window.location.pathname}?${qs}` : window.location.pathname);
+}
+
 /**
  * Owns the search + group-filter state for the launchpad page. A page renders
  * `LaunchpadFilterBar` wherever it wants (e.g. right under the h1) wired to
  * this hook's fields, then passes `query`/`activeGroups` straight through to
  * `LaunchpadGroupedSections` so the grid reacts to the same state.
+ * State is mirrored into the URL (?q=…&groups=…) so a filtered view can be
+ * shared and survives reload.
  */
 export function useLaunchpadFilter() {
-  const [query, setQuery] = useState("");
+  const [query, setQueryState] = useState("");
   const [activeGroups, setActiveGroups] = useState<Set<ServiceGroup>>(new Set());
 
+  // Hydrate once from the URL (client only).
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const q = params.get("q");
+    if (q) setQueryState(q);
+    const g = params.get("groups");
+    if (g) {
+      const groups = g.split(",").filter((k): k is ServiceGroup => GROUP_KEYS.has(k as ServiceGroup));
+      if (groups.length > 0) setActiveGroups(new Set(groups));
+    }
+  }, []);
+
   const filterableGroups = LAUNCHPAD_SERVICE_GROUPS.filter((g) => g.key !== "coming-soon");
+
+  const setQuery = (value: string) => {
+    setQueryState(value);
+    syncFilterUrl(value, activeGroups);
+  };
 
   const toggleGroup = (key: ServiceGroup) => {
     setActiveGroups((prev) => {
       const next = new Set(prev);
       if (next.has(key)) next.delete(key);
       else next.add(key);
+      syncFilterUrl(query, next);
       return next;
     });
   };
@@ -225,9 +265,7 @@ export function useLaunchpadFilter() {
   const matches = (def: ServiceDefinition): boolean => {
     if (activeGroups.size > 0 && !activeGroups.has(def.group)) return false;
     if (def.status !== "live") return false;
-    if (query.trim() === "") return true;
-    const haystack = `${def.title} ${def.blurb} ${def.subtitle}`.toLowerCase();
-    return haystack.includes(query.trim().toLowerCase());
+    return serviceMatchesQuery(def, query);
   };
 
   const totalMatches = useMemo(
@@ -236,7 +274,11 @@ export function useLaunchpadFilter() {
     [query, activeGroups],
   );
 
-  const clear = () => { setQuery(""); setActiveGroups(new Set()); };
+  const clear = () => {
+    setQueryState("");
+    setActiveGroups(new Set());
+    syncFilterUrl("", new Set());
+  };
 
   return { query, setQuery, activeGroups, toggleGroup, filterableGroups, totalMatches, clear };
 }
@@ -260,9 +302,7 @@ export interface LaunchpadGroupedSectionsProps {
  *  `useLaunchpadFilter()` state passed in from the page. */
 export function LaunchpadGroupedSections({ overrides, query, activeGroups, onClearFilters, className }: LaunchpadGroupedSectionsProps) {
   const inActiveGroup = (d: ServiceDefinition) => activeGroups.size === 0 || activeGroups.has(d.group);
-  const inSearch = (d: ServiceDefinition) =>
-    query.trim() === "" ||
-    `${d.title} ${d.blurb} ${d.subtitle}`.toLowerCase().includes(query.trim().toLowerCase());
+  const inSearch = (d: ServiceDefinition) => serviceMatchesQuery(d, query);
 
   const groupOrder = Object.fromEntries(LAUNCHPAD_SERVICE_GROUPS.map((g, i) => [g.key, i]));
 
@@ -291,7 +331,7 @@ export function LaunchpadGroupedSections({ overrides, query, activeGroups, onCle
         </div>
       ) : (
         <>
-          <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
             <AnimatePresence mode="popLayout">
               {liveDefs.map((def, i) => (
                 <LaunchpadServiceCard key={def.key} def={def} override={overrides[def.key]} index={i} />
