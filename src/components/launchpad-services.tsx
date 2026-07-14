@@ -44,58 +44,39 @@ export interface ServiceOverride {
   status?: ServiceStatus;
   /** Per-app one-liner override (rarely needed) */
   blurb?: string;
+  /** Live per-user fact shown as a quiet chip on the card (e.g. "3 collections").
+   *  Apps pass real counts for the signed-in creator; omit when zero/signed out. */
+  meta?: string;
 }
 
 export type ServiceOverrides = Record<string, ServiceOverride>;
 
 // ── Group accents — the grid's only color voice ─────────────────────────────
 
-/** The deck is the brand spectrum: each group owns one slice of the Medialane
- *  gradient (blue → indigo → purple → rose → orange), so the grid read in
- *  group order draws the full spectrum across the launchpad. The slice colors
- *  the icon chip, the use-case markers, and the desktop hover border — never
- *  text labels. */
+/** Each group owns one hue of the Medialane spectrum (blue → indigo → purple →
+ *  rose → orange in group order), applied flat: icon-tile tint + glyph, the
+ *  use-case markers, and the desktop hover border. No gradients, no labels. */
 interface GroupSlice {
-  /** icon chip fill — a two-stop slice of the brand gradient */
-  chip: string;
-  /** use-case marker tint */
-  marker: string;
+  /** soft icon-tile background */
+  tint: string;
+  /** icon glyph + use-case marker tint */
+  text: string;
   /** card border tint on desktop hover (polish only) */
   hoverBorder: string;
 }
 
 const DEFAULT_SLICE: GroupSlice = {
-  chip: "bg-gradient-to-br from-muted to-muted",
-  marker: "text-muted-foreground/60",
+  tint: "bg-muted/60",
+  text: "text-muted-foreground/60",
   hoverBorder: "sm:hover:border-border",
 };
 
 export const GROUP_SLICES: Record<ServiceGroup, GroupSlice> = {
-  "nfts": {
-    chip: "bg-gradient-to-br from-brand-blue to-brand-indigo",
-    marker: "text-brand-blue",
-    hoverBorder: "sm:hover:border-brand-blue/50",
-  },
-  "limited-editions": {
-    chip: "bg-gradient-to-br from-brand-indigo to-brand-purple",
-    marker: "text-brand-indigo",
-    hoverBorder: "sm:hover:border-brand-indigo/50",
-  },
-  "coins": {
-    chip: "bg-gradient-to-br from-brand-purple to-brand-rose",
-    marker: "text-brand-purple",
-    hoverBorder: "sm:hover:border-brand-purple/50",
-  },
-  "community": {
-    chip: "bg-gradient-to-br from-brand-rose to-brand-orange",
-    marker: "text-brand-rose",
-    hoverBorder: "sm:hover:border-brand-rose/50",
-  },
-  "claims": {
-    chip: "bg-gradient-to-br from-brand-orange to-brand-price",
-    marker: "text-brand-orange",
-    hoverBorder: "sm:hover:border-brand-orange/50",
-  },
+  "nfts": { tint: "bg-brand-blue/10", text: "text-brand-blue", hoverBorder: "sm:hover:border-brand-blue/50" },
+  "limited-editions": { tint: "bg-brand-indigo/10", text: "text-brand-indigo", hoverBorder: "sm:hover:border-brand-indigo/50" },
+  "coins": { tint: "bg-brand-purple/10", text: "text-brand-purple", hoverBorder: "sm:hover:border-brand-purple/50" },
+  "community": { tint: "bg-brand-rose/10", text: "text-brand-rose", hoverBorder: "sm:hover:border-brand-rose/50" },
+  "claims": { tint: "bg-brand-orange/10", text: "text-brand-orange", hoverBorder: "sm:hover:border-brand-orange/50" },
   "coming-soon": DEFAULT_SLICE,
 };
 
@@ -149,17 +130,21 @@ export function LaunchpadServiceCard({ def, override = {}, index = 0 }: Launchpa
 
   const body = (
     <>
-      {/* Icon chip — the group's slice of the brand spectrum */}
+      {/* Icon tile + live per-user fact */}
       <div className="flex items-start justify-between gap-3">
-        <span className={cn("flex h-14 w-14 items-center justify-center rounded-2xl shadow-sm", live ? slice.chip : "bg-muted/40")}>
-          <Icon className={cn("h-7 w-7", live ? "text-white" : "text-muted-foreground/50")} />
+        <span className={cn("flex h-14 w-14 items-center justify-center rounded-2xl", live ? slice.tint : "bg-muted/40")}>
+          <Icon className={cn("h-7 w-7", live ? slice.text : "text-muted-foreground/50")} />
         </span>
-        {!live && (
+        {!live ? (
           <span className="flex items-center gap-1 text-[11px] font-medium text-muted-foreground/60 pt-1">
             <Lock className="h-3 w-3" />
             Coming soon
           </span>
-        )}
+        ) : override.meta ? (
+          <span className="text-xs font-semibold tabular-nums px-2.5 py-1 rounded-full bg-muted/50 text-foreground/80">
+            {override.meta}
+          </span>
+        ) : null}
       </div>
 
       {/* Title + one sentence */}
@@ -175,17 +160,17 @@ export function LaunchpadServiceCard({ def, override = {}, index = 0 }: Launchpa
         <ul className="space-y-1.5 pt-4">
           {features.slice(0, 3).map((feature) => (
             <li key={feature} className="flex items-start gap-2 text-xs text-muted-foreground leading-relaxed">
-              <Check className={cn("h-3.5 w-3.5 shrink-0 mt-px", slice.marker)} />
+              <Check className={cn("h-3.5 w-3.5 shrink-0 mt-px", slice.text)} />
               {feature}
             </li>
           ))}
         </ul>
       )}
 
-      {/* The action — one vivid full-spectrum pill, identical on every card */}
+      {/* The action — quiet verb, no pill */}
       {live && (
         <div className="pt-5">
-          <span className="inline-flex items-center gap-2 h-10 px-5 rounded-full text-sm font-semibold text-white bg-gradient-to-r from-brand-blue via-brand-purple to-brand-rose">
+          <span className="inline-flex items-center gap-1.5 text-sm font-semibold">
             {cta}
             <ArrowRight className="h-4 w-4 transition-transform duration-200 sm:group-hover:translate-x-0.5 motion-reduce:transform-none" />
           </span>
