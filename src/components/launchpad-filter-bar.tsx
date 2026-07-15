@@ -16,7 +16,8 @@ export interface LaunchpadFilterBarProps {
   groups: ServiceGroupDefinition[];
   activeGroups: Set<ServiceGroup>;
   onToggleGroup: (key: ServiceGroup) => void;
-  resultCount: number;
+  /** Accepted for API stability; the bar no longer renders a total count. */
+  resultCount?: number;
 }
 
 /**
@@ -32,7 +33,6 @@ export function LaunchpadFilterBar({
   groups,
   activeGroups,
   onToggleGroup,
-  resultCount,
 }: LaunchpadFilterBarProps) {
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -107,9 +107,6 @@ export function LaunchpadFilterBar({
         })}
       </div>
 
-      <p className="text-xs text-muted-foreground whitespace-nowrap sm:pl-2">
-        {resultCount} {resultCount === 1 ? "service" : "services"}
-      </p>
     </div>
   );
 }

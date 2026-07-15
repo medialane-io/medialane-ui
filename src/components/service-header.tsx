@@ -29,7 +29,7 @@ export function ServiceHeader({ icon, title, subtitle, headerAccessory, classNam
         <div className="h-9 w-9 rounded-xl bg-primary flex items-center justify-center shrink-0">
           {icon}
         </div>
-        <h1 className="text-2xl sm:text-3xl font-black tracking-tight">{title}</h1>
+        <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight">{title}</h1>
       </div>
       <p className="mt-1.5 text-sm text-muted-foreground max-w-xl">{subtitle}</p>
       {headerAccessory && <div className="mt-4">{headerAccessory}</div>}
