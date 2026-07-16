@@ -55,28 +55,30 @@ export type ServiceOverrides = Record<string, ServiceOverride>;
 
 /** Each group owns one hue of the Medialane spectrum (blue → indigo → purple →
  *  rose → orange in group order), applied flat: icon-tile tint + glyph, the
- *  use-case markers, and the desktop hover border. No gradients, no labels. */
+ *  use-case markers, and the card's resting hairline. On hover-capable
+ *  devices the full-spectrum gradient ring fades in over the hairline
+ *  (.ml-grad-hover-border — polish only, never carries information). */
 interface GroupSlice {
   /** soft icon-tile background */
   tint: string;
   /** icon glyph + use-case marker tint */
   text: string;
-  /** card border tint on desktop hover (polish only) */
-  hoverBorder: string;
+  /** resting card hairline in the group's hue */
+  border: string;
 }
 
 const DEFAULT_SLICE: GroupSlice = {
   tint: "bg-muted/60",
   text: "text-muted-foreground/60",
-  hoverBorder: "sm:hover:border-border",
+  border: "border-border/60",
 };
 
 export const GROUP_SLICES: Record<ServiceGroup, GroupSlice> = {
-  "nfts": { tint: "bg-brand-blue/10", text: "text-brand-blue", hoverBorder: "sm:hover:border-brand-blue/50" },
-  "limited-editions": { tint: "bg-brand-indigo/10", text: "text-brand-indigo", hoverBorder: "sm:hover:border-brand-indigo/50" },
-  "coins": { tint: "bg-brand-purple/10", text: "text-brand-purple", hoverBorder: "sm:hover:border-brand-purple/50" },
-  "community": { tint: "bg-brand-rose/10", text: "text-brand-rose", hoverBorder: "sm:hover:border-brand-rose/50" },
-  "claims": { tint: "bg-brand-orange/10", text: "text-brand-orange", hoverBorder: "sm:hover:border-brand-orange/50" },
+  "nfts": { tint: "bg-brand-blue/10", text: "text-brand-blue", border: "border-brand-blue/30" },
+  "limited-editions": { tint: "bg-brand-indigo/10", text: "text-brand-indigo", border: "border-brand-indigo/30" },
+  "coins": { tint: "bg-brand-purple/10", text: "text-brand-purple", border: "border-brand-purple/30" },
+  "community": { tint: "bg-brand-rose/10", text: "text-brand-rose", border: "border-brand-rose/30" },
+  "claims": { tint: "bg-brand-orange/10", text: "text-brand-orange", border: "border-brand-orange/30" },
   "coming-soon": DEFAULT_SLICE,
 };
 
@@ -195,9 +197,9 @@ export function LaunchpadServiceCard({ def, override = {}, index = 0 }: Launchpa
         <Link
           href={href}
           className={cn(
-            "group flex flex-1 flex-col rounded-3xl border border-border/60 bg-card p-6 sm:aspect-[4/5]",
-            "transition-colors duration-200",
-            slice.hoverBorder,
+            "group flex flex-1 flex-col rounded-3xl border bg-card p-6 sm:aspect-[4/5]",
+            "ml-grad-hover-border",
+            slice.border,
           )}
         >
           {body}

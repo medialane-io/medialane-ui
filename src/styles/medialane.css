@@ -208,6 +208,29 @@ input[type="number"] { -moz-appearance: textfield; }
   pointer-events: none;
 }
 .ml-gbtn:hover::before { padding: 2px; animation-duration: 1.6s; }
+
+/* ── Hover-only branded gradient border (launchpad cards) ───────────────── */
+/* The resting state keeps the card's own hairline; on hover-capable devices */
+/* the full-spectrum ring fades in over it. Decoration only — never carries  */
+/* information (mobile users lose nothing).                                  */
+.ml-grad-hover-border { position: relative; }
+.ml-grad-hover-border::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1.5px;
+  background: linear-gradient(120deg, #3b7bff, #8a5cf6, #f6608f, #fb8b46);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  pointer-events: none;
+}
+@media (hover: hover) {
+  .ml-grad-hover-border:hover::before { opacity: 1; }
+}
 @keyframes mlBorder {
   0%   { background-position: 0% 50%; }
   100% { background-position: 220% 50%; }
