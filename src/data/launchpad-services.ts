@@ -182,12 +182,12 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
   {
     key: "ip-club",
     cta: "Create",
-    blurb: "Membership passes for your community.",
+    blurb: "Membership cards for your community.",
     title: "IP Club",
-    subtitle: "Membership passes with an on-chain card",
+    subtitle: "Membership tiers, minted as cards",
     description:
-      "Create a club with an on-chain membership card. Set an entry fee and a member cap, and open or close joining anytime.",
-    features: ["On-chain membership card", "Optional entry fee", "Open or close joining anytime"],
+      "Create a club with membership tiers — fans, supporters, press, season passes. Mint the cards and sell them like any collection.",
+    features: ["Membership tiers", "Optional validity window", "Trade like any collection"],
     icon: Users,
     browseLinkLabel: "Browse clubs",
     // Deployed to Starknet mainnet 2026-07-02 — see

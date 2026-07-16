@@ -23,7 +23,7 @@ Package manager: **Bun** for everything except `npm publish`.
    - starknet: `bun install` only (bun.lock is the tracked lockfile; the extra `npm install` step was dropped 2026-07-12 — a clean bun-only install passes `npx tsc --noEmit` + `npm run build`, while npm installs churn ~731 packages that bun then restores) → `npx tsc --noEmit` (must pass; `npm run build` also works env-less since the 2026-07-11 lazy Privy-server fix)
 6. Commit + push all three repos
 
-Current version: **0.73.0** (`AssetPicker` + `LicenseTermsBuilder` — the two shared components the
+Current version: **0.73.1** (IP Club launchpad card copy rewritten to the membership-tiers model — no entry-fee/member-cap/open-close vocabulary; tiers, validity window, trade like any collection. Prior 0.73.0: `AssetPicker` + `LicenseTermsBuilder` — the two shared components the
 IP Sponsorship v3 redesign's create/accept forms need, both reusable by any future launchpad
 service. `AssetPicker`: search + selectable grid over an app-supplied `OwnedAsset[]` (contractAddress/
 tokenId/name/image) — pure presentation, the app's own `useTokensByOwner`-equivalent feeds it, no
