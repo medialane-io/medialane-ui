@@ -35,7 +35,7 @@ export interface ServiceGroupDefinition {
 export const LAUNCHPAD_SERVICE_GROUPS: ServiceGroupDefinition[] = [
   {
     key: "nfts",
-    title: "NFTs",
+    title: "Originals",
     tagline: "Singular works, your own collections, timed drops, and remixes.",
   },
   {
@@ -93,7 +93,7 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     key: "nfts",
     cta: "Create",
     blurb: "Publish each work as a single copy in a collection you own.",
-    title: "Single Editions",
+    title: "Single Edition NFTs",
     subtitle: "Each work is minted once",
     description:
       "Publish any photo, video, audio, or document, minted once inside your collection. Licensing, provenance, and ownership live on-chain.",
