@@ -172,7 +172,7 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
                 <div className="grid grid-cols-2 gap-2">
                   {myListing ? (
                     <ActionButton
-                      label="Cancel"
+                      label="Cancel Listing"
                       icon={isProcessing ? <Loader2 className="h-4 w-4 animate-spin" /> : <X className="h-4 w-4" />}
                       onClick={() => onCancelClick(myListing)}
                       disabled={isProcessing}
