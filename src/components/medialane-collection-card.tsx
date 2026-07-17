@@ -20,18 +20,14 @@ export interface MedialaneCollectionCardProps {
 const FRAME_GRADIENT =
   "linear-gradient(135deg, #3b7bff, #8a5cf6 38%, #f6608f 70%, #fb8b46)";
 
-/** Foil tints on the card material — faint brand radials, like printed foil. */
-const MATERIAL =
-  `radial-gradient(120% 90% at 0% 0%, rgba(59,123,255,0.14), transparent 55%),
-   radial-gradient(120% 90% at 100% 100%, rgba(251,139,70,0.10), transparent 55%),
-   #0a0e1f`;
-
 /** The Medialane Collection Card — a branded collectors-card preview of an
- *  asset or collection. A self-contained dark collectible object (identical in
- *  both themes): brand-spectrum frame, inset artwork on foil-tinted material,
- *  pointer-tracked 3D tilt + holographic sheen, display-face name, serial
- *  pill, Medialane maker's mark. Fluid width — size it with the parent
- *  container. Pure presentation. */
+ *  asset or collection. A self-contained collectible object: brand-spectrum
+ *  frame, inset artwork on foil-tinted material, pointer-tracked 3D tilt +
+ *  holographic sheen, display-face name, serial pill, Medialane maker's mark.
+ *  Follows the app's light/dark theme automatically (`.ml-card-material` /
+ *  `.ml-card-sheen` in medialane.css carry the `.dark` overrides — light is
+ *  the default, no `.dark` ancestor needed). Fluid width — size it with the
+ *  parent container. Pure presentation. */
 export function MedialaneCollectionCard({
   image,
   name,
@@ -81,12 +77,11 @@ export function MedialaneCollectionCard({
         }}
       >
         <div
-          className="relative rounded-[22.5px] overflow-hidden text-white ring-1 ring-inset ring-white/[0.06]"
-          style={{ background: MATERIAL }}
+          className="ml-card-material relative rounded-[22.5px] overflow-hidden text-[#0a0e1f] dark:text-white ring-1 ring-inset ring-black/[0.06] dark:ring-white/[0.06]"
         >
           {/* Artwork — inset like a printed trading card */}
           <div className="p-2.5 pb-0">
-            <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[16px] ring-1 ring-white/10">
+            <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[16px] ring-1 ring-black/10 dark:ring-white/10">
               {image ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img src={image} alt={displayName} className="h-full w-full object-cover" />
@@ -108,12 +103,7 @@ export function MedialaneCollectionCard({
           {/* Holographic sheen — visible at rest, blooms and tracks on hover */}
           <div
             aria-hidden
-            className="pointer-events-none absolute inset-0 opacity-40 group-hover:opacity-100 transition-opacity duration-300"
-            style={{
-              background: `radial-gradient(420px circle at var(--mx, 70%) var(--my, 20%), rgba(255,255,255,0.20), transparent 45%),
-                linear-gradient(115deg, rgba(59,123,255,0.14), rgba(138,92,246,0.14) 35%, rgba(246,96,143,0.14) 65%, rgba(251,139,70,0.14))`,
-              mixBlendMode: "screen",
-            }}
+            className="ml-card-sheen pointer-events-none absolute inset-0 opacity-40 group-hover:opacity-100 transition-opacity duration-300"
           />
 
           {/* Meta */}
@@ -123,26 +113,26 @@ export function MedialaneCollectionCard({
                 {displayName}
               </p>
               {serial && (
-                <span className="mt-0.5 shrink-0 rounded-full bg-white/10 px-2 py-0.5 text-[11px] font-semibold text-white/80 tabular-nums">
+                <span className="mt-0.5 shrink-0 rounded-full bg-black/5 dark:bg-white/10 px-2 py-0.5 text-[11px] font-semibold text-[#0a0e1f]/80 dark:text-white/80 tabular-nums">
                   {serial}
                 </span>
               )}
             </div>
             {collection && (
-              <p className="mt-0.5 text-[12.5px] text-white/55 truncate">{collection}</p>
+              <p className="mt-0.5 text-[12.5px] text-[#0a0e1f]/55 dark:text-white/55 truncate">{collection}</p>
             )}
-            <div className="my-3 h-px bg-white/10" />
+            <div className="my-3 h-px bg-black/10 dark:bg-white/10" />
             <div className="flex items-center gap-2">
               <span
                 aria-hidden
                 className="h-3.5 w-3.5 rounded-full shrink-0"
                 style={{ background: FRAME_GRADIENT }}
               />
-              <span className="text-[9px] font-bold tracking-[0.18em] text-white/50">
+              <span className="text-[9px] font-bold tracking-[0.18em] text-[#0a0e1f]/50 dark:text-white/50">
                 MEDIALANE
               </span>
               {creator && (
-                <span className="ml-auto min-w-0 truncate text-[11px] text-white/55 tabular-nums">
+                <span className="ml-auto min-w-0 truncate text-[11px] text-[#0a0e1f]/55 dark:text-white/55 tabular-nums">
                   {creator}
                 </span>
               )}
