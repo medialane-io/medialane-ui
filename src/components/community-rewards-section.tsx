@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Sparkles, ArrowRight, Zap, Palette, ShoppingBag, MessageSquare } from "lucide-react";
+import { ArrowRight, Zap, Palette, ShoppingBag, MessageSquare } from "lucide-react";
 import { AddressDisplay } from "./address-display.js";
 
 export interface CommunityRewardsEntry {
@@ -36,50 +36,49 @@ export function CommunityRewardsSection({
   creatorHref,
 }: CommunityRewardsSectionProps) {
   return (
-    <section className="grid lg:grid-cols-2 gap-px bg-border/40 rounded-2xl overflow-hidden">
+    <section className="rounded-2xl bg-muted/50 dark:bg-card overflow-hidden grid lg:grid-cols-2 max-lg:divide-y lg:divide-x divide-brand-orange/20">
 
       {/* Left — info panel */}
-      <div className="bg-card px-7 py-8 flex flex-col gap-6">
-        <div className="flex items-center gap-2.5">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-brand-rose to-brand-orange text-white shrink-0">
-            <Sparkles className="h-4 w-4" />
-          </div>
-          <h2 className="text-base font-black">Community Rewards</h2>
+      <div className="px-7 py-8 sm:px-9 flex flex-col gap-6">
+        <div>
+          {/* Creator's Fund eyebrow — shared with CreatorAirdropBanner */}
+          <span className="text-xs font-bold uppercase tracking-widest text-brand-orange">
+            Creator&apos;s Fund
+          </span>
+          <h2 className="mt-4 text-2xl font-bold tracking-tight leading-tight">
+            Community Rewards
+          </h2>
+          <p className="mt-1.5 text-sm text-muted-foreground leading-relaxed">
+            Earn XP. Share the Creator&apos;s Fund.
+          </p>
         </div>
 
-        <p className="text-sm font-semibold text-muted-foreground leading-snug">
-          Earn XP. Share the Creator&apos;s Fund.
-        </p>
-
-        {/* Visual info tiles */}
-        <div className="grid grid-cols-3 gap-2">
+        {/* Info values — hairline-divided row */}
+        <div className="grid grid-cols-3 divide-x divide-brand-orange/20 border-y border-brand-orange/20 py-4">
           {INFO_TILES.map(({ value, label }) => (
-            <div
-              key={label}
-              className="rounded-xl border border-border/50 bg-muted/30 px-3 py-3.5 flex flex-col items-center text-center gap-1"
-            >
-              <span className="text-xl font-black">{value}</span>
+            <div key={label} className="flex flex-col items-center text-center gap-1 px-2">
+              <span className="text-xl font-black tabular-nums">{value}</span>
               <span className="text-[10px] text-muted-foreground leading-tight">{label}</span>
             </div>
           ))}
         </div>
 
-        {/* Earn action pills */}
-        <div className="flex flex-wrap gap-2">
+        {/* Earn actions — plain text row */}
+        <div className="flex flex-wrap gap-x-5 gap-y-2">
           {EARN_ACTIONS.map(({ icon: Icon, label }) => (
-            <div
+            <span
               key={label}
-              className="flex items-center gap-1.5 rounded-full border border-border/50 bg-muted/40 px-3 py-1 text-xs font-medium text-muted-foreground"
+              className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground"
             >
-              <Icon className="h-3 w-3" />
+              <Icon className="h-3 w-3 text-brand-orange/70" />
               {label}
-            </div>
+            </span>
           ))}
         </div>
 
         <Link
           href={rewardsHref}
-          className="mt-auto inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-brand-rose to-brand-orange px-5 py-2.5 text-sm font-semibold text-white hover:opacity-90 transition-opacity"
+          className="mt-auto inline-flex items-center justify-center gap-2 rounded-xl bg-brand-orange px-6 py-3 text-sm font-semibold text-white transition-all hover:brightness-110 active:scale-[0.98]"
         >
           Start earning XP
           <ArrowRight className="h-3.5 w-3.5" />
@@ -87,17 +86,16 @@ export function CommunityRewardsSection({
       </div>
 
       {/* Right — member cards */}
-      <div className="bg-card p-5">
+      <div className="p-5 sm:p-6">
         {!isLoading && entries.length > 0 ? (
           <div className="grid grid-cols-2 gap-3 h-full">
             {entries.slice(0, 4).map((entry) => (
               <Link
                 key={entry.address}
                 href={creatorHref(entry.address)}
-                className="group relative rounded-xl border border-border/40 bg-muted/20 hover:bg-muted/40 hover:border-border/70 overflow-hidden transition-all flex flex-col justify-between p-4"
+                className="group relative rounded-xl bg-card dark:bg-muted/30 hover:bg-card/70 dark:hover:bg-muted/50 overflow-hidden transition-colors flex flex-col justify-between p-4"
               >
-                {/* Brand gradient top rule */}
-                <div className="absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r from-brand-rose to-brand-orange" />
+                <div className="absolute inset-x-0 top-0 h-0.5 bg-brand-orange/40" />
 
                 {/* XP — hero number */}
                 <div className="space-y-0.5 pt-1">
@@ -107,7 +105,6 @@ export function CommunityRewardsSection({
                   <p className="text-[11px] text-muted-foreground">XP earned</p>
                 </div>
 
-                {/* Address */}
                 <AddressDisplay
                   address={entry.address}
                   chars={4}
@@ -120,7 +117,7 @@ export function CommunityRewardsSection({
         ) : (
           <div className="grid grid-cols-2 gap-3 h-full">
             {Array.from({ length: 4 }).map((_, i) => (
-              <div key={i} className="min-h-[100px] rounded-xl bg-muted/20 animate-pulse" />
+              <div key={i} className="min-h-[100px] rounded-xl bg-card dark:bg-muted/30 animate-pulse" />
             ))}
           </div>
         )}
