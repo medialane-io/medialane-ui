@@ -59,6 +59,10 @@ export type { CollectionCardProps } from "./components/collection-card.js";
 export { TokenCard, TokenCardSkeleton } from "./components/token-card.js";
 export type { TokenCardProps } from "./components/token-card.js";
 export {
+  useCollectionFilters, SORT_OPTIONS, CollectionFiltersTrigger, CollectionFiltersBody,
+} from "./components/collection-filters.js";
+export type { TraitSection, CollectionFiltersTriggerProps, CollectionFiltersBodyProps } from "./components/collection-filters.js";
+export {
   DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem,
   DropdownMenuCheckboxItem, DropdownMenuRadioItem, DropdownMenuLabel,
   DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuGroup,

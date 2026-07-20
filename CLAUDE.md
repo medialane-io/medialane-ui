@@ -23,7 +23,19 @@ Package manager: **Bun** for everything except `npm publish`.
    - starknet: `bun install` only (bun.lock is the tracked lockfile; the extra `npm install` step was dropped 2026-07-12 — a clean bun-only install passes `npx tsc --noEmit` + `npm run build`, while npm installs churn ~731 packages that bun then restores) → `npx tsc --noEmit` (must pass; `npm run build` also works env-less since the 2026-07-11 lazy Privy-server fix)
 6. Commit + push all three repos
 
-Current version: **0.75.0** (`TokenCard` replaced — the package's own copy was an
+Current version: **0.76.0** (`CollectionFilters` shared logic — both apps'
+`collection-filters.tsx` had identical trait-computation logic, an identical
+trigger-row (the "Filters" button + active-pill row above a token grid), and
+an identical scrollable panel body (sort-by + trait-value pills); only the
+outer shell (`Dialog` in io, `Sheet` in starknet) and its header/footer were
+genuinely different. `useCollectionFilters` (hook), `CollectionFiltersTrigger`,
+`CollectionFiltersBody`, and `SORT_OPTIONS`/`TraitSection` move here verbatim;
+each app now composes them inside its own shell. No new dependency — the
+trigger's "Filters" button replicates shadcn `Button variant="outline"
+size="sm"` inline, and the trait-section divider is a plain `<div>` instead of
+a `Separator` import, matching how `ui` already hand-rolls controls elsewhere.
+See `medialane-core/docs/plans/2026-07-20-collection-filters-promotion.md`.)
+Prior 0.75.0: (`TokenCard` replaced — the package's own copy was an
 older, simpler variant neither app actually imported (both used their own local
 `src/components/shared/token-card.tsx`, which after the chain-scoped-routing
 work were byte-identical). The real implementation moves here: dropdown menu
