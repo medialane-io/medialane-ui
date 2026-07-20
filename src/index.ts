@@ -57,7 +57,14 @@ export type { ShareButtonProps } from "./components/share-button.js";
 export { CollectionCard, CollectionCardSkeleton } from "./components/collection-card.js";
 export type { CollectionCardProps } from "./components/collection-card.js";
 export { TokenCard, TokenCardSkeleton } from "./components/token-card.js";
-export type { TokenCardProps, RarityTier } from "./components/token-card.js";
+export type { TokenCardProps } from "./components/token-card.js";
+export {
+  DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem,
+  DropdownMenuCheckboxItem, DropdownMenuRadioItem, DropdownMenuLabel,
+  DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuGroup,
+  DropdownMenuPortal, DropdownMenuSub, DropdownMenuSubContent,
+  DropdownMenuSubTrigger, DropdownMenuRadioGroup,
+} from "./components/dropdown-menu.js";
 export { AssetCard, AssetCardSkeleton } from "./components/asset-card.js";
 export type { AssetCardProps, AssetCardPrice } from "./components/asset-card.js";
 export { AssetPicker } from "./components/asset-picker.js";

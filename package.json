@@ -1,6 +1,6 @@
 {
   "name": "@medialane/ui",
-  "version": "0.74.2",
+  "version": "0.75.0",
   "description": "Shared UI components for Medialane apps",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -32,7 +32,8 @@
     "typecheck": "tsc --noEmit"
   },
   "peerDependencies": {
-    "@medialane/sdk": ">=0.71.0",
+    "@medialane/sdk": ">=0.72.0",
+    "@radix-ui/react-dropdown-menu": ">=2.1.0",
     "clsx": ">=2.0.0",
     "cmdk": ">=1.0.0",
     "framer-motion": ">=10.0.0",
@@ -45,7 +46,8 @@
     "tailwind-merge": ">=2.0.0"
   },
   "devDependencies": {
-    "@medialane/sdk": "0.71.1",
+    "@medialane/sdk": "0.72.0",
+    "@radix-ui/react-dropdown-menu": "^2.1.16",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "clsx": "^2.0.0",
