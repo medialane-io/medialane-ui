@@ -2,7 +2,7 @@
 
 import type { ReactNode } from "react";
 import {
-  ArrowRightLeft, CheckCircle, Clock, GitBranch, HandCoins, Loader2,
+  ArrowRightLeft, CheckCircle, Clock, GitBranch, HandCoins, Handshake, Loader2,
   ShoppingCart, Tag, X,
 } from "lucide-react";
 import { CurrencyIcon, CurrencyAmount } from "./currency-icon.js";
@@ -79,6 +79,12 @@ export interface AssetMarketplacePanelProps<T extends ApiOrderLike = ApiOrderLik
   onOpenOffer: () => void;
   onOpenRemix?: () => void;
   onProposeDeal?: () => void;
+  /** Non-owner: propose a sponsorship deal on this asset. */
+  showSponsorOption?: boolean;
+  onOpenSponsorProposal?: () => void;
+  /** Owner: open this asset for sponsorship bidding. */
+  showSponsorSolicitOption?: boolean;
+  onOpenSponsorSolicit?: () => void;
 }
 
 /** Floor + last-sale stats — each hides itself when its data is absent
@@ -118,6 +124,10 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
   walletAddress,
   remixEnabled = false,
   showDealOption = false,
+  showSponsorOption = false,
+  onOpenSponsorProposal,
+  showSponsorSolicitOption = false,
+  onOpenSponsorSolicit,
   floorPriceRaw,
   lastSaleRaw,
   renderAuthAction,
@@ -192,6 +202,16 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
                       renderHelp={renderHelp}
                     />
                   ) : null}
+                  {showSponsorSolicitOption && onOpenSponsorSolicit ? (
+                    <ActionButton
+                      label="Open for Sponsorship"
+                      icon={<Handshake className="h-4 w-4" />}
+                      onClick={onOpenSponsorSolicit}
+                      helpContent="Let sponsors bid on a license for this asset."
+                      tone="blue"
+                      renderHelp={renderHelp}
+                    />
+                  ) : null}
                 </div>
 
                 {canBuyMore && (
@@ -229,6 +249,16 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
                       renderHelp={renderHelp}
                     />
                   ) : null}
+                  {showSponsorOption && onOpenSponsorProposal ? (
+                    <ActionButton
+                      label="Sponsor this IP"
+                      icon={<Handshake className="h-4 w-4" />}
+                      onClick={onOpenSponsorProposal}
+                      helpContent="Propose to sponsor this creator's work — pay them directly for a license, no escrow."
+                      tone="blue"
+                      renderHelp={renderHelp}
+                    />
+                  ) : null}
                 </div>
                 {!remixEnabled && !showDealOption ? (
                   <p className="text-xs text-muted-foreground mt-2 leading-relaxed">
@@ -257,6 +287,16 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
                     renderHelp={renderHelp}
                   />
                 ) : null}
+                {showSponsorSolicitOption && onOpenSponsorSolicit ? (
+                  <ActionButton
+                    label="Open for Sponsorship"
+                    icon={<Handshake className="h-4 w-4" />}
+                    onClick={onOpenSponsorSolicit}
+                    helpContent="Let sponsors bid on a license for this asset."
+                    tone="blue"
+                    renderHelp={renderHelp}
+                  />
+                ) : null}
               </div>
             ) : isSignedIn ? (
               <div className="grid grid-cols-2 gap-2">
@@ -268,6 +308,16 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
                     onClick={onOpenRemix}
                     helpContent="Build a licensed derivative of this digital asset — your remix is minted as a new onchain NFT linked to the original"
                     tone="purple"
+                    renderHelp={renderHelp}
+                  />
+                ) : null}
+                {showSponsorOption && onOpenSponsorProposal ? (
+                  <ActionButton
+                    label="Sponsor this IP"
+                    icon={<Handshake className="h-4 w-4" />}
+                    onClick={onOpenSponsorProposal}
+                    helpContent="Propose to sponsor this creator's work — pay them directly for a license, no escrow."
+                    tone="blue"
                     renderHelp={renderHelp}
                   />
                 ) : null}
