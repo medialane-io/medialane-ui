@@ -23,7 +23,15 @@ Package manager: **Bun** for everything except `npm publish`.
    - starknet: `bun install` only (bun.lock is the tracked lockfile; the extra `npm install` step was dropped 2026-07-12 — a clean bun-only install passes `npx tsc --noEmit` + `npm run build`, while npm installs churn ~731 packages that bun then restores) → `npx tsc --noEmit` (must pass; `npm run build` also works env-less since the 2026-07-11 lazy Privy-server fix)
 6. Commit + push all three repos
 
-Current version: **0.76.0** (`CollectionFilters` shared logic — both apps'
+Current version: **0.77.0** (`AssetSearchPicker` — a server-searched sibling to `AssetPicker`, for
+picking any platform asset by name/creator rather than just the wallet's own owned assets (used by the
+IP Sponsorship "propose to sponsor" flow, but sponsorship-agnostic — the app supplies the actual search
+call, same "component takes data" rule every picker here follows). `AssetMarketplacePanel` gained two new
+optional action slots, `showSponsorOption`/`onOpenSponsorProposal` (non-owner) and
+`showSponsorSolicitOption`/`onOpenSponsorSolicit` (owner) — distinct from the existing
+`showDealOption`/`onProposeDeal` pair, which is remix licensing, unrelated. `derivePortfolioCounts` gained
+an optional 4th param, `sponsorshipPendingCount`, surfaced as `PortfolioCounts.sponsorships`.)
+Prior 0.76.0: (`CollectionFilters` shared logic — both apps'
 `collection-filters.tsx` had identical trait-computation logic, an identical
 trigger-row (the "Filters" button + active-pill row above a token grid), and
 an identical scrollable panel body (sort-by + trait-value pills); only the
