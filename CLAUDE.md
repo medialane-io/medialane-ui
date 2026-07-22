@@ -23,7 +23,14 @@ Package manager: **Bun** for everything except `npm publish`.
    - starknet: `bun install` only (bun.lock is the tracked lockfile; the extra `npm install` step was dropped 2026-07-12 — a clean bun-only install passes `npx tsc --noEmit` + `npm run build`, while npm installs churn ~731 packages that bun then restores) → `npx tsc --noEmit` (must pass; `npm run build` also works env-less since the 2026-07-11 lazy Privy-server fix)
 6. Commit + push all three repos
 
-Current version: **0.78.0** (`LicenseTermsBuilder` rebuilt — icon-enhanced currency picker (button row,
+Current version: **0.78.1** (`LicenseTermsBuilder` layout fix — the 0.78.0 currency picker used
+`flex-wrap justify-end` inside a `grid-cols-[1fr_auto] items-end` row; at 5 tokens it wrapped to 3 uneven
+rows and, combined with `items-end`, visually detached the "Currency" label from "Amount" (reported from a
+live screenshot). Now amount and currency are two full-width stacked rows, currency as a proper
+`grid-cols-3 sm:grid-cols-5` grid — matches the marketplace `CurrencyPicker`'s own grid shape. Also: the
+licensing panel's collapsed trigger now shows a live one-line summary (days/territory/license type) instead
+of a bare label, with a `ScrollText` icon.)
+Prior 0.78.0: (`LicenseTermsBuilder` rebuilt — icon-enhanced currency picker (button row,
 `CurrencyIcon`, replaces the plain `<select>`) and a new collapsible licensing panel: License Type (11
 presets, auto-fills but does NOT lock Commercial Use/Derivatives/Attribution — independently editable via
 segmented toggles, matching the single-editions mint form's actual pattern, not a stricter one), Territory,

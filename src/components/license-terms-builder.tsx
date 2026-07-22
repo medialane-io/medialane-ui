@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, ScrollText } from "lucide-react";
 import { cn } from "../utils/cn.js";
 import { CurrencyIcon } from "./currency-icon.js";
 import { LICENSE_TYPES, GEOGRAPHIC_SCOPES, AI_POLICIES } from "../data/ip.js";
@@ -166,42 +166,42 @@ export function LicenseTermsBuilder({
 
   return (
     <div className={cn("space-y-4", className)}>
-      <div className="grid grid-cols-[1fr_auto] gap-2 items-end">
-        <div className="space-y-1.5">
-          <label className={FIELD_LABEL}>{amountLabel}</label>
-          <input
-            type="number"
-            min={0}
-            step="0.01"
-            inputMode="decimal"
-            disabled={disabled}
-            value={value.amount}
-            onChange={(e) => set("amount", e.target.value)}
-            placeholder="0.00"
-            className={INPUT_BASE}
-          />
-        </div>
-        <div className="space-y-1.5">
-          <label className={FIELD_LABEL}>Currency</label>
-          <div className="flex gap-1 flex-wrap justify-end max-w-[220px]">
-            {tokenOptions.map((symbol) => (
-              <button
-                key={symbol}
-                type="button"
-                disabled={disabled}
-                onClick={() => set("paymentTokenSymbol", symbol)}
-                className={cn(
-                  "h-10 px-2.5 rounded-xl border text-xs font-semibold flex items-center gap-1.5 transition-colors disabled:opacity-50",
-                  value.paymentTokenSymbol === symbol
-                    ? "border-brand-purple bg-brand-purple/10 text-foreground"
-                    : "border-border bg-card text-muted-foreground hover:text-foreground",
-                )}
-              >
-                <CurrencyIcon symbol={symbol} size={14} />
-                {symbol}
-              </button>
-            ))}
-          </div>
+      <div className="space-y-1.5">
+        <label className={FIELD_LABEL}>{amountLabel}</label>
+        <input
+          type="number"
+          min={0}
+          step="0.01"
+          inputMode="decimal"
+          disabled={disabled}
+          value={value.amount}
+          onChange={(e) => set("amount", e.target.value)}
+          placeholder="0.00"
+          className={INPUT_BASE}
+        />
+      </div>
+
+      <div className="space-y-1.5">
+        <label className={FIELD_LABEL}>Currency</label>
+        <div className="grid grid-cols-3 sm:grid-cols-5 gap-1.5">
+          {tokenOptions.map((symbol) => (
+            <button
+              key={symbol}
+              type="button"
+              disabled={disabled}
+              onClick={() => set("paymentTokenSymbol", symbol)}
+              aria-pressed={value.paymentTokenSymbol === symbol}
+              className={cn(
+                "h-10 px-2 rounded-xl border text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors disabled:opacity-50",
+                value.paymentTokenSymbol === symbol
+                  ? "border-brand-purple bg-brand-purple/10 text-foreground"
+                  : "border-border bg-card text-muted-foreground hover:text-foreground",
+              )}
+            >
+              <CurrencyIcon symbol={symbol} size={14} />
+              {symbol}
+            </button>
+          ))}
         </div>
       </div>
 
@@ -234,14 +234,24 @@ export function LicenseTermsBuilder({
         </span>
       </label>
 
-      <div className="rounded-xl border border-border overflow-hidden">
+      <div className="rounded-xl border border-border overflow-hidden bg-card/40">
         <button
           type="button"
           onClick={() => setPanelOpen((o) => !o)}
-          className="w-full flex items-center justify-between px-4 py-3 text-sm font-semibold"
+          className="w-full flex items-center justify-between gap-3 px-4 py-3 text-left transition-colors hover:bg-card/80"
         >
-          <span>How long, where, and what for</span>
-          <ChevronDown className={cn("h-4 w-4 transition-transform text-muted-foreground", panelOpen && "rotate-180")} />
+          <span className="flex items-center gap-2.5 min-w-0">
+            <ScrollText className="h-4 w-4 text-brand-purple shrink-0" />
+            <span className="min-w-0">
+              <span className="block text-sm font-semibold">How long, where, and what for</span>
+              {!panelOpen ? (
+                <span className="block text-xs text-muted-foreground truncate">
+                  {value.durationDays || "30"} days · {value.territory} · {value.licenseType}
+                </span>
+              ) : null}
+            </span>
+          </span>
+          <ChevronDown className={cn("h-4 w-4 transition-transform text-muted-foreground shrink-0", panelOpen && "rotate-180")} />
         </button>
 
         {panelOpen ? (
