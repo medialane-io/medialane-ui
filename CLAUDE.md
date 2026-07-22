@@ -23,7 +23,10 @@ Package manager: **Bun** for everything except `npm publish`.
    - starknet: `bun install` only (bun.lock is the tracked lockfile; the extra `npm install` step was dropped 2026-07-12 — a clean bun-only install passes `npx tsc --noEmit` + `npm run build`, while npm installs churn ~731 packages that bun then restores) → `npx tsc --noEmit` (must pass; `npm run build` also works env-less since the 2026-07-11 lazy Privy-server fix)
 6. Commit + push all three repos
 
-Current version: **0.79.0** (`LicenseTermsBuilder` — more user feedback: the "How long, where, and what for"
+Current version: **0.79.1** (0.79.0 shipped `toDurationDays`/`DURATION_UNITS`/`DurationUnit` from
+`license-terms-builder.tsx` but forgot to re-export them from `src/index.ts` — caught immediately by both
+apps' `tsc` when bumping to consume it. Export-only fix, no behavior change.)
+Prior 0.79.0: (`LicenseTermsBuilder` — more user feedback: the "How long, where, and what for"
 subpanel wrapper is gone entirely, every field flows in the main form now (0.78.0's "collapsible" and
 0.78.2's "always-open-but-still-a-boxed-subsection" were both still imposing a grouping the user didn't
 want). **Breaking**: `SponsorshipTerms.durationDays: string` → `durationValue: string` + `durationUnit:
