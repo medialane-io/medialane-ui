@@ -23,7 +23,15 @@ Package manager: **Bun** for everything except `npm publish`.
    - starknet: `bun install` only (bun.lock is the tracked lockfile; the extra `npm install` step was dropped 2026-07-12 — a clean bun-only install passes `npx tsc --noEmit` + `npm run build`, while npm installs churn ~731 packages that bun then restores) → `npx tsc --noEmit` (must pass; `npm run build` also works env-less since the 2026-07-11 lazy Privy-server fix)
 6. Commit + push all three repos
 
-Current version: **0.78.1** (`LicenseTermsBuilder` layout fix — the 0.78.0 currency picker used
+Current version: **0.78.2** (`LicenseTermsBuilder` polish per user feedback: "Resale royalty (%)" removed
+from the UI entirely — didn't make sense for a sponsorship form; `royaltyPercent` stays on the type
+(defaults `"0"`) only because `create_offer`/`propose_sponsorship` still take a `royaltyBps` arg. The
+licensing panel is no longer collapsible — it always renders (a collapsed-by-default panel meant a user
+could submit with unreviewed defaults, which is the opposite of what the panel is for). "License length
+(days)" has no default value anymore — empty until the user types one, forcing an explicit choice instead
+of silently inheriting 30; the existing "How many days should the license last?" validation catches an
+empty submit.)
+Prior 0.78.1: (`LicenseTermsBuilder` layout fix — the 0.78.0 currency picker used
 `flex-wrap justify-end` inside a `grid-cols-[1fr_auto] items-end` row; at 5 tokens it wrapped to 3 uneven
 rows and, combined with `items-end`, visually detached the "Currency" label from "Amount" (reported from a
 live screenshot). Now amount and currency are two full-width stacked rows, currency as a proper

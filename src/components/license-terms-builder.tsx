@@ -1,7 +1,6 @@
 "use client";
 
-import { useState } from "react";
-import { ChevronDown, ScrollText } from "lucide-react";
+import { ScrollText } from "lucide-react";
 import { cn } from "../utils/cn.js";
 import { CurrencyIcon } from "./currency-icon.js";
 import { LICENSE_TYPES, GEOGRAPHIC_SCOPES, AI_POLICIES } from "../data/ip.js";
@@ -26,8 +25,12 @@ export const MEDIA_TYPES = [
 export interface SponsorshipTerms {
   amount: string;
   paymentTokenSymbol: string;
+  /** No default — the user must explicitly set this, never silently inherit one. */
   durationDays: string;
   transferable: boolean;
+  /** Not surfaced in the UI (no resale-royalty concept here) — always "0". Kept
+   *  on the type because `create_offer`/`propose_sponsorship` still take a
+   *  `royaltyBps` argument. */
   royaltyPercent: string;
   /** Free-text notes that don't fit any structured field below. */
   licenseText: string;
@@ -50,9 +53,9 @@ export interface SponsorshipTerms {
 export const EMPTY_SPONSORSHIP_TERMS: SponsorshipTerms = {
   amount: "",
   paymentTokenSymbol: "",
-  durationDays: "30",
+  durationDays: "",
   transferable: true,
-  royaltyPercent: "5",
+  royaltyPercent: "0",
   licenseText: "",
   licenseType: "CC BY-SA",
   commercialUse: "Yes",
@@ -145,7 +148,6 @@ function YesNoToggle({ label, help, checked, onChange, disabled }: { label: stri
 export function LicenseTermsBuilder({
   value, onChange, tokenOptions, amountLabel = "Amount", disabled, className,
 }: LicenseTermsBuilderProps) {
-  const [panelOpen, setPanelOpen] = useState(false);
   const set = <K extends keyof SponsorshipTerms>(key: K, v: SponsorshipTerms[K]) =>
     onChange({ ...value, [key]: v });
 
@@ -205,21 +207,6 @@ export function LicenseTermsBuilder({
         </div>
       </div>
 
-      <div className="space-y-1.5">
-        <label className={FIELD_LABEL}>Resale royalty (%)</label>
-        <input
-          type="number"
-          min={0}
-          max={100}
-          step="0.1"
-          disabled={disabled}
-          value={value.royaltyPercent}
-          onChange={(e) => set("royaltyPercent", e.target.value)}
-          className={INPUT_BASE}
-        />
-        <p className={FIELD_HELP}>You get this share automatically if the license is ever resold.</p>
-      </div>
-
       <label className="flex items-start gap-2.5 cursor-pointer select-none">
         <input
           type="checkbox"
@@ -235,27 +222,12 @@ export function LicenseTermsBuilder({
       </label>
 
       <div className="rounded-xl border border-border overflow-hidden bg-card/40">
-        <button
-          type="button"
-          onClick={() => setPanelOpen((o) => !o)}
-          className="w-full flex items-center justify-between gap-3 px-4 py-3 text-left transition-colors hover:bg-card/80"
-        >
-          <span className="flex items-center gap-2.5 min-w-0">
-            <ScrollText className="h-4 w-4 text-brand-purple shrink-0" />
-            <span className="min-w-0">
-              <span className="block text-sm font-semibold">How long, where, and what for</span>
-              {!panelOpen ? (
-                <span className="block text-xs text-muted-foreground truncate">
-                  {value.durationDays || "30"} days · {value.territory} · {value.licenseType}
-                </span>
-              ) : null}
-            </span>
-          </span>
-          <ChevronDown className={cn("h-4 w-4 transition-transform text-muted-foreground shrink-0", panelOpen && "rotate-180")} />
-        </button>
+        <div className="flex items-center gap-2.5 px-4 py-3 border-b border-border">
+          <ScrollText className="h-4 w-4 text-brand-purple shrink-0" />
+          <span className="text-sm font-semibold">How long, where, and what for</span>
+        </div>
 
-        {panelOpen ? (
-          <div className="px-4 pb-4 space-y-4 border-t border-border pt-4">
+        <div className="px-4 pb-4 space-y-4 pt-4">
             <div className="space-y-1.5">
               <label className={FIELD_LABEL}>License length (days)</label>
               <input
@@ -264,6 +236,7 @@ export function LicenseTermsBuilder({
                 disabled={disabled}
                 value={value.durationDays}
                 onChange={(e) => set("durationDays", e.target.value)}
+                placeholder="e.g. 30"
                 className={INPUT_BASE}
               />
               <p className={FIELD_HELP}>Counted from the moment the deal is accepted, not from today.</p>
@@ -410,8 +383,7 @@ export function LicenseTermsBuilder({
               />
               <p className={FIELD_HELP}>Saved permanently and shown to anyone who holds the license.</p>
             </div>
-          </div>
-        ) : null}
+        </div>
       </div>
     </div>
   );
