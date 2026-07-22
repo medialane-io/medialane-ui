@@ -75,7 +75,7 @@ export { AssetPicker } from "./components/asset-picker.js";
 export type { AssetPickerProps, OwnedAsset } from "./components/asset-picker.js";
 export { AssetSearchPicker } from "./components/asset-search-picker.js";
 export type { AssetSearchPickerProps } from "./components/asset-search-picker.js";
-export { LicenseTermsBuilder, EMPTY_SPONSORSHIP_TERMS } from "./components/license-terms-builder.js";
+export { LicenseTermsBuilder, EMPTY_SPONSORSHIP_TERMS, MEDIA_TYPES, toLicenseMetadata } from "./components/license-terms-builder.js";
 export type { LicenseTermsBuilderProps, SponsorshipTerms } from "./components/license-terms-builder.js";
 // ── Coin discovery (chain-agnostic; price/data/href injected by the app) ─────
 export {
