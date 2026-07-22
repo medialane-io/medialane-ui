@@ -20,16 +20,22 @@ export interface PortfolioCounts {
   remix: number;
   /** The user's bids that a seller has countered. */
   counter: number;
+  /** Sponsorship proposals/bids awaiting the user's decision. */
+  sponsorships: number;
 }
 
 /**
  * Derive the portfolio header/subnav counts from the user's orders and remix
  * offers. Pure and server-safe (no React). Guards nullish inputs.
+ * `sponsorshipPendingCount` is computed by the caller (received sponsorship
+ * proposals + received bids awaiting a decision) since this function has no
+ * sponsorship-shape knowledge — it just carries the number through.
  */
 export function derivePortfolioCounts(
   orders: ReadonlyArray<CountableOrder> | null | undefined,
   remixOffers: ReadonlyArray<{ status: string }> | null | undefined,
   address: string | null | undefined,
+  sponsorshipPendingCount = 0,
 ): PortfolioCounts {
   const list = Array.isArray(orders) ? orders : [];
   const addr = (address ?? "").toLowerCase();
@@ -60,5 +66,5 @@ export function derivePortfolioCounts(
       o.hasActiveCounterOffer === true,
   ).length;
 
-  return { received, listings, remix, counter };
+  return { received, listings, remix, counter, sponsorships: Math.max(0, sponsorshipPendingCount) };
 }
