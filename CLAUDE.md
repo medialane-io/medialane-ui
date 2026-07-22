@@ -23,7 +23,17 @@ Package manager: **Bun** for everything except `npm publish`.
    - starknet: `bun install` only (bun.lock is the tracked lockfile; the extra `npm install` step was dropped 2026-07-12 — a clean bun-only install passes `npx tsc --noEmit` + `npm run build`, while npm installs churn ~731 packages that bun then restores) → `npx tsc --noEmit` (must pass; `npm run build` also works env-less since the 2026-07-11 lazy Privy-server fix)
 6. Commit + push all three repos
 
-Current version: **0.77.0** (`AssetSearchPicker` — a server-searched sibling to `AssetPicker`, for
+Current version: **0.78.0** (`LicenseTermsBuilder` rebuilt — icon-enhanced currency picker (button row,
+`CurrencyIcon`, replaces the plain `<select>`) and a new collapsible licensing panel: License Type (11
+presets, auto-fills but does NOT lock Commercial Use/Derivatives/Attribution — independently editable via
+segmented toggles, matching the single-editions mint form's actual pattern, not a stricter one), Territory,
+AI Policy, Scope, Deliverables, Exclusivity, Content-approval-required, and a Media multi-select + "Other"
+— all purely declarative additions to the pinned IPFS JSON (`toLicenseMetadata`, new export, the one place
+that shapes that payload so callers stop hand-building it per call site). `SponsorshipTerms` gained the
+matching fields; `EMPTY_SPONSORSHIP_TERMS` updated. `AssetPicker`/`AssetSearchPicker` now share one internal
+grid-cell renderer (`asset-picker-cell.tsx`, not exported from the package root) instead of duplicating it.
+Spec: `medialane-core/docs/specs/2026-07-22-ip-sponsorship-license-panel-redesign-design.md`.)
+Prior 0.77.0: (`AssetSearchPicker` — a server-searched sibling to `AssetPicker`, for
 picking any platform asset by name/creator rather than just the wallet's own owned assets (used by the
 IP Sponsorship "propose to sponsor" flow, but sponsorship-agnostic — the app supplies the actual search
 call, same "component takes data" rule every picker here follows). `AssetMarketplacePanel` gained two new

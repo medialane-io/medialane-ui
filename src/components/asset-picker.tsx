@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
-import { Check, ImageIcon, Search } from "lucide-react";
+import { Search } from "lucide-react";
 import { cn } from "../utils/cn.js";
+import { AssetPickerCell, isSameAsset } from "./asset-picker-cell.js";
 
 export interface OwnedAsset {
   contractAddress: string;
@@ -25,9 +25,6 @@ export interface AssetPickerProps {
   emptyStateLabel?: string;
   className?: string;
 }
-
-const isSame = (a: OwnedAsset, b: OwnedAsset | null) =>
-  !!b && a.contractAddress === b.contractAddress && a.tokenId === b.tokenId;
 
 export function AssetPicker({
   assets, isLoading, selected, onSelect, emptyStateHref, emptyStateLabel, className,
@@ -76,37 +73,14 @@ export function AssetPicker({
       ) : null}
 
       <div className="grid grid-cols-3 sm:grid-cols-4 gap-2.5 max-h-80 overflow-y-auto pr-0.5">
-        {filtered.map((asset) => {
-          const active = isSame(asset, selected);
-          return (
-            <button
-              key={`${asset.contractAddress}-${asset.tokenId}`}
-              type="button"
-              onClick={() => onSelect(asset)}
-              aria-pressed={active}
-              className={cn(
-                "group relative aspect-square rounded-xl overflow-hidden border-2 transition-colors text-left",
-                active ? "border-brand-purple" : "border-border/50 active:border-border sm:hover:border-border",
-              )}
-            >
-              {asset.image ? (
-                <Image src={asset.image} alt={asset.name} fill sizes="120px" className="object-cover" />
-              ) : (
-                <div className="h-full w-full flex items-center justify-center bg-muted/60">
-                  <ImageIcon className="h-5 w-5 text-muted-foreground/50" />
-                </div>
-              )}
-              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent px-1.5 py-1">
-                <p className="truncate text-[11px] font-medium text-white">{asset.name}</p>
-              </div>
-              {active ? (
-                <div className="absolute top-1.5 right-1.5 h-5 w-5 rounded-full bg-brand-purple flex items-center justify-center">
-                  <Check className="h-3 w-3 text-white" />
-                </div>
-              ) : null}
-            </button>
-          );
-        })}
+        {filtered.map((asset) => (
+          <AssetPickerCell
+            key={`${asset.contractAddress}-${asset.tokenId}`}
+            asset={asset}
+            active={isSameAsset(asset, selected)}
+            onSelect={onSelect}
+          />
+        ))}
       </div>
 
       {query && filtered.length === 0 ? (
