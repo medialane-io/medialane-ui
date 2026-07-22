@@ -1,9 +1,23 @@
 "use client";
 
-import { ScrollText } from "lucide-react";
 import { cn } from "../utils/cn.js";
 import { CurrencyIcon } from "./currency-icon.js";
-import { LICENSE_TYPES, GEOGRAPHIC_SCOPES, AI_POLICIES } from "../data/ip.js";
+import { LICENSE_TYPES, AI_POLICIES } from "../data/ip.js";
+
+/** Duration units — the on-chain `duration` arg is seconds, but nobody
+ *  should be forced to think in days for a multi-year deal (or forced into
+ *  days at all — this is declarative, not contract-enforced). */
+export const DURATION_UNITS = ["Days", "Weeks", "Months", "Years"] as const;
+export type DurationUnit = (typeof DURATION_UNITS)[number];
+const DURATION_UNIT_DAYS: Record<DurationUnit, number> = { Days: 1, Weeks: 7, Months: 30, Years: 365 };
+
+/** Converts the user-entered value + unit into whole days for the contract's
+ *  `duration` arg (seconds = days * 86400, done by the caller). */
+export function toDurationDays(terms: SponsorshipTerms): number {
+  const raw = Number(terms.durationValue || "0");
+  if (!raw || raw <= 0) return 0;
+  return Math.round(raw * DURATION_UNIT_DAYS[terms.durationUnit]);
+}
 
 /** Common sponsorship media/channel types — deliberately not part of the
  *  general IP taxonomy in `data/ip.ts` (that's about the asset itself;
@@ -25,8 +39,10 @@ export const MEDIA_TYPES = [
 export interface SponsorshipTerms {
   amount: string;
   paymentTokenSymbol: string;
-  /** No default — the user must explicitly set this, never silently inherit one. */
-  durationDays: string;
+  /** No default — the user must explicitly set this, never silently inherit one.
+   *  Paired with `durationUnit`; convert with `toDurationDays()`. */
+  durationValue: string;
+  durationUnit: DurationUnit;
   transferable: boolean;
   /** Not surfaced in the UI (no resale-royalty concept here) — always "0". Kept
    *  on the type because `create_offer`/`propose_sponsorship` still take a
@@ -38,6 +54,8 @@ export interface SponsorshipTerms {
   commercialUse: "Yes" | "No";
   derivatives: "Allowed" | "Not Allowed" | "Share-Alike";
   attribution: "Required" | "Not Required";
+  /** Free text — "Worldwide" is a fine default, but real deals often name a
+   *  specific country or an exclusion, which a fixed list can't cover. */
   territory: string;
   aiPolicy: string;
   /** e.g. "Instagram + YouTube only" — too deal-specific to bound into an enum. */
@@ -53,7 +71,8 @@ export interface SponsorshipTerms {
 export const EMPTY_SPONSORSHIP_TERMS: SponsorshipTerms = {
   amount: "",
   paymentTokenSymbol: "",
-  durationDays: "",
+  durationValue: "",
+  durationUnit: "Days",
   transferable: true,
   royaltyPercent: "0",
   licenseText: "",
@@ -221,169 +240,170 @@ export function LicenseTermsBuilder({
         </span>
       </label>
 
-      <div className="rounded-xl border border-border overflow-hidden bg-card/40">
-        <div className="flex items-center gap-2.5 px-4 py-3 border-b border-border">
-          <ScrollText className="h-4 w-4 text-brand-purple shrink-0" />
-          <span className="text-sm font-semibold">How long, where, and what for</span>
+      <div className="space-y-1.5">
+        <label className={FIELD_LABEL}>License length</label>
+        <div className="grid grid-cols-[1fr_auto] gap-2">
+          <input
+            type="number"
+            min={1}
+            disabled={disabled}
+            value={value.durationValue}
+            onChange={(e) => set("durationValue", e.target.value)}
+            placeholder="e.g. 30"
+            className={INPUT_BASE}
+          />
+          <select
+            disabled={disabled}
+            value={value.durationUnit}
+            onChange={(e) => set("durationUnit", e.target.value as DurationUnit)}
+            className={cn(INPUT_BASE, "w-28")}
+          >
+            {DURATION_UNITS.map((u) => (
+              <option key={u} value={u}>{u}</option>
+            ))}
+          </select>
         </div>
+        <p className={FIELD_HELP}>Counted from the moment the deal is accepted, not from today.</p>
+      </div>
 
-        <div className="px-4 pb-4 space-y-4 pt-4">
-            <div className="space-y-1.5">
-              <label className={FIELD_LABEL}>License length (days)</label>
-              <input
-                type="number"
-                min={1}
-                disabled={disabled}
-                value={value.durationDays}
-                onChange={(e) => set("durationDays", e.target.value)}
-                placeholder="e.g. 30"
-                className={INPUT_BASE}
-              />
-              <p className={FIELD_HELP}>Counted from the moment the deal is accepted, not from today.</p>
-            </div>
+      <div className="space-y-1.5">
+        <label className={FIELD_LABEL}>License type</label>
+        <select
+          disabled={disabled}
+          value={value.licenseType}
+          onChange={(e) => handleLicenseTypeChange(e.target.value)}
+          className={INPUT_BASE}
+        >
+          {LICENSE_TYPES.map((l) => (
+            <option key={l.value} value={l.value}>{l.label}</option>
+          ))}
+        </select>
+        {selectedLicense ? <p className={FIELD_HELP}>{selectedLicense.description}</p> : null}
+      </div>
 
-            <div className="space-y-1.5">
-              <label className={FIELD_LABEL}>License type</label>
-              <select
-                disabled={disabled}
-                value={value.licenseType}
-                onChange={(e) => handleLicenseTypeChange(e.target.value)}
-                className={INPUT_BASE}
-              >
-                {LICENSE_TYPES.map((l) => (
-                  <option key={l.value} value={l.value}>{l.label}</option>
-                ))}
-              </select>
-              {selectedLicense ? <p className={FIELD_HELP}>{selectedLicense.description}</p> : null}
-            </div>
+      <div className="space-y-1.5">
+        <label className={FIELD_LABEL}>Commercial use</label>
+        <ToggleGroup value={value.commercialUse} options={["Yes", "No"]} onChange={(v) => set("commercialUse", v as SponsorshipTerms["commercialUse"])} disabled={disabled} />
+      </div>
 
-            <div className="space-y-1.5">
-              <label className={FIELD_LABEL}>Commercial use</label>
-              <ToggleGroup value={value.commercialUse} options={["Yes", "No"]} onChange={(v) => set("commercialUse", v as SponsorshipTerms["commercialUse"])} disabled={disabled} />
-            </div>
+      <div className="space-y-1.5">
+        <label className={FIELD_LABEL}>Derivatives</label>
+        <ToggleGroup value={value.derivatives} options={["Allowed", "Not Allowed", "Share-Alike"]} onChange={(v) => set("derivatives", v as SponsorshipTerms["derivatives"])} disabled={disabled} />
+      </div>
 
-            <div className="space-y-1.5">
-              <label className={FIELD_LABEL}>Derivatives</label>
-              <ToggleGroup value={value.derivatives} options={["Allowed", "Not Allowed", "Share-Alike"]} onChange={(v) => set("derivatives", v as SponsorshipTerms["derivatives"])} disabled={disabled} />
-            </div>
+      <div className="space-y-1.5">
+        <label className={FIELD_LABEL}>Attribution</label>
+        <ToggleGroup value={value.attribution} options={["Required", "Not Required"]} onChange={(v) => set("attribution", v as SponsorshipTerms["attribution"])} disabled={disabled} />
+      </div>
 
-            <div className="space-y-1.5">
-              <label className={FIELD_LABEL}>Attribution</label>
-              <ToggleGroup value={value.attribution} options={["Required", "Not Required"]} onChange={(v) => set("attribution", v as SponsorshipTerms["attribution"])} disabled={disabled} />
-            </div>
+      <div className="space-y-1.5">
+        <label className={FIELD_LABEL}>Territory <span className="font-normal text-muted-foreground">(optional)</span></label>
+        <input
+          type="text"
+          disabled={disabled}
+          value={value.territory}
+          onChange={(e) => set("territory", e.target.value)}
+          placeholder="e.g. Worldwide, Brazil only, excluding China"
+          className={INPUT_BASE}
+        />
+      </div>
 
-            <div className="space-y-1.5">
-              <label className={FIELD_LABEL}>Territory</label>
-              <select
-                disabled={disabled}
-                value={value.territory}
-                onChange={(e) => set("territory", e.target.value)}
-                className={INPUT_BASE}
-              >
-                {GEOGRAPHIC_SCOPES.map((t) => (
-                  <option key={t} value={t}>{t}</option>
-                ))}
-              </select>
-            </div>
+      <div className="space-y-1.5">
+        <label className={FIELD_LABEL}>AI policy</label>
+        <select
+          disabled={disabled}
+          value={value.aiPolicy}
+          onChange={(e) => set("aiPolicy", e.target.value)}
+          className={INPUT_BASE}
+        >
+          {AI_POLICIES.map((p) => (
+            <option key={p} value={p}>{p}</option>
+          ))}
+        </select>
+        <p className={FIELD_HELP}>Whether this work can be used to train AI models.</p>
+      </div>
 
-            <div className="space-y-1.5">
-              <label className={FIELD_LABEL}>AI policy</label>
-              <select
-                disabled={disabled}
-                value={value.aiPolicy}
-                onChange={(e) => set("aiPolicy", e.target.value)}
-                className={INPUT_BASE}
-              >
-                {AI_POLICIES.map((p) => (
-                  <option key={p} value={p}>{p}</option>
-                ))}
-              </select>
-              <p className={FIELD_HELP}>Whether this work can be used to train AI models.</p>
-            </div>
+      <div className="space-y-1.5">
+        <label className={FIELD_LABEL}>Scope <span className="font-normal text-muted-foreground">(optional)</span></label>
+        <input
+          type="text"
+          disabled={disabled}
+          value={value.scope}
+          onChange={(e) => set("scope", e.target.value)}
+          placeholder="e.g. Instagram + YouTube only"
+          className={INPUT_BASE}
+        />
+      </div>
 
-            <div className="space-y-1.5">
-              <label className={FIELD_LABEL}>Scope <span className="font-normal text-muted-foreground">(optional)</span></label>
-              <input
-                type="text"
-                disabled={disabled}
-                value={value.scope}
-                onChange={(e) => set("scope", e.target.value)}
-                placeholder="e.g. Instagram + YouTube only"
-                className={INPUT_BASE}
-              />
-            </div>
+      <div className="space-y-1.5">
+        <label className={FIELD_LABEL}>Deliverables <span className="font-normal text-muted-foreground">(optional)</span></label>
+        <textarea
+          disabled={disabled}
+          value={value.deliverables}
+          onChange={(e) => set("deliverables", e.target.value)}
+          placeholder="e.g. 3 posts, 1 video"
+          rows={2}
+          className={cn(INPUT_BASE, "h-auto py-2.5 resize-y")}
+        />
+      </div>
 
-            <div className="space-y-1.5">
-              <label className={FIELD_LABEL}>Deliverables <span className="font-normal text-muted-foreground">(optional)</span></label>
-              <textarea
-                disabled={disabled}
-                value={value.deliverables}
-                onChange={(e) => set("deliverables", e.target.value)}
-                placeholder="e.g. 3 posts, 1 video"
-                rows={2}
-                className={cn(INPUT_BASE, "h-auto py-2.5 resize-y")}
-              />
-            </div>
+      <YesNoToggle
+        label="Exclusive to this sponsor"
+        help="No other sponsors during the license term."
+        checked={value.exclusive}
+        onChange={(v) => set("exclusive", v)}
+        disabled={disabled}
+      />
 
-            <YesNoToggle
-              label="Exclusive to this sponsor"
-              help="No other sponsors during the license term."
-              checked={value.exclusive}
-              onChange={(v) => set("exclusive", v)}
+      <YesNoToggle
+        label="Content approval required"
+        help="Sponsor reviews content before it's published."
+        checked={value.approvalRequired}
+        onChange={(v) => set("approvalRequired", v)}
+        disabled={disabled}
+      />
+
+      <div className="space-y-1.5">
+        <label className={FIELD_LABEL}>Media <span className="font-normal text-muted-foreground">(optional)</span></label>
+        <div className="flex flex-wrap gap-1.5">
+          {MEDIA_TYPES.map((m) => (
+            <button
+              key={m}
+              type="button"
               disabled={disabled}
-            />
-
-            <YesNoToggle
-              label="Content approval required"
-              help="Sponsor reviews content before it's published."
-              checked={value.approvalRequired}
-              onChange={(v) => set("approvalRequired", v)}
-              disabled={disabled}
-            />
-
-            <div className="space-y-1.5">
-              <label className={FIELD_LABEL}>Media <span className="font-normal text-muted-foreground">(optional)</span></label>
-              <div className="flex flex-wrap gap-1.5">
-                {MEDIA_TYPES.map((m) => (
-                  <button
-                    key={m}
-                    type="button"
-                    disabled={disabled}
-                    onClick={() => toggleMedia(m)}
-                    className={cn(
-                      "h-8 px-2.5 rounded-full border text-xs font-medium transition-colors disabled:opacity-50",
-                      value.media.includes(m)
-                        ? "border-brand-purple bg-brand-purple/10 text-foreground"
-                        : "border-border bg-card text-muted-foreground hover:text-foreground",
-                    )}
-                  >
-                    {m}
-                  </button>
-                ))}
-              </div>
-              <input
-                type="text"
-                disabled={disabled}
-                value={value.mediaOther}
-                onChange={(e) => set("mediaOther", e.target.value)}
-                placeholder="Other media type"
-                className={cn(INPUT_BASE, "mt-1.5")}
-              />
-            </div>
-
-            <div className="space-y-1.5">
-              <label className={FIELD_LABEL}>Additional terms <span className="font-normal text-muted-foreground">(optional)</span></label>
-              <textarea
-                disabled={disabled}
-                value={value.licenseText}
-                onChange={(e) => set("licenseText", e.target.value)}
-                placeholder="Anything else worth spelling out."
-                rows={3}
-                className={cn(INPUT_BASE, "h-auto py-2.5 resize-y")}
-              />
-              <p className={FIELD_HELP}>Saved permanently and shown to anyone who holds the license.</p>
-            </div>
+              onClick={() => toggleMedia(m)}
+              className={cn(
+                "h-8 px-2.5 rounded-full border text-xs font-medium transition-colors disabled:opacity-50",
+                value.media.includes(m)
+                  ? "border-brand-purple bg-brand-purple/10 text-foreground"
+                  : "border-border bg-card text-muted-foreground hover:text-foreground",
+              )}
+            >
+              {m}
+            </button>
+          ))}
         </div>
+        <input
+          type="text"
+          disabled={disabled}
+          value={value.mediaOther}
+          onChange={(e) => set("mediaOther", e.target.value)}
+          placeholder="Other media type"
+          className={cn(INPUT_BASE, "mt-1.5")}
+        />
+      </div>
+
+      <div className="space-y-1.5">
+        <label className={FIELD_LABEL}>Additional terms <span className="font-normal text-muted-foreground">(optional)</span></label>
+        <textarea
+          disabled={disabled}
+          value={value.licenseText}
+          onChange={(e) => set("licenseText", e.target.value)}
+          placeholder="Anything else worth spelling out."
+          rows={3}
+          className={cn(INPUT_BASE, "h-auto py-2.5 resize-y")}
+        />
+        <p className={FIELD_HELP}>Saved permanently and shown to anyone who holds the license.</p>
       </div>
     </div>
   );

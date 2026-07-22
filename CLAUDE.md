@@ -23,7 +23,17 @@ Package manager: **Bun** for everything except `npm publish`.
    - starknet: `bun install` only (bun.lock is the tracked lockfile; the extra `npm install` step was dropped 2026-07-12 — a clean bun-only install passes `npx tsc --noEmit` + `npm run build`, while npm installs churn ~731 packages that bun then restores) → `npx tsc --noEmit` (must pass; `npm run build` also works env-less since the 2026-07-11 lazy Privy-server fix)
 6. Commit + push all three repos
 
-Current version: **0.78.2** (`LicenseTermsBuilder` polish per user feedback: "Resale royalty (%)" removed
+Current version: **0.79.0** (`LicenseTermsBuilder` — more user feedback: the "How long, where, and what for"
+subpanel wrapper is gone entirely, every field flows in the main form now (0.78.0's "collapsible" and
+0.78.2's "always-open-but-still-a-boxed-subsection" were both still imposing a grouping the user didn't
+want). **Breaking**: `SponsorshipTerms.durationDays: string` → `durationValue: string` + `durationUnit:
+"Days" | "Weeks" | "Months" | "Years"` (new `DURATION_UNITS` export) — duration isn't contract-enforced in
+v3 (`00-principles` soft-license default), so forcing every deal into a day-count was an arbitrary
+constraint; a multi-year sponsorship shouldn't have to type "730". New `toDurationDays(terms)` export
+converts to whole days for the contract's `duration` arg — callers do `toDurationDays(terms) * 86400` for
+seconds. **Territory** is free text now, not a 6-option continent `<select>` — same reasoning: a real deal
+naming a specific country or an exclusion couldn't be expressed by the fixed list.)
+Prior 0.78.2: (`LicenseTermsBuilder` polish per user feedback: "Resale royalty (%)" removed
 from the UI entirely — didn't make sense for a sponsorship form; `royaltyPercent` stays on the type
 (defaults `"0"`) only because `create_offer`/`propose_sponsorship` still take a `royaltyBps` arg. The
 licensing panel is no longer collapsible — it always renders (a collapsed-by-default panel meant a user
