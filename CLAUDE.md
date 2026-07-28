@@ -23,7 +23,24 @@ Package manager: **Bun** for everything except `npm publish`.
    - starknet: `bun install` only (bun.lock is the tracked lockfile; the extra `npm install` step was dropped 2026-07-12 — a clean bun-only install passes `npx tsc --noEmit` + `npm run build`, while npm installs churn ~731 packages that bun then restores) → `npx tsc --noEmit` (must pass; `npm run build` also works env-less since the 2026-07-11 lazy Privy-server fix)
 6. Commit + push all three repos
 
-Current version: **0.79.1** (0.79.0 shipped `toDurationDays`/`DURATION_UNITS`/`DurationUnit` from
+Current version: **0.80.1** (`NavWalletTrigger` now `React.forwardRef` — a consumer wiring it into
+Radix's `SheetTrigger asChild` needs ref forwarding for focus management; 0.80.0 shipped it as a
+plain function component. No visual change.)
+Prior 0.80.0: (`NavWalletTrigger` added to `nav-shell.tsx` — the reserved header
+right-side slot's first real component, ahead of the full MediaWallet panel. Same glass-pill
+material as `NavBrandButton`/`NavIconButton`; a thin brand-gradient ring (blue→purple→rose,
+`.ml-nav-wallet-ring` in `medialane.css`, reuses the `spin-slow` keyframe) traces the rim instead
+of a static icon — rotating continuously while `connected={false}` (empty center, no glyph, no
+placeholder avatar), settling to a static low-opacity ring with a plain `User` glyph once
+`connected={true}`. Deliberately no gradient-filled avatar anywhere — the component doesn't know
+the wallet's real identity, only whether one is attached; the consuming app supplies `onClick` and
+`connected`.)
+Prior 0.79.2: (`AssetMarketplacePanel` owner view — "List on Marketplace" no longer
+renders next to "Cancel Listing" for a single-instance asset (ERC-721: at most one listing can ever
+exist, so the pair read as broken/confusing once a listing was active). Gated on `!myListing ||
+isERC1155` — an ERC-1155 owner can still hold un-listed editions while one listing is active, so the
+button stays for them.)
+Prior 0.79.1: (0.79.0 shipped `toDurationDays`/`DURATION_UNITS`/`DurationUnit` from
 `license-terms-builder.tsx` but forgot to re-export them from `src/index.ts` — caught immediately by both
 apps' `tsc` when bumping to consume it. Export-only fix, no behavior change.)
 Prior 0.79.0: (`LicenseTermsBuilder` — more user feedback: the "How long, where, and what for"

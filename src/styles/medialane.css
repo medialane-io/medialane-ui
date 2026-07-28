@@ -209,6 +209,27 @@ input[type="number"] { -moz-appearance: textfield; }
 }
 .ml-gbtn:hover::before { padding: 2px; animation-duration: 1.6s; }
 
+/* ── Nav wallet trigger — rotating brand-gradient ring ──────────────────── */
+/* Not connected: the ring rotates continuously (ambient "connect here" cue, */
+/* no icon inside). Connected: the ring stops and settles to a quiet static  */
+/* accent, the trigger's own User glyph renders in the center instead.      */
+.ml-nav-wallet-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  padding: 1.5px;
+  background: conic-gradient(from 0deg, #3b7bff, #8a5cf6, #f6608f, #3b7bff);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: spin-slow 4.5s linear infinite;
+  pointer-events: none;
+}
+.ml-nav-wallet-trigger--connected .ml-nav-wallet-ring {
+  animation: none;
+  opacity: 0.45;
+}
+
 /* ── Hover-only branded gradient border (launchpad cards) ───────────────── */
 /* The resting state keeps the card's own hairline; on hover-capable devices */
 /* the full-spectrum ring fades in over it. Decoration only — never carries  */

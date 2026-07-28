@@ -137,12 +137,14 @@ export type { NavCommand, NavCommandGroup, NavCommandMenuProps } from "./compone
 export {
   NavBrandButton,
   NavIconButton,
+  NavWalletTrigger,
   NavAccountSheet,
   useNavAccountSheet,
 } from "./components/nav-shell.js";
 export type {
   NavBrandButtonProps,
   NavIconButtonProps,
+  NavWalletTriggerProps,
   NavAccountSheetProps,
 } from "./components/nav-shell.js";
 

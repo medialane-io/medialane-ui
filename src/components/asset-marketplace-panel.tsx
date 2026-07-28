@@ -190,7 +190,13 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
                       renderHelp={renderHelp}
                     />
                   ) : null}
-                  <ActionButton label="List on Marketplace" icon={<Tag className="h-4 w-4" />} onClick={onOpenListing} tone="blue" renderHelp={renderHelp} />
+                  {/* ERC-721 has exactly one possible listing — once myListing exists,
+                      "List on Marketplace" is redundant next to "Cancel Listing" and
+                      reads as a broken/confusing pair. An ERC-1155 owner can still hold
+                      un-listed editions while one listing is active, so it stays for them. */}
+                  {(!myListing || isERC1155) ? (
+                    <ActionButton label="List on Marketplace" icon={<Tag className="h-4 w-4" />} onClick={onOpenListing} tone="blue" renderHelp={renderHelp} />
+                  ) : null}
                   <ActionButton label="Transfer" icon={<ArrowRightLeft className="h-4 w-4" />} onClick={onOpenTransfer} tone="orange" renderHelp={renderHelp} />
                   {remixEnabled && onOpenRemix ? (
                     <ActionButton

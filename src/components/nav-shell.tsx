@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { User } from "lucide-react";
 import { cn } from "../utils/cn.js";
 
 // ── Header buttons ────────────────────────────────────────────────────────────
@@ -78,6 +79,48 @@ export function NavIconButton({ onClick, className, indicator, children, ...rest
     </button>
   );
 }
+
+export interface NavWalletTriggerProps {
+  onClick?: () => void;
+  className?: string;
+  "aria-label"?: string;
+  /** Whether a wallet is currently connected. */
+  connected?: boolean;
+}
+
+/**
+ * The right-side counterpart to `NavBrandButton` for a wallet/account entry
+ * point: the same glass pill material, with a thin brand-gradient ring
+ * traced around the rim instead of a static icon. Not connected — the ring
+ * rotates slowly (an ambient "something opens here" cue) around an empty
+ * center, no glyph, no placeholder avatar. Connected — the ring settles to a
+ * static accent and a plain `User` glyph fills the center (never a
+ * gradient-filled avatar — this button doesn't know the wallet's real
+ * identity, only whether one is attached).
+ */
+export const NavWalletTrigger = React.forwardRef<HTMLButtonElement, NavWalletTriggerProps>(
+  function NavWalletTrigger({ onClick, className, connected = false, ...rest }, ref) {
+    return (
+      <button
+        ref={ref}
+        type="button"
+        onClick={onClick}
+        aria-label={rest["aria-label"] ?? (connected ? "Account" : "Connect wallet")}
+        className={cn(
+          "ml-nav-wallet-trigger relative flex h-11 w-11 items-center justify-center rounded-full",
+          "bg-background/10 text-muted-foreground backdrop-blur-xl backdrop-saturate-150",
+          "transition-colors hover:bg-background/20 hover:text-foreground active:scale-[0.97]",
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60",
+          connected && "ml-nav-wallet-trigger--connected",
+          className
+        )}
+      >
+        <span className="ml-nav-wallet-ring" aria-hidden="true" />
+        {connected && <User className="h-4 w-4" />}
+      </button>
+    );
+  }
+);
 
 // ── Account sheet ─────────────────────────────────────────────────────────────
 
