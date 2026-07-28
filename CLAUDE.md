@@ -23,7 +23,11 @@ Package manager: **Bun** for everything except `npm publish`.
    - starknet: `bun install` only (bun.lock is the tracked lockfile; the extra `npm install` step was dropped 2026-07-12 — a clean bun-only install passes `npx tsc --noEmit` + `npm run build`, while npm installs churn ~731 packages that bun then restores) → `npx tsc --noEmit` (must pass; `npm run build` also works env-less since the 2026-07-11 lazy Privy-server fix)
 6. Commit + push all three repos
 
-Current version: **0.81.0** (`NavAccountSheet` redesigned — centered, backdrop-blurred panel with
+Current version: **0.83.0** (`NavWalletTrigger` gained an optional `iconSrc` prop — when the caller
+knows the connected wallet's own icon (e.g. Argent/Braavos/Cartridge), it renders that instead of
+the plain `User` glyph; omitted = unchanged behavior (still no fabricated generic avatar). 0.82.x:
+see git log — not backfilled here.)
+Prior 0.81.0: (`NavAccountSheet` redesigned — centered, backdrop-blurred panel with
 the exact same overlay/card treatment as `NavCommandMenu` (`.nav-canvas-overlay`,
 `bg-background/90 backdrop-blur-2xl backdrop-saturate-150`, `max-w-[380px]`), replacing its
 original corner-anchored/bottom-sheet layout — never actually shipped in either app, so no

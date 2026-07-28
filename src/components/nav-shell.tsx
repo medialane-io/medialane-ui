@@ -86,6 +86,12 @@ export interface NavWalletTriggerProps {
   "aria-label"?: string;
   /** Whether a wallet is currently connected. */
   connected?: boolean;
+  /**
+   * The connected wallet's own icon (e.g. Argent/Braavos/Cartridge). Optional —
+   * apps with no single "connected wallet" identity to show (e.g. an
+   * email/social-login app) simply omit it and get the plain glyph below.
+   */
+  iconSrc?: string;
 }
 
 /**
@@ -94,12 +100,12 @@ export interface NavWalletTriggerProps {
  * traced around the rim instead of a static icon. Not connected — the ring
  * rotates slowly (an ambient "something opens here" cue) around an empty
  * center, no glyph, no placeholder avatar. Connected — the ring settles to a
- * static accent and a plain `User` glyph fills the center (never a
- * gradient-filled avatar — this button doesn't know the wallet's real
- * identity, only whether one is attached).
+ * static accent and shows the connected wallet's own icon via `iconSrc` when
+ * the caller has one; otherwise a plain `User` glyph (never a fabricated
+ * generic avatar).
  */
 export const NavWalletTrigger = React.forwardRef<HTMLButtonElement, NavWalletTriggerProps>(
-  function NavWalletTrigger({ onClick, className, connected = false, ...rest }, ref) {
+  function NavWalletTrigger({ onClick, className, connected = false, iconSrc, ...rest }, ref) {
     return (
       <button
         ref={ref}
@@ -116,7 +122,9 @@ export const NavWalletTrigger = React.forwardRef<HTMLButtonElement, NavWalletTri
         )}
       >
         <span className="ml-nav-wallet-ring" aria-hidden="true" />
-        {connected && <User className="h-3.5 w-3.5" />}
+        {connected && (iconSrc
+          ? <img src={iconSrc} alt="" width={16} height={16} className="h-4 w-4 shrink-0 rounded-full" />
+          : <User className="h-3.5 w-3.5" />)}
       </button>
     );
   }
