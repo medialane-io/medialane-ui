@@ -58,6 +58,7 @@ export { CollectionCard, CollectionCardSkeleton } from "./components/collection-
 export type { CollectionCardProps } from "./components/collection-card.js";
 export { TokenCard, TokenCardSkeleton } from "./components/token-card.js";
 export type { TokenCardProps } from "./components/token-card.js";
+export { ThemeAmbientBackground } from "./components/theme-ambient-background.js";
 export {
   useCollectionFilters, SORT_OPTIONS, CollectionFiltersTrigger, CollectionFiltersBody,
 } from "./components/collection-filters.js";
