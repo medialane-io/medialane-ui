@@ -227,7 +227,6 @@ input[type="number"] { -moz-appearance: textfield; }
 }
 .ml-nav-wallet-trigger--connected .ml-nav-wallet-ring {
   animation: none;
-  opacity: 0.45;
 }
 
 /* ── Hover-only branded gradient border (launchpad cards) ───────────────── */

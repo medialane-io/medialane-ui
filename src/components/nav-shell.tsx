@@ -107,7 +107,7 @@ export const NavWalletTrigger = React.forwardRef<HTMLButtonElement, NavWalletTri
         onClick={onClick}
         aria-label={rest["aria-label"] ?? (connected ? "Account" : "Connect wallet")}
         className={cn(
-          "ml-nav-wallet-trigger relative flex h-11 w-11 items-center justify-center rounded-full",
+          "ml-nav-wallet-trigger relative flex h-8 w-8 items-center justify-center rounded-full",
           "bg-background/10 text-muted-foreground backdrop-blur-xl backdrop-saturate-150",
           "transition-colors hover:bg-background/20 hover:text-foreground active:scale-[0.97]",
           "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60",
@@ -116,7 +116,7 @@ export const NavWalletTrigger = React.forwardRef<HTMLButtonElement, NavWalletTri
         )}
       >
         <span className="ml-nav-wallet-ring" aria-hidden="true" />
-        {connected && <User className="h-4 w-4" />}
+        {connected && <User className="h-3.5 w-3.5" />}
       </button>
     );
   }
@@ -137,23 +137,22 @@ export function useNavAccountSheet() {
 }
 
 export interface NavAccountSheetProps {
-  /** The app's account/connect panel (Clerk, wallet connectors, …). */
+  /** The app's account/wallet panel content — identity, network, disconnect, etc. */
   children: React.ReactNode;
-  /** Optional heading above the panel. */
-  title?: string;
 }
 
 /**
- * The wallet-side surface: a compact glass sheet anchored to the top-right
- * header button (bottom sheet on mobile). Content is app-owned — pass the same
- * account panel the command menu uses in its accountSlot.
+ * The wallet-side surface: a centered, backdrop-blurred panel — the exact
+ * same overlay + card treatment as `NavCommandMenu` (`.nav-canvas-overlay`,
+ * `bg-background/90 backdrop-blur-2xl backdrop-saturate-150`), so every
+ * global panel in the header reads as one system. No built-in title — this
+ * is an account/wallet card, not a menu; content is entirely app-owned.
  *
- * Opens via `useNavAccountSheet().open()`. Mutually exclusive with the command
- * menu: opening one closes the other, and the shared `ml:nav-close` event
- * (fired by `useNavCommandMenu().close()`) closes this sheet too, so account
- * panels behave identically in both hosts.
+ * Opens via `useNavAccountSheet().open()`. Mutually exclusive with the
+ * command menu: opening one closes the other, and the shared `ml:nav-close`
+ * event (fired by `useNavCommandMenu().close()`) closes this too.
  */
-export function NavAccountSheet({ children, title = "Account" }: NavAccountSheetProps) {
+export function NavAccountSheet({ children }: NavAccountSheetProps) {
   const [open, setOpen] = React.useState(false);
 
   React.useEffect(() => {
@@ -183,6 +182,7 @@ export function NavAccountSheet({ children, title = "Account" }: NavAccountSheet
     <AnimatePresence>
       {open && (
         <>
+          {/* Backdrop blur — identical to NavCommandMenu's */}
           <motion.div
             className="nav-canvas-overlay"
             initial={{ opacity: 0 }}
@@ -191,32 +191,33 @@ export function NavAccountSheet({ children, title = "Account" }: NavAccountSheet
             transition={{ duration: 0.15 }}
             onClick={() => setOpen(false)}
           />
+
+          {/* Panel — centered on desktop, bottom sheet on mobile, same as NavCommandMenu */}
           <motion.div
-            className="fixed inset-x-3 bottom-3 z-[101] sm:inset-auto sm:right-4 sm:top-4 sm:w-[360px] lg:right-8"
+            className="fixed inset-0 z-[101] flex items-end justify-center p-3 pb-4 sm:items-center sm:p-4"
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 24 }}
             transition={{ duration: 0.18, ease: "easeOut" }}
+            onClick={() => setOpen(false)}
           >
-            <div className="overflow-hidden rounded-[20px] border border-border/40 bg-background/90 shadow-2xl backdrop-blur-2xl backdrop-saturate-150">
+            <div
+              className="relative w-full max-w-[380px] overflow-hidden rounded-[20px] border border-border/40 bg-background/90 shadow-2xl backdrop-blur-2xl backdrop-saturate-150"
+              onClick={(e) => e.stopPropagation()}
+            >
               <div className="flex justify-center pt-2.5 sm:hidden" aria-hidden="true">
                 <span className="h-1 w-9 rounded-full bg-muted-foreground/30" />
               </div>
-              <div className="flex items-center justify-between px-4 pb-1 pt-2 sm:pt-3">
-                <span className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground/70">
-                  {title}
-                </span>
-                <button
-                  onClick={() => setOpen(false)}
-                  className="rounded-md p-1 text-muted-foreground transition-colors hover:bg-muted/50"
-                  aria-label="Close"
-                >
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-                    <path d="M18 6 6 18M6 6l12 12" />
-                  </svg>
-                </button>
-              </div>
-              <div className="px-3 pb-4 pt-1 sm:pb-3">{children}</div>
+              <button
+                onClick={() => setOpen(false)}
+                className="absolute right-3 top-3 rounded-md p-1 text-muted-foreground/70 transition-colors hover:bg-muted/50 hover:text-foreground"
+                aria-label="Close"
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                  <path d="M18 6 6 18M6 6l12 12" />
+                </svg>
+              </button>
+              <div className="px-4 pb-4 pt-5 sm:pt-6">{children}</div>
             </div>
           </motion.div>
         </>

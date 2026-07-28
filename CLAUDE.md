@@ -23,7 +23,17 @@ Package manager: **Bun** for everything except `npm publish`.
    - starknet: `bun install` only (bun.lock is the tracked lockfile; the extra `npm install` step was dropped 2026-07-12 — a clean bun-only install passes `npx tsc --noEmit` + `npm run build`, while npm installs churn ~731 packages that bun then restores) → `npx tsc --noEmit` (must pass; `npm run build` also works env-less since the 2026-07-11 lazy Privy-server fix)
 6. Commit + push all three repos
 
-Current version: **0.80.1** (`NavWalletTrigger` now `React.forwardRef` — a consumer wiring it into
+Current version: **0.81.0** (`NavAccountSheet` redesigned — centered, backdrop-blurred panel with
+the exact same overlay/card treatment as `NavCommandMenu` (`.nav-canvas-overlay`,
+`bg-background/90 backdrop-blur-2xl backdrop-saturate-150`, `max-w-[380px]`), replacing its
+original corner-anchored/bottom-sheet layout — never actually shipped in either app, so no
+migration needed. **Breaking**: dropped the `title` prop entirely (no built-in header) — this is
+an account/wallet card, not a menu, and a generic title read as filler; content is 100% app-owned
+via `children`, same as before. `NavWalletTrigger` shrunk `h-11 w-11` → `h-8 w-8` to match
+`NavBrandButton`'s actual icon-glyph size (was matching the pill's full bounding box, which read
+heavier); the connected-state ring no longer dims to 45% opacity — it just stops rotating, full
+color, so it doesn't fade to the point of being mistaken for broken.)
+Prior 0.80.1: (`NavWalletTrigger` now `React.forwardRef` — a consumer wiring it into
 Radix's `SheetTrigger asChild` needs ref forwarding for focus management; 0.80.0 shipped it as a
 plain function component. No visual change.)
 Prior 0.80.0: (`NavWalletTrigger` added to `nav-shell.tsx` — the reserved header
