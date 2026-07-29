@@ -1,11 +1,11 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { AddressDisplay } from "./address-display.js";
 import { ParentAttributionBanner } from "./parent-attribution-banner.js";
 import { IpTypeBadge } from "./ip-type-badge.js";
+import { AnimatedTokenMedia } from "./animated-token-media.js";
 import { Layers, Users } from "lucide-react";
 
 interface AssetMediaColumnProps {
@@ -15,6 +15,10 @@ interface AssetMediaColumnProps {
   imgError: boolean;
   onImageError: () => void;
   fallback: React.ReactNode;
+  /** Resolved animation_url — the live on-chain renderer, if any. */
+  animationUrl?: string | null;
+  /** Caller-computed eligibility for the living-render treatment. */
+  live?: boolean;
   stats?: Array<{
     value: string;
     label: string;
@@ -29,6 +33,8 @@ export function AssetMediaColumn({
   imgError,
   onImageError,
   fallback,
+  animationUrl,
+  live,
   stats,
 }: AssetMediaColumnProps) {
   return (
@@ -38,22 +44,24 @@ export function AssetMediaColumn({
       transition={{ duration: 0.6, ease: "easeOut" }}
       className="overflow-hidden rounded-xl lg:sticky lg:top-16"
     >
-      <div className="rounded-2xl overflow-hidden border border-border bg-muted">
-        {image && !imgError ? (
-          <Image
-            src={image}
-            alt={imageAlt}
-            width={0}
-            height={0}
-            sizes="(max-width: 1024px) 100vw, 66vw"
-            className="w-full h-auto"
-            onError={onImageError}
-            crossOrigin="anonymous"
-            priority
-          />
-        ) : (
-          fallback
-        )}
+      <div
+        className={
+          "rounded-2xl overflow-hidden border border-border bg-muted" +
+          (live && animationUrl ? " aspect-square" : "")
+        }
+      >
+        <AnimatedTokenMedia
+          image={image}
+          animationUrl={animationUrl}
+          live={live}
+          alt={imageAlt}
+          mode="natural"
+          sizes="(max-width: 1024px) 100vw, 66vw"
+          priority
+          imgError={imgError}
+          onImageError={onImageError}
+          fallback={fallback}
+        />
       </div>
 
       {stats && stats.length > 0 ? (
