@@ -56,7 +56,7 @@ export function AssetCollectionBar({
           {Array.from({ length: 4 }).map((_, i) => {
             const sibling = preview[i];
             if (!sibling) {
-              return <div key={i} className="aspect-square rounded-xl bg-muted/20" />;
+              return <div key={`empty-${i}`} className="aspect-square rounded-xl bg-muted/20" />;
             }
             return (
               <button

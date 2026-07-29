@@ -30,11 +30,8 @@ function CreatorChip({
 }) {
   const [bannerError, setBannerError] = useState(false);
 
-  // bannerImage with collectionImage fallback — io-approved big-username design
-  const rawSrc =
-    creator.bannerImage ||
-    (creator as ApiCreatorProfile & { collectionImage?: string | null }).collectionImage ||
-    null;
+  // avatarImage (the creator's chosen NFT) with collectionImage fallback — io-approved big-username design
+  const rawSrc = creator.avatarImage || creator.collectionImage || null;
   const bannerUrl = rawSrc && !bannerError ? ipfsToHttp(rawSrc) : null;
 
   return (

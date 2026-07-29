@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { User } from "lucide-react";
+import { User, Wallet } from "lucide-react";
 import { cn } from "../utils/cn.js";
 
 // ── Header buttons ────────────────────────────────────────────────────────────
@@ -92,20 +92,31 @@ export interface NavWalletTriggerProps {
    * email/social-login app) simply omit it and get the plain glyph below.
    */
   iconSrc?: string;
+  /**
+   * Override for the disconnected-state glyph (default: a plain `Wallet`
+   * icon). Apps whose actual connect entry point isn't a wallet — e.g. an
+   * email/social-login app whose users primarily sign in with Google — can
+   * pass a more accurate icon here so the ring points at what will really
+   * happen on click.
+   */
+  disconnectedIcon?: React.ReactNode;
 }
 
 /**
  * The right-side counterpart to `NavBrandButton` for a wallet/account entry
  * point: the same glass pill material, with a thin brand-gradient ring
  * traced around the rim instead of a static icon. Not connected — the ring
- * rotates slowly (an ambient "something opens here" cue) around an empty
- * center, no glyph, no placeholder avatar. Connected — the ring settles to a
- * static accent and shows the connected wallet's own icon via `iconSrc` when
- * the caller has one; otherwise a plain `User` glyph (never a fabricated
- * generic avatar).
+ * rotates slowly (an ambient "something opens here" cue) around a plain
+ * `Wallet` glyph (override via `disconnectedIcon` — e.g. a Google mark for an
+ * email/social-login app), so the trigger reads as an actionable connect
+ * entry point rather than disappearing into the header (users weren't
+ * noticing the bare ring). Connected — the ring settles to a static accent
+ * and shows the connected
+ * wallet's own icon via `iconSrc` when the caller has one; otherwise a plain
+ * `User` glyph (never a fabricated generic avatar).
  */
 export const NavWalletTrigger = React.forwardRef<HTMLButtonElement, NavWalletTriggerProps>(
-  function NavWalletTrigger({ onClick, className, connected = false, iconSrc, ...rest }, ref) {
+  function NavWalletTrigger({ onClick, className, connected = false, iconSrc, disconnectedIcon, ...rest }, ref) {
     return (
       <button
         ref={ref}
@@ -122,9 +133,11 @@ export const NavWalletTrigger = React.forwardRef<HTMLButtonElement, NavWalletTri
         )}
       >
         <span className="ml-nav-wallet-ring" aria-hidden="true" />
-        {connected && (iconSrc
-          ? <img src={iconSrc} alt="" width={16} height={16} className="h-4 w-4 shrink-0 rounded-full" />
-          : <User className="h-3.5 w-3.5" />)}
+        {connected
+          ? (iconSrc
+              ? <img src={iconSrc} alt="" width={16} height={16} className="h-4 w-4 shrink-0 rounded-full" />
+              : <User className="h-3.5 w-3.5" />)
+          : (disconnectedIcon ?? <Wallet className="h-3.5 w-3.5" />)}
       </button>
     );
   }

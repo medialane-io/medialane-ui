@@ -51,6 +51,18 @@ export interface NavCommandMenuProps {
    * framework-agnostic — same pattern as `accountSlot`.
    */
   footerSlot?: React.ReactNode;
+  /**
+   * Show the "↑↓ Navigate  ↵ Open" keyboard-hint text next to `footerSlot`.
+   * Defaults to `true` (unchanged behavior).
+   */
+  showKeyboardHints?: boolean;
+  /**
+   * Optional override for the trailing "medialane ⌘K" brandmark at the
+   * footer's right edge — replaces it entirely rather than adorning it, so
+   * an app can put something more actionable there (e.g. a "Connect" button)
+   * instead of a static label. Omit to keep the default brandmark.
+   */
+  brandSlot?: React.ReactNode;
 }
 
 // ── Singleton hook ─────────────────────────────────────────────────────────────
@@ -139,7 +151,14 @@ const GROUP_HEADING_CLASSES = cn(
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
-export function NavCommandMenu({ commands, trigger, accountSlot, footerSlot }: NavCommandMenuProps) {
+export function NavCommandMenu({
+  commands,
+  trigger,
+  accountSlot,
+  footerSlot,
+  showKeyboardHints = true,
+  brandSlot,
+}: NavCommandMenuProps) {
   const [open, setOpen] = React.useState(false);
   const [query, setQuery] = React.useState("");
   const router = useRouter();
@@ -284,15 +303,19 @@ export function NavCommandMenu({ commands, trigger, accountSlot, footerSlot }: N
                   <div className="flex items-center justify-between gap-3 border-t border-border/40 bg-muted/20 px-3 py-2">
                     <div className="flex items-center gap-3">
                       {footerSlot}
-                      <span className="hidden items-center gap-3 text-[10.5px] text-muted-foreground/70 sm:flex">
-                        <span className="flex items-center gap-1"><Kbd>↑</Kbd><Kbd>↓</Kbd> Navigate</span>
-                        <span className="flex items-center gap-1"><Kbd>↵</Kbd> Open</span>
-                      </span>
+                      {showKeyboardHints && (
+                        <span className="hidden items-center gap-3 text-[10.5px] text-muted-foreground/70 sm:flex">
+                          <span className="flex items-center gap-1"><Kbd>↑</Kbd><Kbd>↓</Kbd> Navigate</span>
+                          <span className="flex items-center gap-1"><Kbd>↵</Kbd> Open</span>
+                        </span>
+                      )}
                     </div>
-                    <span className="flex shrink-0 items-center gap-2 text-[10px] text-muted-foreground/50">
-                      medialane
-                      <Kbd className="hidden sm:inline-flex">⌘K</Kbd>
-                    </span>
+                    {brandSlot ?? (
+                      <span className="flex shrink-0 items-center gap-2 text-[10px] text-muted-foreground/50">
+                        medialane
+                        <Kbd className="hidden sm:inline-flex">⌘K</Kbd>
+                      </span>
+                    )}
                   </div>
                 </Command>
               </div>

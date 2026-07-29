@@ -78,9 +78,9 @@ export function CoinsExplorer({ useCoins, usePrice, coinHref, heading = true }: 
         <div className="space-y-2">
           <div className="flex items-center gap-2 text-primary">
             <Coins className="h-5 w-5" />
-            <span className="text-sm font-semibold uppercase tracking-wider">Tokens</span>
+            <span className="text-sm font-semibold uppercase tracking-wider">Coins</span>
           </div>
-          <h1 className="text-3xl font-bold">Creator coins &amp; memecoins</h1>
+          <h1 className="text-3xl">Creator coins &amp; memecoins</h1>
         </div>
       )}
 

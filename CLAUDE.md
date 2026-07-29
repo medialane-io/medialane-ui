@@ -23,7 +23,30 @@ Package manager: **Bun** for everything except `npm publish`.
    - starknet: `bun install` only (bun.lock is the tracked lockfile; the extra `npm install` step was dropped 2026-07-12 — a clean bun-only install passes `npx tsc --noEmit` + `npm run build`, while npm installs churn ~731 packages that bun then restores) → `npx tsc --noEmit` (must pass; `npm run build` also works env-less since the 2026-07-11 lazy Privy-server fix)
 6. Commit + push all three repos
 
-Current version: **0.84.0** (gol_starknet partner-launch living-render support: a small
+Current version: **0.88.0** (`DiscoverCreatorsStrip` — removed the `bannerImage`
+field from its creator card image priority; the creator's `avatarImage` (an owned
+NFT) already fills the card and themes the platform, so a separate banner was pure
+redundancy. Matches the `@medialane/sdk` 0.74.0 / `medialane-backend`
+`AccountProfile.bannerImage` column removal.)
+Prior 0.87.0: (`NavWalletTrigger` gained an optional `disconnectedIcon`
+prop overriding the default `Wallet` glyph shown in the disconnected-state ring —
+lets an app whose real connect entry point isn't a wallet (e.g. medialane-io, an
+email/social-login app) show a more accurate icon, e.g. the Google mark, since
+Google is the primary sign-in method there. Omitted = unchanged `Wallet` default.
+medialane-io now consumes `NavWalletTrigger`/`NavAccountSheet` for the first time
+this release (top-right ring + account sheet, mirroring starknet's nav treatment
+adapted for Clerk + ChipiPay identity).)
+Prior 0.86.0: (`NavWalletTrigger`'s disconnected state now shows a plain
+`Wallet` glyph inside the rotating brand-gradient ring, instead of an empty center —
+users weren't noticing the bare ring as a connect entry point (medialane-starknet
+feedback). Connected state unchanged (`iconSrc` or `User` glyph).)
+Prior 0.85.0: (`NavCommandMenu` gained two optional, non-breaking props:
+`showKeyboardHints` (default `true` — hides the "↑↓ Navigate / ↵ Open" footer hint when `false`)
+and `brandSlot` (replaces the static "medialane ⌘K" footer brandmark entirely when provided).
+medialane-starknet uses both to swap that brandmark for a "Connect" button (`NavConnectButton`,
+app-local) — users had no obvious way to connect once the wallet component was removed from the
+command menu. io is unaffected (no props passed, default look unchanged).)
+Prior 0.84.0: (gol_starknet partner-launch living-render support: a small
 `living-render-collections.ts` contract-address allowlist (empty until mainnet deploy) +
 `useIntersectionActive` hook + `AnimatedTokenMedia` component swap a token's static `image` for a
 sandboxed iframe of its own on-chain `animation_url` once visible on screen, wired into `TokenCard`/
