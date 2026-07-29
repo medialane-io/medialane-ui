@@ -2,19 +2,21 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { useIntersectionActive } from "../utils/use-intersection-active.js";
 import { AddressDisplay } from "./address-display.js";
 import { ParentAttributionBanner } from "./parent-attribution-banner.js";
 import { IpTypeBadge } from "./ip-type-badge.js";
-import { AnimatedTokenMedia } from "./animated-token-media.js";
 import { Layers, Users } from "lucide-react";
 
 interface AssetMediaColumnProps {
   shouldReduce: boolean;
-  image: string;
+  image: string | null;
   imageAlt: string;
   imgError: boolean;
   onImageError: () => void;
   fallback: React.ReactNode;
+  /** Opens the full-screen lightbox. Omit for a non-interactive (still borderless, real-aspect-ratio) render. */
+  onZoom?: () => void;
   /** Resolved animation_url — the live on-chain renderer, if any. */
   animationUrl?: string | null;
   /** Caller-computed eligibility for the living-render treatment. */
@@ -26,6 +28,17 @@ interface AssetMediaColumnProps {
   }>;
 }
 
+/**
+ * The platform's one asset media column — borderless, respects the work's
+ * real aspect ratio (never forced 1:1), capped to the viewport so it always
+ * fits on screen, optional click-to-zoom (foundations §III: image leads, no
+ * border clutter).
+ *
+ * `live`-eligible tokens (a small partner allowlist, see
+ * living-render-collections) swap the static image for a sandboxed iframe of
+ * the token's own on-chain animation_url once the media scrolls into view —
+ * see medialane-core/docs/specs/2026-07-28-gol-starknet-living-render-design.md.
+ */
 export function AssetMediaColumn({
   shouldReduce,
   image,
@@ -33,36 +46,65 @@ export function AssetMediaColumn({
   imgError,
   onImageError,
   fallback,
+  onZoom,
   animationUrl,
-  live,
+  live = false,
   stats,
 }: AssetMediaColumnProps) {
+  const [ref, isVisible] = useIntersectionActive<HTMLDivElement>();
+  const showLive = live && !!animationUrl && isVisible;
+
   return (
-    <motion.div
-      initial={shouldReduce ? false : { scale: 1.0, opacity: 0 }}
-      animate={{ scale: 1.02, opacity: 1 }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
-      className="overflow-hidden rounded-xl lg:sticky lg:top-16"
-    >
-      <div
-        className={
-          "rounded-2xl overflow-hidden border border-border bg-muted" +
-          (live && animationUrl ? " aspect-square" : "")
-        }
-      >
-        <AnimatedTokenMedia
-          image={image}
-          animationUrl={animationUrl}
-          live={live}
-          alt={imageAlt}
-          mode="natural"
-          sizes="(max-width: 1024px) 100vw, 66vw"
-          priority
-          imgError={imgError}
-          onImageError={onImageError}
-          fallback={fallback}
-        />
-      </div>
+    <div ref={ref} className="w-full lg:sticky lg:top-16">
+      {showLive ? (
+        <div className="w-full overflow-hidden rounded-3xl aspect-square">
+          <iframe
+            src={animationUrl!}
+            title={imageAlt}
+            sandbox="allow-scripts"
+            loading="lazy"
+            className="w-full h-full border-0"
+          />
+        </div>
+      ) : !image || imgError ? (
+        <div className="w-full overflow-hidden rounded-3xl">{fallback}</div>
+      ) : onZoom ? (
+        <motion.button
+          type="button"
+          onClick={onZoom}
+          aria-label="View full image"
+          initial={shouldReduce ? false : { opacity: 0, scale: 0.98 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5 }}
+          className="group block w-full overflow-hidden rounded-3xl cursor-zoom-in focus:outline-none"
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={image}
+            alt={imageAlt}
+            crossOrigin="anonymous"
+            onError={onImageError}
+            className="w-full h-auto max-h-[80vh] object-contain
+                       transition duration-300 group-hover:opacity-95 group-active:scale-[0.99]"
+          />
+        </motion.button>
+      ) : (
+        <motion.div
+          initial={shouldReduce ? false : { opacity: 0, scale: 0.98 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5 }}
+          className="block w-full overflow-hidden rounded-3xl"
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={image}
+            alt={imageAlt}
+            crossOrigin="anonymous"
+            onError={onImageError}
+            className="w-full h-auto max-h-[80vh] object-contain"
+          />
+        </motion.div>
+      )}
 
       {stats && stats.length > 0 ? (
         <div className={`grid gap-3 mt-4 ${stats.length === 2 ? "grid-cols-2" : "grid-cols-1"}`}>
@@ -77,7 +119,7 @@ export function AssetMediaColumn({
           ))}
         </div>
       ) : null}
-    </motion.div>
+    </div>
   );
 }
 
