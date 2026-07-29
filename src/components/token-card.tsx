@@ -1,8 +1,6 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import {
   Loader2, ArrowUpRight, MoreHorizontal, Zap, HandCoins, Tag,
   Layers, GitBranch, Flag, UserCircle2, ArrowRightLeft, XCircle,
@@ -16,6 +14,8 @@ import { ipfsToHttp } from "../utils/ipfs.js";
 import { formatDisplayPrice } from "../utils/format.js";
 import { CurrencyIcon } from "./currency-icon.js";
 import { IpTypeBadge } from "./ip-type-badge.js";
+import { AnimatedTokenMedia } from "./animated-token-media.js";
+import { isLivingRenderCollection } from "../data/living-render-collections.js";
 import { assetHref as buildAssetHref, collectionHref as buildCollectionHref } from "@medialane/sdk";
 import type { ApiToken, Chain } from "@medialane/sdk";
 
@@ -43,10 +43,9 @@ export function TokenCard({
   onOffer,
   onReport,
 }: TokenCardProps) {
-  const [imgError, setImgError] = useState(false);
-
   const name = token.metadata?.name || `Token #${token.tokenId}`;
   const image = ipfsToHttp(token.metadata?.image);
+  const animationUrl = token.metadata?.animationUrl ?? null;
   const ipType = token.metadata?.ipType;
 
   // First listing-type active order (offer.itemType = ERC721 or ERC1155)
@@ -59,6 +58,7 @@ export function TokenCard({
   const owner = token.balances?.[0]?.owner ?? token.owner ?? null;
 
   const chain = token.chain.toUpperCase() as Chain;
+  const live = isLivingRenderCollection(chain, token.contractAddress);
   const assetHref = buildAssetHref(chain, token.contractAddress, token.tokenId);
   const collectionHref = buildCollectionHref(chain, token.contractAddress);
   const remixHref = `/create/remix/${token.contractAddress}/${token.tokenId}`;
@@ -83,21 +83,20 @@ export function TokenCard({
 
         {/* Image */}
         <div className="relative aspect-square bg-muted overflow-hidden shrink-0">
-          {!imgError ? (
-            <Image
-              src={image}
-              alt={name}
-              fill
-              unoptimized
-              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 22vw"
-              className="object-cover"
-              onError={() => setImgError(true)}
-            />
-          ) : (
-            <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-brand-purple/15 to-brand-blue/15">
-              <span className="text-2xl tabular-nums text-muted-foreground">#{token.tokenId}</span>
-            </div>
-          )}
+          <AnimatedTokenMedia
+            image={image}
+            animationUrl={animationUrl}
+            live={live}
+            alt={name}
+            mode="fill"
+            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 22vw"
+            className="object-cover"
+            fallback={
+              <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-brand-purple/15 to-brand-blue/15">
+                <span className="text-2xl tabular-nums text-muted-foreground">#{token.tokenId}</span>
+              </div>
+            }
+          />
 
           {/* Price chip — bottom right overlay */}
           {listingOrder && (
