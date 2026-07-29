@@ -23,7 +23,20 @@ Package manager: **Bun** for everything except `npm publish`.
    - starknet: `bun install` only (bun.lock is the tracked lockfile; the extra `npm install` step was dropped 2026-07-12 — a clean bun-only install passes `npx tsc --noEmit` + `npm run build`, while npm installs churn ~731 packages that bun then restores) → `npx tsc --noEmit` (must pass; `npm run build` also works env-less since the 2026-07-11 lazy Privy-server fix)
 6. Commit + push all three repos
 
-Current version: **0.83.0** (`NavWalletTrigger` gained an optional `iconSrc` prop — when the caller
+Current version: **0.84.0** (gol_starknet partner-launch living-render support: a small
+`living-render-collections.ts` contract-address allowlist (empty until mainnet deploy) +
+`useIntersectionActive` hook + `AnimatedTokenMedia` component swap a token's static `image` for a
+sandboxed iframe of its own on-chain `animation_url` once visible on screen, wired into `TokenCard`/
+`AssetCard`. SDK peer floor raised `>=0.73.0` (needs `ApiTokenMetadata.animationUrl`). **Also
+replaces `AssetMediaColumn` outright** — the old framed (bordered, forced `bg-muted`, no zoom)
+design was wrong; both `io` and `starknet` had already independently forked an identical local
+borderless/real-aspect-ratio/click-to-zoom replacement for their standard (ERC-721) asset page
+without ever fixing the shared component. `AssetMediaColumn` now IS that corrected design
+(`stats` support kept for edition/membership/ticket pages; `onZoom` is optional — pages without a
+lightbox render the same borderless look non-interactively). First `bun:test` file in this
+package — added `@types/bun`, excluded `*.test.ts` from the tsup entry glob. Design:
+`medialane-core/docs/specs/2026-07-28-gol-starknet-living-render-design.md`.)
+Prior 0.83.0: (`NavWalletTrigger` gained an optional `iconSrc` prop — when the caller
 knows the connected wallet's own icon (e.g. Argent/Braavos/Cartridge), it renders that instead of
 the plain `User` glyph; omitted = unchanged behavior (still no fabricated generic avatar). 0.82.x:
 see git log — not backfilled here.)
