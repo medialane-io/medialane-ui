@@ -1,14 +1,13 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { Loader2 } from "lucide-react";
 import { cn } from "../utils/cn.js";
 import { ipfsToHttp } from "../utils/ipfs.js";
 import { formatDisplayPrice } from "../utils/format.js";
 import { CurrencyIcon } from "./currency-icon.js";
 import { IpTypeBadge } from "./ip-type-badge.js";
+import { AnimatedTokenMedia } from "./animated-token-media.js";
 
 export interface AssetCardPrice {
   formatted?: string | null;
@@ -22,6 +21,10 @@ export interface AssetCardProps {
   name: string;
   /** Raw image (ipfs:// or http) — resolved internally. */
   image?: string | null;
+  /** Resolved animation_url — the live on-chain renderer, if any. */
+  animationUrl?: string | null;
+  /** Caller-computed eligibility for the living-render treatment. */
+  live?: boolean;
   /** Secondary line under the title (collection or description). */
   subtitle?: string | null;
   /** IP type (apiValue or label) — renders the icon badge on the footer left. */
@@ -54,6 +57,8 @@ export function AssetCard({
   href,
   name,
   image,
+  animationUrl,
+  live = false,
   subtitle,
   ipType,
   price,
@@ -62,7 +67,6 @@ export function AssetCard({
   ipTypeBaseUrl = "",
   className,
 }: AssetCardProps) {
-  const [imgError, setImgError] = useState(false);
   const resolved = image ? ipfsToHttp(image) : null;
   const hasPrice = !!price?.formatted;
 
@@ -76,23 +80,22 @@ export function AssetCard({
       {/* Artwork — inset with a gallery 4:5 ratio, like the Collection Card */}
       <Link href={href} className="block p-1.5 pb-0">
         <div className="relative aspect-[4/5] rounded-[12px] bg-muted overflow-hidden ring-1 ring-border/50">
-          {resolved && !imgError ? (
-            <Image
-              src={resolved}
-              alt={name}
-              fill
-              unoptimized
-              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 22vw"
-              className="object-cover transition-transform duration-500 group-hover:scale-105"
-              onError={() => setImgError(true)}
-            />
-          ) : (
-            <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-brand-blue/25 via-brand-purple/25 to-brand-rose/25">
-              <span className="text-sm font-semibold text-muted-foreground tabular-nums">
-                #{fallbackId ?? "?"}
-              </span>
-            </div>
-          )}
+          <AnimatedTokenMedia
+            image={resolved}
+            animationUrl={animationUrl}
+            live={live}
+            alt={name}
+            mode="fill"
+            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 22vw"
+            className="object-cover transition-transform duration-500 group-hover:scale-105"
+            fallback={
+              <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-brand-blue/25 via-brand-purple/25 to-brand-rose/25">
+                <span className="text-sm font-semibold text-muted-foreground tabular-nums">
+                  #{fallbackId ?? "?"}
+                </span>
+              </div>
+            }
+          />
 
           {/* Price pill — anchored on the artwork, same glass chip as the
               collection cards' Floor pill */}

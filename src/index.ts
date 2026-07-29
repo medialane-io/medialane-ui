@@ -3,6 +3,7 @@ export { cn } from "./utils/cn.js";
 export { formatDisplayPrice, parsePriceDisplay } from "./utils/format.js";
 export { shortenAddress } from "./utils/address.js";
 export { ipfsToHttp } from "./utils/ipfs.js";
+export { useIntersectionActive } from "./utils/use-intersection-active.js";
 export { licenseSummary } from "./utils/license-summary.js";
 
 // ── Data (server-safe — no React, safe in Server Components) ──────────────────
@@ -32,6 +33,7 @@ export type { AssetUtilityIconsProps } from "./components/asset-utility-icons.js
 export { AssetMarketplacePanel } from "./components/asset-marketplace-panel.js";
 export type { AssetMarketplacePanelProps, ApiOrderLike } from "./components/asset-marketplace-panel.js";
 export { BRAND } from "./data/brand.js";
+export { LIVING_RENDER_COLLECTIONS, isLivingRenderCollection } from "./data/living-render-collections.js";
 
 // ── Components (client-only — all have "use client") ─────────────────────────
 export { CurrencyIcon, CurrencyAmount } from "./components/currency-icon.js";
@@ -58,6 +60,8 @@ export { CollectionCard, CollectionCardSkeleton } from "./components/collection-
 export type { CollectionCardProps } from "./components/collection-card.js";
 export { TokenCard, TokenCardSkeleton } from "./components/token-card.js";
 export type { TokenCardProps } from "./components/token-card.js";
+export { AnimatedTokenMedia } from "./components/animated-token-media.js";
+export type { AnimatedTokenMediaProps } from "./components/animated-token-media.js";
 export { ThemeAmbientBackground } from "./components/theme-ambient-background.js";
 export {
   useCollectionFilters, SORT_OPTIONS, CollectionFiltersTrigger, CollectionFiltersBody,
