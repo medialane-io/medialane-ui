@@ -32,6 +32,7 @@ export type { AssetUtilityIconsProps } from "./components/asset-utility-icons.js
 export { AssetMarketplacePanel } from "./components/asset-marketplace-panel.js";
 export type { AssetMarketplacePanelProps, ApiOrderLike } from "./components/asset-marketplace-panel.js";
 export { BRAND } from "./data/brand.js";
+export { LIVING_RENDER_COLLECTIONS, isLivingRenderCollection } from "./data/living-render-collections.js";
 
 // ── Components (client-only — all have "use client") ─────────────────────────
 export { CurrencyIcon, CurrencyAmount } from "./components/currency-icon.js";
