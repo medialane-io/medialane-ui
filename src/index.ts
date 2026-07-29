@@ -60,6 +60,8 @@ export { CollectionCard, CollectionCardSkeleton } from "./components/collection-
 export type { CollectionCardProps } from "./components/collection-card.js";
 export { TokenCard, TokenCardSkeleton } from "./components/token-card.js";
 export type { TokenCardProps } from "./components/token-card.js";
+export { AnimatedTokenMedia } from "./components/animated-token-media.js";
+export type { AnimatedTokenMediaProps } from "./components/animated-token-media.js";
 export { ThemeAmbientBackground } from "./components/theme-ambient-background.js";
 export {
   useCollectionFilters, SORT_OPTIONS, CollectionFiltersTrigger, CollectionFiltersBody,
