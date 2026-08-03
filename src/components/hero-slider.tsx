@@ -62,7 +62,6 @@ function HeroSlide({ collection, active, getHref }: { collection: ApiCollection;
       ) : (
         <div className="absolute inset-0 bg-gradient-to-br from-brand-purple/40 via-brand-blue/20 to-brand-navy/60" />
       )}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/30 to-black/0" />
       <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-10 flex flex-col gap-3">
         <Link href={getHref(collection)} className="hover:opacity-90 transition-opacity">
           <h2 className="text-4xl lg:text-5xl font-semibold text-white leading-tight">{name}</h2>
@@ -107,10 +106,10 @@ export function HeroSlider({ collections, isLoading, getHref, placeholderHrefs =
           ))}
           {count > 1 && (
             <>
-              <button onClick={prev} aria-label="Previous slide" className="absolute left-3 top-1/2 -translate-y-1/2 z-10 h-9 w-9 rounded-full bg-black/40 hover:bg-black/60 backdrop-blur-sm flex items-center justify-center transition-colors">
+              <button onClick={prev} aria-label="Previous slide" className="absolute left-3 top-1/2 -translate-y-1/2 z-10 h-9 w-9 rounded-full bg-white/10 backdrop-blur-md hover:bg-white/20 flex items-center justify-center transition-colors">
                 <ChevronLeft className="h-5 w-5 text-white" />
               </button>
-              <button onClick={next} aria-label="Next slide" className="absolute right-3 top-1/2 -translate-y-1/2 z-10 h-9 w-9 rounded-full bg-black/40 hover:bg-black/60 backdrop-blur-sm flex items-center justify-center transition-colors">
+              <button onClick={next} aria-label="Next slide" className="absolute right-3 top-1/2 -translate-y-1/2 z-10 h-9 w-9 rounded-full bg-white/10 backdrop-blur-md hover:bg-white/20 flex items-center justify-center transition-colors">
                 <ChevronRight className="h-5 w-5 text-white" />
               </button>
               <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">

@@ -222,6 +222,8 @@ export type { CreatorAirdropBannerProps } from "./components/creator-airdrop-ban
 // ── Design system primitives — action-focus pattern, tokens, data display ────
 export { ActionButton } from "./components/action-button.js";
 export type { ActionButtonProps, ActionKey, ToneKey } from "./components/action-button.js";
+export { GradientButton } from "./components/gradient-button.js";
+export type { GradientButtonProps } from "./components/gradient-button.js";
 
 export { CoinLaunchPreview } from "./components/coin-launch-preview.js";
 export type { CoinPreviewData } from "./components/coin-launch-preview.js";
