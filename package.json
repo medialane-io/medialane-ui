@@ -18,7 +18,22 @@
       "import": "./dist/preset/tailwind.js",
       "require": "./dist/preset/tailwind.cjs"
     },
-    "./styles": "./dist/medialane.css"
+    "./styles": "./dist/medialane.css",
+    "./utils/*": {
+      "types": "./dist/utils/*.d.ts",
+      "import": "./dist/utils/*.js",
+      "require": "./dist/utils/*.cjs"
+    },
+    "./data/*": {
+      "types": "./dist/data/*.d.ts",
+      "import": "./dist/data/*.js",
+      "require": "./dist/data/*.cjs"
+    },
+    "./*": {
+      "types": "./dist/components/*.d.ts",
+      "import": "./dist/components/*.js",
+      "require": "./dist/components/*.cjs"
+    }
   },
   "license": "MIT",
   "publishConfig": {
