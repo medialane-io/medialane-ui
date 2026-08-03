@@ -207,6 +207,30 @@ and `lib/ip-templates` are re-export shims of this layer — edit here, never th
 
 ---
 
+## Deep imports (v0.90.1+)
+
+The bare `import { X } from "@medialane/ui"` barrel is still the primary,
+supported way to use this package — nothing above changes. But because the
+package builds one file per component (`tsup`'s `bundle: false`), each
+component is also reachable directly:
+
+```ts
+import { CurrencyIcon } from "@medialane/ui/currency-icon";
+import { cn } from "@medialane/ui/utils/cn";
+import { IP_TYPE_DATA } from "@medialane/ui/data/ip-types";
+```
+
+You shouldn't need this in a Next.js app: add
+`experimental.optimizePackageImports: ["@medialane/ui"]` to `next.config`
+instead, and Next rewrites barrel imports to per-component imports at build
+time automatically — confirmed to cut a route's First Load JS by ~50% in
+media-wallet, with zero import changes in app code (see
+`medialane-core/docs/superpowers/plans/2026-08-03-medialane-ui-subpath-exports.md`).
+The deep-import subpaths exist for non-Next consumers, or anywhere that flag
+isn't available.
+
+---
+
 ## Build & Publish
 
 ```bash
@@ -233,6 +257,8 @@ The package uses [tsup](https://tsup.egoist.dev/) and outputs ESM + CJS + type d
 
 | Version | Added |
 |---|---|
+| **v0.90.1** | Wildcard subpath exports (`./*` → components, `./utils/*`, `./data/*`) — additive, the barrel import is unchanged. See "Deep imports" above |
+| **v0.88.0–v0.90.0** | *Not individually documented — see `git log`* |
 | **v0.87.0** | `NavWalletTrigger` gains optional `disconnectedIcon` — overrides the default `Wallet` glyph in the disconnected-state ring, for apps whose real connect entry point isn't a wallet (e.g. a Google mark for an email/social-login app). Omitted = unchanged `Wallet` default |
 | **v0.86.0** | `NavWalletTrigger`'s disconnected state shows a plain `Wallet` glyph inside the rotating ring instead of an empty center — the bare ring wasn't being noticed as a connect entry point. Connected state unchanged |
 | **v0.85.0** | `NavCommandMenu` gains two optional props: `showKeyboardHints` (default `true` — hide the "↑↓ Navigate / ↵ Open" footer hint) and `brandSlot` (replace the static "medialane ⌘K" footer brandmark entirely, e.g. with a "Connect" button). Both default to the prior behavior — non-breaking |
