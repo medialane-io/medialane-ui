@@ -1,12 +1,9 @@
 "use client";
 
-import { useState } from "react";
 import { cn } from "../utils/cn.js";
 import { PortfolioBentoTile, type PortfolioBentoTileProps } from "./portfolio-bento-tile.js";
-import { PortfolioChipFilter } from "./portfolio-chip-filter.js";
 
 export interface PortfolioBentoTileConfig {
-  /** Matches a PortfolioChipFilter option key. */
   key: string;
   title: string;
   href: string;
@@ -16,19 +13,8 @@ export interface PortfolioBentoTileConfig {
   content: React.ReactNode;
 }
 
-export interface PortfolioOverviewLink {
-  label: string;
-  href: string;
-}
-
 export interface PortfolioOverviewProps {
   tiles: PortfolioBentoTileConfig[];
-  /**
-   * Extra chip-bar entries that navigate straight to a subpage with no
-   * bento tile of its own (Listings, Offers, Sponsorships, …) — this is how
-   * every portfolio section stays reachable now that there's no tab bar.
-   */
-  links?: PortfolioOverviewLink[];
   /** First-run state across the whole portfolio (zero holdings, zero activity). */
   isEmpty?: boolean;
   emptyState?: React.ReactNode;
@@ -36,53 +22,45 @@ export interface PortfolioOverviewProps {
 }
 
 /**
- * Portfolio landing page: a content-first masonry dashboard. Each tile is a
- * fast preview of one section that expands into its full subpage. A chip
- * row gives fast lateral access across every portfolio destination — both
- * in-page filters (tiles) and direct links to sections with no tile of
- * their own. Pure presentation — the app supplies each tile's rendered
- * content; this component only handles layout, filtering, and hiding empty
- * tiles.
+ * Portfolio landing page: a content-first dashboard. Each tile is a fast
+ * preview of one section, expanding into its full subpage via "See all".
+ * Navigation across portfolio sections lives one level up, in the shared
+ * portfolio chip bar rendered by the app's layout on every page — this
+ * component is pure tile layout, nothing else.
+ *
+ * Uses a CSS grid with `auto-fit` tracks rather than multi-column masonry:
+ * masonry's fixed column tracks leave dead blank space when few tiles are
+ * populated (a real, reproduced failure mode with sparse content). `auto-fit`
+ * collapses empty tracks and stretches present tiles to fill the freed
+ * width, so the layout always uses the full screen regardless of how many
+ * tiles are populated.
  */
 export function PortfolioOverview({
   tiles,
-  links = [],
   isEmpty,
   emptyState,
   className,
 }: PortfolioOverviewProps) {
-  const [selected, setSelected] = useState("all");
-
   if (isEmpty) {
     return <div className={className}>{emptyState}</div>;
   }
 
   const populatedTiles = tiles.filter((t) => !t.isEmpty);
-  const visibleTiles =
-    selected === "all" ? populatedTiles : populatedTiles.filter((t) => t.key === selected);
 
   return (
-    <div className={cn("space-y-6", className)}>
-      <PortfolioChipFilter
-        options={[
-          ...populatedTiles.map((t) => ({ key: t.key, label: t.title })),
-          ...links.map((l) => ({ key: l.href, label: l.label, href: l.href })),
-        ]}
-        value={selected}
-        onChange={setSelected}
-      />
-      <div className="columns-1 md:columns-2 xl:columns-3 gap-4">
-        {visibleTiles.map((tile) => (
-          <PortfolioBentoTile
-            key={tile.key}
-            title={tile.title}
-            href={tile.href}
-            size={tile.size}
-          >
-            {tile.content}
-          </PortfolioBentoTile>
-        ))}
-      </div>
+    <div
+      className={cn("grid gap-4 grid-cols-[repeat(auto-fit,minmax(320px,1fr))]", className)}
+    >
+      {populatedTiles.map((tile) => (
+        <PortfolioBentoTile
+          key={tile.key}
+          title={tile.title}
+          href={tile.href}
+          size={tile.size}
+        >
+          {tile.content}
+        </PortfolioBentoTile>
+      ))}
     </div>
   );
 }

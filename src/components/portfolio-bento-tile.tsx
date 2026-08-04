@@ -10,9 +10,9 @@ export interface PortfolioBentoTileProps {
   /** "See all" link target. */
   href: string;
   /**
-   * "wide" breaks the tile out of the masonry column flow to span full
-   * width (for list-shaped content like Activity). Default sits in the
-   * masonry flow, sized to its own content.
+   * "wide" spans every grid track (for list-shaped content like Activity).
+   * Default sits in one track, sized to its own content — the auto-fit
+   * grid stretches it to fill available width when few tiles are present.
    */
   size?: "wide" | "default";
   children: React.ReactNode;
@@ -20,9 +20,8 @@ export interface PortfolioBentoTileProps {
 }
 
 /**
- * A single masonry cell on the portfolio landing page: a titled,
- * media-forward preview of one section, sized to its own content rather
- * than a fixed grid track, expanding into its full subpage via "See all".
+ * A single cell on the portfolio landing page: a titled, media-forward
+ * preview of one section, expanding into its full subpage via "See all".
  * Pure presentation — content is supplied by the caller.
  */
 export function PortfolioBentoTile({
@@ -35,8 +34,8 @@ export function PortfolioBentoTile({
   return (
     <section
       className={cn(
-        "rounded-2xl border border-border/50 bg-card/60 min-w-0 mb-4 break-inside-avoid",
-        size === "wide" && "[column-span:all]",
+        "rounded-2xl border border-border/50 bg-card/60 min-w-0",
+        size === "wide" && "col-span-full",
         className,
       )}
     >
