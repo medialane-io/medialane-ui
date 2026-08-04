@@ -45,7 +45,7 @@ export function PortfolioHeader({
   return (
     <div className={cn("flex items-center justify-between gap-4", className)}>
       <div className="min-w-0">
-        <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+        <p className="text-xs font-medium text-muted-foreground">
           Portfolio
         </p>
         <AddressDisplay
