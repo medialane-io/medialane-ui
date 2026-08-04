@@ -171,7 +171,6 @@ export { PortfolioOverview } from "./components/portfolio-overview.js";
 export type {
   PortfolioOverviewProps,
   PortfolioOverviewStat,
-  PortfolioAttentionItem,
   PortfolioQuickAction,
 } from "./components/portfolio-overview.js";
 export { derivePortfolioCounts } from "./utils/portfolio-counts.js";
