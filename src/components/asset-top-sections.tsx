@@ -141,7 +141,7 @@ export function AssetHeaderBlock({
   parentTokenId,
 }: AssetHeaderBlockProps) {
   return (
-    <div>
+    <div className="min-w-0 flex-1">
       {ipType || showMultiEditionBadge ? (
         <div className="flex items-center gap-2 flex-wrap mb-2">
           {ipType ? <IpTypeBadge ipType={ipType} size="md" /> : null}
