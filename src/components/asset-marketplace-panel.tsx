@@ -7,6 +7,7 @@ import {
 } from "lucide-react";
 import { CurrencyIcon, CurrencyAmount } from "./currency-icon.js";
 import { AddressDisplay } from "./address-display.js";
+import { ActionButton } from "./action-button.js";
 import { formatDisplayPrice, parsePriceDisplay } from "../utils/format.js";
 import { timeUntil } from "../utils/time.js";
 
@@ -16,40 +17,6 @@ export interface ApiOrderLike {
   offerer: string;
   endTime: string;
   price: { formatted: string | null; currency: string | null };
-}
-
-interface ActionButtonProps {
-  label: string;
-  icon: ReactNode;
-  onClick: () => void;
-  tone: "blue" | "orange" | "purple" | "destructive" | "transparent";
-  disabled?: boolean;
-  helpContent?: string;
-  renderHelp: (content: string) => ReactNode;
-}
-
-const actionToneClass: Record<ActionButtonProps["tone"], string> = {
-  blue: "bg-brand-blue",
-  orange: "bg-brand-orange",
-  purple: "bg-brand-purple",
-  destructive: "bg-destructive",
-  transparent: "bg-transparent",
-};
-
-function ActionButton({ label, icon, onClick, tone, disabled = false, helpContent, renderHelp }: ActionButtonProps) {
-  return (
-    <div className={`btn-border-animated p-[1px] rounded-2xl ${disabled ? "opacity-40 pointer-events-none" : ""}`}>
-      <button
-        className={`w-full h-10 rounded-[15px] flex items-center justify-center gap-2 px-3 text-sm font-semibold text-white transition-all hover:brightness-110 active:scale-[0.98] disabled:opacity-50 ${actionToneClass[tone]}`}
-        disabled={disabled}
-        onClick={onClick}
-      >
-        {icon}
-        {label}
-        {helpContent ? renderHelp(helpContent) : null}
-      </button>
-    </div>
-  );
 }
 
 export interface AssetMarketplacePanelProps<T extends ApiOrderLike = ApiOrderLike> {
@@ -182,41 +149,44 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
                 <div className="grid grid-cols-2 gap-2">
                   {myListing ? (
                     <ActionButton
-                      label="Cancel Listing"
                       icon={isProcessing ? <Loader2 className="h-4 w-4 animate-spin" /> : <X className="h-4 w-4" />}
                       onClick={() => onCancelClick(myListing)}
                       disabled={isProcessing}
-                      tone="destructive"
+                      tone="red"
                       renderHelp={renderHelp}
-                    />
+                    >
+                      Cancel Listing
+                    </ActionButton>
                   ) : null}
                   {/* ERC-721 has exactly one possible listing — once myListing exists,
                       "List on Marketplace" is redundant next to "Cancel Listing" and
                       reads as a broken/confusing pair. An ERC-1155 owner can still hold
                       un-listed editions while one listing is active, so it stays for them. */}
                   {(!myListing || isERC1155) ? (
-                    <ActionButton label="List on Marketplace" icon={<Tag className="h-4 w-4" />} onClick={onOpenListing} tone="blue" renderHelp={renderHelp} />
+                    <ActionButton tone="blue" icon={<Tag className="h-4 w-4" />} onClick={onOpenListing} renderHelp={renderHelp}>List on Marketplace</ActionButton>
                   ) : null}
-                  <ActionButton label="Transfer" icon={<ArrowRightLeft className="h-4 w-4" />} onClick={onOpenTransfer} tone="orange" renderHelp={renderHelp} />
+                  <ActionButton tone="orange" icon={<ArrowRightLeft className="h-4 w-4" />} onClick={onOpenTransfer} renderHelp={renderHelp}>Transfer</ActionButton>
                   {remixEnabled && onOpenRemix ? (
                     <ActionButton
-                      label="Remix"
+                      action="remix"
                       icon={<GitBranch className="h-4 w-4" />}
                       onClick={onOpenRemix}
                       helpContent="Build a licensed derivative of this digital asset — your remix is minted as a new onchain NFT linked to the original"
-                      tone="purple"
                       renderHelp={renderHelp}
-                    />
+                    >
+                      Remix
+                    </ActionButton>
                   ) : null}
                   {showSponsorSolicitOption && onOpenSponsorSolicit ? (
                     <ActionButton
-                      label="Open for Sponsorship"
+                      tone="blue"
                       icon={<Handshake className="h-4 w-4" />}
                       onClick={onOpenSponsorSolicit}
                       helpContent="Let sponsors bid on a license for this asset."
-                      tone="blue"
                       renderHelp={renderHelp}
-                    />
+                    >
+                      Open for Sponsorship
+                    </ActionButton>
                   ) : null}
                 </div>
 
@@ -224,8 +194,8 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
                   <>
                     <div className="border-t border-border/40 pt-2 mt-1" />
                     <div className="grid grid-cols-2 gap-2">
-                      <ActionButton label="Buy" icon={<ShoppingCart className="h-4 w-4" />} onClick={() => onOpenPurchase(cheapest!)} tone="transparent" renderHelp={renderHelp} />
-                      <ActionButton label="Make offer" icon={<HandCoins className="h-4 w-4" />} onClick={onOpenOffer} tone="orange" renderHelp={renderHelp} />
+                      <ActionButton action="buy" icon={<ShoppingCart className="h-4 w-4" />} onClick={() => onOpenPurchase(cheapest!)} renderHelp={renderHelp}>Buy</ActionButton>
+                      <ActionButton action="offer" icon={<HandCoins className="h-4 w-4" />} onClick={onOpenOffer} renderHelp={renderHelp}>Make offer</ActionButton>
                     </div>
                   </>
                 )}
@@ -233,37 +203,40 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
             ) : isSignedIn ? (
               <>
                 <div className="grid grid-cols-2 gap-2">
-                  <ActionButton label="Buy" icon={<ShoppingCart className="h-4 w-4" />} onClick={() => onOpenPurchase(cheapest)} tone="transparent" renderHelp={renderHelp} />
-                  <ActionButton label="Make offer" icon={<HandCoins className="h-4 w-4" />} onClick={onOpenOffer} tone="orange" renderHelp={renderHelp} />
+                  <ActionButton action="buy" icon={<ShoppingCart className="h-4 w-4" />} onClick={() => onOpenPurchase(cheapest)} renderHelp={renderHelp}>Buy</ActionButton>
+                  <ActionButton action="offer" icon={<HandCoins className="h-4 w-4" />} onClick={onOpenOffer} renderHelp={renderHelp}>Make offer</ActionButton>
                   {remixEnabled && onOpenRemix ? (
                     <ActionButton
-                      label="Remix"
+                      action="remix"
                       icon={<GitBranch className="h-4 w-4" />}
                       onClick={onOpenRemix}
                       helpContent="Create your own attributed derivative of this work."
-                      tone="purple"
                       renderHelp={renderHelp}
-                    />
+                    >
+                      Remix
+                    </ActionButton>
                   ) : null}
                   {showDealOption && onProposeDeal ? (
                     <ActionButton
-                      label="License"
+                      action="license"
                       icon={<HandCoins className="h-4 w-4" />}
                       onClick={onProposeDeal}
                       helpContent="Propose a license deal to the creator to use this work."
-                      tone="blue"
                       renderHelp={renderHelp}
-                    />
+                    >
+                      License
+                    </ActionButton>
                   ) : null}
                   {showSponsorOption && onOpenSponsorProposal ? (
                     <ActionButton
-                      label="Sponsor this IP"
+                      tone="blue"
                       icon={<Handshake className="h-4 w-4" />}
                       onClick={onOpenSponsorProposal}
                       helpContent="Propose to sponsor this creator's work — pay them directly for a license, no escrow."
-                      tone="blue"
                       renderHelp={renderHelp}
-                    />
+                    >
+                      Sponsor this IP
+                    </ActionButton>
                   ) : null}
                 </div>
                 {!remixEnabled && !showDealOption ? (
@@ -281,51 +254,55 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
             <StatRow floorPriceRaw={floorPriceRaw} lastSaleRaw={lastSaleRaw} />
             {isOwner ? (
               <div className="grid grid-cols-2 gap-2">
-                <ActionButton label="List on Marketplace" icon={<Tag className="h-4 w-4" />} onClick={onOpenListing} tone="transparent" renderHelp={renderHelp} />
-                <ActionButton label="Transfer" icon={<ArrowRightLeft className="h-4 w-4" />} onClick={onOpenTransfer} tone="orange" renderHelp={renderHelp} />
+                <ActionButton tone="blue" icon={<Tag className="h-4 w-4" />} onClick={onOpenListing} renderHelp={renderHelp}>List on Marketplace</ActionButton>
+                <ActionButton tone="orange" icon={<ArrowRightLeft className="h-4 w-4" />} onClick={onOpenTransfer} renderHelp={renderHelp}>Transfer</ActionButton>
                 {remixEnabled && onOpenRemix ? (
                   <ActionButton
-                    label="Remix"
+                    action="remix"
                     icon={<GitBranch className="h-4 w-4" />}
                     onClick={onOpenRemix}
                     helpContent="Build a licensed derivative of this digital asset — your remix is minted as a new onchain NFT linked to the original"
-                    tone="purple"
                     renderHelp={renderHelp}
-                  />
+                  >
+                    Remix
+                  </ActionButton>
                 ) : null}
                 {showSponsorSolicitOption && onOpenSponsorSolicit ? (
                   <ActionButton
-                    label="Open for Sponsorship"
+                    tone="blue"
                     icon={<Handshake className="h-4 w-4" />}
                     onClick={onOpenSponsorSolicit}
                     helpContent="Let sponsors bid on a license for this asset."
-                    tone="blue"
                     renderHelp={renderHelp}
-                  />
+                  >
+                    Open for Sponsorship
+                  </ActionButton>
                 ) : null}
               </div>
             ) : isSignedIn ? (
               <div className="grid grid-cols-2 gap-2">
-                <ActionButton label="Make offer" icon={<HandCoins className="h-4 w-4" />} onClick={onOpenOffer} tone="orange" renderHelp={renderHelp} />
+                <ActionButton action="offer" icon={<HandCoins className="h-4 w-4" />} onClick={onOpenOffer} renderHelp={renderHelp}>Make offer</ActionButton>
                 {remixEnabled && onOpenRemix ? (
                   <ActionButton
-                    label="Remix"
+                    action="remix"
                     icon={<GitBranch className="h-4 w-4" />}
                     onClick={onOpenRemix}
                     helpContent="Build a licensed derivative of this digital asset — your remix is minted as a new onchain NFT linked to the original"
-                    tone="purple"
                     renderHelp={renderHelp}
-                  />
+                  >
+                    Remix
+                  </ActionButton>
                 ) : null}
                 {showSponsorOption && onOpenSponsorProposal ? (
                   <ActionButton
-                    label="Sponsor this IP"
+                    tone="blue"
                     icon={<Handshake className="h-4 w-4" />}
                     onClick={onOpenSponsorProposal}
                     helpContent="Propose to sponsor this creator's work — pay them directly for a license, no escrow."
-                    tone="blue"
                     renderHelp={renderHelp}
-                  />
+                  >
+                    Sponsor this IP
+                  </ActionButton>
                 ) : null}
               </div>
             ) : (

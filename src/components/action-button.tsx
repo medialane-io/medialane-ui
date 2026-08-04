@@ -49,6 +49,13 @@ export interface ActionButtonProps extends React.ButtonHTMLAttributes<HTMLButton
   big?: boolean;
   /** Ghost: no gradient border, muted surface fill. */
   ghost?: boolean;
+  /**
+   * Inline help/info affordance, rendered next to the label via `renderHelp`
+   * — a render-prop rather than a built-in tooltip because this package
+   * can't depend on an app-specific tooltip primitive.
+   */
+  helpContent?: string;
+  renderHelp?: (content: string) => React.ReactNode;
 }
 
 export function ActionButton({
@@ -57,6 +64,9 @@ export function ActionButton({
   icon,
   big,
   ghost,
+  helpContent,
+  renderHelp,
+  disabled,
   children,
   className,
   style,
@@ -70,15 +80,17 @@ export function ActionButton({
     return (
       <button
         {...rest}
+        disabled={disabled}
         className={cn(
           "inline-flex items-center justify-center gap-2 font-semibold cursor-pointer whitespace-nowrap",
-          "bg-muted text-foreground border-none",
+          "bg-muted text-foreground border-none disabled:opacity-50 disabled:pointer-events-none",
           sizeClass,
           className,
         )}
         style={style}
       >
         {icon}{children}
+        {helpContent && renderHelp ? renderHelp(helpContent) : null}
       </button>
     );
   }
@@ -98,9 +110,10 @@ export function ActionButton({
   return (
     <button
       {...rest}
+      disabled={disabled}
       className={cn(
         "ml-gbtn inline-flex items-center justify-center gap-2 font-semibold cursor-pointer whitespace-nowrap",
-        "bg-card text-foreground border-none relative",
+        "bg-card text-foreground border-none relative disabled:opacity-40 disabled:pointer-events-none",
         sizeClass,
         className,
       )}
@@ -108,6 +121,7 @@ export function ActionButton({
     >
       {icon && <span className="inline-flex" style={{ color: fg }}>{icon}</span>}
       {children}
+      {helpContent && renderHelp ? renderHelp(helpContent) : null}
     </button>
   );
 }
