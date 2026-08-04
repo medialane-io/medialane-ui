@@ -145,7 +145,7 @@ export function IPTypeDisplay({ attributes }: IPTypeDisplayProps) {
       {/* Document pinned to IPFS — immutable, timestamped copy of the work */}
       {docUri && (
         <div className="space-y-1.5">
-          <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+          <p className="text-xs font-medium text-muted-foreground">
             Document
           </p>
           <a
@@ -173,7 +173,7 @@ export function IPTypeDisplay({ attributes }: IPTypeDisplayProps) {
         if (src) {
           return (
             <div key={platform} className="space-y-1.5">
-              <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+              <p className="text-xs font-medium text-muted-foreground">
                 {meta.label}
               </p>
               {COMPACT[platform] ? (
@@ -203,7 +203,7 @@ export function IPTypeDisplay({ attributes }: IPTypeDisplayProps) {
         // Fallback: plain external link if URL parsing failed
         return (
           <div key={platform}>
-            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1">
+            <p className="text-xs font-medium text-muted-foreground mb-1">
               {meta.label}
             </p>
             <a
@@ -221,7 +221,7 @@ export function IPTypeDisplay({ attributes }: IPTypeDisplayProps) {
 
       {socials.length > 0 && (
         <div className="space-y-1.5">
-          <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+          <p className="text-xs font-medium text-muted-foreground">
             Links
           </p>
           <div className="flex flex-wrap gap-2">

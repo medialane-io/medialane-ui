@@ -10,9 +10,9 @@ export interface PortfolioBentoTileProps {
   /** "See all" link target. */
   href: string;
   /**
-   * "wide" spans every grid track (for list-shaped content like Activity).
-   * Default sits in one track, sized to its own content — the auto-fit
-   * grid stretches it to fill available width when few tiles are present.
+   * "wide" spans 2 grid tracks (for content that reads better a bit wider,
+   * like Activity rows) while still sharing a row with other tiles when
+   * there's room. Default sits in a single track.
    */
   size?: "wide" | "default";
   children: React.ReactNode;
@@ -34,13 +34,13 @@ export function PortfolioBentoTile({
   return (
     <section
       className={cn(
-        "rounded-2xl border border-border/50 bg-card/60 min-w-0",
-        size === "wide" && "col-span-full",
+        "rounded-2xl border border-border/50 bg-card/60 min-w-0 transition-colors hover:border-border",
+        size === "wide" && "md:col-span-2",
         className,
       )}
     >
       <div className="flex items-center justify-between gap-3 px-4 pt-4 pb-3">
-        <h2 className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+        <h2 className="text-xs font-medium text-muted-foreground">
           {title}
         </h2>
         <Link

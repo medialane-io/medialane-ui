@@ -78,7 +78,7 @@ export function CoinsExplorer({ useCoins, usePrice, coinHref, heading = true }: 
         <div className="space-y-2">
           <div className="flex items-center gap-2 text-primary">
             <Coins className="h-5 w-5" />
-            <span className="text-sm font-semibold uppercase tracking-wider">Coins</span>
+            <span className="text-sm font-semibold">Coins</span>
           </div>
           <h1 className="text-3xl">Creator coins &amp; memecoins</h1>
         </div>
@@ -200,7 +200,7 @@ export function CoinsExplorer({ useCoins, usePrice, coinHref, heading = true }: 
 function FilterGroup({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div className="space-y-2">
-      <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">{label}</p>
+      <p className="text-[10px] font-medium text-muted-foreground">{label}</p>
       <div className="flex flex-wrap gap-1.5">{children}</div>
     </div>
   );

@@ -100,7 +100,7 @@ export function AssetOverviewContent({
               {/* emphasized cell — the license summary, stretched 2×2 */}
               <div className="col-span-2 sm:row-span-2 flex flex-col justify-between gap-4 rounded-2xl bg-gradient-to-br from-primary/10 via-primary/5 to-accent/10 ring-1 ring-primary/15 p-5">
                 {licenseType ? (
-                  <span className="pill-badge self-start text-[10px] uppercase tracking-wider">{licenseType}</span>
+                  <span className="pill-badge self-start text-[10px]">{licenseType}</span>
                 ) : null}
                 {summary ? (
                   <p className="text-base sm:text-lg font-semibold leading-snug text-foreground">{summary}</p>
