@@ -113,7 +113,7 @@ export function ActionButton({
       disabled={disabled}
       className={cn(
         "ml-gbtn inline-flex items-center justify-center gap-2 font-semibold cursor-pointer whitespace-nowrap",
-        "bg-card text-foreground border-none relative disabled:opacity-40 disabled:pointer-events-none",
+        "bg-transparent text-foreground border-none relative disabled:opacity-40 disabled:pointer-events-none",
         sizeClass,
         className,
       )}

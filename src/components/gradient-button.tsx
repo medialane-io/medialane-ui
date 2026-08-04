@@ -17,8 +17,8 @@ export interface GradientButtonProps extends React.ButtonHTMLAttributes<HTMLButt
  * (e.g. "Connect wallet", "Buy now") — previously hand-copied per call site;
  * this component is the single source.
  *
- * For the secondary animated-border treatment (a neutral `bg-card` fill with
- * only the border animated), use `ActionButton` instead.
+ * For the secondary animated-border treatment (transparent fill, only the
+ * per-action gradient border and colored icon/text), use `ActionButton` instead.
  */
 export function GradientButton({ big, children, className, wrapperClassName, ...rest }: GradientButtonProps) {
   const sizeClass = big
