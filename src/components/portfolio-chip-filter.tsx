@@ -7,19 +7,20 @@ export interface PortfolioChipFilterOption {
   key: string;
   label: string;
   /**
-   * When set, this chip is a direct navigation link (e.g. "Listings",
-   * "Sponsorships") rather than an in-page filter — for portfolio sections
-   * that don't have their own bento tile. Never participates in the active
-   * filter state.
+   * When set, this chip is a direct navigation link rather than an in-page
+   * filter. It's marked active when `href` equals the current `value`
+   * (pass the current pathname as `value` for a location-aware nav bar).
    */
   href?: string;
 }
 
 export interface PortfolioChipFilterProps {
   options: PortfolioChipFilterOption[];
-  /** Selected option key, or "all". */
+  /** Selected filter key, or the current pathname when used for navigation. */
   value: string;
   onChange: (key: string) => void;
+  /** Suppress the auto-injected "All" chip — for pure navigation bars where every option already has an href. Default true. */
+  showAll?: boolean;
   className?: string;
 }
 
@@ -29,21 +30,20 @@ const INACTIVE_CLASS = "bg-muted text-muted-foreground hover:text-foreground";
 const ACTIVE_CLASS = "bg-primary text-primary-foreground font-medium";
 
 /**
- * Horizontally-scrollable chip row for fast lateral access across every
- * portfolio section (Instagram/YouTube-style filter chips) — this is the
- * page's sole fast-access mechanism, replacing tab navigation entirely.
- * Filter chips (no `href`) narrow which bento tiles are visible on the same
- * page. Link chips (`href` set) navigate straight to a subpage that has no
- * tile of its own (Listings, Offers, Sponsorships, …).
+ * Horizontally-scrollable chip row — the portfolio section's sole
+ * navigation mechanism (Instagram/YouTube-style chips), used both as an
+ * in-page filter (chips with no `href`, toggled via `onChange`) and as
+ * cross-page navigation (chips with `href`, highlighted active by matching
+ * `value` against the current pathname).
  */
 export function PortfolioChipFilter({
   options,
   value,
   onChange,
+  showAll = true,
   className,
 }: PortfolioChipFilterProps) {
-  const all: PortfolioChipFilterOption = { key: "all", label: "All" };
-  const items = [all, ...options];
+  const items = showAll ? [{ key: "all", label: "All" }, ...options] : options;
 
   return (
     <div
@@ -54,7 +54,11 @@ export function PortfolioChipFilter({
     >
       {items.map((item) =>
         item.href ? (
-          <Link key={item.key} href={item.href} className={cn(CHIP_CLASS, INACTIVE_CLASS)}>
+          <Link
+            key={item.key}
+            href={item.href}
+            className={cn(CHIP_CLASS, item.href === value ? ACTIVE_CLASS : INACTIVE_CLASS)}
+          >
             {item.label}
           </Link>
         ) : (
