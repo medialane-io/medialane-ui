@@ -170,8 +170,7 @@ export type {
 export { PortfolioOverview } from "./components/portfolio-overview.js";
 export type {
   PortfolioOverviewProps,
-  PortfolioOverviewStat,
-  PortfolioQuickAction,
+  PortfolioBentoTileConfig,
 } from "./components/portfolio-overview.js";
 export { derivePortfolioCounts } from "./utils/portfolio-counts.js";
 export type { PortfolioCounts, CountableOrder } from "./utils/portfolio-counts.js";
