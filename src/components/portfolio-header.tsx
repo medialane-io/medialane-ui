@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { Briefcase } from "lucide-react";
 import { cn } from "../utils/cn.js";
 import { AddressDisplay } from "./address-display.js";
 
@@ -19,11 +18,39 @@ export interface PortfolioHeaderProps {
   className?: string;
 }
 
+/** Deterministic rotation angle from the address, so each wallet gets a
+ *  distinct but stable gradient built entirely from existing brand colors. */
+function angleFromAddress(address: string): number {
+  let hash = 0;
+  for (let i = 0; i < address.length; i++) {
+    hash = (hash * 31 + address.charCodeAt(i)) >>> 0;
+  }
+  return hash % 360;
+}
+
+function IdentityMark({ address }: { address: string }) {
+  const angle = angleFromAddress(address);
+  return (
+    <div
+      className="h-11 w-11 shrink-0 rounded-2xl"
+      style={{
+        // Brand palette hardcoded here — this preset defines colors via
+        // Tailwind's JS config (no auto-generated CSS custom properties to
+        // reference), so `var(--color-brand-*)` isn't available. Keep these
+        // three hexes in sync with `preset/tailwind.ts`'s brand-purple/
+        // brand-blue/brand-orange if that palette ever changes.
+        background: `linear-gradient(${angle}deg, #8a5cf6, #3b7bff 55%, #fb8b46)`,
+      }}
+      aria-hidden
+    />
+  );
+}
+
 /**
- * Compact portfolio header: eyebrow + address on the left, the rewards
- * journey chip on the right — level name + XP inside the animated
- * full-spectrum brand border (`.btn-border-animated`). Counts live in the
- * Overview stat tiles, not here.
+ * Portfolio identity header: a generated identity mark + the address as a
+ * real page title (there's no profile/avatar data to lead with instead),
+ * with the rewards journey chip alongside it — one cohesive block rather
+ * than two disconnected elements at opposite corners.
  */
 export function PortfolioHeader({
   address,
@@ -44,17 +71,19 @@ export function PortfolioHeader({
   );
 
   return (
-    <div
-      className={cn("flex items-start justify-between gap-4", className)}
-    >
-      <div className="space-y-1.5 min-w-0">
-        <div className="flex items-center gap-2 text-primary">
-          <Briefcase className="h-4 w-4" />
-          <span className="text-xs font-semibold uppercase tracking-wider">
+    <div className={cn("flex items-center justify-between gap-4", className)}>
+      <div className="flex items-center gap-3 min-w-0">
+        <IdentityMark address={address} />
+        <div className="min-w-0">
+          <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
             Portfolio
-          </span>
+          </p>
+          <AddressDisplay
+            address={address}
+            chars={6}
+            className="text-xl font-bold tracking-tight text-foreground"
+          />
         </div>
-        <AddressDisplay address={address} chars={6} className="text-sm" />
       </div>
       {score?.href ? (
         <Link href={score.href} className="shrink-0 active:opacity-80">
