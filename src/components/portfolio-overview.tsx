@@ -22,11 +22,18 @@ export interface PortfolioOverviewProps {
 }
 
 /**
- * Portfolio landing page: a content-first masonry dashboard. Each tile is a
- * fast preview of one section, expanding into its full subpage via "See
- * all". Navigation across portfolio sections lives one level up, in the
- * shared portfolio chip bar rendered by the app's layout on every page —
- * this component is pure tile layout, nothing else.
+ * Portfolio landing page: a content-first dashboard. Each tile is a fast
+ * preview of one section, expanding into its full subpage via "See all".
+ * Navigation across portfolio sections lives one level up, in the shared
+ * portfolio chip bar rendered by the app's layout on every page — this
+ * component is pure tile layout, nothing else.
+ *
+ * Uses a CSS grid with `auto-fit` tracks rather than multi-column masonry:
+ * masonry's fixed column tracks leave dead blank space when few tiles are
+ * populated (a real, reproduced failure mode with sparse content). `auto-fit`
+ * collapses empty tracks and stretches present tiles to fill the freed
+ * width, so the layout always uses the full screen regardless of how many
+ * tiles are populated.
  */
 export function PortfolioOverview({
   tiles,
@@ -41,7 +48,9 @@ export function PortfolioOverview({
   const populatedTiles = tiles.filter((t) => !t.isEmpty);
 
   return (
-    <div className={cn("columns-1 md:columns-2 xl:columns-3 gap-4", className)}>
+    <div
+      className={cn("grid gap-4 grid-cols-[repeat(auto-fit,minmax(320px,1fr))]", className)}
+    >
       {populatedTiles.map((tile) => (
         <PortfolioBentoTile
           key={tile.key}
