@@ -1,18 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, BellRing } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { cn } from "../utils/cn.js";
-
-export interface PortfolioAttentionItem {
-  /** e.g. "2 offers received" — caller composes count + label. */
-  label: string;
-  /** Short helper line, e.g. "Accept, counter, or decline". */
-  description?: string;
-  href: string;
-  count: number;
-  tone?: "destructive" | "warning" | "primary";
-}
 
 export interface PortfolioOverviewStat {
   label: string;
@@ -28,11 +18,15 @@ export interface PortfolioQuickAction {
 }
 
 export interface PortfolioOverviewProps {
-  /** Pending items needing action. The panel renders only when a count > 0. */
-  attention?: PortfolioAttentionItem[];
   stats?: PortfolioOverviewStat[];
   /** Shortcut row under the stat tiles ("Create asset", …). */
   quickActions?: PortfolioQuickAction[];
+  /**
+   * Small/empty portfolio: suppresses the stats+quick-actions row entirely
+   * and renders the assets grid full-width. The app computes this from its
+   * own asset/pending counts — this component stays presentation-only.
+   */
+  compact?: boolean;
   /** Recent-assets cards, rendered by the app. */
   assetsSlot?: React.ReactNode;
   assetsHref?: string;
@@ -44,15 +38,6 @@ export interface PortfolioOverviewProps {
   emptyState?: React.ReactNode;
   className?: string;
 }
-
-const ATTENTION_DOT: Record<
-  NonNullable<PortfolioAttentionItem["tone"]>,
-  string
-> = {
-  destructive: "bg-destructive",
-  warning: "bg-amber-500",
-  primary: "bg-primary",
-};
 
 function SectionHeading({
   title,
@@ -78,14 +63,15 @@ function SectionHeading({
 }
 
 /**
- * Portfolio landing page layout: needs-attention panel, clickable stat tiles,
- * and recent assets/activity columns. Pure presentation — the app injects
- * counts, stats, and rendered cards.
+ * Portfolio landing page layout: one merged stats/quick-actions row, then
+ * recent assets/activity columns. Pure presentation — the app injects
+ * counts, stats, and rendered cards. Pending-action counts surface via
+ * PortfolioNav's badges, not here.
  */
 export function PortfolioOverview({
-  attention,
   stats,
   quickActions,
+  compact,
   assetsSlot,
   assetsHref,
   activitySlot,
@@ -94,98 +80,52 @@ export function PortfolioOverview({
   emptyState,
   className,
 }: PortfolioOverviewProps) {
-  const pending = (attention ?? []).filter((item) => item.count > 0);
+  const hasActivity = Boolean(activitySlot) && !compact;
 
   return (
     <div className={cn("space-y-6", className)}>
-      {pending.length > 0 && (
-        <section className="rounded-xl border border-primary/25 bg-primary/[0.04] p-4 sm:p-5 space-y-3">
-          <div className="flex items-center gap-2 text-primary">
-            <BellRing className="h-4 w-4" />
-            <h2 className="text-sm font-semibold">Needs your attention</h2>
-          </div>
-          <div className="grid gap-2 sm:grid-cols-2">
-            {pending.map((item) => (
-              <Link
-                key={item.href + item.label}
-                href={item.href}
-                className="flex items-center justify-between gap-3 rounded-lg bg-card border border-border/60 px-3.5 py-2.5 active:opacity-80 hover:border-border transition-colors"
-              >
-                <span className="flex items-center gap-2.5 min-w-0">
-                  <span
-                    className={cn(
-                      "h-2 w-2 rounded-full shrink-0",
-                      ATTENTION_DOT[item.tone ?? "primary"],
-                    )}
-                  />
-                  <span className="min-w-0">
-                    <span className="block text-sm font-medium text-foreground truncate">
-                      {item.label}
-                    </span>
-                    {item.description && (
-                      <span className="block text-xs text-muted-foreground truncate">
-                        {item.description}
-                      </span>
-                    )}
-                  </span>
+      {!compact && ((stats && stats.length > 0) || (quickActions && quickActions.length > 0)) && (
+        <div className="flex items-center gap-2 flex-wrap">
+          {stats?.map((stat) => {
+            if (stat.value == null) {
+              return (
+                <span
+                  key={stat.label}
+                  className="bg-muted rounded-full px-3 py-1.5 w-20 h-7 animate-pulse inline-block"
+                />
+              );
+            }
+            const pill = (
+              <span className="inline-flex items-baseline gap-1.5 rounded-full bg-muted px-3 py-1.5 text-[13px] whitespace-nowrap">
+                <span className="font-semibold text-foreground tabular-nums">
+                  {stat.value}
                 </span>
-                <ArrowRight className="h-4 w-4 text-muted-foreground shrink-0" />
-              </Link>
-            ))}
-          </div>
-        </section>
-      )}
-
-      {((stats && stats.length > 0) || (quickActions && quickActions.length > 0)) && (
-        <div className="space-y-3">
-          {stats && stats.length > 0 && (
-            <div className="flex items-center gap-2 flex-wrap">
-              {stats.map((stat) => {
-                if (stat.value == null) {
-                  return (
-                    <span
-                      key={stat.label}
-                      className="bg-muted rounded-full px-3 py-1.5 w-20 h-7 animate-pulse inline-block"
-                    />
-                  );
-                }
-                const pill = (
-                  <span className="inline-flex items-baseline gap-1.5 rounded-full bg-muted px-3 py-1.5 text-[13px] whitespace-nowrap">
-                    <span className="font-semibold text-foreground tabular-nums">
-                      {stat.value}
-                    </span>
-                    <span className="text-muted-foreground">{stat.label}</span>
-                    {stat.sub && (
-                      <span className="text-muted-foreground/70">
-                        · {stat.sub}
-                      </span>
-                    )}
+                <span className="text-muted-foreground">{stat.label}</span>
+                {stat.sub && (
+                  <span className="text-muted-foreground/70">
+                    · {stat.sub}
                   </span>
-                );
-                return stat.href ? (
-                  <Link key={stat.label} href={stat.href} className="active:opacity-80">
-                    {pill}
-                  </Link>
-                ) : (
-                  <span key={stat.label}>{pill}</span>
-                );
-              })}
-            </div>
-          )}
+                )}
+              </span>
+            );
+            return stat.href ? (
+              <Link key={stat.label} href={stat.href} className="active:opacity-80">
+                {pill}
+              </Link>
+            ) : (
+              <span key={stat.label}>{pill}</span>
+            );
+          })}
 
-          {quickActions && quickActions.length > 0 && (
-            <div className="flex items-center gap-2 flex-wrap">
-              {quickActions.map((action) => (
-                <Link
-                  key={action.href}
-                  href={action.href}
-                  className="inline-flex items-center rounded-full border border-border bg-card px-4 py-1.5 text-[13px] font-medium text-foreground active:opacity-80 hover:border-primary/40 transition-colors"
-                >
-                  {action.label}
-                </Link>
-              ))}
-            </div>
-          )}
+          {quickActions?.map((action) => (
+            <Link
+              key={action.href}
+              href={action.href}
+              className="inline-flex items-center text-[13px] font-medium text-muted-foreground hover:text-foreground transition-colors px-1"
+            >
+              {action.label}
+            </Link>
+          ))}
         </div>
       )}
 
@@ -194,12 +134,12 @@ export function PortfolioOverview({
       ) : (
         <div className="grid gap-6 lg:grid-cols-5">
           {assetsSlot && (
-            <section className="lg:col-span-3 space-y-3">
+            <section className={cn("space-y-3", hasActivity ? "lg:col-span-3" : "lg:col-span-5")}>
               <SectionHeading title="Your assets" href={assetsHref} />
               {assetsSlot}
             </section>
           )}
-          {activitySlot && (
+          {hasActivity && (
             <section className="lg:col-span-2 space-y-3">
               <SectionHeading title="Recent activity" href={activityHref} />
               {activitySlot}
