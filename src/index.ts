@@ -4,6 +4,7 @@ export { formatDisplayPrice, parsePriceDisplay } from "./utils/format.js";
 export { shortenAddress } from "./utils/address.js";
 export { ipfsToHttp } from "./utils/ipfs.js";
 export { useIntersectionActive } from "./utils/use-intersection-active.js";
+export { getReadIds, markRead } from "./utils/notification-storage.js";
 export { licenseSummary } from "./utils/license-summary.js";
 
 // ── Data (server-safe — no React, safe in Server Components) ──────────────────
@@ -208,6 +209,7 @@ export { LevelLadder } from "./components/rewards/level-ladder.js";
 export type { LevelLadderProps } from "./components/rewards/level-ladder.js";
 export { XpToastContent } from "./components/rewards/xp-toast-content.js";
 export type { XpToastContentProps } from "./components/rewards/xp-toast-content.js";
+export { createRewardToast } from "./components/rewards/reward-toast.js";
 
 // ── v0.37.0 additions — infinite-scroll trigger ──────────────────────────────
 export { LoadMoreSentinel } from "./components/load-more-sentinel.js";
