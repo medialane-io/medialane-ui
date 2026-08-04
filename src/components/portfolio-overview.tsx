@@ -33,7 +33,9 @@ export interface PortfolioOverviewProps {
  * populated (a real, reproduced failure mode with sparse content). `auto-fit`
  * collapses empty tracks and stretches present tiles to fill the freed
  * width, so the layout always uses the full screen regardless of how many
- * tiles are populated.
+ * tiles are populated. `items-start` overrides grid's default row-stretch —
+ * without it, a short tile sharing a row with a tall one gets stretched to
+ * match, leaving dead space inside its own card (also reproduced).
  */
 export function PortfolioOverview({
   tiles,
@@ -49,7 +51,10 @@ export function PortfolioOverview({
 
   return (
     <div
-      className={cn("grid gap-4 grid-cols-[repeat(auto-fit,minmax(320px,1fr))]", className)}
+      className={cn(
+        "grid gap-4 items-start grid-cols-[repeat(auto-fit,minmax(320px,1fr))]",
+        className,
+      )}
     >
       {populatedTiles.map((tile) => (
         <PortfolioBentoTile

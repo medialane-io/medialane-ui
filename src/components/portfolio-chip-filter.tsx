@@ -25,9 +25,9 @@ export interface PortfolioChipFilterProps {
 }
 
 const CHIP_CLASS =
-  "shrink-0 rounded-full px-3.5 py-1.5 text-[13px] whitespace-nowrap transition-colors";
-const INACTIVE_CLASS = "bg-muted text-muted-foreground hover:text-foreground";
-const ACTIVE_CLASS = "bg-primary text-primary-foreground font-medium";
+  "shrink-0 rounded-full px-3.5 py-1.5 text-[13px] whitespace-nowrap transition-colors border";
+const INACTIVE_CLASS = "bg-muted border-border/60 text-muted-foreground hover:text-foreground hover:border-border";
+const ACTIVE_CLASS = "bg-primary border-primary text-primary-foreground font-medium";
 
 /**
  * Horizontally-scrollable chip row — the portfolio section's sole
