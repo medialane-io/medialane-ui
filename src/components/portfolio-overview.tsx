@@ -56,7 +56,7 @@ export function PortfolioOverview({
         value={selected}
         onChange={setSelected}
       />
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 auto-rows-min">
+      <div className="grid grid-cols-1 md:grid-cols-4 md:auto-rows-[240px] gap-4">
         {visibleTiles.map((tile) => (
           <PortfolioBentoTile
             key={tile.key}
