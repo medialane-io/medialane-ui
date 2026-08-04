@@ -170,11 +170,17 @@ export type {
 export { PortfolioOverview } from "./components/portfolio-overview.js";
 export type {
   PortfolioOverviewProps,
-  PortfolioOverviewStat,
-  PortfolioQuickAction,
+  PortfolioBentoTileConfig,
 } from "./components/portfolio-overview.js";
 export { derivePortfolioCounts } from "./utils/portfolio-counts.js";
 export type { PortfolioCounts, CountableOrder } from "./utils/portfolio-counts.js";
+export { PortfolioBentoTile } from "./components/portfolio-bento-tile.js";
+export type { PortfolioBentoTileProps } from "./components/portfolio-bento-tile.js";
+export { PortfolioChipFilter } from "./components/portfolio-chip-filter.js";
+export type {
+  PortfolioChipFilterProps,
+  PortfolioChipFilterOption,
+} from "./components/portfolio-chip-filter.js";
 
 // ── v0.22.0 additions — launchpad/claim form template primitives ─────────────
 // Pure-presentation header + rail shared by every launchpad/claim form. The
