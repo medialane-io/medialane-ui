@@ -2,15 +2,19 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { ShoppingCart, Check, Zap, ArrowUpRight } from "lucide-react";
 import { MotionCard } from "./motion-primitives.js";
 import { CurrencyIcon } from "./currency-icon.js";
+import { AnimatedTokenMedia } from "./animated-token-media.js";
 import { cn } from "../utils/cn.js";
 import { ipfsToHttp } from "../utils/ipfs.js";
 import { formatDisplayPrice } from "../utils/format.js";
 import { timeAgo } from "../utils/time.js";
-import type { ApiOrder } from "@medialane/sdk";
+import { isLivingRenderCollection } from "../data/living-render-collections.js";
+import type { ApiOrder, Chain } from "@medialane/sdk";
+
+/** ui's pinned SDK lags the apps — extend structurally for fields newer SDKs carry. */
+type OrderWithAnimation = ApiOrder & { token: (ApiOrder["token"] & { animationUrl?: string | null }) | null };
 
 export interface ListingCardProps {
   order: ApiOrder;
@@ -36,11 +40,16 @@ export interface ListingCardProps {
   imageUrl?: string | null;
 }
 
-export function ListingCard({ order, inCart = false, onBuy, onCart, overflowMenu, primaryAction, compact = false, imageUrl }: ListingCardProps) {
+export function ListingCard({ order: rawOrder, inCart = false, onBuy, onCart, overflowMenu, primaryAction, compact = false, imageUrl }: ListingCardProps) {
+  const order = rawOrder as OrderWithAnimation;
   const [imgError, setImgError] = useState(false);
   const isListing = order.offer.itemType === "ERC721" || order.offer.itemType === "ERC1155";
   const name = order.token?.name ?? `Token #${order.nftTokenId}`;
   const image = imageUrl !== undefined ? imageUrl : (order.token?.image ? ipfsToHttp(order.token.image) : null);
+  // Not resolved through ipfsToHttp — animation_url is legitimately a data: URI for
+  // fully on-chain-rendered collections (ipfsToHttp rejects data: by design).
+  const animationUrl = order.token?.animationUrl ?? null;
+  const live = !!(order.chain && order.nftContract) && isLivingRenderCollection(order.chain.toUpperCase() as Chain, order.nftContract!);
   const assetHref = `/asset/${order.nftContract}/${order.nftTokenId}`;
 
   // Show the action bar for listings (Buy/View) and for offers (View asset),
@@ -53,13 +62,22 @@ export function ListingCard({ order, inCart = false, onBuy, onCart, overflowMenu
       <MotionCard className="card-base">
         <Link href={assetHref} className="block">
           <div className="relative aspect-square bg-muted overflow-hidden">
-            {image && !imgError ? (
-              <Image src={image} alt={name} fill unoptimized sizes="(max-width: 640px) 33vw, 20vw" className="object-cover group-hover:scale-105 transition-transform duration-500" onError={() => setImgError(true)} />
-            ) : (
-              <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-brand-purple/15 to-brand-blue/15">
-                <span className="text-xl font-mono text-muted-foreground">#{order.nftTokenId}</span>
-              </div>
-            )}
+            <AnimatedTokenMedia
+              image={image}
+              animationUrl={animationUrl}
+              live={live}
+              alt={name}
+              mode="fill"
+              sizes="(max-width: 640px) 33vw, 20vw"
+              className="object-cover group-hover:scale-105 transition-transform duration-500"
+              imgError={imgError}
+              onImageError={() => setImgError(true)}
+              fallback={
+                <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-brand-purple/15 to-brand-blue/15">
+                  <span className="text-xl font-mono text-muted-foreground">#{order.nftTokenId}</span>
+                </div>
+              }
+            />
           </div>
           <div className="p-2.5 space-y-0.5">
             <p className="text-xs font-semibold truncate">{name}</p>
@@ -81,13 +99,22 @@ export function ListingCard({ order, inCart = false, onBuy, onCart, overflowMenu
     <MotionCard className="card-base">
       <Link href={assetHref} className="block">
         <div className="relative aspect-square bg-muted overflow-hidden">
-          {image && !imgError ? (
-            <Image src={image} alt={name} fill unoptimized sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw" className="object-cover group-hover:scale-105 transition-transform duration-500" onError={() => setImgError(true)} />
-          ) : (
-            <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-brand-purple/15 to-brand-blue/15">
-              <span className="text-2xl font-mono text-muted-foreground">#{order.nftTokenId}</span>
-            </div>
-          )}
+          <AnimatedTokenMedia
+            image={image}
+            animationUrl={animationUrl}
+            live={live}
+            alt={name}
+            mode="fill"
+            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+            className="object-cover group-hover:scale-105 transition-transform duration-500"
+            imgError={imgError}
+            onImageError={() => setImgError(true)}
+            fallback={
+              <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-brand-purple/15 to-brand-blue/15">
+                <span className="text-2xl font-mono text-muted-foreground">#{order.nftTokenId}</span>
+              </div>
+            }
+          />
         </div>
 
         <div className="p-3.5 space-y-3">
