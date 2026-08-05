@@ -244,3 +244,5 @@ export type { StatTileProps, StatPillProps } from "./components/stat-tile.js";
 
 export { ActionDialog } from "./components/action-dialog.js";
 export type { ActionDialogProps } from "./components/action-dialog.js";
+
+export { HiddenContentBanner } from "./components/hidden-content-banner.js";
