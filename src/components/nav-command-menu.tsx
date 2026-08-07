@@ -41,8 +41,8 @@ export interface NavCommandMenuProps {
   trigger?: React.ReactNode;
   /**
    * Optional pinned account/connect area rendered below command results.
-   * Apps own the auth implementation here (Clerk, ChipiPay, wallet connectors,
-   * Privy, Cartridge, etc.) so the shared nav stays framework-agnostic.
+   * Apps own the auth implementation here (passkey wallets, injected wallet
+   * connectors, Privy, Cartridge, etc.) so the shared nav stays framework-agnostic.
    */
   accountSlot?: React.ReactNode;
   /**
