@@ -100,6 +100,14 @@ export interface NavWalletTriggerProps {
    * happen on click.
    */
   disconnectedIcon?: React.ReactNode;
+  /**
+   * Override for the connected-state glyph when there's no `iconSrc` (default:
+   * a plain `User` icon). Apps whose account is a self-custody key rather than
+   * a connected third-party wallet can pass a more accurate icon here (e.g. a
+   * shield-user glyph) so the trigger doesn't imply a custodial identity it
+   * isn't.
+   */
+  connectedIcon?: React.ReactNode;
 }
 
 /**
@@ -116,7 +124,7 @@ export interface NavWalletTriggerProps {
  * `User` glyph (never a fabricated generic avatar).
  */
 export const NavWalletTrigger = React.forwardRef<HTMLButtonElement, NavWalletTriggerProps>(
-  function NavWalletTrigger({ onClick, className, connected = false, iconSrc, disconnectedIcon, ...rest }, ref) {
+  function NavWalletTrigger({ onClick, className, connected = false, iconSrc, disconnectedIcon, connectedIcon, ...rest }, ref) {
     return (
       <button
         ref={ref}
@@ -136,7 +144,7 @@ export const NavWalletTrigger = React.forwardRef<HTMLButtonElement, NavWalletTri
         {connected
           ? (iconSrc
               ? <img src={iconSrc} alt="" width={16} height={16} className="h-4 w-4 shrink-0 rounded-full" />
-              : <User className="h-3.5 w-3.5" />)
+              : (connectedIcon ?? <User className="h-3.5 w-3.5" />))
           : (disconnectedIcon ?? <Wallet className="h-3.5 w-3.5" />)}
       </button>
     );
