@@ -222,7 +222,7 @@ export type { LoadMoreSentinelProps } from "./components/load-more-sentinel.js";
 
 // ── v0.47.0 additions — community rewards section ────────────────────────────
 export { CreatorsFundSection } from "./components/creators-fund-section.js";
-export type { CreatorsFundSectionProps, CommunityRewardsEntry } from "./components/creators-fund-section.js";
+export type { CreatorsFundSectionProps, CreatorsFundLeaderboardEntry } from "./components/creators-fund-section.js";
 
 // ── Design system primitives — action-focus pattern, tokens, data display ────
 export { ActionButton } from "./components/action-button.js";
