@@ -221,8 +221,10 @@ export { LoadMoreSentinel } from "./components/load-more-sentinel.js";
 export type { LoadMoreSentinelProps } from "./components/load-more-sentinel.js";
 
 // ── v0.47.0 additions — community rewards section ────────────────────────────
-export { CreatorsFundSection } from "./components/creators-fund-section.js";
-export type { CreatorsFundSectionProps, CreatorsFundLeaderboardEntry } from "./components/creators-fund-section.js";
+export { CommunityRewardsSection } from "./components/community-rewards-section.js";
+export type { CommunityRewardsSectionProps, CommunityRewardsEntry } from "./components/community-rewards-section.js";
+export { CreatorAirdropBanner } from "./components/creator-airdrop-banner.js";
+export type { CreatorAirdropBannerProps } from "./components/creator-airdrop-banner.js";
 
 // ── Design system primitives — action-focus pattern, tokens, data display ────
 export { ActionButton } from "./components/action-button.js";
