@@ -20,7 +20,6 @@ const ACTION_FOREGROUNDS: Record<string, string> = {
 
 const TONE_GRADIENTS: Record<string, [string, string, string]> = {
   blue:   ['#3b7bff', '#5b4ce6', '#3b7bff'],
-  indigo: ['#5b4ce6', '#8a5cf6', '#5b4ce6'],
   purple: ['#8a5cf6', '#f6608f', '#8a5cf6'],
   orange: ['#fb8b46', '#f6608f', '#fb8b46'],
   red:    ['#ef5a5a', '#f6608f', '#ef5a5a'],
@@ -29,7 +28,6 @@ const TONE_GRADIENTS: Record<string, [string, string, string]> = {
 
 const TONE_FOREGROUNDS: Record<string, string> = {
   blue:   '#2f6bff',
-  indigo: '#5b4ce6',
   purple: '#8a3ff0',
   orange: '#fb7a32',
   red:    '#ef5a5a',
@@ -73,7 +71,7 @@ export function ActionButton({
   ...rest
 }: ActionButtonProps) {
   const sizeClass = big
-    ? "h-[54px] px-5 rounded-[13px] text-[15px]"
+    ? "h-[54px] px-5 rounded-[13px] text-base"
     : "h-[46px] px-5 rounded-[13px] text-sm";
 
   if (ghost) {

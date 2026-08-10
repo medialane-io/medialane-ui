@@ -9,8 +9,6 @@ const medialanePreset: Partial<Config> = {
         // color working standalone for any consumer that defines none
         // (medialane-portal today, or a future app).
         "brand-blue":     "hsl(var(--brand-blue, 220 100% 62%))",
-        "brand-electric": "hsl(var(--brand-electric, 241 100% 55%))",
-        "brand-indigo":   "hsl(var(--brand-indigo, 246 75% 60%))",
         "brand-purple":   "hsl(var(--brand-purple, 258 90% 66%))",
         "brand-rose":     "hsl(var(--brand-rose, 341 89% 67%))",
         "brand-orange":   "hsl(var(--brand-orange, 23 96% 63%))",

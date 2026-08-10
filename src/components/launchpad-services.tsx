@@ -75,7 +75,7 @@ const DEFAULT_SLICE: GroupSlice = {
 
 export const GROUP_SLICES: Record<ServiceGroup, GroupSlice> = {
   "nfts": { tint: "bg-brand-blue/10", text: "text-brand-blue", border: "border-brand-blue/30" },
-  "limited-editions": { tint: "bg-brand-indigo/10", text: "text-brand-indigo", border: "border-brand-indigo/30" },
+  "limited-editions": { tint: "bg-brand-price/10", text: "text-brand-price", border: "border-brand-price/30" },
   "coins": { tint: "bg-brand-purple/10", text: "text-brand-purple", border: "border-brand-purple/30" },
   "community": { tint: "bg-brand-rose/10", text: "text-brand-rose", border: "border-brand-rose/30" },
   "claims": { tint: "bg-brand-orange/10", text: "text-brand-orange", border: "border-brand-orange/30" },
@@ -95,13 +95,13 @@ interface ServiceHue {
  *  the brand spectrum. */
 export const SERVICE_HUES: Record<string, ServiceHue> = {
   "nfts": { text: "text-brand-blue", solid: "bg-brand-blue", border: "border-brand-blue/30", tint: "bg-brand-blue/10" },
-  "limited-editions": { text: "text-brand-indigo", solid: "bg-brand-indigo", border: "border-brand-indigo/30", tint: "bg-brand-indigo/10" },
+  "limited-editions": { text: "text-brand-price", solid: "bg-brand-price", border: "border-brand-price/30", tint: "bg-brand-price/10" },
   "creator-coins": { text: "text-brand-price", solid: "bg-brand-price", border: "border-brand-price/30", tint: "bg-brand-price/10" },
   "claim-memecoin": { text: "text-brand-orange", solid: "bg-brand-orange", border: "border-brand-orange/30", tint: "bg-brand-orange/10" },
   "collection-drop": { text: "text-brand-purple", solid: "bg-brand-purple", border: "border-brand-purple/30", tint: "bg-brand-purple/10" },
   "pop-protocol": { text: "text-brand-rose", solid: "bg-brand-rose", border: "border-brand-rose/30", tint: "bg-brand-rose/10" },
   "ip-tickets": { text: "text-brand-orange", solid: "bg-brand-orange", border: "border-brand-orange/30", tint: "bg-brand-orange/10" },
-  "remix-asset": { text: "text-brand-indigo", solid: "bg-brand-indigo", border: "border-brand-indigo/30", tint: "bg-brand-indigo/10" },
+  "remix-asset": { text: "text-brand-price", solid: "bg-brand-price", border: "border-brand-price/30", tint: "bg-brand-price/10" },
   "claim-username": { text: "text-brand-purple", solid: "bg-brand-purple", border: "border-brand-purple/30", tint: "bg-brand-purple/10" },
   "claim-collection": { text: "text-brand-blue", solid: "bg-brand-blue", border: "border-brand-blue/30", tint: "bg-brand-blue/10" },
   "claim-collection-name": { text: "text-brand-rose", solid: "bg-brand-rose", border: "border-brand-rose/30", tint: "bg-brand-rose/10" },
@@ -140,7 +140,7 @@ export function LaunchpadServiceCard({ def, override = {}, index = 0 }: Launchpa
           <Icon className={cn("h-7 w-7", live ? slice.text : "text-muted-foreground/50")} />
         </span>
         {!live ? (
-          <span className="flex items-center gap-1 text-[11px] font-medium text-muted-foreground/60 pt-1">
+          <span className="flex items-center gap-1 text-2xs font-medium text-muted-foreground/60 pt-1">
             <Lock className="h-3 w-3" />
             Coming soon
           </span>
