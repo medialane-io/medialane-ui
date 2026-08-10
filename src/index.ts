@@ -251,3 +251,5 @@ export { HiddenContentBanner } from "./components/hidden-content-banner.js";
 export { useRewardsCelebrations } from "./hooks/use-rewards-celebrations.js";
 export { LevelUpCelebration } from "./components/rewards/level-up-celebration.js";
 export type { LevelUpCelebrationProps } from "./components/rewards/level-up-celebration.js";
+export { BadgeUnlockToastContent } from "./components/rewards/badge-unlock-toast-content.js";
+export type { BadgeUnlockToastContentProps } from "./components/rewards/badge-unlock-toast-content.js";
