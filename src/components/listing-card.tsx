@@ -177,7 +177,7 @@ export function ListingCard({ order: rawOrder, inCart = false, onBuy, onCart, ov
               {onCart && (
                 <button
                   className={cn(
-                    "h-9 w-9 shrink-0 rounded-[9px] border flex items-center justify-center transition-colors",
+                    "min-h-11 min-w-11 shrink-0 rounded-[9px] border flex items-center justify-center transition-colors",
                     inCart
                       ? "border-brand-orange/50 bg-brand-orange/10 text-brand-orange"
                       : "border-border bg-background hover:bg-muted text-foreground"

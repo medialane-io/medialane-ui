@@ -132,7 +132,7 @@ export const NavWalletTrigger = React.forwardRef<HTMLButtonElement, NavWalletTri
         onClick={onClick}
         aria-label={rest["aria-label"] ?? (connected ? "Account" : "Connect wallet")}
         className={cn(
-          "ml-nav-wallet-trigger relative flex h-8 w-8 items-center justify-center rounded-full",
+          "ml-nav-wallet-trigger relative flex h-11 w-11 items-center justify-center rounded-full",
           "bg-background/10 text-muted-foreground backdrop-blur-xl backdrop-saturate-150",
           "transition-colors hover:bg-background/20 hover:text-foreground active:scale-[0.97]",
           "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60",

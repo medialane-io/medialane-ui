@@ -43,7 +43,7 @@ export function JourneyPath({ steps, breakdown = {}, className }: JourneyPathPro
               <span
                 aria-hidden
                 className={cn(
-                  "absolute left-[15px] top-8 h-[calc(100%-8px)] w-px",
+                  "absolute left-[21px] top-11 h-[calc(100%-8px)] w-px",
                   state === "done" ? "bg-brand-rose/50" : "bg-border"
                 )}
               />
@@ -51,7 +51,7 @@ export function JourneyPath({ steps, breakdown = {}, className }: JourneyPathPro
             <a
               href={step.href}
               className={cn(
-                "flex h-8 w-8 shrink-0 items-center justify-center rounded-full border transition-colors",
+                "flex min-h-11 min-w-11 shrink-0 items-center justify-center rounded-full border transition-colors",
                 state === "done" && "border-brand-rose/40 bg-brand-rose/15 text-brand-rose",
                 state === "current" && "border-brand-orange/60 bg-brand-orange/10 text-brand-orange",
                 state === "upcoming" && "border-border text-muted-foreground/50"
