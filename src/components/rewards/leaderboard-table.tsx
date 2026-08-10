@@ -45,7 +45,10 @@ export function LeaderboardTable({ entries, highlightAddress, renderAddress, cla
               {isViewer && <span className="ml-1.5 text-xs text-muted-foreground">(you)</span>}
             </span>
             <LevelBadge level={e.currentLevel} name={e.currentLevelName} badgeColor={e.badgeColor} size="sm" className="hidden sm:inline-flex" />
-            <span className="shrink-0 text-sm font-semibold tabular-nums">{e.totalXp.toLocaleString()} pts</span>
+            <span className="shrink-0 text-sm font-semibold tabular-nums">
+              {e.totalXp.toLocaleString()}
+              <span className="ml-1 text-xs font-normal text-muted-foreground">XP</span>
+            </span>
           </div>
         );
       })}
