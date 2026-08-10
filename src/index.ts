@@ -249,3 +249,5 @@ export { HiddenContentBanner } from "./components/hidden-content-banner.js";
 
 // ── v0.99.0 additions — rewards UX overhaul ───────────────────────────────────
 export { useRewardsCelebrations } from "./hooks/use-rewards-celebrations.js";
+export { LevelUpCelebration } from "./components/rewards/level-up-celebration.js";
+export type { LevelUpCelebrationProps } from "./components/rewards/level-up-celebration.js";
