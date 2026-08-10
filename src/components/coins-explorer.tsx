@@ -136,7 +136,7 @@ export function CoinsExplorer({ useCoins, usePrice, coinHref, heading = true }: 
       </div>
 
       {isLoading && items.length === 0 ? (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
           {Array.from({ length: 8 }).map((_, i) => <CoinCardSkeleton key={i} />)}
         </div>
       ) : items.length === 0 ? (
@@ -148,7 +148,7 @@ export function CoinsExplorer({ useCoins, usePrice, coinHref, heading = true }: 
           {items.map((c) => <CoinRow key={`${c.chain}-${c.contractAddress}`} collection={c} usePrice={usePrice} href={coinHref(c)} />)}
         </div>
       ) : (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
           {items.map((c) => <CoinCard key={`${c.chain}-${c.contractAddress}`} collection={c} usePrice={usePrice} href={coinHref(c)} />)}
         </div>
       )}

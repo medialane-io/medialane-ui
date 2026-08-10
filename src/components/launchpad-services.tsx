@@ -366,7 +366,7 @@ export function LaunchpadGroupedSections({ overrides, query, activeGroups, onCle
         </div>
       ) : (
         <>
-          <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 sm:gap-6">
+          <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-5 sm:gap-6">
             <AnimatePresence mode="popLayout">
               {liveDefs.map((def, i) => (
                 <LaunchpadServiceCard key={def.key} def={def} override={overrides[def.key]} index={i} />
