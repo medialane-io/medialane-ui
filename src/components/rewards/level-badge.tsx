@@ -14,7 +14,7 @@ export interface LevelBadgeProps {
  *  consuming app supplies level data from the rewards API. */
 export function LevelBadge({ level, name, badgeColor, size = "md", className }: LevelBadgeProps) {
   const sizeClasses = {
-    sm: "h-5 px-1.5 gap-1 text-[10px]",
+    sm: "h-5 px-1.5 gap-1 text-2xs",
     md: "h-6 px-2 gap-1.5 text-xs",
     lg: "h-8 px-3 gap-2 text-sm",
   };

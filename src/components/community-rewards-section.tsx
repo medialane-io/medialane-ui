@@ -51,7 +51,7 @@ export function CommunityRewardsSection({
             member cards on the right, no rank/podium framing. */}
         {!isLoading && entries.length > 0 && (
           <div className="border-y border-brand-orange/20 py-3">
-            <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-2">
+            <p className="text-2xs font-bold uppercase tracking-widest text-muted-foreground mb-2">
               Recently active
             </p>
             <div className="flex -space-x-2">
@@ -107,7 +107,7 @@ export function CommunityRewardsSection({
                   <p className="text-2xl font-black tabular-nums leading-none">
                     {entry.totalXp.toLocaleString()}
                   </p>
-                  <p className="text-[11px] text-muted-foreground">XP earned</p>
+                  <p className="text-2xs text-muted-foreground">XP earned</p>
                 </div>
 
                 <AddressDisplay

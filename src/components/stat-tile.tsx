@@ -45,7 +45,7 @@ export function StatTile({
         </span>
       )}
       {sub && (
-        <span className="text-[11px] text-muted-foreground">{sub}</span>
+        <span className="text-2xs text-muted-foreground">{sub}</span>
       )}
       {children}
     </div>
@@ -63,10 +63,10 @@ export function StatPill({ value, label, className }: StatPillProps) {
     <div
       className={`inline-flex items-baseline gap-2 px-4 py-2 rounded-full bg-muted ${className ?? ''}`}
     >
-      <span className="text-[15px] font-bold text-foreground tabular-nums">
+      <span className="text-base font-bold text-foreground tabular-nums">
         {value}
       </span>
-      <span className="text-[13px] text-muted-foreground">{label}</span>
+      <span className="text-sm text-muted-foreground">{label}</span>
     </div>
   );
 }

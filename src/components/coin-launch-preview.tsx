@@ -64,17 +64,17 @@ export function CoinLaunchPreview({ data, className }: { data: CoinPreviewData; 
         {/* Economics */}
         <div className="grid grid-cols-3 gap-2 rounded-xl bg-muted/50 dark:bg-muted/30 p-3 text-sm">
           <div>
-            <p className="text-[10px] uppercase tracking-wide text-muted-foreground">Launch price</p>
+            <p className="text-2xs uppercase tracking-wide text-muted-foreground">Launch price</p>
             <p className="font-semibold tabular-nums">{LAUNCH_PRICE} {quoteSymbol}</p>
           </div>
           <div>
-            <p className="text-[10px] uppercase tracking-wide text-muted-foreground">Market cap</p>
+            <p className="text-2xs uppercase tracking-wide text-muted-foreground">Market cap</p>
             <p className="font-semibold tabular-nums text-brand-price">
               {marketCap != null ? `${marketCap.toLocaleString()} ${quoteSymbol}` : "—"}
             </p>
           </div>
           <div>
-            <p className="text-[10px] uppercase tracking-wide text-muted-foreground">Your share</p>
+            <p className="text-2xs uppercase tracking-wide text-muted-foreground">Your share</p>
             <p className="font-semibold tabular-nums">
               {yourCoins != null ? `${teamPct}% · ${yourCoins.toLocaleString()}` : `${teamPct}%`}
             </p>
@@ -87,13 +87,13 @@ export function CoinLaunchPreview({ data, className }: { data: CoinPreviewData; 
             {teamPct > 0 && <div style={{ width: `${teamPct}%`, background: COIN_GRADIENT }} />}
             <div className="flex-1" />
           </div>
-          <div className="flex justify-between text-[11px] text-muted-foreground">
+          <div className="flex justify-between text-2xs text-muted-foreground">
             <span className="font-medium text-brand-rose">You {teamPct}%</span>
             <span>Community {100 - teamPct}%</span>
           </div>
         </div>
 
-        <p className="text-[11px] text-muted-foreground/70">
+        <p className="text-2xs text-muted-foreground/70">
           Liquidity is locked forever — nobody can pull it, including us.
         </p>
       </div>

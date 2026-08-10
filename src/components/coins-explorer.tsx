@@ -103,7 +103,7 @@ export function CoinsExplorer({ useCoins, usePrice, coinHref, heading = true }: 
             <SlidersHorizontal className="h-3.5 w-3.5" />
             Filters
             {filterCount > 0 && (
-              <span className="ml-0.5 inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-primary px-1 text-[10px] font-semibold text-primary-foreground">
+              <span className="ml-0.5 inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-primary px-1 text-2xs font-semibold text-primary-foreground">
                 {filterCount}
               </span>
             )}
@@ -200,7 +200,7 @@ export function CoinsExplorer({ useCoins, usePrice, coinHref, heading = true }: 
 function FilterGroup({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div className="space-y-2">
-      <p className="text-[10px] font-medium text-muted-foreground">{label}</p>
+      <p className="text-2xs font-medium text-muted-foreground">{label}</p>
       <div className="flex flex-wrap gap-1.5">{children}</div>
     </div>
   );

@@ -26,10 +26,10 @@ export function LevelLadder({ levels, currentLevel, className }: LevelLadderProp
               backgroundColor: state === "current" ? `${l.badgeColor}22` : `${l.badgeColor}0d`,
             }}
           >
-            <span className="text-[10px] font-black tabular-nums" style={{ color: l.badgeColor }}>
+            <span className="text-2xs font-black tabular-nums" style={{ color: l.badgeColor }}>
               {l.level}
             </span>
-            <span className="whitespace-nowrap text-[10px] font-semibold" style={{ color: l.badgeColor }}>
+            <span className="whitespace-nowrap text-2xs font-semibold" style={{ color: l.badgeColor }}>
               {l.name}
             </span>
           </div>

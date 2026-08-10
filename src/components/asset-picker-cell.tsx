@@ -30,7 +30,7 @@ export function AssetPickerCell({
         </div>
       )}
       <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent px-1.5 py-1">
-        <p className="truncate text-[11px] font-medium text-white">{asset.name}</p>
+        <p className="truncate text-2xs font-medium text-white">{asset.name}</p>
       </div>
       {active ? (
         <div className="absolute top-1.5 right-1.5 h-5 w-5 rounded-full bg-brand-purple flex items-center justify-center">

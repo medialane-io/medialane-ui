@@ -44,7 +44,7 @@ export function ClaimRail({ included, steps, trustLead, trust, trustIcon: TrustI
         <ol className="mt-4 space-y-3">
           {steps.map((label, i) => (
             <li key={label} className="flex items-center gap-3">
-              <span className="h-8 w-8 rounded-lg bg-brand-purple/10 text-brand-purple flex items-center justify-center shrink-0 text-[13px] font-bold tabular-nums">
+              <span className="h-8 w-8 rounded-lg bg-brand-purple/10 text-brand-purple flex items-center justify-center shrink-0 text-sm font-bold tabular-nums">
                 {i + 1}
               </span>
               <span className="text-sm text-foreground/90">{label}</span>

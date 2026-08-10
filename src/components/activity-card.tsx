@@ -103,18 +103,18 @@ export function ActivityCard({
           }
         />
         {/* Activity type chip — vivid label on glass */}
-        <span className="absolute top-2.5 left-2.5 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-background/75 backdrop-blur-md border border-border/40">
+        <span className="absolute top-2.5 left-2.5 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-2xs font-semibold bg-background/75 backdrop-blur-md border border-border/40">
           <Icon className={cn("h-3 w-3", config.colorClass)} aria-hidden />
           <span className={config.colorClass}>{config.label}</span>
         </span>
         {amount && (
-          <span className="absolute bottom-2.5 right-2.5 px-2 py-0.5 rounded-full text-[10px] font-bold bg-violet-500 text-white">
+          <span className="absolute bottom-2.5 right-2.5 px-2 py-0.5 rounded-full text-2xs font-bold bg-violet-500 text-white">
             ×{amount}
           </span>
         )}
       </div>
       <div className="p-4 space-y-1.5">
-        <p className="text-[15px] font-semibold truncate">{tokenName}</p>
+        <p className="text-base font-semibold truncate">{tokenName}</p>
         <p
           className="text-xs text-muted-foreground truncate"
           title={new Date(activity.timestamp).toLocaleString()}

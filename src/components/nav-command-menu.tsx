@@ -84,7 +84,7 @@ function Kbd({ children, className }: { children: React.ReactNode; className?: s
     <kbd
       className={cn(
         "inline-flex min-w-[18px] items-center justify-center rounded-md bg-muted/60 px-1.5 py-0.5",
-        "font-sans text-[10px] leading-none text-muted-foreground",
+        "font-sans text-2xs leading-none text-muted-foreground",
         className
       )}
     >
@@ -122,7 +122,7 @@ function CommandRow({ item, primary, onSelect }: { item: NavCommand; primary: bo
         <span
           className={cn(
             "block truncate leading-tight",
-            primary ? "text-[15px] font-medium" : "text-sm"
+            primary ? "text-base font-medium" : "text-sm"
           )}
         >
           {item.label}
@@ -253,7 +253,7 @@ export function NavCommandMenu({
                       value={query}
                       onValueChange={setQuery}
                       placeholder="Search or run a command…"
-                      className="flex-1 bg-transparent text-[15px] outline-none placeholder:text-muted-foreground"
+                      className="flex-1 bg-transparent text-base outline-none placeholder:text-muted-foreground"
                     />
                     <Kbd className="hidden sm:inline-flex">esc</Kbd>
                     <button
@@ -311,7 +311,7 @@ export function NavCommandMenu({
                       )}
                     </div>
                     {brandSlot ?? (
-                      <span className="flex shrink-0 items-center gap-2 text-[10px] text-muted-foreground/50">
+                      <span className="flex shrink-0 items-center gap-2 text-2xs text-muted-foreground/50">
                         medialane
                         <Kbd className="hidden sm:inline-flex">⌘K</Kbd>
                       </span>

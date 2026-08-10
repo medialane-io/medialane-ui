@@ -101,7 +101,7 @@ export function TokenCard({
           {/* Price chip — bottom right overlay */}
           {listingOrder && (
             <div className="absolute bottom-2 right-2 z-10">
-              <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-[11px] font-bold bg-background/90 backdrop-blur-sm border border-border/40 shadow-sm">
+              <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-2xs font-bold bg-background/90 backdrop-blur-sm border border-border/40 shadow-sm">
                 <CurrencyIcon symbol={listingOrder.price.currency ?? ""} size={10} />
                 {formatDisplayPrice(listingOrder.price.formatted)}
                 <span className="text-muted-foreground font-normal">{listingOrder.price.currency}</span>
@@ -113,7 +113,7 @@ export function TokenCard({
           {(token.metadataStatus === "PENDING" || token.metadataStatus === "FETCHING") && (
             <div className="absolute bottom-0 inset-x-0 flex items-center justify-center gap-1.5 bg-black/50 backdrop-blur-sm py-1.5">
               <Loader2 className="h-3 w-3 animate-spin text-white/70" />
-              <span className="text-[10px] text-white/70">Indexing…</span>
+              <span className="text-2xs text-white/70">Indexing…</span>
             </div>
           )}
         </div>
@@ -124,11 +124,11 @@ export function TokenCard({
           <div className="flex items-center gap-1.5 mt-1.5 flex-wrap">
             {ipType && <IpTypeBadge ipType={ipType as any} size="sm" />}
             {creator ? (
-              <p className="text-[10px] tabular-nums text-muted-foreground/60 truncate">
+              <p className="text-2xs tabular-nums text-muted-foreground/60 truncate">
                 {creator.slice(0, 8)}…{creator.slice(-6)}
               </p>
             ) : token.metadata?.description ? (
-              <p className="text-[10px] text-muted-foreground truncate leading-snug">
+              <p className="text-2xs text-muted-foreground truncate leading-snug">
                 {token.metadata.description}
               </p>
             ) : null}

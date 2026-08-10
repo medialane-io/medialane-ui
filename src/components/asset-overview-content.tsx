@@ -43,7 +43,7 @@ function Cell({
     >
       {icon ? <span className="text-primary/70">{icon}</span> : null}
       <div className="space-y-0.5">
-        <p className="text-[10px] font-medium text-muted-foreground truncate" title={label}>
+        <p className="text-2xs font-medium text-muted-foreground truncate" title={label}>
           {label}
         </p>
         <div className="text-sm font-bold text-foreground truncate">{value}</div>
@@ -100,7 +100,7 @@ export function AssetOverviewContent({
               {/* emphasized cell — the license summary, stretched 2×2 */}
               <div className="col-span-2 sm:row-span-2 flex flex-col justify-between gap-4 rounded-2xl bg-gradient-to-br from-primary/10 via-primary/5 to-accent/10 ring-1 ring-primary/15 p-5">
                 {licenseType ? (
-                  <span className="pill-badge self-start text-[10px]">{licenseType}</span>
+                  <span className="pill-badge self-start text-2xs">{licenseType}</span>
                 ) : null}
                 {summary ? (
                   <p className="text-base sm:text-lg font-semibold leading-snug text-foreground">{summary}</p>

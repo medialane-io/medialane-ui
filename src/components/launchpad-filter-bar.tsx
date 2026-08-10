@@ -75,7 +75,7 @@ export function LaunchpadFilterBar({
             <X className="h-3.5 w-3.5" />
           </button>
         ) : (
-          <kbd className="absolute right-3 top-1/2 -translate-y-1/2 hidden sm:flex h-5 w-5 items-center justify-center rounded border border-border bg-muted/40 text-[11px] font-medium text-muted-foreground pointer-events-none">
+          <kbd className="absolute right-3 top-1/2 -translate-y-1/2 hidden sm:flex h-5 w-5 items-center justify-center rounded border border-border bg-muted/40 text-2xs font-medium text-muted-foreground pointer-events-none">
             /
           </kbd>
         )}
