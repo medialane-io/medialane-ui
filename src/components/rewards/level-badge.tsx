@@ -8,8 +8,10 @@ export interface LevelBadgeProps {
   className?: string;
 }
 
-/** Color-coded level chip ("Lv.6 Voyager"). Pure presentation — the consuming
- *  app supplies level data from the rewards API. */
+/** Color-coded level chip — shows the level's title only ("Voyager"), not
+ *  the raw number ("Lv.6 Voyager" read as UI noise). The level is still
+ *  available on hover via the native title tooltip. Pure presentation — the
+ *  consuming app supplies level data from the rewards API. */
 export function LevelBadge({ level, name, badgeColor, size = "md", className }: LevelBadgeProps) {
   const sizeClasses = {
     sm: "h-5 px-1.5 gap-1 text-[10px]",
@@ -25,6 +27,7 @@ export function LevelBadge({ level, name, badgeColor, size = "md", className }: 
 
   return (
     <span
+      title={`Level ${level}`}
       className={cn(
         "inline-flex items-center rounded-full border font-semibold tracking-tight whitespace-nowrap",
         sizeClasses[size],
@@ -33,7 +36,7 @@ export function LevelBadge({ level, name, badgeColor, size = "md", className }: 
       style={{ borderColor: `${badgeColor}60`, backgroundColor: `${badgeColor}18`, color: badgeColor }}
     >
       <span className={cn("rounded-full shrink-0", dotSizes[size])} style={{ backgroundColor: badgeColor }} />
-      Lv.{level} {name}
+      {name}
     </span>
   );
 }

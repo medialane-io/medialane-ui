@@ -23,12 +23,6 @@ const EARN_ACTIONS = [
   { icon: MessageSquare, label: "Engage" },
 ];
 
-const INFO_TILES = [
-  { value: "50", label: "Levels" },
-  { value: "XP", label: "Every action" },
-  { value: "Fund", label: "Distribution" },
-];
-
 export function CommunityRewardsSection({
   entries,
   isLoading = false,
@@ -53,15 +47,26 @@ export function CommunityRewardsSection({
           </p>
         </div>
 
-        {/* Info values — hairline-divided row */}
-        <div className="grid grid-cols-3 divide-x divide-brand-orange/20 border-y border-brand-orange/20 py-4">
-          {INFO_TILES.map(({ value, label }) => (
-            <div key={label} className="flex flex-col items-center text-center gap-1 px-2">
-              <span className="text-xl font-black tabular-nums">{value}</span>
-              <span className="text-[10px] text-muted-foreground leading-tight">{label}</span>
+        {/* Recently active — live rail sourced from the same entries as the
+            member cards on the right, no rank/podium framing. */}
+        {!isLoading && entries.length > 0 && (
+          <div className="border-y border-brand-orange/20 py-3">
+            <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-2">
+              Recently active
+            </p>
+            <div className="flex -space-x-2">
+              {entries.slice(0, 5).map((entry) => (
+                <span
+                  key={entry.address}
+                  title={`${entry.totalXp.toLocaleString()} XP`}
+                  className="flex h-7 w-7 items-center justify-center rounded-full border-2 border-background bg-brand-orange/15 text-[9px] font-bold text-brand-orange"
+                >
+                  {entry.address.slice(2, 4).toUpperCase()}
+                </span>
+              ))}
             </div>
-          ))}
-        </div>
+          </div>
+        )}
 
         {/* Earn actions — plain text row */}
         <div className="flex flex-wrap gap-x-5 gap-y-2">

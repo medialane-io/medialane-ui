@@ -26,7 +26,7 @@ export interface BadgeShelfProps {
 // Lazily resolve lucide icons by name at runtime (icon names come from the API).
 const iconCache = new Map<string, React.ComponentType<LucideProps>>();
 
-function BadgeIcon({ name, color, className }: { name: string; color: string; className?: string }) {
+export function BadgeIcon({ name, color, className }: { name: string; color: string; className?: string }) {
   const [Icon, setIcon] = React.useState<React.ComponentType<LucideProps> | null>(
     () => iconCache.get(name) ?? null
   );
