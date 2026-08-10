@@ -220,7 +220,7 @@ export function NavCommandMenu({
 
             {/* Command panel — centered on desktop, bottom sheet on mobile */}
             <motion.div
-              className="fixed inset-0 z-[101] flex items-end justify-center p-3 pb-4 sm:items-center sm:p-4"
+              className="fixed inset-0 z-[101] flex items-end justify-center p-3 pb-[calc(1rem+env(safe-area-inset-bottom))] sm:items-center sm:p-4"
               initial={{ opacity: 0, y: 24, scale: 1 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 24 }}

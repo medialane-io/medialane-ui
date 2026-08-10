@@ -12,6 +12,10 @@
 .scrollbar-hide { scrollbar-width: none; }
 .scrollbar-hide::-webkit-scrollbar { display: none; }
 
+/* ── Safe-area insets (notched/home-indicator devices) ──────────────────── */
+.pb-safe { padding-bottom: max(env(safe-area-inset-bottom), 0px); }
+.pt-safe { padding-top: max(env(safe-area-inset-top), 0px); }
+
 /* ── Glass ────────────────────────────────────────────────────────────── */
 .glass {
   background: rgba(10, 14, 30, 0.60);

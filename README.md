@@ -231,6 +231,25 @@ isn't available.
 
 ---
 
+## Safe-area utilities
+
+`.pb-safe` / `.pt-safe` — padding using `env(safe-area-inset-*)`, for
+anything pinned to the viewport edge (bottom sheets, fixed tab bars) on
+notched/home-indicator devices. Used internally by `NavCommandMenu`/
+`NavAccountSheet`; apply the same classes to any app-level fixed bottom
+bar (e.g. a mobile tab bar) for the same treatment.
+
+**Composing with an existing base padding:** these classes are purely
+additive (`0px` on a non-notched device) — they are not a drop-in
+replacement for a spacing utility like `pb-4`. Stacking two Tailwind
+padding-bottom classes doesn't merge them (the later one in source order
+just wins), so if the element already has its own bottom padding, combine
+them in one arbitrary value instead: `pb-[calc(1rem+env(safe-area-inset-bottom))]`.
+`NavCommandMenu`/`NavAccountSheet` use this composed form, not the bare
+`.pb-safe` class, because they already had a `pb-4` baseline.
+
+---
+
 ## Build & Publish
 
 ```bash
