@@ -253,3 +253,5 @@ export { LevelUpCelebration } from "./components/rewards/level-up-celebration.js
 export type { LevelUpCelebrationProps } from "./components/rewards/level-up-celebration.js";
 export { BadgeUnlockToastContent } from "./components/rewards/badge-unlock-toast-content.js";
 export type { BadgeUnlockToastContentProps } from "./components/rewards/badge-unlock-toast-content.js";
+export { JourneyPath } from "./components/rewards/journey-path.js";
+export type { JourneyPathProps, JourneyStep } from "./components/rewards/journey-path.js";
