@@ -249,7 +249,7 @@ export type { ActionDialogProps } from "./components/action-dialog.js";
 export { HiddenContentBanner } from "./components/hidden-content-banner.js";
 
 // ── v0.99.0 additions — rewards UX overhaul ───────────────────────────────────
-export { useRewardsCelebrations } from "./hooks/use-rewards-celebrations.js";
+export { useRewardsCelebrations } from "./components/rewards/use-rewards-celebrations.js";
 export { LevelUpCelebration } from "./components/rewards/level-up-celebration.js";
 export type { LevelUpCelebrationProps } from "./components/rewards/level-up-celebration.js";
 export { BadgeUnlockToastContent } from "./components/rewards/badge-unlock-toast-content.js";
