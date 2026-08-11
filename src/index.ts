@@ -276,3 +276,12 @@ export {
 export {
   useFormField, Form, FormItem, FormLabel, FormControl, FormDescription, FormMessage, FormField,
 } from "./components/form.js";
+export { useMedialaneClient } from "./utils/use-medialane-client.js";
+export { useCreators } from "./utils/use-creators.js";
+export {
+  useRewards, useLeaderboard, useRewardsEvents, useRewardsConfig, useRewardsBatch,
+} from "./utils/use-rewards.js";
+export type { UserRewards, LeaderboardEntry, BadgeSummary, LevelSummary } from "./utils/use-rewards.js";
+export { OwnerSetupPanel } from "./components/owner-setup-panel.js";
+export { DropCountdown } from "./components/drop-countdown.js";
+export { CreatorAnalytics } from "./components/creator-analytics.js";
