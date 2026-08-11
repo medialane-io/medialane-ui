@@ -34,13 +34,13 @@ export function PortfolioBentoTile({
   return (
     <section
       className={cn(
-        "rounded-2xl border border-border/50 bg-card/60 min-w-0 transition-colors hover:border-border",
+        "rounded-2xl bg-foreground/[0.04] min-w-0 transition-colors hover:bg-foreground/[0.07]",
         size === "wide" && "md:col-span-2",
         className,
       )}
     >
       <div className="flex items-center justify-between gap-3 px-4 pt-4 pb-3">
-        <h2 className="text-xs font-medium text-muted-foreground">
+        <h2 className="text-sm font-black text-foreground tracking-tight">
           {title}
         </h2>
         <Link
