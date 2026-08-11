@@ -233,6 +233,22 @@ input[type="number"] { -moz-appearance: textfield; }
   animation: none;
 }
 
+/* ── Static two-stop signature ring — Collections/Creators surfaces ────── */
+/* Same masked-ring technique as .ml-nav-wallet-ring, but static (no spin) and
+   scoped to the two colors this section owns (brand-blue -> brand-purple) —
+   see medialane-core reference_brand_colors_and_gradients section-theming map. */
+.ml-collection-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  padding: 1.5px;
+  background: linear-gradient(135deg, #3b7bff, #8a5cf6);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
 /* ── Hover-only branded gradient border (launchpad cards) ───────────────── */
 /* The resting state keeps the card's own hairline; on hover-capable devices */
 /* the full-spectrum ring fades in over it. Decoration only — never carries  */
