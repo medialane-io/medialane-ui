@@ -212,6 +212,8 @@ export { LeaderboardTable, LeaderboardWidget } from "./components/rewards/leader
 export type { LeaderboardTableProps, LeaderboardWidgetProps, LeaderboardEntryLike } from "./components/rewards/leaderboard-table.js";
 export { LevelJourneyList } from "./components/rewards/level-journey-list.js";
 export type { LevelJourneyListProps, LevelJourneyListLevel } from "./components/rewards/level-journey-list.js";
+export { BadgeCatalog } from "./components/rewards/badge-catalog.js";
+export type { BadgeCatalogProps, BadgeCatalogBadge } from "./components/rewards/badge-catalog.js";
 export { XpToastContent } from "./components/rewards/xp-toast-content.js";
 export type { XpToastContentProps } from "./components/rewards/xp-toast-content.js";
 export { createRewardToast } from "./components/rewards/reward-toast.js";
