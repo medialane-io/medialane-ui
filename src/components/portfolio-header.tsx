@@ -30,15 +30,13 @@ export function PortfolioHeader({
   className,
 }: PortfolioHeaderProps) {
   const scoreChip = score && (
-    <div className="btn-border-animated p-[1.5px] rounded-full">
-      <div className="rounded-full bg-card px-3.5 py-1.5 flex items-baseline gap-2 whitespace-nowrap">
-        <span className="text-sm font-semibold text-foreground">
-          {score.levelName}
-        </span>
-        <span className="text-xs text-muted-foreground tabular-nums">
-          {score.totalXp.toLocaleString()} XP
-        </span>
-      </div>
+    <div className="rounded-full bg-gradient-to-r from-brand-purple to-brand-orange px-3.5 py-1.5 flex items-baseline gap-2 whitespace-nowrap text-white">
+      <span className="text-sm font-bold">
+        {score.levelName}
+      </span>
+      <span className="text-xs font-medium text-white/80 tabular-nums">
+        {score.totalXp.toLocaleString()} XP
+      </span>
     </div>
   );
 
@@ -51,7 +49,7 @@ export function PortfolioHeader({
         <AddressDisplay
           address={address}
           chars={6}
-          className="text-xl font-bold tracking-tight text-foreground"
+          className="text-2xl sm:text-3xl font-black tracking-tight text-foreground"
         />
       </div>
       {score?.href ? (
