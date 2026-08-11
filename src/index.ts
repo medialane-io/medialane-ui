@@ -155,13 +155,6 @@ export type {
 } from "./components/nav-shell.js";
 
 // ── v0.59.0 — portfolio shell (two-level nav + header + overview) ────────────
-export { PortfolioNav } from "./components/portfolio-nav.js";
-export type {
-  PortfolioNavProps,
-  PortfolioNavSection,
-  PortfolioNavChild,
-  PortfolioBadgeVariant,
-} from "./components/portfolio-nav.js";
 export { PortfolioHeader } from "./components/portfolio-header.js";
 export type {
   PortfolioHeaderProps,
