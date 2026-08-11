@@ -95,7 +95,7 @@ export function CoinCard({ collection, usePrice, href }: CoinTileProps) {
               <span className="select-none text-5xl font-black tracking-tighter text-white/90">{m.initials}</span>
             </div>
           )}
-          <span className={cn("absolute left-2 top-2 rounded-full px-2 py-0.5 text-[10px] font-semibold backdrop-blur-md", KIND_OVER_IMAGE[m.kind])}>
+          <span className={cn("absolute left-2 top-2 rounded-full px-2 py-0.5 text-2xs font-semibold backdrop-blur-md", KIND_OVER_IMAGE[m.kind])}>
             {kindLabel(m.kind)}
           </span>
         </div>
@@ -107,7 +107,7 @@ export function CoinCard({ collection, usePrice, href }: CoinTileProps) {
             <div className="truncate text-sm text-muted-foreground">{collection.symbol ?? "—"}</div>
           </div>
           <div className="flex items-baseline justify-between gap-2">
-            <span className="text-[10px] uppercase tracking-wide text-muted-foreground">Price</span>
+            <span className="text-2xs uppercase tracking-wide text-muted-foreground">Price</span>
             <PriceValue price={m.price} isLoading={m.isLoading} />
           </div>
         </div>
@@ -122,13 +122,13 @@ export function CoinRow({ collection, usePrice, href }: CoinTileProps) {
     <Link href={href} className="flex items-center gap-3 rounded-lg border border-border/60 bg-card px-3 py-2.5 transition-colors hover:border-primary/40 active:scale-[0.99]">
       <div className="relative h-9 w-9 shrink-0 overflow-hidden rounded-full bg-muted">
         {m.logo ? <Image src={m.logo} alt="" fill sizes="36px" className="object-cover" unoptimized /> :
-          <div className={cn("flex h-full w-full items-center justify-center bg-gradient-to-br text-[11px] font-bold text-white", KIND_FALLBACK[m.kind])}>{m.initials}</div>}
+          <div className={cn("flex h-full w-full items-center justify-center bg-gradient-to-br text-2xs font-bold text-white", KIND_FALLBACK[m.kind])}>{m.initials}</div>}
       </div>
       <div className="min-w-0 flex-1">
         <span className="truncate text-sm font-semibold">{collection.name ?? "Untitled coin"}</span>
         <span className="block truncate text-xs text-muted-foreground">{collection.symbol ?? "—"}</span>
       </div>
-      <span className={cn("hidden shrink-0 rounded-full border px-2 py-0.5 text-[10px] font-medium sm:inline-block", KIND_TAG[m.kind])}>
+      <span className={cn("hidden shrink-0 rounded-full border px-2 py-0.5 text-2xs font-medium sm:inline-block", KIND_TAG[m.kind])}>
         {kindLabel(m.kind)}
       </span>
       <span className="w-28 shrink-0 text-right text-sm">

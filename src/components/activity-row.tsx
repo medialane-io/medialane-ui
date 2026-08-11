@@ -90,7 +90,7 @@ export function ActivityRow({
       {/* Right: badge + price + time + explorer */}
       <div className="flex items-center gap-2.5 shrink-0">
         {!compact && (
-          <span className={cn("text-[10px] font-medium px-1.5 py-0.5 rounded hidden sm:inline-flex", config.bgClass, config.colorClass)}>
+          <span className={cn("text-2xs font-medium px-1.5 py-0.5 rounded hidden sm:inline-flex", config.bgClass, config.colorClass)}>
             {config.label}
           </span>
         )}
@@ -98,14 +98,14 @@ export function ActivityRow({
         {activity.price?.formatted && (
           <div className="text-right">
             <p className="text-sm font-bold tabular-nums leading-tight">{formatDisplayPrice(activity.price.formatted)}</p>
-            <p className="text-[10px] text-muted-foreground leading-tight flex items-center justify-end gap-0.5">
+            <p className="text-2xs text-muted-foreground leading-tight flex items-center justify-end gap-0.5">
               {activity.price.currency && <CurrencyIcon symbol={activity.price.currency} size={10} />}
               {activity.price.currency}
             </p>
           </div>
         )}
 
-        <span className="text-[10px] text-muted-foreground tabular-nums hidden sm:block w-12 text-right" title={new Date(activity.timestamp).toLocaleString()}>
+        <span className="text-2xs text-muted-foreground tabular-nums hidden sm:block w-12 text-right" title={new Date(activity.timestamp).toLocaleString()}>
           {timeAgo(activity.timestamp)}
         </span>
 

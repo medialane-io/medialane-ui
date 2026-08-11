@@ -109,7 +109,7 @@ export function AssetCard({
           {indexing && (
             <div className="absolute bottom-0 inset-x-0 flex items-center justify-center gap-1.5 bg-black/50 backdrop-blur-sm py-1.5">
               <Loader2 className="h-3 w-3 animate-spin text-white/70" />
-              <span className="text-[10px] text-white/70">Indexing…</span>
+              <span className="text-2xs text-white/70">Indexing…</span>
             </div>
           )}
         </div>
@@ -118,7 +118,7 @@ export function AssetCard({
       {/* Body — one tight block: title (+ optional ipType badge inline) and subtitle */}
       <div className="flex items-start justify-between gap-2 px-3 py-3">
         <Link href={href} className="block min-w-0 flex-1">
-          <p className="text-[15px] font-bold line-clamp-1 leading-snug">
+          <p className="text-base font-bold line-clamp-1 leading-snug">
             {name}
           </p>
           {subtitle && (

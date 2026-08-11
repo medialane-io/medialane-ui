@@ -132,7 +132,7 @@ export const NavWalletTrigger = React.forwardRef<HTMLButtonElement, NavWalletTri
         onClick={onClick}
         aria-label={rest["aria-label"] ?? (connected ? "Account" : "Connect wallet")}
         className={cn(
-          "ml-nav-wallet-trigger relative flex h-8 w-8 items-center justify-center rounded-full",
+          "ml-nav-wallet-trigger relative flex h-11 w-11 items-center justify-center rounded-full",
           "bg-background/10 text-muted-foreground backdrop-blur-xl backdrop-saturate-150",
           "transition-colors hover:bg-background/20 hover:text-foreground active:scale-[0.97]",
           "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60",
@@ -223,7 +223,7 @@ export function NavAccountSheet({ children }: NavAccountSheetProps) {
 
           {/* Panel — centered on desktop, bottom sheet on mobile, same as NavCommandMenu */}
           <motion.div
-            className="fixed inset-0 z-[101] flex items-end justify-center p-3 pb-4 sm:items-center sm:p-4"
+            className="fixed inset-0 z-[101] flex items-end justify-center p-3 pb-[calc(1rem+env(safe-area-inset-bottom))] sm:items-center sm:p-4"
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 24 }}

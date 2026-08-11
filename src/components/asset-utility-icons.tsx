@@ -26,7 +26,7 @@ export function AssetUtilityIcons({
         target="_blank"
         rel="noopener noreferrer"
         title="View contract"
-        className="inline-flex h-9 w-9 items-center justify-center rounded-lg hover:bg-muted/50 hover:text-foreground transition-colors"
+        className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg hover:bg-muted/50 hover:text-foreground transition-colors"
       >
         <ExternalLink className="h-4 w-4" />
       </a>
@@ -35,7 +35,7 @@ export function AssetUtilityIcons({
         type="button"
         title="Report this asset"
         onClick={onReportClick}
-        className="inline-flex h-9 w-9 items-center justify-center rounded-lg hover:bg-muted/50 hover:text-foreground transition-colors"
+        className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg hover:bg-muted/50 hover:text-foreground transition-colors"
       >
         <Flag className="h-4 w-4" />
       </button>

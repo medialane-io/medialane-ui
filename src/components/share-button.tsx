@@ -23,7 +23,7 @@ const SIZE_CLASSES: Record<NonNullable<ShareButtonProps["size"]>, string> = {
   sm: "h-9 px-3 text-xs rounded-md",
   default: "h-10 px-4 py-2 text-sm rounded-md",
   lg: "h-11 px-8 text-sm rounded-md",
-  icon: "h-9 w-9 rounded-md",
+  icon: "min-h-11 min-w-11 rounded-md",
 };
 
 export function ShareButton({

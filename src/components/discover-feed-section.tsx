@@ -52,7 +52,7 @@ function StripShell({
           </div>
           <div>
             <h2 className="text-lg sm:text-xl font-semibold leading-none">{title}</h2>
-            {subtitle && <p className="text-[10px] text-muted-foreground mt-1">{subtitle}</p>}
+            {subtitle && <p className="text-2xs text-muted-foreground mt-1">{subtitle}</p>}
           </div>
         </div>
         <a

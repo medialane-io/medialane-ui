@@ -43,7 +43,7 @@ function ActivityPill({ listing, getHref }: { listing: ApiOrder; getHref: (order
           {listing.token?.name ?? `#${listing.nftTokenId}`}
         </p>
         {listing.price?.formatted && (
-          <p className="text-[10px] font-bold text-brand-orange whitespace-nowrap flex items-center gap-0.5">
+          <p className="text-2xs font-bold text-brand-orange whitespace-nowrap flex items-center gap-0.5">
             {listing.price.currency && <CurrencyIcon symbol={listing.price.currency} size={10} />}
             {formatDisplayPrice(listing.price.formatted)} {listing.price.currency}
           </p>

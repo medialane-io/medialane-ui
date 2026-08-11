@@ -103,7 +103,7 @@ export function CoinsExplorer({ useCoins, usePrice, coinHref, heading = true }: 
             <SlidersHorizontal className="h-3.5 w-3.5" />
             Filters
             {filterCount > 0 && (
-              <span className="ml-0.5 inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-primary px-1 text-[10px] font-semibold text-primary-foreground">
+              <span className="ml-0.5 inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-primary px-1 text-2xs font-semibold text-primary-foreground">
                 {filterCount}
               </span>
             )}
@@ -136,7 +136,7 @@ export function CoinsExplorer({ useCoins, usePrice, coinHref, heading = true }: 
       </div>
 
       {isLoading && items.length === 0 ? (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
           {Array.from({ length: 8 }).map((_, i) => <CoinCardSkeleton key={i} />)}
         </div>
       ) : items.length === 0 ? (
@@ -148,7 +148,7 @@ export function CoinsExplorer({ useCoins, usePrice, coinHref, heading = true }: 
           {items.map((c) => <CoinRow key={`${c.chain}-${c.contractAddress}`} collection={c} usePrice={usePrice} href={coinHref(c)} />)}
         </div>
       ) : (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
           {items.map((c) => <CoinCard key={`${c.chain}-${c.contractAddress}`} collection={c} usePrice={usePrice} href={coinHref(c)} />)}
         </div>
       )}
@@ -200,7 +200,7 @@ export function CoinsExplorer({ useCoins, usePrice, coinHref, heading = true }: 
 function FilterGroup({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div className="space-y-2">
-      <p className="text-[10px] font-medium text-muted-foreground">{label}</p>
+      <p className="text-2xs font-medium text-muted-foreground">{label}</p>
       <div className="flex flex-wrap gap-1.5">{children}</div>
     </div>
   );

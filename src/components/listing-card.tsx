@@ -82,12 +82,12 @@ export function ListingCard({ order: rawOrder, inCart = false, onBuy, onCart, ov
           <div className="p-2.5 space-y-0.5">
             <p className="text-xs font-semibold truncate">{name}</p>
             {order.price?.formatted && (
-              <p className="text-[11px] font-bold price-value inline-flex items-center gap-1">
+              <p className="text-2xs font-bold price-value inline-flex items-center gap-1">
                 {order.price.currency && <CurrencyIcon symbol={order.price.currency} size={11} />}
                 {formatDisplayPrice(order.price.formatted)}
               </p>
             )}
-            <p className="text-[10px] text-muted-foreground">{timeAgo(order.createdAt)}</p>
+            <p className="text-2xs text-muted-foreground">{timeAgo(order.createdAt)}</p>
           </div>
         </Link>
       </MotionCard>
@@ -119,8 +119,8 @@ export function ListingCard({ order: rawOrder, inCart = false, onBuy, onCart, ov
 
         <div className="p-3.5 space-y-3">
           <div className="min-w-0">
-            <p className="font-semibold text-[15px] truncate leading-snug">{name}</p>
-            <p className="text-[11px] text-muted-foreground truncate leading-snug mt-0.5">
+            <p className="font-semibold text-base truncate leading-snug">{name}</p>
+            <p className="text-2xs text-muted-foreground truncate leading-snug mt-0.5">
               {order.token?.description ? order.token.description : `#${order.nftTokenId}`}
             </p>
           </div>
@@ -129,7 +129,7 @@ export function ListingCard({ order: rawOrder, inCart = false, onBuy, onCart, ov
           {order.price?.formatted && (
             <div className="flex items-end justify-between gap-2">
               <div className="min-w-0">
-                <p className="text-[10px] uppercase tracking-widest text-muted-foreground/55 leading-none">
+                <p className="text-2xs uppercase tracking-widest text-muted-foreground/55 leading-none">
                   {isListing ? "Price" : "Offer"}
                 </p>
                 <p className="text-lg font-bold price-value leading-none inline-flex items-center gap-1.5 mt-1.5">
@@ -138,7 +138,7 @@ export function ListingCard({ order: rawOrder, inCart = false, onBuy, onCart, ov
                   <span className="sr-only">{order.price.currency}</span>
                 </p>
               </div>
-              <p className="text-[10px] text-muted-foreground/60 whitespace-nowrap shrink-0">
+              <p className="text-2xs text-muted-foreground/60 whitespace-nowrap shrink-0">
                 {timeAgo(order.createdAt)}
               </p>
             </div>
@@ -177,7 +177,7 @@ export function ListingCard({ order: rawOrder, inCart = false, onBuy, onCart, ov
               {onCart && (
                 <button
                   className={cn(
-                    "h-9 w-9 shrink-0 rounded-[9px] border flex items-center justify-center transition-colors",
+                    "min-h-11 min-w-11 shrink-0 rounded-[9px] border flex items-center justify-center transition-colors",
                     inCart
                       ? "border-brand-orange/50 bg-brand-orange/10 text-brand-orange"
                       : "border-border bg-background hover:bg-muted text-foreground"

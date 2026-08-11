@@ -45,7 +45,7 @@ function CountBadge({
   return (
     <span
       className={cn(
-        "h-4 min-w-4 rounded-full text-[10px] font-bold flex items-center justify-center px-1",
+        "h-4 min-w-4 rounded-full text-2xs font-bold flex items-center justify-center px-1",
         BADGE_VARIANT_CLASS[variant ?? "primary"],
       )}
     >
@@ -131,7 +131,7 @@ export function PortfolioNav({
                   key={child.href}
                   href={child.href}
                   className={cn(
-                    "flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-[13px] whitespace-nowrap transition-colors shrink-0",
+                    "flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-sm whitespace-nowrap transition-colors shrink-0",
                     active
                       ? "bg-primary text-primary-foreground font-medium"
                       : "bg-muted text-muted-foreground hover:text-foreground",

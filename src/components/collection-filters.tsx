@@ -120,7 +120,7 @@ export function CollectionFiltersTrigger({
         <SlidersHorizontal className="h-3.5 w-3.5" />
         Filters
         {totalActiveCount > 0 && (
-          <span className="h-4 min-w-4 rounded-full bg-primary text-[10px] font-bold text-primary-foreground flex items-center justify-center px-1 -mr-1">
+          <span className="h-4 min-w-4 rounded-full bg-primary text-2xs font-bold text-primary-foreground flex items-center justify-center px-1 -mr-1">
             {totalActiveCount}
           </span>
         )}
@@ -132,7 +132,7 @@ export function CollectionFiltersTrigger({
           onClick={onSortReset}
           className="inline-flex items-center gap-1 h-8 px-2.5 rounded-md border border-primary/40 bg-primary/10 text-xs font-medium text-foreground hover:bg-primary/20 transition-colors"
         >
-          <span className="text-muted-foreground text-[11px]">Sort:</span>
+          <span className="text-muted-foreground text-2xs">Sort:</span>
           <span>{SORT_OPTIONS.find((o) => o.value === sort)?.label}</span>
           <X className="h-3 w-3 text-muted-foreground ml-0.5" />
         </button>
@@ -145,7 +145,7 @@ export function CollectionFiltersTrigger({
           onClick={() => onRemoveFilter(traitType, value)}
           className="inline-flex items-center gap-1 h-8 px-2.5 rounded-md border border-primary/40 bg-primary/10 text-xs font-medium text-foreground hover:bg-primary/20 transition-colors"
         >
-          <span className="text-muted-foreground text-[11px]">{traitType}:</span>
+          <span className="text-muted-foreground text-2xs">{traitType}:</span>
           <span>{value}</span>
           <X className="h-3 w-3 text-muted-foreground ml-0.5" />
         </button>
@@ -171,7 +171,7 @@ export interface CollectionFiltersBodyProps {
   onToggleValue: (traitType: string, value: string) => void;
 }
 
-const PILL_BASE = "inline-flex items-center gap-1 h-7 px-2.5 rounded-full border text-[12px] font-medium transition-colors";
+const PILL_BASE = "inline-flex items-center gap-1 h-7 px-2.5 rounded-full border text-xs font-medium transition-colors";
 const PILL_ON = "border-primary bg-primary text-primary-foreground";
 const PILL_OFF = "border-border bg-transparent text-muted-foreground hover:text-foreground hover:border-foreground/30";
 
@@ -217,7 +217,7 @@ export function CollectionFiltersBody({
                 {i > 0 && <div className="h-px w-full bg-border mb-4" />}
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-sm font-medium">{section.traitType}</span>
-                  <span className="text-[11px] text-muted-foreground">
+                  <span className="text-2xs text-muted-foreground">
                     {section.values.length} values
                   </span>
                 </div>

@@ -106,11 +106,15 @@ export function HeroSlider({ collections, isLoading, getHref, placeholderHrefs =
           ))}
           {count > 1 && (
             <>
-              <button onClick={prev} aria-label="Previous slide" className="absolute left-3 top-1/2 -translate-y-1/2 z-10 h-9 w-9 rounded-full bg-white/10 backdrop-blur-md hover:bg-white/20 flex items-center justify-center transition-colors">
-                <ChevronLeft className="h-5 w-5 text-white" />
+              <button onClick={prev} aria-label="Previous slide" className="absolute left-3 top-1/2 -translate-y-1/2 z-10 min-h-11 min-w-11 rounded-full flex items-center justify-center transition-colors">
+                <span className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 backdrop-blur-md hover:bg-white/20">
+                  <ChevronLeft className="h-5 w-5 text-white" />
+                </span>
               </button>
-              <button onClick={next} aria-label="Next slide" className="absolute right-3 top-1/2 -translate-y-1/2 z-10 h-9 w-9 rounded-full bg-white/10 backdrop-blur-md hover:bg-white/20 flex items-center justify-center transition-colors">
-                <ChevronRight className="h-5 w-5 text-white" />
+              <button onClick={next} aria-label="Next slide" className="absolute right-3 top-1/2 -translate-y-1/2 z-10 min-h-11 min-w-11 rounded-full flex items-center justify-center transition-colors">
+                <span className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 backdrop-blur-md hover:bg-white/20">
+                  <ChevronRight className="h-5 w-5 text-white" />
+                </span>
               </button>
               <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
                 {collections.map((_, i) => (

@@ -113,7 +113,7 @@ export function MedialaneCollectionCard({
                 {displayName}
               </p>
               {serial && (
-                <span className="mt-0.5 shrink-0 rounded-full bg-black/5 dark:bg-white/10 px-2 py-0.5 text-[11px] font-semibold text-[#0a0e1f]/80 dark:text-white/80 tabular-nums">
+                <span className="mt-0.5 shrink-0 rounded-full bg-black/5 dark:bg-white/10 px-2 py-0.5 text-2xs font-semibold text-[#0a0e1f]/80 dark:text-white/80 tabular-nums">
                   {serial}
                 </span>
               )}
@@ -132,7 +132,7 @@ export function MedialaneCollectionCard({
                 MEDIALANE
               </span>
               {creator && (
-                <span className="ml-auto min-w-0 truncate text-[11px] text-[#0a0e1f]/55 dark:text-white/55 tabular-nums">
+                <span className="ml-auto min-w-0 truncate text-2xs text-[#0a0e1f]/55 dark:text-white/55 tabular-nums">
                   {creator}
                 </span>
               )}

@@ -22,7 +22,7 @@ export interface GradientButtonProps extends React.ButtonHTMLAttributes<HTMLButt
  */
 export function GradientButton({ big, children, className, wrapperClassName, ...rest }: GradientButtonProps) {
   const sizeClass = big
-    ? "h-[54px] px-5 rounded-[15px] text-[15px]"
+    ? "h-[54px] px-5 rounded-[15px] text-base"
     : "h-12 px-5 rounded-[11px] text-sm";
 
   return (

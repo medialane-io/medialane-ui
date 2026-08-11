@@ -139,17 +139,21 @@ export function FeaturedCarousel({
             <>
               <button
                 onClick={prev}
-                className="absolute left-3 top-1/2 -translate-y-1/2 h-9 w-9 rounded-full bg-black/40 border border-white/10 backdrop-blur-sm flex items-center justify-center text-white hover:bg-black/60 transition-colors z-10"
+                className="absolute left-3 top-1/2 -translate-y-1/2 min-h-11 min-w-11 rounded-full flex items-center justify-center z-10"
                 aria-label="Previous"
               >
-                <ChevronLeft className="h-4 w-4" />
+                <span className="flex h-9 w-9 items-center justify-center rounded-full bg-black/40 border border-white/10 backdrop-blur-sm text-white hover:bg-black/60 transition-colors">
+                  <ChevronLeft className="h-4 w-4" />
+                </span>
               </button>
               <button
                 onClick={next}
-                className="absolute right-3 top-1/2 -translate-y-1/2 h-9 w-9 rounded-full bg-black/40 border border-white/10 backdrop-blur-sm flex items-center justify-center text-white hover:bg-black/60 transition-colors z-10"
+                className="absolute right-3 top-1/2 -translate-y-1/2 min-h-11 min-w-11 rounded-full flex items-center justify-center z-10"
                 aria-label="Next"
               >
-                <ChevronRight className="h-4 w-4" />
+                <span className="flex h-9 w-9 items-center justify-center rounded-full bg-black/40 border border-white/10 backdrop-blur-sm text-white hover:bg-black/60 transition-colors">
+                  <ChevronRight className="h-4 w-4" />
+                </span>
               </button>
             </>
           )}
