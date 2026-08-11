@@ -26,28 +26,30 @@ export interface LeaderboardTableProps {
 }
 
 /** Scoreboard rows: address, level chip, points. No position number or
- *  podium coloring — this celebrates participation, not competition. */
+ *  podium coloring — this celebrates participation, not competition.
+ *  Each row is its own rounded tile with real padding, not a bordered
+ *  list with hairline dividers. */
 export function LeaderboardTable({ entries, highlightAddress, renderAddress, className }: LeaderboardTableProps) {
   return (
-    <div className={cn("overflow-hidden rounded-xl border border-border", className)}>
+    <div className={cn("space-y-1.5", className)}>
       {entries.map((e) => {
         const isViewer = highlightAddress != null && e.address === highlightAddress;
         return (
           <div
             key={e.address}
             className={cn(
-              "flex items-center gap-3 border-b border-border/60 bg-card px-3 py-2.5 last:border-b-0 sm:px-4",
-              isViewer && "bg-primary/10"
+              "flex items-center gap-4 rounded-2xl px-4 py-3.5 transition-colors",
+              isViewer ? "bg-brand-rose/10" : "bg-foreground/[0.04] hover:bg-foreground/[0.07]"
             )}
           >
-            <span className="min-w-0 flex-1 truncate text-sm font-medium">
+            <span className="min-w-0 flex-1 truncate text-base font-bold">
               {renderAddress ? renderAddress(e.address) : shortenAddress(e.address)}
-              {isViewer && <span className="ml-1.5 text-xs text-muted-foreground">(you)</span>}
+              {isViewer && <span className="ml-1.5 text-xs font-medium text-foreground/50">(you)</span>}
             </span>
             <LevelBadge level={e.currentLevel} name={e.currentLevelName} badgeColor={e.badgeColor} size="sm" className="hidden sm:inline-flex" />
-            <span className="shrink-0 text-sm font-semibold tabular-nums">
+            <span className="shrink-0 text-lg font-black tabular-nums">
               {e.totalXp.toLocaleString()}
-              <span className="ml-1 text-xs font-normal text-muted-foreground">XP</span>
+              <span className="ml-1 text-xs font-bold text-foreground/40">XP</span>
             </span>
           </div>
         );
@@ -69,11 +71,11 @@ export interface LeaderboardWidgetProps {
 export function LeaderboardWidget({ entries, title = "Community Rewards", href, renderAddress, className }: LeaderboardWidgetProps) {
   if (entries.length === 0) return null;
   return (
-    <section className={cn("rounded-xl border border-border bg-card p-4 sm:p-5", className)}>
+    <section className={cn("rounded-2xl bg-foreground/[0.04] p-5", className)}>
       <div className="mb-3 flex items-center justify-between">
-        <h2 className="text-base font-black">{title}</h2>
+        <h2 className="text-lg font-black">{title}</h2>
         {href && (
-          <a href={href} className="text-xs font-semibold text-muted-foreground active:opacity-70">
+          <a href={href} className="text-xs font-bold text-foreground/50 hover:text-foreground active:opacity-70">
             View scoreboard →
           </a>
         )}
@@ -81,7 +83,7 @@ export function LeaderboardWidget({ entries, title = "Community Rewards", href, 
       <ol className="space-y-2.5">
         {entries.map((e) => (
           <li key={e.address} className="flex items-center gap-2.5">
-            <span className="min-w-0 flex-1 truncate text-sm font-medium">
+            <span className="min-w-0 flex-1 truncate text-sm font-bold">
               {renderAddress ? renderAddress(e.address) : shortenAddress(e.address)}
             </span>
             <LevelBadge level={e.currentLevel} name={e.currentLevelName} badgeColor={e.badgeColor} size="sm" />
