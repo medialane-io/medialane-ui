@@ -64,7 +64,7 @@ export interface TokenAmountProps {
   amount: string;
   /** Icon size in px. Text size scales proportionally. */
   size?: number;
-  /** Override the amount text color. Defaults to brand-price orange. */
+  /** Override the amount text color. Defaults to brand-maeve orange. */
   color?: string;
   bold?: boolean;
   className?: string;

@@ -12,7 +12,7 @@ const medialanePreset: Partial<Config> = {
         "brand-purple":   "hsl(var(--brand-purple, 258 90% 66%))",
         "brand-rose":     "hsl(var(--brand-rose, 341 89% 67%))",
         "brand-orange":   "hsl(var(--brand-orange, 23 96% 63%))",
-        "brand-price":    "hsl(var(--brand-price, 25 95% 53%))",
+        "brand-maeve":    "hsl(var(--brand-maeve, 327 64% 67%))",
         "brand-navy":     "hsl(var(--brand-navy, 229 51% 8%))",
       },
       borderRadius: {

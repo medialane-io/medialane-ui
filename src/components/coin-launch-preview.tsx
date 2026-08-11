@@ -69,7 +69,7 @@ export function CoinLaunchPreview({ data, className }: { data: CoinPreviewData; 
           </div>
           <div>
             <p className="text-2xs uppercase tracking-wide text-muted-foreground">Market cap</p>
-            <p className="font-semibold tabular-nums text-brand-price">
+            <p className="font-semibold tabular-nums text-brand-maeve">
               {marketCap != null ? `${marketCap.toLocaleString()} ${quoteSymbol}` : "—"}
             </p>
           </div>
