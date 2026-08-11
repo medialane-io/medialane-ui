@@ -22,7 +22,10 @@ export interface PortfolioHeaderProps {
  * Portfolio identity header: the address as a real page title (no generic
  * gradient/avatar element — there's no profile data to lead with, and a
  * placeholder gradient mark isn't the answer), with the rewards journey
- * chip alongside it.
+ * chip alongside it. The chip stays orange->maeve (the platform-wide XP/
+ * Rewards identity, matching LevelBadge) rather than Portfolio's own
+ * purple->orange theme — a rewards badge keeps its own aesthetic wherever
+ * it's embedded, it doesn't inherit the surrounding page's section theme.
  */
 export function PortfolioHeader({
   address,
@@ -30,7 +33,7 @@ export function PortfolioHeader({
   className,
 }: PortfolioHeaderProps) {
   const scoreChip = score && (
-    <div className="rounded-full bg-gradient-to-r from-brand-purple to-brand-orange px-3.5 py-1.5 flex items-baseline gap-2 whitespace-nowrap text-white">
+    <div className="rounded-full bg-gradient-to-r from-brand-orange to-brand-maeve px-3.5 py-1.5 flex items-baseline gap-2 whitespace-nowrap text-white">
       <span className="text-sm font-bold">
         {score.levelName}
       </span>
