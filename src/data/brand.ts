@@ -33,10 +33,10 @@ export const BRAND = {
     from:    "from-brand-orange/20",
     to:      "to-brand-orange/20",
   },
-  price: {
-    text:    "text-brand-price",
-    bg:      "bg-brand-price/10",
-    bgSolid: "bg-brand-price/15",
+  maeve: {
+    text:    "text-brand-maeve",
+    bg:      "bg-brand-maeve/10",
+    bgSolid: "bg-brand-maeve/15",
   },
   navy: {
     text:    "text-brand-navy",
