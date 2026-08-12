@@ -309,6 +309,27 @@ export {
 } from "./utils/format-activity.js";
 export type { FormattedEvent } from "./utils/format-activity.js";
 
+// ── v0.107.0 additions — dedupe pass 3: data-fetching hooks + their views ────
+// Same getClient-injection pattern as useRewards/useCreators — the app
+// supplies its own SDK client factory, none of this touches wallet state.
+export { queryKeys, queryKeyPrefix, QUERY_PREFIX } from "./utils/query-keys.js";
+export { useCollectionProfile, useCreatorProfile } from "./utils/use-profiles.js";
+export { useActivities, useActivitiesByAddress } from "./utils/use-activities.js";
+export {
+  useCollections, useCollection, useCollectionsByOwner, useCollectionTokens, useNearbyCollectionTokens,
+} from "./utils/use-collections.js";
+export type { CollectionSort } from "./utils/use-collections.js";
+export { CreatorChip } from "./components/creator-chip.js";
+export type { CreatorChipProps } from "./components/creator-chip.js";
+export { CollectionActivityTab } from "./components/collection-activity-tab.js";
+export type { CollectionActivityTabProps } from "./components/collection-activity-tab.js";
+export { CollectionTraitsTab } from "./components/collection-traits-tab.js";
+export type { CollectionTraitsTabProps } from "./components/collection-traits-tab.js";
+export { PortfolioActivity } from "./components/portfolio-activity.js";
+export type { PortfolioActivityProps } from "./components/portfolio-activity.js";
+export { CreatorScoreInline } from "./components/creator-score-inline.js";
+export type { CreatorScoreInlineProps } from "./components/creator-score-inline.js";
+
 export { useMedialaneClient } from "./utils/use-medialane-client.js";
 export { useCreators } from "./utils/use-creators.js";
 export {
