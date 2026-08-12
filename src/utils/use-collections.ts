@@ -15,20 +15,28 @@ export function useCollections(
   isFeatured?: boolean,
   sort: CollectionSort = "recent",
   hideEmpty = true,
-  service?: string
+  service?: string,
+  /** Token standard filter — single value or comma-separated list (e.g. "ERC721,ERC1155"). */
+  standard?: string,
+  /** Server-fetched seed (e.g. homepage hero) — first render shows real data,
+   *  SWR still revalidates in the background. */
+  fallback?: ApiCollection[]
 ) {
   const client = useMedialaneClient(getClient);
-  const key = queryKeys.collections(page, limit, isFeatured, sort, hideEmpty, service);
+  const key = `${queryKeys.collections(page, limit, isFeatured, sort, hideEmpty, service)}-${standard ?? ""}`;
 
   const { data, error, isLoading, mutate } = useSWR<ApiResponse<ApiCollection[]>>(
     key,
     async () => {
-      const res = await client.api.getCollections(page, limit, isFeatured, sort, service);
+      const res = await client.api.getCollections(page, limit, isFeatured, sort, service, undefined, standard);
       return hideEmpty
         ? { ...res, data: res.data.filter((collection) => (collection.totalSupply ?? 0) > 0) }
         : res;
     },
-    { revalidateOnFocus: false }
+    {
+      revalidateOnFocus: false,
+      ...(fallback ? { fallbackData: { data: fallback } as ApiResponse<ApiCollection[]> } : {}),
+    }
   );
 
   return {
