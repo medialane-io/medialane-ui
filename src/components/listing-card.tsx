@@ -16,41 +16,91 @@ import type { ApiOrder, Chain } from "@medialane/sdk";
 /** ui's pinned SDK lags the apps — extend structurally for fields newer SDKs carry. */
 type OrderWithAnimation = ApiOrder & { token: (ApiOrder["token"] & { animationUrl?: string | null }) | null };
 
-/**
- * Fiat-first price line: USD leads (io's non-crypto audience reads fiat, not
- * token amounts), the on-chain currency trails as a small icon+label — never
- * a second near-duplicate number for USD-pegged stablecoins. Falls back to
- * a crypto-only line when no USD rate is available.
- */
+/** Compact grid thumbnails: too little room for the full dual-price
+ *  treatment, so this stays fiat-primary + a small crypto caption. */
 function PriceLine({
-  amountFormatted, currency, usdValue, compact = false,
+  amountFormatted, currency, usdValue,
 }: {
   amountFormatted: string | null | undefined;
   currency: string | null | undefined;
   usdValue?: string | null;
-  compact?: boolean;
 }) {
   if (!amountFormatted) return null;
   if (!usdValue) {
     return (
-      <p className={compact ? "text-2xs font-bold price-value inline-flex items-center gap-1" : "text-lg font-bold price-value leading-none inline-flex items-center gap-1.5 mt-1.5"}>
-        {currency && <CurrencyIcon symbol={currency} size={compact ? 11 : 18} />}
+      <p className="text-2xs font-bold price-value inline-flex items-center gap-1">
+        {currency && <CurrencyIcon symbol={currency} size={11} />}
         {formatDisplayPrice(amountFormatted)}
-        {!compact && <span className="sr-only">{currency}</span>}
       </p>
     );
   }
   const stable = isStableCurrency(currency);
   return (
     <>
-      <p className={compact ? "text-2xs font-bold price-value" : "text-lg font-bold price-value leading-none mt-1.5"}>
+      <p className="text-2xs font-bold price-value">
         {usdValue}
       </p>
-      <p className={compact ? "text-2xs text-muted-foreground/70 inline-flex items-center gap-1" : "text-2xs text-muted-foreground/60 mt-0.5 inline-flex items-center gap-1"}>
-        {currency && <CurrencyIcon symbol={currency} size={compact ? 10 : 11} />}
+      <p className="text-2xs text-muted-foreground/70 inline-flex items-center gap-1">
+        {currency && <CurrencyIcon symbol={currency} size={10} />}
         {stable ? currency : `${formatDisplayPrice(amountFormatted)} ${currency}`}
       </p>
     </>
+  );
+}
+
+/** Coin icon in a soft circular chip — same treatment as AssetMarketplacePanel,
+ *  scaled down for card density. */
+function CoinChip({ symbol, size }: { symbol: string | null | undefined; size: number }) {
+  return (
+    <span
+      className="grid shrink-0 place-items-center rounded-full bg-foreground/[0.06]"
+      style={{ width: size + 10, height: size + 10 }}
+    >
+      <CurrencyIcon symbol={symbol ?? ""} size={size} />
+    </span>
+  );
+}
+
+/**
+ * Full-card dual price: fiat and the on-chain currency as equal-weight
+ * peers (same language as AssetMarketplacePanel's PrimaryPrice), scaled
+ * down for card density — no "PRICE" eyebrow label, no divider text
+ * duplicating what the coin chip already conveys.
+ */
+function CardDualPrice({
+  amountFormatted, currency, usdValue,
+}: {
+  amountFormatted: string | null | undefined;
+  currency: string | null | undefined;
+  usdValue?: string | null;
+}) {
+  if (!amountFormatted) return null;
+  const cryptoDisplay = formatDisplayPrice(amountFormatted);
+  const displayFace = "font-[family-name:var(--font-display)] font-extrabold tracking-tight tabular-nums";
+
+  if (!usdValue) {
+    return (
+      <p className={`flex items-center gap-1.5 ${displayFace} text-lg`}>
+        <CoinChip symbol={currency} size={11} />
+        {cryptoDisplay}
+      </p>
+    );
+  }
+
+  const stable = isStableCurrency(currency);
+  return (
+    <div className="flex items-center gap-2">
+      <span className={`${displayFace} text-lg`}>{usdValue}</span>
+      {!stable && <span className="h-4 w-px bg-border/60 shrink-0" />}
+      <span className="inline-flex items-center gap-1.5">
+        <CoinChip symbol={currency} size={stable ? 9 : 11} />
+        {stable ? (
+          <span className="text-2xs font-semibold text-muted-foreground">{currency}</span>
+        ) : (
+          <span className={`${displayFace} text-sm text-foreground/80`}>{cryptoDisplay}</span>
+        )}
+      </span>
+    </div>
   );
 }
 
@@ -126,7 +176,7 @@ export function ListingCard({ order: rawOrder, inCart = false, onBuy, onCart, ov
           </div>
           <div className="p-2.5 space-y-0.5">
             <p className="text-xs font-semibold truncate">{name}</p>
-            <PriceLine amountFormatted={order.price?.formatted} currency={order.price?.currency} usdValue={usdValue} compact />
+            <PriceLine amountFormatted={order.price?.formatted} currency={order.price?.currency} usdValue={usdValue} />
             <p className="text-2xs text-muted-foreground">{timeAgo(order.createdAt)}</p>
           </div>
         </Link>
@@ -165,19 +215,8 @@ export function ListingCard({ order: rawOrder, inCart = false, onBuy, onCart, ov
             </p>
           </div>
 
-          {/* Price / Offer + age */}
           {order.price?.formatted && (
-            <div className="flex items-end justify-between gap-2">
-              <div className="min-w-0">
-                <p className="text-2xs uppercase tracking-widest text-muted-foreground/55 leading-none">
-                  {isListing ? "Price" : "Offer"}
-                </p>
-                <PriceLine amountFormatted={order.price.formatted} currency={order.price.currency} usdValue={usdValue} />
-              </div>
-              <p className="text-2xs text-muted-foreground/60 whitespace-nowrap shrink-0">
-                {timeAgo(order.createdAt)}
-              </p>
-            </div>
+            <CardDualPrice amountFormatted={order.price.formatted} currency={order.price.currency} usdValue={usdValue} />
           )}
 
           {showActionBar && (
