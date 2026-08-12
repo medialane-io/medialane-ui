@@ -251,3 +251,41 @@ export { BadgeUnlockToastContent } from "./components/rewards/badge-unlock-toast
 export type { BadgeUnlockToastContentProps } from "./components/rewards/badge-unlock-toast-content.js";
 export { JourneyPath } from "./components/rewards/journey-path.js";
 export type { JourneyPathProps, JourneyStep } from "./components/rewards/journey-path.js";
+
+// ── Primitives (shadcn-derived, deduplicated from io + starknet) ─────────────
+export { Skeleton } from "./components/skeleton.js";
+export { Badge, badgeVariants } from "./components/badge.js";
+export type { BadgeProps } from "./components/badge.js";
+export { Label } from "./components/label.js";
+export { Input } from "./components/input.js";
+export { Switch } from "./components/switch.js";
+export { Checkbox } from "./components/checkbox.js";
+export { Alert, AlertTitle, AlertDescription } from "./components/alert.js";
+export { Tabs, TabsList, TabsTrigger, TabsContent } from "./components/tabs.js";
+export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent } from "./components/card.js";
+export { Collapsible, CollapsibleTrigger, CollapsibleContent } from "./components/collapsible.js";
+export { Button, buttonVariants } from "./components/button.js";
+export type { ButtonProps } from "./components/button.js";
+export { Popover, PopoverTrigger, PopoverContent, PopoverAnchor } from "./components/popover.js";
+export { HelpIcon } from "./components/help-icon.js";
+export { EmptyOrError } from "./components/empty-or-error.js";
+export {
+  Select, SelectGroup, SelectValue, SelectTrigger, SelectContent,
+  SelectLabel, SelectItem, SelectSeparator, SelectScrollUpButton, SelectScrollDownButton,
+} from "./components/select.js";
+export {
+  useFormField, Form, FormItem, FormLabel, FormControl, FormDescription, FormMessage, FormField,
+} from "./components/form.js";
+export { useMedialaneClient } from "./utils/use-medialane-client.js";
+export { useCreators } from "./utils/use-creators.js";
+export {
+  useRewards, useLeaderboard, useRewardsEvents, useRewardsConfig, useRewardsBatch,
+} from "./utils/use-rewards.js";
+export type { UserRewards, LeaderboardEntry, BadgeSummary, LevelSummary } from "./utils/use-rewards.js";
+export { OwnerSetupPanel } from "./components/owner-setup-panel.js";
+export { DropCountdown } from "./components/drop-countdown.js";
+export { CreatorAnalytics } from "./components/creator-analytics.js";
+export {
+  Dialog, DialogPortal, DialogOverlay, DialogClose, DialogTrigger,
+  DialogContent, DialogHeader, DialogFooter, DialogTitle, DialogDescription,
+} from "./components/dialog.js";
