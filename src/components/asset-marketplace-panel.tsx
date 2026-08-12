@@ -31,9 +31,6 @@ export interface AssetMarketplacePanelProps<T extends ApiOrderLike = ApiOrderLik
   walletAddress?: string | null;
   remixEnabled?: boolean;
   showDealOption?: boolean;
-  /** Raw "0.07 STRK"-style strings — already resolved by the caller. `null`/undefined renders "—". */
-  floorPriceRaw?: string | null;
-  lastSaleRaw?: string | null;
   /**
    * Pre-formatted USD equivalent of `cheapest.price` (e.g. "$12.34"), computed
    * by the host from its own live rate feed — this package has no price-feed
@@ -58,11 +55,16 @@ export interface AssetMarketplacePanelProps<T extends ApiOrderLike = ApiOrderLik
   /** Owner: open this asset for sponsorship bidding. */
   showSponsorSolicitOption?: boolean;
   onOpenSponsorSolicit?: () => void;
+  /** Raw "0.07 STRK"-style strings — already resolved by the caller. Shown
+   *  only in the "not currently listed" fallback state (see StatRow) — the
+   *  active-listing price row dropped them to stay uncluttered. */
+  floorPriceRaw?: string | null;
+  lastSaleRaw?: string | null;
 }
 
 /** Floor + last-sale stats — each hides itself when its data is absent
  *  (no dangling "—" placeholders), and the whole row disappears when
- *  neither is available. */
+ *  neither is available. Only used in the "not currently listed" state. */
 function StatRow({ floorPriceRaw, lastSaleRaw }: { floorPriceRaw?: string | null; lastSaleRaw?: string | null }) {
   const floor = floorPriceRaw ? parsePriceDisplay(floorPriceRaw) : null;
   const lastSale = lastSaleRaw ? parsePriceDisplay(lastSaleRaw) : null;
@@ -85,14 +87,28 @@ function StatRow({ floorPriceRaw, lastSaleRaw }: { floorPriceRaw?: string | null
   );
 }
 
+/** A currency icon in the soft circular chip used throughout the wallet UI —
+ *  reads as a coin, not a stray glyph floating next to text. */
+function CoinChip({ symbol, size }: { symbol: string | null; size: "md" | "sm" }) {
+  const wrap = size === "md" ? "h-7 w-7" : "h-6 w-6";
+  const icon = size === "md" ? 16 : 13;
+  return (
+    <span className={`grid ${wrap} shrink-0 place-items-center rounded-full bg-foreground/[0.06]`}>
+      <CurrencyIcon symbol={symbol ?? ""} size={icon} />
+    </span>
+  );
+}
+
 /**
- * Fiat-first price: USD is the dominant number (io's non-crypto audience
- * reads fiat, not token amounts), with the on-chain currency shown side by
- * side at a smaller size — never stacked as an afterthought. Falls back to
- * a crypto-primary display when no USD rate is available. When the order's
- * currency is itself a USD-pegged stablecoin, the crypto amount is dropped
- * entirely (it's the same number as the USD value) and only the currency
- * badge remains, so the price never repeats itself.
+ * Dual price: fiat and the on-chain currency shown as equal-weight peers,
+ * not primary/afterthought — io's audience spans non-crypto newcomers who
+ * read fiat and crypto-native buyers who read the token amount. Both use
+ * the brand display face at a real step-down in scale (4xl → 2xl) so the
+ * pairing reads as "two related numbers," not one dominant + one caption.
+ * Falls back to crypto-only when no USD rate is available. When the
+ * order's currency is itself a USD-pegged stablecoin, the crypto amount
+ * collapses to a small currency badge — showing "$12.00" beside "12.00
+ * USDC" would just be the same number twice.
  */
 function PrimaryPrice({
   amountFormatted,
@@ -105,24 +121,36 @@ function PrimaryPrice({
   usdValue?: string | null;
   trailing?: ReactNode;
 }) {
+  const cryptoDisplay = formatDisplayPrice(amountFormatted);
+  const displayFace = "font-[family-name:var(--font-display)] font-extrabold tracking-tight tabular-nums";
+
   if (!usdValue) {
     return (
-      <div className="flex items-baseline gap-2">
-        <CurrencyIcon symbol={currency ?? ""} size={26} />
-        <span className="text-4xl font-bold tracking-tight">{formatDisplayPrice(amountFormatted)}</span>
-        {trailing}
+      <div className="flex items-center gap-2.5">
+        <CoinChip symbol={currency} size="md" />
+        <span className={`${displayFace} text-4xl`}>{cryptoDisplay}</span>
+        {trailing && <span className="ml-0.5">{trailing}</span>}
       </div>
     );
   }
+
   const stable = isStableCurrency(currency);
   return (
-    <div className="flex items-baseline gap-2.5 flex-wrap">
-      <span className="text-4xl font-bold tracking-tight">{usdValue}</span>
-      <span className="flex items-center gap-1.5 text-base font-semibold text-muted-foreground">
-        <CurrencyIcon symbol={currency ?? ""} size={16} />
-        {stable ? currency : `${formatDisplayPrice(amountFormatted)} ${currency}`}
+    <div className="flex items-center gap-4">
+      <span className={`${displayFace} text-4xl`}>{usdValue}</span>
+      {!stable && <span className="h-7 w-px bg-border/60 shrink-0" />}
+      <span className="inline-flex items-center gap-2">
+        <CoinChip symbol={currency} size={stable ? "sm" : "md"} />
+        {stable ? (
+          <span className="text-sm font-semibold text-muted-foreground">{currency}</span>
+        ) : (
+          <span className="flex items-baseline gap-1.5">
+            <span className={`${displayFace} text-2xl text-foreground/90`}>{cryptoDisplay}</span>
+            <span className="text-sm font-semibold text-muted-foreground/70">{currency}</span>
+          </span>
+        )}
       </span>
-      {trailing}
+      {trailing && <span className="ml-0.5">{trailing}</span>}
     </div>
   );
 }
@@ -180,17 +208,14 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
       <div className="relative space-y-4">
         {cheapest ? (
           <div className="space-y-4">
-            <div className="flex flex-wrap items-baseline gap-x-5 gap-y-1.5">
-              <PrimaryPrice
-                amountFormatted={cheapest.price.formatted}
-                currency={cheapest.price.currency}
-                usdValue={usdValue}
-                trailing={renderHelp(
-                  `${isOwner && !canBuyMore ? "Your listing" : "Current price"} · Expires ${timeUntil(cheapest.endTime)}`
-                )}
-              />
-              <StatRow floorPriceRaw={floorPriceRaw} lastSaleRaw={lastSaleRaw} />
-            </div>
+            <PrimaryPrice
+              amountFormatted={cheapest.price.formatted}
+              currency={cheapest.price.currency}
+              usdValue={usdValue}
+              trailing={renderHelp(
+                `${isOwner && !canBuyMore ? "Your listing" : "Current price"} · Expires ${timeUntil(cheapest.endTime)}`
+              )}
+            />
 
             {isOwner ? (
               <div className="space-y-2">
