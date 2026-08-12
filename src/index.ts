@@ -336,6 +336,19 @@ export {
   useRewards, useLeaderboard, useRewardsEvents, useRewardsConfig, useRewardsBatch,
 } from "./utils/use-rewards.js";
 export type { UserRewards, LeaderboardEntry, BadgeSummary, LevelSummary } from "./utils/use-rewards.js";
+// ── v0.108.0 additions — dedupe pass 4: apiFetch + orders/notifications/remixes ──
+export { apiFetch, ApiError } from "./utils/api-fetch.js";
+export type { ApiFetchConfig, ApiFetchOptions } from "./utils/api-fetch.js";
+export {
+  useOrders, useOrder, useTokenListings, useUserOrders, useCounterOffers,
+  useReceivedOffers, useCollectionFloorListings,
+} from "./utils/use-orders.js";
+export { useNotifications } from "./utils/use-notifications.js";
+export type { Notification, NotificationType, NotificationPriority, Announcement } from "./data/notification.js";
+export { useTokenRemixes } from "./utils/use-remix-offers.js";
+export { RemixesTab } from "./components/remixes-tab.js";
+export type { RemixesTabProps } from "./components/remixes-tab.js";
+
 export { OwnerSetupPanel } from "./components/owner-setup-panel.js";
 export { DropCountdown } from "./components/drop-countdown.js";
 export { CreatorAnalytics } from "./components/creator-analytics.js";
