@@ -8,7 +8,7 @@ import {
 import { CurrencyIcon, CurrencyAmount } from "./currency-icon.js";
 import { AddressDisplay } from "./address-display.js";
 import { ActionButton } from "./action-button.js";
-import { formatDisplayPrice, parsePriceDisplay } from "../utils/format.js";
+import { formatDisplayPrice, parsePriceDisplay, isStableCurrency } from "../utils/format.js";
 import { timeUntil } from "../utils/time.js";
 
 /** Structural subset of `ApiOrder` (both apps' `@medialane/sdk` types satisfy this). */
@@ -85,6 +85,48 @@ function StatRow({ floorPriceRaw, lastSaleRaw }: { floorPriceRaw?: string | null
   );
 }
 
+/**
+ * Fiat-first price: USD is the dominant number (io's non-crypto audience
+ * reads fiat, not token amounts), with the on-chain currency shown side by
+ * side at a smaller size — never stacked as an afterthought. Falls back to
+ * a crypto-primary display when no USD rate is available. When the order's
+ * currency is itself a USD-pegged stablecoin, the crypto amount is dropped
+ * entirely (it's the same number as the USD value) and only the currency
+ * badge remains, so the price never repeats itself.
+ */
+function PrimaryPrice({
+  amountFormatted,
+  currency,
+  usdValue,
+  trailing,
+}: {
+  amountFormatted: string | null;
+  currency: string | null;
+  usdValue?: string | null;
+  trailing?: ReactNode;
+}) {
+  if (!usdValue) {
+    return (
+      <div className="flex items-baseline gap-2">
+        <CurrencyIcon symbol={currency ?? ""} size={26} />
+        <span className="text-4xl font-bold tracking-tight">{formatDisplayPrice(amountFormatted)}</span>
+        {trailing}
+      </div>
+    );
+  }
+  const stable = isStableCurrency(currency);
+  return (
+    <div className="flex items-baseline gap-2.5 flex-wrap">
+      <span className="text-4xl font-bold tracking-tight">{usdValue}</span>
+      <span className="flex items-center gap-1.5 text-base font-semibold text-muted-foreground">
+        <CurrencyIcon symbol={currency ?? ""} size={16} />
+        {stable ? currency : `${formatDisplayPrice(amountFormatted)} ${currency}`}
+      </span>
+      {trailing}
+    </div>
+  );
+}
+
 export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
   cheapest,
   isOwner,
@@ -139,18 +181,14 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
         {cheapest ? (
           <div className="space-y-4">
             <div className="flex flex-wrap items-baseline gap-x-5 gap-y-1.5">
-              <div>
-                <div className="flex items-baseline gap-2">
-                  <CurrencyIcon symbol={cheapest.price.currency ?? ""} size={26} />
-                  <span className="text-4xl font-bold tracking-tight">
-                    {formatDisplayPrice(cheapest.price.formatted)}
-                  </span>
-                  {renderHelp(
-                    `${isOwner && !canBuyMore ? "Your listing" : "Current price"} · Expires ${timeUntil(cheapest.endTime)}`
-                  )}
-                </div>
-                {usdValue && <p className="text-sm text-muted-foreground mt-0.5">≈ {usdValue}</p>}
-              </div>
+              <PrimaryPrice
+                amountFormatted={cheapest.price.formatted}
+                currency={cheapest.price.currency}
+                usdValue={usdValue}
+                trailing={renderHelp(
+                  `${isOwner && !canBuyMore ? "Your listing" : "Current price"} · Expires ${timeUntil(cheapest.endTime)}`
+                )}
+              />
               <StatRow floorPriceRaw={floorPriceRaw} lastSaleRaw={lastSaleRaw} />
             </div>
 

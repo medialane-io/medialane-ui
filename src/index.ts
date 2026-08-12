@@ -1,6 +1,6 @@
 // ── Utils ─────────────────────────────────────────────────────────────────────
 export { cn } from "./utils/cn.js";
-export { formatDisplayPrice, parsePriceDisplay } from "./utils/format.js";
+export { formatDisplayPrice, parsePriceDisplay, isStableCurrency } from "./utils/format.js";
 export { shortenAddress } from "./utils/address.js";
 export { ipfsToHttp } from "./utils/ipfs.js";
 export { useIntersectionActive } from "./utils/use-intersection-active.js";

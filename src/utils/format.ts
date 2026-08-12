@@ -1,3 +1,10 @@
+/** USD-pegged currencies among SUPPORTED_TOKENS — their crypto amount and USD
+ *  value are numerically ~identical, so price displays collapse to a single
+ *  number instead of showing the same figure twice. */
+export function isStableCurrency(symbol: string | null | undefined): boolean {
+  return symbol === "USDC" || symbol === "USDT";
+}
+
 function adaptiveDecimals(num: number): number {
   if (num === 0 || num >= 1) return 2;
   if (num >= 0.01) return 4;

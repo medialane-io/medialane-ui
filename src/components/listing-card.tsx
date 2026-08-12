@@ -8,13 +8,51 @@ import { CurrencyIcon } from "./currency-icon.js";
 import { AnimatedTokenMedia } from "./animated-token-media.js";
 import { cn } from "../utils/cn.js";
 import { ipfsToHttp } from "../utils/ipfs.js";
-import { formatDisplayPrice } from "../utils/format.js";
+import { formatDisplayPrice, isStableCurrency } from "../utils/format.js";
 import { timeAgo } from "../utils/time.js";
 import { isLivingRenderCollection } from "../data/living-render-collections.js";
 import type { ApiOrder, Chain } from "@medialane/sdk";
 
 /** ui's pinned SDK lags the apps — extend structurally for fields newer SDKs carry. */
 type OrderWithAnimation = ApiOrder & { token: (ApiOrder["token"] & { animationUrl?: string | null }) | null };
+
+/**
+ * Fiat-first price line: USD leads (io's non-crypto audience reads fiat, not
+ * token amounts), the on-chain currency trails as a small icon+label — never
+ * a second near-duplicate number for USD-pegged stablecoins. Falls back to
+ * a crypto-only line when no USD rate is available.
+ */
+function PriceLine({
+  amountFormatted, currency, usdValue, compact = false,
+}: {
+  amountFormatted: string | null | undefined;
+  currency: string | null | undefined;
+  usdValue?: string | null;
+  compact?: boolean;
+}) {
+  if (!amountFormatted) return null;
+  if (!usdValue) {
+    return (
+      <p className={compact ? "text-2xs font-bold price-value inline-flex items-center gap-1" : "text-lg font-bold price-value leading-none inline-flex items-center gap-1.5 mt-1.5"}>
+        {currency && <CurrencyIcon symbol={currency} size={compact ? 11 : 18} />}
+        {formatDisplayPrice(amountFormatted)}
+        {!compact && <span className="sr-only">{currency}</span>}
+      </p>
+    );
+  }
+  const stable = isStableCurrency(currency);
+  return (
+    <>
+      <p className={compact ? "text-2xs font-bold price-value" : "text-lg font-bold price-value leading-none mt-1.5"}>
+        {usdValue}
+      </p>
+      <p className={compact ? "text-2xs text-muted-foreground/70 inline-flex items-center gap-1" : "text-2xs text-muted-foreground/60 mt-0.5 inline-flex items-center gap-1"}>
+        {currency && <CurrencyIcon symbol={currency} size={compact ? 10 : 11} />}
+        {stable ? currency : `${formatDisplayPrice(amountFormatted)} ${currency}`}
+      </p>
+    </>
+  );
+}
 
 export interface ListingCardProps {
   order: ApiOrder;
@@ -88,13 +126,7 @@ export function ListingCard({ order: rawOrder, inCart = false, onBuy, onCart, ov
           </div>
           <div className="p-2.5 space-y-0.5">
             <p className="text-xs font-semibold truncate">{name}</p>
-            {order.price?.formatted && (
-              <p className="text-2xs font-bold price-value inline-flex items-center gap-1">
-                {order.price.currency && <CurrencyIcon symbol={order.price.currency} size={11} />}
-                {formatDisplayPrice(order.price.formatted)}
-              </p>
-            )}
-            {usdValue && <p className="text-2xs text-muted-foreground/70">{usdValue}</p>}
+            <PriceLine amountFormatted={order.price?.formatted} currency={order.price?.currency} usdValue={usdValue} compact />
             <p className="text-2xs text-muted-foreground">{timeAgo(order.createdAt)}</p>
           </div>
         </Link>
@@ -140,12 +172,7 @@ export function ListingCard({ order: rawOrder, inCart = false, onBuy, onCart, ov
                 <p className="text-2xs uppercase tracking-widest text-muted-foreground/55 leading-none">
                   {isListing ? "Price" : "Offer"}
                 </p>
-                <p className="text-lg font-bold price-value leading-none inline-flex items-center gap-1.5 mt-1.5">
-                  {order.price.currency && <CurrencyIcon symbol={order.price.currency} size={18} />}
-                  {formatDisplayPrice(order.price.formatted)}
-                  <span className="sr-only">{order.price.currency}</span>
-                </p>
-                {usdValue && <p className="text-2xs text-muted-foreground/60 mt-0.5">{usdValue}</p>}
+                <PriceLine amountFormatted={order.price.formatted} currency={order.price.currency} usdValue={usdValue} />
               </div>
               <p className="text-2xs text-muted-foreground/60 whitespace-nowrap shrink-0">
                 {timeAgo(order.createdAt)}
