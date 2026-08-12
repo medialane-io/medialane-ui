@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Loader2 } from "lucide-react";
 import { cn } from "../utils/cn.js";
 import { ipfsToHttp } from "../utils/ipfs.js";
-import { formatDisplayPrice } from "../utils/format.js";
+import { formatDisplayPrice, isStableCurrency } from "../utils/format.js";
 import { CurrencyIcon } from "./currency-icon.js";
 import { IpTypeBadge } from "./ip-type-badge.js";
 import { AnimatedTokenMedia } from "./animated-token-media.js";
@@ -12,6 +12,12 @@ import { AnimatedTokenMedia } from "./animated-token-media.js";
 export interface AssetCardPrice {
   formatted?: string | null;
   currency?: string | null;
+  /**
+   * Pre-formatted USD equivalent (e.g. "$13.15"), computed by the host from
+   * its own live rate feed — this package has no price-feed access by
+   * design. Omit/null renders the crypto amount alone (today's behavior).
+   */
+  usdValue?: string | null;
 }
 
 export interface AssetCardProps {
@@ -98,13 +104,34 @@ export function AssetCard({
           />
 
           {/* Price pill — anchored on the artwork, same glass chip as the
-              collection cards' Floor pill */}
-          {hasPrice && !indexing && (
-            <span className="absolute bottom-2 right-2 inline-flex items-center gap-1 text-xs font-bold text-white/95 backdrop-blur-md bg-black/40 rounded-full px-2.5 py-1 tabular-nums">
-              {price!.currency && <CurrencyIcon symbol={price!.currency} size={12} />}
-              {formatDisplayPrice(price!.formatted!)}
-            </span>
-          )}
+              collection cards' Floor pill. Fiat leads when a live rate is
+              available; the on-chain amount trails, dimmer, as a secondary
+              fact — never a second full-weight number competing for
+              attention. Stablecoins collapse to fiat + symbol alone, since
+              the crypto amount would just repeat the same figure. */}
+          {hasPrice && !indexing && (() => {
+            const cryptoDisplay = formatDisplayPrice(price!.formatted!);
+            const stable = isStableCurrency(price!.currency);
+            return (
+              <span className="absolute bottom-2 right-2 inline-flex items-center gap-1.5 text-sm font-bold text-white/95 backdrop-blur-md bg-black/40 rounded-full pl-3 pr-3 py-1.5 tabular-nums">
+                {price!.usdValue ? (
+                  <>
+                    {price!.usdValue}
+                    <span className="text-white/30">·</span>
+                    <span className="inline-flex items-center gap-1 font-semibold text-white/65">
+                      {price!.currency && <CurrencyIcon symbol={price!.currency} size={12} />}
+                      {stable ? price!.currency : cryptoDisplay}
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    {price!.currency && <CurrencyIcon symbol={price!.currency} size={13} />}
+                    {cryptoDisplay}
+                  </>
+                )}
+              </span>
+            );
+          })()}
 
           {indexing && (
             <div className="absolute bottom-0 inset-x-0 flex items-center justify-center gap-1.5 bg-black/50 backdrop-blur-sm py-1.5">
