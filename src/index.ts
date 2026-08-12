@@ -285,3 +285,7 @@ export type { UserRewards, LeaderboardEntry, BadgeSummary, LevelSummary } from "
 export { OwnerSetupPanel } from "./components/owner-setup-panel.js";
 export { DropCountdown } from "./components/drop-countdown.js";
 export { CreatorAnalytics } from "./components/creator-analytics.js";
+export {
+  Dialog, DialogPortal, DialogOverlay, DialogClose, DialogTrigger,
+  DialogContent, DialogHeader, DialogFooter, DialogTitle, DialogDescription,
+} from "./components/dialog.js";
