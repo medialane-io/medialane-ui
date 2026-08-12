@@ -242,6 +242,8 @@ export { ActionDialog } from "./components/action-dialog.js";
 export type { ActionDialogProps } from "./components/action-dialog.js";
 
 export { HiddenContentBanner } from "./components/hidden-content-banner.js";
+export { CollectionHeroBanner } from "./components/collection-hero-banner.js";
+export type { CollectionHeroBannerProps, CollectionHeroStat } from "./components/collection-hero-banner.js";
 
 // ── v0.99.0 additions — rewards UX overhaul ───────────────────────────────────
 export { useRewardsCelebrations } from "./components/rewards/use-rewards-celebrations.js";

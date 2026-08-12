@@ -148,7 +148,7 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
               <div className="space-y-2">
                 <div className="grid grid-cols-2 gap-2">
                   {myListing ? (
-                    <ActionButton
+                    <ActionButton big
                       icon={isProcessing ? <Loader2 className="h-4 w-4 animate-spin" /> : <X className="h-4 w-4" />}
                       onClick={() => onCancelClick(myListing)}
                       disabled={isProcessing}
@@ -163,11 +163,11 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
                       reads as a broken/confusing pair. An ERC-1155 owner can still hold
                       un-listed editions while one listing is active, so it stays for them. */}
                   {(!myListing || isERC1155) ? (
-                    <ActionButton tone="blue" icon={<Tag className="h-4 w-4" />} onClick={onOpenListing} renderHelp={renderHelp}>List on Marketplace</ActionButton>
+                    <ActionButton big tone="blue" icon={<Tag className="h-4 w-4" />} onClick={onOpenListing} renderHelp={renderHelp}>List on Marketplace</ActionButton>
                   ) : null}
-                  <ActionButton tone="orange" icon={<ArrowRightLeft className="h-4 w-4" />} onClick={onOpenTransfer} renderHelp={renderHelp}>Transfer</ActionButton>
+                  <ActionButton big tone="orange" icon={<ArrowRightLeft className="h-4 w-4" />} onClick={onOpenTransfer} renderHelp={renderHelp}>Transfer</ActionButton>
                   {remixEnabled && onOpenRemix ? (
-                    <ActionButton
+                    <ActionButton big
                       action="remix"
                       icon={<GitBranch className="h-4 w-4" />}
                       onClick={onOpenRemix}
@@ -178,7 +178,7 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
                     </ActionButton>
                   ) : null}
                   {showSponsorSolicitOption && onOpenSponsorSolicit ? (
-                    <ActionButton
+                    <ActionButton big
                       tone="blue"
                       icon={<Handshake className="h-4 w-4" />}
                       onClick={onOpenSponsorSolicit}
@@ -194,8 +194,8 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
                   <>
                     <div className="border-t border-border/40 pt-2 mt-1" />
                     <div className="grid grid-cols-2 gap-2">
-                      <ActionButton action="buy" icon={<ShoppingCart className="h-4 w-4" />} onClick={() => onOpenPurchase(cheapest!)} renderHelp={renderHelp}>Buy</ActionButton>
-                      <ActionButton action="offer" icon={<HandCoins className="h-4 w-4" />} onClick={onOpenOffer} renderHelp={renderHelp}>Make offer</ActionButton>
+                      <ActionButton big action="buy" icon={<ShoppingCart className="h-4 w-4" />} onClick={() => onOpenPurchase(cheapest!)} renderHelp={renderHelp}>Buy</ActionButton>
+                      <ActionButton big action="offer" icon={<HandCoins className="h-4 w-4" />} onClick={onOpenOffer} renderHelp={renderHelp}>Make offer</ActionButton>
                     </div>
                   </>
                 )}
@@ -203,10 +203,10 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
             ) : isSignedIn ? (
               <>
                 <div className="grid grid-cols-2 gap-2">
-                  <ActionButton action="buy" icon={<ShoppingCart className="h-4 w-4" />} onClick={() => onOpenPurchase(cheapest)} renderHelp={renderHelp}>Buy</ActionButton>
-                  <ActionButton action="offer" icon={<HandCoins className="h-4 w-4" />} onClick={onOpenOffer} renderHelp={renderHelp}>Make offer</ActionButton>
+                  <ActionButton big action="buy" icon={<ShoppingCart className="h-4 w-4" />} onClick={() => onOpenPurchase(cheapest)} renderHelp={renderHelp}>Buy</ActionButton>
+                  <ActionButton big action="offer" icon={<HandCoins className="h-4 w-4" />} onClick={onOpenOffer} renderHelp={renderHelp}>Make offer</ActionButton>
                   {remixEnabled && onOpenRemix ? (
-                    <ActionButton
+                    <ActionButton big
                       action="remix"
                       icon={<GitBranch className="h-4 w-4" />}
                       onClick={onOpenRemix}
@@ -217,7 +217,7 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
                     </ActionButton>
                   ) : null}
                   {showDealOption && onProposeDeal ? (
-                    <ActionButton
+                    <ActionButton big
                       action="license"
                       icon={<HandCoins className="h-4 w-4" />}
                       onClick={onProposeDeal}
@@ -228,7 +228,7 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
                     </ActionButton>
                   ) : null}
                   {showSponsorOption && onOpenSponsorProposal ? (
-                    <ActionButton
+                    <ActionButton big
                       tone="blue"
                       icon={<Handshake className="h-4 w-4" />}
                       onClick={onOpenSponsorProposal}
@@ -254,10 +254,10 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
             <StatRow floorPriceRaw={floorPriceRaw} lastSaleRaw={lastSaleRaw} />
             {isOwner ? (
               <div className="grid grid-cols-2 gap-2">
-                <ActionButton tone="blue" icon={<Tag className="h-4 w-4" />} onClick={onOpenListing} renderHelp={renderHelp}>List on Marketplace</ActionButton>
-                <ActionButton tone="orange" icon={<ArrowRightLeft className="h-4 w-4" />} onClick={onOpenTransfer} renderHelp={renderHelp}>Transfer</ActionButton>
+                <ActionButton big tone="blue" icon={<Tag className="h-4 w-4" />} onClick={onOpenListing} renderHelp={renderHelp}>List on Marketplace</ActionButton>
+                <ActionButton big tone="orange" icon={<ArrowRightLeft className="h-4 w-4" />} onClick={onOpenTransfer} renderHelp={renderHelp}>Transfer</ActionButton>
                 {remixEnabled && onOpenRemix ? (
-                  <ActionButton
+                  <ActionButton big
                     action="remix"
                     icon={<GitBranch className="h-4 w-4" />}
                     onClick={onOpenRemix}
@@ -268,7 +268,7 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
                   </ActionButton>
                 ) : null}
                 {showSponsorSolicitOption && onOpenSponsorSolicit ? (
-                  <ActionButton
+                  <ActionButton big
                     tone="blue"
                     icon={<Handshake className="h-4 w-4" />}
                     onClick={onOpenSponsorSolicit}
@@ -281,9 +281,9 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
               </div>
             ) : isSignedIn ? (
               <div className="grid grid-cols-2 gap-2">
-                <ActionButton action="offer" icon={<HandCoins className="h-4 w-4" />} onClick={onOpenOffer} renderHelp={renderHelp}>Make offer</ActionButton>
+                <ActionButton big action="offer" icon={<HandCoins className="h-4 w-4" />} onClick={onOpenOffer} renderHelp={renderHelp}>Make offer</ActionButton>
                 {remixEnabled && onOpenRemix ? (
-                  <ActionButton
+                  <ActionButton big
                     action="remix"
                     icon={<GitBranch className="h-4 w-4" />}
                     onClick={onOpenRemix}
@@ -294,7 +294,7 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
                   </ActionButton>
                 ) : null}
                 {showSponsorOption && onOpenSponsorProposal ? (
-                  <ActionButton
+                  <ActionButton big
                     tone="blue"
                     icon={<Handshake className="h-4 w-4" />}
                     onClick={onOpenSponsorProposal}

@@ -42,7 +42,7 @@ export function AssetCollectionBar({
             <Image src={collectionImage} alt="" fill className="object-cover" unoptimized />
           ) : null}
         </div>
-        <p className="text-sm font-bold leading-tight truncate min-w-0 flex-1 group-hover:text-primary transition-colors">
+        <p className="text-base font-bold leading-tight truncate min-w-0 flex-1 group-hover:text-primary transition-colors">
           {collectionName}
         </p>
         <div className="shrink-0 h-8 w-8 rounded-xl bg-background/40 flex items-center justify-center text-muted-foreground group-hover:bg-background/70 group-hover:text-foreground transition-all">
