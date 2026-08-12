@@ -278,6 +278,37 @@ export {
 export {
   useFormField, Form, FormItem, FormLabel, FormControl, FormDescription, FormMessage, FormField,
 } from "./components/form.js";
+export { Textarea } from "./components/textarea.js";
+export type { TextareaProps } from "./components/textarea.js";
+export {
+  Sheet, SheetPortal, SheetOverlay, SheetTrigger, SheetClose, SheetContent,
+  SheetHeader, SheetFooter, SheetTitle, SheetDescription,
+} from "./components/sheet.js";
+
+// ── v0.106.0 additions — dedupe pass 2 (io + starknet audit) ─────────────────
+export { ToggleGroup, Section } from "./components/create-form-primitives.js";
+export { OrderSortControl, sortOrders } from "./components/order-sort-control.js";
+export type { OrderSort } from "./components/order-sort-control.js";
+export { AssetLightbox } from "./components/asset-lightbox.js";
+export type { AssetLightboxProps } from "./components/asset-lightbox.js";
+export { PriceHistoryChart } from "./components/price-history-chart.js";
+export type { PriceHistoryChartProps } from "./components/price-history-chart.js";
+export { NavThemeToggle } from "./components/nav-theme-toggle.js";
+export { JsonLd } from "./components/json-ld.js";
+export type { JsonLdProps } from "./components/json-ld.js";
+export { CreationRecord } from "./components/creation-record.js";
+export type { CreationRecordProps } from "./components/creation-record.js";
+export { ClubOwnerActions } from "./components/club-owner-actions.js";
+export type { ClubOwnerActionsProps } from "./components/club-owner-actions.js";
+export { IPTypeFields } from "./components/ip-type-fields.js";
+export type { IPTypeFieldsProps, MetadataField } from "./components/ip-type-fields.js";
+export { readBodyWithCap } from "./utils/proxy-body.js";
+export type { CappedBody } from "./utils/proxy-body.js";
+export {
+  formatActivity, formatOrderNotification, formatOfferAcceptedNotification, formatAssetReceivedNotification,
+} from "./utils/format-activity.js";
+export type { FormattedEvent } from "./utils/format-activity.js";
+
 export { useMedialaneClient } from "./utils/use-medialane-client.js";
 export { useCreators } from "./utils/use-creators.js";
 export {
