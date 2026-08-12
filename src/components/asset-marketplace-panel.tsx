@@ -34,6 +34,12 @@ export interface AssetMarketplacePanelProps<T extends ApiOrderLike = ApiOrderLik
   /** Raw "0.07 STRK"-style strings — already resolved by the caller. `null`/undefined renders "—". */
   floorPriceRaw?: string | null;
   lastSaleRaw?: string | null;
+  /**
+   * Pre-formatted USD equivalent of `cheapest.price` (e.g. "$12.34"), computed
+   * by the host from its own live rate feed — this package has no price-feed
+   * access by design. Omit (or pass null) to render no USD line.
+   */
+  usdValue?: string | null;
   /** Renders the sign-in/connect-wallet CTA for the given label (e.g. "Sign in to trade"). */
   renderAuthAction: (label: string) => ReactNode;
   /** Renders an inline help/info affordance for the given tooltip text. */
@@ -97,6 +103,7 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
   onOpenSponsorSolicit,
   floorPriceRaw,
   lastSaleRaw,
+  usdValue,
   renderAuthAction,
   renderHelp,
   onCancelClick,
@@ -132,14 +139,17 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
         {cheapest ? (
           <div className="space-y-4">
             <div className="flex flex-wrap items-baseline gap-x-5 gap-y-1.5">
-              <div className="flex items-baseline gap-2">
-                <CurrencyIcon symbol={cheapest.price.currency ?? ""} size={26} />
-                <span className="text-4xl font-bold tracking-tight">
-                  {formatDisplayPrice(cheapest.price.formatted)}
-                </span>
-                {renderHelp(
-                  `${isOwner && !canBuyMore ? "Your listing" : "Current price"} · Expires ${timeUntil(cheapest.endTime)}`
-                )}
+              <div>
+                <div className="flex items-baseline gap-2">
+                  <CurrencyIcon symbol={cheapest.price.currency ?? ""} size={26} />
+                  <span className="text-4xl font-bold tracking-tight">
+                    {formatDisplayPrice(cheapest.price.formatted)}
+                  </span>
+                  {renderHelp(
+                    `${isOwner && !canBuyMore ? "Your listing" : "Current price"} · Expires ${timeUntil(cheapest.endTime)}`
+                  )}
+                </div>
+                {usdValue && <p className="text-sm text-muted-foreground mt-0.5">≈ {usdValue}</p>}
               </div>
               <StatRow floorPriceRaw={floorPriceRaw} lastSaleRaw={lastSaleRaw} />
             </div>

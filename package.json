@@ -1,6 +1,6 @@
 {
   "name": "@medialane/ui",
-  "version": "0.109.0",
+  "version": "0.110.0",
   "description": "Shared UI components for Medialane apps",
   "type": "module",
   "sideEffects": false,
