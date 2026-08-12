@@ -11,7 +11,7 @@ import {
 } from "./dropdown-menu.js";
 import { cn } from "../utils/cn.js";
 import { ipfsToHttp } from "../utils/ipfs.js";
-import { formatDisplayPrice } from "../utils/format.js";
+import { formatDisplayPrice, isStableCurrency } from "../utils/format.js";
 import { CurrencyIcon } from "./currency-icon.js";
 import { IpTypeBadge } from "./ip-type-badge.js";
 import { AnimatedTokenMedia } from "./animated-token-media.js";
@@ -31,6 +31,13 @@ export interface TokenCardProps {
   onBuy?: (token: ApiToken) => void;
   onOffer?: (token: ApiToken) => void;
   onReport?: (token: ApiToken) => void;
+  /**
+   * Pre-formatted USD equivalent of the active listing price (e.g.
+   * "$13.15"), computed by the host from its own live rate feed — this
+   * package has no price-feed access by design. Omit/null renders the
+   * crypto-only chip.
+   */
+  usdValue?: string | null;
 }
 
 export function TokenCard({
@@ -42,6 +49,7 @@ export function TokenCard({
   onBuy,
   onOffer,
   onReport,
+  usdValue,
 }: TokenCardProps) {
   const name = token.metadata?.name || `Token #${token.tokenId}`;
   const image = ipfsToHttp(token.metadata?.image);
@@ -98,16 +106,35 @@ export function TokenCard({
             }
           />
 
-          {/* Price chip — bottom right overlay */}
-          {listingOrder && (
-            <div className="absolute bottom-2 right-2 z-10">
-              <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-2xs font-bold bg-background/90 backdrop-blur-sm border border-border/40 shadow-sm">
-                <CurrencyIcon symbol={listingOrder.price.currency ?? ""} size={10} />
-                {formatDisplayPrice(listingOrder.price.formatted)}
-                <span className="text-muted-foreground font-normal">{listingOrder.price.currency}</span>
-              </span>
-            </div>
-          )}
+          {/* Price chip — bottom right overlay. Fiat leads when a live rate
+              is available; the crypto amount trails, dimmer, middot-
+              separated — same language as AssetCard's pill. Stablecoins
+              collapse to fiat + symbol alone (no duplicate number). */}
+          {listingOrder && (() => {
+            const cryptoDisplay = formatDisplayPrice(listingOrder.price.formatted);
+            const stable = isStableCurrency(listingOrder.price.currency);
+            return (
+              <div className="absolute bottom-2 right-2 z-10">
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-sm font-bold bg-background/90 backdrop-blur-sm border border-border/40 shadow-sm tabular-nums">
+                  {usdValue ? (
+                    <>
+                      {usdValue}
+                      <span className="text-muted-foreground/50">·</span>
+                      <span className="inline-flex items-center gap-1 font-semibold text-muted-foreground">
+                        <CurrencyIcon symbol={listingOrder.price.currency ?? ""} size={12} />
+                        {stable ? listingOrder.price.currency : cryptoDisplay}
+                      </span>
+                    </>
+                  ) : (
+                    <>
+                      <CurrencyIcon symbol={listingOrder.price.currency ?? ""} size={13} />
+                      {cryptoDisplay}
+                    </>
+                  )}
+                </span>
+              </div>
+            );
+          })()}
 
           {/* Indexing indicator */}
           {(token.metadataStatus === "PENDING" || token.metadataStatus === "FETCHING") && (
