@@ -38,9 +38,16 @@ export interface ListingCardProps {
    * Omit for the default gateway resolution; null renders the no-image fallback.
    */
   imageUrl?: string | null;
+  /**
+   * Pre-formatted USD equivalent of order.price (e.g. "$12.34"), computed by
+   * the host from its own live rate feed — this package has no price-feed
+   * access by design. Omit (or pass null) to render no USD line, e.g. when
+   * the host has no live rate for this order's currency.
+   */
+  usdValue?: string | null;
 }
 
-export function ListingCard({ order: rawOrder, inCart = false, onBuy, onCart, overflowMenu, primaryAction, compact = false, imageUrl }: ListingCardProps) {
+export function ListingCard({ order: rawOrder, inCart = false, onBuy, onCart, overflowMenu, primaryAction, compact = false, imageUrl, usdValue }: ListingCardProps) {
   const order = rawOrder as OrderWithAnimation;
   const [imgError, setImgError] = useState(false);
   const isListing = order.offer.itemType === "ERC721" || order.offer.itemType === "ERC1155";
@@ -87,6 +94,7 @@ export function ListingCard({ order: rawOrder, inCart = false, onBuy, onCart, ov
                 {formatDisplayPrice(order.price.formatted)}
               </p>
             )}
+            {usdValue && <p className="text-2xs text-muted-foreground/70">{usdValue}</p>}
             <p className="text-2xs text-muted-foreground">{timeAgo(order.createdAt)}</p>
           </div>
         </Link>
@@ -137,6 +145,7 @@ export function ListingCard({ order: rawOrder, inCart = false, onBuy, onCart, ov
                   {formatDisplayPrice(order.price.formatted)}
                   <span className="sr-only">{order.price.currency}</span>
                 </p>
+                {usdValue && <p className="text-2xs text-muted-foreground/60 mt-0.5">{usdValue}</p>}
               </div>
               <p className="text-2xs text-muted-foreground/60 whitespace-nowrap shrink-0">
                 {timeAgo(order.createdAt)}
