@@ -39,7 +39,11 @@ function stripDollarSign(usdValue: string): string {
   return usdValue.replace("$", "");
 }
 
-const DISPLAY_FACE = "font-[family-name:var(--font-display)] font-extrabold tracking-tight tabular-nums";
+// Inter (the platform's default body font, applied via <body>'s className
+// in every app's layout.tsx) rather than the Urbanist display face —
+// direct feedback that the price numbers should use the standard system
+// font, not the brand's opt-in heading face.
+const DISPLAY_FACE = "font-extrabold tracking-tight tabular-nums";
 
 const DUAL_PRICE_SCALES = {
   /** Full-width hero contexts: AssetMarketplacePanel's main price. */
