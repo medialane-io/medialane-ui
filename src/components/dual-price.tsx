@@ -17,15 +17,16 @@ export function CoinChip({ symbol, size }: { symbol: string | null | undefined; 
   );
 }
 
-/** Same circular chip as CoinChip, for fiat — a bare "$" prefix looked like
- *  a stray glyph next to a crypto amount that always got an icon. Giving
- *  USD the identical chip treatment makes the pairing read as two peer
- *  currencies, not one styled number and one plain one. */
+/** Same circular chip as CoinChip, for fiat. Sized 1:1 with the crypto
+ *  icon (fontSize === size, not a fraction of it) so the "$" reads with
+ *  the same visual weight as the coin icon sitting next to it — a smaller,
+ *  thinner glyph in an identically-sized circle looked like an afterthought
+ *  next to a solid icon, even though the circles measured the same. */
 function FiatChip({ size }: { size: number }) {
   return (
     <span
-      className="grid shrink-0 place-items-center rounded-full bg-foreground/[0.06] font-bold text-foreground/70"
-      style={{ width: size + 10, height: size + 10, fontSize: size * 0.7 }}
+      className="grid shrink-0 place-items-center rounded-full bg-foreground/[0.06] font-extrabold leading-none text-foreground/80"
+      style={{ width: size + 10, height: size + 10, fontSize: size }}
     >
       $
     </span>
@@ -41,24 +42,55 @@ function stripDollarSign(usdValue: string): string {
 const DISPLAY_FACE = "font-[family-name:var(--font-display)] font-extrabold tracking-tight tabular-nums";
 
 const DUAL_PRICE_SCALES = {
-  /** Full-width hero contexts: AssetMarketplacePanel's main price. Has room
-   *  to spell out the currency ("0.07 ETH"), not just imply it via icon. */
-  hero: { fiat: "text-4xl", crypto: "text-2xl", chip: 16, stableChip: 13, divider: "h-7", showCurrencyLabel: true },
+  /** Full-width hero contexts: AssetMarketplacePanel's main price. */
+  hero: { amount: "text-3xl", chip: 18, stableChip: 14, divider: "h-7", showLabel: true },
   /** Card contexts: ListingCard's full variant — denser, the coin icon
    *  already conveys the currency, a text label would be redundant. */
-  card: { fiat: "text-lg", crypto: "text-sm", chip: 11, stableChip: 9, divider: "h-4", showCurrencyLabel: false },
+  card: { amount: "text-base", chip: 13, stableChip: 10, divider: "h-4", showLabel: false },
 } as const;
 
 /**
- * Equal-weight dual price: fiat and the on-chain currency shown as peers,
- * not primary/afterthought — this platform's audience spans non-crypto
- * newcomers who read fiat and crypto-native buyers who read the token
- * amount. Both use the brand display face at a real step-down in scale so
- * the pairing reads as "two related numbers," not one dominant + one
- * caption. Falls back to crypto-only when no USD rate is available. When
- * the currency is itself a USD-pegged stablecoin, the crypto amount
- * collapses to a small currency badge — showing "$12.00" beside "12.00
- * USDC" would just be the same number twice.
+ * One currency's [chip] [amount] [optional code label] unit. Fiat and
+ * crypto both render through this exact function — the previous version
+ * had two separately-hand-coded branches (one baseline-aligned, one
+ * center-aligned; one full-opacity, one dimmed) that drifted out of sync
+ * with each other. Routing both through one function makes that class of
+ * bug structurally impossible: there is only one place font, size,
+ * opacity, and alignment for a price unit can be defined.
+ */
+function PriceUnit({
+  chip,
+  amount,
+  label,
+  amountClassName,
+}: {
+  chip: ReactNode;
+  amount: string;
+  label?: string;
+  amountClassName: string;
+}) {
+  return (
+    <span className="inline-flex items-center gap-1.5">
+      {chip}
+      <span className="flex items-baseline gap-1.5">
+        <span className={amountClassName}>{amount}</span>
+        {label && <span className="text-sm font-semibold text-muted-foreground/70">{label}</span>}
+      </span>
+    </span>
+  );
+}
+
+/**
+ * Equal-weight dual price: fiat and the on-chain currency shown as true
+ * peers — same font, same size, same icon treatment, same label
+ * alignment — not one dominant number with a secondary afterthought.
+ * This platform's audience spans non-crypto newcomers who read fiat and
+ * crypto-native buyers who read the token amount; neither should look
+ * like the "real" price and the other a footnote. Falls back to
+ * crypto-only when no USD rate is available. When the currency is itself
+ * a USD-pegged stablecoin, the crypto side collapses to a chip + code
+ * badge — showing "13.14 USD" beside "13.14 USDC" would just be the same
+ * number twice.
  */
 export function DualPrice({
   amountFormatted,
@@ -76,12 +108,17 @@ export function DualPrice({
   if (!amountFormatted) return null;
   const s = DUAL_PRICE_SCALES[scale];
   const cryptoDisplay = formatDisplayPrice(amountFormatted);
+  const amountClass = `${DISPLAY_FACE} ${s.amount}`;
 
   if (!usdValue) {
     return (
-      <div className={`flex items-center gap-2.5 ${DISPLAY_FACE} ${s.fiat}`}>
-        <CoinChip symbol={currency} size={s.chip} />
-        {cryptoDisplay}
+      <div className="flex items-center gap-2.5">
+        <PriceUnit
+          chip={<CoinChip symbol={currency} size={s.chip} />}
+          amount={cryptoDisplay}
+          label={s.showLabel ? (currency ?? undefined) : undefined}
+          amountClassName={amountClass}
+        />
         {trailing && <span className="ml-0.5">{trailing}</span>}
       </div>
     );
@@ -90,25 +127,26 @@ export function DualPrice({
   const stable = isStableCurrency(currency);
   return (
     <div className="flex items-center gap-2.5">
-      <span className="inline-flex items-center gap-1.5">
-        <FiatChip size={s.chip} />
-        <span className={`${DISPLAY_FACE} ${s.fiat}`}>{stripDollarSign(usdValue)}</span>
-        <span className="text-sm font-semibold text-muted-foreground/70">USD</span>
-      </span>
+      <PriceUnit
+        chip={<FiatChip size={s.chip} />}
+        amount={stripDollarSign(usdValue)}
+        label={s.showLabel ? "USD" : undefined}
+        amountClassName={amountClass}
+      />
       {!stable && <span className={`${s.divider} w-px bg-border/60 shrink-0`} />}
-      <span className="inline-flex items-center gap-1.5">
-        <CoinChip symbol={currency} size={stable ? s.stableChip : s.chip} />
-        {stable ? (
+      {stable ? (
+        <span className="inline-flex items-center gap-1.5">
+          <CoinChip symbol={currency} size={s.stableChip} />
           <span className="text-sm font-semibold text-muted-foreground">{currency}</span>
-        ) : s.showCurrencyLabel ? (
-          <span className="flex items-baseline gap-1.5">
-            <span className={`${DISPLAY_FACE} ${s.crypto} text-foreground/90`}>{cryptoDisplay}</span>
-            <span className="text-sm font-semibold text-muted-foreground/70">{currency}</span>
-          </span>
-        ) : (
-          <span className={`${DISPLAY_FACE} ${s.crypto} text-foreground/90`}>{cryptoDisplay}</span>
-        )}
-      </span>
+        </span>
+      ) : (
+        <PriceUnit
+          chip={<CoinChip symbol={currency} size={s.chip} />}
+          amount={cryptoDisplay}
+          label={s.showLabel ? (currency ?? undefined) : undefined}
+          amountClassName={amountClass}
+        />
+      )}
       {trailing && <span className="ml-0.5">{trailing}</span>}
     </div>
   );
@@ -123,11 +161,14 @@ const CHIP_TONES = {
 } as const;
 
 /**
- * Overlay/pill price content — fiat leads, crypto trails dimmer, middot-
+ * Overlay/pill price content — fiat leads, crypto trails, middot-
  * separated; stablecoins collapse to fiat + symbol alone. Renders only the
  * inner fragment: callers own their own pill container (background, blur,
  * border, padding), which intentionally differs between hosts (see
- * `tone`) rather than being forced into one visual treatment.
+ * `tone`) rather than being forced into one visual treatment. Smaller
+ * scale than DualPrice (compact artwork overlay), so no fiat/crypto icon
+ * chips here — the middot + dimmer trailing color is what marks the
+ * crypto side as secondary in this tighter context.
  */
 export function PriceChipContent({
   amountFormatted,
@@ -156,7 +197,7 @@ export function PriceChipContent({
   const t = CHIP_TONES[tone];
   return (
     <>
-      {usdValue}
+      {stripDollarSign(usdValue)}
       <span className={`font-semibold ${t.text}`}>USD</span>
       <span className={t.dot}>·</span>
       <span className={`inline-flex items-center gap-1 font-semibold ${t.text}`}>
