@@ -11,8 +11,9 @@ import {
 } from "./dropdown-menu.js";
 import { cn } from "../utils/cn.js";
 import { ipfsToHttp } from "../utils/ipfs.js";
-import { formatDisplayPrice, isStableCurrency } from "../utils/format.js";
+import { formatDisplayPrice } from "../utils/format.js";
 import { CurrencyIcon } from "./currency-icon.js";
+import { PriceChipContent } from "./dual-price.js";
 import { IpTypeBadge } from "./ip-type-badge.js";
 import { AnimatedTokenMedia } from "./animated-token-media.js";
 import { isLivingRenderCollection } from "../data/living-render-collections.js";
@@ -110,31 +111,18 @@ export function TokenCard({
               is available; the crypto amount trails, dimmer, middot-
               separated — same language as AssetCard's pill. Stablecoins
               collapse to fiat + symbol alone (no duplicate number). */}
-          {listingOrder && (() => {
-            const cryptoDisplay = formatDisplayPrice(listingOrder.price.formatted);
-            const stable = isStableCurrency(listingOrder.price.currency);
-            return (
-              <div className="absolute bottom-2 right-2 z-10">
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-sm font-bold bg-background/90 backdrop-blur-sm border border-border/40 shadow-sm tabular-nums">
-                  {usdValue ? (
-                    <>
-                      {usdValue}
-                      <span className="text-muted-foreground/50">·</span>
-                      <span className="inline-flex items-center gap-1 font-semibold text-muted-foreground">
-                        <CurrencyIcon symbol={listingOrder.price.currency ?? ""} size={12} />
-                        {stable ? listingOrder.price.currency : cryptoDisplay}
-                      </span>
-                    </>
-                  ) : (
-                    <>
-                      <CurrencyIcon symbol={listingOrder.price.currency ?? ""} size={13} />
-                      {cryptoDisplay}
-                    </>
-                  )}
-                </span>
-              </div>
-            );
-          })()}
+          {listingOrder && (
+            <div className="absolute bottom-2 right-2 z-10">
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-sm font-bold bg-background/90 backdrop-blur-sm border border-border/40 shadow-sm tabular-nums">
+                <PriceChipContent
+                  amountFormatted={listingOrder.price.formatted}
+                  currency={listingOrder.price.currency}
+                  usdValue={usdValue}
+                  tone="card"
+                />
+              </span>
+            </div>
+          )}
 
           {/* Indexing indicator */}
           {(token.metadataStatus === "PENDING" || token.metadataStatus === "FETCHING") && (

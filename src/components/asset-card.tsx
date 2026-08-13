@@ -4,8 +4,7 @@ import Link from "next/link";
 import { Loader2 } from "lucide-react";
 import { cn } from "../utils/cn.js";
 import { ipfsToHttp } from "../utils/ipfs.js";
-import { formatDisplayPrice, isStableCurrency } from "../utils/format.js";
-import { CurrencyIcon } from "./currency-icon.js";
+import { PriceChipContent } from "./dual-price.js";
 import { IpTypeBadge } from "./ip-type-badge.js";
 import { AnimatedTokenMedia } from "./animated-token-media.js";
 
@@ -109,29 +108,16 @@ export function AssetCard({
               fact — never a second full-weight number competing for
               attention. Stablecoins collapse to fiat + symbol alone, since
               the crypto amount would just repeat the same figure. */}
-          {hasPrice && !indexing && (() => {
-            const cryptoDisplay = formatDisplayPrice(price!.formatted!);
-            const stable = isStableCurrency(price!.currency);
-            return (
-              <span className="absolute bottom-2 right-2 inline-flex items-center gap-1.5 text-sm font-bold text-white/95 backdrop-blur-md bg-black/40 rounded-full pl-3 pr-3 py-1.5 tabular-nums">
-                {price!.usdValue ? (
-                  <>
-                    {price!.usdValue}
-                    <span className="text-white/30">·</span>
-                    <span className="inline-flex items-center gap-1 font-semibold text-white/65">
-                      {price!.currency && <CurrencyIcon symbol={price!.currency} size={12} />}
-                      {stable ? price!.currency : cryptoDisplay}
-                    </span>
-                  </>
-                ) : (
-                  <>
-                    {price!.currency && <CurrencyIcon symbol={price!.currency} size={13} />}
-                    {cryptoDisplay}
-                  </>
-                )}
-              </span>
-            );
-          })()}
+          {hasPrice && !indexing && (
+            <span className="absolute bottom-2 right-2 inline-flex items-center gap-1.5 text-sm font-bold text-white/95 backdrop-blur-md bg-black/40 rounded-full pl-3 pr-3 py-1.5 tabular-nums">
+              <PriceChipContent
+                amountFormatted={price!.formatted}
+                currency={price!.currency}
+                usdValue={price!.usdValue}
+                tone="overlay-dark"
+              />
+            </span>
+          )}
 
           {indexing && (
             <div className="absolute bottom-0 inset-x-0 flex items-center justify-center gap-1.5 bg-black/50 backdrop-blur-sm py-1.5">

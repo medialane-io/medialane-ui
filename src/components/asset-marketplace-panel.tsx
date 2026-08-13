@@ -8,7 +8,8 @@ import {
 import { CurrencyIcon, CurrencyAmount } from "./currency-icon.js";
 import { AddressDisplay } from "./address-display.js";
 import { ActionButton } from "./action-button.js";
-import { formatDisplayPrice, parsePriceDisplay, isStableCurrency } from "../utils/format.js";
+import { DualPrice } from "./dual-price.js";
+import { formatDisplayPrice, parsePriceDisplay } from "../utils/format.js";
 import { timeUntil } from "../utils/time.js";
 
 /** Structural subset of `ApiOrder` (both apps' `@medialane/sdk` types satisfy this). */
@@ -87,74 +88,6 @@ function StatRow({ floorPriceRaw, lastSaleRaw }: { floorPriceRaw?: string | null
   );
 }
 
-/** A currency icon in the soft circular chip used throughout the wallet UI —
- *  reads as a coin, not a stray glyph floating next to text. */
-function CoinChip({ symbol, size }: { symbol: string | null; size: "md" | "sm" }) {
-  const wrap = size === "md" ? "h-7 w-7" : "h-6 w-6";
-  const icon = size === "md" ? 16 : 13;
-  return (
-    <span className={`grid ${wrap} shrink-0 place-items-center rounded-full bg-foreground/[0.06]`}>
-      <CurrencyIcon symbol={symbol ?? ""} size={icon} />
-    </span>
-  );
-}
-
-/**
- * Dual price: fiat and the on-chain currency shown as equal-weight peers,
- * not primary/afterthought — io's audience spans non-crypto newcomers who
- * read fiat and crypto-native buyers who read the token amount. Both use
- * the brand display face at a real step-down in scale (4xl → 2xl) so the
- * pairing reads as "two related numbers," not one dominant + one caption.
- * Falls back to crypto-only when no USD rate is available. When the
- * order's currency is itself a USD-pegged stablecoin, the crypto amount
- * collapses to a small currency badge — showing "$12.00" beside "12.00
- * USDC" would just be the same number twice.
- */
-function PrimaryPrice({
-  amountFormatted,
-  currency,
-  usdValue,
-  trailing,
-}: {
-  amountFormatted: string | null;
-  currency: string | null;
-  usdValue?: string | null;
-  trailing?: ReactNode;
-}) {
-  const cryptoDisplay = formatDisplayPrice(amountFormatted);
-  const displayFace = "font-[family-name:var(--font-display)] font-extrabold tracking-tight tabular-nums";
-
-  if (!usdValue) {
-    return (
-      <div className="flex items-center gap-2.5">
-        <CoinChip symbol={currency} size="md" />
-        <span className={`${displayFace} text-4xl`}>{cryptoDisplay}</span>
-        {trailing && <span className="ml-0.5">{trailing}</span>}
-      </div>
-    );
-  }
-
-  const stable = isStableCurrency(currency);
-  return (
-    <div className="flex items-center gap-4">
-      <span className={`${displayFace} text-4xl`}>{usdValue}</span>
-      {!stable && <span className="h-7 w-px bg-border/60 shrink-0" />}
-      <span className="inline-flex items-center gap-2">
-        <CoinChip symbol={currency} size={stable ? "sm" : "md"} />
-        {stable ? (
-          <span className="text-sm font-semibold text-muted-foreground">{currency}</span>
-        ) : (
-          <span className="flex items-baseline gap-1.5">
-            <span className={`${displayFace} text-2xl text-foreground/90`}>{cryptoDisplay}</span>
-            <span className="text-sm font-semibold text-muted-foreground/70">{currency}</span>
-          </span>
-        )}
-      </span>
-      {trailing && <span className="ml-0.5">{trailing}</span>}
-    </div>
-  );
-}
-
 export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
   cheapest,
   isOwner,
@@ -208,10 +141,11 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
       <div className="relative space-y-4">
         {cheapest ? (
           <div className="space-y-4">
-            <PrimaryPrice
+            <DualPrice
               amountFormatted={cheapest.price.formatted}
               currency={cheapest.price.currency}
               usdValue={usdValue}
+              scale="hero"
               trailing={renderHelp(
                 `${isOwner && !canBuyMore ? "Your listing" : "Current price"} · Expires ${timeUntil(cheapest.endTime)}`
               )}

@@ -9,6 +9,7 @@ import { AnimatedTokenMedia } from "./animated-token-media.js";
 import { cn } from "../utils/cn.js";
 import { ipfsToHttp } from "../utils/ipfs.js";
 import { formatDisplayPrice, isStableCurrency } from "../utils/format.js";
+import { DualPrice } from "./dual-price.js";
 import { timeAgo } from "../utils/time.js";
 import { isLivingRenderCollection } from "../data/living-render-collections.js";
 import type { ApiOrder, Chain } from "@medialane/sdk";
@@ -45,62 +46,6 @@ function PriceLine({
         {stable ? currency : `${formatDisplayPrice(amountFormatted)} ${currency}`}
       </p>
     </>
-  );
-}
-
-/** Coin icon in a soft circular chip — same treatment as AssetMarketplacePanel,
- *  scaled down for card density. */
-function CoinChip({ symbol, size }: { symbol: string | null | undefined; size: number }) {
-  return (
-    <span
-      className="grid shrink-0 place-items-center rounded-full bg-foreground/[0.06]"
-      style={{ width: size + 10, height: size + 10 }}
-    >
-      <CurrencyIcon symbol={symbol ?? ""} size={size} />
-    </span>
-  );
-}
-
-/**
- * Full-card dual price: fiat and the on-chain currency as equal-weight
- * peers (same language as AssetMarketplacePanel's PrimaryPrice), scaled
- * down for card density — no "PRICE" eyebrow label, no divider text
- * duplicating what the coin chip already conveys.
- */
-function CardDualPrice({
-  amountFormatted, currency, usdValue,
-}: {
-  amountFormatted: string | null | undefined;
-  currency: string | null | undefined;
-  usdValue?: string | null;
-}) {
-  if (!amountFormatted) return null;
-  const cryptoDisplay = formatDisplayPrice(amountFormatted);
-  const displayFace = "font-[family-name:var(--font-display)] font-extrabold tracking-tight tabular-nums";
-
-  if (!usdValue) {
-    return (
-      <p className={`flex items-center gap-1.5 ${displayFace} text-lg`}>
-        <CoinChip symbol={currency} size={11} />
-        {cryptoDisplay}
-      </p>
-    );
-  }
-
-  const stable = isStableCurrency(currency);
-  return (
-    <div className="flex items-center gap-2">
-      <span className={`${displayFace} text-lg`}>{usdValue}</span>
-      {!stable && <span className="h-4 w-px bg-border/60 shrink-0" />}
-      <span className="inline-flex items-center gap-1.5">
-        <CoinChip symbol={currency} size={stable ? 9 : 11} />
-        {stable ? (
-          <span className="text-2xs font-semibold text-muted-foreground">{currency}</span>
-        ) : (
-          <span className={`${displayFace} text-sm text-foreground/80`}>{cryptoDisplay}</span>
-        )}
-      </span>
-    </div>
   );
 }
 
@@ -216,7 +161,7 @@ export function ListingCard({ order: rawOrder, inCart = false, onBuy, onCart, ov
           </div>
 
           {order.price?.formatted && (
-            <CardDualPrice amountFormatted={order.price.formatted} currency={order.price.currency} usdValue={usdValue} />
+            <DualPrice amountFormatted={order.price.formatted} currency={order.price.currency} usdValue={usdValue} scale="card" />
           )}
 
           {showActionBar && (
