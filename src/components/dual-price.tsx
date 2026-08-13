@@ -17,6 +17,27 @@ export function CoinChip({ symbol, size }: { symbol: string | null | undefined; 
   );
 }
 
+/** Same circular chip as CoinChip, for fiat — a bare "$" prefix looked like
+ *  a stray glyph next to a crypto amount that always got an icon. Giving
+ *  USD the identical chip treatment makes the pairing read as two peer
+ *  currencies, not one styled number and one plain one. */
+function FiatChip({ size }: { size: number }) {
+  return (
+    <span
+      className="grid shrink-0 place-items-center rounded-full bg-foreground/[0.06] font-bold text-foreground/70"
+      style={{ width: size + 10, height: size + 10, fontSize: size * 0.7 }}
+    >
+      $
+    </span>
+  );
+}
+
+/** usdValue arrives pre-formatted ("$13.14", "<$0.01") — the chip already
+ *  carries the "$", so strip it from the number to avoid showing it twice. */
+function stripDollarSign(usdValue: string): string {
+  return usdValue.replace("$", "");
+}
+
 const DISPLAY_FACE = "font-[family-name:var(--font-display)] font-extrabold tracking-tight tabular-nums";
 
 const DUAL_PRICE_SCALES = {
@@ -69,7 +90,11 @@ export function DualPrice({
   const stable = isStableCurrency(currency);
   return (
     <div className="flex items-center gap-2.5">
-      <span className={`${DISPLAY_FACE} ${s.fiat}`}>{usdValue}</span>
+      <span className="inline-flex items-center gap-1.5">
+        <FiatChip size={s.chip} />
+        <span className={`${DISPLAY_FACE} ${s.fiat}`}>{stripDollarSign(usdValue)}</span>
+        <span className="text-sm font-semibold text-muted-foreground/70">USD</span>
+      </span>
       {!stable && <span className={`${s.divider} w-px bg-border/60 shrink-0`} />}
       <span className="inline-flex items-center gap-1.5">
         <CoinChip symbol={currency} size={stable ? s.stableChip : s.chip} />
@@ -132,6 +157,7 @@ export function PriceChipContent({
   return (
     <>
       {usdValue}
+      <span className={`font-semibold ${t.text}`}>USD</span>
       <span className={t.dot}>·</span>
       <span className={`inline-flex items-center gap-1 font-semibold ${t.text}`}>
         {currency && <CurrencyIcon symbol={currency} size={12} />}
