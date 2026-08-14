@@ -3,6 +3,12 @@ export function isStableCurrency(symbol: string | null | undefined): boolean {
   return symbol === "USDC" || symbol === "USDT";
 }
 
+export function formatUsd(n: number | null | undefined): string | null {
+  if (n == null || !isFinite(n)) return null;
+  if (n > 0 && n < 0.01) return "<$0.01";
+  return `$${n.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+}
+
 function adaptiveDecimals(num: number): number {
   if (num === 0 || num >= 1) return 2;
   if (num >= 0.01) return 4;
