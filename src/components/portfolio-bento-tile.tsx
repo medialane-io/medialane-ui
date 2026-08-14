@@ -10,20 +10,15 @@ export interface PortfolioBentoTileProps {
 
   href: string;
 
-  /** Cell footprint in the bento-masonry grid (see PortfolioOverview):
-   * "default" = 1x1, "wide" = 2x1 (list-like content), "large" = 2x2 (the
-   * hero tile — the grid is sized so exactly one "large" tile per screen
-   * packs edge-to-edge with the rest, no gaps). */
-  size?: "default" | "wide" | "large";
+  /** "default" flows into whichever column is currently shortest (true
+   * masonry, via PortfolioOverview's CSS multi-column container) — each
+   * tile keeps its own natural height, nothing stretches to match a
+   * sibling. "wide" breaks out to full width instead (list-like content
+   * such as Activity, which reads better edge-to-edge than column-width). */
+  size?: "default" | "wide";
   children: React.ReactNode;
   className?: string;
 }
-
-const SIZE_SPAN: Record<NonNullable<PortfolioBentoTileProps["size"]>, string> = {
-  default: "",
-  wide: "sm:col-span-2",
-  large: "sm:col-span-2 sm:row-span-2",
-};
 
 export function PortfolioBentoTile({
   title,
@@ -35,8 +30,9 @@ export function PortfolioBentoTile({
   return (
     <section
       className={cn(
-        "rounded-2xl bg-foreground/[0.04] min-w-0 flex flex-col transition-colors hover:bg-foreground/[0.07]",
-        SIZE_SPAN[size],
+        "rounded-2xl bg-foreground/[0.04] min-w-0 transition-colors hover:bg-foreground/[0.07]",
+        "mb-4 break-inside-avoid",
+        size === "wide" && "[column-span:all]",
         className,
       )}
     >
@@ -52,7 +48,7 @@ export function PortfolioBentoTile({
           <ArrowRight className="h-3 w-3" />
         </Link>
       </div>
-      <div className="px-4 pb-4 flex-1 min-h-0">{children}</div>
+      <div className="px-4 pb-4">{children}</div>
     </section>
   );
 }
