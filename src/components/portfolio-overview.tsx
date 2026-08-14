@@ -36,12 +36,13 @@ export function PortfolioOverview({
   return (
     <div
       className={cn(
-        // Bento-masonry: a fixed 3-column grid (not auto-fit) so each
-        // tile's declared col/row span composes into a gapless pack via
-        // `dense` auto-flow — auto-fit's variable column count can't
-        // support that. Row height is fixed so a "large" (2x2) tile lines
-        // up exactly with two stacked "default" (1x1) tiles beside it.
-        "grid gap-4 grid-flow-dense auto-rows-[minmax(220px,auto)] grid-cols-1 sm:grid-cols-3",
+        // True masonry: a CSS multi-column container. Each tile keeps its
+        // own natural height and flows into whichever column is currently
+        // shortest — unlike a grid, nothing stretches to match a taller
+        // sibling in the same row, which is what real (unevenly-sized)
+        // portfolio content needs. "wide" tiles opt out via column-span:
+        // all (set on PortfolioBentoTile itself, not here).
+        "columns-1 sm:columns-2 lg:columns-3 gap-4",
         className,
       )}
     >
