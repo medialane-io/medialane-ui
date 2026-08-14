@@ -4,9 +4,7 @@ import { shortenAddress } from "../../utils/address.js";
 import { LevelBadge } from "./level-badge.js";
 
 export interface LeaderboardEntryLike {
-  /** Kept for API compatibility with the backend's ordered response — not
-   *  rendered. This is a scoreboard, not a ranking: no "#1/#2/#3", no podium
-   *  colors. Order in the array is still the sort order the caller gets. */
+
   rank: number;
   address: string;
   publicId?: string | null;
@@ -18,17 +16,13 @@ export interface LeaderboardEntryLike {
 
 export interface LeaderboardTableProps {
   entries: LeaderboardEntryLike[];
-  /** The viewer's address — its row gets highlighted. */
+
   highlightAddress?: string | null;
-  /** Render the address cell (e.g. a profile link). Defaults to a shortened address. */
+
   renderAddress?: (address: string) => ReactNode;
   className?: string;
 }
 
-/** Scoreboard rows: address, level chip, points. No position number or
- *  podium coloring — this celebrates participation, not competition.
- *  Each row is its own rounded tile with real padding, not a bordered
- *  list with hairline dividers. */
 export function LeaderboardTable({ entries, highlightAddress, renderAddress, className }: LeaderboardTableProps) {
   return (
     <div className={cn("space-y-1.5", className)}>
@@ -61,13 +55,12 @@ export function LeaderboardTable({ entries, highlightAddress, renderAddress, cla
 export interface LeaderboardWidgetProps {
   entries: LeaderboardEntryLike[];
   title?: string;
-  /** Link to the full scoreboard ("/rewards"). */
+
   href?: string;
   renderAddress?: (address: string) => ReactNode;
   className?: string;
 }
 
-/** Compact card for homepage/discover rails — same no-ranking scoreboard rows. */
 export function LeaderboardWidget({ entries, title = "Community Rewards", href, renderAddress, className }: LeaderboardWidgetProps) {
   if (entries.length === 0) return null;
   return (

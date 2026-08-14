@@ -9,11 +9,6 @@ export interface AssetUtilityIconsProps {
   onReportClick: () => void;
 }
 
-/**
- * Asset-level utility row: view-on-explorer / share / report. Lives next to
- * the asset's own identity (name/owner), not inside `AssetCollectionBar` —
- * these actions are about the asset, not the collection it belongs to.
- */
 export function AssetUtilityIcons({
   contractExplorerHref,
   shareTitle,

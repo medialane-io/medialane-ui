@@ -21,7 +21,7 @@ export function AssetLightbox({ open, onOpenChange, image, alt }: AssetLightboxP
       >
         <DialogTitle className="sr-only">{alt}</DialogTitle>
         <div className="relative">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
+
           <img
             src={image}
             alt={alt}

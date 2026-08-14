@@ -12,7 +12,6 @@ import { formatDisplayPrice } from "../utils/format.js";
 import { cn } from "../utils/cn.js";
 import type { ApiActivity, Chain } from "@medialane/sdk";
 
-/** ui's pinned SDK lags the apps — extend structurally for fields newer SDKs carry. */
 type ActivityWithEnrichment = ApiActivity & {
   chain?: Chain;
   token?: { name: string | null; image: string | null; animationUrl?: string | null } | null;
@@ -42,12 +41,10 @@ export function ActivityCardSkeleton() {
 
 export interface ActivityCardProps {
   activity: ApiActivity;
-  /** Builds the asset link; card is unlinked when the activity has no token ref */
+
   getAssetHref?: (contract: string, tokenId: string) => string;
 }
 
-/** Card-shaped activity item for horizontal carousels (Discover Community strip).
- *  Same data as ActivityRow, presented like a collection/listing card. */
 export function ActivityCard({
   activity: rawActivity,
   getAssetHref = (c, t) => `/asset/${c}/${t}`,
@@ -73,9 +70,7 @@ export function ActivityCard({
   const tokenName = activity.token?.name ?? (tokenId ? `#${tokenId}` : "—");
   const rawImage = activity.token?.image ?? null;
   const tokenImage = rawImage ? ipfsToHttp(rawImage) : null;
-  // Not resolved through ipfsToHttp — animation_url is legitimately a data: URI for
-  // fully on-chain-rendered collections (ipfsToHttp rejects data: by design), and
-  // AnimatedTokenMedia accepts it as-is, mirroring token-card.tsx's same field.
+
   const animationUrl = activity.token?.animationUrl ?? null;
   const live = !!(activity.chain && contract) && isLivingRenderCollection(activity.chain.toUpperCase() as Chain, contract);
   const amount = activity.amount && Number(activity.amount) > 1 ? activity.amount : null;
@@ -102,7 +97,7 @@ export function ActivityCard({
             <div className="absolute inset-0 bg-gradient-to-br from-muted-foreground/10 to-muted-foreground/5" aria-hidden />
           }
         />
-        {/* Activity type chip — vivid label on glass */}
+
         <span className="absolute top-2.5 left-2.5 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-2xs font-semibold bg-background/75 backdrop-blur-md border border-border/40">
           <Icon className={cn("h-3 w-3", config.colorClass)} aria-hidden />
           <span className={config.colorClass}>{config.label}</span>

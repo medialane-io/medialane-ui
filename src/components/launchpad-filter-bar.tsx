@@ -16,17 +16,10 @@ export interface LaunchpadFilterBarProps {
   groups: ServiceGroupDefinition[];
   activeGroups: Set<ServiceGroup>;
   onToggleGroup: (key: ServiceGroup) => void;
-  /** Accepted for API stability; the bar no longer renders a total count. */
+
   resultCount?: number;
 }
 
-/**
- * Search + group-filter bar above the launchpad grid. Fully controlled — all
- * state (query, active groups) lives in the caller so the grid below reacts
- * to the same state. Each pill shows the live count of services it matches
- * under the current search query. Pressing "/" anywhere on the page focuses
- * the search input.
- */
 export function LaunchpadFilterBar({
   query,
   onQueryChange,

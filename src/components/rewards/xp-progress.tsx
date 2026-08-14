@@ -2,13 +2,13 @@ import { cn } from "../../utils/cn.js";
 
 export interface XpProgressProps {
   totalXp: number;
-  /** XP required to reach the current level. */
+
   levelXp: number;
-  /** XP required for the next level; null at max level (renders full). */
+
   nextLevelXp: number | null;
   badgeColor: string;
   variant?: "bar" | "ring";
-  /** Ring diameter in px (ring variant only). */
+
   size?: number;
   className?: string;
 }
@@ -18,7 +18,6 @@ function progressPct({ totalXp, levelXp, nextLevelXp }: Pick<XpProgressProps, "t
   return Math.min(100, Math.max(0, Math.round(((totalXp - levelXp) / (nextLevelXp - levelXp)) * 100)));
 }
 
-/** XP progress toward the next level, as a rounded bar or an SVG ring. */
 export function XpProgress({ totalXp, levelXp, nextLevelXp, badgeColor, variant = "bar", size = 40, className }: XpProgressProps) {
   const pct = progressPct({ totalXp, levelXp, nextLevelXp });
 

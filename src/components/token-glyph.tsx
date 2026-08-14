@@ -1,5 +1,4 @@
-// Inline SVG token glyphs — self-contained, no external asset dependency.
-// Covers the five tokens active on the platform: STRK, ETH, USDC, USDT, WBTC.
+
 
 export type TokenSymbol = 'strk' | 'eth' | 'usdc' | 'usdt' | 'wbtc';
 
@@ -42,7 +41,7 @@ export function TokenGlyph({ token = 'strk', size = 20 }: TokenGlyphProps) {
         </svg>
       );
     default:
-      // STRK — magenta→orange gradient coin with swoosh
+
       return (
         <svg width={size} height={size} viewBox="0 0 24 24" aria-hidden="true">
           <defs>
@@ -62,9 +61,9 @@ export function TokenGlyph({ token = 'strk', size = 20 }: TokenGlyphProps) {
 export interface TokenAmountProps {
   token?: TokenSymbol | string;
   amount: string;
-  /** Icon size in px. Text size scales proportionally. */
+
   size?: number;
-  /** Override the amount text color. Defaults to brand-maeve orange. */
+
   color?: string;
   bold?: boolean;
   className?: string;

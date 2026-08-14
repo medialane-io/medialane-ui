@@ -4,29 +4,24 @@ import { cn } from "../utils/cn.js";
 
 export interface StepNavStep {
   label: string;
-  /** Whether the step can be navigated to. Defaults to "any step up to the
-   *  current one" when omitted. */
+
   reachable?: boolean;
 }
 
 export interface StepNavProps {
-  /** Ordered steps. */
+
   steps: StepNavStep[];
-  /** 1-based index of the active step. */
+
   current: number;
-  /** Called with the 1-based step index when a reachable step is clicked. */
+
   onStep?: (step: number) => void;
-  /** Tailwind text-color class for the active/completed accent (e.g. "text-brand-rose"). */
+
   accentText?: string;
-  /** Tailwind bg-color class for the active dot + completed connector (e.g. "bg-brand-rose"). */
+
   accentBg?: string;
   className?: string;
 }
 
-/** Presentation-only step indicator: a connected row of numbered dots —
- *  solid accent for the active step, an outlined check for completed steps,
- *  muted for upcoming ones, with the connector filling as you progress.
- *  Touch-first (no hover-only affordance); labels collapse on mobile. */
 export function StepNav({
   steps,
   current,

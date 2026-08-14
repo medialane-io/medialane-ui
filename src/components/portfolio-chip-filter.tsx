@@ -6,20 +6,16 @@ import { cn } from "../utils/cn.js";
 export interface PortfolioChipFilterOption {
   key: string;
   label: string;
-  /**
-   * When set, this chip is a direct navigation link rather than an in-page
-   * filter. It's marked active when `href` equals the current `value`
-   * (pass the current pathname as `value` for a location-aware nav bar).
-   */
+
   href?: string;
 }
 
 export interface PortfolioChipFilterProps {
   options: PortfolioChipFilterOption[];
-  /** Selected filter key, or the current pathname when used for navigation. */
+
   value: string;
   onChange: (key: string) => void;
-  /** Suppress the auto-injected "All" chip — for pure navigation bars where every option already has an href. Default true. */
+
   showAll?: boolean;
   className?: string;
 }
@@ -29,13 +25,6 @@ const CHIP_CLASS =
 const INACTIVE_CLASS = "bg-muted border-border/60 text-muted-foreground hover:text-foreground hover:border-border";
 const ACTIVE_CLASS = "bg-gradient-to-r from-brand-purple to-brand-orange border-transparent text-white font-bold";
 
-/**
- * Horizontally-scrollable chip row — the portfolio section's sole
- * navigation mechanism (Instagram/YouTube-style chips), used both as an
- * in-page filter (chips with no `href`, toggled via `onChange`) and as
- * cross-page navigation (chips with `href`, highlighted active by matching
- * `value` against the current pathname).
- */
 export function PortfolioChipFilter({
   options,
   value,

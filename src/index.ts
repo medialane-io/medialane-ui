@@ -1,4 +1,4 @@
-// ── Utils ─────────────────────────────────────────────────────────────────────
+
 export { cn } from "./utils/cn.js";
 export { formatDisplayPrice, parsePriceDisplay, isStableCurrency } from "./utils/format.js";
 export { shortenAddress } from "./utils/address.js";
@@ -7,7 +7,6 @@ export { useIntersectionActive } from "./utils/use-intersection-active.js";
 export { getReadIds, markRead } from "./utils/notification-storage.js";
 export { licenseSummary } from "./utils/license-summary.js";
 
-// ── Data (server-safe — no React, safe in Server Components) ──────────────────
 export { IP_TYPE_DATA, IP_TYPE_DATA_MAP } from "./data/ip-types.js";
 export type { IpTypeData } from "./data/ip-types.js";
 export {
@@ -36,7 +35,6 @@ export type { AssetMarketplacePanelProps, ApiOrderLike } from "./components/asse
 export { BRAND } from "./data/brand.js";
 export { LIVING_RENDER_COLLECTIONS, isLivingRenderCollection } from "./data/living-render-collections.js";
 
-// ── Components (client-only — all have "use client") ─────────────────────────
 export { CurrencyIcon, CurrencyAmount } from "./components/currency-icon.js";
 export type { CurrencyIconProps, CurrencyAmountProps } from "./components/currency-icon.js";
 
@@ -49,7 +47,6 @@ export type { AddressDisplayProps } from "./components/address-display.js";
 export { MedialaneLogoFull } from "./components/brand-logo.js";
 export type { MedialaneLogoFullProps } from "./components/brand-logo.js";
 
-// ── v0.2 additions ────────────────────────────────────────────────────────────
 export { MotionCard, FadeIn, Stagger, StaggerItem, KineticWords, SPRING, EASE_OUT } from "./components/motion-primitives.js";
 export { PageContainer } from "./components/page-container.js";
 export type { PageContainerProps } from "./components/page-container.js";
@@ -83,7 +80,7 @@ export { AssetSearchPicker } from "./components/asset-search-picker.js";
 export type { AssetSearchPickerProps } from "./components/asset-search-picker.js";
 export { LicenseTermsBuilder, EMPTY_SPONSORSHIP_TERMS, MEDIA_TYPES, DURATION_UNITS, toLicenseMetadata, toDurationDays } from "./components/license-terms-builder.js";
 export type { LicenseTermsBuilderProps, SponsorshipTerms, DurationUnit } from "./components/license-terms-builder.js";
-// ── Coin discovery (chain-agnostic; price/data/href injected by the app) ─────
+
 export {
   coinKind, formatCoinPrice, formatFdv,
   type CoinKind, type CoinCollectionLike, type CoinPriceLike,
@@ -94,7 +91,6 @@ export {
   type CoinsExplorerProps, type CoinFilter, type CoinSort, type UseCoins,
 } from "./components/coins-explorer.js";
 
-// ── v0.3 additions ────────────────────────────────────────────────────────────
 export { timeAgo, timeUntil } from "./utils/time.js";
 export { ACTIVITY_TYPE_CONFIG, TYPE_FILTERS } from "./data/activity.js";
 export type { ActivityTypeConfig } from "./data/activity.js";
@@ -111,7 +107,6 @@ export type { ActivityFeedShellProps } from "./components/activity-feed-shell.js
 export { CtaCardGrid } from "./components/cta-card-grid.js";
 export type { CtaCardGridProps, CtaCardItem } from "./components/cta-card-grid.js";
 
-// ── v0.3.2 additions ─────────────────────────────────────────────────────────
 export { DiscoverHero } from "./components/discover-hero.js";
 export type { DiscoverHeroProps } from "./components/discover-hero.js";
 export { FeaturedCarousel, FeaturedCarouselSkeleton } from "./components/featured-carousel.js";
@@ -125,7 +120,6 @@ export type { DiscoverFeedSectionProps, DiscoverActivityStripProps } from "./com
 export { ActivityCard, ActivityCardSkeleton, ACTIVITY_MESSAGES } from "./components/activity-card.js";
 export type { ActivityCardProps } from "./components/activity-card.js";
 
-// ── Launchpad (grouped sections — single page-UI source since 0.8.0) ─────────
 export { LaunchpadGroupedSections, LaunchpadServiceCard, SERVICE_HUES, useLaunchpadFilter } from "./components/launchpad-services.js";
 export { LaunchpadFilterBar } from "./components/launchpad-filter-bar.js";
 export type { LaunchpadFilterBarProps } from "./components/launchpad-filter-bar.js";
@@ -135,11 +129,9 @@ export type { LaunchpadGroupedSectionsProps, LaunchpadServiceCardProps, ServiceO
 export { LAUNCHPAD_SERVICE_DEFINITIONS, LAUNCHPAD_SERVICE_GROUPS } from "./data/launchpad-services.js";
 export type { ServiceDefinition, ServiceStatus, ServiceGroup, ServiceGroupDefinition } from "./data/launchpad-services.js";
 
-// ── v0.5.0 additions ─────────────────────────────────────────────────────────
 export { NavCommandMenu, useNavCommandMenu } from "./components/nav-command-menu.js";
 export type { NavCommand, NavCommandGroup, NavCommandMenuProps } from "./components/nav-command-menu.js";
 
-// ── v0.62.0 — nav shell (brand trigger + header buttons + account sheet) ─────
 export {
   NavBrandButton,
   NavIconButton,
@@ -154,7 +146,6 @@ export type {
   NavAccountSheetProps,
 } from "./components/nav-shell.js";
 
-// ── v0.59.0 — portfolio shell (two-level nav + header + overview) ────────────
 export { PortfolioHeader } from "./components/portfolio-header.js";
 export type {
   PortfolioHeaderProps,
@@ -175,24 +166,16 @@ export type {
   PortfolioChipFilterOption,
 } from "./components/portfolio-chip-filter.js";
 
-// ── v0.22.0 additions — launchpad/claim form template primitives ─────────────
-// Pure-presentation header + rail shared by every launchpad/claim form. The
-// app supplies its own gate, back button, and form logic. Requires the
-// `.btn-border-animated` class (in @medialane/ui/styles) for the form shell.
 export { ServiceHeader } from "./components/service-header.js";
 export type { ServiceHeaderProps } from "./components/service-header.js";
 export { ClaimRail } from "./components/claim-rail.js";
 export type { ClaimRailProps } from "./components/claim-rail.js";
 
-// ── v0.23.0 additions — slot-based form shell ────────────────────────────────
-// Pure layout (back slot + header + animated-border compartment + 8/4 bento).
-// No auth/router — the app injects its own gate (around children) + back button.
 export { ServiceFormShell } from "./components/service-form-shell.js";
 export type { ServiceFormShellProps } from "./components/service-form-shell.js";
 export { StepNav } from "./components/step-nav.js";
 export type { StepNavProps, StepNavStep } from "./components/step-nav.js";
 
-// Rewards score kit (v0.36.0)
 export { LevelBadge } from "./components/rewards/level-badge.js";
 export type { LevelBadgeProps } from "./components/rewards/level-badge.js";
 export { XpProgress } from "./components/rewards/xp-progress.js";
@@ -212,17 +195,14 @@ export type { XpToastContentProps } from "./components/rewards/xp-toast-content.
 export { createRewardToast } from "./components/rewards/reward-toast.js";
 export type { RewardToastSnapshot } from "./components/rewards/reward-toast.js";
 
-// ── v0.37.0 additions — infinite-scroll trigger ──────────────────────────────
 export { LoadMoreSentinel } from "./components/load-more-sentinel.js";
 export type { LoadMoreSentinelProps } from "./components/load-more-sentinel.js";
 
-// ── v0.47.0 additions — community rewards section ────────────────────────────
 export { CommunityRewardsSection } from "./components/community-rewards-section.js";
 export type { CommunityRewardsSectionProps, CommunityRewardsEntry } from "./components/community-rewards-section.js";
 export { CreatorAirdropBanner } from "./components/creator-airdrop-banner.js";
 export type { CreatorAirdropBannerProps } from "./components/creator-airdrop-banner.js";
 
-// ── Design system primitives — action-focus pattern, tokens, data display ────
 export { ActionButton } from "./components/action-button.js";
 export type { ActionButtonProps, ActionKey, ToneKey } from "./components/action-button.js";
 export { GradientButton } from "./components/gradient-button.js";
@@ -245,7 +225,6 @@ export { HiddenContentBanner } from "./components/hidden-content-banner.js";
 export { CollectionHeroBanner } from "./components/collection-hero-banner.js";
 export type { CollectionHeroBannerProps, CollectionHeroStat } from "./components/collection-hero-banner.js";
 
-// ── v0.99.0 additions — rewards UX overhaul ───────────────────────────────────
 export { useRewardsCelebrations } from "./components/rewards/use-rewards-celebrations.js";
 export { LevelUpCelebration } from "./components/rewards/level-up-celebration.js";
 export type { LevelUpCelebrationProps } from "./components/rewards/level-up-celebration.js";
@@ -254,7 +233,6 @@ export type { BadgeUnlockToastContentProps } from "./components/rewards/badge-un
 export { JourneyPath } from "./components/rewards/journey-path.js";
 export type { JourneyPathProps, JourneyStep } from "./components/rewards/journey-path.js";
 
-// ── Primitives (shadcn-derived, deduplicated from io + starknet) ─────────────
 export { Skeleton } from "./components/skeleton.js";
 export { Badge, badgeVariants } from "./components/badge.js";
 export type { BadgeProps } from "./components/badge.js";
@@ -285,7 +263,6 @@ export {
   SheetHeader, SheetFooter, SheetTitle, SheetDescription,
 } from "./components/sheet.js";
 
-// ── v0.106.0 additions — dedupe pass 2 (io + starknet audit) ─────────────────
 export { ToggleGroup, Section } from "./components/create-form-primitives.js";
 export { OrderSortControl, sortOrders } from "./components/order-sort-control.js";
 export type { OrderSort } from "./components/order-sort-control.js";
@@ -309,9 +286,6 @@ export {
 } from "./utils/format-activity.js";
 export type { FormattedEvent } from "./utils/format-activity.js";
 
-// ── v0.107.0 additions — dedupe pass 3: data-fetching hooks + their views ────
-// Same getClient-injection pattern as useRewards/useCreators — the app
-// supplies its own SDK client factory, none of this touches wallet state.
 export { queryKeys, queryKeyPrefix, QUERY_PREFIX } from "./utils/query-keys.js";
 export { useCollectionProfile, useCreatorProfile } from "./utils/use-profiles.js";
 export { useActivities, useActivitiesByAddress } from "./utils/use-activities.js";
@@ -336,7 +310,7 @@ export {
   useRewards, useLeaderboard, useRewardsEvents, useRewardsConfig, useRewardsBatch,
 } from "./utils/use-rewards.js";
 export type { UserRewards, LeaderboardEntry, BadgeSummary, LevelSummary } from "./utils/use-rewards.js";
-// ── v0.108.0 additions — dedupe pass 4: apiFetch + orders/notifications/remixes ──
+
 export { apiFetch, ApiError } from "./utils/api-fetch.js";
 export type { ApiFetchConfig, ApiFetchOptions } from "./utils/api-fetch.js";
 export {

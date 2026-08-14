@@ -7,8 +7,7 @@ import type { OwnedAsset } from "./asset-picker.js";
 import { AssetPickerCell, isSameAsset } from "./asset-picker-cell.js";
 
 export interface AssetSearchPickerProps {
-  /** App-supplied search — the app owns the actual fetch (e.g. GET /v1/search).
-   *  Called only when the query is 2+ chars, debounced by this component. */
+
   search: (query: string) => Promise<OwnedAsset[]>;
   selected: OwnedAsset | null;
   onSelect: (asset: OwnedAsset) => void;

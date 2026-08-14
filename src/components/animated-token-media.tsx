@@ -5,26 +5,22 @@ import Image from "next/image";
 import { useIntersectionActive } from "../utils/use-intersection-active.js";
 
 export interface AnimatedTokenMediaProps {
-  /** Resolved (already ipfsToHttp'd, if needed) static image URL. */
+
   image: string | null;
   alt: string;
-  /** Resolved animation_url (data:/http(s)/ipfs-resolved) — the live on-chain renderer. */
+
   animationUrl?: string | null;
-  /** Caller-computed eligibility — this component never decides eligibility itself. */
+
   live?: boolean;
-  /**
-   * "fill" = absolutely-positioned, fills a `position:relative` parent (grid
-   * tiles). "natural" = flows at its own width, `w-full h-auto` for the
-   * image / a forced square for the live iframe (asset detail hero).
-   */
+
   mode?: "fill" | "natural";
   className?: string;
   sizes?: string;
   priority?: boolean;
-  /** Controlled error state (AssetMediaColumn's existing external contract). Omit for internal (uncontrolled) tracking. */
+
   imgError?: boolean;
   onImageError?: () => void;
-  /** Rendered instead of the image/iframe when there's no image and nothing live to show, or the image errored. */
+
   fallback?: React.ReactNode;
 }
 

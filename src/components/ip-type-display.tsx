@@ -19,8 +19,6 @@ interface IPTypeDisplayProps {
   attributes: Attr[] | null | undefined;
 }
 
-// ── Embed URL parsers ────────────────────────────────────────────────────────
-
 function parseYouTubeEmbed(url: string): string | null {
   try {
     const u = new URL(url);
@@ -41,9 +39,7 @@ function parseSpotifyEmbed(url: string): string | null {
   try {
     const u = new URL(url);
     if (!u.hostname.includes("spotify.com")) return null;
-    // Spotify's embed endpoint only accepts /embed/{type}/{id}. Isolate the
-    // resource type + id so locale prefixes (e.g. /intl-pt) and trailing query
-    // params don't leak through — `/embed/intl-pt/album/…` 404s on Spotify.
+
     const match = u.pathname.match(
       /(track|album|playlist|episode|show|artist)\/([A-Za-z0-9]+)/
     );
@@ -56,7 +52,7 @@ function parseSpotifyEmbed(url: string): string | null {
 
 function parseSoundCloudEmbed(url: string): string | null {
   try {
-    new URL(url); // validate
+    new URL(url);
     if (!url.includes("soundcloud.com")) return null;
     const encoded = encodeURIComponent(url);
     return `https://w.soundcloud.com/player/?url=${encoded}&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false`;
@@ -99,7 +95,6 @@ function getEmbedSrc(platform: EmbedPlatform, value: string): string | null {
   }
 }
 
-// Compact iframe (fixed height) vs 16:9 video frame.
 const COMPACT: Record<EmbedPlatform, boolean> = {
   spotify: true,
   soundcloud: true,
@@ -107,8 +102,6 @@ const COMPACT: Record<EmbedPlatform, boolean> = {
   tiktok: false,
   vimeo: false,
 };
-
-// ── Component ─────────────────────────────────────────────────────────────────
 
 export function IPTypeDisplay({ attributes }: IPTypeDisplayProps) {
   const attrs = attributes ?? [];
@@ -142,7 +135,7 @@ export function IPTypeDisplay({ attributes }: IPTypeDisplayProps) {
 
   return (
     <div className="space-y-5">
-      {/* Document pinned to IPFS — immutable, timestamped copy of the work */}
+
       {docUri && (
         <div className="space-y-1.5">
           <p className="text-xs font-medium text-muted-foreground">
@@ -200,7 +193,7 @@ export function IPTypeDisplay({ attributes }: IPTypeDisplayProps) {
             </div>
           );
         }
-        // Fallback: plain external link if URL parsing failed
+
         return (
           <div key={platform}>
             <p className="text-xs font-medium text-muted-foreground mb-1">

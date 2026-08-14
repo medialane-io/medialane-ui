@@ -1,16 +1,5 @@
 "use client";
 
-/**
- * CoinsExplorer — the shared coin-discovery surface (chain-agnostic).
- *
- * Owns view/search/filter/sort UI only. The data source (`useCoins`), the price
- * read (`usePrice`), and the link target (`coinHref`) are injected, so each app
- * (and each chain) wires its own without forking this component.
- *
- * Type + sort live in a centered Filters dialog (the "action focus" pattern, and
- * matching the marketplace page); the header stays to two lines.
- */
-
 import { useState, useMemo, useEffect } from "react";
 import { Coins, LayoutGrid, List, Search, SlidersHorizontal, X } from "lucide-react";
 import { cn } from "../utils/cn.js";
@@ -27,7 +16,7 @@ export type UseCoins = (opts: { filter: CoinFilter; sort: CoinSort }) => {
 export interface CoinsExplorerProps {
   useCoins: UseCoins;
   usePrice: UseCoinPrice;
-  /** Build the link target for a coin (internal or per-chain trading app). */
+
   coinHref: (collection: CoinCollectionLike) => string;
   heading?: boolean;
 }
@@ -38,7 +27,6 @@ const FILTER_TABS: { label: string; value: CoinFilter }[] = [
   { label: "Memecoins", value: "memecoin" },
 ];
 
-// Recency default — never raw swap volume (05 §11 anti-wash hygiene).
 const SORT_OPTIONS: { label: string; value: CoinSort }[] = [
   { label: "Recently launched", value: "recent" },
   { label: "Name", value: "name" },
@@ -84,7 +72,6 @@ export function CoinsExplorer({ useCoins, usePrice, coinHref, heading = true }: 
         </div>
       )}
 
-      {/* Controls — search + filters + view, kept lean. */}
       <div className="space-y-3 border-b border-border/60 pb-3">
         <div className="flex items-center gap-2">
           <div className="relative flex-1">
@@ -122,7 +109,6 @@ export function CoinsExplorer({ useCoins, usePrice, coinHref, heading = true }: 
           </div>
         </div>
 
-        {/* Active-filter chips */}
         {filterCount > 0 && (
           <div className="flex flex-wrap items-center gap-1.5">
             {filter !== "all" && (

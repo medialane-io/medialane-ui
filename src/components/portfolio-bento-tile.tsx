@@ -5,25 +5,16 @@ import { ArrowRight } from "lucide-react";
 import { cn } from "../utils/cn.js";
 
 export interface PortfolioBentoTileProps {
-  /** Tile heading, e.g. "Collections". */
+
   title: string;
-  /** "See all" link target. */
+
   href: string;
-  /**
-   * "wide" spans 2 grid tracks (for content that reads better a bit wider,
-   * like Activity rows) while still sharing a row with other tiles when
-   * there's room. Default sits in a single track.
-   */
+
   size?: "wide" | "default";
   children: React.ReactNode;
   className?: string;
 }
 
-/**
- * A single cell on the portfolio landing page: a titled, media-forward
- * preview of one section, expanding into its full subpage via "See all".
- * Pure presentation — content is supplied by the caller.
- */
 export function PortfolioBentoTile({
   title,
   href,

@@ -1,6 +1,5 @@
 import { cn } from "../utils/cn.js";
 
-/** Segmented two/three-option toggle used across the create flows. */
 export function ToggleGroup({
   value, options, onChange,
 }: { value: string; options: readonly string[]; onChange: (v: string) => void }) {
@@ -26,7 +25,6 @@ export function ToggleGroup({
   );
 }
 
-/** Titled card section wrapper for the create forms. */
 export function Section({ title, icon, children }: {
   title: string; icon: React.ReactNode; children: React.ReactNode;
 }) {

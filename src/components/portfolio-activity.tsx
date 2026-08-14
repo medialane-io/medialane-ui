@@ -25,7 +25,6 @@ export function PortfolioActivity({ getClient, address }: PortfolioActivityProps
     ? activities.filter((a) => a.type === typeFilter)
     : activities;
 
-  // Per-type counts for the filter chip badges
   const typeCounts = useMemo(() => {
     const counts: Record<string, number> = {};
     for (const a of activities) {
@@ -36,7 +35,7 @@ export function PortfolioActivity({ getClient, address }: PortfolioActivityProps
 
   return (
     <div className="space-y-4">
-      {/* Filter chips with icons + per-type counts */}
+
       <div className="flex flex-wrap gap-2">
         {TYPE_FILTERS.map((f) => {
           const typeConfig = f.value ? ACTIVITY_TYPE_CONFIG[f.value] : null;

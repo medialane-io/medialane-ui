@@ -17,13 +17,9 @@ interface AssetOverviewContentProps {
   isDisplayAttr: (attribute: AssetAttribute) => boolean;
 }
 
-// Attribute values can be numbers (OpenSea allows numeric trait `value`s), so
-// guard against non-strings — `(123).trim()` would throw and crash the page.
 const isAddressLike = (v?: unknown): boolean =>
   typeof v === "string" && /^0x[0-9a-fA-F]{16,}$/.test(v.trim());
 
-/** A standard bento square: a brand-tinted icon, a plain label, a bold value.
- *  `wide` stretches it across two columns for an emphasized detail. */
 function Cell({
   icon,
   label,
@@ -52,13 +48,6 @@ function Cell({
   );
 }
 
-/**
- * Asset Overview tab, as a Bento 2.0 grid: an asymmetrical lattice of rounded
- * compartments on a soft brand light-leak, uniform gaps throughout. The license
- * summary is the emphasized cell (stretched 2×2, brand-gradient wash + license
- * stamp + emerald trust seal); each right is a standard square; Details follow.
- * Uses only design-system tokens (brand-* / primary / aurora / emerald-for-trust).
- */
 export function AssetOverviewContent({
   attributes,
   hasTemplateData,
@@ -97,7 +86,7 @@ export function AssetOverviewContent({
           <div className="relative">
 
             <div className="relative grid grid-cols-2 sm:grid-cols-4 gap-3 [grid-auto-flow:dense] auto-rows-[minmax(6rem,auto)]">
-              {/* emphasized cell — the license summary, stretched 2×2 */}
+
               <div className="col-span-2 sm:row-span-2 flex flex-col justify-between gap-4 rounded-2xl bg-gradient-to-br from-primary/10 via-primary/5 to-accent/10 ring-1 ring-primary/15 p-5">
                 {licenseType ? (
                   <span className="pill-badge self-start text-2xs">{licenseType}</span>

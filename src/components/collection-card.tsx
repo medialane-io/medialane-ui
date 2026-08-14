@@ -11,7 +11,6 @@ import { MotionCard } from "./motion-primitives.js";
 import { CurrencyIcon } from "./currency-icon.js";
 import type { ApiCollection } from "@medialane/sdk";
 
-/** "0.990000 USDC" → { amount: "0.99", symbol: "USDC" } */
 function parseFloorPrice(floor: string | null | undefined): { amount: string; symbol: string } | null {
   if (!floor) return null;
   const formatted = formatDisplayPrice(floor);
@@ -22,16 +21,15 @@ function parseFloorPrice(floor: string | null | undefined): { amount: string; sy
   return { amount, symbol };
 }
 
-/** ui's pinned SDK lags the apps — extend structurally for newer fields. */
 type CollectionWithProfile = ApiCollection & {
   profile?: { hasGatedContent?: boolean } | null;
 };
 
 export interface CollectionCardProps {
   collection: ApiCollection;
-  /** Override the card link destination. Defaults to /collections/:contractAddress. */
+
   href?: string;
-  /** Shows settings gear icon linking to this path — used in portfolio pages */
+
   settingsHref?: string;
   className?: string;
 }

@@ -8,16 +8,14 @@ import type { ApiCollection } from "@medialane/sdk";
 export interface DiscoverCollectionsStripProps {
   collections: ApiCollection[];
   isLoading: boolean;
-  /** Kept for API compat — CollectionCard links to /collections/:contract internally */
+
   getHref?: (collection: ApiCollection) => string;
   allCollectionsHref?: string;
-  /** Kept for API compat — the io-style header has no eyebrow label */
+
   sectionLabel?: string;
   title?: string;
 }
 
-/** Discover Collections carousel — CollectionCard tiles under the shared
- *  icon-badge ScrollSection header (io-approved design). */
 export function DiscoverCollectionsStrip({
   collections,
   isLoading,

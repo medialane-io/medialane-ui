@@ -1,14 +1,14 @@
-// Bento stat tile and header stat pill — the design system's data-display primitives.
+
 
 export interface StatTileProps {
   label: string;
-  /** Shown as the primary value. Pass "—" (em dash) for unknown, never zero. */
+
   value?: string | number | null;
-  /** Secondary line below the value. */
+
   sub?: string;
-  /** Override color for the value text (e.g. brand-blue for positive deltas). */
+
   accent?: string;
-  /** Large 22px value variant. */
+
   big?: boolean;
   radius?: number;
   children?: React.ReactNode;

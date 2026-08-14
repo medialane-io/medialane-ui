@@ -12,7 +12,6 @@ function parts(totalSeconds: number) {
   };
 }
 
-// Counts down to a unix-seconds target (phase start when upcoming, phase end when live).
 export function DropCountdown({ targetTs, label }: { targetTs: number; label: string }) {
   const [now, setNow] = useState(() => Math.floor(Date.now() / 1000));
 

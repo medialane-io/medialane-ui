@@ -1,6 +1,6 @@
-/** Human-readable countdown, e.g. "2d 4h", "3h 12m", "Expired". */
+
 export function timeUntil(dateStr: string | number): string {
-  // Accept Unix seconds as number, numeric string (BigInt serialized), or ISO date string.
+
   const raw = typeof dateStr === "string" && /^\d+$/.test(dateStr.trim())
     ? Number(dateStr)
     : dateStr;
@@ -14,10 +14,6 @@ export function timeUntil(dateStr: string | number): string {
   return `${hours}h ${mins}m`;
 }
 
-/**
- * Returns a human-readable relative time string.
- * e.g. "just now", "2m ago", "3h ago", "5d ago"
- */
 export function timeAgo(iso: string): string {
   const diff = Date.now() - new Date(iso).getTime();
   const s = Math.floor(diff / 1000);

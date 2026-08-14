@@ -16,10 +16,9 @@ export function useCollections(
   sort: CollectionSort = "recent",
   hideEmpty = true,
   service?: string,
-  /** Token standard filter — single value or comma-separated list (e.g. "ERC721,ERC1155"). */
+
   standard?: string,
-  /** Server-fetched seed (e.g. homepage hero) — first render shows real data,
-   *  SWR still revalidates in the background. */
+
   fallback?: ApiCollection[]
 ) {
   const client = useMedialaneClient(getClient);
@@ -90,12 +89,6 @@ export function useCollectionTokens(
   return { tokens: data?.data ?? [], meta: data?.meta, isLoading, error, mutate };
 }
 
-/** From a token list ordered by tokenId (ascending), picks up to `count`
- *  tokens surrounding `currentTokenId` — the ones after it first, then the
- *  ones before, backfilling from whichever side has room near a collection
- *  edge. Returned in ascending tokenId order for a natural "keep browsing"
- *  feel. Falls back to the first `count` tokens when the current one isn't
- *  in the fetched page (e.g. a collection larger than the pool). */
 function pickNearbyTokens<T extends { tokenId: string }>(
   tokens: T[],
   currentTokenId: string | null,
@@ -115,11 +108,6 @@ function pickNearbyTokens<T extends { tokenId: string }>(
   return picked.sort((a, b) => Number(a.tokenId) - Number(b.tokenId));
 }
 
-/** Asset-page "more from this collection" strip — tokens near `currentTokenId`
- *  by id, not just whatever minted most recently (which can be anywhere in a
- *  large collection and feel unrelated to the piece being viewed). Pulls a
- *  bounded pool sorted `oldest` (ascending mint order, i.e. tokenId order for
- *  every Medialane-issued collection) and windows around the current token. */
 export function useNearbyCollectionTokens(
   getClient: () => MedialaneClient,
   contract: string | null,

@@ -19,8 +19,7 @@ export function useCreatorProfile(getClient: () => MedialaneClient, walletAddres
       try {
         return await getClient().api.getCreatorProfile(walletAddress!);
       } catch (e: unknown) {
-        // 404 means no profile yet — return null instead of throwing so the
-        // global SWR error toast is not triggered and the form stays editable.
+
         const msg = e instanceof Error ? e.message : "";
         const status = (e as { status?: number })?.status;
         if (msg.includes("404") || msg.includes("Not Found") || status === 404) {

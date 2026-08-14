@@ -16,7 +16,7 @@ interface EmptyOrErrorProps {
   emptyCta?: { label: string; href: string };
   emptyIcon?: ReactNode;
   skeletonCount?: number;
-  /** Optional custom skeleton renderer — replaces the default row skeletons */
+
   skeletonNode?: ReactNode;
   children?: ReactNode;
 }

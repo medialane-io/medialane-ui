@@ -6,9 +6,6 @@ import {
 } from "lucide-react";
 import type { IPType } from "./ip.js";
 
-// ── Embeds (inline iframe players) ──────────────────────────────────────────
-// Only platforms with clean iframe embeds. Each maps to a stored trait_type key
-// so the asset page can render the player from metadata attributes.
 export type EmbedPlatform = "spotify" | "soundcloud" | "youtube" | "tiktok" | "vimeo";
 
 export const EMBED_PLATFORM_META: Record<
@@ -22,9 +19,6 @@ export const EMBED_PLATFORM_META: Record<
   vimeo:      { label: "Vimeo",      icon: Video,      traitKey: "Vimeo URL",      placeholder: "https://vimeo.com/…" },
 };
 
-// ── Socials (icon-chip links — open in a new tab, never iframed) ────────────
-// X / Instagram / Facebook need fragile JS SDKs and sites block iframing, so
-// these render as clickable platform chips on the asset page, not players.
 export type SocialPlatform = "x" | "instagram" | "facebook" | "tiktok" | "website";
 
 export const SOCIAL_PLATFORM_META: Record<
@@ -38,9 +32,6 @@ export const SOCIAL_PLATFORM_META: Record<
   website:   { label: "Website",   icon: Globe,     traitKey: "Website",   placeholder: "https://…" },
 };
 
-// ── Trait suggestions (friendly, no dates / no technical fields) ────────────
-// Tapping a suggestion pre-fills a trait row. Optional `options` renders the
-// value as a select (e.g. Rarity).
 export interface TraitSuggestion {
   key: string;
   placeholder?: string;
@@ -48,12 +39,12 @@ export interface TraitSuggestion {
 }
 
 export interface DocUploadConfig {
-  /** Stored trait_type carrying the ipfs:// URI of the uploaded document */
+
   traitType: string;
-  /** File-input accept list */
+
   accept: string;
   maxMb: number;
-  /** Creator-facing explanation shown under the upload field */
+
   hint: string;
 }
 
@@ -66,13 +57,10 @@ export interface IPTemplate {
   embeds?: EmbedPlatform[];
   socials?: SocialPlatform[];
   traitSuggestions?: TraitSuggestion[];
-  /** Document/PDF upload to IPFS (Documents, Patents, Publications, Software) */
+
   docUpload?: DocUploadConfig;
 }
 
-/** The document itself, pinned to immutable IPFS — a timestamped copy of the
- *  work that stands as proof of authorship (Berne Convention: protection
- *  exists from fixation; an immutable dated copy is the evidence). */
 export const DOC_UPLOAD: DocUploadConfig = {
   traitType: "Document File",
   accept: ".pdf,.doc,.docx,.txt,.md,.rtf,.odt",
@@ -217,11 +205,6 @@ export const IP_TEMPLATES: Record<IPType, IPTemplate> = {
   },
 };
 
-/**
- * All trait_type keys owned by templates (embeds + socials + suggestions), plus
- * "IP Type" itself. Used to filter template-managed attributes out of other
- * attribute grids so they aren't duplicated.
- */
 export const TEMPLATE_TRAIT_TYPES = new Set<string>([
   "IP Type",
   DOC_UPLOAD.traitType,

@@ -1,8 +1,8 @@
-/** Server-safe IP type data — no React components, safe to import in Server Components. */
+
 export interface IpTypeData {
   slug: string;
   label: string;
-  /** API ipType value — null means "nft" special case */
+
   apiValue: string | null;
   colorClass: string;
   bgClass: string;

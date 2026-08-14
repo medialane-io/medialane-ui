@@ -4,63 +4,41 @@ import { cn } from "../utils/cn.js";
 import { CurrencyIcon } from "./currency-icon.js";
 import { LICENSE_TYPES, AI_POLICIES } from "../data/ip.js";
 
-/** Duration units — the on-chain `duration` arg is seconds, but nobody
- *  should be forced to think in days for a multi-year deal (or forced into
- *  days at all — this is declarative, not contract-enforced). */
 export const DURATION_UNITS = ["Days", "Weeks", "Months", "Years"] as const;
 export type DurationUnit = (typeof DURATION_UNITS)[number];
 const DURATION_UNIT_DAYS: Record<DurationUnit, number> = { Days: 1, Weeks: 7, Months: 30, Years: 365 };
 
-/** Converts the user-entered value + unit into whole days for the contract's
- *  `duration` arg (seconds = days * 86400, done by the caller). */
 export function toDurationDays(terms: SponsorshipTerms): number {
   const raw = Number(terms.durationValue || "0");
   if (!raw || raw <= 0) return 0;
   return Math.round(raw * DURATION_UNIT_DAYS[terms.durationUnit]);
 }
 
-/** Common sponsorship media/channel types — deliberately not part of the
- *  general IP taxonomy in `data/ip.ts` (that's about the asset itself;
- *  this is about the sponsorship deal's channels), so it stays local here. */
 export const MEDIA_TYPES = [
   "Social Media", "Video", "Photo", "Article/Blog", "Print", "Broadcast", "Podcast/Audio", "Livestream",
 ] as const;
 
-/**
- * The deal terms a sponsorship offer/proposal needs, in plain-language shape
- * — no bps, no IPFS, no ByteArray. `royaltyPercent` is a plain 0–100 number
- * (multiply by 100 for the contract's basis-points argument). Every field
- * here is declarative metadata carried in the pinned IPFS document (see
- * `toLicenseMetadata`) — the contract never reads any of it, so none of it
- * is enforced beyond the atomic accept-and-mint payment itself. This
- * component only collects and validates the data, it never fetches or
- * uploads anything itself.
- */
 export interface SponsorshipTerms {
   amount: string;
   paymentTokenSymbol: string;
-  /** No default — the user must explicitly set this, never silently inherit one.
-   *  Paired with `durationUnit`; convert with `toDurationDays()`. */
+
   durationValue: string;
   durationUnit: DurationUnit;
   transferable: boolean;
-  /** Not surfaced in the UI (no resale-royalty concept here) — always "0". Kept
-   *  on the type because `create_offer`/`propose_sponsorship` still take a
-   *  `royaltyBps` argument. */
+
   royaltyPercent: string;
-  /** Free-text notes that don't fit any structured field below. */
+
   licenseText: string;
   licenseType: string;
   commercialUse: "Yes" | "No";
   derivatives: "Allowed" | "Not Allowed" | "Share-Alike";
   attribution: "Required" | "Not Required";
-  /** Free text — "Worldwide" is a fine default, but real deals often name a
-   *  specific country or an exclusion, which a fixed list can't cover. */
+
   territory: string;
   aiPolicy: string;
-  /** e.g. "Instagram + YouTube only" — too deal-specific to bound into an enum. */
+
   scope: string;
-  /** e.g. "3 posts, 1 video" */
+
   deliverables: string;
   exclusive: boolean;
   approvalRequired: boolean;
@@ -90,9 +68,6 @@ export const EMPTY_SPONSORSHIP_TERMS: SponsorshipTerms = {
   mediaOther: "",
 };
 
-/** Shapes the pinned-IPFS-JSON payload — the single place both apps build
- *  this object, so it can't drift across call sites. Purely additive; the
- *  contract never reads any of it. */
 export function toLicenseMetadata(terms: SponsorshipTerms): Record<string, unknown> {
   return {
     terms: terms.licenseText,
@@ -116,10 +91,9 @@ export function toLicenseMetadata(terms: SponsorshipTerms): Record<string, unkno
 export interface LicenseTermsBuilderProps {
   value: SponsorshipTerms;
   onChange: (next: SponsorshipTerms) => void;
-  /** Payment token symbols to offer — e.g. from SUPPORTED_TOKENS. */
+
   tokenOptions: string[];
-  /** Copy override for the amount field — "Minimum bid" for an owner's
-   *  offer, "Amount you'll pay" for a sponsor's proposal. Default: "Amount". */
+
   amountLabel?: string;
   disabled?: boolean;
   className?: string;

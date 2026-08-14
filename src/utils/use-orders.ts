@@ -67,7 +67,6 @@ export function useUserOrders(getClient: () => MedialaneClient, address: string 
   return { orders: data?.data ?? [], isLoading, error, mutate };
 }
 
-/** Fetch counter-offers for a specific original bid (buyer view) or by seller address. */
 export function useCounterOffers(
   getClient: () => MedialaneClient,
   {
@@ -105,7 +104,6 @@ export function useCounterOffers(
   };
 }
 
-/** Fetch active ERC20 offers received by the given address (offers on tokens they hold). */
 export function useReceivedOffers(apiConfig: ApiFetchConfig, address: string | null) {
   const normalized = address ? normalizeAddress("STARKNET", address) : null;
 

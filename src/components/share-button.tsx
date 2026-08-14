@@ -41,7 +41,7 @@ export function ShareButton({
       try {
         await navigator.share({ title, url: shareUrl });
       } catch {
-        // User cancelled — ignore
+
       }
     } else {
       await navigator.clipboard.writeText(shareUrl);

@@ -8,16 +8,12 @@ import { SERVICE_HUES } from "./launchpad-services.js";
 import { LAUNCHPAD_SERVICE_DEFINITIONS } from "../data/launchpad-services.js";
 import { cn } from "../utils/cn.js";
 
-/** Homepage launchpad strip — cards derive from the shared launchpad service
- *  definitions: creator language, one blurb, one example, one vivid verb pill.
- *  No tech chips, no long descriptions. Apps inject only hrefs. */
-
 export interface LaunchpadStripProps {
-  /** Per-service destinations, keyed by service key. Services without an href are skipped. */
+
   hrefs: Record<string, string>;
-  /** Marketplace card destination (omit to hide the marketplace card) */
+
   marketplaceHref?: string;
-  /** "Explore" header link */
+
   launchpadHref?: string;
 }
 
@@ -34,7 +30,6 @@ interface StripCard {
 
 const DEF_BY_KEY = Object.fromEntries(LAUNCHPAD_SERVICE_DEFINITIONS.map((d) => [d.key, d]));
 
-/** Display order on the homepage strip */
 const STRIP_ORDER = [
   "nfts",
   "limited-editions",

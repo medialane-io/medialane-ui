@@ -30,9 +30,8 @@ export function useNotifications(
 ) {
   const [readIds, setReadIds] = useState<Set<string>>(() => getReadIds());
 
-  // Offers this user placed (to detect accepted ones)
   const { orders: userOrders } = useUserOrders(getClient, address ?? null);
-  // Offers received on tokens the user holds
+
   const { orders: receivedOffers } = useReceivedOffers(apiConfig, address ?? null);
   const { activities } = useActivitiesByAddress(getClient, address ?? null);
   const { data: announcements = [] } = useSWR<Announcement[]>(
@@ -44,7 +43,6 @@ export function useNotifications(
   const notifications: Notification[] = useMemo(() => {
     const items: Notification[] = [];
 
-    // ── Offers accepted (buyer: my ERC20 bid was fulfilled) ──────────────────
     userOrders
       .filter((o) => o.offer.itemType === "ERC20" && o.status === "FULFILLED")
       .forEach((order) => {
@@ -67,7 +65,6 @@ export function useNotifications(
         });
       });
 
-    // ── Received offers (someone bid on my asset) ────────────────────────────
     receivedOffers.forEach((order) => {
       const id = `order-${order.orderHash}`;
       const fmt = formatOrderNotification(order);
@@ -87,11 +84,9 @@ export function useNotifications(
       });
     });
 
-    // ── Activity events ──────────────────────────────────────────────────────
     (activities as ApiActivity[]).slice(0, 50).forEach((event) => {
       const id = `activity-${event.txHash}-${event.type}-${event.nftTokenId ?? ""}`;
 
-      // Asset received: transfer where this user is the recipient
       if (
         event.type === "transfer" &&
         address &&
@@ -114,7 +109,6 @@ export function useNotifications(
         return;
       }
 
-      // Sale (seller perspective): activity sale where offerer = address
       const isMySale =
         event.type === "sale" &&
         address &&
@@ -139,7 +133,6 @@ export function useNotifications(
       });
     });
 
-    // ── Announcements ────────────────────────────────────────────────────────
     announcements.forEach((ann) => {
       const id = `ann-${ann.id}`;
       items.push({
@@ -156,7 +149,6 @@ export function useNotifications(
       });
     });
 
-    // Chronological, newest first
     items.sort(
       (a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
     );

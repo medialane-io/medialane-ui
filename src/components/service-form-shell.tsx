@@ -3,30 +3,22 @@ import { cn } from "../utils/cn.js";
 import { ServiceHeader } from "./service-header.js";
 
 export interface ServiceFormShellProps {
-  /** Rendered icon element for the header, e.g. <Coins className="h-4 w-4 text-white" />. */
+
   icon: ReactNode;
   title: string;
   subtitle: string;
-  /** Optional element under the header subtitle (e.g. a URL pill). */
+
   headerAccessory?: ReactNode;
-  /** Rendered above the header — the app's own back button (router-specific). */
+
   backSlot?: ReactNode;
-  /** Right-rail panels (e.g. <ClaimRail/>). When present, lays out an 8/4 bento. */
+
   aside?: ReactNode;
-  /** Rendered in the left column between the header and the form — e.g. a
-   *  <StepNav/> for multi-step flows. Only used in the aside (8/4) layout. */
+
   aboveForm?: ReactNode;
-  /** The form. **Already gated by the app** — wrap it in your own auth/wallet
-   *  gate before passing. This component stays presentation-only (no auth,
-   *  no router) so both apps can share it. */
+
   children: ReactNode;
 }
 
-/** Shared launchpad/claim form layout: back slot + bare header (no card), then
- *  the form directly on the page — no compartment, no panel surface. With an
- *  `aside` it lays out an 8/4 bento (form left, rail right); without, a single
- *  centered column. The brand gradient belongs to the form's action button,
- *  not to any container. */
 export function ServiceFormShell({ icon, title, subtitle, headerAccessory, backSlot, aside, aboveForm, children }: ServiceFormShellProps) {
   const header = <ServiceHeader bare icon={icon} title={title} subtitle={subtitle} headerAccessory={headerAccessory} />;
 

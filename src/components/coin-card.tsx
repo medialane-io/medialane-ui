@@ -1,17 +1,5 @@
 "use client";
 
-/**
- * CoinCard / CoinRow — chain-agnostic, art-forward coin discovery tiles.
- *
- * Pure presentation: the price read (`usePrice`) and the link target (`href`)
- * are injected by the consuming app, and the collection is typed structurally
- * (CoinCollectionLike) — so a coin on Starknet, Ethereum, or Solana renders the
- * same with zero changes here. The coin's artwork is the hero; the whole tile
- * links to the coin page (where trading happens), and the only stat is the live
- * spot price with its quote-currency icon. FDV / holders / a "verified" mark are
- * intentionally not shown — Medialane indexes none of them.
- */
-
 import Link from "next/link";
 import Image from "next/image";
 import { cn } from "../utils/cn.js";
@@ -23,7 +11,6 @@ import {
   type CoinCollectionLike, type CoinPriceLike,
 } from "../data/coins.js";
 
-/** Injected per-chain spot-price read. `price` is null while loading/unknown. */
 export type UseCoinPrice = (collection: CoinCollectionLike) => {
   price: CoinPriceLike | null;
   isLoading: boolean;
@@ -32,21 +19,20 @@ export type UseCoinPrice = (collection: CoinCollectionLike) => {
 export interface CoinTileProps {
   collection: CoinCollectionLike;
   usePrice: UseCoinPrice;
-  /** Link target — internal coin page or the per-chain trading app. */
+
   href: string;
 }
 
-// Kind tag on a card surface (table row) — brand hues, never red.
 const KIND_TAG: Record<string, string> = {
   creator: "border-brand-blue/30 bg-brand-blue/10 text-brand-blue",
   memecoin: "border-brand-purple/30 bg-brand-purple/10 text-brand-purple",
 };
-// Kind tag layered over artwork — solid brand pill, white text for legibility.
+
 const KIND_OVER_IMAGE: Record<string, string> = {
   creator: "bg-brand-blue/85 text-white",
   memecoin: "bg-brand-purple/85 text-white",
 };
-// Art-fallback gradient (no logo) — vivid brand wash.
+
 const KIND_FALLBACK: Record<string, string> = {
   creator: "from-brand-blue to-brand-purple",
   memecoin: "from-brand-purple to-brand-rose",
@@ -79,7 +65,7 @@ export function CoinCard({ collection, usePrice, href }: CoinTileProps) {
   return (
     <MotionCard className="card-base group relative flex h-full flex-col">
       <Link href={href} className="flex h-full flex-col">
-        {/* Hero artwork */}
+
         <div className="relative aspect-square w-full overflow-hidden bg-muted">
           {m.logo ? (
             <Image
@@ -100,7 +86,6 @@ export function CoinCard({ collection, usePrice, href }: CoinTileProps) {
           </span>
         </div>
 
-        {/* Body */}
         <div className="flex flex-col gap-2 p-3">
           <div className="min-w-0">
             <div className="truncate font-semibold leading-tight">{collection.name ?? "Untitled coin"}</div>

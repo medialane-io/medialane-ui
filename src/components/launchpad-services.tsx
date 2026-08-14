@@ -1,24 +1,5 @@
 "use client";
 
-/**
- * Launchpad services — the single source for the /launchpad page UI in
- * medialane-io and medialane-starknet.
- *
- * One dynamic grid (2026-07-13 redesign): one card per service, no group
- * sections. Groups exist as tags — a small accent label on the card and the
- * filter pills above the grid. The card is a single link to the service's own
- * page (its complete control surface); it carries no second link, no feature
- * chips, and no per-service color identity. Five group accents are the only
- * color voice, applied to the icon tile and the tag text.
- *
- * Filter state (search + group pills) lives in `useLaunchpadFilter()` so a
- * page can render `LaunchpadFilterBar` wherever it wants while
- * `LaunchpadGroupedSections` — fully controlled — renders the grid reacting
- * to that same state.
- *
- * Apps own: hrefs + per-app rollout status flips. Everything else lives here.
- */
-
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
@@ -33,37 +14,27 @@ import {
   type ServiceStatus,
 } from "../data/launchpad-services.js";
 
-// ── Per-app injection points ─────────────────────────────────────────────────
-
 export interface ServiceOverride {
-  /** Primary destination — the whole card links here (required for live services) */
+
   href?: string;
-  /** Legacy secondary link — the redesigned card renders a single link, so this is unused. */
+
   browseHref?: string;
-  /** Per-app rollout flips (e.g. coins live on one app first) */
+
   status?: ServiceStatus;
-  /** Per-app one-liner override (rarely needed) */
+
   blurb?: string;
-  /** Live per-user fact shown as a quiet chip on the card (e.g. "3 collections").
-   *  Apps pass real counts for the signed-in creator; omit when zero/signed out. */
+
   meta?: string;
 }
 
 export type ServiceOverrides = Record<string, ServiceOverride>;
 
-// ── Group accents — the grid's only color voice ─────────────────────────────
-
-/** Each group owns one hue of the Medialane spectrum (blue → indigo → purple →
- *  rose → orange in group order), applied flat: icon-tile tint + glyph, the
- *  use-case markers, and the card's resting hairline. On hover-capable
- *  devices the full-spectrum gradient ring fades in over the hairline
- *  (.ml-grad-hover-border — polish only, never carries information). */
 interface GroupSlice {
-  /** soft icon-tile background */
+
   tint: string;
-  /** icon glyph + use-case marker tint */
+
   text: string;
-  /** resting card hairline in the group's hue */
+
   border: string;
 }
 
@@ -82,8 +53,6 @@ export const GROUP_SLICES: Record<ServiceGroup, GroupSlice> = {
   "coming-soon": DEFAULT_SLICE,
 };
 
-/** Legacy per-service hue table — kept for LaunchpadStrip (homepage). The grid
- *  no longer uses it. */
 interface ServiceHue {
   text: string;
   solid: string;
@@ -91,8 +60,6 @@ interface ServiceHue {
   tint: string;
 }
 
-/** Brand tokens only ([[brand-tokens-only]]) — one hue per service, drawn from
- *  the brand spectrum. */
 export const SERVICE_HUES: Record<string, ServiceHue> = {
   "nfts": { text: "text-brand-blue", solid: "bg-brand-blue", border: "border-brand-blue/30", tint: "bg-brand-blue/10" },
   "limited-editions": { text: "text-brand-maeve", solid: "bg-brand-maeve", border: "border-brand-maeve/30", tint: "bg-brand-maeve/10" },
@@ -113,12 +80,10 @@ const GROUP_TITLE_BY_KEY = Object.fromEntries(
 
 const GROUP_KEYS = new Set(LAUNCHPAD_SERVICE_GROUPS.map((g) => g.key));
 
-// ── Service card — one link, one accent, title + one sentence ────────────────
-
 export interface LaunchpadServiceCardProps {
   def: ServiceDefinition;
   override?: ServiceOverride;
-  /** Grid position — drives the staggered entrance reveal. */
+
   index?: number;
 }
 
@@ -134,7 +99,7 @@ export function LaunchpadServiceCard({ def, override = {}, index = 0 }: Launchpa
 
   const body = (
     <>
-      {/* Icon tile + live per-user fact */}
+
       <div className="flex items-start justify-between gap-3">
         <span className={cn("flex h-14 w-14 items-center justify-center rounded-2xl", live ? slice.tint : "bg-muted/40")}>
           <Icon className={cn("h-7 w-7", live ? slice.text : "text-muted-foreground/50")} />
@@ -151,7 +116,6 @@ export function LaunchpadServiceCard({ def, override = {}, index = 0 }: Launchpa
         ) : null}
       </div>
 
-      {/* Title + one sentence */}
       <div className="mt-auto space-y-2 pt-6">
         <h3 className="text-2xl font-bold tracking-tight leading-tight">{title}</h3>
         <p className={cn("text-sm leading-relaxed", live ? "text-muted-foreground" : "text-muted-foreground/60")}>
@@ -159,7 +123,6 @@ export function LaunchpadServiceCard({ def, override = {}, index = 0 }: Launchpa
         </p>
       </div>
 
-      {/* Use cases */}
       {live && features.length > 0 && (
         <ul className="space-y-1.5 pt-4">
           {features.slice(0, 3).map((feature) => (
@@ -171,7 +134,6 @@ export function LaunchpadServiceCard({ def, override = {}, index = 0 }: Launchpa
         </ul>
       )}
 
-      {/* The action — quiet verb, no pill */}
       {live && (
         <div className="pt-5">
           <span className="inline-flex items-center gap-1.5 text-sm font-semibold">
@@ -213,8 +175,6 @@ export function LaunchpadServiceCard({ def, override = {}, index = 0 }: Launchpa
   );
 }
 
-// ── Coming-soon strip ────────────────────────────────────────────────────────
-
 function ComingSoonStrip({ group, defs }: { group: ServiceGroupDefinition; defs: ServiceDefinition[] }) {
   return (
     <div className="rounded-2xl border border-border/40 p-5">
@@ -232,19 +192,12 @@ function ComingSoonStrip({ group, defs }: { group: ServiceGroupDefinition; defs:
   );
 }
 
-// ── Filter state ─────────────────────────────────────────────────────────────
-
-/** Shared search predicate — group titles count as search terms so a query
- *  like "editions" or "community" finds the whole group. */
 export function serviceMatchesQuery(def: ServiceDefinition, query: string): boolean {
   if (query.trim() === "") return true;
   const haystack = `${def.title} ${def.blurb} ${def.subtitle} ${GROUP_TITLE_BY_KEY[def.group] ?? ""}`.toLowerCase();
   return haystack.includes(query.trim().toLowerCase());
 }
 
-/** Sync filter state into the URL (?q=…&groups=…) via replaceState — the
- *  filtered launchpad becomes shareable and survives reload, without touching
- *  the router (this package is router-agnostic). */
 function syncFilterUrl(query: string, groups: Set<ServiceGroup>) {
   if (typeof window === "undefined") return;
   const params = new URLSearchParams(window.location.search);
@@ -256,19 +209,10 @@ function syncFilterUrl(query: string, groups: Set<ServiceGroup>) {
   window.history.replaceState(null, "", qs ? `${window.location.pathname}?${qs}` : window.location.pathname);
 }
 
-/**
- * Owns the search + group-filter state for the launchpad page. A page renders
- * `LaunchpadFilterBar` wherever it wants (e.g. right under the h1) wired to
- * this hook's fields, then passes `query`/`activeGroups` straight through to
- * `LaunchpadGroupedSections` so the grid reacts to the same state.
- * State is mirrored into the URL (?q=…&groups=…) so a filtered view can be
- * shared and survives reload.
- */
 export function useLaunchpadFilter() {
   const [query, setQueryState] = useState("");
   const [activeGroups, setActiveGroups] = useState<Set<ServiceGroup>>(new Set());
 
-  // Hydrate once from the URL (client only).
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const q = params.get("q");
@@ -305,7 +249,7 @@ export function useLaunchpadFilter() {
 
   const totalMatches = useMemo(
     () => LAUNCHPAD_SERVICE_DEFINITIONS.filter(matches).length,
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
     [query, activeGroups],
   );
 
@@ -318,23 +262,18 @@ export function useLaunchpadFilter() {
   return { query, setQuery, activeGroups, toggleGroup, filterableGroups, totalMatches, clear };
 }
 
-// ── The grid ─────────────────────────────────────────────────────────────────
-
 export interface LaunchpadGroupedSectionsProps {
-  /** Per-app hrefs / rollout flips, keyed by service key. */
+
   overrides: ServiceOverrides;
-  /** Current search query — from `useLaunchpadFilter()`. */
+
   query: string;
-  /** Current active group filters — from `useLaunchpadFilter()`. */
+
   activeGroups: Set<ServiceGroup>;
-  /** Reset both — from `useLaunchpadFilter()`. */
+
   onClearFilters: () => void;
   className?: string;
 }
 
-/** The full launchpad services grid — one dynamic grid of all live services,
- *  ordered by group, plus the coming-soon strip. Fully controlled by
- *  `useLaunchpadFilter()` state passed in from the page. */
 export function LaunchpadGroupedSections({ overrides, query, activeGroups, onClearFilters, className }: LaunchpadGroupedSectionsProps) {
   const inActiveGroup = (d: ServiceDefinition) => activeGroups.size === 0 || activeGroups.has(d.group);
   const inSearch = (d: ServiceDefinition) => serviceMatchesQuery(d, query);

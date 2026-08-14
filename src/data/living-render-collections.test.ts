@@ -7,9 +7,7 @@ describe("isLivingRenderCollection", () => {
   });
 
   test("returns true for a listed address, case/padding-insensitive", () => {
-    // Temporarily exercise the matcher against a fixture entry rather than the
-    // (currently empty) production list, so this test stays meaningful before
-    // the plan's mainnet-activation task adds real addresses.
+
     const fixtureAddr = "0x00000000000000000000000000000000000000000000000000000000000abc";
     LIVING_RENDER_COLLECTIONS.STARKNET = [fixtureAddr];
     expect(isLivingRenderCollection("STARKNET", "0xABC")).toBe(true);

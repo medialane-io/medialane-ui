@@ -14,8 +14,6 @@ const LABELS: Record<OrderSort, string> = {
   price_desc: "Price: high to low",
 };
 
-/** Pure — orders already come from the API sorted "recent"; this only
- *  re-sorts the in-memory page by price.raw (BigInt-safe wei comparison). */
 export function sortOrders(orders: ApiOrder[], sort: OrderSort): ApiOrder[] {
   if (sort === "recent") return orders;
   const withPrice = orders.filter((o) => o.price.raw != null);

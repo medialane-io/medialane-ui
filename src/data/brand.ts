@@ -1,9 +1,4 @@
-/**
- * Typed Tailwind class constants for Medialane brand colors.
- * Mirrors the brand color extensions defined in the Tailwind preset.
- * Keeping these as string literals ensures JIT picks them up via the
- * consumer's content scan of node_modules/@medialane/ui/dist.
- */
+
 export const BRAND = {
   blue: {
     text:    "text-brand-blue",

@@ -8,8 +8,7 @@ import { useCollectionTokens } from "../utils/use-collections.js";
 import { useCollectionFilters } from "./collection-filters.js";
 
 const FETCH_PAGE_SIZE = 100;
-// Rarity is a nice-to-have stat, not settlement data — cap the crawl so a
-// very large collection doesn't turn this tab into an unbounded fetch loop.
+
 const MAX_TOKENS_FOR_RARITY = 2000;
 
 export interface CollectionTraitsTabProps {

@@ -9,12 +9,6 @@ export interface LoadMoreSentinelProps {
   rootMargin?: string;
 }
 
-/**
- * Invisible trigger that calls `onLoadMore` when scrolled near the viewport.
- * Renders nothing once `hasMore` is false. Skips firing while `isLoading` is
- * true so callers can pass their existing "currently fetching" flag straight
- * through with no extra guard logic.
- */
 export function LoadMoreSentinel({
   hasMore,
   isLoading,

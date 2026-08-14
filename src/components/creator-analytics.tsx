@@ -30,7 +30,7 @@ function parsePrice(formatted: string | null | undefined): number {
 function buildDailyVolume(sales: ApiActivity[]): DayStat[] {
   const buckets = new Map<string, number>();
   const now = Date.now();
-  // Pre-fill last 30 days so chart always shows full range
+
   for (let i = 29; i >= 0; i--) {
     const d = new Date(now - i * 86_400_000);
     buckets.set(
@@ -57,7 +57,6 @@ export function CreatorAnalytics({ activities, isLoading }: CreatorAnalyticsProp
   const { sales, totalVolume, topCurrency, dailyVolume } = useMemo(() => {
     const sales = activities.filter((a) => a.type === "sale");
 
-    // Volume per currency
     const byCurrency = new Map<string, number>();
     for (const s of sales) {
       const cur = s.price?.currency ?? "STRK";
@@ -112,7 +111,7 @@ export function CreatorAnalytics({ activities, isLoading }: CreatorAnalyticsProp
 
   return (
     <div className="space-y-6">
-      {/* Stat cards */}
+
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
         {stats.map(({ label, value, icon: Icon }) => (
           <div
@@ -128,7 +127,6 @@ export function CreatorAnalytics({ activities, isLoading }: CreatorAnalyticsProp
         ))}
       </div>
 
-      {/* 30-day volume chart */}
       <div className="rounded-xl border border-border bg-card/50 p-4 space-y-2">
         <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
           30-day volume · {topCurrency}

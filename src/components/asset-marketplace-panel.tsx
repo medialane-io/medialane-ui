@@ -12,7 +12,6 @@ import { DualPrice } from "./dual-price.js";
 import { formatDisplayPrice, parsePriceDisplay } from "../utils/format.js";
 import { timeUntil } from "../utils/time.js";
 
-/** Structural subset of `ApiOrder` (both apps' `@medialane/sdk` types satisfy this). */
 export interface ApiOrderLike {
   orderHash: string;
   offerer: string;
@@ -32,15 +31,11 @@ export interface AssetMarketplacePanelProps<T extends ApiOrderLike = ApiOrderLik
   walletAddress?: string | null;
   remixEnabled?: boolean;
   showDealOption?: boolean;
-  /**
-   * Pre-formatted USD equivalent of `cheapest.price` (e.g. "$12.34"), computed
-   * by the host from its own live rate feed — this package has no price-feed
-   * access by design. Omit (or pass null) to render no USD line.
-   */
+
   usdValue?: string | null;
-  /** Renders the sign-in/connect-wallet CTA for the given label (e.g. "Sign in to trade"). */
+
   renderAuthAction: (label: string) => ReactNode;
-  /** Renders an inline help/info affordance for the given tooltip text. */
+
   renderHelp: (content: string) => ReactNode;
   onCancelClick: (order: T) => void;
   onAcceptBid: (order: T) => void;
@@ -50,22 +45,17 @@ export interface AssetMarketplacePanelProps<T extends ApiOrderLike = ApiOrderLik
   onOpenOffer: () => void;
   onOpenRemix?: () => void;
   onProposeDeal?: () => void;
-  /** Non-owner: propose a sponsorship deal on this asset. */
+
   showSponsorOption?: boolean;
   onOpenSponsorProposal?: () => void;
-  /** Owner: open this asset for sponsorship bidding. */
+
   showSponsorSolicitOption?: boolean;
   onOpenSponsorSolicit?: () => void;
-  /** Raw "0.07 STRK"-style strings — already resolved by the caller. Shown
-   *  only in the "not currently listed" fallback state (see StatRow) — the
-   *  active-listing price row dropped them to stay uncluttered. */
+
   floorPriceRaw?: string | null;
   lastSaleRaw?: string | null;
 }
 
-/** Floor + last-sale stats — each hides itself when its data is absent
- *  (no dangling "—" placeholders), and the whole row disappears when
- *  neither is available. Only used in the "not currently listed" state. */
 function StatRow({ floorPriceRaw, lastSaleRaw }: { floorPriceRaw?: string | null; lastSaleRaw?: string | null }) {
   const floor = floorPriceRaw ? parsePriceDisplay(floorPriceRaw) : null;
   const lastSale = lastSaleRaw ? parsePriceDisplay(lastSaleRaw) : null;
@@ -165,10 +155,7 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
                       Cancel Listing
                     </ActionButton>
                   ) : null}
-                  {/* ERC-721 has exactly one possible listing — once myListing exists,
-                      "List on Marketplace" is redundant next to "Cancel Listing" and
-                      reads as a broken/confusing pair. An ERC-1155 owner can still hold
-                      un-listed editions while one listing is active, so it stays for them. */}
+
                   {(!myListing || isERC1155) ? (
                     <ActionButton big tone="blue" icon={<Tag className="h-4 w-4" />} onClick={onOpenListing} renderHelp={renderHelp}>List on Marketplace</ActionButton>
                   ) : null}

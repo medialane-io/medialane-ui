@@ -4,7 +4,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
 export interface CreatorAirdropBannerProps {
-  /** Route of the airdrop claim page. */
+
   href: string;
 }
 
@@ -17,7 +17,7 @@ const HIGHLIGHTS = [
 export function CreatorAirdropBanner({ href }: CreatorAirdropBannerProps) {
   return (
     <section className="rounded-2xl bg-muted/50 dark:bg-card px-7 py-8 sm:px-9">
-      {/* Creator's Fund eyebrow — shared with CommunityRewardsSection */}
+
       <div className="flex items-center gap-3">
         <span className="text-xs font-bold uppercase tracking-widest text-brand-orange">
           Creator&apos;s Fund

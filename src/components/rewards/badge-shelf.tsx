@@ -14,16 +14,15 @@ export interface BadgeShelfBadge {
 }
 
 export interface BadgeShelfProps {
-  /** The badges to render — the earned set, or the full catalog with `earnedKeys`. */
+
   badges: BadgeShelfBadge[];
-  /** When set, badges outside this set render locked (grayscale, reduced opacity). */
+
   earnedKeys?: string[];
-  /** Render locked badges too (requires `earnedKeys`); default hides them. */
+
   showLocked?: boolean;
   className?: string;
 }
 
-// Lazily resolve lucide icons by name at runtime (icon names come from the API).
 const iconCache = new Map<string, React.ComponentType<LucideProps>>();
 
 export function BadgeIcon({ name, color, className }: { name: string; color: string; className?: string }) {
@@ -49,8 +48,6 @@ export function BadgeIcon({ name, color, className }: { name: string; color: str
   return <Icon className={className} style={{ color }} />;
 }
 
-/** Badge chips with native tooltips. Earned badges render in their color;
- *  locked ones (present in `badges` but not `earnedKeys`) render muted. */
 export function BadgeShelf({ badges, earnedKeys, showLocked = false, className }: BadgeShelfProps) {
   const earned = earnedKeys ? new Set(earnedKeys) : null;
   const visible = badges.filter((b) => showLocked || !earned || earned.has(b.key));

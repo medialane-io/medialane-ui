@@ -4,18 +4,18 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
 export interface ScrollSectionProps {
-  /** Icon element rendered inside the colored badge */
+
   icon: React.ReactNode;
-  /** Tailwind classes for the icon badge (background + shadow) */
+
   iconBg: string;
   title: string;
-  /** Optional small line under the title (e.g. "Updated 1m ago") */
+
   subtitle?: React.ReactNode;
-  /** "See all" link destination */
+
   href: string;
-  /** Button label — defaults to "See all" */
+
   linkLabel?: string;
-  /** Scroll items: wrap each in a sized snap-start div */
+
   children: React.ReactNode;
 }
 

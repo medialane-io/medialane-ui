@@ -38,20 +38,16 @@ export type ActionKey = keyof typeof ACTION_GRADIENTS;
 export type ToneKey = keyof typeof TONE_GRADIENTS;
 
 export interface ActionButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  /** Semantic action — hue signals the action, never decorative. */
+
   action?: ActionKey;
-  /** Tone — for secondary/owner actions. Ignored when action is set. */
+
   tone?: ToneKey;
   icon?: React.ReactNode;
-  /** Tall 54px variant for hero contexts. */
+
   big?: boolean;
-  /** Ghost: no gradient border, muted surface fill. */
+
   ghost?: boolean;
-  /**
-   * Inline help/info affordance, rendered next to the label via `renderHelp`
-   * — a render-prop rather than a built-in tooltip because this package
-   * can't depend on an app-specific tooltip primitive.
-   */
+
   helpContent?: string;
   renderHelp?: (content: string) => React.ReactNode;
 }

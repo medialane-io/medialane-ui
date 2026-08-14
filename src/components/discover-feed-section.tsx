@@ -19,13 +19,12 @@ export interface DiscoverFeedSectionProps {
   explorerUrl?: string;
   marketplaceHref?: string;
   activitiesHref?: string;
-  /** Optional buy hook — when provided, listing cards show their Buy action */
+
   onBuyOrder?: (order: ApiOrder) => void;
-  /** Hide the buy action for orders the viewer owns */
+
   isOwnOrder?: (order: ApiOrder) => boolean;
 }
 
-// ── Shared strip shell: icon-badge header + snap-scroll row ─────────────────
 function StripShell({
   icon,
   iconBg,
@@ -80,8 +79,6 @@ export interface DiscoverActivityStripProps {
   isOwnOrder?: (order: ApiOrder) => boolean;
 }
 
-/** Markets — recent listings carousel. Standalone (2026-07-05) so a page can
- *  place other sections (e.g. Browse by Type) between this and Community. */
 export function DiscoverActivityStrip({
   orders,
   isLoading,
@@ -124,13 +121,6 @@ export function DiscoverActivityStrip({
   );
 }
 
-/**
- * @deprecated Kept for apps still on the combined layout (e.g. medialane-io,
- * pending its own migration). New pages should use `DiscoverActivityStrip`
- * directly and build their own Community section — see medialane-starknet's
- * discover community-section.tsx for the 2-column activities+leaderboard
- * replacement of the old carousel below.
- */
 export function DiscoverFeedSection({
   orders,
   isLoading,
@@ -153,7 +143,6 @@ export function DiscoverFeedSection({
         isOwnOrder={isOwnOrder}
       />
 
-      {/* Community — recent on-chain activity carousel */}
       <FadeIn delay={0.08}>
         <StripShell
           icon={<Activity className="h-3.5 w-3.5 text-white" />}

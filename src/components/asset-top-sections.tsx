@@ -15,11 +15,11 @@ interface AssetMediaColumnProps {
   imgError: boolean;
   onImageError: () => void;
   fallback: React.ReactNode;
-  /** Opens the full-screen lightbox. Omit for a non-interactive (still borderless, real-aspect-ratio) render. */
+
   onZoom?: () => void;
-  /** Resolved animation_url — the live on-chain renderer, if any. */
+
   animationUrl?: string | null;
-  /** Caller-computed eligibility for the living-render treatment. */
+
   live?: boolean;
   stats?: Array<{
     value: string;
@@ -28,17 +28,6 @@ interface AssetMediaColumnProps {
   }>;
 }
 
-/**
- * The platform's one asset media column — borderless, respects the work's
- * real aspect ratio (never forced 1:1), capped to the viewport so it always
- * fits on screen, optional click-to-zoom (foundations §III: image leads, no
- * border clutter).
- *
- * `live`-eligible tokens (a small partner allowlist, see
- * living-render-collections) swap the static image for a sandboxed iframe of
- * the token's own on-chain animation_url once the media scrolls into view —
- * see medialane-core/docs/specs/2026-07-28-gol-starknet-living-render-design.md.
- */
 export function AssetMediaColumn({
   shouldReduce,
   image,
@@ -78,7 +67,7 @@ export function AssetMediaColumn({
           transition={{ duration: 0.5 }}
           className="group block w-full overflow-hidden rounded-3xl cursor-zoom-in focus:outline-none"
         >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
+
           <img
             src={image}
             alt={imageAlt}
@@ -95,7 +84,7 @@ export function AssetMediaColumn({
           transition={{ duration: 0.5 }}
           className="block w-full overflow-hidden rounded-3xl"
         >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
+
           <img
             src={image}
             alt={imageAlt}
@@ -175,10 +164,6 @@ export interface AssetOwnerRowProps {
   ownerHref: string;
 }
 
-/** Single-owner identity (ERC-721) — its own sibling row, not nested inside
- *  the collection bar (that reads as if ownership were a collection
- *  attribute, 2026-07-05 feedback). ERC-1155 editions use `AssetOwnersPanel`
- *  instead (multiple owners). */
 export function AssetOwnerRow({ ownerAddress, ownerHref }: AssetOwnerRowProps) {
   return (
     <div className="flex items-center gap-1.5 text-xs text-muted-foreground">

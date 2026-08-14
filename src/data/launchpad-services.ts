@@ -25,13 +25,12 @@ export type ServiceGroup =
 export interface ServiceGroupDefinition {
   key: ServiceGroup;
   title: string;
-  /** One line of plain creator language: what does this group do for my portfolio/revenue? */
+
   tagline: string;
-  /** Optional small chip next to the title (e.g. the token standard) */
+
   badge?: string;
 }
 
-/** Ordered — drives the filter pills and the grid's tag order. */
 export const LAUNCHPAD_SERVICE_GROUPS: ServiceGroupDefinition[] = [
   {
     key: "nfts",
@@ -65,9 +64,6 @@ export const LAUNCHPAD_SERVICE_GROUPS: ServiceGroupDefinition[] = [
   },
 ];
 
-/** All colors on launchpad surfaces come from the design system: the group
- *  accents in `GROUP_SLICES` / `SERVICE_HUES` (brand tokens only). Service
- *  definitions carry NO style fields — content only. */
 export interface ServiceDefinition {
   key: string;
   title: string;
@@ -77,18 +73,18 @@ export interface ServiceDefinition {
   icon: LucideIcon;
   status: ServiceStatus;
   group: ServiceGroup;
-  /** The ONE creator-language sentence the card shows (no jargon). */
+
   blurb: string;
-  /** Single-verb action label (never repeats the title). */
+
   cta: string;
-  /** Concrete usage example (legacy long-card layout; unused by the current card). */
+
   example?: string;
-  /** Secondary browse link label — injected app adds the href */
+
   browseLinkLabel?: string;
 }
 
 export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
-  // ── Create ────────────────────────────────────────────────────────────────
+
   {
     key: "nfts",
     cta: "Create",
@@ -132,7 +128,6 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     group: "nfts",
   },
 
-  // ── Launch ────────────────────────────────────────────────────────────────
   {
     key: "pop-protocol",
     cta: "Create",
@@ -174,8 +169,7 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     features: ["Verifiable at the door", "Supply and validity you set", TICKETS_TRANSFERABLE_FEATURE],
     icon: Ticket,
     browseLinkLabel: "Browse tickets",
-    // Deployed to Starknet mainnet 2026-07-02 — see
-    // medialane-core/docs/deployments.md
+
     status: "live",
     group: "community",
   },
@@ -190,8 +184,7 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     features: ["Membership tiers", "Optional validity window", "Trade like any collection"],
     icon: Users,
     browseLinkLabel: "Browse clubs",
-    // Deployed to Starknet mainnet 2026-07-02 — see
-    // medialane-core/docs/deployments.md
+
     status: "live",
     group: "community",
   },
@@ -207,13 +200,11 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     example: "Sponsor a song, an artwork, or a patent for a license",
     icon: Handshake,
     browseLinkLabel: "Browse offers",
-    // Deployed to Starknet mainnet 2026-07-02 — see
-    // medialane-core/docs/deployments.md
+
     status: "live",
     group: "community",
   },
 
-  // ── Monetize ─────────────────────────────────────────────────────────────
   {
     key: "creator-coins",
     cta: "Launch",
@@ -229,7 +220,6 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     group: "coins",
   },
 
-  // ── Claims ────────────────────────────────────────────────────────────────
   {
     key: "claim-memecoin",
     cta: "Claim",

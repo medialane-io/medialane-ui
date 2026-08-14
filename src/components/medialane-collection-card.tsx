@@ -4,15 +4,15 @@ import { useRef } from "react";
 import { cn } from "../utils/cn.js";
 
 export interface MedialaneCollectionCardProps {
-  /** Resolved, browser-loadable image URL. Empty → brand-gradient placeholder. */
+
   image?: string | null;
-  /** Asset or collection name. */
+
   name?: string;
-  /** Secondary line under the name (collection name, symbol, ticker…). */
+
   collection?: string;
-  /** Edition or serial shown as a pill, e.g. "#42" or "1 / 300". */
+
   serial?: string;
-  /** Creator display name or shortened address. */
+
   creator?: string;
   className?: string;
 }
@@ -20,14 +20,6 @@ export interface MedialaneCollectionCardProps {
 const FRAME_GRADIENT =
   "linear-gradient(135deg, #3b7bff, #8a5cf6 38%, #f6608f 70%, #fb8b46)";
 
-/** The Medialane Collection Card — a branded collectors-card preview of an
- *  asset or collection. A self-contained collectible object: brand-spectrum
- *  frame, inset artwork on foil-tinted material, pointer-tracked 3D tilt +
- *  holographic sheen, display-face name, serial pill, Medialane maker's mark.
- *  Follows the app's light/dark theme automatically (`.ml-card-material` /
- *  `.ml-card-sheen` in medialane.css carry the `.dark` overrides — light is
- *  the default, no `.dark` ancestor needed). Fluid width — size it with the
- *  parent container. Pure presentation. */
 export function MedialaneCollectionCard({
   image,
   name,
@@ -79,11 +71,11 @@ export function MedialaneCollectionCard({
         <div
           className="ml-card-material relative rounded-[22.5px] overflow-hidden text-[#0a0e1f] dark:text-white ring-1 ring-inset ring-black/[0.06] dark:ring-white/[0.06]"
         >
-          {/* Artwork — inset like a printed trading card */}
+
           <div className="p-2.5 pb-0">
             <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[16px] ring-1 ring-black/10 dark:ring-white/10">
               {image ? (
-                // eslint-disable-next-line @next/next/no-img-element
+
                 <img src={image} alt={displayName} className="h-full w-full object-cover" />
               ) : (
                 <div
@@ -91,7 +83,7 @@ export function MedialaneCollectionCard({
                   style={{ background: FRAME_GRADIENT, opacity: 0.9 }}
                 />
               )}
-              {/* Bottom scrim for depth against the meta block */}
+
               <div
                 aria-hidden
                 className="pointer-events-none absolute inset-x-0 bottom-0 h-16"
@@ -100,13 +92,11 @@ export function MedialaneCollectionCard({
             </div>
           </div>
 
-          {/* Holographic sheen — visible at rest, blooms and tracks on hover */}
           <div
             aria-hidden
             className="ml-card-sheen pointer-events-none absolute inset-0 opacity-40 group-hover:opacity-100 transition-opacity duration-300"
           />
 
-          {/* Meta */}
           <div className="relative px-4 pt-3 pb-4">
             <div className="flex items-start gap-2">
               <p className="min-w-0 flex-1 text-[18px] font-bold leading-snug truncate">

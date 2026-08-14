@@ -12,13 +12,6 @@ export interface LevelJourneyListProps {
   className?: string;
 }
 
-/** The full level ladder as a vertical showcase list — not the old
- *  horizontal chip rail, which doesn't scale past a handful of items and
- *  was built for a dashboard strip, not a 50-row standalone page. No
- *  current-level state: this is the system-wide view, not "where am I."
- *  Every 10th level gets a small gradient marker as a milestone cue;
- *  colors are otherwise uniform (one signature identity, not 50 flat
- *  per-level colors) — badgeColor is deliberately not consumed here. */
 export function LevelJourneyList({ levels, className }: LevelJourneyListProps) {
   return (
     <ol className={cn("divide-y divide-foreground/[0.06]", className)}>

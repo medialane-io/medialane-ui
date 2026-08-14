@@ -9,7 +9,6 @@ export interface ParentBannerProps {
   parentName?: string;
 }
 
-/** "Remix of <parent>" attribution link shown on remix asset pages. */
 export function ParentAttributionBanner({ parentContract, parentTokenId, parentName }: ParentBannerProps) {
   return (
     <Link

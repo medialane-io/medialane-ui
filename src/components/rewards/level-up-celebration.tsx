@@ -14,10 +14,6 @@ export interface LevelUpCelebrationProps {
 
 const PARTICLE_COUNT = 14;
 
-/** Auto-dismissing celebration burst for a level-up moment. Pure CSS
- *  animation, no dependency — particles are positioned/rotated via inline
- *  style so the same component works without a keyframe-per-particle
- *  stylesheet entry. */
 export function LevelUpCelebration({ level, name, badgeColor, onDismiss, className }: LevelUpCelebrationProps) {
   useEffect(() => {
     const timer = setTimeout(onDismiss, 3000);

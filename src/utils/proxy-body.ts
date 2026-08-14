@@ -1,14 +1,4 @@
-/**
- * Read an upstream `fetch` Response body into memory with a hard byte cap.
- *
- * `arrayBuffer()` buffers the whole body before any limit applies, so a public
- * proxy route (image, IPFS) can be made to pin server memory by pointing it at
- * a large file. This streams the body and aborts once `maxBytes` is crossed.
- * A `Content-Length` larger than the cap short-circuits before a byte is read
- * (advisory — some origins omit or lie, so the streaming guard is the real
- * limit). Shared by both apps' `/api/img` and `/api/ipfs` routes so the cap
- * can't drift between them.
- */
+
 export type CappedBody =
   | { ok: true; body: Uint8Array<ArrayBuffer> }
   | { ok: false; status: 413 | 502; error: string };

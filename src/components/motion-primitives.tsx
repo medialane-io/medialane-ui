@@ -5,8 +5,6 @@ import { motion, type HTMLMotionProps } from "framer-motion";
 export const SPRING = { type: "spring", stiffness: 400, damping: 28 } as const;
 export const EASE_OUT = [0.25, 0.46, 0.45, 0.94] as const;
 
-// ─── Press-able card wrapper ──────────────────────────────────────────────────
-
 interface MotionCardProps extends HTMLMotionProps<"div"> {
   children: React.ReactNode;
 }
@@ -23,8 +21,6 @@ export function MotionCard({ children, className, ...props }: MotionCardProps) {
     </motion.div>
   );
 }
-
-// ─── Scroll-triggered fade-in ─────────────────────────────────────────────────
 
 interface FadeInProps {
   children: React.ReactNode;
@@ -46,8 +42,6 @@ export function FadeIn({ children, className, delay = 0, y = 20 }: FadeInProps) 
     </motion.div>
   );
 }
-
-// ─── Stagger container ────────────────────────────────────────────────────────
 
 interface StaggerProps {
   children: React.ReactNode;
@@ -85,8 +79,6 @@ export function StaggerItem({ children, className }: { children: React.ReactNode
     </motion.div>
   );
 }
-
-// ─── Kinetic headline words ───────────────────────────────────────────────────
 
 export function KineticWords({ text, className }: { text: string; className?: string }) {
   const words = text.split(" ");

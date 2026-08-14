@@ -12,7 +12,7 @@ export interface HeroSliderProps {
   collections: ApiCollection[];
   isLoading: boolean;
   getHref: (collection: ApiCollection) => string;
-  /** Optional placeholder CTA hrefs — defaults to "/marketplace" and "/create/asset" */
+
   placeholderHrefs?: { markets?: string; create?: string };
 }
 

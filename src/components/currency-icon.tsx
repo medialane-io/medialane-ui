@@ -15,10 +15,7 @@ export interface CurrencyIconProps {
   symbol: string | null | undefined;
   size?: number;
   className?: string;
-  /**
-   * Base path prepended to icon paths. Default: "" (icons served from app's public root).
-   * Example: "https://cdn.medialane.io/icons"
-   */
+
   iconsBasePath?: string;
 }
 
@@ -43,7 +40,7 @@ export interface CurrencyAmountProps {
   amountClassName?: string;
   iconSize?: number;
   className?: string;
-  /** Forwarded to CurrencyIcon. */
+
   iconsBasePath?: string;
 }
 

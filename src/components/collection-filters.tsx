@@ -5,10 +5,6 @@ import { SlidersHorizontal, X, Check } from "lucide-react";
 import { cn } from "../utils/cn.js";
 import type { ApiToken, CollectionTokensSort } from "@medialane/sdk";
 
-// Trait types that are per-token stamps rather than real categories — never
-// useful as a filter regardless of how many distinct values they have.
-// "Registration" is the Berne Convention registration date, near-unique per
-// mint; filtering by an exact date isn't a meaningful narrowing action.
 const EXCLUDED_TRAIT_TYPES = new Set(["registration"]);
 
 export const SORT_OPTIONS: { value: CollectionTokensSort; label: string }[] = [
@@ -30,9 +26,7 @@ export function useCollectionFilters(
   sort: CollectionTokensSort,
   onSortChange: (sort: CollectionTokensSort) => void,
 ) {
-  // Build trait map with value counts from loaded tokens, then drop any
-  // trait type where every token shares the same single value (can never
-  // narrow the result set) or that's a known per-token stamp, not a category.
+
   const traitSections: TraitSection[] = useMemo(() => {
     const map = new Map<string, Map<string, number>>();
     for (const token of tokens) {
@@ -126,7 +120,6 @@ export function CollectionFiltersTrigger({
         )}
       </button>
 
-      {/* Sort pill — only shown when not the default */}
       {!sortIsDefault && (
         <button
           onClick={onSortReset}
@@ -138,7 +131,6 @@ export function CollectionFiltersTrigger({
         </button>
       )}
 
-      {/* Active trait pills — one per selected value */}
       {activeEntries.map(({ traitType, value }) => (
         <button
           key={`${traitType}:${value}`}
@@ -184,7 +176,7 @@ export function CollectionFiltersBody({
 }: CollectionFiltersBodyProps) {
   return (
     <div className="flex-1 overflow-y-auto px-5 py-3 space-y-4">
-      {/* Sort section */}
+
       <div>
         <div className="mb-2">
           <span className="text-sm font-medium">Sort by</span>
@@ -206,7 +198,6 @@ export function CollectionFiltersBody({
         </div>
       </div>
 
-      {/* Trait sections — always expanded (pruning already removed the noise) */}
       {traitSections.length > 0 && (
         <>
           <div className="h-px w-full bg-border" />

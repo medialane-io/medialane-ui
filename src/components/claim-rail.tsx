@@ -1,22 +1,17 @@
 import { ShieldCheck, type LucideIcon } from "lucide-react";
 
 export interface ClaimRailProps {
-  /** "What's included" benefits. Omit to hide that panel (e.g. when a live
-   *  preview is the rail's first panel instead). */
+
   included?: { icon: LucideIcon; title: string; desc: string }[];
-  /** "How it works" ordered steps. */
+
   steps: string[];
-  /** Trust/assurance note: bold lead + the rest of the sentence. */
+
   trustLead: string;
   trust: string;
-  /** Trust glyph — defaults to a shield. */
+
   trustIcon?: LucideIcon;
 }
 
-/** Right-rail for launchpad/claim pages — one quiet borderless sectioned card
- *  (What's included · How it works · trust). The brand spectrum appears only
- *  as tints: blue benefit chips → purple step numerals → orange trust glyph.
- *  Pure presentation; the consuming app passes the per-surface content. */
 export function ClaimRail({ included, steps, trustLead, trust, trustIcon: TrustIcon = ShieldCheck }: ClaimRailProps) {
   return (
     <div className="rounded-2xl bg-muted/50 dark:bg-card divide-y divide-border/60 overflow-hidden">

@@ -1,18 +1,11 @@
 "use client";
 
-// The ip-club service action on the collection page — one featured button,
-// visible only to the collection owner, in the right owner cluster (the same
-// slot erc1155 collections use for "Mint editions"). Links to the dedicated
-// mint page (create a membership tier + mint its supply, same shape as the
-// IP Tickets mint page).
-
 import Link from "next/link";
 import { Users } from "lucide-react";
 
 export interface ClubOwnerActionsProps {
   contractAddress: string;
-  /** Caller computes this from its own wallet session — the wallet model
-   *  differs per app, so this component stays purely presentational. */
+
   isOwner: boolean;
 }
 

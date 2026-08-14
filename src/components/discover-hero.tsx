@@ -22,7 +22,7 @@ export function DiscoverHero({
 }: DiscoverHeroProps) {
   return (
     <div className="space-y-6 pt-2 pb-6 border-b border-border/50">
-      {/* Badge */}
+
       <motion.div
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
@@ -31,7 +31,6 @@ export function DiscoverHero({
         <span className="pill-badge">{badgeText}</span>
       </motion.div>
 
-      {/* Headline */}
       <motion.div
         className="text-3xl sm:text-4xl lg:text-5xl font-black leading-[1.1]"
         style={{ perspective: "800px" }}
@@ -44,7 +43,6 @@ export function DiscoverHero({
         </span>
       </motion.div>
 
-      {/* Stats chips */}
       {stats && (
         <motion.div
           className="flex flex-wrap gap-2"
@@ -68,7 +66,6 @@ export function DiscoverHero({
         </motion.div>
       )}
 
-      {/* Scrolling ticker */}
       <ActivityTicker orders={orders} getHref={getTickerHref} />
     </div>
   );

@@ -5,10 +5,6 @@ import { Check, ImageIcon } from "lucide-react";
 import { cn } from "../utils/cn.js";
 import type { OwnedAsset } from "./asset-picker.js";
 
-/** Shared grid-cell button — the image/fallback/name/selected-check tile
- *  both `AssetPicker` (my owned assets) and `AssetSearchPicker` (platform
- *  search) render identically. Internal, not exported from the package
- *  root — both callers stay the public API surface. */
 export function AssetPickerCell({
   asset, active, onSelect,
 }: { asset: OwnedAsset; active: boolean; onSelect: (asset: OwnedAsset) => void }) {

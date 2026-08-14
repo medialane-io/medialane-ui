@@ -27,7 +27,6 @@ export function PriceHistoryChart({ history }: PriceHistoryChartProps) {
     );
     if (sales.length < 2) return null;
 
-    // Pick most common currency to keep Y-axis consistent
     const currencyCounts = new Map<string, number>();
     for (const s of sales) {
       const c = s.price!.currency ?? "STRK";
@@ -45,7 +44,7 @@ export function PriceHistoryChart({ history }: PriceHistoryChartProps) {
         ).toLocaleDateString("en-US", { month: "short", day: "numeric" }),
         price: parsePrice(s.price!.formatted ?? ""),
       }))
-      .reverse(); // oldest → newest left to right
+      .reverse();
 
     if (points.length < 2) return null;
     return { currency: topCurrency, points };

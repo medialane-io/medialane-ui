@@ -5,8 +5,6 @@ export interface BadgeUnlockToastContentProps {
   badge: BadgeShelfBadge;
 }
 
-/** Toast body for a newly-earned badge: icon, name, description — the
- *  badge equivalent of XpToastContent. */
 export function BadgeUnlockToastContent({ badge }: BadgeUnlockToastContentProps) {
   return (
     <div className="flex items-center gap-2.5">

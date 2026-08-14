@@ -40,28 +40,24 @@ const looksLikeUrl = (v: string) => /^https?:\/\/\S+/i.test(v.trim());
 export interface IPTypeFieldsProps {
   ipType: IPType | null;
   onChange: (fields: MetadataField[]) => void;
-  /** Uploads a document file to IPFS, resolving to its ipfs:// URI.
-   *  Enables the document upload field for types with template.docUpload. */
+
   uploadDocument?: (file: File) => Promise<string>;
 }
 
 export function IPTypeFields({ ipType, onChange, uploadDocument }: IPTypeFieldsProps) {
   const template = ipType ? IP_TEMPLATES[ipType] : null;
 
-  // URL inputs keyed by their stored trait_type (e.g. "Spotify URL", "X").
   const [embedValues, setEmbedValues] = useState<Record<string, string>>({});
   const [socialValues, setSocialValues] = useState<Record<string, string>>({});
-  // One unified, ordered list of traits (suggestions pre-fill rows; custom = blank).
+
   const [traits, setTraits] = useState<TraitRow[]>([]);
-  // Document pinned to IPFS (Documents / Patents / Publications / Software).
+
   const [docUri, setDocUri] = useState<string | null>(null);
   const [docName, setDocName] = useState<string | null>(null);
   const [docUploading, setDocUploading] = useState(false);
   const [docError, setDocError] = useState<string | null>(null);
   const docInputRef = useRef<HTMLInputElement>(null);
 
-  // Embeds, socials & document are type-specific — reset them when the IP type
-  // changes. Trait rows are generic key/value and persist across type switches.
   useEffect(() => {
     setEmbedValues({});
     setSocialValues({});
@@ -150,7 +146,6 @@ export function IPTypeFields({ ipType, onChange, uploadDocument }: IPTypeFieldsP
         <p className="text-sm font-semibold">{template.label} Details</p>
       </div>
 
-      {/* ── Document file → IPFS (Documents / Patents / Publications / Software) ── */}
       {docUpload && uploadDocument && (
         <section className="space-y-2">
           <p className="text-[11px] font-semibold text-muted-foreground">
@@ -212,7 +207,6 @@ export function IPTypeFields({ ipType, onChange, uploadDocument }: IPTypeFieldsP
         </section>
       )}
 
-      {/* ── Embeds (inline players) ─────────────────────────────── */}
       {template.embeds && template.embeds.length > 0 && (
         <section className="space-y-3">
           <p className="text-[11px] font-semibold text-muted-foreground">Embeds</p>
@@ -247,7 +241,6 @@ export function IPTypeFields({ ipType, onChange, uploadDocument }: IPTypeFieldsP
         </section>
       )}
 
-      {/* ── Social links (icon chips on the asset page) ─────────── */}
       {template.socials && template.socials.length > 0 && (
         <section className="space-y-3">
           <p className="text-[11px] font-semibold text-muted-foreground">Social links</p>
@@ -277,11 +270,9 @@ export function IPTypeFields({ ipType, onChange, uploadDocument }: IPTypeFieldsP
         </section>
       )}
 
-      {/* ── Traits ───────────────────────────────────────────────── */}
       <section className="space-y-3 border-t border-border/60 pt-4">
         <p className="text-sm font-semibold">Traits</p>
 
-        {/* Suggestion chips */}
         {template.traitSuggestions && template.traitSuggestions.length > 0 && (
           <div className="flex flex-wrap gap-2">
             {template.traitSuggestions
@@ -300,7 +291,6 @@ export function IPTypeFields({ ipType, onChange, uploadDocument }: IPTypeFieldsP
           </div>
         )}
 
-        {/* Trait rows — one trait per card, inputs stacked (mobile-first) */}
         {traits.length > 0 && (
           <div className="space-y-2">
             {traits.map((row) => (

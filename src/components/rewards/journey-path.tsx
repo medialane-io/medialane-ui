@@ -2,7 +2,7 @@ import type { ElementType } from "react";
 import { cn } from "../../utils/cn.js";
 
 export interface JourneyStep {
-  /** Matches a key in the rewards breakdown (e.g. "mint_asset"). */
+
   actionType: string;
   label: string;
   href: string;
@@ -11,9 +11,7 @@ export interface JourneyStep {
 
 export interface JourneyPathProps {
   steps: JourneyStep[];
-  /** The signed-in user's `rewards.breakdown` — a step is done when its
-   *  actionType key is present with a positive value. Pass `{}` (or omit)
-   *  for a signed-out visitor — every step renders upcoming. */
+
   breakdown?: Record<string, number>;
   className?: string;
 }
@@ -26,11 +24,6 @@ function stateFor(step: JourneyStep, index: number, steps: JourneyStep[], breakd
   return index === firstNotDone ? "current" : "upcoming";
 }
 
-/** A permanent, ordered milestone path — no time window, no reset, no
- *  comparison to other users. A step lights up the moment its action has
- *  ever been done and stays lit forever; the first not-yet-done step is
- *  highlighted as "current". Safe to render for a signed-out visitor
- *  (`breakdown` omitted) — every step just renders upcoming, still linkable. */
 export function JourneyPath({ steps, breakdown = {}, className }: JourneyPathProps) {
   return (
     <ol className={cn("flex flex-col gap-1", className)}>

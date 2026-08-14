@@ -17,8 +17,8 @@ export function markRead(ids: string[]): void {
   try {
     const existing = getReadIds();
     ids.forEach((id) => existing.add(id));
-    // Cap at 1000 entries to prevent unbounded growth
+
     const arr = [...existing].slice(-1000);
     localStorage.setItem(KEY, JSON.stringify(arr));
-  } catch { /* ignore */ }
+  } catch {  }
 }

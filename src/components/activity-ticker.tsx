@@ -10,7 +10,7 @@ import type { ApiOrder } from "@medialane/sdk";
 
 export interface ActivityTickerProps {
   orders: ApiOrder[];
-  /** Hide ticker if fewer items than this threshold. Default: 3 */
+
   minItems?: number;
   className?: string;
   getHref?: (order: ApiOrder) => string;

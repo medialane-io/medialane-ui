@@ -14,11 +14,8 @@ import { timeAgo } from "../utils/time.js";
 import { isLivingRenderCollection } from "../data/living-render-collections.js";
 import type { ApiOrder, Chain } from "@medialane/sdk";
 
-/** ui's pinned SDK lags the apps — extend structurally for fields newer SDKs carry. */
 type OrderWithAnimation = ApiOrder & { token: (ApiOrder["token"] & { animationUrl?: string | null }) | null };
 
-/** Compact grid thumbnails: too little room for the full dual-price
- *  treatment, so this stays fiat-primary + a small crypto caption. */
 function PriceLine({
   amountFormatted, currency, usdValue,
 }: {
@@ -54,29 +51,14 @@ export interface ListingCardProps {
   inCart?: boolean;
   onBuy?: (order: ApiOrder) => void;
   onCart?: (order: ApiOrder) => void;
-  /** App passes a fully constructed <DropdownMenu> here */
+
   overflowMenu?: React.ReactNode;
-  /**
-   * Optional flex-1 primary control for listings, replacing the default
-   * Buy/View button — lets a host inject its own action (e.g. an owner
-   * "Cancel" with an app-specific, auth-coupled handler) while keeping this
-   * card's layout. Ignored for offers (which always render "View asset").
-   */
+
   primaryAction?: React.ReactNode;
   compact?: boolean;
-  /**
-   * Pre-resolved, browser-loadable image URL. When provided (including null),
-   * overrides the card's internal ipfsToHttp resolution — apps that proxy or
-   * resize images (e.g. a same-origin /api/ipfs?w= proxy) pass it here.
-   * Omit for the default gateway resolution; null renders the no-image fallback.
-   */
+
   imageUrl?: string | null;
-  /**
-   * Pre-formatted USD equivalent of order.price (e.g. "$12.34"), computed by
-   * the host from its own live rate feed — this package has no price-feed
-   * access by design. Omit (or pass null) to render no USD line, e.g. when
-   * the host has no live rate for this order's currency.
-   */
+
   usdValue?: string | null;
 }
 
@@ -86,17 +68,13 @@ export function ListingCard({ order: rawOrder, inCart = false, onBuy, onCart, ov
   const isListing = order.offer.itemType === "ERC721" || order.offer.itemType === "ERC1155";
   const name = order.token?.name ?? `Token #${order.nftTokenId}`;
   const image = imageUrl !== undefined ? imageUrl : (order.token?.image ? ipfsToHttp(order.token.image) : null);
-  // Not resolved through ipfsToHttp — animation_url is legitimately a data: URI for
-  // fully on-chain-rendered collections (ipfsToHttp rejects data: by design).
+
   const animationUrl = order.token?.animationUrl ?? null;
   const live = !!(order.chain && order.nftContract) && isLivingRenderCollection(order.chain.toUpperCase() as Chain, order.nftContract!);
   const assetHref = `/asset/${order.nftContract}/${order.nftTokenId}`;
 
-  // Show the action bar for listings (Buy/View) and for offers (View asset),
-  // whenever the host wired any action or an overflow menu.
   const showActionBar = !!(onBuy || onCart || overflowMenu || primaryAction);
 
-  // ─── Compact variant ──────────────────────────────────────────────────────
   if (compact) {
     return (
       <MotionCard className="card-base">
@@ -129,7 +107,6 @@ export function ListingCard({ order: rawOrder, inCart = false, onBuy, onCart, ov
     );
   }
 
-  // ─── Full variant ─────────────────────────────────────────────────────────
   return (
     <MotionCard className="card-base">
       <Link href={assetHref} className="block">

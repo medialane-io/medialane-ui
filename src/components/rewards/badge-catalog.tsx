@@ -21,11 +21,6 @@ const CATEGORY_LABELS: Record<string, string> = {
   community: "Community",
 };
 
-/** Full badge catalog, grouped by category — "what's achievable," not
- *  "what you've done" (no earned/locked state; that's BadgeShelf's job on
- *  /rewards, which stays exactly as-is for the viewer's own progress).
- *  Groups render in whatever categories are actually present in the data,
- *  not a hardcoded list — new categories show up automatically. */
 export function BadgeCatalog({ badges, className }: BadgeCatalogProps) {
   const categories = [...new Set(badges.map((b) => b.category))];
 

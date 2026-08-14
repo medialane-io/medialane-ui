@@ -8,7 +8,7 @@ import { Skeleton } from "./skeleton.js";
 export interface CollectionHeroStat {
   label: string;
   display: string;
-  /** Currency symbol (STRK, ETH, ...) — renders CurrencyIcon next to the value. Omit for plain counts. */
+
   symbol?: string | null;
 }
 
@@ -22,12 +22,6 @@ export interface CollectionHeroBannerProps {
   className?: string;
 }
 
-/**
- * Full-bleed collection hero: page-wide atmospheric blur, a parallax banner
- * image, and a bottom overlay (type/symbol eyebrows, title, stat chips).
- * Deduplicated from io + starknet, which had drifted into two independent
- * copies of the same block.
- */
 export function CollectionHeroBanner({
   bannerUrl,
   loading = false,
@@ -43,7 +37,7 @@ export function CollectionHeroBanner({
 
   return (
     <>
-      {/* Atmospheric blur background, fixed behind the whole page */}
+
       <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
         {bannerUrl && (
           <img
@@ -72,8 +66,6 @@ export function CollectionHeroBanner({
             <div className="absolute inset-0 w-full h-full bg-muted" />
           )}
 
-          {/* Bottom overlay: eyebrows + title + stat chips — frosted glass so
-              they hold up over any artwork, regardless of site theme. */}
           <div className="absolute bottom-0 left-0 right-0 px-4 sm:px-6 pb-4 sm:pb-6 space-y-3 z-10">
             {(standard || symbol) && (
               <div className="flex items-center gap-2 flex-wrap">

@@ -6,18 +6,16 @@ export interface ScoreSummaryCardProps {
   levelName: string;
   badgeColor: string;
   totalXp: number;
-  /** XP required to reach the current level. */
+
   levelXp: number;
   nextLevel: { level: number; name: string; xpRequired: number } | null;
-  /** A few earned badges to preview (already limited by the caller). */
+
   topBadges?: BadgeShelfBadge[];
-  /** Where the card links ("/rewards"); rendered as a plain anchor. */
+
   href?: string;
   className?: string;
 }
 
-/** Compact score overview for portfolio/profile surfaces: level ring, XP,
- *  next-level progress, and a short badge preview. */
 export function ScoreSummaryCard({
   level,
   levelName,

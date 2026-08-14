@@ -13,14 +13,12 @@ export interface OwnedAsset {
 }
 
 export interface AssetPickerProps {
-  /** The caller's already-fetched, already-resolved asset list — this
-   *  component takes data, it doesn't fetch it. Plug in `useTokensByOwner`
-   *  (or an app's equivalent) and map to `OwnedAsset` at the call site. */
+
   assets: OwnedAsset[];
   isLoading: boolean;
   selected: OwnedAsset | null;
   onSelect: (asset: OwnedAsset) => void;
-  /** Shown in the empty state when the wallet owns nothing yet. */
+
   emptyStateHref?: string;
   emptyStateLabel?: string;
   className?: string;

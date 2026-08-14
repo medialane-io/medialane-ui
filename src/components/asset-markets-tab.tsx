@@ -8,7 +8,6 @@ import { cn } from "../utils/cn.js";
 import { Clock, CheckCircle } from "lucide-react";
 import type { ApiOrder } from "@medialane/sdk";
 
-/** shadcn-equivalent small button (ui package carries no Radix/shadcn primitives) */
 function ActionButton({
   variant = "default",
   className,

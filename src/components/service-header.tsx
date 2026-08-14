@@ -2,26 +2,19 @@ import type { ReactNode } from "react";
 import { cn } from "../utils/cn.js";
 
 export interface ServiceHeaderProps {
-  /** Rendered icon element, e.g. <Coins className="h-4 w-4 text-white" />. */
+
   icon: ReactNode;
   title: string;
   subtitle: string;
-  /** Optional element shown under the subtitle (e.g. a URL pill). */
+
   headerAccessory?: ReactNode;
   className?: string;
-  /** Drop the brand gradient border for a plain neutral-bordered card.
-   *  Standalone headers (browse pages, coin page, /claim hub) keep the
-   *  gradient by default. */
+
   plain?: boolean;
-  /** No card at all — icon chip + title + subtitle on the page background.
-   *  Used by ServiceFormShell so the form card is the page's only panel. */
+
   bare?: boolean;
 }
 
-/** Shared launchpad/claim page header: a dark card with a solid primary icon
- *  chip, title + subtitle. By default it sits on a static brand gradient
- *  border; pass `plain` for a neutral-bordered card. Pure presentation —
- *  consuming app supplies the icon and (optionally) a header accessory. */
 export function ServiceHeader({ icon, title, subtitle, headerAccessory, className, plain = false, bare = false }: ServiceHeaderProps) {
   const body = (
     <>

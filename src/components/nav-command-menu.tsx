@@ -7,65 +7,37 @@ import { Search, X, ArrowRight } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { cn } from "../utils/cn.js";
 
-// ── Types ─────────────────────────────────────────────────────────────────────
-
 export interface NavCommand {
   id: string;
   label: string;
   icon: React.ComponentType<{ className?: string }>;
   href?: string;
   action?: () => void;
-  /** Extra search terms beyond the label */
+
   keywords?: string[];
-  /** Optional one-line description shown under the label */
+
   description?: string;
 }
 
 export interface NavCommandGroup {
-  /**
-   * Optional group heading. Omit it for the primary group so its items
-   * read as the top-level menu — they render first, emphasized, with no
-   * label, separated from the headed groups below.
-   */
+
   heading?: string;
   items: NavCommand[];
 }
 
 export interface NavCommandMenuProps {
   commands: NavCommandGroup[];
-  /**
-   * Optional trigger element rendered inline at the component's mount point.
-   * For most apps, omit this and call `useNavCommandMenu().open()` from a
-   * separate button — that keeps the trigger in the right place in the layout.
-   */
+
   trigger?: React.ReactNode;
-  /**
-   * Optional pinned account/connect area rendered below command results.
-   * Apps own the auth implementation here (passkey wallets, injected wallet
-   * connectors, Privy, Cartridge, etc.) so the shared nav stays framework-agnostic.
-   */
+
   accountSlot?: React.ReactNode;
-  /**
-   * Optional control rendered in the footer row (e.g. a theme toggle).
-   * Apps own theme state (next-themes etc.) so the shared nav stays
-   * framework-agnostic — same pattern as `accountSlot`.
-   */
+
   footerSlot?: React.ReactNode;
-  /**
-   * Show the "↑↓ Navigate  ↵ Open" keyboard-hint text next to `footerSlot`.
-   * Defaults to `true` (unchanged behavior).
-   */
+
   showKeyboardHints?: boolean;
-  /**
-   * Optional override for the trailing "medialane ⌘K" brandmark at the
-   * footer's right edge — replaces it entirely rather than adorning it, so
-   * an app can put something more actionable there (e.g. a "Connect" button)
-   * instead of a static label. Omit to keep the default brandmark.
-   */
+
   brandSlot?: React.ReactNode;
 }
-
-// ── Singleton hook ─────────────────────────────────────────────────────────────
 
 const ML_NAV_OPEN  = "ml:nav-open";
 const ML_NAV_CLOSE = "ml:nav-close";
@@ -76,8 +48,6 @@ export function useNavCommandMenu() {
     close: () => document.dispatchEvent(new CustomEvent(ML_NAV_CLOSE)),
   };
 }
-
-// ── Small primitives ──────────────────────────────────────────────────────────
 
 function Kbd({ children, className }: { children: React.ReactNode; className?: string }) {
   return (
@@ -149,8 +119,6 @@ const GROUP_HEADING_CLASSES = cn(
   "[&_[cmdk-group-heading]]:text-muted-foreground/60"
 );
 
-// ── Component ─────────────────────────────────────────────────────────────────
-
 export function NavCommandMenu({
   commands,
   trigger,
@@ -208,7 +176,7 @@ export function NavCommandMenu({
       <AnimatePresence>
         {open && (
           <>
-            {/* Backdrop blur */}
+
             <motion.div
               className="nav-canvas-overlay"
               initial={{ opacity: 0 }}
@@ -218,7 +186,6 @@ export function NavCommandMenu({
               onClick={() => setOpen(false)}
             />
 
-            {/* Command panel — centered on desktop, bottom sheet on mobile */}
             <motion.div
               className="fixed inset-0 z-[101] flex items-end justify-center p-3 pb-[calc(1rem+env(safe-area-inset-bottom))] sm:items-center sm:p-4"
               initial={{ opacity: 0, y: 24, scale: 1 }}
@@ -235,12 +202,11 @@ export function NavCommandMenu({
                 onClick={(e) => e.stopPropagation()}
               >
                 <Command shouldFilter label="Medialane navigation" className="flex min-h-0 flex-1 flex-col">
-                  {/* Drag handle (mobile) */}
+
                   <div className="flex justify-center pt-2.5 sm:hidden" aria-hidden="true">
                     <span className="h-1 w-9 rounded-full bg-muted-foreground/30" />
                   </div>
 
-                  {/* Search bar */}
                   <div className="flex items-center gap-3 border-b border-border/40 px-4 py-3.5">
                     <Search
                       className={cn(
@@ -265,7 +231,6 @@ export function NavCommandMenu({
                     </button>
                   </div>
 
-                  {/* Results */}
                   <Command.List className="min-h-0 flex-1 overflow-y-auto overscroll-contain p-2">
                     <Command.Empty className="py-8 text-center text-sm text-muted-foreground">
                       No results found.
@@ -299,7 +264,6 @@ export function NavCommandMenu({
                     </div>
                   )}
 
-                  {/* Footer */}
                   <div className="flex items-center justify-between gap-3 border-t border-border/40 bg-muted/20 px-3 py-2">
                     <div className="flex items-center gap-3">
                       {footerSlot}

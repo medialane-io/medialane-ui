@@ -8,7 +8,7 @@ import { shortenAddress } from "../utils/address.js";
 export interface AddressDisplayProps {
   address: string;
   className?: string;
-  /** Number of chars to show at start and end. Default: 4 */
+
   chars?: number;
   showCopy?: boolean;
 }

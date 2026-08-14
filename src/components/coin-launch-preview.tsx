@@ -8,24 +8,18 @@ export interface CoinPreviewData {
   name: string;
   symbol: string;
   description: string;
-  /** Local object URL or resolved IPFS URL for the feature image */
+
   imageUrl: string | null;
-  /** Human supply (already validated) or null while typing */
+
   supplyHuman: number | null;
   quoteSymbol: string;
   teamPct: number;
 }
 
-const LAUNCH_PRICE = 0.01; // fixed, quote per coin
+const LAUNCH_PRICE = 0.01;
 
-/** Warm coin gradient — rose → orange, the brand's coin palette. */
 const COIN_GRADIENT = "linear-gradient(135deg, #f6608f, #fb8b46)";
 
-/** Live preview for the Creator Coin launch studio — builds the coin in front
- *  of the creator as they type. Mirrors the coin's eventual discovery card so
- *  what they design is what their fans will see. Quiet borderless panel in the
- *  launchpad-rail language; the warm coin gradient appears only as the avatar
- *  ring and the allocation bar. */
 export function CoinLaunchPreview({ data, className }: { data: CoinPreviewData; className?: string }) {
   const { name, symbol, description, imageUrl, supplyHuman, quoteSymbol, teamPct } = data;
   const marketCap = supplyHuman != null ? supplyHuman * LAUNCH_PRICE : null;
@@ -38,7 +32,7 @@ export function CoinLaunchPreview({ data, className }: { data: CoinPreviewData; 
       </div>
 
       <div className="p-5 space-y-4">
-        {/* Identity — avatar in the warm coin ring */}
+
         <div className="flex items-center gap-3">
           <div className="shrink-0 rounded-full p-[2px]" style={{ background: COIN_GRADIENT }}>
             <div className="relative h-14 w-14 rounded-full overflow-hidden bg-card flex items-center justify-center">
@@ -61,7 +55,6 @@ export function CoinLaunchPreview({ data, className }: { data: CoinPreviewData; 
           <p className="text-sm text-muted-foreground leading-relaxed line-clamp-3">{description}</p>
         ) : null}
 
-        {/* Economics */}
         <div className="grid grid-cols-3 gap-2 rounded-xl bg-muted/50 dark:bg-muted/30 p-3 text-sm">
           <div>
             <p className="text-2xs uppercase tracking-wide text-muted-foreground">Launch price</p>
@@ -81,7 +74,6 @@ export function CoinLaunchPreview({ data, className }: { data: CoinPreviewData; 
           </div>
         </div>
 
-        {/* Allocation split bar */}
         <div className="space-y-1.5">
           <div className="flex h-2.5 rounded-full overflow-hidden bg-muted-foreground/15">
             {teamPct > 0 && <div style={{ width: `${teamPct}%`, background: COIN_GRADIENT }} />}

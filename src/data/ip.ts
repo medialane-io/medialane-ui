@@ -1,4 +1,4 @@
-// Local const for z.enum() — [string, ...string[]] tuple required by Zod.
+
 export const IP_TYPES = [
   "Audio",
   "Art",
@@ -129,7 +129,6 @@ export const AI_POLICIES = ["Allowed", "Not Allowed", "Training Only"] as const;
 
 export const DERIVATIVES_OPTIONS = ["Allowed", "Not Allowed", "Share-Alike"] as const;
 
-/** Trait types that represent IP licensing metadata in the attributes array. */
 export const LICENSE_TRAIT_TYPES = new Set([
   "License",
   "Commercial Use",

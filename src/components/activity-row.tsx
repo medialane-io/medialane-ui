@@ -14,7 +14,7 @@ import type { ApiActivity } from "@medialane/sdk";
 
 export interface ActivityRowProps {
   activity: ApiActivity;
-  /** Optional token enrichment — if absent shows #tokenId fallback. No internal useToken call. */
+
   token?: { name?: string; image?: string };
   showActor?: boolean;
   showExplorer?: boolean;
@@ -57,12 +57,11 @@ export function ActivityRow({
 
   return (
     <div className={cn("flex items-center gap-3 hover:bg-muted/30 transition-colors group", compact ? "pl-4 pr-5 py-2.5" : "pl-4 pr-5 py-3.5")}>
-      {/* Type icon */}
+
       <div className={cn("rounded-lg flex items-center justify-center shrink-0", config.bgClass, compact ? "h-7 w-7" : "h-8 w-8")}>
         <Icon className={cn("shrink-0", config.colorClass, compact ? "h-3.5 w-3.5" : "h-4 w-4")} />
       </div>
 
-      {/* Token thumbnail */}
       <div className={cn("rounded-md overflow-hidden shrink-0 bg-muted", compact ? "h-7 w-7" : "h-9 w-9")}>
         {tokenImage ? (
           <Image src={tokenImage} alt={tokenName} width={compact ? 28 : 36} height={compact ? 28 : 36} className="object-cover w-full h-full" unoptimized />
@@ -71,7 +70,6 @@ export function ActivityRow({
         )}
       </div>
 
-      {/* Asset name + actor */}
       <div className="flex-1 min-w-0">
         {contract && tokenId ? (
           <Link href={getAssetHref(contract, tokenId)} className="text-sm font-semibold hover:text-primary transition-colors truncate block leading-tight">
@@ -87,7 +85,6 @@ export function ActivityRow({
         )}
       </div>
 
-      {/* Right: badge + price + time + explorer */}
       <div className="flex items-center gap-2.5 shrink-0">
         {!compact && (
           <span className={cn("text-2xs font-medium px-1.5 py-0.5 rounded hidden sm:inline-flex", config.bgClass, config.colorClass)}>

@@ -32,10 +32,9 @@ export function CommunityRewardsSection({
   return (
     <section className="rounded-2xl bg-muted/50 dark:bg-card overflow-hidden grid lg:grid-cols-2 max-lg:divide-y lg:divide-x divide-brand-orange/20">
 
-      {/* Left — info panel */}
       <div className="px-7 py-8 sm:px-9 flex flex-col gap-6">
         <div>
-          {/* Creator's Fund eyebrow — shared with CreatorAirdropBanner */}
+
           <span className="text-xs font-bold uppercase tracking-widest text-brand-orange">
             Creator&apos;s Fund
           </span>
@@ -47,8 +46,6 @@ export function CommunityRewardsSection({
           </p>
         </div>
 
-        {/* Recently active — live rail sourced from the same entries as the
-            member cards on the right, no rank/podium framing. */}
         {!isLoading && entries.length > 0 && (
           <div className="border-y border-brand-orange/20 py-3">
             <p className="text-2xs font-bold uppercase tracking-widest text-muted-foreground mb-2">
@@ -68,7 +65,6 @@ export function CommunityRewardsSection({
           </div>
         )}
 
-        {/* Earn actions — plain text row */}
         <div className="flex flex-wrap gap-x-5 gap-y-2">
           {EARN_ACTIONS.map(({ icon: Icon, label }) => (
             <span
@@ -90,7 +86,6 @@ export function CommunityRewardsSection({
         </Link>
       </div>
 
-      {/* Right — member cards */}
       <div className="p-5 sm:p-6">
         {!isLoading && entries.length > 0 ? (
           <div className="grid grid-cols-2 gap-3 h-full">
@@ -102,7 +97,6 @@ export function CommunityRewardsSection({
               >
                 <div className="absolute inset-x-0 top-0 h-0.5 bg-brand-orange/40" />
 
-                {/* XP — hero number */}
                 <div className="space-y-0.5 pt-1">
                   <p className="text-2xl font-black tabular-nums leading-none">
                     {entry.totalXp.toLocaleString()}

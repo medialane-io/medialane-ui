@@ -8,14 +8,9 @@ const EXPLORER_URL = process.env.NEXT_PUBLIC_EXPLORER_URL || "https://voyager.on
 
 export interface CreationRecordProps {
   originalCreator: string;
-  registeredAt: number; // unix seconds
+  registeredAt: number;
 }
 
-/**
- * Berne Convention authorship record surfaced from IPNft.get_full_token_data.
- * Both fields are immutable on-chain — original_creator is set at mint time
- * and never changes regardless of subsequent ownership transfers.
- */
 export function CreationRecord({ originalCreator, registeredAt }: CreationRecordProps) {
   const creator = originalCreator ? normalizeAddress("STARKNET", originalCreator) : "";
   const date = new Date(registeredAt * 1000);

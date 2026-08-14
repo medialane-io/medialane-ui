@@ -9,10 +9,6 @@ interface HelpIconProps {
   className?: string;
 }
 
-/**
- * Tap/click to reveal an explanation popover — works on mobile and desktop.
- * Place inline next to any element that needs contextual help.
- */
 export function HelpIcon({ content, side = "top", className }: HelpIconProps) {
   return (
     <Popover>

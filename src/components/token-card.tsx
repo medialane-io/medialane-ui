@@ -32,12 +32,7 @@ export interface TokenCardProps {
   onBuy?: (token: ApiToken) => void;
   onOffer?: (token: ApiToken) => void;
   onReport?: (token: ApiToken) => void;
-  /**
-   * Pre-formatted USD equivalent of the active listing price (e.g.
-   * "$13.15"), computed by the host from its own live rate feed — this
-   * package has no price-feed access by design. Omit/null renders the
-   * crypto-only chip.
-   */
+
   usdValue?: string | null;
 }
 
@@ -57,7 +52,6 @@ export function TokenCard({
   const animationUrl = token.metadata?.animationUrl ?? null;
   const ipType = token.metadata?.ipType;
 
-  // First listing-type active order (offer.itemType = ERC721 or ERC1155)
   const listingOrder = token.activeOrders?.find(
     (o) => o.offer.itemType === "ERC721" || o.offer.itemType === "ERC1155"
   );
@@ -87,10 +81,8 @@ export function TokenCard({
   return (
     <div className="card-base relative overflow-hidden flex flex-col w-full">
 
-      {/* ── Clickable image + info ─────────────────────────────── */}
       <Link href={assetHref} className="flex flex-col flex-1">
 
-        {/* Image */}
         <div className="relative aspect-square bg-muted overflow-hidden shrink-0">
           <AnimatedTokenMedia
             image={image}
@@ -107,10 +99,6 @@ export function TokenCard({
             }
           />
 
-          {/* Price chip — bottom right overlay. Fiat leads when a live rate
-              is available; the crypto amount trails, dimmer, middot-
-              separated — same language as AssetCard's pill. Stablecoins
-              collapse to fiat + symbol alone (no duplicate number). */}
           {listingOrder && (
             <div className="absolute bottom-2 right-2 z-10">
               <span className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-sm font-bold bg-background/90 backdrop-blur-sm border border-border/40 shadow-sm tabular-nums">
@@ -124,7 +112,6 @@ export function TokenCard({
             </div>
           )}
 
-          {/* Indexing indicator */}
           {(token.metadataStatus === "PENDING" || token.metadataStatus === "FETCHING") && (
             <div className="absolute bottom-0 inset-x-0 flex items-center justify-center gap-1.5 bg-black/50 backdrop-blur-sm py-1.5">
               <Loader2 className="h-3 w-3 animate-spin text-white/70" />
@@ -133,7 +120,6 @@ export function TokenCard({
           )}
         </div>
 
-        {/* Info */}
         <div className="px-3 pt-2.5 pb-4 flex-1">
           <p className="text-base font-bold line-clamp-2 leading-snug">{name}</p>
           <div className="flex items-center gap-1.5 mt-1.5 flex-wrap">
@@ -151,10 +137,8 @@ export function TokenCard({
         </div>
       </Link>
 
-      {/* ── Action row ────────────────────────────────────────── */}
       <div className="px-3 pb-3 flex items-center gap-1.5">
 
-        {/* Expand */}
         <Link
           href={assetHref}
           className={cn(BTN_OUTLINE, "w-8 shrink-0 px-0")}
@@ -163,7 +147,6 @@ export function TokenCard({
           <ArrowUpRight className="h-3.5 w-3.5" />
         </Link>
 
-        {/* Owner: List (or Listed label) — Buyer: Buy / Make offer */}
         {isOwner ? (
           listingOrder ? (
             <Link href={assetHref} className={cn(BTN_OUTLINE, "flex-1")}>
@@ -199,7 +182,6 @@ export function TokenCard({
           </button>
         )}
 
-        {/* 3-dot menu */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <button

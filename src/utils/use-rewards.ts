@@ -10,13 +10,10 @@ import type {
   ApiPointEvent,
 } from "@medialane/sdk";
 
-// Legacy local names — kept so existing consumers compile unchanged.
 export type UserRewards = ApiUserRewards;
 export type LeaderboardEntry = ApiRewardsLeaderboardEntry;
 export type BadgeSummary = ApiUserRewards["badges"][number];
 export type LevelSummary = NonNullable<ApiUserRewards["nextLevel"]>;
-
-// ── Hooks ─────────────────────────────────────────────────────────────────────
 
 export function useRewards(getClient: () => MedialaneClient, address: string | null | undefined) {
   return useSWR<ApiUserRewards>(
@@ -59,7 +56,6 @@ export function useRewardsEvents(
   );
 }
 
-/** Level ladder + action XP values + badge catalog. Changes rarely. */
 export function useRewardsConfig(getClient: () => MedialaneClient) {
   return useSWR<ApiRewardsConfig>(
     "rewards-config",
@@ -68,9 +64,6 @@ export function useRewardsConfig(getClient: () => MedialaneClient) {
   );
 }
 
-/** Minimal level info for a page of addresses — ONE request per page.
- *  Returns a Map keyed by normalized address. Failures resolve to undefined
- *  data; list surfaces render nothing rather than an error. */
 export function useRewardsBatch(getClient: () => MedialaneClient, addresses: string[]) {
   const unique = [...new Set(addresses)].slice(0, 50);
   const key = unique.length ? `rewards-batch:${[...unique].sort().join(",")}` : null;

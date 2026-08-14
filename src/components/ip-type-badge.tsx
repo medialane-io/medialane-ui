@@ -8,7 +8,6 @@ import { cn } from "../utils/cn.js";
 import { IP_TYPE_DATA, IP_TYPE_DATA_MAP } from "../data/ip-types.js";
 import type { IpTypeData } from "../data/ip-types.js";
 
-/** Client-only: extends IpTypeData with a React icon component. */
 export interface IpTypeConfig extends IpTypeData {
   icon: React.ElementType;
 }
@@ -35,7 +34,6 @@ export const IP_TYPE_MAP = Object.fromEntries(
   IP_TYPE_CONFIG.map((c) => [c.slug, c])
 ) as Record<string, IpTypeConfig>;
 
-// Re-export server-safe data so consumers only need one import path
 export { IP_TYPE_DATA, IP_TYPE_DATA_MAP };
 export type { IpTypeData };
 
@@ -48,7 +46,7 @@ export interface IpTypeBadgeProps {
   ipType: string;
   size?: "sm" | "md";
   className?: string;
-  /** Base URL for IP type pages. Default: "" (relative). */
+
   baseUrl?: string;
 }
 

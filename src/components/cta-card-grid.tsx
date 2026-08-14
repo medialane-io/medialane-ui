@@ -9,9 +9,9 @@ export interface CtaCardItem {
   description: string;
   links: { label: string; href: string }[];
   href: string;
-  /** Tailwind gradient class applied as a 3% opacity hover overlay */
+
   gradient: string;
-  /** Tailwind gradient + shadow class for the icon pill */
+
   iconGradient: string;
 }
 

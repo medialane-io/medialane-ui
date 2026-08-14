@@ -1,6 +1,4 @@
-/** USD-pegged currencies among SUPPORTED_TOKENS — their crypto amount and USD
- *  value are numerically ~identical, so price displays collapse to a single
- *  number instead of showing the same figure twice. */
+
 export function isStableCurrency(symbol: string | null | undefined): boolean {
   return symbol === "USDC" || symbol === "USDT";
 }
@@ -12,10 +10,6 @@ function adaptiveDecimals(num: number): number {
   return leadingZeros + 2;
 }
 
-/**
- * Format a display price string with adaptive decimal places.
- * Handles "1.234 USDC" format — reformats the numeric part, preserves the symbol.
- */
 export function formatDisplayPrice(price: string | number | null | undefined): string {
   if (price === null || price === undefined) return "";
   const priceStr = String(price);
@@ -32,10 +26,6 @@ export function formatDisplayPrice(price: string | number | null | undefined): s
   return currencyPart ? `${formatted} ${currencyPart}` : formatted;
 }
 
-/**
- * Parse a backend price string like "0.000012000000 WBTC" into a clean display + symbol.
- * Strips trailing zeros ("1.500000" → "1.50"); guards against raw-wei values (> 1e12 → "—").
- */
 export function parsePriceDisplay(raw: string | null | undefined): { numStr: string; symbol: string | null } {
   if (!raw) return { numStr: "—", symbol: null };
   const parts = raw.trim().split(" ");

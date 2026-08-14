@@ -5,7 +5,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 export interface AssetCollectionBarSibling {
   tokenId: string;
-  /** Already-resolved, ready-to-render src. `null` renders a placeholder. */
+
   image: string | null;
 }
 
@@ -26,7 +26,7 @@ export function AssetCollectionBar({
   siblingTokens,
   onNavigate,
 }: AssetCollectionBarProps) {
-  // Show up to 4 OTHER tokens — never the current one
+
   const others = siblingTokens.filter(
     (t) => String(t.tokenId) !== String(currentTokenId)
   );
@@ -35,7 +35,6 @@ export function AssetCollectionBar({
   return (
     <div className="rounded-2xl bg-gradient-to-br from-muted/40 to-transparent overflow-hidden p-4 space-y-3">
 
-      {/* Collection identity — links to collection page */}
       <Link href={collectionHref} className="flex items-center gap-3 group min-w-0">
         <div className="relative h-11 w-11 rounded-xl overflow-hidden shrink-0 bg-gradient-to-br from-brand-blue/20 to-brand-purple/20 ring-1 ring-border/30 group-hover:ring-border/60 transition-all">
           {collectionImage ? (
@@ -50,7 +49,6 @@ export function AssetCollectionBar({
         </div>
       </Link>
 
-      {/* Grid — always 4 columns so thumbnails stay the same size regardless of count */}
       {preview.length > 0 && (
         <div className="grid grid-cols-4 gap-1.5">
           {Array.from({ length: 4 }).map((_, i) => {

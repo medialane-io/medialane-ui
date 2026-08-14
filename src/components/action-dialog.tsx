@@ -1,13 +1,9 @@
 "use client";
 
-// The signature "action focus" dialog shell — the app recedes into a blurred,
-// oversaturated backdrop while a single clean decision panel floats centered.
-// Requires mlFade / mlPop keyframes from @medialane/ui/styles.
-
 export interface ActionDialogProps {
   open: boolean;
   onClose: () => void;
-  /** Card width in px. */
+
   width?: number;
   children: React.ReactNode;
 }

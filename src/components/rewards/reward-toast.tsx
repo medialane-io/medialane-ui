@@ -9,14 +9,6 @@ export interface RewardToastSnapshot {
   currentLevel: number;
 }
 
-/**
- * Optimistic XP feedback after a scoring action. Scores recompute on a
- * schedule, so this shows the action's configured value, never a balance.
- * Fire-and-forget: any failure is silent (rewards UI must never break a flow).
- *
- * Each app supplies its own `getRewardsConfig` (bound to its own
- * `MedialaneClient` singleton) — the caching/toast logic lives here once.
- */
 export function createRewardToast(getRewardsConfig: () => Promise<ApiRewardsConfig>) {
   let configPromise: Promise<ApiRewardsConfig> | null = null;
   function loadConfig() {
@@ -24,10 +16,6 @@ export function createRewardToast(getRewardsConfig: () => Promise<ApiRewardsConf
     return configPromise;
   }
 
-  /**
-   * @param snapshot Optional — when provided, the toast additionally shows
-   * a progress bar toward the next level. Omit to get today's plain toast.
-   */
   return function rewardToast(actionType: string, snapshot?: RewardToastSnapshot): void {
     loadConfig()
       .then((config) => {
@@ -53,7 +41,7 @@ export function createRewardToast(getRewardsConfig: () => Promise<ApiRewardsConf
         );
       })
       .catch(() => {
-        configPromise = null; // retry on the next action
+        configPromise = null;
       });
   };
 }

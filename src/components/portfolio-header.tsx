@@ -5,10 +5,10 @@ import { cn } from "../utils/cn.js";
 import { AddressDisplay } from "./address-display.js";
 
 export interface PortfolioHeaderScore {
-  /** Journey level name ("Starter", "Explorer", …) — no numeric level shown. */
+
   levelName: string;
   totalXp: number;
-  /** Where the score chip links ("/rewards"). */
+
   href?: string;
 }
 
@@ -18,15 +18,6 @@ export interface PortfolioHeaderProps {
   className?: string;
 }
 
-/**
- * Portfolio identity header: the address as a real page title (no generic
- * gradient/avatar element — there's no profile data to lead with, and a
- * placeholder gradient mark isn't the answer), with the rewards journey
- * chip alongside it. The chip stays orange->maeve (the platform-wide XP/
- * Rewards identity, matching LevelBadge) rather than Portfolio's own
- * purple->orange theme — a rewards badge keeps its own aesthetic wherever
- * it's embedded, it doesn't inherit the surrounding page's section theme.
- */
 export function PortfolioHeader({
   address,
   score,
