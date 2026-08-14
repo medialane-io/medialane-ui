@@ -10,6 +10,7 @@ import {
   coinKind, formatCoinPrice,
   type CoinCollectionLike, type CoinPriceLike,
 } from "../data/coins.js";
+import { formatUsd } from "../utils/format.js";
 
 export type UseCoinPrice = (collection: CoinCollectionLike) => {
   price: CoinPriceLike | null;
@@ -52,10 +53,14 @@ function useTileModel({ collection, usePrice }: Omit<CoinTileProps, "href">) {
 function PriceValue({ price, isLoading }: { price: CoinPriceLike | null; isLoading: boolean }) {
   if (isLoading) return <span className="inline-block h-4 w-14 rounded bg-muted-foreground/20 animate-pulse" />;
   if (!price) return <span className="text-muted-foreground">—</span>;
+  const usdValue = price.quoteUsdRate != null ? formatUsd(price.quotePerCoin * price.quoteUsdRate) : null;
   return (
-    <span className="inline-flex items-center gap-1 font-semibold tabular-nums">
-      <CurrencyIcon symbol={price.quoteSymbol} size={14} />
-      {formatCoinPrice(price.quotePerCoin)}
+    <span className="inline-flex flex-wrap items-baseline justify-end gap-x-1.5 gap-y-0">
+      <span className="inline-flex items-center gap-1 font-semibold tabular-nums">
+        <CurrencyIcon symbol={price.quoteSymbol} size={14} />
+        {formatCoinPrice(price.quotePerCoin)}
+      </span>
+      {usdValue && <span className="text-2xs text-muted-foreground/70 whitespace-nowrap">≈ {usdValue}</span>}
     </span>
   );
 }

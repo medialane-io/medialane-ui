@@ -18,6 +18,9 @@ export interface CoinCollectionLike {
 export interface CoinPriceLike {
   quotePerCoin: number;
   quoteSymbol: string | null;
+  /** USD value of one unit of quoteSymbol, when known — lets price
+   * displays show a fiat-equivalent alongside the on-chain quote. */
+  quoteUsdRate?: number | null;
 }
 
 export function coinKind(service: string | null | undefined): CoinKind {
