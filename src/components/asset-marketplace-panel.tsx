@@ -9,6 +9,7 @@ import { CurrencyIcon, CurrencyAmount } from "./currency-icon.js";
 import { AddressDisplay } from "./address-display.js";
 import { ActionButton } from "./action-button.js";
 import { DualPrice } from "./dual-price.js";
+import { EmailVerificationGate } from "./email-verification-gate.js";
 import { formatDisplayPrice, parsePriceDisplay } from "../utils/format.js";
 import { timeUntil } from "../utils/time.js";
 
@@ -54,6 +55,9 @@ export interface AssetMarketplacePanelProps<T extends ApiOrderLike = ApiOrderLik
 
   floorPriceRaw?: string | null;
   lastSaleRaw?: string | null;
+
+  listingRequiresEmailVerification?: boolean;
+  settingsHref?: string;
 }
 
 function StatRow({ floorPriceRaw, lastSaleRaw }: { floorPriceRaw?: string | null; lastSaleRaw?: string | null }) {
@@ -97,6 +101,8 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
   floorPriceRaw,
   lastSaleRaw,
   usdValue,
+  listingRequiresEmailVerification = false,
+  settingsHref = "/settings",
   renderAuthAction,
   renderHelp,
   onCancelClick,
@@ -157,7 +163,9 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
                   ) : null}
 
                   {(!myListing || isERC1155) ? (
-                    <ActionButton big tone="blue" icon={<Tag className="h-4 w-4" />} onClick={onOpenListing} renderHelp={renderHelp}>List on Marketplace</ActionButton>
+                    <EmailVerificationGate required={listingRequiresEmailVerification} reason="list assets for sale" settingsHref={settingsHref}>
+                      <ActionButton big tone="blue" icon={<Tag className="h-4 w-4" />} onClick={onOpenListing} disabled={listingRequiresEmailVerification} renderHelp={renderHelp}>List on Marketplace</ActionButton>
+                    </EmailVerificationGate>
                   ) : null}
                   <ActionButton big tone="orange" icon={<ArrowRightLeft className="h-4 w-4" />} onClick={onOpenTransfer} renderHelp={renderHelp}>Transfer</ActionButton>
                   {remixEnabled && onOpenRemix ? (
@@ -248,7 +256,9 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
             <StatRow floorPriceRaw={floorPriceRaw} lastSaleRaw={lastSaleRaw} />
             {isOwner ? (
               <div className="grid grid-cols-2 gap-2">
-                <ActionButton big tone="blue" icon={<Tag className="h-4 w-4" />} onClick={onOpenListing} renderHelp={renderHelp}>List on Marketplace</ActionButton>
+                <EmailVerificationGate required={listingRequiresEmailVerification} reason="list assets for sale" settingsHref={settingsHref}>
+                  <ActionButton big tone="blue" icon={<Tag className="h-4 w-4" />} onClick={onOpenListing} disabled={listingRequiresEmailVerification} renderHelp={renderHelp}>List on Marketplace</ActionButton>
+                </EmailVerificationGate>
                 <ActionButton big tone="orange" icon={<ArrowRightLeft className="h-4 w-4" />} onClick={onOpenTransfer} renderHelp={renderHelp}>Transfer</ActionButton>
                 {remixEnabled && onOpenRemix ? (
                   <ActionButton big
