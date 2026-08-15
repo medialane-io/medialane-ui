@@ -103,7 +103,7 @@ export const NavWalletTrigger = React.forwardRef<HTMLButtonElement, NavWalletTri
         <span className="ml-nav-wallet-ring" aria-hidden="true" />
         {connected
           ? (iconSrc
-              ? <img src={iconSrc} alt="" width={16} height={16} className="h-4 w-4 shrink-0 rounded-full" />
+              ? <img src={iconSrc} alt="" width={36} height={36} className="h-9 w-9 shrink-0 rounded-full" />
               : (connectedIcon ?? <User className="h-3.5 w-3.5" />))
           : (disconnectedIcon ?? <Wallet className="h-3.5 w-3.5" />)}
       </button>
