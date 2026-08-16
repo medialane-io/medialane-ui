@@ -1,4 +1,4 @@
-const DEFAULT_GATEWAY = "https://ipfs.io/ipfs/";
+const DEFAULT_GATEWAY = "/api/ipfs/";
 
 const ALLOWED_PROTOCOLS = new Set(["http:", "https:", "ipfs:"]);
 
