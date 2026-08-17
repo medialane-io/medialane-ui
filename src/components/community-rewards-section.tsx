@@ -30,12 +30,12 @@ export function CommunityRewardsSection({
   creatorHref,
 }: CommunityRewardsSectionProps) {
   return (
-    <section className="rounded-2xl bg-muted/50 dark:bg-card overflow-hidden grid lg:grid-cols-2 max-lg:divide-y lg:divide-x divide-brand-orange/20">
+    <section className="rounded-2xl bg-muted/50 dark:bg-card overflow-hidden grid lg:grid-cols-2 max-lg:divide-y lg:divide-x divide-brand-maeve/20">
 
       <div className="px-7 py-8 sm:px-9 flex flex-col gap-6">
         <div>
 
-          <span className="text-xs font-bold uppercase tracking-widest text-brand-orange">
+          <span className="text-xs font-bold uppercase tracking-widest text-brand-maeve">
             Creator&apos;s Fund
           </span>
           <h2 className="mt-4 text-2xl font-bold tracking-tight leading-tight">
@@ -47,7 +47,7 @@ export function CommunityRewardsSection({
         </div>
 
         {!isLoading && entries.length > 0 && (
-          <div className="border-y border-brand-orange/20 py-3">
+          <div className="border-y border-brand-maeve/20 py-3">
             <p className="text-2xs font-bold uppercase tracking-widest text-muted-foreground mb-2">
               Recently active
             </p>
@@ -56,7 +56,7 @@ export function CommunityRewardsSection({
                 <span
                   key={entry.address}
                   title={`${entry.totalXp.toLocaleString()} XP`}
-                  className="flex h-7 w-7 items-center justify-center rounded-full border-2 border-background bg-brand-orange/15 text-[9px] font-bold text-brand-orange"
+                  className="flex h-7 w-7 items-center justify-center rounded-full border-2 border-background bg-brand-maeve/15 text-[9px] font-bold text-brand-maeve"
                 >
                   {entry.address.slice(2, 4).toUpperCase()}
                 </span>
@@ -71,7 +71,7 @@ export function CommunityRewardsSection({
               key={label}
               className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground"
             >
-              <Icon className="h-3 w-3 text-brand-orange/70" />
+              <Icon className="h-3 w-3 text-brand-maeve/70" />
               {label}
             </span>
           ))}
@@ -79,7 +79,7 @@ export function CommunityRewardsSection({
 
         <Link
           href={rewardsHref}
-          className="mt-auto inline-flex items-center justify-center gap-2 rounded-xl bg-brand-orange px-6 py-3 text-sm font-semibold text-white transition-all hover:brightness-110 active:scale-[0.98]"
+          className="mt-auto inline-flex items-center justify-center gap-2 rounded-xl bg-brand-maeve px-6 py-3 text-sm font-semibold text-white transition-all hover:brightness-110 active:scale-[0.98]"
         >
           Start earning XP
           <ArrowRight className="h-3.5 w-3.5" />
@@ -95,7 +95,7 @@ export function CommunityRewardsSection({
                 href={creatorHref(entry.address)}
                 className="group relative rounded-xl bg-card dark:bg-muted/30 hover:bg-card/70 dark:hover:bg-muted/50 overflow-hidden transition-colors flex flex-col justify-between p-4"
               >
-                <div className="absolute inset-x-0 top-0 h-0.5 bg-brand-orange/40" />
+                <div className="absolute inset-x-0 top-0 h-0.5 bg-brand-maeve/40" />
 
                 <div className="space-y-0.5 pt-1">
                   <p className="text-2xl font-black tabular-nums leading-none">
