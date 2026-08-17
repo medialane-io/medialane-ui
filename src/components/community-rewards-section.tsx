@@ -1,125 +1,43 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, Zap, Palette, ShoppingBag, MessageSquare } from "lucide-react";
-import { AddressDisplay } from "./address-display.js";
-
-export interface CommunityRewardsEntry {
-  address: string;
-  totalXp: number;
-}
+import { ArrowRight } from "lucide-react";
 
 export interface CommunityRewardsSectionProps {
-  entries: CommunityRewardsEntry[];
-  isLoading?: boolean;
   rewardsHref: string;
-  creatorHref: (address: string) => string;
+  airdropHref: string;
 }
 
-const EARN_ACTIONS = [
-  { icon: Zap, label: "Mint" },
-  { icon: Palette, label: "Create" },
-  { icon: ShoppingBag, label: "Trade" },
-  { icon: MessageSquare, label: "Engage" },
-];
-
-export function CommunityRewardsSection({
-  entries,
-  isLoading = false,
-  rewardsHref,
-  creatorHref,
-}: CommunityRewardsSectionProps) {
+export function CommunityRewardsSection({ rewardsHref, airdropHref }: CommunityRewardsSectionProps) {
   return (
-    <section className="rounded-2xl bg-muted/50 dark:bg-card overflow-hidden grid lg:grid-cols-2 max-lg:divide-y lg:divide-x divide-brand-maeve/20">
+    <section className="rounded-2xl bg-muted/50 dark:bg-card px-7 py-8 sm:px-9">
+      <span className="text-xs font-bold uppercase tracking-widest text-brand-maeve">
+        Creator&apos;s Fund
+      </span>
+      <h2 className="mt-4 text-2xl font-bold tracking-tight leading-tight">
+        How it works
+      </h2>
+      <p className="mt-1.5 text-sm text-muted-foreground leading-relaxed max-w-lg">
+        A share of what Medialane earns is set aside in one public wallet and shared back
+        with the people creating and trading here — the more you do, the bigger your share,
+        every round.
+      </p>
 
-      <div className="px-7 py-8 sm:px-9 flex flex-col gap-6">
-        <div>
-
-          <span className="text-xs font-bold uppercase tracking-widest text-brand-maeve">
-            Creator&apos;s Fund
-          </span>
-          <h2 className="mt-4 text-2xl font-bold tracking-tight leading-tight">
-            Community Rewards
-          </h2>
-          <p className="mt-1.5 text-sm text-muted-foreground leading-relaxed">
-            Earn XP. Share the Creator&apos;s Fund.
-          </p>
-        </div>
-
-        {!isLoading && entries.length > 0 && (
-          <div className="border-y border-brand-maeve/20 py-3">
-            <p className="text-2xs font-bold uppercase tracking-widest text-muted-foreground mb-2">
-              Recently active
-            </p>
-            <div className="flex -space-x-2">
-              {entries.slice(0, 5).map((entry) => (
-                <span
-                  key={entry.address}
-                  title={`${entry.totalXp.toLocaleString()} XP`}
-                  className="flex h-7 w-7 items-center justify-center rounded-full border-2 border-background bg-brand-maeve/15 text-[9px] font-bold text-brand-maeve"
-                >
-                  {entry.address.slice(2, 4).toUpperCase()}
-                </span>
-              ))}
-            </div>
-          </div>
-        )}
-
-        <div className="flex flex-wrap gap-x-5 gap-y-2">
-          {EARN_ACTIONS.map(({ icon: Icon, label }) => (
-            <span
-              key={label}
-              className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground"
-            >
-              <Icon className="h-3 w-3 text-brand-maeve/70" />
-              {label}
-            </span>
-          ))}
-        </div>
-
+      <div className="mt-7 flex flex-wrap items-center gap-x-6 gap-y-3">
         <Link
           href={rewardsHref}
-          className="mt-auto inline-flex items-center justify-center gap-2 rounded-xl bg-brand-maeve px-6 py-3 text-sm font-semibold text-white transition-all hover:brightness-110 active:scale-[0.98]"
+          className="inline-flex items-center gap-1.5 text-sm font-semibold text-foreground hover:text-brand-maeve transition-colors"
         >
-          Start earning XP
+          See your rewards
           <ArrowRight className="h-3.5 w-3.5" />
         </Link>
-      </div>
-
-      <div className="p-5 sm:p-6">
-        {!isLoading && entries.length > 0 ? (
-          <div className="grid grid-cols-2 gap-3 h-full">
-            {entries.slice(0, 4).map((entry) => (
-              <Link
-                key={entry.address}
-                href={creatorHref(entry.address)}
-                className="group relative rounded-xl bg-card dark:bg-muted/30 hover:bg-card/70 dark:hover:bg-muted/50 overflow-hidden transition-colors flex flex-col justify-between p-4"
-              >
-                <div className="absolute inset-x-0 top-0 h-0.5 bg-brand-maeve/40" />
-
-                <div className="space-y-0.5 pt-1">
-                  <p className="text-2xl font-black tabular-nums leading-none">
-                    {entry.totalXp.toLocaleString()}
-                  </p>
-                  <p className="text-2xs text-muted-foreground">XP earned</p>
-                </div>
-
-                <AddressDisplay
-                  address={entry.address}
-                  chars={4}
-                  showCopy={false}
-                  className="text-xs font-medium text-muted-foreground group-hover:text-foreground transition-colors"
-                />
-              </Link>
-            ))}
-          </div>
-        ) : (
-          <div className="grid grid-cols-2 gap-3 h-full">
-            {Array.from({ length: 4 }).map((_, i) => (
-              <div key={i} className="min-h-[100px] rounded-xl bg-card dark:bg-muted/30 animate-pulse" />
-            ))}
-          </div>
-        )}
+        <Link
+          href={airdropHref}
+          className="inline-flex items-center gap-1.5 text-sm font-semibold text-muted-foreground hover:text-foreground transition-colors"
+        >
+          How the fund works
+          <ArrowRight className="h-3.5 w-3.5" />
+        </Link>
       </div>
     </section>
   );

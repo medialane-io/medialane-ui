@@ -8,12 +8,6 @@ export interface CreatorAirdropBannerProps {
   href: string;
 }
 
-const HIGHLIGHTS = [
-  "Free and frictionless participation",
-  "Eligible for every prize distribution",
-  "Create, trade and earn more rewards",
-];
-
 export function CreatorAirdropBanner({ href }: CreatorAirdropBannerProps) {
   return (
     <section className="relative overflow-hidden rounded-2xl bg-brand-orange px-7 py-8 sm:px-9">
@@ -46,15 +40,6 @@ export function CreatorAirdropBanner({ href }: CreatorAirdropBannerProps) {
           Read More
           <ArrowRight className="h-4 w-4" />
         </Link>
-      </div>
-
-      <div className="mt-7 border-t border-white/20 pt-4 flex flex-wrap items-center gap-x-2.5 gap-y-1.5 text-sm text-white/70">
-        {HIGHLIGHTS.map((h, i) => (
-          <span key={h} className="flex items-center gap-2.5">
-            {i > 0 && <span className="text-white/40" aria-hidden>·</span>}
-            {h}
-          </span>
-        ))}
       </div>
     </section>
   );

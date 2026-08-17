@@ -201,7 +201,7 @@ export { LoadMoreSentinel } from "./components/load-more-sentinel.js";
 export type { LoadMoreSentinelProps } from "./components/load-more-sentinel.js";
 
 export { CommunityRewardsSection } from "./components/community-rewards-section.js";
-export type { CommunityRewardsSectionProps, CommunityRewardsEntry } from "./components/community-rewards-section.js";
+export type { CommunityRewardsSectionProps } from "./components/community-rewards-section.js";
 export { CreatorAirdropBanner } from "./components/creator-airdrop-banner.js";
 export type { CreatorAirdropBannerProps } from "./components/creator-airdrop-banner.js";
 
