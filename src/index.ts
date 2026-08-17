@@ -200,10 +200,8 @@ export type { RewardToastSnapshot } from "./components/rewards/reward-toast.js";
 export { LoadMoreSentinel } from "./components/load-more-sentinel.js";
 export type { LoadMoreSentinelProps } from "./components/load-more-sentinel.js";
 
-export { CommunityRewardsSection } from "./components/community-rewards-section.js";
-export type { CommunityRewardsSectionProps } from "./components/community-rewards-section.js";
-export { CreatorAirdropBanner } from "./components/creator-airdrop-banner.js";
-export type { CreatorAirdropBannerProps } from "./components/creator-airdrop-banner.js";
+export { RewardsSection } from "./components/rewards-section.js";
+export type { RewardsSectionProps } from "./components/rewards-section.js";
 
 export { ActionButton } from "./components/action-button.js";
 export type { ActionButtonProps, ActionKey, ToneKey } from "./components/action-button.js";
