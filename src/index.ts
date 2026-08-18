@@ -153,15 +153,18 @@ export type {
   PortfolioHeaderProps,
   PortfolioHeaderScore,
 } from "./components/portfolio-header.js";
-export { PortfolioOverview } from "./components/portfolio-overview.js";
+export { PortfolioSectionGrid } from "./components/portfolio-section-grid.js";
 export type {
-  PortfolioOverviewProps,
-  PortfolioBentoTileConfig,
-} from "./components/portfolio-overview.js";
+  PortfolioSectionGridProps,
+  PortfolioSectionConfig,
+} from "./components/portfolio-section-grid.js";
 export { derivePortfolioCounts } from "./utils/portfolio-counts.js";
 export type { PortfolioCounts, CountableOrder } from "./utils/portfolio-counts.js";
-export { PortfolioBentoTile } from "./components/portfolio-bento-tile.js";
-export type { PortfolioBentoTileProps } from "./components/portfolio-bento-tile.js";
+export { PortfolioSection } from "./components/portfolio-section.js";
+export type {
+  PortfolioSectionProps,
+  PortfolioSectionColor,
+} from "./components/portfolio-section.js";
 export { PortfolioChipFilter } from "./components/portfolio-chip-filter.js";
 export type {
   PortfolioChipFilterProps,
