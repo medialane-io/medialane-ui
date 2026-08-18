@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useIntersectionActive } from "../utils/use-intersection-active.js";
+import { cn } from "../utils/cn.js";
 
 export interface AnimatedTokenMediaProps {
 
@@ -44,11 +45,14 @@ export function AnimatedTokenMedia({
     onImageError?.();
   };
 
+  const [loaded, setLoaded] = useState(false);
+  useEffect(() => setLoaded(false), [image]);
+
   const [ref, isVisible] = useIntersectionActive<HTMLDivElement>();
   const showLive = live && !!animationUrl && isVisible;
 
   return (
-    <div ref={ref} className={mode === "fill" ? "absolute inset-0" : "w-full"}>
+    <div ref={ref} className={mode === "fill" ? "absolute inset-0" : "relative w-full"}>
       {showLive ? (
         <iframe
           src={animationUrl!}
@@ -62,30 +66,47 @@ export function AnimatedTokenMedia({
           }
         />
       ) : image && !imgError ? (
-        mode === "fill" ? (
-          <Image
-            src={image}
-            alt={alt}
-            fill
-            unoptimized
-            sizes={sizes}
-            priority={priority}
-            className={className}
-            onError={handleImageError}
-          />
-        ) : (
-          <Image
-            src={image}
-            alt={alt}
-            width={0}
-            height={0}
-            sizes={sizes}
-            priority={priority}
-            crossOrigin="anonymous"
-            className={className ?? "w-full h-auto"}
-            onError={handleImageError}
-          />
-        )
+        <>
+          {!loaded && (
+            <div
+              className={cn(
+                "animate-[shimmer_1.6s_ease-in-out_infinite] bg-foreground/[0.06] absolute",
+                mode === "fill" ? "inset-0" : "inset-x-0 top-0 aspect-square"
+              )}
+              style={{
+                backgroundImage:
+                  "linear-gradient(90deg, transparent, color-mix(in srgb, var(--foreground) 8%, transparent), transparent)",
+                backgroundSize: "200% 100%",
+              }}
+            />
+          )}
+          {mode === "fill" ? (
+            <Image
+              src={image}
+              alt={alt}
+              fill
+              unoptimized
+              sizes={sizes}
+              priority={priority}
+              className={cn(className, "transition-opacity duration-300", loaded ? "opacity-100" : "opacity-0")}
+              onLoad={() => setLoaded(true)}
+              onError={handleImageError}
+            />
+          ) : (
+            <Image
+              src={image}
+              alt={alt}
+              width={0}
+              height={0}
+              sizes={sizes}
+              priority={priority}
+              crossOrigin="anonymous"
+              className={cn(className ?? "w-full h-auto", "transition-opacity duration-300", loaded ? "opacity-100" : "opacity-0")}
+              onLoad={() => setLoaded(true)}
+              onError={handleImageError}
+            />
+          )}
+        </>
       ) : (
         fallback ?? null
       )}
