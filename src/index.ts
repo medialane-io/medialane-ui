@@ -6,6 +6,15 @@ export { ipfsToHttp } from "./utils/ipfs.js";
 export { useIntersectionActive } from "./utils/use-intersection-active.js";
 export { getReadIds, markRead } from "./utils/notification-storage.js";
 export { licenseSummary } from "./utils/license-summary.js";
+export {
+  getFriendlyWalletError,
+  isBareExecuteFailure,
+  isUserRejectedRequest,
+  isWrongNetwork,
+  assertCorrectNetwork,
+  WrongNetworkError,
+} from "./utils/wallet-error.js";
+export type { FriendlyWalletError } from "./utils/wallet-error.js";
 
 export { IP_TYPE_DATA, IP_TYPE_DATA_MAP } from "./data/ip-types.js";
 export type { IpTypeData } from "./data/ip-types.js";
