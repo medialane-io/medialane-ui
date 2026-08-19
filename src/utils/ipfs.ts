@@ -2,6 +2,8 @@ const DEFAULT_GATEWAY = "/api/ipfs/";
 
 const ALLOWED_PROTOCOLS = new Set(["http:", "https:", "ipfs:"]);
 
+const KNOWN_IPFS_GATEWAY_HOSTS = /(^|\.)(mypinata\.cloud|pinata\.cloud|ipfs\.io|dweb\.link|cloudflare-ipfs\.com|nftstorage\.link|w3s\.link)$/i;
+
 export function ipfsToHttp(
   uri: string | null | undefined,
   gateway = DEFAULT_GATEWAY
@@ -14,8 +16,13 @@ export function ipfsToHttp(
     return uri;
   }
   try {
-    const { protocol } = new URL(uri);
-    if (!ALLOWED_PROTOCOLS.has(protocol)) return "";
+    const parsed = new URL(uri);
+    if (!ALLOWED_PROTOCOLS.has(parsed.protocol)) return "";
+
+    if (KNOWN_IPFS_GATEWAY_HOSTS.test(parsed.hostname)) {
+      const match = parsed.pathname.match(/\/ipfs\/(.+)$/);
+      if (match) return `${gateway}${match[1]}`;
+    }
   } catch {
     return "";
   }
