@@ -163,9 +163,11 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
                   ) : null}
 
                   {(!myListing || isERC1155) ? (
-                    <EmailVerificationGate required={listingRequiresEmailVerification} reason="list assets for sale" settingsHref={settingsHref}>
-                      <ActionButton big tone="blue" icon={<Tag className="h-4 w-4" />} onClick={onOpenListing} disabled={listingRequiresEmailVerification} renderHelp={renderHelp}>List on Marketplace</ActionButton>
-                    </EmailVerificationGate>
+                    listingRequiresEmailVerification ? (
+                      <EmailVerificationGate reason="list assets for sale" settingsHref={settingsHref} />
+                    ) : (
+                      <ActionButton big tone="blue" icon={<Tag className="h-4 w-4" />} onClick={onOpenListing} renderHelp={renderHelp}>List on Marketplace</ActionButton>
+                    )
                   ) : null}
                   <ActionButton big tone="orange" icon={<ArrowRightLeft className="h-4 w-4" />} onClick={onOpenTransfer} renderHelp={renderHelp}>Transfer</ActionButton>
                   {remixEnabled && onOpenRemix ? (
@@ -256,9 +258,11 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
             <StatRow floorPriceRaw={floorPriceRaw} lastSaleRaw={lastSaleRaw} />
             {isOwner ? (
               <div className="grid grid-cols-2 gap-2">
-                <EmailVerificationGate required={listingRequiresEmailVerification} reason="list assets for sale" settingsHref={settingsHref}>
-                  <ActionButton big tone="blue" icon={<Tag className="h-4 w-4" />} onClick={onOpenListing} disabled={listingRequiresEmailVerification} renderHelp={renderHelp}>List on Marketplace</ActionButton>
-                </EmailVerificationGate>
+                {listingRequiresEmailVerification ? (
+                  <EmailVerificationGate reason="list assets for sale" settingsHref={settingsHref} />
+                ) : (
+                  <ActionButton big tone="blue" icon={<Tag className="h-4 w-4" />} onClick={onOpenListing} renderHelp={renderHelp}>List on Marketplace</ActionButton>
+                )}
                 <ActionButton big tone="orange" icon={<ArrowRightLeft className="h-4 w-4" />} onClick={onOpenTransfer} renderHelp={renderHelp}>Transfer</ActionButton>
                 {remixEnabled && onOpenRemix ? (
                   <ActionButton big
