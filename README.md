@@ -1,6 +1,6 @@
 # @medialane/ui
 
-Shared UI component library for Medialane apps. Used by `medialane-starknet`, `medialane-io`, and `medialane-portal`.
+Shared UI component library for Medialane apps. Used by `medialane-starknet`, `medialane-io`, `medialane-portal`, and `media-wallet`.
 
 [![npm version](https://img.shields.io/npm/v/@medialane/ui)](https://www.npmjs.com/package/@medialane/ui)
 
@@ -43,12 +43,28 @@ import "@medialane/ui/styles";
 | `react` | >=18.0.0 |
 | `react-dom` | >=18.0.0 |
 | `next` | >=14.0.0 |
+| `next-themes` | >=0.3.0 |
 | `framer-motion` | >=10.0.0 |
 | `lucide-react` | >=0.400.0 |
 | `sonner` | >=1.0.0 |
 | `tailwind-merge` | >=2.0.0 |
 | `clsx` | >=2.0.0 |
-| `@medialane/sdk` | >=0.6.0 |
+| `class-variance-authority` | >=0.7.0 |
+| `cmdk` | >=1.0.0 |
+| `react-hook-form` | >=7.50.0 |
+| `recharts` | >=2.0.0 |
+| `swr` | >=2.0.0 |
+| `@medialane/sdk` | >=0.73.0 |
+| `@radix-ui/react-checkbox` | >=1.1.0 |
+| `@radix-ui/react-collapsible` | >=1.1.0 |
+| `@radix-ui/react-dialog` | >=1.1.0 |
+| `@radix-ui/react-dropdown-menu` | >=2.1.0 |
+| `@radix-ui/react-label` | >=2.1.0 |
+| `@radix-ui/react-popover` | >=1.1.0 |
+| `@radix-ui/react-select` | >=2.1.0 |
+| `@radix-ui/react-slot` | >=1.1.0 |
+| `@radix-ui/react-switch` | >=1.1.0 |
+| `@radix-ui/react-tabs` | >=1.1.0 |
 
 ---
 
@@ -65,7 +81,7 @@ import { cn, formatDisplayPrice, shortenAddress, ipfsToHttp, timeAgo } from "@me
 | `cn(...classes)` | clsx + tailwind-merge class combiner |
 | `formatDisplayPrice(price)` | Format price string for display |
 | `shortenAddress(addr)` | Truncate 0x address — `0x1234…abcd` |
-| `ipfsToHttp(uri)` | Convert `ipfs://` URI to Pinata HTTP gateway URL |
+| `ipfsToHttp(uri)` | Convert `ipfs://` URIs (and known IPFS gateway URLs) to the app's own `/api/ipfs/` proxy path |
 | `timeAgo(timestamp)` | Relative time string — "3 hours ago" |
 
 ---
@@ -264,7 +280,12 @@ cd medialane-ui
 # Watch mode during development
 ~/.bun/bin/bun run dev
 
-# Publish to npm
+# Publish to npm — bump package.json version first.
+# If `npm` isn't on PATH, use bun with a project-local .npmrc
+# (NPM_CONFIG_USERCONFIG doesn't carry auth through to `bun publish`):
+#   echo "//registry.npmjs.org/:_authToken=<token>" > .npmrc
+#   NPM_CONFIG_USERCONFIG=$(pwd)/.npmrc bun publish
+# .npmrc is gitignored — delete it after publishing if it holds a live token.
 npm publish
 ```
 
@@ -276,6 +297,8 @@ The package uses [tsup](https://tsup.egoist.dev/) and outputs ESM + CJS + type d
 
 | Version | Added |
 |---|---|
+| **v0.126.3** | `ipfsToHttp` now also recognizes known IPFS gateway hosts (`*.mypinata.cloud`, `gateway.pinata.cloud`, `ipfs.io`, `dweb.link`, `cloudflare-ipfs.com`, `nftstorage.link`, `w3s.link`) in an absolute `https://` URI and routes them through the app's own `/api/ipfs/` proxy, same as `ipfs://` — previously only `ipfs://` was rewritten; other gateway URLs passed through unchanged and could reach the browser unproxied |
+| **v0.91.0–v0.126.2** | *Not individually documented — see `git log`* |
 | **v0.90.1** | Wildcard subpath exports (`./*` → components, `./utils/*`, `./data/*`) — additive, the barrel import is unchanged. See "Deep imports" above |
 | **v0.88.0–v0.90.0** | *Not individually documented — see `git log`* |
 | **v0.87.0** | `NavWalletTrigger` gains optional `disconnectedIcon` — overrides the default `Wallet` glyph in the disconnected-state ring, for apps whose real connect entry point isn't a wallet (e.g. a Google mark for an email/social-login app). Omitted = unchanged `Wallet` default |
