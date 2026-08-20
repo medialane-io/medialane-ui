@@ -142,7 +142,7 @@ export function CoinsExplorer({ useCoins, usePrice, coinHref, heading = true }: 
       {filtersOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-label="Filters">
           <div className="absolute inset-0 bg-background/70 backdrop-blur-sm" onClick={() => setFiltersOpen(false)} />
-          <div className="card-base relative z-10 w-full max-w-sm space-y-5 p-5">
+          <div className="relative z-10 w-full max-w-sm space-y-5 overflow-hidden rounded-[calc(var(--radius)*1.25)] bg-card p-5">
             <div className="flex items-center justify-between">
               <h2 className="flex items-center gap-2 text-base font-bold">
                 <SlidersHorizontal className="h-4 w-4 text-primary" />

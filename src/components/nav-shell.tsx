@@ -177,7 +177,7 @@ export function NavAccountSheet({ children }: NavAccountSheetProps) {
             onClick={() => setOpen(false)}
           >
             <div
-              className="relative w-full max-w-[380px] overflow-hidden rounded-[20px] border border-border/40 bg-background/90 backdrop-blur-2xl backdrop-saturate-150"
+              className="relative w-full max-w-[380px] overflow-hidden rounded-[20px] bg-background/90 backdrop-blur-2xl backdrop-saturate-150"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex justify-center pt-2.5 sm:hidden" aria-hidden="true">
