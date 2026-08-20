@@ -197,7 +197,7 @@ export function NavCommandMenu({
               <div
                 className={cn(
                   "flex w-full max-h-[85dvh] flex-col overflow-hidden rounded-[20px] sm:max-h-[min(680px,88dvh)] sm:max-w-[620px]",
-                  "border border-border/40 bg-background/90 backdrop-blur-2xl backdrop-saturate-150"
+                  "bg-background/90 backdrop-blur-2xl backdrop-saturate-150"
                 )}
                 onClick={(e) => e.stopPropagation()}
               >
