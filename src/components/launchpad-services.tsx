@@ -272,21 +272,24 @@ export interface LaunchpadGroupedSectionsProps {
 
   onClearFilters: () => void;
   className?: string;
+
+  excludeKeys?: string[];
 }
 
-export function LaunchpadGroupedSections({ overrides, query, activeGroups, onClearFilters, className }: LaunchpadGroupedSectionsProps) {
+export function LaunchpadGroupedSections({ overrides, query, activeGroups, onClearFilters, className, excludeKeys }: LaunchpadGroupedSectionsProps) {
   const inActiveGroup = (d: ServiceDefinition) => activeGroups.size === 0 || activeGroups.has(d.group);
   const inSearch = (d: ServiceDefinition) => serviceMatchesQuery(d, query);
+  const notExcluded = (d: ServiceDefinition) => !excludeKeys?.includes(d.key);
 
   const groupOrder = Object.fromEntries(LAUNCHPAD_SERVICE_GROUPS.map((g, i) => [g.key, i]));
 
   const liveDefs = LAUNCHPAD_SERVICE_DEFINITIONS
-    .filter((d) => d.group !== "coming-soon" && d.status === "live" && inActiveGroup(d) && inSearch(d))
+    .filter((d) => d.group !== "coming-soon" && d.status === "live" && notExcluded(d) && inActiveGroup(d) && inSearch(d))
     .sort((a, b) => (groupOrder[a.group] ?? 99) - (groupOrder[b.group] ?? 99));
 
   const comingSoonGroup = LAUNCHPAD_SERVICE_GROUPS.find((g) => g.key === "coming-soon");
   const comingSoonDefs = LAUNCHPAD_SERVICE_DEFINITIONS.filter(
-    (d) => d.group === "coming-soon" && inActiveGroup(d) && inSearch(d),
+    (d) => d.group === "coming-soon" && notExcluded(d) && inActiveGroup(d) && inSearch(d),
   );
 
   return (
