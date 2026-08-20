@@ -1,6 +1,5 @@
 "use client";
 
-import { useRef } from "react";
 import { cn } from "../utils/cn.js";
 
 export interface MedialaneCollectionCardProps {
@@ -28,48 +27,13 @@ export function MedialaneCollectionCard({
   creator,
   className,
 }: MedialaneCollectionCardProps) {
-  const frameRef = useRef<HTMLDivElement>(null);
-
-  const handleMove = (e: React.PointerEvent<HTMLDivElement>) => {
-    const el = frameRef.current;
-    if (!el || e.pointerType !== "mouse") return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const rect = el.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width;
-    const y = (e.clientY - rect.top) / rect.height;
-    el.style.setProperty("--rx", `${(0.5 - y) * 9}deg`);
-    el.style.setProperty("--ry", `${(x - 0.5) * 9}deg`);
-    el.style.setProperty("--mx", `${x * 100}%`);
-    el.style.setProperty("--my", `${y * 100}%`);
-    el.style.setProperty("--pop", "1.015");
-  };
-
-  const handleLeave = () => {
-    const el = frameRef.current;
-    if (!el) return;
-    el.style.setProperty("--rx", "0deg");
-    el.style.setProperty("--ry", "0deg");
-    el.style.setProperty("--pop", "1");
-  };
-
   const displayName = name?.trim() || "Untitled";
 
   return (
-    <div className={cn("group", className)} style={{ perspective: "1000px" }}>
-      <div
-        ref={frameRef}
-        onPointerMove={handleMove}
-        onPointerLeave={handleLeave}
-        className="rounded-[24px] p-[1.5px] transition-transform duration-200 ease-out will-change-transform shadow-[0_16px_40px_-16px_rgba(91,76,230,0.45)]"
-        style={{
-          background: FRAME_GRADIENT,
-          transform:
-            "rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) scale(var(--pop, 1))",
-          transformStyle: "preserve-3d",
-        }}
-      >
+    <div className={cn(className)}>
+      <div className="rounded-[24px] border border-border">
         <div
-          className="ml-card-material relative rounded-[22.5px] overflow-hidden text-[#0a0e1f] dark:text-white ring-1 ring-inset ring-black/[0.06] dark:ring-white/[0.06]"
+          className="ml-card-material relative rounded-[23px] overflow-hidden text-[#0a0e1f] dark:text-white"
         >
 
           <div className="p-2.5 pb-0">
@@ -91,11 +55,6 @@ export function MedialaneCollectionCard({
               />
             </div>
           </div>
-
-          <div
-            aria-hidden
-            className="ml-card-sheen pointer-events-none absolute inset-0 opacity-40 group-hover:opacity-100 transition-opacity duration-300"
-          />
 
           <div className="relative px-4 pt-3 pb-4">
             <div className="flex items-start gap-2">
