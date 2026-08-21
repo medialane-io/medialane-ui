@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import Link from "./link.js";
 import type { MedialaneClient } from "@medialane/sdk/starknet";
 import { LevelBadge } from "./rewards/level-badge.js";
 import { BadgeShelf } from "./rewards/badge-shelf.js";

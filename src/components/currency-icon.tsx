@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import Image from "./image.js";
 import { cn } from "../utils/cn.js";
 
 const CURRENCY_ICON_PATHS: Record<string, string> = {

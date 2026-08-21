@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import Link from "./link.js";
 import { ShoppingBag, ArrowRight, Rocket } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { ScrollSection } from "./scroll-section.js";

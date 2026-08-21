@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import Image from "./image.js";
 import { TrendingUp } from "lucide-react";
 import { cn } from "../utils/cn.js";
 

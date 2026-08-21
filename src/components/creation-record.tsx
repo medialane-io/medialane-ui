@@ -1,12 +1,9 @@
 "use client";
 
 import { Award, ExternalLink } from "lucide-react";
-import Link from "next/link";
+import Link from "./link.js";
 import { normalizeAddress } from "@medialane/sdk";
-
-const EXPLORER_URL =
-  (typeof process !== "undefined" ? process.env.NEXT_PUBLIC_EXPLORER_URL : undefined) ||
-  "https://voyager.online";
+import { EXPLORER_URL } from "../utils/explorer-url.js";
 
 export interface CreationRecordProps {
   originalCreator: string;
