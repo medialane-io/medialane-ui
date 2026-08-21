@@ -20,6 +20,10 @@ export interface CollectionHeroBannerProps {
   name: string;
   stats: CollectionHeroStat[];
   className?: string;
+
+  /** Extra content rendered alongside the standard/symbol eyebrow pills —
+   *  e.g. a creator level badge on a creator profile reusing this banner. */
+  eyebrowSlot?: React.ReactNode;
 }
 
 export function CollectionHeroBanner({
@@ -30,6 +34,7 @@ export function CollectionHeroBanner({
   name,
   stats,
   className,
+  eyebrowSlot,
 }: CollectionHeroBannerProps) {
   const { scrollY } = useScroll();
   const shouldReduce = useReducedMotion();
@@ -67,7 +72,7 @@ export function CollectionHeroBanner({
           )}
 
           <div className="absolute bottom-0 left-0 right-0 px-4 sm:px-6 pb-4 sm:pb-6 space-y-3 z-10">
-            {(standard || symbol) && (
+            {(standard || symbol || eyebrowSlot) && (
               <div className="flex items-center gap-2 flex-wrap">
                 {standard === "ERC1155" ? (
                   <Eyebrow>Multi-edition NFT</Eyebrow>
@@ -75,6 +80,7 @@ export function CollectionHeroBanner({
                   <Eyebrow>Single NFT</Eyebrow>
                 ) : null}
                 {symbol && <Eyebrow className="tabular-nums">{symbol}</Eyebrow>}
+                {eyebrowSlot}
               </div>
             )}
 
