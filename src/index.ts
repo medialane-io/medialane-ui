@@ -275,6 +275,8 @@ export type { ButtonProps } from "./components/button.js";
 export { Popover, PopoverTrigger, PopoverContent, PopoverAnchor } from "./components/popover.js";
 export { HelpIcon } from "./components/help-icon.js";
 export { EmptyOrError } from "./components/empty-or-error.js";
+export { TabEmptyState } from "./components/tab-empty-state.js";
+export type { TabEmptyStateProps } from "./components/tab-empty-state.js";
 export {
   Select, SelectGroup, SelectValue, SelectTrigger, SelectContent,
   SelectLabel, SelectItem, SelectSeparator, SelectScrollUpButton, SelectScrollDownButton,
