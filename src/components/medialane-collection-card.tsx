@@ -1,5 +1,6 @@
 "use client";
 
+import { ImageIcon } from "lucide-react";
 import { cn } from "../utils/cn.js";
 
 export interface MedialaneCollectionCardProps {
@@ -13,11 +14,11 @@ export interface MedialaneCollectionCardProps {
   serial?: string;
 
   creator?: string;
+
+  /** Explorer/profile URL for the creator address — makes the footer address a link. */
+  creatorHref?: string;
   className?: string;
 }
-
-const FRAME_GRADIENT =
-  "linear-gradient(135deg, #3b7bff, #8a5cf6 38%, #f6608f 70%, #fb8b46)";
 
 export function MedialaneCollectionCard({
   image,
@@ -25,6 +26,7 @@ export function MedialaneCollectionCard({
   collection,
   serial,
   creator,
+  creatorHref,
   className,
 }: MedialaneCollectionCardProps) {
   const displayName = name?.trim() || "Untitled";
@@ -37,15 +39,14 @@ export function MedialaneCollectionCard({
         >
 
           <div className="p-2.5 pb-0">
-            <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[16px] ring-1 ring-black/10 dark:ring-white/10">
+            <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[16px] ring-1 ring-black/10 dark:ring-white/10 bg-muted">
               {image ? (
 
                 <img src={image} alt={displayName} className="h-full w-full object-cover" />
               ) : (
-                <div
-                  className="h-full w-full"
-                  style={{ background: FRAME_GRADIENT, opacity: 0.9 }}
-                />
+                <div className="h-full w-full flex items-center justify-center">
+                  <ImageIcon className="h-8 w-8 text-muted-foreground/40" />
+                </div>
               )}
             </div>
           </div>
@@ -70,9 +71,20 @@ export function MedialaneCollectionCard({
                 STARKNET
               </span>
               {creator && (
-                <span className="ml-auto min-w-0 truncate text-2xs text-[#0a0e1f]/55 dark:text-white/55 tabular-nums">
-                  {creator}
-                </span>
+                creatorHref ? (
+                  <a
+                    href={creatorHref}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="ml-auto min-w-0 truncate text-2xs text-[#0a0e1f]/55 dark:text-white/55 tabular-nums hover:text-[#0a0e1f]/80 dark:hover:text-white/80 transition-colors"
+                  >
+                    {creator}
+                  </a>
+                ) : (
+                  <span className="ml-auto min-w-0 truncate text-2xs text-[#0a0e1f]/55 dark:text-white/55 tabular-nums">
+                    {creator}
+                  </span>
+                )
               )}
             </div>
           </div>
