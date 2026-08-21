@@ -61,7 +61,7 @@ export function AssetCard({
   return (
     <div
       className={cn(
-        "group relative flex flex-col w-full overflow-hidden rounded-xl bg-card transition-colors",
+        "group relative flex flex-col w-full overflow-hidden rounded-xl border border-border/50 bg-card transition-colors hover:border-border",
         className
       )}
     >
@@ -127,7 +127,7 @@ export function AssetCard({
 
 export function AssetCardSkeleton() {
   return (
-    <div className="flex flex-col w-full overflow-hidden rounded-xl bg-card">
+    <div className="flex flex-col w-full overflow-hidden rounded-xl border border-border/50 bg-card">
       <div className="aspect-[4/5] w-full animate-pulse bg-muted" />
       <div className="px-3 py-3 space-y-1.5">
         <div className="h-4 w-3/4 rounded-md animate-pulse bg-muted" />
