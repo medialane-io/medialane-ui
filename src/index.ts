@@ -147,7 +147,10 @@ export { LaunchpadFilterBar } from "./components/launchpad-filter-bar.js";
 export type { LaunchpadFilterBarProps } from "./components/launchpad-filter-bar.js";
 export { LaunchpadStrip } from "./components/launchpad-strip.js";
 export type { LaunchpadStripProps } from "./components/launchpad-strip.js";
+export { LaunchpadCtaBanner } from "./components/launchpad-cta-banner.js";
+export type { LaunchpadCtaBannerProps } from "./components/launchpad-cta-banner.js";
 export type { LaunchpadGroupedSectionsProps, LaunchpadServiceCardProps, ServiceOverride, ServiceOverrides } from "./components/launchpad-services.js";
+export { LAUNCHPAD_ROUTE_OVERRIDES } from "./components/launchpad-services.js";
 export { LAUNCHPAD_SERVICE_DEFINITIONS, LAUNCHPAD_SERVICE_GROUPS } from "./data/launchpad-services.js";
 export type { ServiceDefinition, ServiceStatus, ServiceGroup, ServiceGroupDefinition } from "./data/launchpad-services.js";
 
