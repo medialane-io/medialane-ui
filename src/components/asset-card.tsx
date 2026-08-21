@@ -61,52 +61,45 @@ export function AssetCard({
   return (
     <div
       className={cn(
-        "card-base group relative flex flex-col w-full transition-colors hover:border-foreground/20",
+        "group relative flex flex-col w-full overflow-hidden rounded-[calc(var(--radius)*1.25)] bg-card transition-colors",
         className
       )}
     >
 
-      <Link href={href} className="block p-1.5 pb-0">
-        <div className="relative aspect-[4/5] rounded-[12px] bg-muted overflow-hidden ring-1 ring-border/50">
-          <AnimatedTokenMedia
-            image={resolved}
-            animationUrl={animationUrl}
-            live={live}
-            alt={name}
-            mode="fill"
-            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 22vw"
-            className="object-cover transition-transform duration-500 group-hover:scale-105"
-            fallback={
-              <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-brand-blue/25 via-brand-purple/25 to-brand-rose/25">
-                <span className="text-sm font-semibold text-muted-foreground tabular-nums">
-                  #{fallbackId ?? "?"}
-                </span>
-              </div>
-            }
-          />
-
-          {hasPrice && !indexing && (
-            <span className="absolute bottom-2 right-2 inline-flex items-center gap-1.5 text-sm font-bold text-white/95 backdrop-blur-md bg-black/40 rounded-full pl-3 pr-3 py-1.5 tabular-nums">
-              <PriceChipContent
-                amountFormatted={price!.formatted}
-                currency={price!.currency}
-                usdValue={price!.usdValue}
-                tone="overlay-dark"
-              />
-            </span>
-          )}
-
-          {indexing && (
-            <div className="absolute bottom-0 inset-x-0 flex items-center justify-center gap-1.5 bg-black/50 backdrop-blur-sm py-1.5">
-              <Loader2 className="h-3 w-3 animate-spin text-white/70" />
-              <span className="text-2xs text-white/70">Indexing…</span>
+      <Link href={href} className="block relative aspect-[4/5] bg-muted overflow-hidden">
+        <AnimatedTokenMedia
+          image={resolved}
+          animationUrl={animationUrl}
+          live={live}
+          alt={name}
+          mode="fill"
+          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 22vw"
+          className="object-cover transition-transform duration-500 group-hover:scale-105"
+          fallback={
+            <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-brand-blue/25 via-brand-purple/25 to-brand-rose/25">
+              <span className="text-sm font-semibold text-muted-foreground tabular-nums">
+                #{fallbackId ?? "?"}
+              </span>
             </div>
-          )}
-        </div>
+          }
+        />
+
+        {ipType && (
+          <div className="absolute top-2 left-2">
+            <IpTypeBadge ipType={ipType} size="sm" baseUrl={ipTypeBaseUrl} />
+          </div>
+        )}
+
+        {indexing && (
+          <div className="absolute bottom-0 inset-x-0 flex items-center justify-center gap-1.5 bg-black/50 backdrop-blur-sm py-1.5">
+            <Loader2 className="h-3 w-3 animate-spin text-white/70" />
+            <span className="text-2xs text-white/70">Indexing…</span>
+          </div>
+        )}
       </Link>
 
-      <div className="flex items-start justify-between gap-2 px-3 py-3">
-        <Link href={href} className="block min-w-0 flex-1">
+      <div className="px-3 py-3 space-y-1">
+        <Link href={href} className="block min-w-0">
           <p className="text-base font-bold line-clamp-1 leading-snug">
             {name}
           </p>
@@ -117,9 +110,14 @@ export function AssetCard({
           )}
         </Link>
 
-        {ipType && (
-          <div className="shrink-0 mt-0.5">
-            <IpTypeBadge ipType={ipType} size="sm" baseUrl={ipTypeBaseUrl} />
+        {hasPrice && !indexing && (
+          <div className="flex items-center gap-1.5 text-sm font-bold tabular-nums pt-0.5">
+            <PriceChipContent
+              amountFormatted={price!.formatted}
+              currency={price!.currency}
+              usdValue={price!.usdValue}
+              tone="card"
+            />
           </div>
         )}
       </div>
@@ -129,10 +127,8 @@ export function AssetCard({
 
 export function AssetCardSkeleton() {
   return (
-    <div className="card-base flex flex-col w-full">
-      <div className="p-1.5 pb-0">
-        <div className="aspect-[4/5] w-full animate-pulse bg-muted rounded-[12px]" />
-      </div>
+    <div className="flex flex-col w-full overflow-hidden rounded-[calc(var(--radius)*1.25)] bg-card">
+      <div className="aspect-[4/5] w-full animate-pulse bg-muted" />
       <div className="px-3 py-3 space-y-1.5">
         <div className="h-4 w-3/4 rounded-md animate-pulse bg-muted" />
         <div className="h-3.5 w-2/5 rounded-md animate-pulse bg-muted" />
