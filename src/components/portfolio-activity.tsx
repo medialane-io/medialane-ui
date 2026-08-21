@@ -10,7 +10,9 @@ import { ACTIVITY_TYPE_CONFIG, TYPE_FILTERS } from "../data/activity.js";
 import { ActivityRow } from "./activity-row.js";
 import { cn } from "../utils/cn.js";
 
-const EXPLORER_URL = process.env.NEXT_PUBLIC_EXPLORER_URL || "https://voyager.online";
+const EXPLORER_URL =
+  (typeof process !== "undefined" ? process.env.NEXT_PUBLIC_EXPLORER_URL : undefined) ||
+  "https://voyager.online";
 
 export interface PortfolioActivityProps {
   getClient: () => MedialaneClient;

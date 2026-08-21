@@ -20,7 +20,7 @@ export const Browse = () => (
       token={makeToken({
         tokenId: '2',
         metadata: { name: 'Neon Metropolis #2', image: 'https://images.unsplash.com/photo-1519501025264-65ba15a82390?w=400&q=80', attributes: [] },
-        activeOrders: [{ price: '120000000000000', currency: 'ETH', orderId: '0xabc', status: 'active' }],
+        activeOrders: [{ offer: { itemType: 'ERC721' }, price: { formatted: '0.12', currency: 'ETH' }, orderId: '0xabc', status: 'active' }],
       })}
       onBuy={() => {}}
     />
@@ -42,7 +42,7 @@ export const Owner = () => (
     <TokenCard
       token={makeToken({
         tokenId: '2',
-        activeOrders: [{ price: '50000000000000000', currency: 'ETH', orderId: '0xdef', status: 'active' }],
+        activeOrders: [{ offer: { itemType: 'ERC721' }, price: { formatted: '0.05', currency: 'ETH' }, orderId: '0xdef', status: 'active' }],
       })}
       isOwner
       onCancel={() => {}}

@@ -26,7 +26,7 @@ export const Ghost = () => (
 export const ToneVariants = () => (
   <div style={{ background: 'hsl(224 50% 4%)', padding: '24px', display: 'flex', gap: '12px', flexWrap: 'wrap', alignItems: 'center' }}>
     <ActionButton tone="blue">Manage</ActionButton>
-    <ActionButton tone="indigo">Transfer</ActionButton>
+    <ActionButton tone="purple">Transfer</ActionButton>
     <ActionButton tone="red">Burn</ActionButton>
   </div>
 );

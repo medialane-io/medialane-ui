@@ -222,6 +222,14 @@
   .animate-kenburns { animation: none; }
 }
 
+/* ── Anchor reset ─────────────────────────────────────────────────────── */
+/* Real apps get this from Tailwind's preflight; this hand-maintained sheet
+   doesn't ship preflight, so every next/link-wrapped card (AssetCard,
+   TokenCard, CollectionCard, ListingCard, …) rendered with the browser's
+   default blue/underlined link styling instead of inheriting the design
+   system's own text color. */
+a { color: inherit; text-decoration: inherit; }
+
 /* ── Input spinners ───────────────────────────────────────────────────── */
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
