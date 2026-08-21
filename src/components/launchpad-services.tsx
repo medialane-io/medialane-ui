@@ -29,6 +29,25 @@ export interface ServiceOverride {
 
 export type ServiceOverrides = Record<string, ServiceOverride>;
 
+/** The launchpad route structure both apps share (`/launchpad/...`,
+ *  `/claim/...`) — spread this into an app's own overrides and add
+ *  `meta` counts or any app-specific extras on top. */
+export const LAUNCHPAD_ROUTE_OVERRIDES: ServiceOverrides = {
+  "nfts": { href: "/launchpad/single-editions" },
+  "limited-editions": { href: "/launchpad/nfteditions" },
+  "remix-asset": { href: "/launchpad/remix" },
+  "pop-protocol": { href: "/launchpad/pop" },
+  "collection-drop": { href: "/launchpad/drop" },
+  "creator-coins": { href: "/launchpad/coin/create" },
+  "claim-memecoin": { href: "/launchpad/memecoin" },
+  "claim-username": { href: "/claim/username" },
+  "claim-collection": { href: "/claim/collection" },
+  "claim-collection-name": { href: "/claim/collection-name" },
+  "ip-tickets": { href: "/launchpad/tickets" },
+  "ip-club": { href: "/launchpad/club" },
+  "ip-sponsorship": { href: "/launchpad/sponsorship" },
+};
+
 interface GroupSlice {
 
   tint: string;
