@@ -61,7 +61,7 @@ export function AssetCard({
   return (
     <div
       className={cn(
-        "group relative flex flex-col w-full overflow-hidden rounded-[calc(var(--radius)*1.25)] bg-card transition-colors",
+        "group relative flex flex-col w-full overflow-hidden rounded-xl bg-card transition-colors",
         className
       )}
     >
@@ -74,7 +74,7 @@ export function AssetCard({
           alt={name}
           mode="fill"
           sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 22vw"
-          className="object-cover transition-transform duration-500 group-hover:scale-105"
+          className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
           fallback={
             <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-brand-blue/25 via-brand-purple/25 to-brand-rose/25">
               <span className="text-sm font-semibold text-muted-foreground tabular-nums">
@@ -85,7 +85,7 @@ export function AssetCard({
         />
 
         {ipType && (
-          <div className="absolute top-2 left-2">
+          <div className="absolute top-2 right-2">
             <IpTypeBadge ipType={ipType} size="sm" baseUrl={ipTypeBaseUrl} />
           </div>
         )}
@@ -116,7 +116,7 @@ export function AssetCard({
               amountFormatted={price!.formatted}
               currency={price!.currency}
               usdValue={price!.usdValue}
-              tone="card"
+              tone="solid"
             />
           </div>
         )}
@@ -127,7 +127,7 @@ export function AssetCard({
 
 export function AssetCardSkeleton() {
   return (
-    <div className="flex flex-col w-full overflow-hidden rounded-[calc(var(--radius)*1.25)] bg-card">
+    <div className="flex flex-col w-full overflow-hidden rounded-xl bg-card">
       <div className="aspect-[4/5] w-full animate-pulse bg-muted" />
       <div className="px-3 py-3 space-y-1.5">
         <div className="h-4 w-3/4 rounded-md animate-pulse bg-muted" />
