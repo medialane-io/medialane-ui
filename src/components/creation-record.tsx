@@ -4,7 +4,9 @@ import { Award, ExternalLink } from "lucide-react";
 import Link from "next/link";
 import { normalizeAddress } from "@medialane/sdk";
 
-const EXPLORER_URL = process.env.NEXT_PUBLIC_EXPLORER_URL || "https://voyager.online";
+const EXPLORER_URL =
+  (typeof process !== "undefined" ? process.env.NEXT_PUBLIC_EXPLORER_URL : undefined) ||
+  "https://voyager.online";
 
 export interface CreationRecordProps {
   originalCreator: string;

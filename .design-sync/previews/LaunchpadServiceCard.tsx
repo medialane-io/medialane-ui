@@ -4,8 +4,8 @@ const def = (key: string) => LAUNCHPAD_SERVICE_DEFINITIONS.find((d) => d.key ===
 
 export const Grid = () => (
   <div style={{ background: 'hsl(224 50% 4%)', padding: '16px', display: 'grid', gridTemplateColumns: 'repeat(2, 280px)', gap: '12px' }}>
-    <LaunchpadServiceCard def={def('mint-ip-asset')} override={{ href: '/create/asset', status: 'live' }} index={0} />
-    <LaunchpadServiceCard def={def('create-collection')} override={{ href: '/create/collection', status: 'live' }} index={1} />
+    <LaunchpadServiceCard def={def('nfts')} override={{ href: '/create/asset', status: 'live' }} index={0} />
+    <LaunchpadServiceCard def={def('limited-editions')} override={{ href: '/create/collection', status: 'live' }} index={1} />
     <LaunchpadServiceCard def={def('creator-coins')} override={{ href: '/coins/create', status: 'live' }} index={2} />
     <LaunchpadServiceCard def={def('pop-protocol')} override={{ href: '/pop', status: 'live' }} index={3} />
   </div>

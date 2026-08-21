@@ -1,14 +1,19 @@
 {
-  "projectId": "1b29ca75-55e7-42eb-977f-39a4add480d7",
+  "projectId": "019ddfff-5c0c-7505-819f-f4abff094169",
   "shape": "package",
   "pkg": "@medialane/ui",
   "globalName": "MedialaneUI",
   "buildCmd": "bun run build",
   "cssEntry": "./.design-sync/base.css",
+  "readmeHeader": ".design-sync/conventions.md",
+  "libOverrides": {
+    "bundle.mjs": "adds nextShim esbuild plugin — real next/link, next/image, next/navigation modules crash the browser IIFE (process.env.__NEXT_* at module-eval time); stubbed with a plain <a>, <img>, and no-op nav hooks",
+    "package-capture.mjs": "settle() waits 600ms for CSS/JS mount transitions then double-rAFs before the grading screenshot — headless Chromium can screenshot before actually painting a same-page navigation",
+    "package-validate.mjs": "same 600ms wait + double-rAF before the render-check screenshot, same paint-timing reason"
+  },
   "overrides": {
     "ActionDialog": { "cardMode": "single", "primaryStory": "Open" },
     "AssetCard": { "cardMode": "column" },
-    "Aurora": { "cardMode": "column" },
     "CollectionCard": { "cardMode": "column" },
     "FeaturedCarousel": { "cardMode": "column" },
     "HeroSlider": { "cardMode": "column" },
