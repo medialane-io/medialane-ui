@@ -2,7 +2,7 @@
 
 import { Skeleton } from "./skeleton.js";
 import { Button } from "./button.js";
-import Link from "next/link";
+import Link from "./link.js";
 import { RefreshCw, AlertCircle } from "lucide-react";
 import { ReactNode } from "react";
 

@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import Link from "./link.js";
 import { ArrowRight, Zap, Coins, Gift } from "lucide-react";
 
 export interface RewardsSectionProps {

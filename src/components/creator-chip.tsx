@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import Link from "./link.js";
 import type { MedialaneClient } from "@medialane/sdk/starknet";
 import { useCreatorProfile } from "../utils/use-profiles.js";
 import { AddressDisplay } from "./address-display.js";

@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import Link from "./link.js";
 import { GitBranch, ExternalLink } from "lucide-react";
 
 export interface ParentBannerProps {

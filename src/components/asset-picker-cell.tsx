@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import Image from "./image.js";
 import { Check, ImageIcon } from "lucide-react";
 import { cn } from "../utils/cn.js";
 import type { OwnedAsset } from "./asset-picker.js";

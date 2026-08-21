@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import Link from "./link.js";
 import { CheckCircle2, Circle, Settings, Sparkles } from "lucide-react";
 import { cn } from "../utils/cn.js";
 import type { ApiCollectionProfile } from "@medialane/sdk";

@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import Link from "./link.js";
 import { assetHref } from "@medialane/sdk";
 import { GitBranch } from "lucide-react";
 import { useTokenRemixes } from "../utils/use-remix-offers.js";

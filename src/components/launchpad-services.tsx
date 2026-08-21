@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import Link from "next/link";
+import Link from "./link.js";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Lock, ArrowRight, Check } from "lucide-react";
 import { cn } from "../utils/cn.js";

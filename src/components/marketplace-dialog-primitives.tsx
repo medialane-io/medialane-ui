@@ -1,7 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
-import Image from "next/image";
+import Image from "./image.js";
 import { AlertCircle, CheckCircle2, ExternalLink, Loader2, Sparkles, Wallet } from "lucide-react";
 import { Alert, AlertDescription } from "./alert.js";
 import { Button } from "./button.js";

@@ -1,7 +1,7 @@
 "use client";
 
-import Image from "next/image";
-import Link from "next/link";
+import Image from "./image.js";
+import Link from "./link.js";
 import { ArrowRight } from "lucide-react";
 export interface AssetCollectionBarSibling {
   tokenId: string;

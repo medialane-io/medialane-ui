@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import Link from "./link.js";
 import { cn } from "../utils/cn.js";
 
 export interface PortfolioChipFilterOption {

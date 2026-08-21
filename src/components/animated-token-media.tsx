@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Image from "next/image";
+import Image from "./image.js";
 import { useIntersectionActive } from "../utils/use-intersection-active.js";
 import { cn } from "../utils/cn.js";
 

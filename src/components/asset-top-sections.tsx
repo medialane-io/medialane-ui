@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import Link from "./link.js";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useIntersectionActive } from "../utils/use-intersection-active.js";

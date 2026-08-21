@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import Link from "./link.js";
 import {
   Loader2, ArrowUpRight, MoreHorizontal, Zap, HandCoins, Tag,
   Layers, GitBranch, Flag, UserCircle2, ArrowRightLeft, XCircle,

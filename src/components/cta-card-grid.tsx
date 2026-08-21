@@ -1,5 +1,5 @@
 import type { ElementType } from "react";
-import Link from "next/link";
+import Link from "./link.js";
 import { ArrowRight } from "lucide-react";
 import { cn } from "../utils/cn.js";
 

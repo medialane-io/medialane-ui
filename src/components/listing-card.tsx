@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
+import Link from "./link.js";
 import { ShoppingCart, Check, Zap, ArrowUpRight } from "lucide-react";
 import { MotionCard } from "./motion-primitives.js";
 import { CurrencyIcon } from "./currency-icon.js";

@@ -9,10 +9,7 @@ import { EmptyOrError } from "./empty-or-error.js";
 import { ACTIVITY_TYPE_CONFIG, TYPE_FILTERS } from "../data/activity.js";
 import { ActivityRow } from "./activity-row.js";
 import { cn } from "../utils/cn.js";
-
-const EXPLORER_URL =
-  (typeof process !== "undefined" ? process.env.NEXT_PUBLIC_EXPLORER_URL : undefined) ||
-  "https://voyager.online";
+import { EXPLORER_URL } from "../utils/explorer-url.js";
 
 export interface PortfolioActivityProps {
   getClient: () => MedialaneClient;

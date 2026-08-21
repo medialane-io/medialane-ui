@@ -1,7 +1,7 @@
 "use client";
 
-import Image from "next/image";
-import Link from "next/link";
+import Image from "./image.js";
+import Link from "./link.js";
 import { ExternalLink } from "lucide-react";
 import { AddressDisplay } from "./address-display.js";
 import { CurrencyIcon } from "./currency-icon.js";

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
+import Link from "./link.js";
 import { CurrencyIcon } from "./currency-icon.js";
 import { formatDisplayPrice } from "../utils/format.js";
 import { ipfsToHttp } from "../utils/ipfs.js";

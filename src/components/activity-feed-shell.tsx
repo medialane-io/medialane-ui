@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import Link from "./link.js";
 import { ArrowRight, Activity, RefreshCw } from "lucide-react";
 import { timeAgo } from "../utils/time.js";
 
