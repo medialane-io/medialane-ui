@@ -130,6 +130,8 @@ export type { DraftItem } from "./components/drop-item-list.js";
 export { dropCreateSchema } from "./data/drop-create-schema.js";
 export type { DropCreateFormValues } from "./data/drop-create-schema.js";
 export { getDefaultDropSchedule, getDefaultClaimWindow, suggestLaunchpadSymbol } from "./utils/launchpad-defaults.js";
+export { useUsdPrices, usdPriceFor } from "./utils/use-usd-prices.js";
+export type { UsdPrices } from "./utils/use-usd-prices.js";
 export { NotificationRow } from "./components/notification-row.js";
 export type { NotificationRowProps } from "./components/notification-row.js";
 export { NOTIFICATION_ICON, NOTIFICATION_COLOR, NOTIFICATION_LABEL } from "./data/notification-meta.js";
