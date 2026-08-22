@@ -17,6 +17,7 @@ export interface CoinCollectionLike {
 
   totalSupply?: string | null;
   decimals?: number | null;
+  isLaunched?: boolean | null;
   profile?: { image?: string | null } | null;
 }
 
