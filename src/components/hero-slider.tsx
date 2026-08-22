@@ -16,15 +16,6 @@ export interface HeroSliderProps {
   placeholderHrefs?: { markets?: string; create?: string };
 }
 
-function formatFloorPrice(price: string | null | undefined): string {
-  if (!price) return "";
-  const n = parseFloat(price);
-  if (isNaN(n)) return price;
-  if (n >= 1000) return `${(n / 1000).toFixed(1)}K`;
-  if (n >= 1) return n.toFixed(2);
-  return n.toPrecision(3);
-}
-
 function HeroPlaceholder({ hrefs }: { hrefs: Required<HeroSliderProps>["placeholderHrefs"] }) {
   return (
     <div className="absolute inset-0 bg-gradient-to-br from-brand-purple/30 via-brand-blue/20 to-brand-navy/50 flex flex-col items-center justify-center gap-4 text-center px-6 overflow-hidden">
@@ -48,7 +39,6 @@ function HeroPlaceholder({ hrefs }: { hrefs: Required<HeroSliderProps>["placehol
 function HeroSlide({ collection, active, getHref }: { collection: ApiCollection; active: boolean; getHref: (col: ApiCollection) => string }) {
   const imageUrl = collection.image ? ipfsToHttp(collection.image) : null;
   const name = collection.name ?? "Collection";
-  const floor = collection.floorPrice;
   const supply = collection.totalSupply;
 
   return (
@@ -68,7 +58,6 @@ function HeroSlide({ collection, active, getHref }: { collection: ApiCollection;
         </Link>
         <div className="flex items-center gap-4 text-sm text-white/70">
           {supply != null && <span>{supply.toLocaleString()} items</span>}
-          {floor && <span className="text-white font-semibold">Floor {formatFloorPrice(floor)}</span>}
         </div>
       </div>
     </div>
