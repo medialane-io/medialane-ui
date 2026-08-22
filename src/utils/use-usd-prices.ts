@@ -20,10 +20,6 @@ async function fetchUsdPrices(): Promise<UsdPrices | null> {
   return body.data?.usd ?? null;
 }
 
-/**
- * Shared across every component that calls it: SWR keys the request, so a page
- * mounting twenty price-aware components issues one request, not twenty.
- */
 export function useUsdPrices(): UsdPrices | null {
   const { data } = useSWR(PRICES_KEY, fetchUsdPrices, {
     refreshInterval: REFRESH_MS,
