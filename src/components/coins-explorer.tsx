@@ -4,9 +4,9 @@ import { useState, useMemo, useEffect } from "react";
 import { Coins, Search, SlidersHorizontal, X } from "lucide-react";
 import { cn } from "../utils/cn.js";
 import { CoinRow, CoinRowSkeleton, COIN_GRID, type UseCoinPrice } from "./coin-row.js";
-import { coinKind, type CoinCollectionLike } from "../data/coins.js";
+import { coinKind, coinKindLabel, COIN_KINDS, type CoinCollectionLike, type CoinKind } from "../data/coins.js";
 
-export type CoinFilter = "all" | "creator" | "memecoin";
+export type CoinFilter = "all" | CoinKind;
 export type CoinSort = "recent" | "name";
 export type UseCoins = (opts: { filter: CoinFilter; sort: CoinSort }) => {
   collections: CoinCollectionLike[];
@@ -23,8 +23,7 @@ export interface CoinsExplorerProps {
 
 const FILTER_TABS: { label: string; value: CoinFilter }[] = [
   { label: "All", value: "all" },
-  { label: "Creator Coins", value: "creator" },
-  { label: "Memecoins", value: "memecoin" },
+  ...COIN_KINDS.map((kind) => ({ label: coinKindLabel(kind), value: kind as CoinFilter })),
 ];
 
 const SORT_OPTIONS: { label: string; value: CoinSort }[] = [

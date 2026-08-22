@@ -3,7 +3,7 @@
 import { getService, listServices, type ServiceDefinition } from "@medialane/sdk";
 import { formatSmallDecimal } from "../utils/format.js";
 
-export type CoinKind = "creator" | "memecoin";
+export type CoinKind = "creator" | "unruggable" | "memecoin";
 
 export interface CoinCollectionLike {
   contractAddress: string;
@@ -28,8 +28,19 @@ export interface CoinPriceLike {
   quoteUsdRate?: number | null;
 }
 
+const KIND_BY_SERVICE: Record<string, CoinKind> = {
+  "creator-coin": "creator",
+  "unruggable-erc20": "unruggable",
+  "external-erc20": "memecoin",
+};
+
 export function coinKind(service: string | null | undefined): CoinKind {
-  return getService(service)?.provenance === "EXTERNAL" ? "memecoin" : "creator";
+  const def = getService(service);
+  return (def && KIND_BY_SERVICE[def.id]) ?? "memecoin";
+}
+
+export function coinKindLabel(kind: CoinKind): string {
+  return getService(coinServiceIds(kind)[0])?.displayName ?? "Coin";
 }
 
 export function isCoinService(def: ServiceDefinition): boolean {
@@ -37,11 +48,12 @@ export function isCoinService(def: ServiceDefinition): boolean {
 }
 
 export function coinServiceIds(kind: CoinKind): string[] {
-  const provenance = kind === "creator" ? "MEDIALANE" : "EXTERNAL";
   return listServices()
-    .filter((s) => isCoinService(s) && s.provenance === provenance)
+    .filter((s) => isCoinService(s) && KIND_BY_SERVICE[s.id] === kind)
     .map((s) => s.id);
 }
+
+export const COIN_KINDS: CoinKind[] = ["creator", "unruggable", "memecoin"];
 
 export function formatCoinPrice(n: number): string {
   return formatSmallDecimal(n);

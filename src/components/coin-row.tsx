@@ -4,9 +4,9 @@ import Link from "./link.js";
 import Image from "./image.js";
 import { cn } from "../utils/cn.js";
 import { ipfsToHttp } from "../utils/ipfs.js";
-import { CurrencyIcon } from "./currency-icon.js";
+import { DualPrice } from "./dual-price.js";
 import {
-  coinKind, coinAccentToken, formatCoinPrice,
+  coinKind, coinKindLabel, coinAccentToken,
   type CoinCollectionLike, type CoinPriceLike,
 } from "../data/coins.js";
 import { formatUsdPrice } from "../utils/format.js";
@@ -19,9 +19,7 @@ export type UseCoinPrice = (collection: CoinCollectionLike) => {
   isLoading: boolean;
 };
 
-export const COIN_GRID = "grid grid-cols-[minmax(0,1fr)_8rem] items-center gap-3 sm:gap-4";
-
-const kindLabel = (kind: string) => (kind === "creator" ? "Creator Coin" : "Memecoin");
+export const COIN_GRID = "grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 sm:gap-4";
 
 export interface CoinRowProps {
   collection: CoinCollectionLike;
@@ -68,12 +66,13 @@ function PriceCell({ price, status, isLoading }: { price: CoinPriceLike | null; 
   const usd = price.quoteUsdRate != null ? formatUsdPrice(price.quotePerCoin * price.quoteUsdRate) : null;
 
   return (
-    <span className="block text-right leading-tight">
-      <span className="block font-semibold tabular-nums">{usd ?? formatCoinPrice(price.quotePerCoin)}</span>
-      <span className="mt-0.5 inline-flex items-center justify-end gap-1 text-2xs tabular-nums text-muted-foreground">
-        <CurrencyIcon symbol={price.quoteSymbol} size={10} />
-        {formatCoinPrice(price.quotePerCoin)}
-      </span>
+    <span className="flex justify-end">
+      <DualPrice
+        amountFormatted={String(price.quotePerCoin)}
+        currency={price.quoteSymbol}
+        usdValue={usd}
+        scale="card"
+      />
     </span>
   );
 }
@@ -96,7 +95,7 @@ export function CoinRow({ collection, usePrice, href, showKind = false }: CoinRo
           <span className="block truncate font-semibold leading-tight">{collection.name ?? "Untitled coin"}</span>
           <span className="block truncate text-xs text-muted-foreground">
             {collection.symbol ?? "—"}
-            {showKind && <span className="text-muted-foreground/60"> · {kindLabel(coinKind(collection.service))}</span>}
+            {showKind && <span className="text-muted-foreground/60"> · {coinKindLabel(coinKind(collection.service))}</span>}
           </span>
         </span>
       </span>
