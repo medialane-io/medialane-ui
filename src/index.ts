@@ -123,6 +123,11 @@ export {
   MarketplaceConfirmStep,
 } from "./components/marketplace-dialog-primitives.js";
 export { ActivityRow } from "./components/activity-row.js";
+export { ActivityTimelineRow } from "./components/activity-timeline-row.js";
+export type { ActivityTimelineRowProps } from "./components/activity-timeline-row.js";
+export { NotificationRow } from "./components/notification-row.js";
+export type { NotificationRowProps } from "./components/notification-row.js";
+export { NOTIFICATION_ICON, NOTIFICATION_COLOR, NOTIFICATION_LABEL } from "./data/notification-meta.js";
 export type { ActivityRowProps } from "./components/activity-row.js";
 export { ActivityFeedShell } from "./components/activity-feed-shell.js";
 export type { ActivityFeedShellProps } from "./components/activity-feed-shell.js";
