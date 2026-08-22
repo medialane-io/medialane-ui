@@ -1,6 +1,6 @@
 
 export { cn } from "./utils/cn.js";
-export { formatDisplayPrice, parsePriceDisplay, isStableCurrency, formatUsd } from "./utils/format.js";
+export { formatDisplayPrice, parsePriceDisplay, isStableCurrency, formatUsd, formatUsdPrice, formatSmallDecimal } from "./utils/format.js";
 export { shortenAddress } from "./utils/address.js";
 export { ipfsToHttp } from "./utils/ipfs.js";
 export { useIntersectionActive } from "./utils/use-intersection-active.js";
@@ -93,10 +93,10 @@ export { LicenseTermsBuilder, EMPTY_SPONSORSHIP_TERMS, MEDIA_TYPES, DURATION_UNI
 export type { LicenseTermsBuilderProps, SponsorshipTerms, DurationUnit } from "./components/license-terms-builder.js";
 
 export {
-  coinKind, formatCoinPrice, formatFdv,
+  coinKind, coinAccentHue, formatCoinPrice, formatFdv, formatFdvUsd, fdvUsd,
   type CoinKind, type CoinCollectionLike, type CoinPriceLike,
 } from "./data/coins.js";
-export { CoinCard, CoinRow, CoinCardSkeleton, type UseCoinPrice, type CoinTileProps } from "./components/coin-card.js";
+export { CoinRow, CoinRowSkeleton, CoinAvatar, COIN_GRID, type UseCoinPrice, type CoinRowProps } from "./components/coin-row.js";
 export {
   CoinsExplorer,
   type CoinsExplorerProps, type CoinFilter, type CoinSort, type UseCoins,

@@ -1,10 +1,10 @@
 "use client";
 
 import { useState, useMemo, useEffect } from "react";
-import { Coins, LayoutGrid, List, Search, SlidersHorizontal, X } from "lucide-react";
+import { Coins, Search, SlidersHorizontal, X } from "lucide-react";
 import { cn } from "../utils/cn.js";
-import { CoinCard, CoinRow, CoinCardSkeleton, type UseCoinPrice } from "./coin-card.js";
-import type { CoinCollectionLike } from "../data/coins.js";
+import { CoinRow, CoinRowSkeleton, COIN_GRID, type UseCoinPrice } from "./coin-row.js";
+import { coinKind, type CoinCollectionLike } from "../data/coins.js";
 
 export type CoinFilter = "all" | "creator" | "memecoin";
 export type CoinSort = "recent" | "name";
@@ -38,7 +38,6 @@ const sortLabel = (v: CoinSort) => SORT_OPTIONS.find((o) => o.value === v)?.labe
 export function CoinsExplorer({ useCoins, usePrice, coinHref, heading = true }: CoinsExplorerProps) {
   const [filter, setFilter] = useState<CoinFilter>("all");
   const [sort, setSort] = useState<CoinSort>("recent");
-  const [view, setView] = useState<"grid" | "table">("grid");
   const [query, setQuery] = useState("");
   const [filtersOpen, setFiltersOpen] = useState(false);
 
@@ -60,8 +59,10 @@ export function CoinsExplorer({ useCoins, usePrice, coinHref, heading = true }: 
     );
   }, [collections, query]);
 
+  const showKind = useMemo(() => new Set(items.map((c) => coinKind(c.service))).size > 1, [items]);
+
   return (
-    <div className="space-y-6">
+    <div className="space-y-5">
       {heading && (
         <div className="space-y-2">
           <div className="flex items-center gap-2 text-primary">
@@ -72,72 +73,61 @@ export function CoinsExplorer({ useCoins, usePrice, coinHref, heading = true }: 
         </div>
       )}
 
-      <div className="space-y-3 border-b border-border/60 pb-3">
-        <div className="flex items-center gap-2">
-          <div className="relative flex-1">
-            <Search className="pointer-events-none absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
-            <input
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search coins by name or symbol…"
-              className="w-full rounded-lg border border-border bg-background py-2 pl-9 pr-3 text-sm outline-none focus:border-primary/50"
-            />
-          </div>
-          <button
-            onClick={() => setFiltersOpen(true)}
-            className="inline-flex shrink-0 items-center gap-1.5 rounded-lg border border-border px-3 py-2 text-xs font-medium text-foreground hover:border-primary/50"
-          >
-            <SlidersHorizontal className="h-3.5 w-3.5" />
-            Filters
-            {filterCount > 0 && (
-              <span className="ml-0.5 inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-primary px-1 text-2xs font-semibold text-primary-foreground">
-                {filterCount}
-              </span>
-            )}
-          </button>
-          <div className="inline-flex shrink-0 rounded-lg border border-border p-0.5">
-            {([{ v: "grid", Icon: LayoutGrid }, { v: "table", Icon: List }] as const).map(({ v, Icon }) => (
-              <button
-                key={v}
-                onClick={() => setView(v)}
-                aria-label={v === "grid" ? "Grid view" : "Table view"}
-                className={cn("rounded-md p-1.5 transition-colors", view === v ? "bg-primary/10 text-primary" : "text-muted-foreground hover:text-foreground")}
-              >
-                <Icon className="h-4 w-4" />
-              </button>
-            ))}
-          </div>
+      <div className="flex items-center gap-2">
+        <div className="relative flex-1">
+          <Search className="pointer-events-none absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
+          <input
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Search coins by name or symbol…"
+            className="w-full rounded-lg border border-border bg-background py-2 pl-9 pr-3 text-sm outline-none focus:border-primary/50"
+          />
         </div>
-
-        {filterCount > 0 && (
-          <div className="flex flex-wrap items-center gap-1.5">
-            {filter !== "all" && (
-              <Chip onClear={() => setFilter("all")}>{filterLabel(filter)}</Chip>
-            )}
-            {sort !== "recent" && (
-              <Chip onClear={() => setSort("recent")}>{sortLabel(sort)}</Chip>
-            )}
-          </div>
-        )}
+        <button
+          onClick={() => setFiltersOpen(true)}
+          className="inline-flex shrink-0 items-center gap-1.5 rounded-lg border border-border px-3 py-2 text-xs font-medium text-foreground hover:border-primary/50"
+        >
+          <SlidersHorizontal className="h-3.5 w-3.5" />
+          Filters
+          {filterCount > 0 && (
+            <span className="ml-0.5 inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-primary px-1 text-2xs font-semibold text-primary-foreground">
+              {filterCount}
+            </span>
+          )}
+        </button>
       </div>
 
-      {isLoading && items.length === 0 ? (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
-          {Array.from({ length: 8 }).map((_, i) => <CoinCardSkeleton key={i} />)}
-        </div>
-      ) : items.length === 0 ? (
-        <div className="rounded-xl border border-border/60 py-16 text-center text-muted-foreground">
-          {query.trim() ? `No coins match "${query.trim()}".` : "No coins yet."}
-        </div>
-      ) : view === "table" ? (
-        <div className="space-y-2">
-          {items.map((c) => <CoinRow key={`${c.chain}-${c.contractAddress}`} collection={c} usePrice={usePrice} href={coinHref(c)} />)}
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
-          {items.map((c) => <CoinCard key={`${c.chain}-${c.contractAddress}`} collection={c} usePrice={usePrice} href={coinHref(c)} />)}
+      {filterCount > 0 && (
+        <div className="flex flex-wrap items-center gap-1.5">
+          {filter !== "all" && <Chip onClear={() => setFilter("all")}>{filterLabel(filter)}</Chip>}
+          {sort !== "recent" && <Chip onClear={() => setSort("recent")}>{sortLabel(sort)}</Chip>}
         </div>
       )}
+
+      <div>
+        <div className={cn(COIN_GRID, "border-b border-border px-2 pb-2 text-2xs font-medium uppercase tracking-wide text-muted-foreground")}>
+          <span>Token</span>
+          <span className="text-right">Price</span>
+        </div>
+
+        {isLoading && items.length === 0 ? (
+          Array.from({ length: 6 }).map((_, i) => <CoinRowSkeleton key={i} />)
+        ) : items.length === 0 ? (
+          <p className="py-16 text-center text-sm text-muted-foreground">
+            {query.trim() ? `No coins match "${query.trim()}".` : "No coins yet."}
+          </p>
+        ) : (
+          items.map((c) => (
+            <CoinRow
+              key={`${c.chain}-${c.contractAddress}`}
+              collection={c}
+              usePrice={usePrice}
+              href={coinHref(c)}
+              showKind={showKind}
+            />
+          ))
+        )}
+      </div>
 
       {filtersOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-label="Filters">

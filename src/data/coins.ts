@@ -1,5 +1,7 @@
 
 
+import { formatSmallDecimal } from "../utils/format.js";
+
 export type CoinKind = "creator" | "memecoin";
 
 export interface CoinCollectionLike {
@@ -28,10 +30,23 @@ export function coinKind(service: string | null | undefined): CoinKind {
 }
 
 export function formatCoinPrice(n: number): string {
-  if (n === 0) return "0";
-  if (n < 0.000001) return n.toExponential(2);
-  if (n < 1) return n.toPrecision(3);
-  return n.toLocaleString(undefined, { maximumFractionDigits: 4 });
+  return formatSmallDecimal(n);
+}
+
+const ACCENT_HUES = [220, 258, 341, 23, 325];
+
+export function coinAccentHue(seed: string | null | undefined): number {
+  const s = (seed ?? "?").trim().toUpperCase();
+  let h = 0;
+  for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0;
+  return ACCENT_HUES[h % ACCENT_HUES.length];
+}
+
+function abbreviate(n: number): string {
+  if (n >= 1_000_000_000) return `${(n / 1_000_000_000).toLocaleString(undefined, { maximumFractionDigits: 1 })}B`;
+  if (n >= 1_000_000) return `${(n / 1_000_000).toLocaleString(undefined, { maximumFractionDigits: 1 })}M`;
+  if (n >= 1_000) return `${(n / 1_000).toLocaleString(undefined, { maximumFractionDigits: 1 })}K`;
+  return n.toLocaleString(undefined, { maximumFractionDigits: 2 });
 }
 
 export function formatFdv(
@@ -40,12 +55,18 @@ export function formatFdv(
   quoteSymbol: string | null | undefined
 ): string | null {
   if (quotePerCoin == null || !totalSupply) return null;
-  const fdv = quotePerCoin * totalSupply;
   const sym = quoteSymbol ?? "";
-  const abbr =
-    fdv >= 1_000_000_000 ? `${(fdv / 1_000_000_000).toLocaleString(undefined, { maximumFractionDigits: 1 })}B` :
-    fdv >= 1_000_000     ? `${(fdv / 1_000_000).toLocaleString(undefined, { maximumFractionDigits: 1 })}M` :
-    fdv >= 1_000         ? `${(fdv / 1_000).toLocaleString(undefined, { maximumFractionDigits: 1 })}K` :
-                           fdv.toLocaleString(undefined, { maximumFractionDigits: 2 });
+  const abbr = abbreviate(quotePerCoin * totalSupply);
   return sym ? `${abbr} ${sym}` : abbr;
+}
+
+export function fdvUsd(price: CoinPriceLike | null, totalSupply: number | null | undefined): number | null {
+  if (!price || !totalSupply || totalSupply <= 0 || price.quoteUsdRate == null) return null;
+  const v = price.quotePerCoin * totalSupply * price.quoteUsdRate;
+  return v > 0 && isFinite(v) ? v : null;
+}
+
+export function formatFdvUsd(price: CoinPriceLike | null, totalSupply: number | null | undefined): string | null {
+  const v = fdvUsd(price, totalSupply);
+  return v == null ? null : `$${abbreviate(v)}`;
 }

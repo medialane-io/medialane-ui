@@ -9,6 +9,37 @@ export function formatUsd(n: number | null | undefined): string | null {
   return `$${n.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 }
 
+const SUBSCRIPTS = "₀₁₂₃₄₅₆₇₈₉";
+
+const toSubscript = (n: number) =>
+  String(n)
+    .split("")
+    .map((d) => SUBSCRIPTS[Number(d)])
+    .join("");
+
+export function formatSmallDecimal(n: number, significantDigits = 3): string {
+  if (!isFinite(n) || n === 0) return "0";
+  const abs = Math.abs(n);
+  const sign = n < 0 ? "-" : "";
+
+  if (abs >= 1) return sign + abs.toLocaleString(undefined, { maximumFractionDigits: 4 });
+  if (abs >= 0.0001) return sign + abs.toPrecision(significantDigits).replace(/(\.\d*?)0+$/, "$1").replace(/\.$/, "");
+
+  const zeros = -Math.floor(Math.log10(abs)) - 1;
+  const digits = abs
+    .toExponential(significantDigits - 1)
+    .replace(/e[+-]\d+$/, "")
+    .replace(".", "")
+    .replace(/0+$/, "");
+
+  return `${sign}0.0${toSubscript(zeros)}${digits || "0"}`;
+}
+
+export function formatUsdPrice(n: number | null | undefined): string | null {
+  if (n == null || !isFinite(n)) return null;
+  return `$${formatSmallDecimal(n)}`;
+}
+
 function adaptiveDecimals(num: number): number {
   if (num === 0 || num >= 1) return 2;
   if (num >= 0.01) return 4;
