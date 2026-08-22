@@ -1,5 +1,6 @@
 
 
+import { getService, listServices, type ServiceDefinition } from "@medialane/sdk";
 import { formatSmallDecimal } from "../utils/format.js";
 
 export type CoinKind = "creator" | "memecoin";
@@ -13,7 +14,9 @@ export interface CoinCollectionLike {
   service?: string | null;
   claimedBy?: string | null;
   holderCount?: number | null;
-  totalSupply?: number | null;
+
+  totalSupply?: string | null;
+  decimals?: number | null;
   profile?: { image?: string | null } | null;
 }
 
@@ -26,20 +29,37 @@ export interface CoinPriceLike {
 }
 
 export function coinKind(service: string | null | undefined): CoinKind {
-  return service === "external-erc20" ? "memecoin" : "creator";
+  return getService(service)?.provenance === "EXTERNAL" ? "memecoin" : "creator";
+}
+
+export function isCoinService(def: ServiceDefinition): boolean {
+  return def.uiVariant === "coin";
+}
+
+export function coinServiceIds(kind: CoinKind): string[] {
+  const provenance = kind === "creator" ? "MEDIALANE" : "EXTERNAL";
+  return listServices()
+    .filter((s) => isCoinService(s) && s.provenance === provenance)
+    .map((s) => s.id);
 }
 
 export function formatCoinPrice(n: number): string {
   return formatSmallDecimal(n);
 }
 
-const ACCENT_HUES = [220, 258, 341, 23, 325];
+const ACCENT_TOKENS = [
+  "bg-brand-rose",
+  "bg-brand-maeve",
+  "bg-brand-purple",
+  "bg-brand-orange",
+  "bg-brand-blue",
+] as const;
 
-export function coinAccentHue(seed: string | null | undefined): number {
+export function coinAccentToken(seed: string | null | undefined): string {
   const s = (seed ?? "?").trim().toUpperCase();
   let h = 0;
   for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0;
-  return ACCENT_HUES[h % ACCENT_HUES.length];
+  return ACCENT_TOKENS[h % ACCENT_TOKENS.length];
 }
 
 function abbreviate(n: number): string {
@@ -49,24 +69,29 @@ function abbreviate(n: number): string {
   return n.toLocaleString(undefined, { maximumFractionDigits: 2 });
 }
 
-export function formatFdv(
-  quotePerCoin: number | null | undefined,
-  totalSupply: number | null | undefined,
-  quoteSymbol: string | null | undefined
-): string | null {
-  if (quotePerCoin == null || !totalSupply) return null;
-  const sym = quoteSymbol ?? "";
-  const abbr = abbreviate(quotePerCoin * totalSupply);
-  return sym ? `${abbr} ${sym}` : abbr;
+export function coinSupply(collection: CoinCollectionLike): number | null {
+  const raw = collection.totalSupply;
+  if (raw == null || raw === "") return null;
+  let units: bigint;
+  try {
+    units = BigInt(raw);
+  } catch {
+    return null;
+  }
+  if (units <= 0n) return null;
+  const supply = Number(units) / 10 ** (collection.decimals ?? 18);
+
+  return isFinite(supply) && supply >= 1 ? supply : null;
 }
 
-export function fdvUsd(price: CoinPriceLike | null, totalSupply: number | null | undefined): number | null {
-  if (!price || !totalSupply || totalSupply <= 0 || price.quoteUsdRate == null) return null;
-  const v = price.quotePerCoin * totalSupply * price.quoteUsdRate;
+export function fdvUsd(price: CoinPriceLike | null, collection: CoinCollectionLike): number | null {
+  const supply = coinSupply(collection);
+  if (!price || supply == null || price.quoteUsdRate == null) return null;
+  const v = price.quotePerCoin * supply * price.quoteUsdRate;
   return v > 0 && isFinite(v) ? v : null;
 }
 
-export function formatFdvUsd(price: CoinPriceLike | null, totalSupply: number | null | undefined): string | null {
-  const v = fdvUsd(price, totalSupply);
+export function formatFdvUsd(price: CoinPriceLike | null, collection: CoinCollectionLike): string | null {
+  const v = fdvUsd(price, collection);
   return v == null ? null : `$${abbreviate(v)}`;
 }

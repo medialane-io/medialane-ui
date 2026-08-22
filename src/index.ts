@@ -93,10 +93,10 @@ export { LicenseTermsBuilder, EMPTY_SPONSORSHIP_TERMS, MEDIA_TYPES, DURATION_UNI
 export type { LicenseTermsBuilderProps, SponsorshipTerms, DurationUnit } from "./components/license-terms-builder.js";
 
 export {
-  coinKind, coinAccentHue, formatCoinPrice, formatFdv, formatFdvUsd, fdvUsd,
+  coinKind, coinAccentToken, coinServiceIds, isCoinService, formatCoinPrice, coinSupply, formatFdvUsd, fdvUsd,
   type CoinKind, type CoinCollectionLike, type CoinPriceLike,
 } from "./data/coins.js";
-export { CoinRow, CoinRowSkeleton, CoinAvatar, COIN_GRID, type UseCoinPrice, type CoinRowProps } from "./components/coin-row.js";
+export { CoinRow, CoinRowSkeleton, CoinAvatar, COIN_GRID, type UseCoinPrice, type CoinRowProps, type CoinMarketStatus } from "./components/coin-row.js";
 export {
   CoinsExplorer,
   type CoinsExplorerProps, type CoinFilter, type CoinSort, type UseCoins,

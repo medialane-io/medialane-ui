@@ -6,13 +6,16 @@ import { cn } from "../utils/cn.js";
 import { ipfsToHttp } from "../utils/ipfs.js";
 import { CurrencyIcon } from "./currency-icon.js";
 import {
-  coinKind, coinAccentHue, formatCoinPrice,
+  coinKind, coinAccentToken, formatCoinPrice,
   type CoinCollectionLike, type CoinPriceLike,
 } from "../data/coins.js";
 import { formatUsdPrice } from "../utils/format.js";
 
+export type CoinMarketStatus = "live" | "pre-launch" | "unavailable";
+
 export type UseCoinPrice = (collection: CoinCollectionLike) => {
   price: CoinPriceLike | null;
+  status?: CoinMarketStatus;
   isLoading: boolean;
 };
 
@@ -31,12 +34,12 @@ export function CoinAvatar({ collection, size = 36 }: { collection: CoinCollecti
   const logoUri = collection.profile?.image ?? collection.image;
   const logo = logoUri ? ipfsToHttp(logoUri) : null;
   const initials = (collection.symbol ?? collection.name ?? "?").trim().slice(0, 2).toUpperCase();
-  const hue = coinAccentHue(collection.symbol ?? collection.name ?? collection.contractAddress);
+  const accent = coinAccentToken(collection.symbol ?? collection.name ?? collection.contractAddress);
 
   return (
     <div
-      className="relative shrink-0 overflow-hidden rounded-full"
-      style={{ width: size, height: size, backgroundColor: `hsl(${hue} 70% 52%)` }}
+      className={cn("relative shrink-0 overflow-hidden rounded-full", accent)}
+      style={{ width: size, height: size }}
     >
       {logo ? (
         <Image src={logo} alt="" fill sizes={`${size}px`} className="object-cover" unoptimized />
@@ -52,9 +55,15 @@ export function CoinAvatar({ collection, size = 36 }: { collection: CoinCollecti
   );
 }
 
-function PriceCell({ price, isLoading }: { price: CoinPriceLike | null; isLoading: boolean }) {
+function PriceCell({ price, status, isLoading }: { price: CoinPriceLike | null; status?: CoinMarketStatus; isLoading: boolean }) {
   if (isLoading) return <span className="ml-auto block h-4 w-16 animate-pulse rounded bg-muted-foreground/20" />;
-  if (!price) return <span className="block text-right text-muted-foreground">—</span>;
+  if (!price) {
+    return status === "pre-launch" ? (
+      <span className="block text-right text-xs text-muted-foreground">Not trading yet</span>
+    ) : (
+      <span className="block text-right text-muted-foreground">—</span>
+    );
+  }
 
   const usd = price.quoteUsdRate != null ? formatUsdPrice(price.quotePerCoin * price.quoteUsdRate) : null;
 
@@ -70,12 +79,16 @@ function PriceCell({ price, isLoading }: { price: CoinPriceLike | null; isLoadin
 }
 
 export function CoinRow({ collection, usePrice, href, showKind = false }: CoinRowProps) {
-  const { price, isLoading } = usePrice(collection);
+  const { price, status, isLoading } = usePrice(collection);
 
   return (
     <Link
       href={href}
-      className={cn(COIN_GRID, "border-b border-border/40 px-2 py-2.5 text-sm transition-colors hover:bg-muted/40")}
+      className={cn(
+        COIN_GRID,
+        "border-b border-border/40 px-2 py-2.5 text-sm transition-colors",
+        "hover:bg-muted/40 active:bg-muted/60"
+      )}
     >
       <span className="flex min-w-0 items-center gap-3">
         <CoinAvatar collection={collection} />
@@ -88,7 +101,7 @@ export function CoinRow({ collection, usePrice, href, showKind = false }: CoinRo
         </span>
       </span>
 
-      <PriceCell price={price} isLoading={isLoading} />
+      <PriceCell price={price} status={status} isLoading={isLoading} />
     </Link>
   );
 }
