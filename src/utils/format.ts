@@ -55,6 +55,12 @@ export function formatDisplayPrice(price: string | number | null | undefined): s
   const currencyPart = parts.length > 1 ? parts.slice(1).join(" ") : "";
   const num = Number(numericPart);
   if (isNaN(num)) return priceStr;
+
+  if (num !== 0 && Math.abs(num) < 0.0001) {
+    const compressed = formatSmallDecimal(num);
+    return currencyPart ? `${compressed} ${currencyPart}` : compressed;
+  }
+
   const maxDecimals = adaptiveDecimals(num);
   const formatted = num.toLocaleString(undefined, {
     minimumFractionDigits: Math.min(2, maxDecimals),
