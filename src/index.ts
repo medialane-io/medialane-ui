@@ -96,6 +96,7 @@ export {
   coinKind, coinAccentToken, coinServiceIds, isCoinService, formatCoinPrice, coinSupply, formatFdvUsd, fdvUsd,
   type CoinKind, type CoinCollectionLike, type CoinPriceLike,
 } from "./data/coins.js";
+export { CoinGuarantees, type CoinGuaranteesProps, type CoinGuaranteesData } from "./components/coin-guarantees.js";
 export { CoinRow, CoinRowSkeleton, CoinAvatar, COIN_GRID, type UseCoinPrice, type CoinRowProps, type CoinMarketStatus } from "./components/coin-row.js";
 export {
   CoinsExplorer,
