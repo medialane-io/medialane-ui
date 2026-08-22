@@ -5,20 +5,29 @@ import Link from "./link.js";
 import { ExternalLink } from "lucide-react";
 import { AddressDisplay } from "./address-display.js";
 import { CurrencyIcon } from "./currency-icon.js";
+import { LevelBadge } from "./rewards/level-badge.js";
 import { ACTIVITY_TYPE_CONFIG } from "../data/activity.js";
 import { ipfsToHttp } from "../utils/ipfs.js";
 import { timeAgo } from "../utils/time.js";
 import { formatDisplayPrice } from "../utils/format.js";
 import { cn } from "../utils/cn.js";
-import type { ApiActivity } from "@medialane/sdk";
+import type { ApiActivity, ApiRewardsBatchEntry } from "@medialane/sdk";
+
+const ACTIVITY_MESSAGES: Record<string, string> = {
+  mint: "Newly minted",
+  listing: "Listed for sale",
+  sale: "Purchased",
+  offer: "Offer placed",
+  transfer: "Transferred",
+  cancelled: "Listing cancelled",
+};
 
 export interface ActivityRowProps {
   activity: ApiActivity;
-
-  token?: { name?: string; image?: string };
   showActor?: boolean;
   showExplorer?: boolean;
   compact?: boolean;
+  actorLevel?: ApiRewardsBatchEntry;
   explorerUrl?: string;
   getAssetHref?: (contract: string, tokenId: string) => string;
   getActorHref?: (address: string) => string;
@@ -26,13 +35,13 @@ export interface ActivityRowProps {
 
 export function ActivityRow({
   activity,
-  token,
   showActor = true,
   showExplorer = true,
   compact = false,
+  actorLevel,
   explorerUrl = "https://voyager.online",
-  getAssetHref = (c, t) => `/asset/${c}/${t}`,
-  getActorHref = (a) => `/creator/${a}`,
+  getAssetHref = (contract, tokenId) => `/asset/STARKNET/${contract}/${tokenId}`,
+  getActorHref = (address) => `/creator/${address}`,
 }: ActivityRowProps) {
   const config = ACTIVITY_TYPE_CONFIG[activity.type] ?? {
     label: activity.type,
@@ -48,67 +57,141 @@ export function ActivityRow({
   const actor =
     activity.offerer ??
     activity.fulfiller ??
-    ((activity.type as string) === "mint" ? activity.to : activity.from) ??
+    (activity.type === "mint" ? activity.to : activity.from) ??
     null;
   const txLink = activity.txHash ? `${explorerUrl}/tx/${activity.txHash}` : null;
 
-  const tokenName = token?.name ?? (tokenId ? `#${tokenId}` : "—");
-  const tokenImage = token?.image ? ipfsToHttp(token.image) : null;
+  const tokenName = activity.token?.name ?? (tokenId ? `#${tokenId}` : "—");
+  const rawImage = activity.token?.image ?? null;
+  const tokenImage = rawImage ? ipfsToHttp(rawImage) : null;
+
+  const is1155 = activity.tokenStandard === "ERC1155" ||
+    (activity.type === "mint" || activity.type === "transfer") && Number(activity.amount ?? "1") > 1;
+  const amount = activity.amount && Number(activity.amount) > 1 ? activity.amount : null;
+
+  const message = ACTIVITY_MESSAGES[activity.type] ?? config.label;
 
   return (
-    <div className={cn("flex items-center gap-3 hover:bg-muted/30 transition-colors group", compact ? "pl-4 pr-5 py-2.5" : "pl-4 pr-5 py-3.5")}>
+    <div
+      className={cn(
+        "flex items-center gap-3 hover:bg-muted/30 transition-colors group",
+        compact ? "pl-4 pr-5 py-2.5" : "pl-4 pr-5 py-3.5"
+      )}
+    >
 
-      <div className={cn("rounded-lg flex items-center justify-center shrink-0", config.bgClass, compact ? "h-7 w-7" : "h-8 w-8")}>
-        <Icon className={cn("shrink-0", config.colorClass, compact ? "h-3.5 w-3.5" : "h-4 w-4")} />
+      <div
+        className={cn(
+          "rounded-lg flex items-center justify-center shrink-0",
+          config.bgClass,
+          compact ? "h-7 w-7" : "h-8 w-8"
+        )}
+        title={config.label}
+        aria-label={config.label}
+      >
+        <Icon
+          className={cn("shrink-0", config.colorClass, compact ? "h-3.5 w-3.5" : "h-4 w-4")}
+          aria-hidden
+        />
       </div>
 
-      <div className={cn("rounded-md overflow-hidden shrink-0 bg-muted", compact ? "h-7 w-7" : "h-9 w-9")}>
+      <div
+        className={cn(
+          "rounded-md overflow-hidden shrink-0 bg-muted relative",
+          compact ? "h-7 w-7" : "h-9 w-9"
+        )}
+      >
         {tokenImage ? (
-          <Image src={tokenImage} alt={tokenName} width={compact ? 28 : 36} height={compact ? 28 : 36} className="object-cover w-full h-full" unoptimized />
+          <Image
+            src={tokenImage}
+            alt={tokenName}
+            width={compact ? 28 : 36}
+            height={compact ? 28 : 36}
+            className="object-cover w-full h-full"
+            unoptimized
+          />
         ) : (
-          <div className="w-full h-full bg-gradient-to-br from-muted-foreground/10 to-muted-foreground/5" />
+          <div className="w-full h-full bg-gradient-to-br from-brand-purple/15 to-brand-blue/15" aria-hidden />
+        )}
+
+        {is1155 && (
+          <span className="absolute -bottom-1 -right-1 text-[8px] font-bold bg-brand-purple text-white rounded px-0.5 leading-tight">
+            1155
+          </span>
         )}
       </div>
 
       <div className="flex-1 min-w-0">
-        {contract && tokenId ? (
-          <Link href={getAssetHref(contract, tokenId)} className="text-sm font-semibold hover:text-primary transition-colors truncate block leading-tight">
-            {tokenName}
-          </Link>
-        ) : (
-          <span className="text-sm font-semibold text-muted-foreground">—</span>
-        )}
-        {showActor && actor && (
-          <Link href={getActorHref(actor)} className="text-xs text-muted-foreground hover:text-primary transition-colors font-mono leading-tight">
-            <AddressDisplay address={actor} chars={4} showCopy={false} />
-          </Link>
-        )}
+        <div className="flex items-center gap-1.5 leading-tight">
+          {contract && tokenId ? (
+            <Link
+              href={getAssetHref(contract, tokenId)}
+              className="text-sm font-semibold hover:text-primary transition-colors truncate block"
+            >
+              {tokenName}
+            </Link>
+          ) : (
+            <span className="text-sm font-semibold text-muted-foreground">—</span>
+          )}
+          {amount && (
+            <span className="text-[10px] font-medium text-brand-purple shrink-0">
+              ×{amount}
+            </span>
+          )}
+        </div>
+        <p className="text-xs text-muted-foreground leading-tight truncate mt-0.5 flex items-center gap-1">
+          <span className="truncate">{message}</span>
+          {showActor && actor && (
+            <>
+              <Link
+                href={getActorHref(actor)}
+                className="hover:text-primary transition-colors tabular-nums shrink-0"
+              >
+                <AddressDisplay address={actor} chars={4} showCopy={false} />
+              </Link>
+              {actorLevel && actorLevel.totalXp > 0 && (
+                <LevelBadge
+                  level={actorLevel.currentLevel}
+                  name={actorLevel.currentLevelName}
+                  badgeColor={actorLevel.badgeColor}
+                  size="sm"
+                  className="shrink-0"
+                />
+              )}
+            </>
+          )}
+        </p>
       </div>
 
       <div className="flex items-center gap-2.5 shrink-0">
-        {!compact && (
-          <span className={cn("text-2xs font-medium px-1.5 py-0.5 rounded hidden sm:inline-flex", config.bgClass, config.colorClass)}>
-            {config.label}
-          </span>
-        )}
-
         {activity.price?.formatted && (
           <div className="text-right">
-            <p className="text-sm font-bold tabular-nums leading-tight">{formatDisplayPrice(activity.price.formatted)}</p>
-            <p className="text-2xs text-muted-foreground leading-tight flex items-center justify-end gap-0.5">
-              {activity.price.currency && <CurrencyIcon symbol={activity.price.currency} size={10} />}
-              {activity.price.currency}
+            <p className="text-sm font-bold tabular-nums leading-tight">
+              {formatDisplayPrice(activity.price.formatted)}
+            </p>
+            <p className="text-[10px] text-muted-foreground leading-tight flex items-center justify-end gap-0.5">
+              <CurrencyIcon symbol={activity.price.currency} size={10} aria-hidden />
+              <span className="sr-only">{activity.price.currency}</span>
             </p>
           </div>
         )}
 
-        <span className="text-2xs text-muted-foreground tabular-nums hidden sm:block w-12 text-right" title={new Date(activity.timestamp).toLocaleString()}>
+        <span
+          className="text-[10px] text-muted-foreground tabular-nums hidden sm:block w-12 text-right"
+          title={new Date(activity.timestamp).toLocaleString()}
+        >
           {timeAgo(activity.timestamp)}
         </span>
 
         {showExplorer && txLink && (
-          <a href={txLink} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center h-6 w-6 rounded-md hover:bg-muted transition-colors opacity-50 sm:opacity-0 sm:group-hover:opacity-100 shrink-0" aria-label="View on explorer">
-            <ExternalLink className="h-3 w-3 text-muted-foreground" />
+          <a
+            href={txLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center h-6 w-6 rounded-md hover:bg-muted transition-colors opacity-50 sm:opacity-0 sm:group-hover:opacity-100 shrink-0"
+            aria-label="View transaction on Voyager"
+            title="View on Voyager"
+          >
+            <ExternalLink className="h-3 w-3 text-muted-foreground" aria-hidden />
           </a>
         )}
       </div>
