@@ -56,13 +56,26 @@ export interface StatPillProps {
   value: string | number;
   label: string;
   className?: string;
+  active?: boolean;
+  onClick?: () => void;
 }
 
-export function StatPill({ value, label, className }: StatPillProps) {
+export function StatPill({ value, label, className, active, onClick }: StatPillProps) {
+  const classes = `inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-sm ${
+    active ? "border-primary bg-primary/10 text-primary" : "border-border bg-card"
+  } ${className ?? ''}`;
+
+  if (onClick) {
+    return (
+      <button type="button" onClick={onClick} aria-pressed={active} className={classes}>
+        <span className={`font-bold tabular-nums ${active ? "" : "text-foreground"}`}>{value}</span>
+        <span className={active ? "" : "text-muted-foreground"}>{label}</span>
+      </button>
+    );
+  }
+
   return (
-    <div
-      className={`inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1 text-sm ${className ?? ''}`}
-    >
+    <div className={classes}>
       <span className="font-bold text-foreground tabular-nums">{value}</span>
       <span className="text-muted-foreground">{label}</span>
     </div>
@@ -75,17 +88,31 @@ export interface StatPillRowItem {
   value?: number | string | null;
 }
 
-export function StatPillRow({ items, className }: { items: StatPillRowItem[]; className?: string }) {
-  const shown = items.filter((i) => i.value !== undefined);
+export function StatPillRow({
+  items,
+  className,
+  onSelect,
+  activeIndex,
+}: {
+  items: StatPillRowItem[];
+  className?: string;
+  onSelect?: (index: number) => void;
+  activeIndex?: number;
+}) {
+  const shown = items
+    .map((item, index) => ({ item, index }))
+    .filter(({ item }) => item.value !== undefined);
   if (shown.length === 0) return null;
 
   return (
     <div className={`flex flex-wrap items-center gap-2 pt-0.5 ${className ?? ''}`}>
-      {shown.map(({ label, value }) => (
+      {shown.map(({ item: { label, value }, index }) => (
         <StatPill
           key={label}
           label={label}
           value={value == null ? "—" : typeof value === "number" ? value.toLocaleString() : value}
+          active={onSelect ? activeIndex === index : undefined}
+          onClick={onSelect ? () => onSelect(index) : undefined}
         />
       ))}
     </div>

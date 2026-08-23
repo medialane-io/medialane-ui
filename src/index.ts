@@ -98,9 +98,10 @@ export {
 } from "./data/coins.js";
 export { CoinGuarantees, type CoinGuaranteesProps, type CoinGuaranteesData } from "./components/coin-guarantees.js";
 export { CoinRow, CoinRowSkeleton, CoinAvatar, COIN_GRID, type UseCoinPrice, type CoinRowProps, type CoinMarketStatus } from "./components/coin-row.js";
+export { orderCoins, type CoinPriceSort } from "./data/coin-order.js";
 export {
   CoinsExplorer,
-  type CoinsExplorerProps, type CoinFilter, type CoinSort, type UseCoins, type CoinCounts,
+  type CoinsExplorerProps, type CoinFilter, type CoinSort, type UseCoins, type UsePriceMap, type CoinCounts,
 } from "./components/coins-explorer.js";
 
 export { timeAgo, timeUntil } from "./utils/time.js";

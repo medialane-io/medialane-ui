@@ -59,7 +59,12 @@ function PriceCell({ price, status, isLoading }: { price: CoinPriceLike | null; 
     return status === "pre-launch" ? (
       <span className="block text-right text-xs text-muted-foreground">Not trading yet</span>
     ) : (
-      <span className="block text-right text-muted-foreground">—</span>
+      <span
+        className="block text-right text-muted-foreground"
+        title="No liquidity route was found for this coin on any Starknet DEX yet."
+      >
+        —
+      </span>
     );
   }
 
@@ -72,6 +77,7 @@ function PriceCell({ price, status, isLoading }: { price: CoinPriceLike | null; 
         currency={price.quoteSymbol}
         usdValue={usd}
         scale="card"
+        secondaryClassName="hidden sm:flex"
       />
     </span>
   );
