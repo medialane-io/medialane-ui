@@ -3,6 +3,7 @@
 import Image from "./image.js";
 import { TrendingUp } from "lucide-react";
 import { cn } from "../utils/cn.js";
+import { CurrencyIcon } from "./currency-icon.js";
 
 export interface CoinPreviewData {
   name: string;
@@ -12,17 +13,24 @@ export interface CoinPreviewData {
   imageUrl: string | null;
 
   supplyHuman: number | null;
+  price: number;
   quoteSymbol: string;
   teamPct: number;
 }
 
-const LAUNCH_PRICE = 0.01;
-
 const COIN_GRADIENT = "linear-gradient(135deg, #f6608f, #fb8b46)";
 
+function StatValue({ children }: { children: React.ReactNode }) {
+  return (
+    <span className="inline-flex items-center gap-1 font-bold tabular-nums text-brand-maeve">
+      {children}
+    </span>
+  );
+}
+
 export function CoinLaunchPreview({ data, className }: { data: CoinPreviewData; className?: string }) {
-  const { name, symbol, description, imageUrl, supplyHuman, quoteSymbol, teamPct } = data;
-  const marketCap = supplyHuman != null ? supplyHuman * LAUNCH_PRICE : null;
+  const { name, symbol, description, imageUrl, supplyHuman, price, quoteSymbol, teamPct } = data;
+  const marketCap = supplyHuman != null ? supplyHuman * price : null;
   const yourCoins = supplyHuman != null ? supplyHuman * (teamPct / 100) : null;
 
   return (
@@ -55,33 +63,39 @@ export function CoinLaunchPreview({ data, className }: { data: CoinPreviewData; 
           <p className="text-sm text-muted-foreground leading-relaxed line-clamp-3">{description}</p>
         ) : null}
 
-        <div className="grid grid-cols-3 gap-2 rounded-xl bg-muted/50 dark:bg-muted/30 p-3 text-sm">
-          <div>
-            <p className="text-2xs uppercase tracking-wide text-muted-foreground">Launch price</p>
-            <p className="font-semibold tabular-nums">{LAUNCH_PRICE} {quoteSymbol}</p>
-          </div>
+        <div className="rounded-xl bg-muted/50 dark:bg-muted/30 p-4 space-y-3">
           <div>
             <p className="text-2xs uppercase tracking-wide text-muted-foreground">Market cap</p>
-            <p className="font-semibold tabular-nums text-brand-maeve">
-              {marketCap != null ? `${marketCap.toLocaleString()} ${quoteSymbol}` : "—"}
+            <p className="text-2xl">
+              {marketCap != null ? (
+                <StatValue>
+                  <CurrencyIcon symbol={quoteSymbol} size={18} />
+                  {marketCap.toLocaleString()} {quoteSymbol}
+                </StatValue>
+              ) : (
+                <span className="text-muted-foreground">—</span>
+              )}
             </p>
           </div>
-          <div>
-            <p className="text-2xs uppercase tracking-wide text-muted-foreground">Your share</p>
-            <p className="font-semibold tabular-nums">
-              {yourCoins != null ? `${teamPct}% · ${yourCoins.toLocaleString()}` : `${teamPct}%`}
-            </p>
+          <div className="flex items-center justify-between text-sm border-t border-border/60 pt-3">
+            <span className="text-muted-foreground">Launch price</span>
+            <span className="inline-flex items-center gap-1 font-semibold tabular-nums">
+              <CurrencyIcon symbol={quoteSymbol} size={14} />
+              {price} {quoteSymbol} / coin
+            </span>
           </div>
         </div>
 
         <div className="space-y-1.5">
+          <div className="flex items-center justify-between text-sm">
+            <span className="font-medium text-brand-rose">
+              You keep {teamPct}%{yourCoins != null ? ` · ${yourCoins.toLocaleString()} ${symbol || "coins"}` : ""}
+            </span>
+            <span className="text-muted-foreground">Community {100 - teamPct}%</span>
+          </div>
           <div className="flex h-2.5 rounded-full overflow-hidden bg-muted-foreground/15">
             {teamPct > 0 && <div style={{ width: `${teamPct}%`, background: COIN_GRADIENT }} />}
             <div className="flex-1" />
-          </div>
-          <div className="flex justify-between text-2xs text-muted-foreground">
-            <span className="font-medium text-brand-rose">You {teamPct}%</span>
-            <span>Community {100 - teamPct}%</span>
           </div>
         </div>
 
