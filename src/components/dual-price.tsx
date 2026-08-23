@@ -67,12 +67,14 @@ export function DualPrice({
   usdValue,
   scale,
   trailing,
+  secondaryClassName,
 }: {
   amountFormatted: string | null | undefined;
   currency: string | null | undefined;
   usdValue?: string | null;
   scale: keyof typeof DUAL_PRICE_SCALES;
   trailing?: ReactNode;
+  secondaryClassName?: string;
 }) {
   if (!amountFormatted) return null;
   const s = DUAL_PRICE_SCALES[scale];
@@ -102,20 +104,22 @@ export function DualPrice({
         label={s.showLabel ? "USD" : undefined}
         amountClassName={amountClass}
       />
-      {!stable && <span className={`${s.divider} w-px bg-border/60 shrink-0`} />}
-      {stable ? (
-        <span className="inline-flex items-center gap-1.5">
-          <CoinChip symbol={currency} size={s.stableChip} />
-          <span className="text-sm font-semibold text-muted-foreground">{currency}</span>
-        </span>
-      ) : (
-        <PriceUnit
-          chip={<CoinChip symbol={currency} size={s.chip} />}
-          amount={cryptoDisplay}
-          label={s.showLabel ? (currency ?? undefined) : undefined}
-          amountClassName={amountClass}
-        />
-      )}
+      <span className={`items-center gap-2.5 ${secondaryClassName ?? "flex"}`}>
+        {!stable && <span className={`${s.divider} w-px bg-border/60 shrink-0`} />}
+        {stable ? (
+          <span className="inline-flex items-center gap-1.5">
+            <CoinChip symbol={currency} size={s.stableChip} />
+            <span className="text-sm font-semibold text-muted-foreground">{currency}</span>
+          </span>
+        ) : (
+          <PriceUnit
+            chip={<CoinChip symbol={currency} size={s.chip} />}
+            amount={cryptoDisplay}
+            label={s.showLabel ? (currency ?? undefined) : undefined}
+            amountClassName={amountClass}
+          />
+        )}
+      </span>
       {trailing && <span className="ml-0.5">{trailing}</span>}
     </div>
   );
