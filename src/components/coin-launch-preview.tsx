@@ -18,7 +18,7 @@ export interface CoinPreviewData {
   teamPct: number;
 }
 
-const COIN_GRADIENT = "linear-gradient(135deg, #f6608f, #fb8b46)";
+const COIN_GRADIENT = "linear-gradient(135deg, #d5520b, #e175b0)";
 
 function StatValue({ children }: { children: React.ReactNode }) {
   return (
@@ -47,7 +47,7 @@ export function CoinLaunchPreview({ data, className }: { data: CoinPreviewData; 
               {imageUrl ? (
                 <Image src={imageUrl} alt="" fill sizes="56px" className="object-cover" unoptimized />
               ) : (
-                <TrendingUp className="h-6 w-6 text-brand-rose/70" />
+                <TrendingUp className="h-6 w-6 text-brand-orange/70" />
               )}
             </div>
           </div>
@@ -88,7 +88,7 @@ export function CoinLaunchPreview({ data, className }: { data: CoinPreviewData; 
 
         <div className="space-y-1.5">
           <div className="flex items-center justify-between text-sm">
-            <span className="font-medium text-brand-rose">
+            <span className="font-medium text-brand-orange">
               You keep {teamPct}%{yourCoins != null ? ` · ${yourCoins.toLocaleString()} ${symbol || "coins"}` : ""}
             </span>
             <span className="text-muted-foreground">Community {100 - teamPct}%</span>
@@ -100,7 +100,7 @@ export function CoinLaunchPreview({ data, className }: { data: CoinPreviewData; 
         </div>
 
         <p className="text-2xs text-muted-foreground/70">
-          Liquidity is locked forever — nobody can pull it, including us.
+          Liquidity locks permanently at launch.
         </p>
       </div>
     </div>
