@@ -61,12 +61,33 @@ export interface StatPillProps {
 export function StatPill({ value, label, className }: StatPillProps) {
   return (
     <div
-      className={`inline-flex items-baseline gap-2 px-4 py-2 rounded-full bg-muted ${className ?? ''}`}
+      className={`inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1 text-sm ${className ?? ''}`}
     >
-      <span className="text-base font-bold text-foreground tabular-nums">
-        {value}
-      </span>
-      <span className="text-sm text-muted-foreground">{label}</span>
+      <span className="font-bold text-foreground tabular-nums">{value}</span>
+      <span className="text-muted-foreground">{label}</span>
+    </div>
+  );
+}
+
+export interface StatPillRowItem {
+  label: string;
+
+  value?: number | string | null;
+}
+
+export function StatPillRow({ items, className }: { items: StatPillRowItem[]; className?: string }) {
+  const shown = items.filter((i) => i.value !== undefined);
+  if (shown.length === 0) return null;
+
+  return (
+    <div className={`flex flex-wrap items-center gap-2 pt-0.5 ${className ?? ''}`}>
+      {shown.map(({ label, value }) => (
+        <StatPill
+          key={label}
+          label={label}
+          value={value == null ? "—" : typeof value === "number" ? value.toLocaleString() : value}
+        />
+      ))}
     </div>
   );
 }

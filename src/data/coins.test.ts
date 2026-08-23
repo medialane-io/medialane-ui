@@ -1,5 +1,5 @@
 import { describe, expect, it } from "bun:test";
-import { coinSupply, fdvUsd, coinAccentToken, type CoinCollectionLike, type CoinPriceLike } from "./coins.js";
+import { coinSupply, fdvUsd, coinAccentToken, coinKindLabelPlural, type CoinCollectionLike, type CoinPriceLike } from "./coins.js";
 
 const coin = (over: Partial<CoinCollectionLike> = {}): CoinCollectionLike => ({
   contractAddress: "0x1",
@@ -53,5 +53,16 @@ describe("coinAccentToken", () => {
 
   it("is stable for the same seed", () => {
     expect(coinAccentToken("SLINK")).toBe(coinAccentToken("SLINK"));
+  });
+});
+
+describe("coinKindLabelPlural", () => {
+  it("pluralises coin-suffixed labels for count displays", () => {
+    expect(coinKindLabelPlural("memecoin")).toBe("Memecoins");
+    expect(coinKindLabelPlural("creator")).toBe("Creator Coins");
+  });
+
+  it("leaves a label that is not a coin noun alone", () => {
+    expect(coinKindLabelPlural("unruggable")).toBe("Unruggable");
   });
 });

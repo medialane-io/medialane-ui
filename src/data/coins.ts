@@ -44,6 +44,12 @@ export function coinKindLabel(kind: CoinKind): string {
   return getService(coinServiceIds(kind)[0])?.displayName ?? "Coin";
 }
 
+export function coinKindLabelPlural(kind: CoinKind): string {
+  const label = coinKindLabel(kind);
+
+  return /coin$/i.test(label) ? `${label}s` : label;
+}
+
 export function isCoinService(def: ServiceDefinition): boolean {
   return def.uiVariant === "coin";
 }
