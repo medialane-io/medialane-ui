@@ -93,14 +93,14 @@ export { LicenseTermsBuilder, EMPTY_SPONSORSHIP_TERMS, MEDIA_TYPES, DURATION_UNI
 export type { LicenseTermsBuilderProps, SponsorshipTerms, DurationUnit } from "./components/license-terms-builder.js";
 
 export {
-  coinKind, coinKindLabel, COIN_KINDS, coinAccentToken, coinServiceIds, isCoinService, formatCoinPrice, coinSupply, formatFdvUsd, fdvUsd,
+  coinKind, coinKindLabel, coinKindLabelPlural, COIN_KINDS, coinAccentToken, coinServiceIds, isCoinService, formatCoinPrice, coinSupply, formatFdvUsd, fdvUsd,
   type CoinKind, type CoinCollectionLike, type CoinPriceLike,
 } from "./data/coins.js";
 export { CoinGuarantees, type CoinGuaranteesProps, type CoinGuaranteesData } from "./components/coin-guarantees.js";
 export { CoinRow, CoinRowSkeleton, CoinAvatar, COIN_GRID, type UseCoinPrice, type CoinRowProps, type CoinMarketStatus } from "./components/coin-row.js";
 export {
   CoinsExplorer,
-  type CoinsExplorerProps, type CoinFilter, type CoinSort, type UseCoins,
+  type CoinsExplorerProps, type CoinFilter, type CoinSort, type UseCoins, type CoinCounts,
 } from "./components/coins-explorer.js";
 
 export { timeAgo, timeUntil } from "./utils/time.js";
@@ -254,8 +254,8 @@ export type { MedialaneCollectionCardProps } from "./components/medialane-collec
 export { TokenGlyph, TokenAmount } from "./components/token-glyph.js";
 export type { TokenGlyphProps, TokenAmountProps, TokenSymbol } from "./components/token-glyph.js";
 
-export { StatTile, StatPill } from "./components/stat-tile.js";
-export type { StatTileProps, StatPillProps } from "./components/stat-tile.js";
+export { StatTile, StatPill, StatPillRow } from "./components/stat-tile.js";
+export type { StatTileProps, StatPillProps, StatPillRowItem } from "./components/stat-tile.js";
 
 export { ActionDialog } from "./components/action-dialog.js";
 export type { ActionDialogProps } from "./components/action-dialog.js";

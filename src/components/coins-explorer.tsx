@@ -1,16 +1,20 @@
 "use client";
 
 import { useState, useMemo, useEffect } from "react";
-import { Coins, Search, SlidersHorizontal, X } from "lucide-react";
+import { Search, SlidersHorizontal, X } from "lucide-react";
 import { cn } from "../utils/cn.js";
 import { CoinRow, CoinRowSkeleton, COIN_GRID, type UseCoinPrice } from "./coin-row.js";
-import { coinKind, coinKindLabel, COIN_KINDS, type CoinCollectionLike, type CoinKind } from "../data/coins.js";
+import { StatPillRow } from "./stat-tile.js";
+import { coinKind, coinKindLabel, coinKindLabelPlural, coinServiceIds, COIN_KINDS, type CoinCollectionLike, type CoinKind } from "../data/coins.js";
 
 export type CoinFilter = "all" | CoinKind;
 export type CoinSort = "recent" | "name";
+export type CoinCounts = Record<string, number>;
+
 export type UseCoins = (opts: { filter: CoinFilter; sort: CoinSort }) => {
   collections: CoinCollectionLike[];
   isLoading: boolean;
+  counts?: CoinCounts;
 };
 
 export interface CoinsExplorerProps {
@@ -19,6 +23,8 @@ export interface CoinsExplorerProps {
 
   coinHref: (collection: CoinCollectionLike) => string;
   heading?: boolean;
+
+  action?: React.ReactNode;
 }
 
 const FILTER_TABS: { label: string; value: CoinFilter }[] = [
@@ -34,7 +40,7 @@ const SORT_OPTIONS: { label: string; value: CoinSort }[] = [
 const filterLabel = (v: CoinFilter) => FILTER_TABS.find((t) => t.value === v)?.label ?? "";
 const sortLabel = (v: CoinSort) => SORT_OPTIONS.find((o) => o.value === v)?.label ?? "";
 
-export function CoinsExplorer({ useCoins, usePrice, coinHref, heading = true }: CoinsExplorerProps) {
+export function CoinsExplorer({ useCoins, usePrice, coinHref, heading = true, action }: CoinsExplorerProps) {
   const [filter, setFilter] = useState<CoinFilter>("all");
   const [sort, setSort] = useState<CoinSort>("recent");
   const [query, setQuery] = useState("");
@@ -49,7 +55,7 @@ export function CoinsExplorer({ useCoins, usePrice, coinHref, heading = true }: 
     return () => window.removeEventListener("keydown", onKey);
   }, [filtersOpen]);
 
-  const { collections, isLoading } = useCoins({ filter, sort });
+  const { collections, isLoading, counts } = useCoins({ filter, sort });
   const items = useMemo(() => {
     const q = query.trim().toLowerCase();
     if (!q) return collections;
@@ -60,15 +66,28 @@ export function CoinsExplorer({ useCoins, usePrice, coinHref, heading = true }: 
 
   const showKind = useMemo(() => new Set(items.map((c) => coinKind(c.service))).size > 1, [items]);
 
+  const statItems = useMemo(() => {
+    if (!counts) return [];
+    const forKind = (kind: CoinKind) =>
+      coinServiceIds(kind).reduce((sum, id) => sum + (counts[id] ?? 0), 0);
+    const total = Object.values(counts).reduce((a, b) => a + b, 0);
+    return [
+      { label: total === 1 ? "Coin" : "Coins", value: total },
+      ...COIN_KINDS.map((kind) => ({ label: coinKindLabelPlural(kind), value: forKind(kind) })).filter(
+        (s) => s.value > 0,
+      ),
+    ];
+  }, [counts]);
+
   return (
     <div className="space-y-5">
       {heading && (
-        <div className="space-y-2">
-          <div className="flex items-center gap-2 text-primary">
-            <Coins className="h-5 w-5" />
-            <span className="text-sm font-semibold">Coins</span>
+        <div className="flex flex-wrap items-start justify-between gap-4">
+          <div className="space-y-2">
+            <h1 className="text-3xl font-bold">Creator coins &amp; memecoins</h1>
+            <StatPillRow items={statItems} />
           </div>
-          <h1 className="text-3xl">Creator coins &amp; memecoins</h1>
+          {action}
         </div>
       )}
 
