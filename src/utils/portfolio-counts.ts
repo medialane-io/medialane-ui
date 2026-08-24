@@ -1,3 +1,4 @@
+import { normalizeAddress } from "@medialane/sdk";
 
 export interface CountableOrder {
   status: string;
@@ -19,6 +20,14 @@ export interface PortfolioCounts {
   sponsorships: number;
 }
 
+function safeNormalize(address: string): string | null {
+  try {
+    return normalizeAddress("STARKNET", address);
+  } catch {
+    return null;
+  }
+}
+
 export function derivePortfolioCounts(
   orders: ReadonlyArray<CountableOrder> | null | undefined,
   remixOffers: ReadonlyArray<{ status: string }> | null | undefined,
@@ -26,13 +35,13 @@ export function derivePortfolioCounts(
   sponsorshipPendingCount = 0,
 ): PortfolioCounts {
   const list = Array.isArray(orders) ? orders : [];
-  const addr = (address ?? "").toLowerCase();
+  const addr = address ? safeNormalize(address) : null;
 
   const received = list.filter(
     (o) =>
       o.status === "ACTIVE" &&
       o.offer.itemType === "ERC20" &&
-      o.offerer.toLowerCase() !== addr,
+      safeNormalize(o.offerer) !== addr,
   ).length;
 
   const listings = list.filter(
@@ -50,7 +59,8 @@ export function derivePortfolioCounts(
   const counter = list.filter(
     (o) =>
       o.offer.itemType === "ERC20" &&
-      o.offerer.toLowerCase() === addr &&
+      addr !== null &&
+      safeNormalize(o.offerer) === addr &&
       o.hasActiveCounterOffer === true,
   ).length;
 
