@@ -190,11 +190,6 @@ export type {
   PortfolioHeaderProps,
   PortfolioHeaderScore,
 } from "./components/portfolio-header.js";
-export { PortfolioSectionGrid } from "./components/portfolio-section-grid.js";
-export type {
-  PortfolioSectionGridProps,
-  PortfolioSectionConfig,
-} from "./components/portfolio-section-grid.js";
 export { derivePortfolioCounts } from "./utils/portfolio-counts.js";
 export type { PortfolioCounts, CountableOrder } from "./utils/portfolio-counts.js";
 export { PortfolioSection } from "./components/portfolio-section.js";
