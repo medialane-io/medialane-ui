@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Search } from "lucide-react";
+import { Search, Plus, Sparkles } from "lucide-react";
 import { cn } from "../utils/cn.js";
 import { AssetPickerCell, isSameAsset } from "./asset-picker-cell.js";
 
@@ -21,11 +21,50 @@ export interface AssetPickerProps {
 
   emptyStateHref?: string;
   emptyStateLabel?: string;
+  onMintClick?: () => void;
   className?: string;
 }
 
+function MintPromoCard({ onMintClick }: { onMintClick: () => void }) {
+  return (
+    <div className="rounded-2xl p-[1.5px] bg-gradient-to-br from-brand-purple to-brand-orange">
+      <div className="rounded-[15px] bg-card p-5 flex flex-col sm:flex-row sm:items-center gap-4">
+        <div className="h-11 w-11 rounded-xl bg-gradient-to-br from-brand-purple to-brand-orange flex items-center justify-center shrink-0">
+          <Sparkles className="h-5 w-5 text-white" />
+        </div>
+        <div className="flex-1 min-w-0">
+          <p className="text-sm font-bold text-foreground">Mint your first asset</p>
+          <p className="text-xs text-muted-foreground mt-0.5">It becomes your avatar and app theme — ready in seconds.</p>
+        </div>
+        <div className="btn-border-animated shrink-0 p-[1px] rounded-xl">
+          <button
+            type="button"
+            onClick={onMintClick}
+            className="h-10 px-4 rounded-[11px] bg-card text-sm font-semibold text-foreground hover:brightness-110 active:scale-[0.98] transition-all whitespace-nowrap"
+          >
+            Mint an asset
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function MintTile({ onMintClick }: { onMintClick: () => void }) {
+  return (
+    <button
+      type="button"
+      onClick={onMintClick}
+      className="aspect-square rounded-xl border-2 border-dashed border-brand-purple/40 hover:border-brand-purple/70 hover:bg-brand-purple/5 transition-colors flex flex-col items-center justify-center gap-1 text-brand-purple"
+    >
+      <Plus className="h-4 w-4" />
+      <span className="text-2xs font-semibold">New</span>
+    </button>
+  );
+}
+
 export function AssetPicker({
-  assets, isLoading, selected, onSelect, emptyStateHref, emptyStateLabel, className,
+  assets, isLoading, selected, onSelect, emptyStateHref, emptyStateLabel, onMintClick, className,
 }: AssetPickerProps) {
   const [query, setQuery] = useState("");
   const filtered = query
@@ -43,6 +82,7 @@ export function AssetPicker({
   }
 
   if (assets.length === 0) {
+    if (onMintClick) return <MintPromoCard onMintClick={onMintClick} />;
     return (
       <div className={cn("rounded-xl border border-dashed border-border/60 p-6 text-center text-sm text-muted-foreground", className)}>
         You don&apos;t own any assets yet.
@@ -79,6 +119,7 @@ export function AssetPicker({
             onSelect={onSelect}
           />
         ))}
+        {onMintClick && !query ? <MintTile onMintClick={onMintClick} /> : null}
       </div>
 
       {query && filtered.length === 0 ? (
