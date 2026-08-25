@@ -5,10 +5,11 @@ export interface ActionDialogProps {
   onClose: () => void;
 
   width?: number;
+  shadow?: boolean;
   children: React.ReactNode;
 }
 
-export function ActionDialog({ open, onClose, width = 540, children }: ActionDialogProps) {
+export function ActionDialog({ open, onClose, width = 540, shadow = true, children }: ActionDialogProps) {
   if (!open) return null;
   return (
     <div
@@ -35,7 +36,7 @@ export function ActionDialog({ open, onClose, width = 540, children }: ActionDia
           maxWidth: '100%',
           maxHeight: '92vh',
           borderRadius: 24,
-          boxShadow: '0 50px 120px rgba(0,0,0,0.6)',
+          boxShadow: shadow ? '0 50px 120px rgba(0,0,0,0.6)' : 'none',
           animation: 'mlPop .22s cubic-bezier(.2,.8,.3,1)',
         }}
       >
