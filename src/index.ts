@@ -148,6 +148,8 @@ export { CollapsibleSection } from "./components/collapsible-section.js";
 export { ExclusiveContentSection } from "./components/exclusive-content-section.js";
 export { DropPreviewCard } from "./components/drop-preview-card.js";
 export type { DropPreviewCardProps } from "./components/drop-preview-card.js";
+export { DropCreateForm } from "./components/drop-create-form.js";
+export type { PaymentTokenOption } from "./components/drop-create-form.js";
 export { useUsdPrices, usdPriceFor } from "./utils/use-usd-prices.js";
 export type { UsdPrices } from "./utils/use-usd-prices.js";
 export { NotificationRow } from "./components/notification-row.js";
