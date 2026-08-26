@@ -45,6 +45,11 @@ export const dropCreateSchema = z
 
     whitelistEnabled: z.boolean().default(false),
     allowlistAddresses: z.string().default(""),
+
+    gatedEnabled: z.boolean().default(false),
+    gatedContentTitle: z.string().max(100).default(""),
+    gatedContentUrl: z.string().default(""),
+    gatedContentType: z.string().default(""),
   })
   .superRefine((values, ctx) => {
     const start = parseDateTime(values.startDate, values.startTime);
@@ -64,6 +69,10 @@ export const dropCreateSchema = z
       if (addrs.length === 0) {
         ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["allowlistAddresses"], message: "Add at least one address, or turn the whitelist off" });
       }
+    }
+
+    if (values.gatedEnabled && values.gatedContentUrl.trim() === "") {
+      ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["gatedContentUrl"], message: "Add a content URL, or turn exclusive content off" });
     }
   });
 
