@@ -2,7 +2,7 @@
 export { cn } from "./utils/cn.js";
 export { formatDisplayPrice, parsePriceDisplay, isStableCurrency, formatUsd, formatUsdPrice, formatSmallDecimal } from "./utils/format.js";
 export { shortenAddress } from "./utils/address.js";
-export { ipfsToHttp } from "./utils/ipfs.js";
+export { ipfsToHttp, DEFAULT_GATEWAY as PINATA_PUBLIC_GATEWAY } from "./utils/ipfs.js";
 export { useIntersectionActive } from "./utils/use-intersection-active.js";
 export { getReadIds, markRead } from "./utils/notification-storage.js";
 export { licenseSummary } from "./utils/license-summary.js";
