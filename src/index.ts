@@ -139,6 +139,8 @@ export type { DraftItem } from "./components/drop-item-list.js";
 export { dropCreateSchema } from "./data/drop-create-schema.js";
 export type { DropCreateFormValues } from "./data/drop-create-schema.js";
 export { getDefaultDropSchedule, getDefaultClaimWindow, suggestLaunchpadSymbol } from "./utils/launchpad-defaults.js";
+export { getDropStatus } from "./utils/drop-status.js";
+export type { DropConditions, DropStatus } from "./utils/drop-status.js";
 export { useUsdPrices, usdPriceFor } from "./utils/use-usd-prices.js";
 export type { UsdPrices } from "./utils/use-usd-prices.js";
 export { NotificationRow } from "./components/notification-row.js";
