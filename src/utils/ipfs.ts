@@ -1,4 +1,7 @@
-const DEFAULT_GATEWAY = "/api/ipfs/";
+// IPFS content is public by CID — there is nothing to protect by proxying it
+// through our own servers. Pinata's default public gateway serves any CID
+// with no token, no signing, no app-server hop.
+const DEFAULT_GATEWAY = "https://gateway.pinata.cloud/ipfs/";
 
 const ALLOWED_PROTOCOLS = new Set(["http:", "https:", "ipfs:"]);
 
