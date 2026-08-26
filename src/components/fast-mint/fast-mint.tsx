@@ -242,8 +242,10 @@ export function FastMint(props: FastMintProps) {
   const [existingCollectionContract, setExistingCollectionContract] = useState("");
   const [newCollectionName, setNewCollectionName] = useState("");
   const [newCollectionSymbol, setNewCollectionSymbol] = useState("");
+  const [newCollectionDescription, setNewCollectionDescription] = useState("");
   const [autoSymbol, setAutoSymbol] = useState("");
   const [autoCollectionName, setAutoCollectionName] = useState("");
+  const [autoCollectionDescription, setAutoCollectionDescription] = useState("");
 
   const [ipType, setIpType] = useState<IPType>("NFT");
   const [advancedOpen, setAdvancedOpen] = useState(false);
@@ -267,6 +269,12 @@ export function FastMint(props: FastMintProps) {
   const name = form.watch("name");
 
   useEffect(() => {
+    if (walletAddress && !form.getValues("external_url")) {
+      form.setValue("external_url", `https://medialane.io/account/${walletAddress}`);
+    }
+  }, [walletAddress, form]);
+
+  useEffect(() => {
     const s = suggestLaunchpadSymbol(name);
     if (!s) return;
     if (!newCollectionSymbol || newCollectionSymbol === autoSymbol) {
@@ -278,6 +286,14 @@ export function FastMint(props: FastMintProps) {
       setAutoCollectionName(name);
     }
   }, [name, autoSymbol, autoCollectionName, newCollectionSymbol, newCollectionName]);
+
+  const description = form.watch("description");
+  useEffect(() => {
+    if (!newCollectionDescription || newCollectionDescription === autoCollectionDescription) {
+      setNewCollectionDescription(description);
+      setAutoCollectionDescription(description);
+    }
+  }, [description, autoCollectionDescription, newCollectionDescription]);
 
   const erc721Collections = collections.filter((c) => getService(c.service)?.id === "mip-erc721");
   const erc1155Collections = collections.filter((c) => c.standard === "ERC1155");
@@ -428,6 +444,8 @@ export function FastMint(props: FastMintProps) {
             owner: walletAddress,
             name: newCollectionName,
             symbol: newCollectionSymbol,
+            description: newCollectionDescription || undefined,
+            image,
           });
           await executeIntent(provider, signer, client, intentRes.data);
 
@@ -462,6 +480,8 @@ export function FastMint(props: FastMintProps) {
             owner: walletAddress,
             name: newCollectionName,
             symbol: newCollectionSymbol,
+            description: newCollectionDescription || undefined,
+            image,
             baseUri: "",
             service: "mip-erc1155",
           });
@@ -523,8 +543,10 @@ export function FastMint(props: FastMintProps) {
     setExistingCollectionContract("");
     setNewCollectionName("");
     setNewCollectionSymbol("");
+    setNewCollectionDescription("");
     setAutoSymbol("");
     setAutoCollectionName("");
+    setAutoCollectionDescription("");
     templateFieldsRef.current = [];
   };
 
@@ -638,7 +660,7 @@ export function FastMint(props: FastMintProps) {
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-8 items-start">
           <div className="space-y-5">
             <div className="space-y-2">
-              <label className="text-sm font-medium">Name *</label>
+              <label className="text-sm font-medium">Title *</label>
               <Input
                 value={name}
                 onChange={(e) => form.setValue("name", e.target.value)}
@@ -667,7 +689,7 @@ export function FastMint(props: FastMintProps) {
 
             {mediaKind !== "image" && (
               <div className="space-y-2">
-                <label className="text-sm font-medium">Feature image *</label>
+                <label className="text-sm font-medium">Upload a cover image for your asset *</label>
                 <div className="flex items-center gap-4">
                   <div
                     role="button"
@@ -694,7 +716,7 @@ export function FastMint(props: FastMintProps) {
             )}
 
             <div className="space-y-2">
-              <label className="text-sm font-medium">Type</label>
+              <label className="text-sm font-medium">Asset Type</label>
               <div className="grid grid-cols-2 gap-3">
                 <button
                   type="button"
@@ -704,7 +726,7 @@ export function FastMint(props: FastMintProps) {
                 >
                   <SingleIcon className={cn("h-5 w-5 shrink-0 mt-0.5", assetType === "single" ? "text-brand-blue" : "text-muted-foreground")} />
                   <span>
-                    <span className="block text-sm font-semibold">One copy</span>
+                    <span className="block text-sm font-semibold">Single Edition NFT</span>
                     <span className="block text-xs mt-0.5 text-muted-foreground">Minted once</span>
                   </span>
                 </button>
@@ -716,8 +738,8 @@ export function FastMint(props: FastMintProps) {
                 >
                   <Layers className={cn("h-5 w-5 shrink-0 mt-0.5", assetType === "editions" ? "text-brand-blue" : "text-muted-foreground")} />
                   <span>
-                    <span className="block text-sm font-semibold">Numbered copies</span>
-                    <span className="block text-xs mt-0.5 text-muted-foreground">Several editions</span>
+                    <span className="block text-sm font-semibold">Limited Editions NFT</span>
+                    <span className="block text-xs mt-0.5 text-muted-foreground">Several numbered copies</span>
                   </span>
                 </button>
               </div>
@@ -769,17 +791,46 @@ export function FastMint(props: FastMintProps) {
                   onChange={assetType === "single" ? setExistingCollectionId : setExistingCollectionContract}
                 />
               ) : (
-                <div className="grid grid-cols-2 gap-2">
-                  <Input
-                    value={newCollectionName}
-                    onChange={(e) => setNewCollectionName(e.target.value)}
-                    placeholder="Collection name"
-                  />
-                  <Input
-                    value={newCollectionSymbol}
-                    onChange={(e) => setNewCollectionSymbol(e.target.value.toUpperCase())}
-                    placeholder="SYMBOL"
-                  />
+                <div className="flex gap-3 rounded-xl border border-border p-3">
+                  <div className="relative h-16 w-16 rounded-lg overflow-hidden bg-muted shrink-0">
+                    {(mediaKind === "image" ? mediaPreview : featurePreview) ? (
+                      <Image
+                        src={(mediaKind === "image" ? mediaPreview : featurePreview)!}
+                        alt=""
+                        fill
+                        className="object-cover"
+                        unoptimized
+                      />
+                    ) : (
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <Boxes className="h-5 w-5 text-muted-foreground/40" />
+                      </div>
+                    )}
+                  </div>
+                  <div className="min-w-0 flex-1 space-y-2">
+                    <div className="grid grid-cols-[1fr_100px] gap-2">
+                      <Input
+                        value={newCollectionName}
+                        onChange={(e) => setNewCollectionName(e.target.value)}
+                        placeholder="Collection name"
+                        className="h-9 text-sm"
+                      />
+                      <Input
+                        value={newCollectionSymbol}
+                        onChange={(e) => setNewCollectionSymbol(e.target.value.toUpperCase())}
+                        placeholder="SYMBOL"
+                        className="h-9 text-sm"
+                      />
+                    </div>
+                    <Textarea
+                      value={newCollectionDescription}
+                      onChange={(e) => setNewCollectionDescription(e.target.value)}
+                      placeholder="Describe this collection…"
+                      rows={2}
+                      className="text-sm resize-none"
+                    />
+                    <p className="text-2xs text-muted-foreground">Prefilled from your asset — edit anything above.</p>
+                  </div>
                 </div>
               )}
             </div>
