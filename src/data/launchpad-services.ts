@@ -90,7 +90,7 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     key: "nfts",
     cta: "Create",
     blurb: "Publish each work as a single copy in a collection you own.",
-    title: "Single Edition NFTs",
+    title: "Single Edition NFT",
     subtitle: "Each work is minted once",
     description:
       "Publish any photo, video, audio, or document, minted once inside your collection. Licensing, provenance, and ownership live on-chain.",
@@ -104,7 +104,7 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     key: "limited-editions",
     cta: "Mint",
     blurb: "Release your work in numbered copies that can be collected and traded.",
-    title: "Limited Editions",
+    title: "Limited Editions NFT",
     subtitle: "Numbered copies from a collection you own",
     description:
       "Create an editions collection and release each work in as many numbered copies as you choose.",
@@ -118,7 +118,7 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     key: "create-collection",
     cta: "Create",
     blurb: "Deploy your own collection to mint single-edition works into.",
-    title: "Create NFT Collection",
+    title: "NFT Collection",
     subtitle: "Your own ERC-721 collection, ready to mint into",
     description:
       "Deploy a collection you own and control, with its own name, symbol, and page. Mint single-edition works into it whenever you're ready.",
@@ -147,7 +147,7 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     key: "create-1155",
     cta: "Create",
     blurb: "Deploy your own collection to release numbered editions from.",
-    title: "Create Limited Editions Collection",
+    title: "Limited Editions Collection",
     subtitle: "Your own ERC-1155 collection, ready for editions",
     description:
       "Deploy an editions collection you own and control. Release each work in as many numbered copies as you choose.",
