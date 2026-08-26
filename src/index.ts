@@ -3,6 +3,13 @@ export { cn } from "./utils/cn.js";
 export { formatDisplayPrice, parsePriceDisplay, isStableCurrency, formatUsd, formatUsdPrice, formatSmallDecimal } from "./utils/format.js";
 export { shortenAddress } from "./utils/address.js";
 export { ipfsToHttp, DEFAULT_GATEWAY as PINATA_PUBLIC_GATEWAY } from "./utils/ipfs.js";
+export {
+  uploadFileToIpfs,
+  uploadJsonToIpfs,
+  uploadFailureToast,
+  isUserRejection,
+  type UploadedIpfsFile,
+} from "./utils/ipfs-upload.js";
 export { useIntersectionActive } from "./utils/use-intersection-active.js";
 export { getReadIds, markRead } from "./utils/notification-storage.js";
 export { licenseSummary } from "./utils/license-summary.js";
@@ -316,6 +323,15 @@ export { ClubOwnerActions } from "./components/club-owner-actions.js";
 export type { ClubOwnerActionsProps } from "./components/club-owner-actions.js";
 export { IPTypeFields } from "./components/ip-type-fields.js";
 export type { IPTypeFieldsProps, MetadataField } from "./components/ip-type-fields.js";
+
+export { FastMint } from "./components/fast-mint/fast-mint.js";
+export { Dropzone } from "./components/fast-mint/dropzone.js";
+export type { DropzoneProps } from "./components/fast-mint/dropzone.js";
+export { SuccessView } from "./components/fast-mint/success-view.js";
+export type { SuccessViewProps } from "./components/fast-mint/success-view.js";
+export type {
+  MediaKind, FastMintSigner, MintedAsset, FastMintProps,
+} from "./components/fast-mint/types.js";
 export { readBodyWithCap } from "./utils/proxy-body.js";
 export type { CappedBody } from "./utils/proxy-body.js";
 export {
