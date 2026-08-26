@@ -23,6 +23,7 @@ import {
   IP_TYPES, LICENSE_TYPES, GEOGRAPHIC_SCOPES, AI_POLICIES, DERIVATIVES_OPTIONS,
   type IPType,
 } from "../../data/ip.js";
+import { IP_TEMPLATES } from "../../data/ip-templates.js";
 import { suggestLaunchpadSymbol } from "../../utils/launchpad-defaults.js";
 import { uploadFileToIpfs, uploadJsonToIpfs, uploadFailureToast } from "../../utils/ipfs-upload.js";
 import { ipfsToHttp } from "../../utils/ipfs.js";
@@ -600,11 +601,28 @@ export function FastMint(props: FastMintProps) {
             </div>
           )}
         </div>
-        <div className="min-w-0 flex-1">
+        <div className="min-w-0 flex-1 space-y-1">
           <p className="text-sm font-semibold truncate">{mediaFile.name}</p>
-          <p className="text-xs text-muted-foreground">
-            {mediaUploading ? "Uploading…" : mediaUri ? "Uploaded" : "Upload failed"}
-          </p>
+          <div className="flex items-center gap-2 flex-wrap">
+            <p className="text-xs text-muted-foreground">
+              {mediaUploading ? "Uploading…" : mediaUri ? "Uploaded" : "Upload failed"}
+            </p>
+            {mediaUri && (() => {
+              const template = IP_TEMPLATES[ipType];
+              const TemplateIcon = template.icon;
+              return (
+                <span
+                  className={cn(
+                    "inline-flex shrink-0 items-center gap-1 rounded-full border px-2 py-0.5 text-2xs font-medium",
+                    template.color.bg, template.color.text, template.color.border
+                  )}
+                >
+                  <TemplateIcon className="h-3 w-3" />
+                  {template.label}
+                </span>
+              );
+            })()}
+          </div>
         </div>
         <button
           type="button"
@@ -856,6 +874,7 @@ export function FastMint(props: FastMintProps) {
                         const { uri } = await uploadFileToIpfs(file, token, "document");
                         return uri;
                       }}
+                      existingDocument={mediaKind === "document" && mediaUri && mediaFile ? { uri: mediaUri, name: mediaFile.name } : null}
                     />
                   </div>
                 </CollapsibleContent>
@@ -880,7 +899,7 @@ export function FastMint(props: FastMintProps) {
             </p>
           </div>
 
-          <div className="lg:sticky lg:top-20">
+          <div className="order-first lg:order-last lg:sticky lg:top-20 max-w-[260px] mx-auto w-full lg:max-w-none lg:mx-0">
             <MedialaneCollectionCard
               image={mediaKind === "image" ? mediaPreview : featurePreview}
               name={name}

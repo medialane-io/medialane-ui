@@ -42,9 +42,17 @@ export interface IPTypeFieldsProps {
   onChange: (fields: MetadataField[]) => void;
 
   uploadDocument?: (file: File) => Promise<string>;
+
+  /**
+   * When the primary asset being minted is already the document this IP
+   * type would otherwise ask to upload (e.g. a Documents/Publications type
+   * whose main file is a PDF), pass it here to skip the redundant picker
+   * and show it as already attached instead.
+   */
+  existingDocument?: { uri: string; name: string } | null;
 }
 
-export function IPTypeFields({ ipType, onChange, uploadDocument }: IPTypeFieldsProps) {
+export function IPTypeFields({ ipType, onChange, uploadDocument, existingDocument }: IPTypeFieldsProps) {
   const template = ipType ? IP_TEMPLATES[ipType] : null;
 
   const [embedValues, setEmbedValues] = useState<Record<string, string>>({});
@@ -66,6 +74,9 @@ export function IPTypeFields({ ipType, onChange, uploadDocument }: IPTypeFieldsP
     setDocError(null);
   }, [ipType]);
 
+  const effectiveDocUri = existingDocument?.uri ?? docUri;
+  const effectiveDocName = existingDocument?.name ?? docName;
+
   const docTraitType = template?.docUpload?.traitType ?? null;
 
   const metadataFields = useMemo(() => {
@@ -79,12 +90,12 @@ export function IPTypeFields({ ipType, onChange, uploadDocument }: IPTypeFieldsP
       seen.add(k);
       fields.push({ traitType: t, value: v });
     };
-    if (docTraitType && docUri) add(docTraitType, docUri);
+    if (docTraitType && effectiveDocUri) add(docTraitType, effectiveDocUri);
     Object.entries(embedValues).forEach(([key, value]) => add(key, value));
     Object.entries(socialValues).forEach(([key, value]) => add(key, value));
     traits.forEach((row) => add(row.key, row.value));
     return fields;
-  }, [embedValues, socialValues, traits, docTraitType, docUri]);
+  }, [embedValues, socialValues, traits, docTraitType, effectiveDocUri]);
 
   useEffect(() => {
     onChange(metadataFields);
@@ -146,12 +157,20 @@ export function IPTypeFields({ ipType, onChange, uploadDocument }: IPTypeFieldsP
         <p className="text-sm font-semibold">{template.label} Details</p>
       </div>
 
-      {docUpload && uploadDocument && (
+      {docUpload && (uploadDocument || existingDocument) && (
         <section className="space-y-2">
           <p className="text-[11px] font-semibold text-muted-foreground">
             Document
           </p>
-          {docUri ? (
+          {existingDocument ? (
+            <div className="flex items-center gap-3 rounded-xl border border-emerald-500/30 bg-emerald-500/5 px-4 py-3">
+              <FileText className="h-5 w-5 text-emerald-500 shrink-0" />
+              <div className="min-w-0 flex-1">
+                <p className="text-sm font-medium truncate">{effectiveDocName}</p>
+                <p className="text-xs text-muted-foreground">Already attached as your uploaded file</p>
+              </div>
+            </div>
+          ) : docUri ? (
             <div className="flex items-center gap-3 rounded-xl border border-emerald-500/30 bg-emerald-500/5 px-4 py-3">
               <FileText className="h-5 w-5 text-emerald-500 shrink-0" />
               <div className="min-w-0 flex-1">
