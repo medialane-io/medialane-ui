@@ -144,6 +144,8 @@ export type { DropConditions, DropStatus } from "./utils/drop-status.js";
 export { DropStatusBadge, DropSupplyProgress, DropPriceDisplay } from "./components/drop-status-display.js";
 export { GATED_CONTENT_TYPES, GATED_CONTENT_TYPE_FALLBACK } from "./data/gated-content-types.js";
 export type { ContentTypeConfig } from "./data/gated-content-types.js";
+export { CollapsibleSection } from "./components/collapsible-section.js";
+export { ExclusiveContentSection } from "./components/exclusive-content-section.js";
 export { useUsdPrices, usdPriceFor } from "./utils/use-usd-prices.js";
 export type { UsdPrices } from "./utils/use-usd-prices.js";
 export { NotificationRow } from "./components/notification-row.js";
