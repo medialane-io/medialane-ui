@@ -48,7 +48,7 @@ export function TokenCard({
   usdValue,
 }: TokenCardProps) {
   const name = token.metadata?.name || `Token #${token.tokenId}`;
-  const image = ipfsToHttp(token.metadata?.image);
+  const image = ipfsToHttp(token.metadata?.image, { width: 480 });
   const animationUrl = token.metadata?.animationUrl ?? null;
   const ipType = token.metadata?.ipType;
 

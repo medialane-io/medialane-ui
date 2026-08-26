@@ -4,13 +4,24 @@ const ALLOWED_PROTOCOLS = new Set(["http:", "https:", "ipfs:"]);
 
 const KNOWN_IPFS_GATEWAY_HOSTS = /(^|\.)(mypinata\.cloud|pinata\.cloud|ipfs\.io|dweb\.link|cloudflare-ipfs\.com|nftstorage\.link|w3s\.link)$/i;
 
+const DEFAULT_WIDTH = 1200;
+
+function withSize(url: string, gateway: string, width: number | null): string {
+  if (!width || !url.startsWith(gateway)) return url;
+  const sep = url.includes("?") ? "&" : "?";
+  return `${url}${sep}img-width=${width}&img-format=webp&img-quality=80`;
+}
+
 export function ipfsToHttp(
   uri: string | null | undefined,
-  gateway = DEFAULT_GATEWAY
+  opts: { gateway?: string; width?: number | null } = {}
 ): string {
+  const gateway = opts.gateway ?? DEFAULT_GATEWAY;
+  const width = opts.width === undefined ? DEFAULT_WIDTH : opts.width;
+
   if (!uri) return "";
   if (uri.startsWith("ipfs://")) {
-    return uri.replace("ipfs://", gateway);
+    return withSize(uri.replace("ipfs://", gateway), gateway, width);
   }
   if (uri.startsWith("data:image/")) {
     return uri;
@@ -21,7 +32,7 @@ export function ipfsToHttp(
 
     if (KNOWN_IPFS_GATEWAY_HOSTS.test(parsed.hostname)) {
       const match = parsed.pathname.match(/\/ipfs\/(.+)$/);
-      if (match) return `${gateway}${match[1]}`;
+      if (match) return withSize(`${gateway}${match[1]}`, gateway, width);
     }
   } catch {
     return "";

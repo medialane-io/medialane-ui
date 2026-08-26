@@ -36,7 +36,7 @@ export interface CollectionCardProps {
 
 export function CollectionCard({ collection, href, settingsHref, className }: CollectionCardProps) {
   const [imgError, setImgError] = useState(false);
-  const imageUrl = collection.image ? ipfsToHttp(collection.image) : null;
+  const imageUrl = collection.image ? ipfsToHttp(collection.image, { width: 480 }) : null;
   const showImage = imageUrl && !imgError;
   const initial = (collection.name ?? collection.contractAddress).charAt(0).toUpperCase();
   const floor = parseFloorPrice(collection.floorPrice);

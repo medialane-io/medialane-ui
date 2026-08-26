@@ -55,7 +55,7 @@ export function AssetCard({
   ipTypeBaseUrl = "",
   className,
 }: AssetCardProps) {
-  const resolved = image ? ipfsToHttp(image) : null;
+  const resolved = image ? ipfsToHttp(image, { width: 480 }) : null;
   const hasPrice = !!price?.formatted;
 
   return (

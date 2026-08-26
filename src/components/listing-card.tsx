@@ -67,7 +67,7 @@ export function ListingCard({ order: rawOrder, inCart = false, onBuy, onCart, ov
   const [imgError, setImgError] = useState(false);
   const isListing = order.offer.itemType === "ERC721" || order.offer.itemType === "ERC1155";
   const name = order.token?.name ?? `Token #${order.nftTokenId}`;
-  const image = imageUrl !== undefined ? imageUrl : (order.token?.image ? ipfsToHttp(order.token.image) : null);
+  const image = imageUrl !== undefined ? imageUrl : (order.token?.image ? ipfsToHttp(order.token.image, { width: 480 }) : null);
 
   const animationUrl = order.token?.animationUrl ?? null;
   const live = !!(order.chain && order.nftContract) && isLivingRenderCollection(order.chain.toUpperCase() as Chain, order.nftContract!);
