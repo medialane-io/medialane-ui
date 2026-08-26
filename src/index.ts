@@ -146,6 +146,8 @@ export { GATED_CONTENT_TYPES, GATED_CONTENT_TYPE_FALLBACK } from "./data/gated-c
 export type { ContentTypeConfig } from "./data/gated-content-types.js";
 export { CollapsibleSection } from "./components/collapsible-section.js";
 export { ExclusiveContentSection } from "./components/exclusive-content-section.js";
+export { DropPreviewCard } from "./components/drop-preview-card.js";
+export type { DropPreviewCardProps } from "./components/drop-preview-card.js";
 export { useUsdPrices, usdPriceFor } from "./utils/use-usd-prices.js";
 export type { UsdPrices } from "./utils/use-usd-prices.js";
 export { NotificationRow } from "./components/notification-row.js";
