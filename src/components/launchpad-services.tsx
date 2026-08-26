@@ -34,7 +34,9 @@ export type ServiceOverrides = Record<string, ServiceOverride>;
  *  `meta` counts or any app-specific extras on top. */
 export const LAUNCHPAD_ROUTE_OVERRIDES: ServiceOverrides = {
   "nfts": { href: "/launchpad/single-editions" },
+  "create-collection": { href: "/launchpad/single-editions/collection" },
   "limited-editions": { href: "/launchpad/nfteditions" },
+  "create-1155": { href: "/launchpad/nfteditions/create" },
   "remix-asset": { href: "/launchpad/remix" },
   "pop-protocol": { href: "/launchpad/pop" },
   "collection-drop": { href: "/launchpad/drop" },

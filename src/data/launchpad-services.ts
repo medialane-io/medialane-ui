@@ -5,6 +5,7 @@ import {
   Ticket, Users, Handshake,
   Coins, TrendingUp,
   AtSign, FolderInput, Link2,
+  LayoutGrid, Boxes,
 } from "lucide-react";
 import { hasCapability } from "@medialane/sdk";
 
@@ -114,6 +115,20 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     group: "limited-editions",
   },
   {
+    key: "create-collection",
+    cta: "Create",
+    blurb: "Deploy your own collection to mint single-edition works into.",
+    title: "Create NFT Collection",
+    subtitle: "Your own ERC-721 collection, ready to mint into",
+    description:
+      "Deploy a collection you own and control, with its own name, symbol, and page. Mint single-edition works into it whenever you're ready.",
+    features: ["Your own collection contract", "Set the name and symbol", "Mint into it anytime"],
+    example: "A photography collection, an album of singles",
+    icon: LayoutGrid,
+    status: "live",
+    group: "nfts",
+  },
+  {
     key: "remix-asset",
     cta: "Browse",
     blurb: "Create from another work. Credit and royalties are handled automatically.",
@@ -128,6 +143,20 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     group: "nfts",
   },
 
+  {
+    key: "create-1155",
+    cta: "Create",
+    blurb: "Deploy your own collection to release numbered editions from.",
+    title: "Create Limited Editions Collection",
+    subtitle: "Your own ERC-1155 collection, ready for editions",
+    description:
+      "Deploy an editions collection you own and control. Release each work in as many numbered copies as you choose.",
+    features: ["Your own collection contract", "Set the name and symbol", "Release editions anytime"],
+    example: "A print series, a music EP with numbered editions",
+    icon: Boxes,
+    status: "live",
+    group: "limited-editions",
+  },
   {
     key: "pop-protocol",
     cta: "Create",
