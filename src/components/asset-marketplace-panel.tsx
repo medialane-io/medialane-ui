@@ -26,6 +26,13 @@ export interface AssetMarketplacePanelProps<T extends ApiOrderLike = ApiOrderLik
   isSignedIn: boolean;
   isProcessing: boolean;
   isERC1155: boolean;
+  /**
+   * Whether the viewer still holds editions that are not already listed.
+   * Only consulted for multi-edition assets that already have a listing.
+   * Undefined means unknown, and an unknown quantity must not hide a
+   * legitimate action, so it shows.
+   */
+  canListMoreEditions?: boolean;
   isMarketLoading?: boolean;
   myListing: T | null;
   activeBids: T[];
@@ -88,6 +95,7 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
   isSignedIn,
   isProcessing,
   isERC1155,
+  canListMoreEditions,
   isMarketLoading = false,
   myListing,
   activeBids,
@@ -170,7 +178,7 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
                     </ActionButton>
                   ) : null}
 
-                  {(!liveMyListing || isERC1155) ? (
+                  {(!liveMyListing || (isERC1155 && canListMoreEditions !== false)) ? (
                     listingRequiresEmailVerification ? (
                       <EmailVerificationGate reason="list assets for sale" settingsHref={settingsHref} />
                     ) : (
