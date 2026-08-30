@@ -111,7 +111,7 @@ export {
   type CoinsExplorerProps, type CoinFilter, type CoinSort, type UseCoins, type UsePriceMap, type CoinCounts,
 } from "./components/coins-explorer.js";
 
-export { timeAgo, timeUntil } from "./utils/time.js";
+export { timeAgo, timeUntil, isExpired } from "./utils/time.js";
 export { ACTIVITY_TYPE_CONFIG, TYPE_FILTERS } from "./data/activity.js";
 export type { ActivityTypeConfig } from "./data/activity.js";
 export { HeroSlider, HeroSliderSkeleton } from "./components/hero-slider.js";
