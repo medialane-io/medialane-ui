@@ -4,8 +4,9 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { hash } from "starknet";
-import { normalizeAddress, getService, buildAssetMetadata, type ApiCollection } from "@medialane/sdk";
+import { normalizeAddress, buildAssetMetadata, type ApiCollection } from "@medialane/sdk";
 import { executeIntent } from "@medialane/sdk/starknet";
+import { mintableCollections, collectionKey } from "./mintable-collections.js";
 import {
   ImagePlus, Music, Video, FileText, Loader2,
   Layers, ImagePlus as SingleIcon, ChevronDown, Boxes, Plus, Check,
@@ -141,10 +142,22 @@ function CollectionThumb({ image }: { image: string | null | undefined }) {
 }
 
 function CollectionPicker({
-  collections, value, onChange,
-}: { collections: ApiCollection[]; value: string; onChange: (id: string) => void }) {
+  collections, value, onChange, valueOf,
+}: {
+  collections: ApiCollection[];
+  value: string;
+  onChange: (id: string) => void;
+  // Which field identifies a collection here. Single editions are keyed by
+  // collectionId; limited editions by contract address, because ERC1155
+  // collections have no collectionId at all. Hardcoding collectionId meant the
+  // picker handed back null for every ERC1155 row, which read as "nothing
+  // chosen" to the submit gate while still rendering as chosen.
+  valueOf: (c: ApiCollection) => string | null | undefined;
+}) {
   const [open, setOpen] = useState(false);
-  const selected = collections.find((c) => c.collectionId === value) ?? null;
+  const selected = value
+    ? collections.find((c) => valueOf(c) === value) ?? null
+    : null;
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -172,12 +185,14 @@ function CollectionPicker({
             <p className="px-3 py-4 text-center text-sm text-muted-foreground">No collections yet — create one instead.</p>
           ) : (
             collections.map((col) => {
-              const isSelected = value === col.collectionId;
+              const id = valueOf(col);
+              const isSelected = !!id && value === id;
               return (
                 <button
-                  key={col.collectionId!}
+                  key={id ?? col.contractAddress ?? col.name}
                   type="button"
-                  onClick={() => { onChange(col.collectionId!); setOpen(false); }}
+                  disabled={!id}
+                  onClick={() => { if (!id) return; onChange(id); setOpen(false); }}
                   className="flex w-full items-center gap-2.5 rounded-lg px-2 py-2 text-left transition-colors hover:bg-muted/60"
                 >
                   <CollectionThumb image={col.image} />
@@ -295,8 +310,8 @@ export function FastMint(props: FastMintProps) {
     }
   }, [description, autoCollectionDescription, newCollectionDescription]);
 
-  const erc721Collections = collections.filter((c) => getService(c.service)?.id === "mip-erc721");
-  const erc1155Collections = collections.filter((c) => c.standard === "ERC1155");
+  const erc721Collections = mintableCollections("single", collections);
+  const erc1155Collections = mintableCollections("editions", collections);
 
   const handleMediaSelect = async (file: File) => {
     const kind = detectMediaKind(file.type);
@@ -789,6 +804,7 @@ export function FastMint(props: FastMintProps) {
                   collections={assetType === "single" ? erc721Collections : erc1155Collections}
                   value={assetType === "single" ? existingCollectionId : existingCollectionContract}
                   onChange={assetType === "single" ? setExistingCollectionId : setExistingCollectionContract}
+                  valueOf={collectionKey(assetType === "single" ? "single" : "editions")}
                 />
               ) : (
                 <div className="flex gap-3 rounded-xl border border-border p-3">
