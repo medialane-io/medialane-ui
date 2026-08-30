@@ -11,7 +11,7 @@ import { ActionButton } from "./action-button.js";
 import { DualPrice } from "./dual-price.js";
 import { EmailVerificationGate } from "./email-verification-gate.js";
 import { formatDisplayPrice, parsePriceDisplay } from "../utils/format.js";
-import { timeUntil } from "../utils/time.js";
+import { isExpired, timeUntil } from "../utils/time.js";
 
 export interface ApiOrderLike {
   orderHash: string;
@@ -114,15 +114,23 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
   onOpenRemix,
   onProposeDeal,
 }: AssetMarketplacePanelProps<T>) {
+  // The indexer marks orders EXPIRED on a slow sweep, so a client can hold one
+  // that lapsed minutes ago. Every action below is derived from the live set
+  // rather than from status, because filling a lapsed order reverts on chain
+  // and the gas for that revert is sponsored.
+  const liveBids = activeBids.filter((bid) => !isExpired(bid.endTime));
+  const liveCheapest = cheapest && !isExpired(cheapest.endTime) ? cheapest : undefined;
+  const liveMyListing = myListing && !isExpired(myListing.endTime) ? myListing : null;
+
   const myBid = !isOwner && walletAddress
-    ? activeBids.find((bid) => bid.offerer.toLowerCase() === walletAddress.toLowerCase()) ?? null
+    ? liveBids.find((bid) => bid.offerer.toLowerCase() === walletAddress.toLowerCase()) ?? null
     : null;
 
   const canBuyMore =
-    isERC1155 && isOwner && !!cheapest && !!walletAddress &&
-    cheapest.offerer.toLowerCase() !== walletAddress.toLowerCase();
+    isERC1155 && isOwner && !!liveCheapest && !!walletAddress &&
+    liveCheapest.offerer.toLowerCase() !== walletAddress.toLowerCase();
 
-  if (isMarketLoading && !cheapest) {
+  if (isMarketLoading && !liveCheapest) {
     return (
       <div className="space-y-4">
         <div className="h-9 w-32 rounded-md bg-muted animate-pulse" />
@@ -135,38 +143,40 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
     <div className="relative">
 
       <div className="relative space-y-4">
-        {cheapest ? (
+        {liveCheapest ? (
           <div className="space-y-4">
             <DualPrice
-              amountFormatted={cheapest.price.formatted}
-              currency={cheapest.price.currency}
+              amountFormatted={liveCheapest.price.formatted}
+              currency={liveCheapest.price.currency}
               usdValue={usdValue}
               scale="hero"
               trailing={renderHelp(
-                `${isOwner && !canBuyMore ? "Your listing" : "Current price"} · Expires ${timeUntil(cheapest.endTime)}`
+                `${isOwner && !canBuyMore ? "Your listing" : "Current price"} · Expires ${timeUntil(liveCheapest.endTime)}`
               )}
             />
 
             {isOwner ? (
               <div className="space-y-2">
                 <div className="grid grid-cols-2 gap-2">
-                  {myListing ? (
+                  {liveMyListing ? (
                     <ActionButton big
                       icon={isProcessing ? <Loader2 className="h-4 w-4 animate-spin" /> : <X className="h-4 w-4" />}
-                      onClick={() => onCancelClick(myListing)}
+                      onClick={() => onCancelClick(liveMyListing)}
                       disabled={isProcessing}
                       tone="red"
                       renderHelp={renderHelp}
                     >
-                      Cancel Listing
+                      {isERC1155 ? "Cancel My Listing" : "Cancel Listing"}
                     </ActionButton>
                   ) : null}
 
-                  {(!myListing || isERC1155) ? (
+                  {(!liveMyListing || isERC1155) ? (
                     listingRequiresEmailVerification ? (
                       <EmailVerificationGate reason="list assets for sale" settingsHref={settingsHref} />
                     ) : (
-                      <ActionButton big tone="blue" icon={<Tag className="h-4 w-4" />} onClick={onOpenListing} renderHelp={renderHelp}>List on Marketplace</ActionButton>
+                      <ActionButton big tone="blue" icon={<Tag className="h-4 w-4" />} onClick={onOpenListing} renderHelp={renderHelp}>
+                        {liveMyListing ? "List More Editions" : "List on Marketplace"}
+                      </ActionButton>
                     )
                   ) : null}
                   <ActionButton big tone="orange" icon={<ArrowRightLeft className="h-4 w-4" />} onClick={onOpenTransfer} renderHelp={renderHelp}>Transfer</ActionButton>
@@ -198,7 +208,7 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
                   <>
                     <div className="border-t border-border/40 pt-2 mt-1" />
                     <div className="grid grid-cols-2 gap-2">
-                      <ActionButton big action="buy" icon={<ShoppingCart className="h-4 w-4" />} onClick={() => onOpenPurchase(cheapest!)} renderHelp={renderHelp}>Buy</ActionButton>
+                      <ActionButton big action="buy" icon={<ShoppingCart className="h-4 w-4" />} onClick={() => onOpenPurchase(liveCheapest!)} renderHelp={renderHelp}>Buy</ActionButton>
                       <ActionButton big action="offer" icon={<HandCoins className="h-4 w-4" />} onClick={onOpenOffer} renderHelp={renderHelp}>Make offer</ActionButton>
                     </div>
                   </>
@@ -207,7 +217,7 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
             ) : isSignedIn ? (
               <>
                 <div className="grid grid-cols-2 gap-2">
-                  <ActionButton big action="buy" icon={<ShoppingCart className="h-4 w-4" />} onClick={() => onOpenPurchase(cheapest)} renderHelp={renderHelp}>Buy</ActionButton>
+                  <ActionButton big action="buy" icon={<ShoppingCart className="h-4 w-4" />} onClick={() => onOpenPurchase(liveCheapest)} renderHelp={renderHelp}>Buy</ActionButton>
                   <ActionButton big action="offer" icon={<HandCoins className="h-4 w-4" />} onClick={onOpenOffer} renderHelp={renderHelp}>Make offer</ActionButton>
                   {remixEnabled && onOpenRemix ? (
                     <ActionButton big
@@ -346,13 +356,13 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
           </div>
         ) : null}
 
-        {isOwner && activeBids.length > 0 ? (
+        {isOwner && liveBids.length > 0 ? (
           <div className="rounded-xl bg-card/40 p-5 space-y-3">
             <p className="text-xs font-semibold text-muted-foreground">
-              Incoming offers ({activeBids.length})
+              Incoming offers ({liveBids.length})
             </p>
             <div className="space-y-2">
-              {activeBids.map((bid) => (
+              {liveBids.map((bid) => (
                 <div key={bid.orderHash} className="flex items-center justify-between gap-3 rounded-lg bg-muted/30 px-3 py-2">
                   <div className="min-w-0">
                     <p className="text-sm font-bold">
