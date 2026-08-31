@@ -8,6 +8,8 @@ export function ThemeAmbientBackground({ imageUrl }: { imageUrl: string | null }
       <img
         src={imageUrl}
         alt=""
+        loading="lazy"
+        decoding="async"
         className="absolute inset-0 w-full h-full object-cover opacity-30 scale-110"
         style={{ filter: "blur(60px) saturate(1.5)" }}
       />
