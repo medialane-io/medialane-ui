@@ -188,7 +188,7 @@ export { LAUNCHPAD_ROUTE_OVERRIDES } from "./components/launchpad-services.js";
 export { LAUNCHPAD_SERVICE_DEFINITIONS, LAUNCHPAD_SERVICE_GROUPS } from "./data/launchpad-services.js";
 export type { ServiceDefinition, ServiceStatus, ServiceGroup, ServiceGroupDefinition } from "./data/launchpad-services.js";
 
-export { NavCommandMenu, useNavCommandMenu } from "./components/nav-command-menu.js";
+export { NavCommandMenu, useNavCommandMenu, relevanceFilter } from "./components/nav-command-menu.js";
 export type { NavCommand, NavCommandGroup, NavCommandMenuProps } from "./components/nav-command-menu.js";
 
 export {

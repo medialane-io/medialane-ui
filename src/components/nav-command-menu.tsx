@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Command } from "cmdk";
+import { Command, defaultFilter } from "cmdk";
 import { useRouter } from "./router.js";
 import { Search, X, ArrowRight } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
@@ -61,6 +61,13 @@ function Kbd({ children, className }: { children: React.ReactNode; className?: s
       {children}
     </kbd>
   );
+}
+
+const RELEVANCE_FLOOR = 0.2;
+
+export function relevanceFilter(value: string, search: string, keywords?: string[]): number {
+  const score = defaultFilter(value, search, keywords);
+  return score >= RELEVANCE_FLOOR ? score : 0;
 }
 
 function CommandRow({ item, primary, onSelect }: { item: NavCommand; primary: boolean; onSelect: () => void }) {
@@ -129,6 +136,7 @@ export function NavCommandMenu({
 }: NavCommandMenuProps) {
   const [open, setOpen] = React.useState(false);
   const [query, setQuery] = React.useState("");
+  const searching = query.trim().length > 0;
   const router = useRouter();
   const inputRef = React.useRef<HTMLInputElement>(null);
 
@@ -201,7 +209,7 @@ export function NavCommandMenu({
                 )}
                 onClick={(e) => e.stopPropagation()}
               >
-                <Command shouldFilter label="Medialane navigation" className="flex min-h-0 flex-1 flex-col">
+                <Command shouldFilter filter={relevanceFilter} label="Medialane navigation" className="flex min-h-0 flex-1 flex-col">
 
                   <div className="flex justify-center pt-2.5 sm:hidden" aria-hidden="true">
                     <span className="h-1 w-9 rounded-full bg-muted-foreground/30" />
@@ -236,26 +244,39 @@ export function NavCommandMenu({
                       No results found.
                     </Command.Empty>
 
-                    {commands.map((group, i) => {
-                      const primary = !group.heading;
-                      return (
-                      <React.Fragment key={group.heading ?? `__primary-${i}`}>
-                        {i > 0 && (
-                          <Command.Separator className="my-1.5 h-px bg-border/40" />
-                        )}
-                        <Command.Group heading={group.heading} className={GROUP_HEADING_CLASSES}>
-                          {group.items.map((item) => (
-                            <CommandRow
-                              key={item.id}
-                              item={item}
-                              primary={primary}
-                              onSelect={() => runCommand(item)}
-                            />
-                          ))}
-                        </Command.Group>
-                      </React.Fragment>
-                      );
-                    })}
+                    {searching ? (
+                      <Command.Group className={GROUP_HEADING_CLASSES}>
+                        {commands.flatMap((group) => group.items).map((item) => (
+                          <CommandRow
+                            key={item.id}
+                            item={item}
+                            primary={false}
+                            onSelect={() => runCommand(item)}
+                          />
+                        ))}
+                      </Command.Group>
+                    ) : (
+                      commands.map((group, i) => {
+                        const primary = !group.heading;
+                        return (
+                        <React.Fragment key={group.heading ?? `__primary-${i}`}>
+                          {i > 0 && (
+                            <Command.Separator className="my-1.5 h-px bg-border/40" />
+                          )}
+                          <Command.Group heading={group.heading} className={GROUP_HEADING_CLASSES}>
+                            {group.items.map((item) => (
+                              <CommandRow
+                                key={item.id}
+                                item={item}
+                                primary={primary}
+                                onSelect={() => runCommand(item)}
+                              />
+                            ))}
+                          </Command.Group>
+                        </React.Fragment>
+                        );
+                      })
+                    )}
                   </Command.List>
 
                   {accountSlot && (
