@@ -75,3 +75,15 @@ export function toDisplayUrlOrNull(
   if (raw.startsWith("/") || raw.startsWith("data:")) return raw;
   return toDisplayUrl(raw, opts);
 }
+
+/**
+ * Absolute URL for a crawler: og:image and twitter:image are fetched by
+ * Facebook, X and Slack with our app nowhere in the path, so the result must
+ * resolve on its own. Pointing these at an app route is how every social
+ * preview once 404'd. Empty string means "no image", which is what the
+ * metadata APIs expect in place of a broken URL.
+ */
+export function toAbsoluteImageUrl(uri: string | null | undefined): string {
+  if (!uri) return "";
+  return ipfsToHttp(uri) || "";
+}

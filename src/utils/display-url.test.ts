@@ -1,5 +1,5 @@
 import { test, expect } from "bun:test";
-import { toDisplayUrl, toDisplayUrlOrNull } from "./ipfs.js";
+import { toDisplayUrl, toDisplayUrlOrNull, toAbsoluteImageUrl } from "./ipfs.js";
 
 const G = "https://gateway.pinata.cloud/ipfs/";
 const CID = "bafybeif44ivsaive7an4l55lhvlap56qjjqprxkzvngpcd2b675dkdryga";
@@ -46,4 +46,18 @@ test("a stored route path is not treated as an image reference", () => {
   // deleted. Passing a path through is why that rendered as a broken image.
   const dead = `/api/ipfs/${CID}`;
   expect(toDisplayUrlOrNull(dead)).toBe(dead);
+});
+
+test("a crawler URL is absolute, never an app-relative route", () => {
+  const out = toAbsoluteImageUrl(`ipfs://${CID}`);
+  expect(out.startsWith("https://")).toBe(true);
+});
+
+test("an external image stays absolute rather than routing through the proxy", () => {
+  expect(toAbsoluteImageUrl("https://example.com/a.png")).toBe("https://example.com/a.png");
+});
+
+test("no image yields an empty string, not a broken URL", () => {
+  expect(toAbsoluteImageUrl(null)).toBe("");
+  expect(toAbsoluteImageUrl("")).toBe("");
 });
