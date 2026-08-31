@@ -3,7 +3,8 @@
 import { AddressDisplay } from "./address-display.js";
 import { CurrencyIcon } from "./currency-icon.js";
 import { formatDisplayPrice } from "../utils/format.js";
-import { timeUntil } from "../utils/time.js";
+import { isExpired, timeUntil } from "../utils/time.js";
+import { isSameAddress } from "../utils/same-address.js";
 import { cn } from "../utils/cn.js";
 import { Clock, CheckCircle } from "lucide-react";
 import type { ApiOrder } from "@medialane/sdk";
@@ -49,16 +50,21 @@ export function AssetMarketsTab({
   onCancelClick,
   onAcceptClick,
 }: AssetMarketsTabProps) {
+  // A lapsed order cannot be filled on chain, so it is not offered here
+  // either. The indexer only marks orders expired on a slow sweep.
+  const liveListings = activeListings.filter((o) => !isExpired(o.endTime));
+  const liveBids = activeBids.filter((o) => !isExpired(o.endTime));
+
   return (
     <div className="mt-4 space-y-6">
       <div>
         <p className="text-xs font-semibold text-muted-foreground mb-2">Listings</p>
-        {activeListings.length === 0 ? (
+        {liveListings.length === 0 ? (
           <p className="text-sm text-muted-foreground py-4 text-center">No active listings.</p>
         ) : (
           <div className="rounded-xl border border-border divide-y divide-border">
-            {activeListings.map((order) => {
-              const isMyOrder = walletAddress && order.offerer.toLowerCase() === walletAddress.toLowerCase();
+            {liveListings.map((order) => {
+              const isMyOrder = isSameAddress(order.offerer, walletAddress);
               return (
                 <div key={order.orderHash} className="flex items-center justify-between px-4 py-3 gap-4">
                   <div className="min-w-0">
@@ -90,11 +96,11 @@ export function AssetMarketsTab({
 
       <div>
         <p className="text-xs font-semibold text-muted-foreground mb-2">Offers</p>
-        {activeBids.length === 0 ? (
+        {liveBids.length === 0 ? (
           <p className="text-sm text-muted-foreground py-4 text-center">No active offers.</p>
         ) : (
           <div className="rounded-xl border border-border divide-y divide-border">
-            {activeBids.map((bid) => (
+            {liveBids.map((bid) => (
               <div key={bid.orderHash} className="flex items-center justify-between px-4 py-3 gap-4">
                 <div className="min-w-0">
                   <p className="font-bold text-sm">
