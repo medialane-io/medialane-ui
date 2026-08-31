@@ -42,8 +42,6 @@ test("a local path is passed through, so app assets still render", () => {
 });
 
 test("a stored route path is not treated as an image reference", () => {
-  // A profile once held /api/ipfs/<cid>, a link to a route that was later
-  // deleted. Passing a path through is why that rendered as a broken image.
   const dead = `/api/ipfs/${CID}`;
   expect(toDisplayUrlOrNull(dead)).toBe(dead);
 });

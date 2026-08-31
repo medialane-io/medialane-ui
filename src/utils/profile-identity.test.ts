@@ -7,7 +7,7 @@ const ADDRESS = "0x057b4f2390e6239194aa04608133e7d6652d31de318d3b7dfcd63db440579
 test("a claimed username is the identity", () => {
   const { identity, name, hasUsername } = profileIdentity({
     username: "devdesign",
-    displayName: "Alkera Dev/Design",
+    name: "Alkera Dev/Design",
     walletAddress: ADDRESS,
   });
   expect(identity).toBe("@devdesign");
@@ -17,7 +17,7 @@ test("a claimed username is the identity", () => {
 
 test("without a username the address identifies the account, never the name", () => {
   const { identity, name, hasUsername } = profileIdentity({
-    displayName: "Kimia shayesteh",
+    name: "Kimia shayesteh",
     walletAddress: ADDRESS,
   });
   expect(identity).toBe(shorten(ADDRESS));
@@ -26,10 +26,8 @@ test("without a username the address identifies the account, never the name", ()
 });
 
 test("a name claiming to be the platform does not become the identity", () => {
-  // A production profile had displayName "medialane" and no username. The
-  // reserved list blocks that as a username; free text went around it.
   const { identity, name } = profileIdentity({
-    displayName: "medialane",
+    name: "medialane",
     walletAddress: ADDRESS,
   });
   expect(identity).toBe(shorten(ADDRESS));
@@ -38,12 +36,12 @@ test("a name claiming to be the platform does not become the identity", () => {
 });
 
 test("a name matching someone else's handle does not borrow the @ prefix", () => {
-  const { identity } = profileIdentity({ displayName: "@devdesign", walletAddress: ADDRESS });
+  const { identity } = profileIdentity({ name: "@devdesign", walletAddress: ADDRESS });
   expect(identity).toBe(shorten(ADDRESS));
 });
 
 test("blank and whitespace values are treated as absent", () => {
-  expect(profileIdentity({ username: "  ", displayName: "", walletAddress: ADDRESS })).toEqual({
+  expect(profileIdentity({ username: "  ", name: "", walletAddress: ADDRESS })).toEqual({
     identity: shorten(ADDRESS),
     name: null,
     hasUsername: false,
