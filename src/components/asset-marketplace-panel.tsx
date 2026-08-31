@@ -12,6 +12,7 @@ import { DualPrice } from "./dual-price.js";
 import { EmailVerificationGate } from "./email-verification-gate.js";
 import { formatDisplayPrice, parsePriceDisplay } from "../utils/format.js";
 import { isExpired, timeUntil } from "../utils/time.js";
+import { isSameAddress } from "../utils/same-address.js";
 
 export interface ApiOrderLike {
   orderHash: string;
@@ -131,12 +132,12 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
   const liveMyListing = myListing && !isExpired(myListing.endTime) ? myListing : null;
 
   const myBid = !isOwner && walletAddress
-    ? liveBids.find((bid) => bid.offerer.toLowerCase() === walletAddress.toLowerCase()) ?? null
+    ? liveBids.find((bid) => isSameAddress(bid.offerer, walletAddress)) ?? null
     : null;
 
   const canBuyMore =
     isERC1155 && isOwner && !!liveCheapest && !!walletAddress &&
-    liveCheapest.offerer.toLowerCase() !== walletAddress.toLowerCase();
+    !isSameAddress(liveCheapest.offerer, walletAddress);
 
   if (isMarketLoading && !liveCheapest) {
     return (
