@@ -27,7 +27,6 @@ test("unparseable input is treated as live rather than silently blocking an acti
 });
 
 test("epoch seconds are read as seconds, not milliseconds", () => {
-  // Read as ms, a real endTime lands in 1970 and everything looks expired.
   expect(isExpired(secs(3600))).toBe(false);
   expect(isExpired(Math.floor(Date.now() / 1000) + 3600)).toBe(false);
 });

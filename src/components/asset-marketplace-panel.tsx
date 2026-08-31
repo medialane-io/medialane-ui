@@ -27,12 +27,6 @@ export interface AssetMarketplacePanelProps<T extends ApiOrderLike = ApiOrderLik
   isSignedIn: boolean;
   isProcessing: boolean;
   isERC1155: boolean;
-  /**
-   * Whether the viewer still holds editions that are not already listed.
-   * Only consulted for multi-edition assets that already have a listing.
-   * Undefined means unknown, and an unknown quantity must not hide a
-   * legitimate action, so it shows.
-   */
   canListMoreEditions?: boolean;
   isMarketLoading?: boolean;
   myListing: T | null;
@@ -123,10 +117,6 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
   onOpenRemix,
   onProposeDeal,
 }: AssetMarketplacePanelProps<T>) {
-  // The indexer marks orders EXPIRED on a slow sweep, so a client can hold one
-  // that lapsed minutes ago. Every action below is derived from the live set
-  // rather than from status, because filling a lapsed order reverts on chain
-  // and the gas for that revert is sponsored.
   const liveBids = activeBids.filter((bid) => !isExpired(bid.endTime));
   const liveCheapest = cheapest && !isExpired(cheapest.endTime) ? cheapest : undefined;
   const liveMyListing = myListing && !isExpired(myListing.endTime) ? myListing : null;

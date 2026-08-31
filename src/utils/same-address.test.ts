@@ -1,8 +1,6 @@
 import { test, expect } from "bun:test";
 import { isSameAddress } from "./same-address.js";
 
-// The exact pair from the asset that surfaced this: the indexer stores the
-// padded form, the wallet reports the short one.
 const PADDED = "0x036a8f48641d42dba28375c31651aa14a4413582da2db7655a362a9e4ffc20d2";
 const SHORT = "0x36a8f48641d42dba28375c31651aa14a4413582da2db7655a362a9e4ffc20d2";
 const OTHER = "0x000c9c2997100000000000000000000000000000000000000000000000022592";
