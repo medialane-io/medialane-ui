@@ -42,7 +42,7 @@ export function MedialaneCollectionCard({
             <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[16px] ring-1 ring-black/10 dark:ring-white/10 bg-muted">
               {image ? (
 
-                <img src={image} alt={displayName} className="h-full w-full object-cover" />
+                <img src={image} alt={displayName} loading="lazy" decoding="async" className="h-full w-full object-cover" />
               ) : (
                 <div className="h-full w-full flex items-center justify-center">
                   <ImageIcon className="h-8 w-8 text-muted-foreground/40" />

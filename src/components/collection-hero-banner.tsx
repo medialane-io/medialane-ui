@@ -49,6 +49,8 @@ export function CollectionHeroBanner({
             src={bannerUrl}
             alt=""
             aria-hidden
+            loading="lazy"
+            decoding="async"
             className="absolute inset-0 w-full h-full object-cover opacity-20 scale-110"
             style={{ filter: "blur(60px) saturate(1.5)" }}
           />
