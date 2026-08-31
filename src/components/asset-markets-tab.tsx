@@ -50,8 +50,6 @@ export function AssetMarketsTab({
   onCancelClick,
   onAcceptClick,
 }: AssetMarketsTabProps) {
-  // A lapsed order cannot be filled on chain, so it is not offered here
-  // either. The indexer only marks orders expired on a slow sweep.
   const liveListings = activeListings.filter((o) => !isExpired(o.endTime));
   const liveBids = activeBids.filter((o) => !isExpired(o.endTime));
 

@@ -147,11 +147,6 @@ function CollectionPicker({
   collections: ApiCollection[];
   value: string;
   onChange: (id: string) => void;
-  // Which field identifies a collection here. Single editions are keyed by
-  // collectionId; limited editions by contract address, because ERC1155
-  // collections have no collectionId at all. Hardcoding collectionId meant the
-  // picker handed back null for every ERC1155 row, which read as "nothing
-  // chosen" to the submit gate while still rendering as chosen.
   valueOf: (c: ApiCollection) => string | null | undefined;
 }) {
   const [open, setOpen] = useState(false);

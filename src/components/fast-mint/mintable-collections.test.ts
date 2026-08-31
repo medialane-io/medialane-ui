@@ -45,8 +45,6 @@ test("limited editions are keyed by contract address, because ERC1155 has no col
 
 test("reading the wrong key for an ERC1155 collection yields nothing, which is the bug this guards", () => {
   const c = col({ service: "mip-erc1155", standard: "ERC1155", collectionId: null } as Partial<ApiCollection>);
-  // Every ERC1155 collection in production has a null collectionId, so keying
-  // the picker on it made the submit gate see "nothing chosen" forever.
   expect(collectionKey("single")(c)).toBeNull();
   expect(collectionKey("editions")(c)).toBeTruthy();
 });

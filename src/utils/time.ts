@@ -1,5 +1,4 @@
 
-// Epoch seconds arrive as a string from the API, ISO strings from elsewhere.
 function toMs(dateStr: string | number): number {
   const raw = typeof dateStr === "string" && /^\d+$/.test(dateStr.trim())
     ? Number(dateStr)
@@ -7,11 +6,6 @@ function toMs(dateStr: string | number): number {
   return typeof raw === "number" ? raw * 1000 : new Date(raw).getTime();
 }
 
-// An order past its window cannot be filled on chain. `timeUntil` already knew
-// this and rendered "Expired", but callers gated their buttons on order status
-// alone, so an expired order still offered Accept or Buy and the transaction
-// reverted. Anything that decides whether an order is actionable uses this.
-// endTime 0 conventionally means no expiry.
 export function isExpired(endTime: string | number | null | undefined): boolean {
   if (endTime === null || endTime === undefined || endTime === "" || endTime === 0 || endTime === "0") {
     return false;
