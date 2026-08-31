@@ -72,7 +72,7 @@ export function toDisplayUrlOrNull(
   opts: DisplayUrlOptions = {},
 ): string | null {
   if (!raw) return null;
-  if (raw.startsWith("/") || raw.startsWith("data:")) return raw;
+  if (raw.startsWith("/")) return raw;
   return toDisplayUrl(raw, opts);
 }
 

@@ -61,3 +61,12 @@ test("no image yields an empty string, not a broken URL", () => {
   expect(toAbsoluteImageUrl(null)).toBe("");
   expect(toAbsoluteImageUrl("")).toBe("");
 });
+
+test("an image data URI still renders", () => {
+  const d = "data:image/png;base64,AAAA";
+  expect(toDisplayUrlOrNull(d)).toBe(d);
+});
+
+test("a data URI that is not an image gets the placeholder, not an unrenderable src", () => {
+  expect(toDisplayUrlOrNull("data:text/html,<script>")).toBe("/placeholder.svg");
+});
