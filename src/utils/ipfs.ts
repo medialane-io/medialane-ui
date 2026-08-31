@@ -39,3 +39,39 @@ export function ipfsToHttp(
   }
   return uri;
 }
+
+export interface DisplayUrlOptions {
+  gateway?: string;
+  proxyPath?: string;
+  placeholder?: string;
+}
+
+export function toDisplayUrl(
+  uri: string | null | undefined,
+  opts: DisplayUrlOptions = {},
+): string {
+  const gateway = opts.gateway ?? DEFAULT_GATEWAY;
+  const placeholder = opts.placeholder ?? "/placeholder.svg";
+  const proxyPath = opts.proxyPath ?? "/api/img";
+
+  if (!uri) return placeholder;
+  if (uri.startsWith("data:image/")) return uri;
+
+  const resolved = ipfsToHttp(uri, { gateway });
+  if (resolved.startsWith(gateway)) return resolved;
+
+  if (uri.startsWith("https://") || uri.startsWith("http://")) {
+    return `${proxyPath}?url=${encodeURIComponent(uri)}`;
+  }
+
+  return placeholder;
+}
+
+export function toDisplayUrlOrNull(
+  raw: string | null | undefined,
+  opts: DisplayUrlOptions = {},
+): string | null {
+  if (!raw) return null;
+  if (raw.startsWith("/") || raw.startsWith("data:")) return raw;
+  return toDisplayUrl(raw, opts);
+}

@@ -112,6 +112,7 @@ export {
 } from "./components/coins-explorer.js";
 
 export { timeAgo, timeUntil, isExpired } from "./utils/time.js";
+export { toDisplayUrl, toDisplayUrlOrNull, type DisplayUrlOptions } from "./utils/ipfs.js";
 export { isSameAddress } from "./utils/same-address.js";
 export { ACTIVITY_TYPE_CONFIG, TYPE_FILTERS } from "./data/activity.js";
 export type { ActivityTypeConfig } from "./data/activity.js";
