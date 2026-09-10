@@ -131,8 +131,6 @@ const CHIP_TONES = {
 
   card: { dot: "text-muted-foreground/50", text: "text-muted-foreground" },
 
-  /** Same solid color as the primary USD figure — for cards that want a
-   *  single consistent shade instead of a muted secondary currency. */
   solid: { dot: "text-foreground/40", text: "text-foreground" },
 } as const;
 

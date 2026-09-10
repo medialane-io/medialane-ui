@@ -10,11 +10,9 @@ export interface LaunchpadCtaBannerProps {
   description: string;
   href: string;
   ctaLabel: string;
-  /** External links render a plain <a target="_blank"> with an ExternalLink
-   *  icon; internal links route through next/link with an ArrowRight icon. */
+
   external?: boolean;
-  /** Swaps the background gradient tint — "primary" for cross-app CTAs,
-   *  "manage" for account/portfolio-management CTAs. */
+
   tone?: "primary" | "manage";
   className?: string;
 }

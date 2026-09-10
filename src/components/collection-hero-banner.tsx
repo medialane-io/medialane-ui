@@ -21,8 +21,6 @@ export interface CollectionHeroBannerProps {
   stats: CollectionHeroStat[];
   className?: string;
 
-  /** Extra content rendered alongside the standard/symbol eyebrow pills —
-   *  e.g. a creator level badge on a creator profile reusing this banner. */
   eyebrowSlot?: React.ReactNode;
 }
 

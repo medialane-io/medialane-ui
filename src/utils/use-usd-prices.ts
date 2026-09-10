@@ -4,8 +4,6 @@ import useSWR from "swr";
 
 export type UsdPrices = Partial<Record<"STRK" | "ETH" | "USDC" | "USDT" | "WBTC", number>>;
 
-/** Looks up a USD price by an arbitrary token symbol (not just the pinned
- * set UsdPrices is keyed on) — a coin/memecoin symbol simply has no entry. */
 export function usdPriceFor(prices: UsdPrices | null, symbol: string): number | undefined {
   return (prices as Record<string, number | undefined> | null)?.[symbol];
 }

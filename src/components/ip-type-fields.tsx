@@ -43,12 +43,6 @@ export interface IPTypeFieldsProps {
 
   uploadDocument?: (file: File) => Promise<string>;
 
-  /**
-   * When the primary asset being minted is already the document this IP
-   * type would otherwise ask to upload (e.g. a Documents/Publications type
-   * whose main file is a PDF), pass it here to skip the redundant picker
-   * and show it as already attached instead.
-   */
   existingDocument?: { uri: string; name: string } | null;
 }
 

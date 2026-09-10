@@ -25,12 +25,8 @@ export interface PortfolioSectionProps {
   title: string;
   href: string;
 
-  /** Which brand color accents this section's hairline border. */
   color?: PortfolioSectionColor;
 
-  /** "default" sits in the grid alongside its siblings; "wide" spans the
-   * full row instead — for list-like content (e.g. Activity) that reads
-   * better edge-to-edge than column-width. */
   size?: "default" | "wide";
   children: React.ReactNode;
   className?: string;

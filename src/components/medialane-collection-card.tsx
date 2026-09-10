@@ -15,7 +15,6 @@ export interface MedialaneCollectionCardProps {
 
   creator?: string;
 
-  /** Explorer/profile URL for the creator address — makes the footer address a link. */
   creatorHref?: string;
   className?: string;
 }

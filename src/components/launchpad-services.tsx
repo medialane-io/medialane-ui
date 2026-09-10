@@ -29,9 +29,6 @@ export interface ServiceOverride {
 
 export type ServiceOverrides = Record<string, ServiceOverride>;
 
-/** The launchpad route structure both apps share (`/launchpad/...`,
- *  `/claim/...`) — spread this into an app's own overrides and add
- *  `meta` counts or any app-specific extras on top. */
 export const LAUNCHPAD_ROUTE_OVERRIDES: ServiceOverrides = {
   "nfts": { href: "/launchpad/single-editions" },
   "create-collection": { href: "/launchpad/single-editions/collection" },
