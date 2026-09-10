@@ -1,9 +1,3 @@
-/* Medialane Design System — shared CSS
-   Imported by apps via: import "@medialane/ui/styles"
-   Do NOT import @tailwind directives here — apps handle that.
-   All classes here are pure CSS, no @apply. */
-
-/* ── Scrollbars ───────────────────────────────────────────────────────── */
 ::-webkit-scrollbar { width: 4px; height: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: hsl(var(--border)); border-radius: 4px; }
@@ -12,11 +6,9 @@
 .scrollbar-hide { scrollbar-width: none; }
 .scrollbar-hide::-webkit-scrollbar { display: none; }
 
-/* ── Safe-area insets (notched/home-indicator devices) ──────────────────── */
 .pb-safe { padding-bottom: max(env(safe-area-inset-bottom), 0px); }
 .pt-safe { padding-top: max(env(safe-area-inset-top), 0px); }
 
-/* ── Glass ────────────────────────────────────────────────────────────── */
 .glass {
   background: rgba(10, 14, 30, 0.60);
   backdrop-filter: blur(16px);
@@ -30,15 +22,10 @@
   border: 1px solid rgba(255, 255, 255, 0.5);
 }
 
-/* ── Display face ─────────────────────────────────────────────────────── */
-/* Only the page main header renders in the brand display face (Urbanist);
-   everything else stays on the body face. Apps set --font-display via
-   next/font; unset, h1 inherits the body face. */
 h1 {
   font-family: var(--font-display, inherit);
 }
 
-/* ── Typography gradients ─────────────────────────────────────────────── */
 .gradient-text {
   background: linear-gradient(135deg, #8a5cf6 0%, #5b4ce6 40%, #3b7bff 100%);
   -webkit-background-clip: text;
@@ -64,14 +51,12 @@ h1 {
   background-clip: text;
 }
 
-/* ── Price ────────────────────────────────────────────────────────────── */
 .price-value {
   color: hsl(var(--price));
   font-weight: 700;
   font-variant-numeric: tabular-nums;
 }
 
-/* ── Section label ────────────────────────────────────────────────────── */
 .section-label {
   font-size: 0.625rem;
   font-weight: 700;
@@ -80,7 +65,6 @@ h1 {
   color: hsl(var(--muted-foreground));
 }
 
-/* ── Pill badge ───────────────────────────────────────────────────────── */
 .pill-badge {
   display: inline-flex;
   align-items: center;
@@ -96,7 +80,6 @@ h1 {
   color: hsl(var(--primary));
 }
 
-/* Navigation canvas */
 .nav-canvas-overlay {
   position: fixed;
   inset: 0;
@@ -104,7 +87,7 @@ h1 {
   backdrop-filter: blur(48px) saturate(1.5);
   -webkit-backdrop-filter: blur(48px) saturate(1.5);
 }
-/* ── Card primitives ──────────────────────────────────────────────────── */
+
 .card-base {
   border-radius: calc(var(--radius) * 1.25);
   border: 1px solid hsl(var(--border));
@@ -120,7 +103,6 @@ h1 {
   position: relative;
 }
 
-/* ── Background grid ──────────────────────────────────────────────────── */
 .bg-grid {
   background-image:
     linear-gradient(hsl(var(--border) / 0.4) 1px, transparent 1px),
@@ -128,11 +110,9 @@ h1 {
   background-size: 48px 48px;
 }
 
-/* ── Snap scroll ──────────────────────────────────────────────────────── */
 .snap-x-mandatory { scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
 .snap-start { scroll-snap-align: start; }
 
-/* ── Keyframes ────────────────────────────────────────────────────────── */
 @keyframes float {
   0%, 100% { transform: translateY(0px); }
   50% { transform: translateY(-10px); }
@@ -163,39 +143,32 @@ h1 {
   50%       { background-position: 100% 50%; }
 }
 
-/* ── Animation utilities ──────────────────────────────────────────────── */
 .animate-float      { animation: float 5s ease-in-out infinite; }
 .animate-pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }
 .animate-spin-slow  { animation: spin-slow 24s linear infinite; }
 .animate-sparkle    { animation: pulse-glow 2.5s ease-in-out infinite; }
 .animate-kenburns   { animation: kenburns 8s ease-in-out infinite alternate; transform-origin: center center; }
 
-/* ── Reduced motion ───────────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   .animate-float, .animate-pulse-glow, .animate-spin-slow,
   .animate-sparkle, .animate-kenburns { animation: none; }
 }
 
-/* ── Input spinners (price inputs use custom suffix) ──────────────────── */
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
 input[type="number"] { -moz-appearance: textfield; }
 
-/* ── Wrapper that adds a 2px animated gradient border around a .card-base card ── */
 .card-exclusive-wrapper {
   padding: 2px;
   border-radius: calc(var(--radius) * 1.25 + 2px);
 }
 
-/* ── Animated gradient border (marketplace buy button) ────────────────── */
 .btn-border-animated {
   background: linear-gradient(270deg, #3b7bff, #8a5cf6, #f6608f, #fb8b46, #3b7bff);
   background-size: 300% 300%;
   animation: border-flow 5s ease infinite;
 }
 
-/* ── Action button — animated gradient border via ::before mask ────────── */
-/* Set --ml-grad on the element to choose the border gradient.              */
 .ml-gbtn { position: relative; }
 .ml-gbtn::before {
   content: '';
@@ -213,10 +186,6 @@ input[type="number"] { -moz-appearance: textfield; }
 }
 .ml-gbtn:hover::before { padding: 2px; animation-duration: 1.6s; }
 
-/* ── Nav wallet trigger — rotating brand-gradient ring ──────────────────── */
-/* Not connected: the ring rotates continuously (ambient "connect here" cue, */
-/* no icon inside). Connected: the ring stops and settles to a quiet static  */
-/* accent, the trigger's own User glyph renders in the center instead.      */
 .ml-nav-wallet-ring {
   position: absolute;
   inset: 0;
@@ -233,10 +202,6 @@ input[type="number"] { -moz-appearance: textfield; }
   animation: none;
 }
 
-/* ── Static two-stop signature ring — Collections/Creators surfaces ────── */
-/* Same masked-ring technique as .ml-nav-wallet-ring, but static (no spin) and
-   scoped to the two colors this section owns (brand-blue -> brand-purple) —
-   see medialane-core reference_brand_colors_and_gradients section-theming map. */
 .ml-collection-ring {
   position: absolute;
   inset: 0;
@@ -249,10 +214,6 @@ input[type="number"] { -moz-appearance: textfield; }
   pointer-events: none;
 }
 
-/* ── Hover-only branded gradient border (launchpad cards) ───────────────── */
-/* The resting state keeps the card's own hairline; on hover-capable devices */
-/* the full-spectrum ring fades in over it. Decoration only — never carries  */
-/* information (mobile users lose nothing).                                  */
 .ml-grad-hover-border { position: relative; }
 .ml-grad-hover-border::before {
   content: '';
@@ -276,9 +237,6 @@ input[type="number"] { -moz-appearance: textfield; }
   100% { background-position: 220% 50%; }
 }
 
-/* ── Collector card material (MedialaneCollectionCard) ────────────────── */
-/* Light by default (matches the app's light-theme root, no .dark ancestor);
-   .dark overrides restore the original always-dark foil-on-navy look. */
 .ml-card-material {
   background:
     radial-gradient(120% 90% at 0% 0%, rgba(59,123,255,0.07), transparent 55%),
@@ -292,7 +250,6 @@ input[type="number"] { -moz-appearance: textfield; }
     #0a0e1f;
 }
 
-/* ── Action dialog keyframes ──────────────────────────────────────────── */
 @keyframes mlFade {
   from { opacity: 0; }
   to   { opacity: 1; }
