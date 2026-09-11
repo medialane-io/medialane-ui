@@ -2,7 +2,6 @@ import { defineConfig } from "tsup";
 import { copyFileSync } from "fs";
 
 export default defineConfig([
-  // Main components + utils — transpile individually so "use client" directives are preserved
   {
     entry: ["src/index.ts", "src/components/**/*.tsx", "src/components/**/*.ts", "src/utils/*.ts", "src/data/*.ts", "src/preset/*.ts", "!src/**/*.test.ts"],
     format: ["esm", "cjs"],
