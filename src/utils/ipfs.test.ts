@@ -1,5 +1,5 @@
 import { test, expect } from "bun:test";
-import { ipfsToHttp, DEFAULT_GATEWAY, PUBLIC_GATEWAY, gatewayFrom } from "./ipfs.js";
+import { ipfsToHttp, DEFAULT_GATEWAY, PUBLIC_GATEWAY, gatewayFrom, toDisplayUrl } from "./ipfs.js";
 
 test("resolves ipfs:// URIs to the public gateway with a default resize", () => {
   expect(ipfsToHttp("ipfs://QmXxx")).toBe(`${DEFAULT_GATEWAY}QmXxx?img-width=1200&img-format=webp&img-quality=80`);
@@ -54,4 +54,16 @@ test("a configured gateway is normalised whether or not it carries a scheme", ()
 
 test("a url outside the configured gateway is never given a token", () => {
   expect(ipfsToHttp("https://example.com/a.png")).toBe("https://example.com/a.png");
+});
+
+test("no gateway url ever carries a token", () => {
+  const urls = [
+    ipfsToHttp("ipfs://QmXxx"),
+    ipfsToHttp("ipfs://QmXxx", { width: 400 }),
+    ipfsToHttp("https://gateway.pinata.cloud/ipfs/QmXxx"),
+    toDisplayUrl("ipfs://QmXxx"),
+  ];
+  for (const url of urls) {
+    expect(url.toLowerCase()).not.toContain("token");
+  }
 });

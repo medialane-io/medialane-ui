@@ -9,14 +9,6 @@ export function gatewayFrom(host: string | undefined): string {
 
 export const DEFAULT_GATEWAY = gatewayFrom(process.env.NEXT_PUBLIC_IPFS_GATEWAY);
 
-export const GATEWAY_TOKEN = process.env.NEXT_PUBLIC_IPFS_GATEWAY_TOKEN?.trim() ?? "";
-
-function withToken(url: string, gateway: string): string {
-  if (!GATEWAY_TOKEN || !url.startsWith(gateway)) return url;
-  const sep = url.includes("?") ? "&" : "?";
-  return `${url}${sep}pinataGatewayToken=${GATEWAY_TOKEN}`;
-}
-
 const ALLOWED_PROTOCOLS = new Set(["http:", "https:", "ipfs:"]);
 
 const KNOWN_IPFS_GATEWAY_HOSTS = /(^|\.)(mypinata\.cloud|pinata\.cloud|ipfs\.io|dweb\.link|cloudflare-ipfs\.com|nftstorage\.link|w3s\.link)$/i;
@@ -24,11 +16,9 @@ const KNOWN_IPFS_GATEWAY_HOSTS = /(^|\.)(mypinata\.cloud|pinata\.cloud|ipfs\.io|
 const DEFAULT_WIDTH = 1200;
 
 function withSize(url: string, gateway: string, width: number | null): string {
-  if (!url.startsWith(gateway)) return url;
-  const sized = width
-    ? `${url}${url.includes("?") ? "&" : "?"}img-width=${width}&img-format=webp&img-quality=80`
-    : url;
-  return withToken(sized, gateway);
+  if (!width || !url.startsWith(gateway)) return url;
+  const sep = url.includes("?") ? "&" : "?";
+  return `${url}${sep}img-width=${width}&img-format=webp&img-quality=80`;
 }
 
 export function ipfsToHttp(

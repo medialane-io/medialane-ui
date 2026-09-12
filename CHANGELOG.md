@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.158.0] — 2026-09-11
+
+### Removed
+
+- The gateway token option added in 0.157.0. It read a token from a
+  `NEXT_PUBLIC_` variable, which places a credential in the browser bundle
+  where anyone can read and spend it. A gateway is reached by restricting it to
+  the hosts allowed to call it, never by shipping a key to every visitor.
+  A test now asserts no gateway URL can carry a token.
+
 ## [0.157.0] — 2026-09-11
 
 ### Changed
@@ -10,8 +20,6 @@
   A dedicated gateway serves a freshly pinned file immediately, which the
   public one does not, and honours the resize parameters, which the public one
   ignores.
-- `NEXT_PUBLIC_IPFS_GATEWAY_TOKEN`, when set, is appended to gateway URLs.
-  Only needed where the gateway is not reachable by host restriction.
 
 ## [0.156.0] — 2026-09-11
 
