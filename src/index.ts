@@ -3,7 +3,7 @@ export { cn } from "./utils/cn.js";
 export { formatDisplayPrice, parsePriceDisplay, isStableCurrency, formatUsd, formatUsdPrice, formatSmallDecimal } from "./utils/format.js";
 export { shortenAddress } from "./utils/address.js";
 export { profileIdentity, type ProfileIdentity, type ProfileIdentitySource } from "./utils/profile-identity.js";
-export { ipfsToHttp, DEFAULT_GATEWAY as PINATA_PUBLIC_GATEWAY, PUBLIC_GATEWAY, gatewayFrom } from "./utils/ipfs.js";
+export { ipfsToHttp, DEFAULT_GATEWAY as PINATA_PUBLIC_GATEWAY } from "./utils/ipfs.js";
 export { syncTransaction, type SyncTransactionResult } from "./utils/sync-transaction.js";
 export {
   uploadFileToIpfs,

@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.159.0] — 2026-09-11
+
+### Removed
+
+- `NEXT_PUBLIC_IPFS_GATEWAY`. Pointing images at a dedicated Pinata gateway
+  broke every image in both apps: that gateway refuses unauthenticated reads
+  even from hosts on its own allowlist, and a browser cannot hold the token it
+  wants. The public gateway is the only one a browser can read, so it is the
+  only one, and no setting can redirect images away from it.
+
 ## [0.158.0] — 2026-09-11
 
 ### Removed

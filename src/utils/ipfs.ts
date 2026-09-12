@@ -1,13 +1,4 @@
-export const PUBLIC_GATEWAY = "https://gateway.pinata.cloud/ipfs/";
-
-export function gatewayFrom(host: string | undefined): string {
-  const trimmed = host?.trim();
-  if (!trimmed) return PUBLIC_GATEWAY;
-  const bare = trimmed.replace(/^https?:\/\//, "").replace(/\/+$/, "");
-  return `https://${bare}/ipfs/`;
-}
-
-export const DEFAULT_GATEWAY = gatewayFrom(process.env.NEXT_PUBLIC_IPFS_GATEWAY);
+export const DEFAULT_GATEWAY = "https://gateway.pinata.cloud/ipfs/";
 
 const ALLOWED_PROTOCOLS = new Set(["http:", "https:", "ipfs:"]);
 
