@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.157.0] — 2026-09-11
+
+### Changed
+
+- The IPFS gateway is configuration rather than a constant. Set
+  `NEXT_PUBLIC_IPFS_GATEWAY` to a dedicated gateway host and every image
+  resolves through it; leave it unset and the public gateway is used as before.
+  A dedicated gateway serves a freshly pinned file immediately, which the
+  public one does not, and honours the resize parameters, which the public one
+  ignores.
+- `NEXT_PUBLIC_IPFS_GATEWAY_TOKEN`, when set, is appended to gateway URLs.
+  Only needed where the gateway is not reachable by host restriction.
+
 ## [0.156.0] — 2026-09-11
 
 ### Added

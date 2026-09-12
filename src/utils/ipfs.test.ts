@@ -1,5 +1,5 @@
 import { test, expect } from "bun:test";
-import { ipfsToHttp, DEFAULT_GATEWAY } from "./ipfs.js";
+import { ipfsToHttp, DEFAULT_GATEWAY, PUBLIC_GATEWAY, gatewayFrom } from "./ipfs.js";
 
 test("resolves ipfs:// URIs to the public gateway with a default resize", () => {
   expect(ipfsToHttp("ipfs://QmXxx")).toBe(`${DEFAULT_GATEWAY}QmXxx?img-width=1200&img-format=webp&img-quality=80`);
@@ -38,4 +38,20 @@ test("rejects javascript: URIs", () => {
 test("returns empty string for null/undefined", () => {
   expect(ipfsToHttp(null)).toBe("");
   expect(ipfsToHttp(undefined)).toBe("");
+});
+
+test("with no gateway configured, the public one is used", () => {
+  expect(DEFAULT_GATEWAY).toBe(PUBLIC_GATEWAY);
+});
+
+test("a configured gateway is normalised whether or not it carries a scheme", () => {
+  expect(gatewayFrom("example.mypinata.cloud")).toBe("https://example.mypinata.cloud/ipfs/");
+  expect(gatewayFrom("https://example.mypinata.cloud")).toBe("https://example.mypinata.cloud/ipfs/");
+  expect(gatewayFrom("https://example.mypinata.cloud/")).toBe("https://example.mypinata.cloud/ipfs/");
+  expect(gatewayFrom("")).toBe(PUBLIC_GATEWAY);
+  expect(gatewayFrom(undefined)).toBe(PUBLIC_GATEWAY);
+});
+
+test("a url outside the configured gateway is never given a token", () => {
+  expect(ipfsToHttp("https://example.com/a.png")).toBe("https://example.com/a.png");
 });
