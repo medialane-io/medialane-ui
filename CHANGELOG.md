@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.156.0] — 2026-09-11
+
+### Added
+
+- `syncTransaction(txHash)` asks the backend to apply a transaction the moment
+  it confirms, rather than waiting for the indexer's next sweep. It answers
+  `null` on any failure and gives up after its timeout, so a flow never blocks
+  on it.
+
 ## [0.155.0] — 2026-09-11
 
 ### Fixed
