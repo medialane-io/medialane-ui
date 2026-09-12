@@ -7,9 +7,14 @@ export { ipfsToHttp, DEFAULT_GATEWAY as PINATA_PUBLIC_GATEWAY } from "./utils/ip
 export {
   uploadFileToIpfs,
   uploadJsonToIpfs,
+  uploadDirectoryToIpfs,
+  pinAssetMetadata,
   uploadFailureToast,
   isUserRejection,
+  type SignedUploadKind,
   type UploadedIpfsFile,
+  type PinAssetMetadataInput,
+  type PinnedAsset,
 } from "./utils/ipfs-upload.js";
 export { useIntersectionActive } from "./utils/use-intersection-active.js";
 export { getReadIds, markRead } from "./utils/notification-storage.js";

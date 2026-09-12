@@ -336,7 +336,7 @@ export function FastMint(props: FastMintProps) {
     try {
       const token = await getUploadToken();
       if (!token) throw new Error("Sign in first");
-      const { uri } = await uploadFileToIpfs(file, token, viaMediaRoute ? "media" : "document");
+      const { uri } = await uploadFileToIpfs(file, viaMediaRoute ? "media" : "document");
       setMediaUri(uri);
     } catch (err) {
       const t = uploadFailureToast(err);
@@ -363,7 +363,7 @@ export function FastMint(props: FastMintProps) {
     try {
       const token = await getUploadToken();
       if (!token) throw new Error("Sign in first");
-      const { uri } = await uploadFileToIpfs(file, token, "image");
+      const { uri } = await uploadFileToIpfs(file, "image");
       setFeatureUri(uri);
     } catch (err) {
       const t = uploadFailureToast(err);
@@ -439,7 +439,7 @@ export function FastMint(props: FastMintProps) {
 
       const uploadToken = await getUploadToken();
       if (!uploadToken) throw new Error("Sign in first");
-      const tokenUri = await uploadJsonToIpfs(metadata, uploadToken);
+      const tokenUri = await uploadJsonToIpfs(metadata);
 
       let result: { txHash: string };
       let finalContractAddress: string | null;
@@ -933,7 +933,7 @@ export function FastMint(props: FastMintProps) {
                       uploadDocument={async (file) => {
                         const token = await getUploadToken();
                         if (!token) throw new Error("Sign in first");
-                        const { uri } = await uploadFileToIpfs(file, token, "document");
+                        const { uri } = await uploadFileToIpfs(file, "document");
                         return uri;
                       }}
                       existingDocument={mediaKind === "document" && mediaUri && mediaFile ? { uri: mediaUri, name: mediaFile.name } : null}

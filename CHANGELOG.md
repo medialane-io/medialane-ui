@@ -1,0 +1,18 @@
+# Changelog
+
+## [0.155.0] — 2026-09-11
+
+### Fixed
+
+- Uploads reach the backend through each app's `/api/proxy/v1/metadata/*`
+  rather than the per-app pinata routes, which no longer exist. FastMint
+  uploaded through those routes and had stopped working wherever they were
+  removed.
+- No upload asks for a wallet signature. The token argument is gone from
+  `uploadFileToIpfs` and `uploadJsonToIpfs`, and the proxy holds the API key.
+
+### Added
+
+- `uploadDirectoryToIpfs` and `pinAssetMetadata`, so an app assembles asset
+  metadata with the SDK's builder and pins it without keeping its own copy of
+  the upload dance.
