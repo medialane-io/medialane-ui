@@ -402,3 +402,5 @@ export {
   Dialog, DialogPortal, DialogOverlay, DialogClose, DialogTrigger,
   DialogContent, DialogHeader, DialogFooter, DialogTitle, DialogDescription,
 } from "./components/dialog.js";
+export { SelfFundConsentDialog, feeLabelFor } from "./components/wallet/self-fund-consent-dialog.js";
+export { ExportKeySection, type ExportKeySectionProps } from "./components/wallet/export-key-section.js";
