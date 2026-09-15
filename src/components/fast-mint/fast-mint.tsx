@@ -7,6 +7,7 @@ import { hash } from "starknet";
 import { normalizeAddress, buildAssetMetadata, type ApiCollection } from "@medialane/sdk";
 import { executeIntent } from "@medialane/sdk/starknet";
 import { mintableCollections, collectionKey } from "./mintable-collections.js";
+import { executeAndSync } from "./execute-and-sync.js";
 import {
   ImagePlus, Music, Video, FileText, Loader2,
   Layers, ImagePlus as SingleIcon, ChevronDown, Boxes, Plus, Check,
@@ -457,7 +458,7 @@ export function FastMint(props: FastMintProps) {
             description: newCollectionDescription || undefined,
             image,
           });
-          await executeIntent(provider, signer, client, intentRes.data);
+          await executeAndSync(() => executeIntent(provider, signer, client, intentRes.data));
 
           const found = await pollForNewCollection(newCollectionName, newCollectionSymbol);
           if (!found) throw new Error("Collection created, but it's still indexing — try minting again in a moment from My Collections.");
@@ -476,7 +477,7 @@ export function FastMint(props: FastMintProps) {
           const calls = intentRes.data.calls;
           contractAddress = calls[calls.length - 1]?.contractAddress ?? contractAddress;
         }
-        result = await executeIntent(provider, signer, client, intentRes.data);
+        result = await executeAndSync(() => executeIntent(provider, signer, client, intentRes.data));
         finalContractAddress = contractAddress;
 
         if (finalContractAddress) {
@@ -495,7 +496,7 @@ export function FastMint(props: FastMintProps) {
             baseUri: "",
             service: "mip-erc1155",
           });
-          const deployResult = await executeIntent(provider, signer, client, intentRes.data);
+          const deployResult = await executeAndSync(() => executeIntent(provider, signer, client, intentRes.data));
 
           let receipt: { events?: { keys?: string[] }[] } | null = null;
           for (let attempt = 0; attempt < 3 && !receipt; attempt++) {
@@ -521,7 +522,7 @@ export function FastMint(props: FastMintProps) {
           value: editionCount,
           royaltyBps: Math.round(values.royalty * 100),
         });
-        result = await executeIntent(provider, signer, client, intentRes.data);
+        result = await executeAndSync(() => executeIntent(provider, signer, client, intentRes.data));
         finalContractAddress = collectionContract;
         finalTokenId = await readMintedTokenId(provider, result.txHash, collectionContract);
       }
