@@ -5,7 +5,7 @@
     "": {
       "name": "@medialane/ui",
       "devDependencies": {
-        "@medialane/sdk": "0.120.0",
+        "@medialane/sdk": "0.121.0",
         "@radix-ui/react-checkbox": "^1.3.8",
         "@radix-ui/react-collapsible": "^1.1.17",
         "@radix-ui/react-dialog": "^1.1.20",
@@ -43,7 +43,7 @@
         "zod": "^3.25.76",
       },
       "peerDependencies": {
-        "@medialane/sdk": ">=0.119.0",
+        "@medialane/sdk": ">=0.120.0",
         "@radix-ui/react-checkbox": ">=1.1.0",
         "@radix-ui/react-collapsible": ">=1.1.0",
         "@radix-ui/react-dialog": ">=1.1.0",
@@ -198,7 +198,7 @@
 
     "@jridgewell/trace-mapping": ["@jridgewell/trace-mapping@0.3.31", "", { "dependencies": { "@jridgewell/resolve-uri": "^3.1.0", "@jridgewell/sourcemap-codec": "^1.4.14" } }, "sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw=="],
 
-    "@medialane/sdk": ["@medialane/sdk@0.120.0", "", { "dependencies": { "@noble/hashes": "^2.2.0", "@scure/base": "^2.2.0", "zod": "^3.23.8" }, "peerDependencies": { "@solana/web3.js": ">=1.90.0", "@stellar/stellar-sdk": ">=13.0.0", "starknet": ">=6.0.0", "viem": ">=2.0.0" }, "optionalPeers": ["@solana/web3.js", "@stellar/stellar-sdk", "starknet", "viem"] }, "sha512-W0sEPo8xB7nqwUb7H6h/IveDQEiOy403Fpt7W34WnIudmYRod5gKmtXfGp83uSP35gcg6Tqe6XFTZRn2XTJjDg=="],
+    "@medialane/sdk": ["@medialane/sdk@0.121.0", "", { "dependencies": { "@noble/hashes": "^2.2.0", "@scure/base": "^2.2.0", "zod": "^3.23.8" }, "peerDependencies": { "@solana/web3.js": ">=1.90.0", "@stellar/stellar-sdk": ">=13.0.0", "starknet": ">=6.0.0", "viem": ">=2.0.0" }, "optionalPeers": ["@solana/web3.js", "@stellar/stellar-sdk", "starknet", "viem"] }, "sha512-l9GEV40r/0YbwuNmKR2EfyLpi0cI2yhG3fvtxlqvKl4YvyI7v83I7BA5fWHOebChlNbP2ehREu+/edwc0K81Dg=="],
 
     "@next/env": ["@next/env@15.5.23", "", {}, "sha512-Mv3Z9hVbFcPnoLevsZ6rnX1TBtyHb5E17yN7HTPDXSXxeNsGBjUFrdbjRXKKXIOhfth7/cg6Ay7PZ2UFawaWsQ=="],
 

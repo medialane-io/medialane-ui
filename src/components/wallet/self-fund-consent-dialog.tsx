@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { formatAmount } from "@medialane/sdk";
-import type { SelfFundConsent, SelfFundFeeEstimate } from "@medialane/sdk/wallet";
+import type { SelfFundConsent, SelfFundFeeEstimate } from "@medialane/sdk/starknet";
 import { ActionDialog } from "../action-dialog.js";
 
 interface PendingRequest {

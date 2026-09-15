@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { KeyRound, Copy, Check, EyeOff, Loader2, ShieldAlert } from "lucide-react";
-import type { SealedOwner } from "@medialane/sdk/wallet";
+import type { SealedOwner } from "@medialane/sdk/starknet";
 import { Button } from "../button.js";
 import { Alert, AlertDescription } from "../alert.js";
 

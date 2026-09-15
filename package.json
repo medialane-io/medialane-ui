@@ -51,7 +51,7 @@
     "preview": "vite --config preview/vite.config.ts"
   },
   "peerDependencies": {
-    "@medialane/sdk": ">=0.120.0",
+    "@medialane/sdk": ">=0.121.0",
     "@radix-ui/react-checkbox": ">=1.1.0",
     "@radix-ui/react-collapsible": ">=1.1.0",
     "@radix-ui/react-dialog": ">=1.1.0",
@@ -80,7 +80,7 @@
     "zod": "^3.25.0"
   },
   "devDependencies": {
-    "@medialane/sdk": "0.120.0",
+    "@medialane/sdk": "0.121.0",
     "@radix-ui/react-checkbox": "^1.3.8",
     "@radix-ui/react-collapsible": "^1.1.17",
     "@radix-ui/react-dialog": "^1.1.20",
