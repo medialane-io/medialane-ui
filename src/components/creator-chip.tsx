@@ -12,7 +12,7 @@ export interface CreatorChipProps {
 
 export function CreatorChip({ getClient, address }: CreatorChipProps) {
   const { profile } = useCreatorProfile(getClient, address);
-  const label = profile?.displayName || profile?.username || null;
+  const label = profile?.name || profile?.username || null;
 
   return (
     <Link

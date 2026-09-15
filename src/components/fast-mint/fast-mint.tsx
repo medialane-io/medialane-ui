@@ -3,11 +3,9 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
-import { hash } from "starknet";
-import { normalizeAddress, buildAssetMetadata, type ApiCollection } from "@medialane/sdk";
-import { executeIntent } from "@medialane/sdk/starknet";
+import { buildAssetMetadata, type ApiCollection } from "@medialane/sdk";
+import { executeIntent, deployedCollectionFromReceipt, mintedTokenIdFromReceipt } from "@medialane/sdk/starknet";
 import { mintableCollections, collectionKey } from "./mintable-collections.js";
-import { executeAndSync } from "./execute-and-sync.js";
 import {
   ImagePlus, Music, Video, FileText, Loader2,
   Layers, ImagePlus as SingleIcon, ChevronDown, Boxes, Plus, Check,
@@ -33,33 +31,6 @@ import { cn } from "../../utils/cn.js";
 import { Dropzone } from "./dropzone.js";
 import { SuccessView } from "./success-view.js";
 import type { FastMintProps, FastMintSigner, MediaKind, MintedAsset } from "./types.js";
-
-const COLLECTION_DEPLOYED_SELECTOR = hash.getSelectorFromName("CollectionDeployed");
-const IP_MINTED_SELECTOR = hash.getSelectorFromName("IPMinted");
-
-async function readMintedTokenId(
-  provider: { getTransactionReceipt(txHash: string): Promise<unknown> },
-  txHash: string,
-  contractAddress: string,
-): Promise<string | null> {
-  let receipt: { events?: { from_address?: string; keys?: string[] }[] } | null = null;
-  for (let attempt = 0; attempt < 3 && !receipt; attempt++) {
-    try {
-      if (attempt > 0) await new Promise((r) => setTimeout(r, 2000));
-      const raw = await provider.getTransactionReceipt(txHash);
-      receipt = raw as { events?: { from_address?: string; keys?: string[] }[] };
-    } catch { /* retry */ }
-  }
-  const events = receipt?.events ?? [];
-  const mintEvent = events.find((e) =>
-    e.from_address && BigInt(e.from_address) === BigInt(contractAddress) &&
-    e.keys?.[0] && BigInt(e.keys[0]) === BigInt(IP_MINTED_SELECTOR)
-  );
-  if (!mintEvent?.keys?.[1]) return null;
-  const low = BigInt(mintEvent.keys[1] ?? 0);
-  const high = BigInt(mintEvent.keys[2] ?? 0);
-  return (low + (high << 128n)).toString();
-}
 
 const MEDIA_ROUTE_MIME_TYPES = new Set([
   "image/jpeg", "image/png", "image/gif", "image/webp", "image/svg+xml", "image/avif",
@@ -442,7 +413,7 @@ export function FastMint(props: FastMintProps) {
       if (!uploadToken) throw new Error("Sign in first");
       const tokenUri = await uploadJsonToIpfs(metadata);
 
-      let result: { txHash: string };
+      let result: Awaited<ReturnType<typeof executeIntent>>;
       let finalContractAddress: string | null;
       let finalTokenId: string | null = null;
 
@@ -458,7 +429,7 @@ export function FastMint(props: FastMintProps) {
             description: newCollectionDescription || undefined,
             image,
           });
-          await executeAndSync(() => executeIntent(provider, signer, client, intentRes.data));
+          await executeIntent(provider, signer, client, intentRes.data);
 
           const found = await pollForNewCollection(newCollectionName, newCollectionSymbol);
           if (!found) throw new Error("Collection created, but it's still indexing — try minting again in a moment from My Collections.");
@@ -473,15 +444,11 @@ export function FastMint(props: FastMintProps) {
           tokenUri,
           royaltyBps: Math.round(values.royalty * 100),
         });
-        if (!intentRes.data.requiresSignature) {
-          const calls = intentRes.data.calls;
-          contractAddress = calls[calls.length - 1]?.contractAddress ?? contractAddress;
-        }
-        result = await executeAndSync(() => executeIntent(provider, signer, client, intentRes.data));
+        result = await executeIntent(provider, signer, client, intentRes.data);
         finalContractAddress = contractAddress;
 
         if (finalContractAddress) {
-          finalTokenId = await readMintedTokenId(provider, result.txHash, finalContractAddress);
+          finalTokenId = mintedTokenIdFromReceipt(result.receipt, finalContractAddress);
         }
       } else {
         let collectionContract = existingCollectionContract;
@@ -496,22 +463,11 @@ export function FastMint(props: FastMintProps) {
             baseUri: "",
             service: "mip-erc1155",
           });
-          const deployResult = await executeAndSync(() => executeIntent(provider, signer, client, intentRes.data));
+          const deployResult = await executeIntent(provider, signer, client, intentRes.data);
 
-          let receipt: { events?: { keys?: string[] }[] } | null = null;
-          for (let attempt = 0; attempt < 3 && !receipt; attempt++) {
-            try {
-              if (attempt > 0) await new Promise((r) => setTimeout(r, 2000));
-              const raw = await provider.getTransactionReceipt(deployResult.txHash);
-              receipt = raw as { events?: { keys?: string[] }[] };
-            } catch { /* retry */ }
-          }
-          const events = receipt?.events ?? [];
-          const deployEvent = events.find((e) =>
-            e.keys?.[0] && BigInt(e.keys[0]) === BigInt(COLLECTION_DEPLOYED_SELECTOR)
-          );
-          if (!deployEvent?.keys?.[1]) throw new Error("Collection deployed, but its address couldn't be read — check My Collections to mint into it.");
-          collectionContract = normalizeAddress("STARKNET", deployEvent.keys[1]);
+          const deployed = deployedCollectionFromReceipt(deployResult.receipt, "mip-erc1155");
+          if (!deployed) throw new Error("Collection deployed, but its address couldn't be read — check My Collections to mint into it.");
+          collectionContract = deployed;
         }
 
         const intentRes = await client.api.createMintIntent({
@@ -522,9 +478,9 @@ export function FastMint(props: FastMintProps) {
           value: editionCount,
           royaltyBps: Math.round(values.royalty * 100),
         });
-        result = await executeAndSync(() => executeIntent(provider, signer, client, intentRes.data));
+        result = await executeIntent(provider, signer, client, intentRes.data);
         finalContractAddress = collectionContract;
-        finalTokenId = await readMintedTokenId(provider, result.txHash, collectionContract);
+        finalTokenId = mintedTokenIdFromReceipt(result.receipt, collectionContract);
       }
 
       if (finalContractAddress && finalTokenId) {

@@ -4,7 +4,6 @@ export { formatDisplayPrice, parsePriceDisplay, isStableCurrency, formatUsd, for
 export { shortenAddress } from "./utils/address.js";
 export { profileIdentity, type ProfileIdentity, type ProfileIdentitySource } from "./utils/profile-identity.js";
 export { ipfsToHttp, DEFAULT_GATEWAY as PINATA_PUBLIC_GATEWAY } from "./utils/ipfs.js";
-export { syncTransaction, type SyncTransactionResult } from "./utils/sync-transaction.js";
 export {
   uploadFileToIpfs,
   uploadJsonToIpfs,
