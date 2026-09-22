@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { Share2, Check } from "lucide-react";
-import { toast } from "sonner";
 import { cn } from "../utils/cn.js";
 
 export interface ShareButtonProps {
@@ -46,7 +45,6 @@ export function ShareButton({
     } else {
       await navigator.clipboard.writeText(shareUrl);
       setCopied(true);
-      toast.success("Link copied to clipboard");
       setTimeout(() => setCopied(false), 2000);
     }
   };
