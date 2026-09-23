@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import type { Call, TypedData } from "starknet";
 import type { ApiCollection } from "@medialane/sdk";
 import type { MedialaneClient, ReceiptProvider } from "@medialane/sdk/starknet";
@@ -35,4 +36,5 @@ export interface FastMintProps {
   getSigner: () => Promise<FastMintSigner> | FastMintSigner;
   client: MedialaneClient;
   provider: ReceiptProvider;
+  successFooter?: ReactNode;
 }

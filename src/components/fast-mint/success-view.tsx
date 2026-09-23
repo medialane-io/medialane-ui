@@ -1,5 +1,6 @@
 "use client";
 
+import type { ReactNode } from "react";
 import Link from "../link.js";
 import { CheckCircle2, Eye, Tag, ArrowRightLeft, GitBranch } from "lucide-react";
 import { cn } from "../../utils/cn.js";
@@ -14,6 +15,7 @@ export interface SuccessViewProps {
   collectionLabel?: string;
   mintedAsset: MintedAsset | null;
   onPublishAnother: () => void;
+  footer?: ReactNode;
 }
 
 export function SuccessView({
@@ -22,6 +24,7 @@ export function SuccessView({
   name,
   collectionLabel,
   mintedAsset,
+  footer,
   onPublishAnother,
 }: SuccessViewProps) {
   return (
@@ -71,6 +74,8 @@ export function SuccessView({
               </Link>
             </div>
           )}
+
+          {footer}
 
           <Button variant="outline" onClick={onPublishAnother} className="w-full sm:w-auto">
             Publish another

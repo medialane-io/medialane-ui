@@ -253,10 +253,10 @@ export { LevelJourneyList } from "./components/rewards/level-journey-list.js";
 export type { LevelJourneyListProps, LevelJourneyListLevel } from "./components/rewards/level-journey-list.js";
 export { BadgeCatalog } from "./components/rewards/badge-catalog.js";
 export type { BadgeCatalogProps, BadgeCatalogBadge } from "./components/rewards/badge-catalog.js";
-export { XpToastContent } from "./components/rewards/xp-toast-content.js";
-export type { XpToastContentProps } from "./components/rewards/xp-toast-content.js";
-export { createRewardToast } from "./components/rewards/reward-toast.js";
-export type { RewardToastSnapshot } from "./components/rewards/reward-toast.js";
+export { XpEarned } from "./components/rewards/xp-earned.js";
+export type { XpEarnedProps } from "./components/rewards/xp-earned.js";
+export { createRewardEarned } from "./components/rewards/reward-earned.js";
+export type { RewardEarnedProps, RewardSnapshot } from "./components/rewards/reward-earned.js";
 
 export { LoadMoreSentinel } from "./components/load-more-sentinel.js";
 export type { LoadMoreSentinelProps } from "./components/load-more-sentinel.js";
@@ -289,8 +289,8 @@ export type { CollectionHeroBannerProps, CollectionHeroStat } from "./components
 export { useRewardsCelebrations } from "./components/rewards/use-rewards-celebrations.js";
 export { LevelUpCelebration } from "./components/rewards/level-up-celebration.js";
 export type { LevelUpCelebrationProps } from "./components/rewards/level-up-celebration.js";
-export { BadgeUnlockToastContent } from "./components/rewards/badge-unlock-toast-content.js";
-export type { BadgeUnlockToastContentProps } from "./components/rewards/badge-unlock-toast-content.js";
+export { BadgeUnlocked } from "./components/rewards/badge-unlocked.js";
+export type { BadgeUnlockedProps } from "./components/rewards/badge-unlocked.js";
 export { JourneyPath } from "./components/rewards/journey-path.js";
 export type { JourneyPathProps, JourneyStep } from "./components/rewards/journey-path.js";
 

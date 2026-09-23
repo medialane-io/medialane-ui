@@ -1,6 +1,6 @@
 import { XpProgress } from "./xp-progress.js";
 
-export interface XpToastContentProps {
+export interface XpEarnedProps {
   xp: number;
 
   label: string;
@@ -11,7 +11,7 @@ export interface XpToastContentProps {
   nextLevelXp?: number | null;
 }
 
-export function XpToastContent({ xp, label, color = "#8b5cf6", totalXp, levelXp, nextLevelXp }: XpToastContentProps) {
+export function XpEarned({ xp, label, color = "#8b5cf6", totalXp, levelXp, nextLevelXp }: XpEarnedProps) {
   const showProgress = totalXp !== undefined && levelXp !== undefined && nextLevelXp !== undefined;
   return (
     <div className="flex flex-col gap-1.5">

@@ -196,7 +196,7 @@ export function FastMint(props: FastMintProps) {
     presentation = "inline", open = true, onClose, mediaKindLock, onMinted,
     collections, refetchCollections,
     hasWallet, walletAddress, onRequireWallet, connectLabel, getUploadToken, getSigner,
-    client, provider,
+    client, provider, successFooter,
   } = props;
 
   const [status, setStatus] = useState<"idle" | "minting" | "success" | "error">("idle");
@@ -550,6 +550,7 @@ export function FastMint(props: FastMintProps) {
   if (status === "success") {
     return wrap(
       <SuccessView
+        footer={successFooter}
         presentation={presentation}
         previewImage={mediaKind === "image" ? mediaPreview : featurePreview}
         name={name}

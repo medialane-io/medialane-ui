@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import useSWR from "swr";
 import { normalizeAddress } from "@medialane/sdk";
 import type { ApiActivity } from "@medialane/sdk";
@@ -8,6 +8,7 @@ import type { MedialaneClient } from "@medialane/sdk/starknet";
 import { useUserOrders, useReceivedOffers } from "./use-orders.js";
 import { useActivitiesByAddress } from "./use-activities.js";
 import { getReadIds, markRead } from "./notification-storage.js";
+import { notificationsAreLoading } from "./notification-readiness.js";
 import {
   formatActivity,
   formatOrderNotification,
@@ -28,12 +29,16 @@ export function useNotifications(
   apiConfig: ApiFetchConfig,
   address: string | null | undefined
 ) {
-  const [readIds, setReadIds] = useState<Set<string>>(() => getReadIds());
+  const [readIds, setReadIds] = useState<Set<string>>(() => new Set<string>());
 
-  const { orders: userOrders } = useUserOrders(getClient, address ?? null);
+  useEffect(() => {
+    setReadIds(getReadIds());
+  }, []);
 
-  const { orders: receivedOffers } = useReceivedOffers(apiConfig, address ?? null);
-  const { activities } = useActivitiesByAddress(getClient, address ?? null);
+  const { orders: userOrders, isLoading: ordersLoading } = useUserOrders(getClient, address ?? null);
+
+  const { orders: receivedOffers, isLoading: receivedLoading } = useReceivedOffers(apiConfig, address ?? null);
+  const { activities, isLoading: activitiesLoading } = useActivitiesByAddress(getClient, address ?? null);
   const { data: announcements = [] } = useSWR<Announcement[]>(
     "announcements",
     fetchAnnouncements,
@@ -163,9 +168,17 @@ export function useNotifications(
     setReadIds(getReadIds());
   }, []);
 
+  const isLoading = notificationsAreLoading({
+    ordersLoading,
+    receivedLoading,
+    activitiesLoading,
+    hasAddress: !!address,
+  });
+
   return {
     notifications,
     unreadCount,
+    isLoading,
     markAllRead: () => markNotificationsRead(notifications.map((n) => n.id)),
     markRead: (id: string) => markNotificationsRead([id]),
   };
