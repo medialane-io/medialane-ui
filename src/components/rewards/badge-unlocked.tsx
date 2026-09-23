@@ -1,11 +1,11 @@
 import { BadgeIcon } from "./badge-shelf.js";
 import type { BadgeShelfBadge } from "./badge-shelf.js";
 
-export interface BadgeUnlockToastContentProps {
+export interface BadgeUnlockedProps {
   badge: BadgeShelfBadge;
 }
 
-export function BadgeUnlockToastContent({ badge }: BadgeUnlockToastContentProps) {
+export function BadgeUnlocked({ badge }: BadgeUnlockedProps) {
   return (
     <div className="flex items-center gap-2.5">
       <span
