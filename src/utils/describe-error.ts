@@ -1,10 +1,5 @@
 import { MedialaneApiError, PasskeyCancelledError, UserFacingError } from "@medialane/sdk";
-import {
-  WrongNetworkError,
-  isBareExecuteFailure,
-  isUserRejectedRequest,
-  collectErrorText,
-} from "./wallet-error.js";
+import { WrongNetworkError, isBareExecuteFailure, isUserRejectedRequest, collectErrorText } from "./wallet-error.js";
 
 export const NOT_SUBMITTED = "Request not completed. Nothing was submitted.";
 export const GENERIC = "Something went wrong. Please try again.";
@@ -18,101 +13,74 @@ export interface ErrorNotice {
   isUserRejection: boolean;
 }
 
-function isTransientStatus(status: number): boolean {
-  return status === 408 || status === 429 || status >= 500;
-}
+const notice = (title: string, message: string, description?: string): ErrorNotice => ({
+  title,
+  message,
+  description,
+  isUserRejection: false,
+});
 
-function isTransientNetworkError(text: string): boolean {
+function isTransient(error: unknown): boolean {
+  if (error instanceof MedialaneApiError) {
+    return error.status === 408 || error.status === 429 || error.status >= 500;
+  }
   return /-32001|unable to complete request|service unavailable|temporarily unavailable|rate.?limit|too many requests|gateway time-?out|bad gateway|failed to fetch|fetch failed|network ?error|load failed/i.test(
-    text,
+    collectErrorText(error),
   );
 }
 
+function apiReason(error: MedialaneApiError): string | undefined {
+  const body = error.details;
+  if (body && typeof body === "object" && "error" in body) {
+    const reason = (body as { error?: unknown }).error;
+    if (typeof reason === "string" && reason.trim() !== "") return reason;
+  }
+  return undefined;
+}
+
 export function describeError(error: unknown, fallback?: string): ErrorNotice {
-  if (error instanceof PasskeyCancelledError) {
+  if (error instanceof PasskeyCancelledError || isUserRejectedRequest(error)) {
+    const unclear = isBareExecuteFailure(error) || error instanceof PasskeyCancelledError;
     return {
       title: "Request not completed",
       message: NOT_SUBMITTED,
-      description: "Your device did not confirm this request. Nothing was submitted. Try again when you are ready.",
-      isUserRejection: true,
-    };
-  }
-
-  if (isBareExecuteFailure(error)) {
-    return {
-      title: "Request not completed",
-      message: NOT_SUBMITTED,
-      description: "Your wallet didn't complete this request. This usually means you closed or declined it, your wallet needs extra verification (like 2FA) before it can sign, or your wallet hit a temporary network hiccup. Nothing was submitted. Try again in a moment.",
-      isUserRejection: true,
-    };
-  }
-
-  if (isUserRejectedRequest(error)) {
-    return {
-      title: "Request not completed",
-      message: NOT_SUBMITTED,
-      description: "Your wallet didn't complete this request. You may have closed or declined it, or it may need extra verification before it can sign. Nothing was submitted.",
+      description: unclear
+        ? "Your wallet didn't complete this request. You may have closed or declined it, it may need extra verification such as 2FA before it can sign, or it may have hit a temporary network hiccup. Try again in a moment."
+        : "Your wallet didn't complete this request. You may have closed or declined it, or it may need extra verification before it can sign.",
       isUserRejection: true,
     };
   }
 
   if (error instanceof WrongNetworkError) {
-    return {
-      title: "Wrong network",
-      message: "Your wallet is connected to the wrong network. Nothing was submitted.",
-      description: "Switch your wallet to Starknet Mainnet, then try again.",
-      isUserRejection: false,
-    };
+    return notice(
+      "Wrong network",
+      "Your wallet is connected to the wrong network. Nothing was submitted.",
+      "Switch your wallet to Starknet Mainnet, then try again.",
+    );
+  }
+
+  if (isTransient(error)) {
+    return notice("Network busy", NETWORK_BUSY);
   }
 
   if (error instanceof UserFacingError) {
-    return { title: "Something went wrong", message: error.message, isUserRejection: false };
+    return notice("Something went wrong", error.message);
   }
 
   if (error instanceof MedialaneApiError) {
-    if (error.isAuthored) {
-      return { title: "Something went wrong", message: error.message, isUserRejection: false };
-    }
-    if (isTransientStatus(error.status)) {
-      return { title: "Network busy", message: NETWORK_BUSY, isUserRejection: false };
-    }
-    return { title: "Something went wrong", message: fallback ?? GENERIC, isUserRejection: false };
+    return notice("Something went wrong", apiReason(error) ?? fallback ?? GENERIC);
   }
 
-  const raw = collectErrorText(error);
-
-  if (isTransientNetworkError(raw)) {
-    return { title: "Network busy", message: NETWORK_BUSY, isUserRejection: false };
+  const text = collectErrorText(error).toLowerCase();
+  if (text.includes("insufficient") && /balance|allowance|funds/.test(text)) {
+    return notice(
+      "Insufficient balance",
+      "You don't have enough balance to complete this transaction.",
+      "Add funds to your wallet, then try again.",
+    );
   }
 
-  const lower = raw.toLowerCase();
-  if (lower.includes("insufficient") && /balance|allowance|funds/.test(lower)) {
-    return {
-      title: "Insufficient balance",
-      message: "You don't have enough balance to complete this transaction.",
-      isUserRejection: false,
-    };
-  }
-
-  const stack = error instanceof Error && typeof error.stack === "string" ? error.stack.toLowerCase() : "";
-  if (lower.includes("validation failure") && (lower.includes("jscontrollererror") || stack.includes("jscontrollererror"))) {
-    return {
-      title: "Not enough gas",
-      message: "Your wallet doesn't have enough STRK (or ETH) to pay for this transaction's gas fee.",
-      description: "Add funds to your wallet, then try again.",
-      isUserRejection: false,
-    };
-  }
-
-  if (/unknown_error/i.test(raw) || (typeof error === "object" && error !== null && (error as { code?: unknown }).code === 163)) {
-    return {
-      title: "Something went wrong",
-      message: "Your wallet couldn't complete this transaction. Nothing was submitted. Try again, or try a different wallet or device if it keeps happening.",
-      isUserRejection: false,
-    };
-  }
-
-  return { title: "Something went wrong", message: fallback ?? GENERIC, isUserRejection: false };
+  return notice("Something went wrong", fallback ?? GENERIC);
 }
 
 export { UserFacingError };
