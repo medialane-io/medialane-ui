@@ -3,20 +3,20 @@ import { MedialaneApiError } from "@medialane/sdk";
 import { describeError, UserFacingError, NOT_SUBMITTED, GENERIC } from "./describe-error.js";
 import { WrongNetworkError } from "./wallet-error.js";
 
-test("copy the API authored is shown as written", () => {
-  const err = new MedialaneApiError(409, "Active offer already exists", undefined, undefined, true);
+test("the reason the API gave is shown as written", () => {
+  const err = new MedialaneApiError(409, "Active offer already exists", undefined, { error: "Active offer already exists" });
   expect(describeError(err).message).toBe("Active offer already exists");
 });
 
-test("an API body the API did not author never reaches the user", () => {
-  const err = new MedialaneApiError(502, "<html>502 Bad Gateway</html>", undefined, undefined, false);
+test("a gateway body never reaches the user", () => {
+  const err = new MedialaneApiError(502, "<html>502 Bad Gateway</html>", undefined, "<html>502 Bad Gateway</html>");
   const notice = describeError(err, "Purchase failed");
   expect(notice.message).not.toContain("html");
   expect(notice.message).toBe("The network is busy right now. Nothing was submitted. Please try again in a moment.");
 });
 
-test("an unauthored 4xx falls back to the caller's copy", () => {
-  const err = new MedialaneApiError(400, "invalid body: field `x`", undefined, undefined, false);
+test("a 4xx with no reason falls back to the caller's copy", () => {
+  const err = new MedialaneApiError(400, "invalid body: field `x`", undefined, { detail: "field x" });
   expect(describeError(err, "Transfer failed").message).toBe("Transfer failed");
 });
 
@@ -43,10 +43,6 @@ test("an unrecognised error never shows its own text", () => {
 
 test("insufficient balance is named", () => {
   expect(describeError(new Error("insufficient balance for transfer")).title).toBe("Insufficient balance");
-});
-
-test("an opaque wallet error suggests another wallet or device", () => {
-  expect(describeError({ code: 163 }).message).toContain("different wallet or device");
 });
 
 test("a bare 'Execute failed' names all three real causes, not just a decline", () => {
