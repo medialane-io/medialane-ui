@@ -259,6 +259,8 @@ export { createRewardEarned } from "./components/rewards/reward-earned.js";
 export type { RewardEarnedProps, RewardSnapshot } from "./components/rewards/reward-earned.js";
 
 export { LoadMoreSentinel } from "./components/load-more-sentinel.js";
+export { ActivitiesFeed } from "./components/activities-feed.js";
+export type { ActivitiesFeedProps } from "./components/activities-feed.js";
 export type { LoadMoreSentinelProps } from "./components/load-more-sentinel.js";
 
 export { RewardsSection } from "./components/rewards-section.js";
