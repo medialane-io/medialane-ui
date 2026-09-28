@@ -1,4 +1,4 @@
-import { MedialaneApiError, PasskeyCancelledError } from "@medialane/sdk";
+import { MedialaneApiError, PasskeyCancelledError, UserFacingError } from "@medialane/sdk";
 import {
   WrongNetworkError,
   isBareExecuteFailure,
@@ -16,13 +16,6 @@ export interface ErrorNotice {
   message: string;
   description?: string;
   isUserRejection: boolean;
-}
-
-export class UserFacingError extends Error {
-  constructor(message: string) {
-    super(message);
-    this.name = "UserFacingError";
-  }
 }
 
 function isTransientStatus(status: number): boolean {
@@ -121,3 +114,5 @@ export function describeError(error: unknown, fallback?: string): ErrorNotice {
 
   return { title: "Something went wrong", message: fallback ?? GENERIC, isUserRejection: false };
 }
+
+export { UserFacingError };
