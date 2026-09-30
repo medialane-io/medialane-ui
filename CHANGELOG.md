@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.168.0] — 2026-09-30
+
+### Removed
+
+- `EmailVerificationGate`, and the `listingRequiresEmailVerification` and `settingsHref` props of
+  `AssetMarketplacePanel`. An io account that never verifies its email becomes inactive and is
+  refused by the backend, so the panel no longer gates listing on the email itself.
+
 ## [0.159.0] — 2026-09-11
 
 ### Removed
