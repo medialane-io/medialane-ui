@@ -389,8 +389,6 @@ export {
 } from "./utils/use-rewards.js";
 export type { UserRewards, LeaderboardEntry, BadgeSummary, LevelSummary } from "./utils/use-rewards.js";
 
-export { apiFetch, ApiError } from "./utils/api-fetch.js";
-export type { ApiFetchConfig, ApiFetchOptions } from "./utils/api-fetch.js";
 export {
   useOrders, useOrder, useTokenListings, useUserOrders, useCounterOffers,
   useReceivedOffers, useCollectionFloorListings,

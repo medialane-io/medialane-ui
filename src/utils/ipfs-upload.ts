@@ -1,4 +1,4 @@
-import { buildAssetMetadata, type BuildAssetMetadataInput } from "@medialane/sdk";
+import { buildAssetMetadata, type ApiClient, type BuildAssetMetadataInput } from "@medialane/sdk";
 
 export interface UploadedIpfsFile {
   cid: string;
@@ -8,18 +8,12 @@ export interface UploadedIpfsFile {
 export type SignedUploadKind = "image" | "document" | "media";
 
 export async function uploadFileToIpfs(
+  api: ApiClient,
   file: File,
   kind: SignedUploadKind = "image",
 ): Promise<UploadedIpfsFile> {
-  const signedRes = await fetch(`/api/proxy/v1/metadata/signed-url?kind=${kind}`);
-  const signed = (await signedRes.json().catch(() => ({}))) as {
-    data?: { url?: string };
-    error?: string;
-  };
-  const signedUrl = signed.data?.url;
-  if (!signedRes.ok || !signedUrl) {
-    throw new Error(signed.error ?? "Failed to prepare the upload");
-  }
+  const signedUrl = (await api.getMetadataSignedUrl(kind)).data?.url;
+  if (!signedUrl) throw new Error("Failed to prepare the upload");
 
   const formData = new FormData();
   formData.append("file", file, file.name);
@@ -36,40 +30,17 @@ export async function uploadFileToIpfs(
   return { cid, uri: `ipfs://${cid}` };
 }
 
-export async function uploadJsonToIpfs(payload: unknown): Promise<string> {
-  const res = await fetch("/api/proxy/v1/metadata/upload", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
-  });
-  const body = (await res.json().catch(() => ({}))) as {
-    data?: { url?: string };
-    error?: string;
-  };
-  const uri = body.data?.url;
-  if (!res.ok || !uri) {
-    throw new Error(body.error ?? "Metadata upload failed");
-  }
-
+export async function uploadJsonToIpfs(api: ApiClient, payload: unknown): Promise<string> {
+  const uri = (await api.uploadMetadata(payload as Record<string, unknown>)).data?.url;
+  if (!uri) throw new Error("Metadata upload failed");
   return uri;
 }
 
-export async function uploadDirectoryToIpfs(
+export function uploadDirectoryToIpfs(
+  api: ApiClient,
   files: { name: string; content: unknown }[],
 ): Promise<{ cid: string; baseUri: string }> {
-  const res = await fetch("/api/proxy/v1/metadata/upload-directory", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ files }),
-  });
-  const body = (await res.json().catch(() => ({}))) as {
-    data?: { cid?: string; baseUri?: string };
-    error?: string;
-  };
-  if (!res.ok || !body.data?.baseUri || !body.data.cid) {
-    throw new Error(body.error ?? "Directory pin failed");
-  }
-  return { cid: body.data.cid, baseUri: body.data.baseUri };
+  return api.uploadMetadataDirectory(files);
 }
 
 export function isUserRejection(err: unknown): boolean {
@@ -99,15 +70,16 @@ export interface PinnedAsset {
   imageUri: string | null;
 }
 
-export async function pinAssetMetadata(input: PinAssetMetadataInput): Promise<PinnedAsset> {
+export async function pinAssetMetadata(api: ApiClient, input: PinAssetMetadataInput): Promise<PinnedAsset> {
   const { imageFile, ...fields } = input;
 
   let imageUri = fields.imageUri ?? null;
   if (!imageUri && imageFile && imageFile.size > 0) {
-    imageUri = (await uploadFileToIpfs(imageFile)).uri;
+    imageUri = (await uploadFileToIpfs(api, imageFile)).uri;
   }
 
   const uri = await uploadJsonToIpfs(
+    api,
     buildAssetMetadata({
       ...fields,
       imageUri,

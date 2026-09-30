@@ -5,16 +5,16 @@ import { assetHref } from "@medialane/sdk";
 import { GitBranch } from "lucide-react";
 import { useTokenRemixes } from "../utils/use-remix-offers.js";
 import { Skeleton } from "./skeleton.js";
-import type { ApiFetchConfig } from "../utils/api-fetch.js";
+import type { MedialaneClient } from "@medialane/sdk/starknet";
 
 export interface RemixesTabProps {
-  apiConfig: ApiFetchConfig;
+  getClient: () => MedialaneClient;
   contractAddress: string;
   tokenId: string;
 }
 
-export function RemixesTab({ apiConfig, contractAddress, tokenId }: RemixesTabProps) {
-  const { remixes, total, isLoading } = useTokenRemixes(apiConfig, contractAddress, tokenId);
+export function RemixesTab({ getClient, contractAddress, tokenId }: RemixesTabProps) {
+  const { remixes, total, isLoading } = useTokenRemixes(getClient, contractAddress, tokenId);
 
   if (isLoading) {
     return (

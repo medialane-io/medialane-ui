@@ -1,4 +1,5 @@
 import { test, expect, mock } from "bun:test";
+import type { ApiClient } from "@medialane/sdk";
 import {
   uploadFileToIpfs,
   uploadJsonToIpfs,
@@ -7,46 +8,50 @@ import {
   isUserRejection,
 } from "./ipfs-upload.js";
 
-function mockFetchSequence(responses: { ok: boolean; json: unknown }[]) {
-  let i = 0;
-  return mock(async () => {
-    const r = responses[i++]!;
-    return { ok: r.ok, json: async () => r.json } as Response;
-  });
+function fakeApi(overrides: Partial<Record<keyof ApiClient, unknown>> = {}): ApiClient {
+  return {
+    getMetadataSignedUrl: async () => ({ data: { url: "https://upload.example/signed" } }),
+    uploadMetadata: async () => ({ data: { cid: "metaCid", url: "ipfs://metaCid" } }),
+    uploadMetadataDirectory: async () => ({ cid: "bafydir", baseUri: "ipfs://bafydir/" }),
+    ...overrides,
+  } as unknown as ApiClient;
 }
 
-test("uploadFileToIpfs gets a signed URL then uploads and returns the cid/uri", async () => {
-  global.fetch = mockFetchSequence([
-    { ok: true, json: { data: { url: "https://upload.example/signed" } } },
-    { ok: true, json: { data: { cid: "bafyabc" } } },
-  ]) as unknown as typeof fetch;
+function pinataReturns(json: unknown) {
+  global.fetch = mock(async () => ({ ok: true, json: async () => json } as Response)) as unknown as typeof fetch;
+}
 
-  const result = await uploadFileToIpfs(new File(["x"], "a.png"), "image");
+test("uploadFileToIpfs gets a signed URL through the SDK, uploads, and returns the cid/uri", async () => {
+  pinataReturns({ data: { cid: "bafyabc" } });
+  const kinds: unknown[] = [];
+  const api = fakeApi({
+    getMetadataSignedUrl: async (kind: unknown) => {
+      kinds.push(kind);
+      return { data: { url: "https://upload.example/signed" } };
+    },
+  });
+  const result = await uploadFileToIpfs(api, new File(["x"], "a.png"), "image");
   expect(result).toEqual({ cid: "bafyabc", uri: "ipfs://bafyabc" });
+  expect(kinds).toEqual(["image"]);
 });
 
-test("uploadFileToIpfs throws when the signed-url request fails", async () => {
-  global.fetch = mockFetchSequence([{ ok: false, json: { error: "gateway down" } }]) as unknown as typeof fetch;
-  await expect(uploadFileToIpfs(new File(["x"], "a.png"))).rejects.toThrow("gateway down");
+test("uploadFileToIpfs throws the backend's error when the signed-url request fails", async () => {
+  const api = fakeApi({ getMetadataSignedUrl: async () => { throw new Error("gateway down"); } });
+  await expect(uploadFileToIpfs(api, new File(["x"], "a.png"))).rejects.toThrow("gateway down");
 });
 
 test("uploadFileToIpfs throws when the upload step returns no cid", async () => {
-  global.fetch = mockFetchSequence([
-    { ok: true, json: { data: { url: "https://upload.example/signed" } } },
-    { ok: true, json: {} },
-  ]) as unknown as typeof fetch;
-  await expect(uploadFileToIpfs(new File(["x"], "a.png"))).rejects.toThrow("Upload to IPFS failed");
+  pinataReturns({});
+  await expect(uploadFileToIpfs(fakeApi(), new File(["x"], "a.png"))).rejects.toThrow("Upload to IPFS failed");
 });
 
-test("uploadJsonToIpfs returns the uri on success", async () => {
-  global.fetch = mock(async () => ({ ok: true, json: async () => ({ data: { url: "ipfs://metaCid" } }) } as Response)) as unknown as typeof fetch;
-  const uri = await uploadJsonToIpfs({ name: "x" });
-  expect(uri).toBe("ipfs://metaCid");
+test("uploadJsonToIpfs returns the uri the SDK reports", async () => {
+  expect(await uploadJsonToIpfs(fakeApi(), { name: "x" })).toBe("ipfs://metaCid");
 });
 
-test("uploadJsonToIpfs throws with the server's error message on failure", async () => {
-  global.fetch = mock(async () => ({ ok: false, json: async () => ({ error: "bad payload" }) } as Response)) as unknown as typeof fetch;
-  await expect(uploadJsonToIpfs({})).rejects.toThrow("bad payload");
+test("uploadJsonToIpfs throws with the backend's error message on failure", async () => {
+  const api = fakeApi({ uploadMetadata: async () => { throw new Error("bad payload"); } });
+  await expect(uploadJsonToIpfs(api, {})).rejects.toThrow("bad payload");
 });
 
 test("isUserRejection detects wallet-decline-shaped errors", () => {
@@ -65,28 +70,8 @@ test("uploadFailureToast falls back to a generic message otherwise", () => {
   expect(t.description).toBe("boom");
 });
 
-test("an upload asks the proxy for its signed url, never a pinata route", async () => {
-  const seen: string[] = [];
-  global.fetch = mock(async (url: string) => {
-    seen.push(String(url));
-    return {
-      ok: true,
-      json: async () =>
-        seen.length === 1 ? { data: { url: "https://upload.example/signed" } } : { data: { cid: "bafy" } },
-    } as Response;
-  }) as unknown as typeof fetch;
-
-  await uploadFileToIpfs(new File(["x"], "a.png"));
-  expect(seen[0]).toBe("/api/proxy/v1/metadata/signed-url?kind=image");
-});
-
-test("a directory pin returns what the proxy reports", async () => {
-  global.fetch = mock(async () => ({
-    ok: true,
-    json: async () => ({ data: { cid: "bafydir", baseUri: "ipfs://bafydir/" } }),
-  } as Response)) as unknown as typeof fetch;
-
-  expect(await uploadDirectoryToIpfs([{ name: "1", content: {} }])).toEqual({
+test("a directory pin returns what the SDK reports", async () => {
+  expect(await uploadDirectoryToIpfs(fakeApi(), [{ name: "1", content: {} }])).toEqual({
     cid: "bafydir",
     baseUri: "ipfs://bafydir/",
   });

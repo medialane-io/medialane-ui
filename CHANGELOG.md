@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.169.0] — 2026-10-01
+
+### Changed
+
+The package reaches the backend only through the SDK client.
+
+- `uploadFileToIpfs`, `uploadJsonToIpfs`, `uploadDirectoryToIpfs` and `pinAssetMetadata` take the SDK
+  `ApiClient` as their first argument (e.g. `getMedialaneClient().api`).
+- `useReceivedOffers` and `useTokenRemixes` take `getClient` instead of an `apiConfig`.
+- `RemixesTab` takes `getClient` instead of `apiConfig`.
+- `useNotifications(getClient, address)` no longer takes an `apiConfig`.
+- Requires `@medialane/sdk` 0.135.0.
+
+### Removed
+
+- `apiFetch`, `ApiError`, `ApiFetchConfig` and `ApiFetchOptions`. Use the SDK client's methods; its errors
+  are `MedialaneApiError`.
+
 ## [0.168.0] — 2026-09-30
 
 ### Removed

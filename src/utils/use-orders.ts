@@ -6,7 +6,6 @@ import type { MedialaneClient } from "@medialane/sdk/starknet";
 import type { ApiOrdersQuery, ApiOrder, ApiResponse } from "@medialane/sdk";
 import { useMedialaneClient } from "./use-medialane-client.js";
 import { queryKeys } from "./query-keys.js";
-import { apiFetch, type ApiFetchConfig } from "./api-fetch.js";
 
 const ACTIVE_ORDER_REFRESH_INTERVAL = 60_000;
 const ACTIVE_ORDER_DEDUPING_INTERVAL = 10_000;
@@ -104,12 +103,13 @@ export function useCounterOffers(
   };
 }
 
-export function useReceivedOffers(apiConfig: ApiFetchConfig, address: string | null) {
+export function useReceivedOffers(getClient: () => MedialaneClient, address: string | null) {
+  const client = useMedialaneClient(getClient);
   const normalized = address ? normalizeAddress("STARKNET", address) : null;
 
   const { data, error, isLoading, mutate } = useSWR<ApiResponse<ApiOrder[]>>(
     normalized ? ["received-offers", normalized] : null,
-    () => apiFetch<ApiResponse<ApiOrder[]>>(apiConfig, `/v1/orders/received/${normalized}?limit=50`),
+    () => client.api.getReceivedOffers(normalized!, { limit: 50 }),
     { revalidateOnFocus: false, refreshInterval: ACTIVE_ORDER_REFRESH_INTERVAL, dedupingInterval: ACTIVE_ORDER_DEDUPING_INTERVAL }
   );
 

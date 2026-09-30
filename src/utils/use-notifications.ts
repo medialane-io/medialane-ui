@@ -16,7 +16,6 @@ import {
   formatAssetReceivedNotification,
 } from "./format-activity.js";
 import type { Notification, Announcement } from "../data/notification.js";
-import type { ApiFetchConfig } from "./api-fetch.js";
 
 async function fetchAnnouncements(): Promise<Announcement[]> {
   const res = await fetch("/api/announcements");
@@ -26,7 +25,6 @@ async function fetchAnnouncements(): Promise<Announcement[]> {
 
 export function useNotifications(
   getClient: () => MedialaneClient,
-  apiConfig: ApiFetchConfig,
   address: string | null | undefined
 ) {
   const [readIds, setReadIds] = useState<Set<string>>(() => new Set<string>());
@@ -37,7 +35,7 @@ export function useNotifications(
 
   const { orders: userOrders, isLoading: ordersLoading } = useUserOrders(getClient, address ?? null);
 
-  const { orders: receivedOffers, isLoading: receivedLoading } = useReceivedOffers(apiConfig, address ?? null);
+  const { orders: receivedOffers, isLoading: receivedLoading } = useReceivedOffers(getClient, address ?? null);
   const { activities, isLoading: activitiesLoading } = useActivitiesByAddress(getClient, address ?? null);
   const { data: announcements = [] } = useSWR<Announcement[]>(
     "announcements",
