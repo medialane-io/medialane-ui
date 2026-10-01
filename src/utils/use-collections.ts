@@ -27,7 +27,7 @@ export function useCollections(
   const { data, error, isLoading, mutate } = useSWR<ApiResponse<ApiCollection[]>>(
     key,
     async () => {
-      const res = await client.api.getCollections(page, limit, isFeatured, sort, service, undefined, standard);
+      const res = await client.api.listCollections({ page, limit, isFeatured, sort, service, standard });
       return hideEmpty
         ? { ...res, data: res.data.filter((collection) => (collection.totalSupply ?? 0) > 0) }
         : res;
@@ -64,7 +64,7 @@ export function useCollectionsByOwner(getClient: () => MedialaneClient, owner: s
 
   const { data, error, isLoading, mutate } = useSWR(
     owner ? queryKeys.collectionsOwner(owner) : null,
-    () => client.api.getCollectionsByOwner(owner!),
+    () => client.api.listCollections({ owner: owner!, limit: 50 }),
     { revalidateOnFocus: false, refreshInterval: 60_000 }
   );
 

@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.170.0] — 2026-10-01
+
+### Added
+
+Hooks io and the dapp each kept a copy of, all taking `getClient`:
+
+- Drops: `useDropCollections`, `useMyDrops`, `useDropMintStatus`, `useDropInfo`, `useOnChainDropState`.
+- POP: `usePopCollections`, `useMyPopEvents`, `usePopClaimStatus`.
+- Sponsorship: offers, offer, bids, proposals, proposal, licenses, pending proposals, deal counts.
+- Tickets and clubs: `useMyClubCollections`, `useMyTicketCollections`, `useMembershipList`, `useTicketList`,
+  `useMembershipOnchain`, `useTicketOnchain`, `useIsMemberOf`, `predictNextMembershipId(api, contract)`,
+  `predictNextTicketId(api, contract)`. Tier lists read the count once instead of probing ids.
+- `usePlatformStats`, `useTokensByIpType`, `usePriceMap`, `useCoinPrice`.
+- `collectSitemapData(api)`: pages through the backend's per-page caps.
+
+### Changed
+
+- Collection hooks use the SDK's `listCollections`. Requires `@medialane/sdk` 0.138.0.
+
 ## [0.169.0] — 2026-10-01
 
 ### Changed
