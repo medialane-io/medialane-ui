@@ -1,5 +1,16 @@
 # Changelog
 
+## [Unreleased]
+
+### Changed
+
+- `SelfFundConsentDialog`: "Network fee needed" with the fee, the wallet's balance, "Try again later" and "Pay <fee>";
+  paying is disabled when the balance does not cover the fee. Needs `@medialane/sdk` 0.144.0.
+
+### Fixed
+
+- `ActionDialog` stays clickable while another modal dialog is open, so its buttons work over a transaction dialog.
+
 ## [0.171.0] — 2026-10-01
 
 ### Changed

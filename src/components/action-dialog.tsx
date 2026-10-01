@@ -18,6 +18,8 @@ export function ActionDialog({ open, onClose, width = 540, shadow = true, childr
         position: 'fixed',
         inset: 0,
         zIndex: 1000,
+        // Clickable even while another modal has disabled pointer events on the page.
+        pointerEvents: 'auto',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
