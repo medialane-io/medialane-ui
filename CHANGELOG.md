@@ -1,5 +1,12 @@
 # Changelog
 
+## [Unreleased]
+
+### Changed
+
+- `ExportKeySection` exports any owner key on the device as a recovery key that carries the wallet address
+  (`encodeRecoveryKey`). The `isRecoveryKey` prop is removed. Needs `@medialane/sdk` 0.142.0.
+
 ## [0.170.0] — 2026-10-01
 
 ### Added

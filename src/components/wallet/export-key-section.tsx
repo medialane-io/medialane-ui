@@ -2,19 +2,18 @@
 
 import { useState } from "react";
 import { KeyRound, Copy, Check, EyeOff, Loader2, ShieldAlert } from "lucide-react";
-import type { SealedOwner } from "@medialane/sdk/starknet";
+import { encodeRecoveryKey, type SealedOwner } from "@medialane/sdk/starknet";
 import { Button } from "../button.js";
 import { Alert, AlertDescription } from "../alert.js";
 
 export interface ExportKeySectionProps {
   loadSealed: () => SealedOwner | null;
   unlock: (sealed: SealedOwner) => Promise<string>;
-  isRecoveryKey: (sealed: SealedOwner) => boolean;
   describeError?: (err: unknown, fallback: string) => string;
 }
 
-export function ExportKeySection({ loadSealed, unlock, isRecoveryKey, describeError }: ExportKeySectionProps) {
-  const [privateKey, setPrivateKey] = useState<string | null>(null);
+export function ExportKeySection({ loadSealed, unlock, describeError }: ExportKeySectionProps) {
+  const [recoveryKey, setRecoveryKey] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
@@ -28,13 +27,7 @@ export function ExportKeySection({ loadSealed, unlock, isRecoveryKey, describeEr
         setError("This browser has no wallet key stored.");
         return;
       }
-      if (!isRecoveryKey(sealed)) {
-        setError(
-          "This device was approved from another one, so its key cannot restore your account on its own. Export from the device you first signed up on.",
-        );
-        return;
-      }
-      setPrivateKey(await unlock(sealed));
+      setRecoveryKey(encodeRecoveryKey({ walletAddress: sealed.address, privateKey: await unlock(sealed) }));
     } catch (err) {
       const fallback = "Could not unlock your key. Please try again.";
       setError(describeError ? describeError(err, fallback) : fallback);
@@ -44,14 +37,14 @@ export function ExportKeySection({ loadSealed, unlock, isRecoveryKey, describeEr
   };
 
   const copy = async () => {
-    if (!privateKey) return;
-    await navigator.clipboard.writeText(privateKey);
+    if (!recoveryKey) return;
+    await navigator.clipboard.writeText(recoveryKey);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
 
   const hide = () => {
-    setPrivateKey(null);
+    setRecoveryKey(null);
     setCopied(false);
   };
 
@@ -66,7 +59,7 @@ export function ExportKeySection({ loadSealed, unlock, isRecoveryKey, describeEr
         </p>
       </div>
 
-      {privateKey ? (
+      {recoveryKey ? (
         <>
           <Alert variant="destructive">
             <ShieldAlert className="h-4 w-4" />
@@ -77,7 +70,7 @@ export function ExportKeySection({ loadSealed, unlock, isRecoveryKey, describeEr
             </AlertDescription>
           </Alert>
           <code className="block break-all rounded-xl bg-muted px-3 py-2.5 font-mono text-xs select-all">
-            {privateKey}
+            {recoveryKey}
           </code>
           <div className="flex items-center gap-2">
             <Button onClick={copy} variant="outline" size="sm">
