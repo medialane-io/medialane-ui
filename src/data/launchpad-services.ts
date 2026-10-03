@@ -46,7 +46,7 @@ export const LAUNCHPAD_SERVICE_GROUPS: ServiceGroupDefinition[] = [
   {
     key: "coins",
     title: "Coins",
-    tagline: "Launch your own coin, or bring one you already made.",
+    tagline: "Launch your own coin.",
   },
   {
     key: "community",
@@ -56,7 +56,7 @@ export const LAUNCHPAD_SERVICE_GROUPS: ServiceGroupDefinition[] = [
   {
     key: "claims",
     title: "Claims",
-    tagline: "Reserve your username, your collection's name, or bring in a collection you already made.",
+    tagline: "Reserve your username or a collection's name, or bring in a collection or coin you already made.",
   },
   {
     key: "coming-soon",
@@ -261,7 +261,7 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     example: "Your unrug memecoin, listed on your creator profile",
     icon: Coins,
     status: "live",
-    group: "coins",
+    group: "claims",
   },
   {
     key: "claim-username",

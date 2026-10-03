@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.174.0] — 2026-10-03
+
+### Changed
+
+- The memecoin claim card is in the Claims group, with the other claims, and the Coins and Claims taglines say so.
+
 ## [0.173.0] — 2026-10-03
 
 ### Fixed
