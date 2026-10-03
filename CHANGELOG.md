@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.173.0] — 2026-10-03
+
+### Fixed
+
+- The launchpad claim cards show the real addresses: `medialane.io/creator/your-name` for a username and
+  `medialane.io/collection/your-collection` for a collection name.
+
 ## [0.172.0] — 2026-10-01
 
 ### Changed

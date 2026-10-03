@@ -272,7 +272,7 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     description:
       "Claim your username to get a shareable creator page, your public portfolio at a clean, memorable URL.",
     features: ["Free claim", "Shareable creator page", "Your public portfolio"],
-    example: "medialane.io/your-name — your portfolio at your own name",
+    example: "medialane.io/creator/your-name — your portfolio at your own name",
     icon: AtSign,
     status: "live",
     group: "claims",
@@ -300,7 +300,7 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     description:
       "Claim a custom name for your collection page and get a clean, shareable URL instead of a long technical address.",
     features: ["Free claim", "Clean shareable URL", "Easy to remember and share"],
-    example: "medialane.io/collections/your-collection",
+    example: "medialane.io/collection/your-collection",
     icon: Link2,
     status: "live",
     group: "claims",
