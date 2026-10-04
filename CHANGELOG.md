@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.176.0] — 2026-10-04
+
+### Added
+
+- Account components shared by the apps: `DevicesSection`, `DeviceApprovalDialog`, `GuardianRecoverySection`,
+  `AddGuardianDialog`, `AccountSection`, `EmailCodeEntry` and `InputOTP`. Each takes the app's media wallet and its
+  sealed-owner loader as props, so an app keeps its own passkey identity.
+- `useEmailCode`, taking the app's API client, for the six-digit email code step.
+- `input-otp` is a peer dependency.
+
 ## [0.175.0] — 2026-10-04
 
 ### Added

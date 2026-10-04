@@ -138,6 +138,22 @@ export {
   initialEmailCodeState,
 } from "./utils/email-code.js";
 export type { EmailCodeAction, EmailCodeState, EmailCodeStatus } from "./utils/email-code.js";
+export { useEmailCode } from "./utils/use-email-code.js";
+export type { EmailCode, EmailCodeApi } from "./utils/use-email-code.js";
+export { AccountSection } from "./components/account/account-section.js";
+export type { AccountSectionProps } from "./components/account/account-section.js";
+export { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator } from "./components/account/input-otp.js";
+export { EmailCodeEntry } from "./components/account/email-code-entry.js";
+export type { EmailCodeEntryProps } from "./components/account/email-code-entry.js";
+export { DevicesSection } from "./components/account/devices-section.js";
+export type { DevicesSectionProps } from "./components/account/devices-section.js";
+export { DeviceApprovalDialog } from "./components/account/device-approval-dialog.js";
+export type { DeviceApprovalDialogProps } from "./components/account/device-approval-dialog.js";
+export { GuardianRecoverySection } from "./components/account/guardian-recovery-section.js";
+export type { GuardianRecoverySectionProps } from "./components/account/guardian-recovery-section.js";
+export { AddGuardianDialog } from "./components/account/add-guardian-dialog.js";
+export type { AddGuardianDialogProps } from "./components/account/add-guardian-dialog.js";
+export type { DeviceWallet, GuardianWallet, LoadSealedOwner } from "./components/account/wallet-types.js";
 export { ACTIVITY_TYPE_CONFIG, TYPE_FILTERS } from "./data/activity.js";
 export type { ActivityTypeConfig } from "./data/activity.js";
 export { HeroSlider, HeroSliderSkeleton } from "./components/hero-slider.js";

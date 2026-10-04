@@ -13,7 +13,7 @@ export default defineConfig([
     external: [
       "react", "react-dom", "next", "next-themes",
       "lucide-react", "tailwind-merge", "clsx",
-      "framer-motion", "sonner", "@medialane/sdk", "cmdk",
+      "framer-motion", "input-otp", "sonner", "@medialane/sdk", "cmdk",
     ],
     outDir: "dist",
     onSuccess: async () => {
