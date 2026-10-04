@@ -124,6 +124,20 @@ export {
 export { timeAgo, timeUntil, isExpired } from "./utils/time.js";
 export { toDisplayUrl, toDisplayUrlOrNull, toAbsoluteImageUrl, type DisplayUrlOptions } from "./utils/ipfs.js";
 export { isSameAddress } from "./utils/same-address.js";
+export { createAppWallet, stableUserId, decodeCredentialId } from "./utils/app-wallet.js";
+export type { AppWalletConfig } from "./utils/app-wallet.js";
+export { detectPasskeySupport } from "./utils/passkey-support.js";
+export type { PasskeySupport } from "./utils/passkey-support.js";
+export { describeWalletFailure, isPasskeyCancelled } from "./utils/wallet-failure.js";
+export type { WalletFailureKind, WalletFailureNotice } from "./utils/wallet-failure.js";
+export {
+  RESEND_COOLDOWN_SECONDS,
+  canResendCode,
+  canVerifyCode,
+  emailCodeReducer,
+  initialEmailCodeState,
+} from "./utils/email-code.js";
+export type { EmailCodeAction, EmailCodeState, EmailCodeStatus } from "./utils/email-code.js";
 export { ACTIVITY_TYPE_CONFIG, TYPE_FILTERS } from "./data/activity.js";
 export type { ActivityTypeConfig } from "./data/activity.js";
 export { HeroSlider, HeroSliderSkeleton } from "./components/hero-slider.js";

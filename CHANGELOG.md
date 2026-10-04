@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.175.0] — 2026-10-04
+
+### Added
+
+- `createAppWallet`: one factory for an app's wallet client (owner store, passkey owner, self-fund consent and media wallet),
+  configured with the app's relying party, PRF salt, HKDF info, store key and proxy paths.
+- `describeWalletFailure`, `isPasskeyCancelled` and `detectPasskeySupport`: the passkey and wallet-setup failure messages
+  shared by every app.
+- `emailCodeReducer` and its helpers for the six-digit email code step.
+
 ## [0.174.0] — 2026-10-03
 
 ### Changed
