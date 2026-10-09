@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.179.0] — 2026-10-09
+
+### Changed
+
+- `describeError`: PasskeyUnsupportedError -> describeWalletFailure message.
+
 ## [0.178.0] — 2026-10-09
 
 ### Added

@@ -1,4 +1,4 @@
-import { test, expect } from "bun:test";
+import { describe, test, expect } from "bun:test";
 import { MedialaneApiError } from "@medialane/sdk";
 import { describeError, UserFacingError, NOT_SUBMITTED, GENERIC } from "./describe-error.js";
 import { WrongNetworkError } from "./wallet-error.js";
@@ -57,4 +57,20 @@ test("an explicit rejection phrase keeps the decline-focused copy", () => {
   expect(notice.isUserRejection).toBe(true);
   expect(notice.description).toContain("closed or declined it");
   expect(notice.description).not.toContain("temporary network hiccup");
+});
+
+describe("a passkey that can't be used for a wallet", () => {
+  const unsupported = (reason: string) => Object.assign(new Error("unsupported"), { name: "PasskeyUnsupportedError", reason });
+
+  test("no-prf gets the same message as the wallet step, not the fallback", () => {
+    const notice = describeError(unsupported("no-prf"), "Could not set up this device.");
+    expect(notice.message).toBe("This passkey can't protect a wallet. Try again and save it on your phone or in your password manager.");
+    expect(notice.isUserRejection).toBe(false);
+  });
+
+  test("no-webauthn says passkeys aren't available here", () => {
+    expect(describeError(unsupported("no-webauthn"), "fallback").message).toBe(
+      "Passkeys aren't available here. Open Medialane in a regular browser window or on another device.",
+    );
+  });
 });
