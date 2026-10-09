@@ -73,7 +73,7 @@ describe("other failures each get their own plain message", () => {
   test("a passkey that can't protect a wallet suggests saving it somewhere else, and offers a retry", () => {
     expect(describeWalletFailure(unsupported("no-prf"))).toEqual({
       kind: "unsupported-passkey",
-      message: "This passkey can't protect a wallet. Try again and save it on your phone or in your password manager.",
+      message: "Let's save your passkey in another place. Try again and choose your phone or password manager.",
       canRetry: true,
     });
   });
@@ -81,7 +81,7 @@ describe("other failures each get their own plain message", () => {
   test("no passkeys at all says so, with no retry", () => {
     expect(describeWalletFailure(unsupported("no-webauthn"))).toEqual({
       kind: "no-passkeys",
-      message: "Passkeys aren't available here. Open Medialane in a regular browser window or on another device.",
+      message: "Open Medialane in a regular browser window or on another device to continue.",
       canRetry: false,
     });
   });

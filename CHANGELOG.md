@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.180.0] — 2026-10-09
+
+### Changed
+
+- `describeWalletFailure`: copy for `unsupported-passkey` and `no-passkeys` (PasskeyUnsupportedError).
+
 ## [0.179.0] — 2026-10-09
 
 ### Changed
