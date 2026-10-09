@@ -1,6 +1,8 @@
 # @medialane/ui
 
-Shared UI component library for Medialane apps. Used by `medialane-starknet`, `medialane-io`, `medialane-portal`, and `media-wallet`.
+**The shared design system of the Medialane apps.**
+
+The React components behind [medialane.io](https://medialane.io), [starknet.medialane.io](https://starknet.medialane.io) and [portal.medialane.io](https://portal.medialane.io): asset and collection cards, launchpad services, marketplace and activity views, licensing and IP data, and the Medialane brand. Use it to build an app that feels at home on Medialane.
 
 [![npm version](https://img.shields.io/npm/v/@medialane/ui)](https://www.npmjs.com/package/@medialane/ui)
 
@@ -240,8 +242,7 @@ import { IP_TYPE_DATA } from "@medialane/ui/data/ip-types";
 In a Next.js app, adding `experimental.optimizePackageImports: ["@medialane/ui"]`
 to `next.config` gets the same result automatically: Next rewrites barrel
 imports to per-component imports at build time, confirmed to cut a route's
-First Load JS by ~50% in media-wallet with zero import changes in app code
-(see `medialane-core/docs/superpowers/plans/2026-08-03-medialane-ui-subpath-exports.md`).
+First Load JS by ~50% in a consuming app with zero import changes in app code.
 The deep-import subpaths are there directly for non-Next consumers, or
 anywhere that flag is unavailable.
 
@@ -266,98 +267,22 @@ baseline.
 
 ---
 
-## Build & Publish
+## Development
 
 ```bash
-cd medialane-ui
-
-# Build (outputs to dist/)
-~/.bun/bin/bun run build
-
-# Type-check
-~/.bun/bin/bun run typecheck
-
-# Watch mode during development
-~/.bun/bin/bun run dev
-
-# Publish to npm: bump package.json version first.
-# If `npm` is on PATH, use it directly. Otherwise use bun with a
-# project-local .npmrc, which carries auth through to `bun publish`
-# (NPM_CONFIG_USERCONFIG alone does not):
-#   echo "//registry.npmjs.org/:_authToken=<token>" > .npmrc
-#   NPM_CONFIG_USERCONFIG=$(pwd)/.npmrc bun publish
-# .npmrc is gitignored; remove it after publishing if it holds a live token.
-npm publish
+bun run build      # outputs ESM + CJS + type declarations to dist/
+bun run typecheck
+bun run dev        # watch mode
 ```
-
-The package uses [tsup](https://tsup.egoist.dev/) and outputs ESM + CJS + type declarations.
 
 ---
 
-## Version History
+## Changelog
 
-| Version | Added |
-|---|---|
-| **v0.126.3** | `ipfsToHttp` now also recognizes known IPFS gateway hosts (`*.mypinata.cloud`, `gateway.pinata.cloud`, `ipfs.io`, `dweb.link`, `cloudflare-ipfs.com`, `nftstorage.link`, `w3s.link`) in an absolute `https://` URI and routes them through the app's own `/api/ipfs/` proxy, same as `ipfs://`. Extends the gateway-recognition that `ipfs://` already had to these hosts too. |
-| **v0.91.0-v0.126.2** | *Not individually documented, see `git log`* |
-| **v0.90.1** | Wildcard subpath exports (`./*` → components, `./utils/*`, `./data/*`), additive; the barrel import stays unchanged. See "Deep imports" above |
-| **v0.88.0-v0.90.0** | *Not individually documented, see `git log`* |
-| **v0.87.0** | `NavWalletTrigger` gains optional `disconnectedIcon`, overriding the default `Wallet` glyph in the disconnected-state ring, for apps whose real connect entry point is something else (e.g. a Google mark for an email/social-login app). Omitting it keeps the `Wallet` default |
-| **v0.86.0** | `NavWalletTrigger`'s disconnected state shows a plain `Wallet` glyph inside the rotating ring, making the ring itself easier to notice as a connect entry point. Connected state unchanged |
-| **v0.85.0** | `NavCommandMenu` gains two optional props: `showKeyboardHints` (default `true`; set `false` to hide the "↑↓ Navigate / ↵ Open" footer hint) and `brandSlot` (replace the static "medialane ⌘K" footer brandmark entirely, e.g. with a "Connect" button). Both default to the prior, non-breaking behavior |
-| **v0.84.0** | gol_starknet living-render support: `useIntersectionActive` + `AnimatedTokenMedia` swap a token's static image for a sandboxed iframe of its on-chain `animation_url` once visible, wired into `TokenCard`/`AssetCard`; SDK peer floor `>=0.73.0`. **Also replaces `AssetMediaColumn`** with the borderless/real-aspect-ratio/click-to-zoom design both apps had already forked locally |
-| **v0.83.0** | `NavWalletTrigger` gains optional `iconSrc`, rendering the connected wallet's own icon in place of a generic glyph when set; omitting it keeps the prior behavior |
-| **v0.82.x** | *Not individually documented, see `git log`* |
-| **v0.81.0** | `NavAccountSheet` redesigned to match `NavCommandMenu`'s glass-panel treatment. **Breaking:** dropped the `title` prop; content is now 100% `children`-driven. `NavWalletTrigger` resized `h-11 w-11` → `h-8 w-8`; connected-state ring stays at full opacity |
-| **v0.80.1** | `NavWalletTrigger` is now `React.forwardRef` (needed for `SheetTrigger asChild`); no visual change |
-| **v0.80.0** | `NavWalletTrigger` added to `nav-shell.tsx`: spinning brand-gradient ring while disconnected, static low-opacity ring + `User` glyph once connected, both drawn from real wallet state |
-| **v0.79.2** | `AssetMarketplacePanel`: "List on Marketplace" hidden next to "Cancel Listing" for single-instance (ERC-721) assets; ERC-1155 owners still see both |
-| **v0.79.1** | Export-only fix: `toDurationDays`/`DURATION_UNITS`/`DurationUnit` (shipped in 0.79.0) now re-exported from `src/index.ts` |
-| **v0.79.0** | `LicenseTermsBuilder`: licensing subpanel wrapper removed, fields flow in the main form. **Breaking:** `SponsorshipTerms.durationDays: string` → `durationValue` + `durationUnit` (new `DURATION_UNITS`); new `toDurationDays(terms)` export. Territory is now free text |
-| **v0.78.2** | `LicenseTermsBuilder`: removed "Resale royalty (%)" from the UI; licensing panel no longer collapsible; "License length (days)" has no default |
-| **v0.78.1** | `LicenseTermsBuilder` currency-picker layout fix, now stacked rows; collapsed trigger shows a live summary |
-| **v0.78.0** | `LicenseTermsBuilder` rebuilt: icon-enhanced currency picker, collapsible panel (License Type presets, Territory, AI Policy, Scope, Deliverables, Exclusivity, media multi-select); new `toLicenseMetadata` export. `SponsorshipTerms` gains matching fields |
-| **v0.77.0** | `AssetSearchPicker` (server-searched asset picker for the IP Sponsorship "propose to sponsor" flow). `AssetMarketplacePanel` gains `showSponsorOption`/`onOpenSponsorProposal` + `showSponsorSolicitOption`/`onOpenSponsorSolicit`. `derivePortfolioCounts` gains `sponsorshipPendingCount` → `PortfolioCounts.sponsorships` |
-| **v0.76.0** | `CollectionFilters` shared logic lifted from both apps' near-identical local copies: `useCollectionFilters`, `CollectionFiltersTrigger`, `CollectionFiltersBody`, `SORT_OPTIONS`/`TraitSection` |
-| **v0.75.0** | `TokenCard` replaced with the real implementation (dropdown menu, price chip, indexing badge) both apps had forked locally; hrefs computed via the SDK's `assetHref`/`collectionHref` using `token.chain`. New dep `@radix-ui/react-dropdown-menu`. SDK peer floor `>=0.72.0`. `RarityTier` and several unused props removed |
-| **v0.74.2** | SDK peer floor `>=0.6.0` → `>=0.71.0` (no component code changed) |
-| **v0.74.1** | Creator's Fund family: `CreatorAirdropBanner` lifted into the package; `CommunityRewardsSection` redesigned to brand tokens, borderless panels. (**v0.74.0 is deprecated on npm**, published from an incomplete checkout; use v0.74.1) |
-| **v0.73.6** | `AssetMarketplacePanel` cancel-listing button label: "Cancel" → "Cancel Listing" |
-| **v0.73.5** | `MedialaneCollectionCard` now follows the app's light/dark theme |
-| **v0.73.4** | `NavBrandButton` left padding 6px → 10px |
-| **v0.73.3** | Launchpad cards: resting hairline in each group's accent hue (was hover-only); gradient ring fades in on hover-capable devices |
-| **v0.73.2** | Launchpad copy: "Single Editions" → "Single Edition NFTs"; "NFTs" group pill → "Originals" |
-| **v0.73.1** | IP Club launchpad card copy rewritten to the membership-tiers model |
-| **v0.73.0** | `AssetPicker` + `LicenseTermsBuilder` (initial versions), for the IP Sponsorship v3 create/accept forms |
-| **v0.67.0–0.72.0** | *Not individually documented.* Only v0.72.0 is known: display face set to semibold, filter bar drops the services count |
-| **v0.66.0** | Launchpad redesign: one card per service, one dynamic grid (`mint-ip-asset`+`create-collection` → `nfts`, `ip-collection-1155`+`mint-editions` → `limited-editions`); `LaunchpadGroupedSections` renders a single grid keyed by `GROUP_ACCENTS`; all service copy rewritten to plain language |
-| **v0.65.1** | IP Tickets copy rewritten to event vocabulary (kept verbatim through v0.66.0) |
-| **v0.65.0** | `ServiceFormShell` form compartment removed; forms render directly on the page |
-| **v0.64.1** | `ActivityTicker` hover-zoom removed, keeping effects mobile-first and touch-friendly |
-| **v0.64.0** | `NavBrandButton.onClick` defaults to opening the nav command menu; dead `MedialaneIcon` removed from the package |
-| **v0.63.2** | Header triggers borderless (`NavBrandButton`/`NavIconButton`) |
-| **v0.63.1 / v0.62.0** | Nav shell redesign: `NavCommandMenu` restyled (620px glass panel, icon-chip rows, optional `description`, localStorage "Recent" group, keycap footer hints, mobile bottom-sheet). New `nav-shell.tsx`: `NavBrandButton`, `NavIconButton`, `NavAccountSheet`/`useNavAccountSheet` (exported, ready for either app to mount) |
-| **v0.61.0** | Typography restraint: Urbanist display face scoped to h1 (previously h1-h3); rewards chip simplified to a plain pill; `PortfolioOverview` stats → compact pill row |
-| **v0.60.0** | `PortfolioHeader` drops stat chips, rewards chip becomes a journey badge (`levelName`+`totalXp`, no numeric level); `PortfolioOverview` gains `quickActions` |
-| **v0.59.0** | Portfolio shell redesign: `PortfolioNav` (two-level nav), `PortfolioHeader` (compact block), `PortfolioOverview` (landing page). `PortfolioSubnav` removed |
-| **v0.58.0** | `ListingCard` gains optional `imageUrl` override prop |
-| **v0.57.2** | `AssetCard` redesigned: inset 4:5 gallery artwork, display-face title, price as a glass pill |
-| **v0.56.0** | `CoinLaunchPreview` lifted from the apps and redesigned to brand tokens |
-| **v0.55.1** | `MedialaneCollectionCard`: branded collectors-card preview (3D tilt, holographic sheen, serial pill) |
-| **v0.53.1** | Borderless launchpad panels (`ServiceFormShell`, `ClaimRail`); Geist Mono removed everywhere in favor of `tabular-nums`; new `font-display` preset token |
-| **v0.29.0-0.52.x** | *Not individually documented; changelog notes for this range didn't survive in `CLAUDE.md`.* Component-inventory milestone recorded at v0.50.1 (78 components) |
-| **v0.28.0** | `StepNav` (presentation-only step indicator: solid active dot, outlined check for done, filling connector, accent-themed). `ServiceFormShell` gains an `aboveForm` slot (left column, between header and form, e.g. a stepper) and a **sticky right rail** on desktop. Lets the Creator Coin page adopt the standard form layout |
-| **v0.27.0** | `ServiceHeader` gains a `plain` variant (neutral border); `ServiceFormShell` renders the header `plain` so create/mint form pages carry the gradient border on the form itself. Standalone headers (browse pages, coin page, `/claim` hub) keep the gradient |
-| **v0.26.0** | `LaunchpadServiceCard` "living color cards" high-fidelity pass: per-hue aurora light-leaks, gradient icon tile, hairline gradient frame that ignites on interaction, staggered entrance reveal, press/hover microinteractions, animated CTA arrow; roomier grid gaps + section rhythm. Touch-first, reduced-motion safe |
-| **v0.25.0** | `CoinsExplorer`/`CoinCard` refined: kind label over the artwork in brand hues, quote-currency icon on price, marketplace-style Filters dialog; simplified by dropping the Verified badge / FDV / holders / per-card glow / Trade button |
-| **v0.24.0** | Art-forward `CoinCard` redesign, making the coin's cover artwork the hero of the tile |
-| **v0.14.0** | `docUpload` template config + `DOC_UPLOAD` (document/PDF → IPFS for Documents/Patents/Publications/Software), `IPTypeDisplay` document card |
-| **v0.13.x** | Asset-page modules lifted: `AssetOverviewContent`, `AssetMarketsTab`, `AssetMediaColumn`/`AssetHeaderBlock`, `ParentAttributionBanner`, `IPTypeDisplay`; IP data layer (`data/ip`, `data/ip-templates`); `timeUntil` |
-| **v0.12.x** | `LaunchpadStrip` (homepage carousel from service defs); Discover strips restyled to the approved design; `CollectionCard` gated-content border + currency floor |
-| **v0.11.x** | `DiscoverFeedSection` rebuilt as carousels; `ActivityCard`; coins live in shared service defaults |
-| **v0.8–0.10** | `LaunchpadGroupedSections` + creator-first card redesign (chips, examples, gradient section titles); `PageContainer`, `NavCommandMenu`, `PortfolioSubnav` |
-| **v0.4.0** | `LaunchpadServicesGrid` (removed in v0.8), `LAUNCHPAD_SERVICE_DEFINITIONS` |
-| **v0.3.2** | `DiscoverHero`, `FeaturedCarousel`, `DiscoverCollectionsStrip`, `DiscoverCreatorsStrip`, `DiscoverFeedSection` |
-| **v0.3.0** | `ActivityRow`, `ActivityFeedShell`, `ActivityTicker`, `HeroSlider`, `ListingCard`, `LaunchpadGrid`, `CtaCardGrid`, `timeAgo`, `ACTIVITY_TYPE_CONFIG` |
-| **v0.2.0** | `MotionCard`, `FadeIn`, `Stagger`, `StaggerItem`, `KineticWords`, `ScrollSection`, `ShareButton`, `CollectionCard`, `TokenCard` |
-| **v0.1.0** | `cn`, `formatDisplayPrice`, `shortenAddress`, `ipfsToHttp`, `CurrencyIcon`, `CurrencyAmount`, `IpTypeBadge`, `AddressDisplay`, `MedialaneIcon`, `MedialaneLogoFull`, `IP_TYPE_DATA`, `BRAND` |
+See [CHANGELOG.md](./CHANGELOG.md).
+
+---
+
+## License
+
+[MIT](LICENSE)
