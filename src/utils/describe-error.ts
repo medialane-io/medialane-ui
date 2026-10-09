@@ -1,5 +1,6 @@
 import { MedialaneApiError, PasskeyCancelledError, UserFacingError } from "@medialane/sdk";
 import { WrongNetworkError, isBareExecuteFailure, isUserRejectedRequest, collectErrorText } from "./wallet-error.js";
+import { describeWalletFailure, passkeyUnsupportedReason } from "./wallet-failure.js";
 
 export const NOT_SUBMITTED = "Request not completed. Nothing was submitted.";
 export const GENERIC = "Something went wrong. Please try again.";
@@ -49,6 +50,10 @@ export function describeError(error: unknown, fallback?: string): ErrorNotice {
         : "Your wallet didn't complete this request. You may have closed or declined it, or it may need extra verification before it can sign.",
       isUserRejection: true,
     };
+  }
+
+  if (passkeyUnsupportedReason(error)) {
+    return notice("Passkey not supported", describeWalletFailure(error).message);
   }
 
   if (error instanceof WrongNetworkError) {
