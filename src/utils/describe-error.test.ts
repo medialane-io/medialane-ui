@@ -64,13 +64,13 @@ describe("a passkey that can't be used for a wallet", () => {
 
   test("no-prf gets the same message as the wallet step, not the fallback", () => {
     const notice = describeError(unsupported("no-prf"), "Could not set up this device.");
-    expect(notice.message).toBe("This passkey can't protect a wallet. Try again and save it on your phone or in your password manager.");
+    expect(notice.message).toBe("Let's save your passkey in another place. Try again and choose your phone or password manager.");
     expect(notice.isUserRejection).toBe(false);
   });
 
   test("no-webauthn says passkeys aren't available here", () => {
     expect(describeError(unsupported("no-webauthn"), "fallback").message).toBe(
-      "Passkeys aren't available here. Open Medialane in a regular browser window or on another device.",
+      "Open Medialane in a regular browser window or on another device to continue.",
     );
   });
 });

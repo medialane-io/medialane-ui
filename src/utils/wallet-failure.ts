@@ -51,14 +51,14 @@ export function describeWalletFailure(err: unknown, support: PasskeySupport = "u
   if (unsupported === "no-prf") {
     return {
       kind: "unsupported-passkey",
-      message: "This passkey can't protect a wallet. Try again and save it on your phone or in your password manager.",
+      message: "Let's save your passkey in another place. Try again and choose your phone or password manager.",
       canRetry: true,
     };
   }
   if (unsupported === "no-webauthn") {
     return {
       kind: "no-passkeys",
-      message: "Passkeys aren't available here. Open Medialane in a regular browser window or on another device.",
+      message: "Open Medialane in a regular browser window or on another device to continue.",
       canRetry: false,
     };
   }
