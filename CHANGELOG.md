@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.177.0] — 2026-10-09
+
+### Changed
+
+- `usePopClaimStatus(provider, collection, wallet)` reads `has_claimed` from the collection on chain and returns
+  `{ hasClaimed }`. It takes a Starknet provider instead of the API client.
+- Requires `@medialane/sdk` 0.159.0 or later.
+
+### Added
+
+- `popClaimedKey`.
+
 ## [0.176.0] — 2026-10-04
 
 ### Added

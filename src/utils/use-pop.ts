@@ -1,8 +1,9 @@
 "use client";
 
 import useSWR from "swr";
-import type { ApiCollection, ApiMeta, PopClaimStatus } from "@medialane/sdk";
-import type { MedialaneClient } from "@medialane/sdk/starknet";
+import type { ApiCollection, ApiMeta } from "@medialane/sdk";
+import { popHasClaimed, type MedialaneClient } from "@medialane/sdk/starknet";
+import type { ProviderInterface } from "starknet";
 import { useMedialaneClient } from "./use-medialane-client.js";
 
 export function usePopCollections(getClient: () => MedialaneClient) {
@@ -25,12 +26,20 @@ export function useMyPopEvents(getClient: () => MedialaneClient, owner: string |
   return { events: data ?? [], isLoading, error, mutate };
 }
 
-export function usePopClaimStatus(getClient: () => MedialaneClient, collection: string | null, wallet: string | null) {
-  const client = useMedialaneClient(getClient);
-  const { data, error, isLoading, mutate } = useSWR<PopClaimStatus>(
-    collection && wallet ? `pop-eligibility-${collection}-${wallet}` : null,
-    () => client.api.getPopEligibility(collection!, wallet!),
-    { revalidateOnFocus: false, shouldRetryOnError: false }
+export function popClaimedKey(collection: string | null, wallet: string | null): string | null {
+  return collection && wallet ? `pop-claimed-${collection}-${wallet}` : null;
+}
+
+/** Whether `wallet` already holds this collection's credential, read from chain. */
+export function usePopClaimStatus(
+  provider: Pick<ProviderInterface, "callContract">,
+  collection: string | null,
+  wallet: string | null,
+) {
+  const { data, error, isLoading, mutate } = useSWR<boolean>(
+    popClaimedKey(collection, wallet),
+    () => popHasClaimed(provider, collection!, wallet!),
+    { revalidateOnFocus: false, shouldRetryOnError: false },
   );
-  return { claimStatus: data ?? null, isLoading, error, mutate };
+  return { hasClaimed: data ?? null, isLoading, error, mutate };
 }
