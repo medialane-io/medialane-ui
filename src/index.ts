@@ -128,8 +128,8 @@ export { createAppWallet, stableUserId, decodeCredentialId } from "./utils/app-w
 export type { AppWalletConfig } from "./utils/app-wallet.js";
 export { detectPasskeySupport } from "./utils/passkey-support.js";
 export type { PasskeySupport } from "./utils/passkey-support.js";
-export { describeWalletFailure, isPasskeyCancelled } from "./utils/wallet-failure.js";
-export type { WalletFailureKind, WalletFailureNotice } from "./utils/wallet-failure.js";
+export { describeWalletFailure, isPasskeyCancelled, passkeyUnsupportedReason } from "./utils/wallet-failure.js";
+export type { PasskeyUnsupportedReason, WalletFailureKind, WalletFailureNotice } from "./utils/wallet-failure.js";
 export {
   RESEND_COOLDOWN_SECONDS,
   canResendCode,

@@ -3,7 +3,7 @@ import type { PasskeySupport } from "./passkey-support.js";
 export type WalletFailureKind =
   | "cancelled"
   | "no-passkeys"
-  | "unsupported-browser"
+  | "unsupported-passkey"
   | "network"
   | "still-deploying"
   | "deployment"
@@ -17,6 +17,15 @@ export interface WalletFailureNotice {
 
 export const isPasskeyCancelled = (err: unknown): boolean =>
   typeof err === "object" && err !== null && (err as { name?: unknown }).name === "PasskeyCancelledError";
+
+export type PasskeyUnsupportedReason = "no-webauthn" | "no-prf";
+
+export function passkeyUnsupportedReason(err: unknown): PasskeyUnsupportedReason | null {
+  if (typeof err !== "object" || err === null) return null;
+  const { name, reason } = err as { name?: unknown; reason?: unknown };
+  if (name !== "PasskeyUnsupportedError") return null;
+  return reason === "no-webauthn" || reason === "no-prf" ? reason : null;
+}
 
 const message = (err: unknown): string => (err instanceof Error ? err.message : "");
 
@@ -38,8 +47,20 @@ export function describeWalletFailure(err: unknown, support: PasskeySupport = "u
         };
   }
 
-  if (/PRF/.test(raw)) {
-    return { kind: "unsupported-browser", message: "Browser not supported. Please try another browser.", canRetry: false };
+  const unsupported = passkeyUnsupportedReason(err);
+  if (unsupported === "no-prf") {
+    return {
+      kind: "unsupported-passkey",
+      message: "This passkey can't protect a wallet. Try again and save it on your phone or in your password manager.",
+      canRetry: true,
+    };
+  }
+  if (unsupported === "no-webauthn") {
+    return {
+      kind: "no-passkeys",
+      message: "Passkeys aren't available here. Open Medialane in a regular browser window or on another device.",
+      canRetry: false,
+    };
   }
 
   if (/has not appeared|submitted but/i.test(raw)) {
