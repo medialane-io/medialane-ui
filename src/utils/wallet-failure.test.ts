@@ -1,7 +1,8 @@
 import { describe, expect, test } from "bun:test";
-import { describeWalletFailure, isPasskeyCancelled } from "./wallet-failure.js";
+import { describeWalletFailure, isPasskeyCancelled, passkeyUnsupportedReason } from "./wallet-failure.js";
 
 const cancelled = Object.assign(new Error("Passkey prompt was cancelled."), { name: "PasskeyCancelledError" });
+const unsupported = (reason: string) => Object.assign(new Error("unsupported"), { name: "PasskeyUnsupportedError", reason });
 
 describe("telling a closed passkey prompt from other failures", () => {
   test("recognises the SDK's cancelled error by name, even from another copy of the package", () => {
@@ -69,9 +70,32 @@ describe("other failures each get their own plain message", () => {
     }
   });
 
-  test("an unsupported browser still gets the short advice and no retry", () => {
-    const notice = describeWalletFailure(new Error("This browser didn't return a passkey PRF secret."));
-    expect(notice).toEqual({ kind: "unsupported-browser", message: "Browser not supported. Please try another browser.", canRetry: false });
+  test("a passkey that can't protect a wallet suggests saving it somewhere else, and offers a retry", () => {
+    expect(describeWalletFailure(unsupported("no-prf"))).toEqual({
+      kind: "unsupported-passkey",
+      message: "This passkey can't protect a wallet. Try again and save it on your phone or in your password manager.",
+      canRetry: true,
+    });
+  });
+
+  test("no passkeys at all says so, with no retry", () => {
+    expect(describeWalletFailure(unsupported("no-webauthn"))).toEqual({
+      kind: "no-passkeys",
+      message: "Passkeys aren't available here. Open Medialane in a regular browser window or on another device.",
+      canRetry: false,
+    });
+  });
+
+  test("the SDK's unsupported error is recognised by name, even from another copy of the package", () => {
+    expect(passkeyUnsupportedReason(unsupported("no-prf"))).toBe("no-prf");
+    expect(passkeyUnsupportedReason(unsupported("no-webauthn"))).toBe("no-webauthn");
+    expect(passkeyUnsupportedReason(unsupported("other"))).toBeNull();
+    expect(passkeyUnsupportedReason(new Error("PRF"))).toBeNull();
+    expect(passkeyUnsupportedReason(null)).toBeNull();
+  });
+
+  test("error text that merely mentions PRF is not treated as unsupported", () => {
+    expect(describeWalletFailure(new Error("Passkey PRF unavailable")).kind).toBe("unknown");
   });
 
   test("anything else is the short generic message, with a retry", () => {
@@ -90,7 +114,8 @@ describe("what the messages never say", () => {
     new TypeError("Failed to fetch"),
     new Error("has not appeared on Starknet yet"),
     new Error("Sponsored deploy failed: x"),
-    new Error("PRF"),
+    unsupported("no-prf"),
+    unsupported("no-webauthn"),
     new Error("nope"),
   ];
 
@@ -98,7 +123,7 @@ describe("what the messages never say", () => {
     for (const err of errors) {
       for (const support of ["available", "unavailable", "unknown"] as const) {
         const { message } = describeWalletFailure(err, support);
-        for (const word of ["Safari", "Chrome", "Brave", "Firefox", "PRF", "WebAuthn", "Starknet", "ERC"]) {
+        for (const word of ["Safari", "Chrome", "Brave", "Firefox", "Edge", "PRF", "WebAuthn", "Starknet", "ERC"]) {
           expect(message).not.toContain(word);
         }
       }

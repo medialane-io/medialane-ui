@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.178.0] — 2026-10-09
+
+### Added
+
+- `passkeyUnsupportedReason(err)`, `PasskeyUnsupportedReason`.
+
+### Changed
+
+- `describeWalletFailure` maps by error name; `WalletFailureKind` `unsupported-browser` renamed to `unsupported-passkey`.
+- Peer `@medialane/sdk` >=0.161.0.
+
 ## [0.177.0] — 2026-10-09
 
 ### Changed
