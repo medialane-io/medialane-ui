@@ -66,13 +66,13 @@ export function describeWalletFailure(err: unknown, support: PasskeySupport = "u
   if (/has not appeared|submitted but/i.test(raw)) {
     return {
       kind: "still-deploying",
-      message: "Your account is still being secured. Give it a minute, then try again. Nothing is lost.",
+      message: "Your wallet is still being set up. Give it a minute, then try again. Nothing is lost.",
       canRetry: true,
     };
   }
 
   if (/deploy/i.test(raw)) {
-    return { kind: "deployment", message: "We couldn't finish securing your account. Please try again in a moment.", canRetry: true };
+    return { kind: "deployment", message: "We couldn't finish setting up your wallet. Please try again in a moment.", canRetry: true };
   }
 
   if (/failed to fetch|networkerror|load failed|network request failed/i.test(raw)) {

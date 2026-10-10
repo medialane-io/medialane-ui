@@ -1,11 +1,5 @@
 # Changelog
 
-## [0.182.0] — 2026-10-10
-
-### Changed
-
-- `describeWalletFailure`: copy for `deployment` and not-yet-deployed notices.
-
 ## [0.181.0] — 2026-10-10
 
 ### Changed
