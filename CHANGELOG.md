@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.181.0] — 2026-10-10
+
+### Changed
+
+- `createAppWallet`: `passkeyUser` id is random per registration; `knownCredentials` is empty.
+
+### Removed
+
+- `stableUserId`, `decodeCredentialId`.
+
 ## [0.180.0] — 2026-10-09
 
 ### Changed

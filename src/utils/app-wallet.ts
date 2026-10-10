@@ -24,17 +24,6 @@ export interface AppWalletConfig {
 
 const encode = (value: string): Uint8Array<ArrayBuffer> => new TextEncoder().encode(value) as Uint8Array<ArrayBuffer>;
 
-export async function stableUserId(email: string): Promise<Uint8Array<ArrayBuffer>> {
-  return new Uint8Array(await crypto.subtle.digest("SHA-256", encode(email)));
-}
-
-export function decodeCredentialId(id: string): Uint8Array<ArrayBuffer> {
-  const binary = atob(id);
-  const raw = new Uint8Array(binary.length);
-  for (let i = 0; i < binary.length; i++) raw[i] = binary.charCodeAt(i);
-  return raw;
-}
-
 export function createAppWallet(config: AppWalletConfig) {
   const ownerStore = createOwnerStore({ storeKey: config.storeKey, changeEvent: config.changeEvent });
 
@@ -45,20 +34,10 @@ export function createAppWallet(config: AppWalletConfig) {
     prfSalt: encode(config.prfSalt),
     hkdfInfo: encode(config.hkdfInfo),
     passkeyUser: async () => {
-      const email = config.loadAccountEmail();
-      if (!email) {
-        return {
-          id: crypto.getRandomValues(new Uint8Array(16)),
-          name: config.appName,
-          displayName: config.appName,
-        };
-      }
-      return { id: await stableUserId(email), name: email, displayName: email };
+      const name = config.loadAccountEmail() ?? config.appName;
+      return { id: crypto.getRandomValues(new Uint8Array(16)), name, displayName: name };
     },
-    knownCredentials: () => {
-      const id = ownerStore.load()?.credentialId;
-      return id ? [{ type: "public-key", id: decodeCredentialId(id) }] : [];
-    },
+    knownCredentials: () => [],
   });
 
   const walletConsent = createSelfFundConsent((address, calls) =>
