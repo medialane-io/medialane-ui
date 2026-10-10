@@ -53,7 +53,7 @@ describe("other failures each get their own plain message", () => {
       new Error("Your wallet was submitted but has not appeared on Starknet yet. Please try again in a moment."),
     );
     expect(notice.kind).toBe("still-deploying");
-    expect(notice.message).toBe("Your wallet is still being set up. Give it a minute, then try again. Nothing is lost.");
+    expect(notice.message).toBe("Your account is still being secured. Give it a minute, then try again. Nothing is lost.");
     expect(notice.message).not.toContain("Starknet");
   });
 
@@ -65,7 +65,7 @@ describe("other failures each get their own plain message", () => {
     ]) {
       const notice = describeWalletFailure(new Error(msg));
       expect(notice.kind).toBe("deployment");
-      expect(notice.message).toBe("We couldn't finish setting up your wallet. Please try again in a moment.");
+      expect(notice.message).toBe("We couldn't finish securing your account. Please try again in a moment.");
       expect(notice.canRetry).toBe(true);
     }
   });
