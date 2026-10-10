@@ -124,7 +124,7 @@ export {
 export { timeAgo, timeUntil, isExpired } from "./utils/time.js";
 export { toDisplayUrl, toDisplayUrlOrNull, toAbsoluteImageUrl, type DisplayUrlOptions } from "./utils/ipfs.js";
 export { isSameAddress } from "./utils/same-address.js";
-export { createAppWallet, stableUserId, decodeCredentialId } from "./utils/app-wallet.js";
+export { createAppWallet } from "./utils/app-wallet.js";
 export type { AppWalletConfig } from "./utils/app-wallet.js";
 export { detectPasskeySupport } from "./utils/passkey-support.js";
 export type { PasskeySupport } from "./utils/passkey-support.js";
