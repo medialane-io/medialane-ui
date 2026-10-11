@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.182.0] — 2026-10-11
+
+### Changed
+
+- `FastMintSigner.execute(calls, opts?)` accepts intent ids.
+- Requires `@medialane/sdk` 0.168.0 for development.
+
 ## [0.181.0] — 2026-10-10
 
 ### Changed
