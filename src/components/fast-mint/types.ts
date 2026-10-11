@@ -7,7 +7,7 @@ export type MediaKind = "image" | "audio" | "video" | "document";
 
 export interface FastMintSigner {
   readonly address: string;
-  execute(calls: Call[]): Promise<{ txHash: string }>;
+  execute(calls: Call[], opts?: { intentIds?: string[] }): Promise<{ txHash: string }>;
   signTypedData(data: TypedData): Promise<string[]>;
 }
 
