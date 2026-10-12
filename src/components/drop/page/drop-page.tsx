@@ -2,7 +2,6 @@
 
 import { useMemo, useState } from "react";
 import { Package } from "lucide-react";
-import type { ResolvedFeeConfig } from "@medialane/sdk";
 import { dropMintState } from "@medialane/sdk/starknet";
 import Image from "../../image.js";
 import { CreatorChip } from "../../creator-chip.js";
@@ -18,7 +17,7 @@ import { DropMintDialog } from "./drop-mint-dialog.js";
 import { GradientButton } from "../../gradient-button.js";
 import { ipfsToHttp } from "../../../utils/ipfs.js";
 import { useCollectionTokens } from "../../../utils/use-collections.js";
-import { useDrop, useDropChain, useDropFile, useDropMints } from "../../../utils/use-drops.js";
+import { useDrop, useDropChain, useDropFee, useDropFile, useDropMints } from "../../../utils/use-drops.js";
 import { useNow } from "../../../utils/drop/use-now.js";
 import { actionBoxView } from "../../../utils/drop/view.js";
 import { claimProofFor } from "../../../utils/drop/claim-proof.js";
@@ -27,14 +26,16 @@ import type { DropAppProps } from "../../../utils/drop/types.js";
 
 type TokenFile = { image?: string; attributes?: { trait_type?: string; value?: string }[] };
 
-export function DropPage(props: DropAppProps & { contract: string; feeConfig: ResolvedFeeConfig; initialTab?: string; portfolioHref?: string }) {
+export function DropPage(props: DropAppProps & { contract: string; initialTab?: string; portfolioHref?: string }) {
   const { contract, getClient, provider, walletAddress } = props;
   const { drop: indexed, isLoading } = useDrop(getClient, contract);
   const chain = useDropChain(provider, contract, walletAddress);
   const { mints, mutate: refreshMints } = useDropMints(getClient, contract);
+  const feeBps = useDropFee(getClient);
   const collectionFile = useDropFile<{ drop_kind?: string }>(getClient, indexed?.baseUri ?? null, "collection.json");
+  const isCollection = collectionFile?.drop_kind === "collection";
   const firstToken = useDropFile<TokenFile>(getClient, indexed?.baseUri ?? null, "1");
-  const { tokens } = useCollectionTokens(getClient, contract, 1, 24);
+  const { tokens } = useCollectionTokens(getClient, isCollection ? contract : null, 1, 24);
   const now = useNow();
   const [quantity, setQuantity] = useState(1n);
   const [minting, setMinting] = useState(false);
@@ -56,10 +57,11 @@ export function DropPage(props: DropAppProps & { contract: string; feeConfig: Re
   }
 
   const onchain = chain.drop;
-  const mint = dropMintState({ drop: onchain, wallet: walletAddress, claimed: chain.claimed, proof, balance: chain.balance, feeConfig: props.feeConfig, now });
-  const view = onchain ? actionBoxView({ drop: onchain, mint, quantity, feeConfig: props.feeConfig, now }) : null;
+  // Until the fee is known the mint box counts as loading: no total, no mint button on a guessed fee.
+  const priced = feeBps === null ? null : onchain;
+  const mint = dropMintState({ drop: priced, wallet: walletAddress, claimed: chain.claimed, proof, balance: chain.balance, feeBps: feeBps ?? 0, now });
+  const view = priced ? actionBoxView({ drop: priced, mint, quantity, feeBps: feeBps!, now }) : null;
   const isOrganizer = !!walletAddress && !!onchain && BigInt(walletAddress) === BigInt(onchain.organizer);
-  const isCollection = collectionFile?.drop_kind === "collection";
   const art = firstToken?.image ?? indexed?.image ?? null;
   const name = indexed?.name ?? "Drop";
   const deps = async () => ({ client: getClient(), provider, signer: await props.getSigner() });

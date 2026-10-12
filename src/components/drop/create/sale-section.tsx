@@ -1,7 +1,7 @@
 "use client";
 
 import { Tag } from "lucide-react";
-import { getListableTokens, type ResolvedFeeConfig } from "@medialane/sdk";
+import { getListableTokens } from "@medialane/sdk";
 import { Input } from "../../input.js";
 import { Switch } from "../../switch.js";
 import { Section, ToggleGroup } from "../../create-form-primitives.js";
@@ -9,10 +9,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from ".
 import { collectorPriceLine, type SaleDraft } from "../../../utils/drop/sale.js";
 import { FieldError, type SectionProps } from "./artwork-section.js";
 
-export function SaleSection({ draft, setDraft, errors, feeConfig }: SectionProps & { feeConfig: ResolvedFeeConfig }) {
+export function SaleSection({ draft, setDraft, errors, feeBps }: SectionProps & { feeBps: number | null }) {
   const sale = draft.sale;
   const set = (patch: Partial<SaleDraft>) => setDraft({ sale: { ...sale, ...patch } });
-  const line = collectorPriceLine(sale, feeConfig);
+  const line = feeBps === null ? null : collectorPriceLine(sale, feeBps);
   return (
     <Section title="Sale" icon={<Tag className="h-4 w-4" />}>
       <ToggleGroup value={sale.paid ? "Paid" : "Free"} options={["Free", "Paid"]} onChange={(v) => set({ paid: v === "Paid" })} />

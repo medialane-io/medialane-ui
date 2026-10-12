@@ -1,6 +1,6 @@
 import { test, expect } from "bun:test";
 import { renderToStaticMarkup } from "react-dom/server";
-import { DropStatusBadge, DropSupplyProgress } from "./drop-status-display.js";
+import { DropStatusBadge, DropSupplyProgress } from "./drop-status.js";
 
 test("DropStatusBadge renders the live label with a pulse dot", () => {
   const html = renderToStaticMarkup(<DropStatusBadge phase="live" />);

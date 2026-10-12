@@ -1,7 +1,7 @@
 "use client";
 
-import { cn } from "../utils/cn.js";
-import type { DropPhase } from "../utils/drop/view.js";
+import { cn } from "../../utils/cn.js";
+import type { DropPhase } from "../../utils/drop/view.js";
 
 export function DropStatusBadge({ phase }: { phase: DropPhase }) {
   const map = {

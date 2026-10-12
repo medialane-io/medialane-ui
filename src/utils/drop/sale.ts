@@ -1,5 +1,5 @@
-import { formatAmount, getListableTokens, getTokenByAddress, parseAmount, type DropTermsBody, type ResolvedFeeConfig } from "@medialane/sdk";
-import { dropMintCost, feeBps } from "@medialane/sdk/starknet";
+import { formatAmount, getListableTokens, getTokenByAddress, parseAmount, type DropTermsBody } from "@medialane/sdk";
+import { dropMintCost } from "@medialane/sdk/starknet";
 
 export interface SaleDraft {
   paid: boolean;
@@ -66,14 +66,14 @@ export function toDropTerms(d: SaleDraft): DropTermsBody {
 }
 
 /** What one token costs a collector, with the platform fee; null while the price is free or unfinished. */
-export function collectorPriceLine(d: SaleDraft, cfg: ResolvedFeeConfig): string | null {
+export function collectorPriceLine(d: SaleDraft, feeBps: number): string | null {
   const token = d.paid ? saleToken(d.tokenSymbol) : null;
   if (!token || validateSale({ ...EMPTY_SALE, paid: true, price: d.price, tokenSymbol: d.tokenSymbol }, 0).price) return null;
   const price = BigInt(parseAmount(d.price, token.decimals));
-  const { fee, total } = dropMintCost(price, 1, cfg);
+  const { fee, total } = dropMintCost(price, 1, feeBps);
   const amount = (v: bigint) => `${formatAmount(v.toString(), token.decimals)} ${token.symbol}`;
   if (fee === 0n) return `Collectors pay ${amount(price)}.`;
-  return `Collectors pay ${amount(total)} (incl. ${feeBps("launchpad", cfg) / 100}% platform fee). You receive ${amount(price)}.`;
+  return `Collectors pay ${amount(total)} (incl. ${feeBps / 100}% platform fee). You receive ${amount(price)}.`;
 }
 
 export function priceLabel(price: string, paymentToken: string): string {

@@ -1,4 +1,4 @@
-import { formatAmount, getTokenByAddress, type ResolvedFeeConfig } from "@medialane/sdk";
+import { formatAmount, getTokenByAddress } from "@medialane/sdk";
 import { dropMintCost, type DropMintState, type DropOnchain } from "@medialane/sdk/starknet";
 import { priceLabel } from "./sale.js";
 
@@ -29,10 +29,11 @@ export function actionBoxView(input: {
   drop: DropOnchain;
   mint: DropMintState;
   quantity: bigint;
-  feeConfig: ResolvedFeeConfig;
+  /** Platform fee added to a mint, in basis points. */
+  feeBps: number;
   now: number;
 }): ActionBoxView {
-  const { drop, mint, feeConfig, now } = input;
+  const { drop, mint, feeBps, now } = input;
   const phase = dropPhase(drop, drop.maxSupply, drop.totalMinted, now);
   const token = getTokenByAddress(drop.paymentToken);
   const listed = BigInt(drop.allowlistRoot) !== 0n;
@@ -50,7 +51,7 @@ export function actionBoxView(input: {
 
   let totalText: string | null = null;
   if (mint.state === "ready" && drop.price > 0n && token) {
-    const { total } = dropMintCost(drop.price, quantity, feeConfig);
+    const { total } = dropMintCost(drop.price, quantity, feeBps);
     totalText = `Total ${formatAmount(total.toString(), token.decimals)} ${token.symbol} (incl. platform fee)`;
   }
 

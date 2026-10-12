@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { CheckCircle2, Loader2, RotateCcw, XCircle } from "lucide-react";
 import { dropHref } from "@medialane/sdk";
 import { buildPopAllowlist, dropClaimLinks, popClaimLinksCsv, type PopClaimLink } from "@medialane/sdk/starknet";
@@ -32,7 +32,10 @@ export function LaunchDialog({ open, onClose, draft, app }: { open: boolean; onC
   const client = app.getClient();
   const files = draft.kind === "edition" ? (draft.edition ? [draft.edition] : []) : draft.items.map((i) => i.file);
   const terms = toDropTerms(draft.sale);
-  const list = draft.listOnly ? buildPopAllowlist(parseAllowlist(draft.allowlist).addresses) : null;
+  const list = useMemo(
+    () => (draft.listOnly ? buildPopAllowlist(parseAllowlist(draft.allowlist).addresses) : null),
+    [draft.listOnly, draft.allowlist],
+  );
 
   const run = async () => {
     try {
