@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { Lock } from "lucide-react";
 import type { ResolvedFeeConfig } from "@medialane/sdk";
 import Image from "../../image.js";
@@ -15,6 +15,7 @@ import { LaunchDialog } from "./launch-dialog.js";
 import { FieldError } from "./artwork-section.js";
 import { EMPTY_DRAFT, draftSupply, validateDropDraft, type DropDraft } from "../../../utils/drop/draft.js";
 import { collectorPriceLine } from "../../../utils/drop/sale.js";
+import { previewUrl } from "../../../utils/drop/preview.js";
 import type { DropAppProps } from "../../../utils/drop/types.js";
 
 export function DropCreate(props: DropAppProps & { feeConfig: ResolvedFeeConfig }) {
@@ -63,7 +64,7 @@ export function DropCreate(props: DropAppProps & { feeConfig: ResolvedFeeConfig 
 /** The drop as collectors will see it, updated as the form changes. */
 export function DraftSummary({ draft, feeConfig }: { draft: DropDraft; feeConfig: ResolvedFeeConfig }) {
   const art = draft.cover ?? (draft.kind === "edition" ? draft.edition : draft.items[0]?.file ?? null);
-  const preview = useMemo(() => (art ? URL.createObjectURL(art) : null), [art]);
+  const preview = art ? previewUrl(art) : null;
   const supply = draftSupply(draft);
   return (
     <div className="overflow-hidden rounded-2xl border border-border bg-card">

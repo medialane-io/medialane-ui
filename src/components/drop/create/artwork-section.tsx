@@ -8,6 +8,7 @@ import { Section, ToggleGroup } from "../../create-form-primitives.js";
 import { DropItemList } from "../../drop-item-list.js";
 import { MAX_DROP_SUPPLY } from "../../../utils/drop/metadata.js";
 import type { DropDraft, DropDraftErrors } from "../../../utils/drop/draft.js";
+import { previewUrl } from "../../../utils/drop/preview.js";
 
 export interface SectionProps {
   draft: DropDraft;
@@ -21,7 +22,7 @@ export function FieldError({ message }: { message?: string }) {
 
 export function ImagePick({ file, onPick, label }: { file: File | null; onPick: (f: File) => void; label: string }) {
   const ref = useRef<HTMLInputElement | null>(null);
-  const preview = file ? URL.createObjectURL(file) : null;
+  const preview = file ? previewUrl(file) : null;
   return (
     <button type="button" onClick={() => ref.current?.click()}
       className="relative flex aspect-square w-full max-w-xs items-center justify-center overflow-hidden rounded-xl border border-dashed border-border bg-muted/30 hover:border-primary/50">
