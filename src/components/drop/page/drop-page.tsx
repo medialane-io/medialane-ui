@@ -29,7 +29,7 @@ type TokenFile = { image?: string; attributes?: { trait_type?: string; value?: s
 export function DropPage(props: DropAppProps & { contract: string; initialTab?: string; portfolioHref?: string }) {
   const { contract, getClient, provider, walletAddress } = props;
   const { drop: indexed, isLoading } = useDrop(getClient, contract);
-  const chain = useDropChain(provider, contract, walletAddress);
+  const chain = useDropChain(getClient, provider, contract, walletAddress);
   const { mints, mutate: refreshMints } = useDropMints(getClient, contract);
   const feeBps = useDropFee(getClient);
   const collectionFile = useDropFile<{ drop_kind?: string }>(getClient, indexed?.baseUri ?? null, "collection.json");
