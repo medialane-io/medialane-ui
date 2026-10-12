@@ -6,8 +6,10 @@ export const MAX_DROP_METADATA_BYTES = 5 * 1024 * 1024;
 
 export type DropKind = "edition" | "collection";
 
-export type DropLicense = Required<Pick<BuildAssetMetadataInput,
-  "ipType" | "licenseType" | "commercialUse" | "derivatives" | "attribution" | "geographicScope" | "aiPolicy" | "royalty">>;
+export type DropLicense = Record<
+  keyof Pick<BuildAssetMetadataInput, "ipType" | "licenseType" | "commercialUse" | "derivatives" | "attribution" | "geographicScope" | "aiPolicy" | "royalty">,
+  string
+>;
 
 export interface DropMetadataInput {
   kind: DropKind;
