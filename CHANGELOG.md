@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.185.0] — 2026-10-12
+
+### Added
+
+- `useDropFee(getClient)`: the platform fee for a mint, read from the backend.
+- `DropFeatures`: the drop features strip.
+
+### Changed
+
+- `DropCreate` and `DropPage` read the fee with `useDropFee`; the `feeConfig` prop is removed. `collectorPriceLine` and `actionBoxView` take the fee in basis points.
+- `DropPage` loads collection items only for collection drops; `LaunchDialog` builds the allowlist once per list change.
+- `DropStatusBadge` and `DropSupplyProgress` moved to `components/drop/drop-status` (same exports).
+- Requires `@medialane/sdk` 0.171.0.
+
 ## [0.184.0] — 2026-10-11
 
 ### Added

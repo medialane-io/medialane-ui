@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { getTokenBySymbol, resolveFeeConfig } from "@medialane/sdk";
+import { getTokenBySymbol } from "@medialane/sdk";
 import { EMPTY_SALE, collectorPriceLine, priceLabel, supplyLabel, toDropTerms, validateSale } from "./sale.js";
 
 const NOW = 1_800_000_000;
@@ -8,7 +8,6 @@ const local = (unix: number) => {
   const p = (n: number) => String(n).padStart(2, "0");
   return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}T${p(d.getHours())}:${p(d.getMinutes())}`;
 };
-const cfg = resolveFeeConfig({ fundAddress: "0x123" }); // launchpad 100 bps
 const USDC = getTokenBySymbol("USDC")!;
 
 describe("sale terms", () => {
@@ -44,11 +43,11 @@ describe("sale terms", () => {
   });
 
   test("the collector line includes the platform fee", () => {
-    expect(collectorPriceLine({ ...EMPTY_SALE, paid: true, price: "5", tokenSymbol: "USDC" }, cfg))
+    expect(collectorPriceLine({ ...EMPTY_SALE, paid: true, price: "5", tokenSymbol: "USDC" }, 100))
       .toBe("Collectors pay 5.05 USDC (incl. 1% platform fee). You receive 5 USDC.");
-    expect(collectorPriceLine({ ...EMPTY_SALE, paid: true, price: "5", tokenSymbol: "USDC" }, resolveFeeConfig({})))
+    expect(collectorPriceLine({ ...EMPTY_SALE, paid: true, price: "5", tokenSymbol: "USDC" }, 0))
       .toBe("Collectors pay 5 USDC.");
-    expect(collectorPriceLine(EMPTY_SALE, cfg)).toBeNull();
+    expect(collectorPriceLine(EMPTY_SALE, 100)).toBeNull();
   });
 
   test("labels", () => {

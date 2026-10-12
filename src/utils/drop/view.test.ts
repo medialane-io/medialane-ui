@@ -1,17 +1,16 @@
 import { describe, expect, test } from "bun:test";
-import { getTokenBySymbol, normalizeAddress, resolveFeeConfig } from "@medialane/sdk";
+import { getTokenBySymbol, normalizeAddress } from "@medialane/sdk";
 import type { DropMintState, DropOnchain } from "@medialane/sdk/starknet";
 import { actionBoxView, dropPhase } from "./view.js";
 
 const NOW = 1_800_000_000;
-const cfg = resolveFeeConfig({ fundAddress: "0x123" });
 const USDC = normalizeAddress("STARKNET", getTokenBySymbol("USDC")!.address);
 const drop = (over: Partial<DropOnchain> = {}): DropOnchain => ({
   organizer: "0x1", startTime: 0, endTime: 0, price: 0n, paymentToken: normalizeAddress("STARKNET", "0x0"),
   maxPerWallet: 0n, allowlistRoot: "0x0", maxSupply: 500n, totalMinted: 310n, ...over,
 });
 const view = (state: DropMintState["state"], over: Partial<DropOnchain> = {}, maxQuantity = 0n, quantity = 1n) =>
-  actionBoxView({ drop: drop(over), mint: { state, maxQuantity }, quantity, feeConfig: cfg, now: NOW });
+  actionBoxView({ drop: drop(over), mint: { state, maxQuantity }, quantity, feeBps: 100, now: NOW });
 
 describe("dropPhase", () => {
   test("upcoming, live at the edges, ended, sold out", () => {

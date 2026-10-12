@@ -1,6 +1,5 @@
 import { expect, test } from "bun:test";
 import { renderToStaticMarkup } from "react-dom/server";
-import { resolveFeeConfig } from "@medialane/sdk";
 import { DropCreate } from "./drop-create.js";
 
 const props = {
@@ -9,7 +8,6 @@ const props = {
   getSigner: () => { throw new Error("not used"); },
   walletAddress: "0x1",
   onRequireWallet: () => {},
-  feeConfig: resolveFeeConfig({ fundAddress: "0x123" }),
 };
 
 test("the create page opens on an edition with every section", () => {

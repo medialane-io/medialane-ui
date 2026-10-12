@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { Lock } from "lucide-react";
-import type { ResolvedFeeConfig } from "@medialane/sdk";
 import Image from "../../image.js";
 import { GradientButton } from "../../gradient-button.js";
 import { CollapsibleSection } from "../../collapsible-section.js";
@@ -17,8 +16,10 @@ import { EMPTY_DRAFT, draftSupply, validateDropDraft, type DropDraft } from "../
 import { collectorPriceLine } from "../../../utils/drop/sale.js";
 import { previewUrl } from "../../../utils/drop/preview.js";
 import type { DropAppProps } from "../../../utils/drop/types.js";
+import { useDropFee } from "../../../utils/use-drops.js";
 
-export function DropCreate(props: DropAppProps & { feeConfig: ResolvedFeeConfig }) {
+export function DropCreate(props: DropAppProps) {
+  const feeBps = useDropFee(props.getClient);
   const [draft, setDraftState] = useState<DropDraft>(EMPTY_DRAFT);
   const [tried, setTried] = useState(false);
   const [launching, setLaunching] = useState(false);
@@ -36,7 +37,7 @@ export function DropCreate(props: DropAppProps & { feeConfig: ResolvedFeeConfig 
     <div className="space-y-5 lg:order-1 order-2">
       <ArtworkSection draft={draft} setDraft={setDraft} errors={errors} />
       <DetailsSection draft={draft} setDraft={setDraft} errors={errors} />
-      <SaleSection draft={draft} setDraft={setDraft} errors={errors} feeConfig={props.feeConfig} />
+      <SaleSection draft={draft} setDraft={setDraft} errors={errors} feeBps={feeBps} />
       <ListSection draft={draft} setDraft={setDraft} errors={errors} />
       <CollapsibleSection
         open={draft.gated.enabled}
@@ -55,14 +56,14 @@ export function DropCreate(props: DropAppProps & { feeConfig: ResolvedFeeConfig 
       {launching && <LaunchDialog open onClose={() => setLaunching(false)} draft={draft} app={props} />}
     </div>
     <div className="order-1 lg:order-2">
-      <div className="lg:sticky lg:top-24"><DraftSummary draft={draft} feeConfig={props.feeConfig} /></div>
+      <div className="lg:sticky lg:top-24"><DraftSummary draft={draft} feeBps={feeBps} /></div>
     </div>
     </div>
   );
 }
 
 /** The drop as collectors will see it, updated as the form changes. */
-export function DraftSummary({ draft, feeConfig }: { draft: DropDraft; feeConfig: ResolvedFeeConfig }) {
+export function DraftSummary({ draft, feeBps }: { draft: DropDraft; feeBps: number | null }) {
   const art = draft.cover ?? (draft.kind === "edition" ? draft.edition : draft.items[0]?.file ?? null);
   const preview = art ? previewUrl(art) : null;
   const supply = draftSupply(draft);
@@ -74,7 +75,7 @@ export function DraftSummary({ draft, feeConfig }: { draft: DropDraft; feeConfig
       <div className="space-y-1 p-4">
         <p className="truncate font-semibold">{draft.name || "Untitled drop"}</p>
         <p className="text-xs text-muted-foreground">
-          {draft.sale.paid ? collectorPriceLine(draft.sale, feeConfig) ?? "Set a price" : "Free"}
+          {draft.sale.paid ? (feeBps === null ? "…" : collectorPriceLine(draft.sale, feeBps) ?? "Set a price") : "Free"}
         </p>
         <p className="text-xs text-muted-foreground">
           {Number.isFinite(supply) && supply > 0 ? `${supply.toLocaleString("en-US")} ${draft.kind === "edition" ? "copies" : "items"}` : "Supply not set"}

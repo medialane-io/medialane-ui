@@ -3,7 +3,7 @@
 import { dropHref, type ApiDrop } from "@medialane/sdk";
 import Image from "../image.js";
 import Link from "../link.js";
-import { DropStatusBadge } from "../drop-status-display.js";
+import { DropStatusBadge } from "./drop-status.js";
 import { ipfsToHttp } from "../../utils/ipfs.js";
 import { dropPhase } from "../../utils/drop/view.js";
 import { priceLabel, supplyLabel } from "../../utils/drop/sale.js";

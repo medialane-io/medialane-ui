@@ -179,9 +179,10 @@ export type { ActivityTimelineRowProps } from "./components/activity-timeline-ro
 export { DropItemList } from "./components/drop-item-list.js";
 export type { DraftItem } from "./components/drop-item-list.js";
 export { getDefaultClaimWindow, suggestLaunchpadSymbol } from "./utils/launchpad-defaults.js";
-export { DropStatusBadge, DropSupplyProgress } from "./components/drop-status-display.js";
+export { DropStatusBadge, DropSupplyProgress } from "./components/drop/drop-status.js";
 export { DropCard, DropGrid, DropGridSkeleton } from "./components/drop/drop-card.js";
 export { DropListing } from "./components/drop/drop-listing.js";
+export { DropFeatures } from "./components/drop/drop-features.js";
 export { MyDrops } from "./components/drop/my-drops.js";
 export { DropTokenLink } from "./components/drop/drop-token-link.js";
 export type { DropPhase } from "./utils/drop/view.js";
@@ -441,7 +442,7 @@ export {
 } from "./components/dialog.js";
 export { SelfFundConsentDialog, feeLabelFor } from "./components/wallet/self-fund-consent-dialog.js";
 export { ExportKeySection, type ExportKeySectionProps } from "./components/wallet/export-key-section.js";
-export { useDrops, useMyDrops, useDrop, useDropMints, useDropFile, useDropChain } from "./utils/use-drops.js";
+export { useDrops, useMyDrops, useDrop, useDropMints, useDropFee, useDropFile, useDropChain } from "./utils/use-drops.js";
 export type { DropChainState } from "./utils/use-drops.js";
 export { usePopCollections, useMyPopEvents, usePopClaimStatus } from "./utils/use-pop.js";
 export { usePlatformStats } from "./utils/use-platform-stats.js";

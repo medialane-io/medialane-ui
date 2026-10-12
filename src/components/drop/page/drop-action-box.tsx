@@ -2,7 +2,7 @@
 
 import { Minus, Plus } from "lucide-react";
 import { DropCountdown } from "../../drop-countdown.js";
-import { DropStatusBadge, DropSupplyProgress } from "../../drop-status-display.js";
+import { DropStatusBadge, DropSupplyProgress } from "../drop-status.js";
 import { GradientButton } from "../../gradient-button.js";
 import type { ActionBoxView } from "../../../utils/drop/view.js";
 
