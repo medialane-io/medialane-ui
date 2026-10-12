@@ -438,9 +438,8 @@ export {
 } from "./components/dialog.js";
 export { SelfFundConsentDialog, feeLabelFor } from "./components/wallet/self-fund-consent-dialog.js";
 export { ExportKeySection, type ExportKeySectionProps } from "./components/wallet/export-key-section.js";
-export {
-  useDropCollections, useMyDrops, useDropMintStatus, useDropInfo, useOnChainDropState,
-} from "./utils/use-drops.js";
+export { useDrops, useMyDrops, useDrop, useDropMints, useDropFile, useDropChain } from "./utils/use-drops.js";
+export type { DropChainState } from "./utils/use-drops.js";
 export { usePopCollections, useMyPopEvents, usePopClaimStatus } from "./utils/use-pop.js";
 export { usePlatformStats } from "./utils/use-platform-stats.js";
 export { useTokensByIpType } from "./utils/use-tokens-by-ip-type.js";

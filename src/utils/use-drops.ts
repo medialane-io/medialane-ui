@@ -1,56 +1,60 @@
 "use client";
 
 import useSWR from "swr";
-import type { ApiCollection, ApiDropInfo, ApiDropState, ApiMeta, DropMintStatus } from "@medialane/sdk";
-import type { MedialaneClient } from "@medialane/sdk/starknet";
+import type { ApiDrop, ApiDropListStatus, ApiDropMint } from "@medialane/sdk";
+import { dropClaimedBy, readDrop, type DropOnchain, type MedialaneClient } from "@medialane/sdk/starknet";
 import { useMedialaneClient } from "./use-medialane-client.js";
+import { erc20Balance } from "./drop/chain.js";
+import type { DropProvider } from "./drop/types.js";
 
-export function useDropCollections(getClient: () => MedialaneClient) {
+const quiet = { revalidateOnFocus: false, shouldRetryOnError: false } as const;
+
+export function useDrops(getClient: () => MedialaneClient, status: ApiDropListStatus) {
   const client = useMedialaneClient(getClient);
-  const { data, error, isLoading, mutate } = useSWR<{ data: ApiCollection[]; meta?: ApiMeta }>(
-    "drop-collections",
-    () => client.api.listCollections({ service: "drop-collection", hideEmpty: false, limit: 50 }),
-    { revalidateOnFocus: false }
-  );
-  return { collections: data?.data ?? [], meta: data?.meta, isLoading, error, mutate };
+  const { data, error, isLoading } = useSWR(["drops", status], () => client.api.getDrops({ status, limit: 48 }), quiet);
+  return { drops: data?.data ?? ([] as ApiDrop[]), isLoading, error };
 }
 
-export function useMyDrops(getClient: () => MedialaneClient, owner: string | null) {
+export function useMyDrops(getClient: () => MedialaneClient, organizer: string | null) {
   const client = useMedialaneClient(getClient);
-  const { data, error, isLoading, mutate } = useSWR<ApiCollection[]>(
-    owner ? `my-drops-${owner}` : null,
-    async () => (await client.api.listCollections({ service: "drop-collection", owner: owner!, limit: 50 })).data ?? [],
-    { revalidateOnFocus: false }
-  );
-  return { drops: data ?? [], isLoading, error, mutate };
+  const { data, error, isLoading } = useSWR(organizer ? ["my-drops", organizer] : null, () => client.api.getDrops({ organizer: organizer!, limit: 100 }), quiet);
+  return { drops: data?.data ?? ([] as ApiDrop[]), isLoading, error };
 }
 
-export function useDropMintStatus(getClient: () => MedialaneClient, collection: string | null, wallet: string | null) {
+export function useDrop(getClient: () => MedialaneClient, contract: string | null) {
   const client = useMedialaneClient(getClient);
-  const { data, error, isLoading, mutate } = useSWR<DropMintStatus>(
-    collection && wallet ? `drop-mint-status-${collection}-${wallet}` : null,
-    () => client.api.getDropMintStatus(collection!, wallet!),
-    { revalidateOnFocus: false, shouldRetryOnError: false }
-  );
-  return { mintStatus: data ?? null, isLoading, error, mutate };
+  const { data, error, isLoading, mutate } = useSWR(contract ? ["drop", contract] : null, () => client.api.getDrop(contract!), { ...quiet, refreshInterval: 30_000 });
+  return { drop: data ?? null, isLoading, error, mutate };
 }
 
-export function useDropInfo(getClient: () => MedialaneClient, contract: string | null) {
+export function useDropMints(getClient: () => MedialaneClient, contract: string | null) {
   const client = useMedialaneClient(getClient);
-  const { data, error, isLoading } = useSWR<ApiDropInfo | null>(
-    contract ? `drop-info-${contract}` : null,
-    () => client.api.getDropInfo(contract!),
-    { revalidateOnFocus: false, shouldRetryOnError: false }
-  );
-  return { dropInfo: data ?? null, isLoading, error };
+  const { data, isLoading, mutate } = useSWR(contract ? ["drop-mints", contract] : null, () => client.api.getDropMints(contract!, { limit: 20 }), { ...quiet, refreshInterval: 30_000 });
+  return { mints: data?.data ?? ([] as ApiDropMint[]), isLoading, mutate };
 }
 
-export function useOnChainDropState(getClient: () => MedialaneClient, contract: string | null) {
+/** A file from the drop's metadata folder ("1" or "collection.json"). */
+export function useDropFile<T = Record<string, unknown>>(getClient: () => MedialaneClient, baseUri: string | null, name: string) {
   const client = useMedialaneClient(getClient);
-  const { data, error, isLoading, mutate } = useSWR<ApiDropState>(
-    contract ? `drop-onchain-${contract}` : null,
-    () => client.api.getDropState(contract!),
-    { revalidateOnFocus: false, refreshInterval: 30_000, shouldRetryOnError: false }
-  );
-  return { state: data ?? null, isLoading, error, mutate };
+  const { data } = useSWR(baseUri ? ["drop-file", baseUri, name] : null, async () => (await client.api.resolveMetadata(`${baseUri}${name}`)).data as T, quiet);
+  return data ?? null;
+}
+
+export interface DropChainState {
+  drop: DropOnchain | null;
+  claimed: bigint | null;
+  balance: bigint | null;
+}
+
+/** The drop's terms and supply, the wallet's claims and balance — read from chain. */
+export function useDropChain(provider: DropProvider, contract: string | null, wallet: string | null) {
+  const { data, mutate, error } = useSWR(contract ? ["drop-chain", contract, wallet] : null, async (): Promise<DropChainState> => {
+    const drop = await readDrop(provider, contract!);
+    const [claimed, balance] = await Promise.all([
+      wallet ? dropClaimedBy(provider, contract!, wallet) : Promise.resolve(null),
+      wallet && drop.price > 0n ? erc20Balance(provider, drop.paymentToken, wallet) : Promise.resolve(null),
+    ]);
+    return { drop, claimed, balance };
+  }, { revalidateOnFocus: true, refreshInterval: 15_000 });
+  return { ...(data ?? { drop: null, claimed: null, balance: null }), error, mutate };
 }
