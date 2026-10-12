@@ -24,6 +24,12 @@ export interface AppWalletConfig {
 
 const encode = (value: string): Uint8Array<ArrayBuffer> => new TextEncoder().encode(value) as Uint8Array<ArrayBuffer>;
 
+export const APP_WALLET_DEFAULTS = {
+  backendUrl: "/api/proxy",
+  sponsoredInvokeUrl: "/api/proxy/v1/paymaster/invoke",
+  deployProxyUrl: "/api/proxy/v1/paymaster/deploy",
+} as const;
+
 export function createAppWallet(config: AppWalletConfig) {
   const ownerStore = createOwnerStore({ storeKey: config.storeKey, changeEvent: config.changeEvent });
 
@@ -49,12 +55,12 @@ export function createAppWallet(config: AppWalletConfig) {
     passkey: passkeyOwner,
     executor: sponsoredExecutor({
       provider: config.provider,
-      proxyUrl: config.sponsoredInvokeUrl ?? "/api/wallet/sponsored-invoke",
+      proxyUrl: config.sponsoredInvokeUrl ?? APP_WALLET_DEFAULTS.sponsoredInvokeUrl,
       consent: walletConsent,
     }),
     provider: config.provider,
-    backendUrl: config.backendUrl ?? "/api/proxy",
-    deployProxyUrl: config.deployProxyUrl ?? "/api/wallet/deploy-sponsored",
+    backendUrl: config.backendUrl ?? APP_WALLET_DEFAULTS.backendUrl,
+    deployProxyUrl: config.deployProxyUrl ?? APP_WALLET_DEFAULTS.deployProxyUrl,
   });
 
   return { ownerStore, passkeyOwner, walletConsent, mediaWallet };

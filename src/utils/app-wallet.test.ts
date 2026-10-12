@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { createAppWallet } from "./app-wallet.js";
+import { APP_WALLET_DEFAULTS, createAppWallet } from "./app-wallet.js";
 
 type CreateOptions = { publicKey: PublicKeyCredentialCreationOptions };
 
@@ -58,5 +58,13 @@ describe("a new wallet's passkey", () => {
     const { passkeyOwner } = wallet(btoa("old-credential"));
     await passkeyOwner.createOwnerKey().catch(() => {});
     expect(seen[0]!.publicKey.excludeCredentials ?? []).toEqual([]);
+  });
+});
+
+test("the wallet talks to the backend only through the app gateway", () => {
+  expect(APP_WALLET_DEFAULTS).toEqual({
+    backendUrl: "/api/proxy",
+    sponsoredInvokeUrl: "/api/proxy/v1/paymaster/invoke",
+    deployProxyUrl: "/api/proxy/v1/paymaster/deploy",
   });
 });

@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.187.0] — 2026-10-12
+
+### Changed
+
+- `createAppWallet` defaults (`APP_WALLET_DEFAULTS`) use the app gateway paths: `/api/proxy/v1/paymaster/invoke` and `/api/proxy/v1/paymaster/deploy`. Requires `@medialane/sdk` 0.173.0.
+
 ## [0.186.0] — 2026-10-12
 
 ### Added
