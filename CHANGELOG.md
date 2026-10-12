@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.184.0] — 2026-10-11
+
+### Added
+
+- Drop screens: `DropCreate` with `DraftSummary` (edition or collection, sale, list, launch dialog with parallel uploads and retry), `DropPage` (mint box with quantity, mint dialog, About / Items / Activity / License / Manage tabs), `DropListing`, `MyDrops`, `DropCard`, `DropGrid`, `DropTokenLink`, `ExclusiveFields`, `DropActionBox`, `DropActivityList`.
+- Hooks `useDrops`, `useMyDrops`, `useDrop`, `useDropMints`, `useDropFile`, `useDropChain`; `claimProofFor`; types `DropAppProps`, `DropSigner`, `DropProvider`, `DropPhase`.
+
+### Changed
+
+- `DropStatusBadge` takes `phase` (`upcoming | live | sold-out | ended`).
+- Requires `@medialane/sdk` 0.170.0.
+
+### Removed
+
+- `DropCreateForm`, `dropCreateSchema`, `DropPreviewCard`, `ExclusiveContentSection`, `DropPriceDisplay`, `getDropStatus`, `getDefaultDropSchedule`, `useDropCollections`, `useDropMintStatus`, `useDropInfo`, `useOnChainDropState`.
+
 ## [0.183.0] — 2026-10-11
 
 ### Changed

@@ -13,29 +13,6 @@ function formatTimeForInput(date: Date): string {
   return `${hours}:${minutes}`;
 }
 
-function roundUpToQuarterHour(date: Date): Date {
-  const rounded = new Date(date);
-  rounded.setSeconds(0, 0);
-  const minutes = rounded.getMinutes();
-  const delta = (15 - (minutes % 15)) % 15 || 15;
-  rounded.setMinutes(minutes + delta);
-  return rounded;
-}
-
-export function getDefaultDropSchedule(now = new Date()) {
-  const start = roundUpToQuarterHour(now);
-  const end = new Date(start);
-  end.setDate(end.getDate() + 7);
-  end.setHours(23, 59, 0, 0);
-
-  return {
-    startDate: formatDateForInput(start),
-    startTime: formatTimeForInput(start),
-    endDate: formatDateForInput(end),
-    endTime: formatTimeForInput(end),
-  };
-}
-
 export function getDefaultClaimWindow(daysFromNow = 30, now = new Date()) {
   const end = new Date(now);
   end.setDate(end.getDate() + daysFromNow);
