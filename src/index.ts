@@ -421,6 +421,7 @@ export { useMedialaneClient } from "./utils/use-medialane-client.js";
 export { MediaWalletOverlay, useMediaWallet } from "./components/media-wallet/media-wallet-overlay.js";
 export type {
   MediaWalletAppProps,
+  MediaWalletHeaderIdentity,
   MediaWalletSession,
   MediaWalletView,
   WalletWriteAction,
