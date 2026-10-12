@@ -417,6 +417,15 @@ export { CreatorScoreInline } from "./components/creator-score-inline.js";
 export type { CreatorScoreInlineProps } from "./components/creator-score-inline.js";
 
 export { useMedialaneClient } from "./utils/use-medialane-client.js";
+
+export { MediaWalletOverlay, useMediaWallet } from "./components/media-wallet/media-wallet-overlay.js";
+export type {
+  MediaWalletAppProps,
+  MediaWalletSession,
+  MediaWalletView,
+  WalletWriteAction,
+  WalletWriteStatus,
+} from "./components/media-wallet/types.js";
 export { useCreators } from "./utils/use-creators.js";
 export {
   useRewards, useLeaderboard, useRewardsEvents, useRewardsConfig, useRewardsBatch,
