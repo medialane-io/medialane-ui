@@ -2,7 +2,7 @@ import { LevelBadge } from "../src/components/rewards/level-badge.js";
 import { JourneyPath, type JourneyStep } from "../src/components/rewards/journey-path.js";
 import { NavIconButton } from "../src/components/nav-shell.js";
 import { PortfolioHeader } from "../src/components/portfolio-header.js";
-import { PortfolioOverview } from "../src/components/portfolio-overview.js";
+import { PortfolioSection } from "../src/components/portfolio-section.js";
 import { Award } from "lucide-react";
 
 const WIDTHS = [375, 768, 1024, 1440];
@@ -13,11 +13,11 @@ const SAMPLE_STEPS: JourneyStep[] = [
   { actionType: "c", label: "Third step", href: "#", icon: Award },
 ];
 
-const SAMPLE_TILES = [
-  { key: "assets", title: "Assets", href: "#", content: <div style={{ padding: 12 }}>12 assets</div> },
-  { key: "collections", title: "Collections", href: "#", content: <div style={{ padding: 12 }}>3 collections</div> },
-  { key: "activity", title: "Activity", href: "#", content: <div style={{ padding: 12 }}>Recent activity</div> },
-];
+const SAMPLE_SECTIONS = [
+  { title: "Assets", color: "blue", content: "12 assets" },
+  { title: "Collections", color: "purple", content: "3 collections" },
+  { title: "Activity", color: "rose", content: "Recent activity" },
+] as const;
 
 function Strip({ width, children }: { width: number; children: React.ReactNode }) {
   return (
@@ -49,7 +49,11 @@ export function App() {
             <PortfolioHeader address="0x0123456789abcdef0123456789abcdef01234567" score={{ levelName: "Fighter", totalXp: 1240, href: "#" }} />
           </div>
           <div style={{ marginTop: 16 }}>
-            <PortfolioOverview tiles={SAMPLE_TILES} />
+            {SAMPLE_SECTIONS.map((section) => (
+              <PortfolioSection key={section.title} title={section.title} href="#" color={section.color}>
+                <div style={{ padding: 12 }}>{section.content}</div>
+              </PortfolioSection>
+            ))}
           </div>
         </Strip>
       ))}
