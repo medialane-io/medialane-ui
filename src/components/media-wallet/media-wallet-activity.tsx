@@ -26,7 +26,8 @@ const gradFor = (seed: string) => {
 };
 
 export function MediaWalletActivity({ onNavigate }: { onNavigate: (view: MediaWalletView) => void }) {
-  const { session: { address }, getClient } = useMediaWalletApp();
+  const { useWalletSession, getClient } = useMediaWalletApp();
+  const { address } = useWalletSession();
   const [items, setItems] = useState<MergedActivityItem[] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);

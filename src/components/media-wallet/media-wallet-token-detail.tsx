@@ -22,7 +22,8 @@ export function MediaWalletTokenDetail({
   token: WalletToken;
   onNavigate: (view: MediaWalletView) => void;
 }) {
-  const { session: { address: walletAddress }, provider, explorerUrl } = useMediaWalletApp();
+  const { useWalletSession, provider, explorerUrl } = useMediaWalletApp();
+  const { address: walletAddress } = useWalletSession();
   const { rawBalance: bal } = useErc20Balance(provider, token.address, walletAddress);
   const usdPrices = useUsdPrices();
   const price = usdPriceFor(usdPrices, token.symbol) ?? null;

@@ -16,7 +16,7 @@ afterEach(() => cleanup());
 const ADDRESS = "0x36a8000000000000000000000000000000000020d2";
 const renderHeader = (app: Partial<MediaWalletAppProps>) =>
   render(
-    <MediaWalletAppContext.Provider value={{ accountEmail: null, ...app } as MediaWalletAppProps}>
+    <MediaWalletAppContext.Provider value={{ useAccountEmail: () => null, ...app } as MediaWalletAppProps}>
       <MediaWalletHeader address={ADDRESS} onNavigate={() => {}} />
     </MediaWalletAppContext.Provider>,
   );
@@ -29,7 +29,7 @@ test("without an identity it shows the wallet icon and the short address", () =>
 
 test("with an identity it shows the app's avatar, headline and badge", () => {
   const { getByText, queryByText, getByTestId } = renderHeader({
-    headerIdentity: { avatarUrl: "https://img/avatar.png", headline: "@mochi", badge: <span>Level 3</span> },
+    useHeaderIdentity: () => ({ avatarUrl: "https://img/avatar.png", headline: "@mochi", badge: <span>Level 3</span> }),
   });
   expect(getByText("@mochi")).toBeTruthy();
   expect(queryByText(/0x36a8…20d2/i)).toBeNull();
@@ -38,6 +38,12 @@ test("with an identity it shows the app's avatar, headline and badge", () => {
 });
 
 test("shows the account email when there is one", () => {
-  const { getByText } = renderHeader({ accountEmail: "me@example.com" });
+  const { getByText } = renderHeader({ useAccountEmail: () => "me@example.com" });
   expect(getByText("me@example.com")).toBeTruthy();
+});
+
+test("asks the app for the identity of the wallet it shows", () => {
+  const asked: string[] = [];
+  renderHeader({ useHeaderIdentity: (address) => { asked.push(address); return {}; } });
+  expect(asked[0]).toBe(ADDRESS);
 });

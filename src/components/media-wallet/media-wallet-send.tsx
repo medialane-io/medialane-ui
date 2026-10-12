@@ -46,7 +46,8 @@ export function MediaWalletSend({
   onNavigate: (view: MediaWalletView) => void;
   onDone: () => void;
 }) {
-  const { session: { address }, provider, getClient, useWriteAction } = useMediaWalletApp();
+  const { useWalletSession, provider, getClient, useWriteAction } = useMediaWalletApp();
+  const { address } = useWalletSession();
   const { run, status, reset, error } = useWriteAction();
 
   const [currency, setCurrency] = useState<WalletToken>(initialToken ?? WALLET_TOKENS[0]);

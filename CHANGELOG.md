@@ -4,7 +4,7 @@
 
 ### Added
 
-- Media Wallet screens (`components/media-wallet`): `MediaWalletOverlay(props: MediaWalletAppProps)` and `useMediaWallet()` (open/close). The app passes its client, provider, wallet, session, write action, image resolver, explorer URL, email status and banner, external wallet link and optional header identity.
+- Media Wallet screens (`components/media-wallet`): `MediaWalletOverlay(props: MediaWalletAppProps)` and `useMediaWallet()` (open/close). The app passes its client, provider, wallet, image resolver, explorer URL, email banner and external wallet link, plus hooks the screens call while shown: `useWalletSession`, `useWriteAction`, `useEmailStatus`, `useAccountEmail` and optional `useHeaderIdentity`.
 - Media Wallet helpers under `utils/media-wallet`: formatting, wallet activity, activity feed merge, wallet tokens, NFT items, confetti, `runIntentCalls`, `useErc20Balance(provider, …)`, `useTokenBalance(provider, …)`, `useTokensByOwner(getClient, …)`.
 - Peer dependencies: `canvas-confetti`, `qrcode-generator`.
 

@@ -17,10 +17,10 @@ const app = (over: Partial<MediaWalletAppProps>): MediaWalletAppProps =>
   ({
     getClient: () => ({ api: { getTokensByOwner: async () => ({ data: [] }) } }),
     provider: { callContract: async () => ["0x0", "0x0"] },
-    session: { address: "0x36a8000000000000000000000000000000000020d2", hasWallet: true, isDeployed: true, signer: null },
+    useWalletSession: () => ({ address: "0x36a8000000000000000000000000000000000020d2", hasWallet: true, isDeployed: true, signer: null }),
     resolveImage: () => null,
-    accountEmail: null,
-    emailStatus: null,
+    useAccountEmail: () => null,
+    useEmailStatus: () => null,
     emailBanner: { href: "/verify", text: () => "" },
     externalWallet: { href: "https://wallet.example", label: "Use another wallet" },
     ...over,
@@ -36,7 +36,7 @@ const renderHome = (props: MediaWalletAppProps) =>
 test("the email banner uses the app's link and text", () => {
   const { getByText } = renderHome(
     app({
-      emailStatus: { email: "me@example.com", emailVerified: false, deadline: "2026-10-20" },
+      useEmailStatus: () => ({ email: "me@example.com", emailVerified: false, deadline: "2026-10-20" }),
       emailBanner: { href: "/settings/email", text: (deadline) => `Verify by ${deadline}` },
     }),
   );
@@ -45,7 +45,7 @@ test("the email banner uses the app's link and text", () => {
 
 test("no email banner once the email is verified", () => {
   const { queryByText } = renderHome(
-    app({ emailStatus: { email: "me@example.com", emailVerified: true }, emailBanner: { href: "/verify", text: () => "Verify soon" } }),
+    app({ useEmailStatus: () => ({ email: "me@example.com", emailVerified: true }), emailBanner: { href: "/verify", text: () => "Verify soon" } }),
   );
   expect(queryByText("Verify soon")).toBeNull();
 });

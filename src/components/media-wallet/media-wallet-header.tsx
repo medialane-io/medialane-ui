@@ -5,10 +5,14 @@ import Link from "../link.js";
 import Image from "../image.js";
 import { short } from "../../utils/media-wallet/wallet-format.js";
 import { CopyIcon } from "./copy-icon.js";
-import { useMediaWalletApp } from "./types.js";
+import { useMediaWalletApp, type MediaWalletHeaderIdentity } from "./types.js";
+
+const noIdentity = (): MediaWalletHeaderIdentity => ({});
 
 export function MediaWalletHeader({ address, onNavigate }: { address: string; onNavigate: () => void }) {
-  const { headerIdentity, accountEmail } = useMediaWalletApp();
+  const { useHeaderIdentity = noIdentity, useAccountEmail } = useMediaWalletApp();
+  const headerIdentity = useHeaderIdentity(address);
+  const accountEmail = useAccountEmail();
   const [copied, setCopied] = useState(false);
   const avatarUrl = headerIdentity?.avatarUrl ?? null;
 

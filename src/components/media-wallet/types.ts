@@ -25,19 +25,25 @@ export interface MediaWalletSession {
   signer: StarknetVenueSigner | null;
 }
 
+export interface MediaWalletHeaderIdentity {
+  avatarUrl?: string | null;
+  headline?: string;
+  badge?: ReactNode;
+}
+
 export interface MediaWalletAppProps {
   getClient: () => MedialaneClient;
   provider: ProviderInterface;
   wallet: Pick<MediaWallet, "completeDeployment">;
-  session: MediaWalletSession;
+  useWalletSession: () => MediaWalletSession;
   useWriteAction: () => WalletWriteAction;
   resolveImage: (uri: string | null | undefined) => string | null;
   explorerUrl: string;
-  accountEmail: string | null;
-  emailStatus: { email: string | null; emailVerified: boolean; deadline?: string | null } | null;
+  useAccountEmail: () => string | null;
+  useEmailStatus: () => { email: string | null; emailVerified: boolean; deadline?: string | null } | null;
   emailBanner: { href: string; text: (deadline: string | null | undefined) => string };
   externalWallet: { href: string; label: string };
-  headerIdentity?: { avatarUrl?: string | null; headline?: string; badge?: ReactNode };
+  useHeaderIdentity?: (address: string) => MediaWalletHeaderIdentity;
 }
 
 export const MediaWalletAppContext = createContext<MediaWalletAppProps | null>(null);

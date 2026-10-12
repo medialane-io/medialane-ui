@@ -29,7 +29,9 @@ export function MediaWalletHome({
   onClose: () => void;
   autoOpenReceive?: boolean;
 }) {
-  const { session: { address, isDeployed }, provider, getClient, resolveImage, emailStatus, emailBanner, externalWallet } = useMediaWalletApp();
+  const { useWalletSession, useEmailStatus, provider, getClient, resolveImage, emailBanner, externalWallet } = useMediaWalletApp();
+  const { address, isDeployed } = useWalletSession();
+  const emailStatus = useEmailStatus();
   const router = useRouter();
   const needsEmailVerification = !!emailStatus?.email && !emailStatus.emailVerified;
 
