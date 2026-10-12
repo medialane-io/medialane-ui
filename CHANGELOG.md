@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.188.0] — 2026-10-12
+
+### Changed
+
+- `useDropChain(getClient, provider, contract, wallet)`: the drop's terms and supply come from the backend (`getDropState`); only the wallet's own claims and balance are read from chain. Requires `@medialane/sdk` 0.174.0.
+
 ## [0.187.0] — 2026-10-12
 
 ### Changed

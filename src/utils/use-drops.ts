@@ -2,7 +2,7 @@
 
 import useSWR from "swr";
 import type { ApiDrop, ApiDropListStatus, ApiDropMint } from "@medialane/sdk";
-import { dropClaimedBy, readDrop, type DropOnchain, type MedialaneClient } from "@medialane/sdk/starknet";
+import { dropClaimedBy, type DropOnchain, type MedialaneClient } from "@medialane/sdk/starknet";
 import { useMedialaneClient } from "./use-medialane-client.js";
 import { erc20Balance } from "./drop/chain.js";
 import type { DropProvider } from "./drop/types.js";
@@ -53,15 +53,32 @@ export interface DropChainState {
   balance: bigint | null;
 }
 
-/** The drop's terms and supply, the wallet's claims and balance — read from chain. */
-export function useDropChain(provider: DropProvider, contract: string | null, wallet: string | null) {
-  const { data, mutate, error } = useSWR(contract ? ["drop-chain", contract, wallet] : null, async (): Promise<DropChainState> => {
-    const drop = await readDrop(provider, contract!);
-    const [claimed, balance] = await Promise.all([
-      wallet ? dropClaimedBy(provider, contract!, wallet) : Promise.resolve(null),
-      wallet && drop.price > 0n ? erc20Balance(provider, drop.paymentToken, wallet) : Promise.resolve(null),
-    ]);
-    return { drop, claimed, balance };
-  }, { revalidateOnFocus: true, refreshInterval: 15_000 });
+export async function readDropState(
+  client: MedialaneClient,
+  provider: DropProvider,
+  contract: string,
+  wallet: string | null,
+): Promise<DropChainState> {
+  const drop = await client.api.getDropState(contract);
+  if (!drop) throw new Error("Drop not found");
+  const [claimed, balance] = await Promise.all([
+    wallet ? dropClaimedBy(provider, contract, wallet) : Promise.resolve(null),
+    wallet && drop.price > 0n ? erc20Balance(provider, drop.paymentToken, wallet) : Promise.resolve(null),
+  ]);
+  return { drop, claimed, balance };
+}
+
+export function useDropChain(
+  getClient: () => MedialaneClient,
+  provider: DropProvider,
+  contract: string | null,
+  wallet: string | null,
+) {
+  const client = useMedialaneClient(getClient);
+  const { data, mutate, error } = useSWR(
+    contract ? ["drop-chain", contract, wallet] : null,
+    () => readDropState(client, provider, contract!, wallet),
+    { revalidateOnFocus: true, refreshInterval: 15_000 },
+  );
   return { ...(data ?? { drop: null, claimed: null, balance: null }), error, mutate };
 }
