@@ -1,11 +1,10 @@
 import type { CreateDropManageIntentParams, DropTermsBody } from "@medialane/sdk";
 import { deployedCollectionFromReceipt, executeIntent, type MedialaneClient } from "@medialane/sdk/starknet";
 import { claimedTokenIds } from "./receipt.js";
-import type { DropProvider, DropSigner } from "./types.js";
+import type { DropSigner } from "./types.js";
 
 export interface DropDeps {
   client: MedialaneClient;
-  provider: DropProvider;
   signer: DropSigner;
 }
 
@@ -28,7 +27,7 @@ export async function launchDrop(
     ...(input.description ? { description: input.description } : {}),
     ...(input.image ? { image: input.image } : {}),
   });
-  const { txHash, receipt } = await executeIntent(deps.provider, deps.signer, deps.client, res.data);
+  const { txHash, receipt } = await executeIntent(deps.signer, deps.client, res.data);
   const collection = deployedCollectionFromReceipt(receipt, "drop-collection");
   if (!collection) throw new Error("Your drop launched, but its address wasn't found yet. Check My drops in a minute.");
   return { collection, txHash };
@@ -44,13 +43,13 @@ export async function mintDrop(
     quantity: input.quantity.toString(),
     ...(input.proof ? { proof: input.proof } : {}),
   });
-  const { txHash, receipt } = await executeIntent(deps.provider, deps.signer, deps.client, res.data);
+  const { txHash, receipt } = await executeIntent(deps.signer, deps.client, res.data);
   return { txHash, tokenIds: claimedTokenIds(receipt, input.collection) };
 }
 
 export async function manageDrop(deps: DropDeps, params: CreateDropManageIntentParams): Promise<{ txHash: string }> {
   const res = await deps.client.api.createDropManageIntent(params);
-  const { txHash } = await executeIntent(deps.provider, deps.signer, deps.client, res.data);
+  const { txHash } = await executeIntent(deps.signer, deps.client, res.data);
   return { txHash };
 }
 

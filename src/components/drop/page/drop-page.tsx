@@ -27,9 +27,9 @@ import type { DropAppProps } from "../../../utils/drop/types.js";
 type TokenFile = { image?: string; attributes?: { trait_type?: string; value?: string }[] };
 
 export function DropPage(props: DropAppProps & { contract: string; initialTab?: string; portfolioHref?: string }) {
-  const { contract, getClient, provider, walletAddress } = props;
+  const { contract, getClient, walletAddress } = props;
   const { drop: indexed, isLoading } = useDrop(getClient, contract);
-  const chain = useDropChain(getClient, provider, contract, walletAddress);
+  const chain = useDropChain(getClient, contract, walletAddress);
   const { mints, mutate: refreshMints } = useDropMints(getClient, contract);
   const feeBps = useDropFee(getClient);
   const collectionFile = useDropFile<{ drop_kind?: string }>(getClient, indexed?.baseUri ?? null, "collection.json");
@@ -64,7 +64,7 @@ export function DropPage(props: DropAppProps & { contract: string; initialTab?: 
   const isOrganizer = !!walletAddress && !!onchain && BigInt(walletAddress) === BigInt(onchain.organizer);
   const art = firstToken?.image ?? indexed?.image ?? null;
   const name = indexed?.name ?? "Drop";
-  const deps = async () => ({ client: getClient(), provider, signer: await props.getSigner() });
+  const deps = async () => ({ client: getClient(), signer: await props.getSigner() });
 
   const onAction = () => {
     if (!view) return;

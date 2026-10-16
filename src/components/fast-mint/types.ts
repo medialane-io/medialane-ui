@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import type { Call, TypedData } from "starknet";
 import type { ApiCollection } from "@medialane/sdk";
-import type { MedialaneClient, ReceiptProvider } from "@medialane/sdk/starknet";
+import type { MedialaneClient } from "@medialane/sdk/starknet";
 
 export type MediaKind = "image" | "audio" | "video" | "document";
 
@@ -35,6 +35,5 @@ export interface FastMintProps {
   getUploadToken: () => Promise<string | null>;
   getSigner: () => Promise<FastMintSigner> | FastMintSigner;
   client: MedialaneClient;
-  provider: ReceiptProvider;
   successFooter?: ReactNode;
 }

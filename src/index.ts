@@ -192,7 +192,7 @@ export { DropPage } from "./components/drop/page/drop-page.js";
 export { DropActionBox } from "./components/drop/page/drop-action-box.js";
 export { DropActivityList } from "./components/drop/page/drop-activity.js";
 export { claimProofFor } from "./utils/drop/claim-proof.js";
-export type { DropAppProps, DropSigner, DropProvider } from "./utils/drop/types.js";
+export type { DropAppProps, DropSigner } from "./utils/drop/types.js";
 export { GATED_CONTENT_TYPES, GATED_CONTENT_TYPE_FALLBACK } from "./data/gated-content-types.js";
 export type { ContentTypeConfig } from "./data/gated-content-types.js";
 export { CollapsibleSection } from "./components/collapsible-section.js";

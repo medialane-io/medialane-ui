@@ -29,17 +29,17 @@ export function MediaWalletHome({
   onClose: () => void;
   autoOpenReceive?: boolean;
 }) {
-  const { useWalletSession, useEmailStatus, provider, getClient, resolveImage, emailBanner, externalWallet } = useMediaWalletApp();
+  const { useWalletSession, useEmailStatus, getClient, resolveImage, emailBanner, externalWallet } = useMediaWalletApp();
   const { address, isDeployed } = useWalletSession();
   const emailStatus = useEmailStatus();
   const router = useRouter();
   const needsEmailVerification = !!emailStatus?.email && !emailStatus.emailVerified;
 
   const balances: Record<WalletToken["symbol"], ReturnType<typeof useTokenBalance>> = {
-    STRK: useTokenBalance(provider, "STRK", address),
-    ETH: useTokenBalance(provider, "ETH", address),
-    USDC: useTokenBalance(provider, "USDC", address),
-    WBTC: useTokenBalance(provider, "WBTC", address),
+    STRK: useTokenBalance(getClient, "STRK", address),
+    ETH: useTokenBalance(getClient, "ETH", address),
+    USDC: useTokenBalance(getClient, "USDC", address),
+    WBTC: useTokenBalance(getClient, "WBTC", address),
   };
 
   const { tokens, isLoading: loadingNfts } = useTokensByOwner(getClient, address, 1, 6);

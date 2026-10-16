@@ -37,7 +37,7 @@ const wallet = (storedCredentialId: string | null) => {
     changeEvent: "test-change",
     prfSalt: "salt",
     hkdfInfo: "info",
-    provider: () => ({}) as never,
+    getClient: () => ({ provider: {} }) as never,
     loadAccountEmail: () => "team@example.com",
   });
 };

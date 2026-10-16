@@ -3,7 +3,6 @@
 import useSWR from "swr";
 import type { ApiCollection, ApiMeta } from "@medialane/sdk";
 import { popHasClaimed, type MedialaneClient } from "@medialane/sdk/starknet";
-import type { ProviderInterface } from "starknet";
 import { useMedialaneClient } from "./use-medialane-client.js";
 
 export function usePopCollections(getClient: () => MedialaneClient) {
@@ -32,13 +31,14 @@ export function popClaimedKey(collection: string | null, wallet: string | null):
 
 /** Whether `wallet` already holds this collection's credential, read from chain. */
 export function usePopClaimStatus(
-  provider: Pick<ProviderInterface, "callContract">,
+  getClient: () => MedialaneClient,
   collection: string | null,
   wallet: string | null,
 ) {
+  const client = useMedialaneClient(getClient);
   const { data, error, isLoading, mutate } = useSWR<boolean>(
     popClaimedKey(collection, wallet),
-    () => popHasClaimed(provider, collection!, wallet!),
+    () => popHasClaimed(client.provider, collection!, wallet!),
     { revalidateOnFocus: false, shouldRetryOnError: false },
   );
   return { hasClaimed: data ?? null, isLoading, error, mutate };

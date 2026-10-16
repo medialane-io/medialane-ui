@@ -5,7 +5,7 @@ import {
   createSelfFundConsent,
   estimateSelfFundedFee,
   sponsoredExecutor,
-  type MediaWalletConfig,
+  type MedialaneClient,
 } from "@medialane/sdk/starknet";
 
 export interface AppWalletConfig {
@@ -15,7 +15,7 @@ export interface AppWalletConfig {
   changeEvent: string;
   prfSalt: string;
   hkdfInfo: string;
-  provider: MediaWalletConfig["provider"];
+  getClient: () => MedialaneClient;
   loadAccountEmail: () => string | null;
   backendUrl?: string;
   sponsoredInvokeUrl?: string;
@@ -31,6 +31,7 @@ export const APP_WALLET_DEFAULTS = {
 } as const;
 
 export function createAppWallet(config: AppWalletConfig) {
+  const provider = () => config.getClient().provider;
   const ownerStore = createOwnerStore({ storeKey: config.storeKey, changeEvent: config.changeEvent });
 
   const passkeyOwner = createPasskeyOwner({
@@ -47,18 +48,18 @@ export function createAppWallet(config: AppWalletConfig) {
   });
 
   const walletConsent = createSelfFundConsent((address, calls) =>
-    estimateSelfFundedFee(config.provider(), address, calls),
+    estimateSelfFundedFee(provider(), address, calls),
   );
 
   const mediaWallet = createMediaWallet({
     store: ownerStore,
     passkey: passkeyOwner,
     executor: sponsoredExecutor({
-      provider: config.provider,
+      provider,
       proxyUrl: config.sponsoredInvokeUrl ?? APP_WALLET_DEFAULTS.sponsoredInvokeUrl,
       consent: walletConsent,
     }),
-    provider: config.provider,
+    provider,
     backendUrl: config.backendUrl ?? APP_WALLET_DEFAULTS.backendUrl,
     deployProxyUrl: config.deployProxyUrl ?? APP_WALLET_DEFAULTS.deployProxyUrl,
   });

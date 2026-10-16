@@ -15,8 +15,10 @@ afterEach(() => cleanup());
 
 const app = (over: Partial<MediaWalletAppProps>): MediaWalletAppProps =>
   ({
-    getClient: () => ({ api: { getTokensByOwner: async () => ({ data: [] }) } }),
-    provider: { callContract: async () => ["0x0", "0x0"] },
+    getClient: () => ({
+      api: { getTokensByOwner: async () => ({ data: [] }) },
+      provider: { callContract: async () => ["0x0", "0x0"] },
+    }),
     useWalletSession: () => ({ address: "0x36a8000000000000000000000000000000000020d2", hasWallet: true, isDeployed: true, signer: null }),
     resolveImage: () => null,
     useAccountEmail: () => null,
