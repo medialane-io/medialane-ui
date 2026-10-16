@@ -46,21 +46,21 @@ export function MediaWalletSend({
   onNavigate: (view: MediaWalletView) => void;
   onDone: () => void;
 }) {
-  const { useWalletSession, provider, getClient, useWriteAction } = useMediaWalletApp();
+  const { useWalletSession, getClient, useWriteAction } = useMediaWalletApp();
   const { address } = useWalletSession();
   const { run, status, reset, error } = useWriteAction();
 
   const [currency, setCurrency] = useState<WalletToken>(initialToken ?? WALLET_TOKENS[0]);
   const [pickerOpen, setPickerOpen] = useState(false);
-  const strk = useTokenBalance(provider, "STRK", address);
-  const eth = useTokenBalance(provider, "ETH", address);
-  const usdc = useTokenBalance(provider, "USDC", address);
-  const wbtc = useTokenBalance(provider, "WBTC", address);
+  const strk = useTokenBalance(getClient, "STRK", address);
+  const eth = useTokenBalance(getClient, "ETH", address);
+  const usdc = useTokenBalance(getClient, "USDC", address);
+  const wbtc = useTokenBalance(getClient, "WBTC", address);
   
   const pinnedBalancesBySymbol: Record<string, bigint | null> = {
     STRK: strk.rawBalance, ETH: eth.rawBalance, USDC: usdc.rawBalance, WBTC: wbtc.rawBalance,
   };
-  const { rawBalance: currencyBalance } = useErc20Balance(provider, currency.address, address);
+  const { rawBalance: currencyBalance } = useErc20Balance(getClient, currency.address, address);
 
   const [to, setTo] = useState("");
   const [amount, setAmount] = useState("");
@@ -99,7 +99,7 @@ export function MediaWalletSend({
     setFeeError(null);
     setFee(null);
     setConfirmOpen(true);
-    estimateSendFee(provider, address, currency.address, to.trim(), amountRaw)
+    estimateSendFee(getClient().provider, address, currency.address, to.trim(), amountRaw)
       .then((f) => setFee({ raw: f.feeRaw, unit: f.unit }))
       .catch((e) => setFeeError(describeError(e, "We couldn't estimate the network fee. Please try again.").message));
   };

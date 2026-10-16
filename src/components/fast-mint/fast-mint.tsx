@@ -196,7 +196,7 @@ export function FastMint(props: FastMintProps) {
     presentation = "inline", open = true, onClose, mediaKindLock, onMinted,
     collections, refetchCollections,
     hasWallet, walletAddress, onRequireWallet, connectLabel, getUploadToken, getSigner,
-    client, provider, successFooter,
+    client, successFooter,
   } = props;
 
   const [status, setStatus] = useState<"idle" | "minting" | "success" | "error">("idle");
@@ -429,7 +429,7 @@ export function FastMint(props: FastMintProps) {
             description: newCollectionDescription || undefined,
             image,
           });
-          await executeIntent(provider, signer, client, intentRes.data);
+          await executeIntent(signer, client, intentRes.data);
 
           const found = await pollForNewCollection(newCollectionName, newCollectionSymbol);
           if (!found) throw new Error("Collection created, but it's still indexing — try minting again in a moment from My Collections.");
@@ -444,7 +444,7 @@ export function FastMint(props: FastMintProps) {
           tokenUri,
           royaltyBps: Math.round(values.royalty * 100),
         });
-        result = await executeIntent(provider, signer, client, intentRes.data);
+        result = await executeIntent(signer, client, intentRes.data);
         finalContractAddress = contractAddress;
 
         if (finalContractAddress) {
@@ -463,7 +463,7 @@ export function FastMint(props: FastMintProps) {
             baseUri: "",
             service: "mip-erc1155",
           });
-          const deployResult = await executeIntent(provider, signer, client, intentRes.data);
+          const deployResult = await executeIntent(signer, client, intentRes.data);
 
           const deployed = deployedCollectionFromReceipt(deployResult.receipt, "mip-erc1155");
           if (!deployed) throw new Error("Collection deployed, but its address couldn't be read — check My Collections to mint into it.");
@@ -478,7 +478,7 @@ export function FastMint(props: FastMintProps) {
           value: editionCount,
           royaltyBps: Math.round(values.royalty * 100),
         });
-        result = await executeIntent(provider, signer, client, intentRes.data);
+        result = await executeIntent(signer, client, intentRes.data);
         finalContractAddress = collectionContract;
         finalTokenId = mintedTokenIdFromReceipt(result.receipt, collectionContract);
       }

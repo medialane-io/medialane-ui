@@ -1,5 +1,4 @@
 import { createContext, useContext, type ReactNode } from "react";
-import type { ProviderInterface } from "starknet";
 import type { MediaWallet, MedialaneClient, StarknetVenueSigner } from "@medialane/sdk/starknet";
 import type { WalletToken } from "../../utils/media-wallet/wallet-tokens.js";
 
@@ -33,7 +32,6 @@ export interface MediaWalletHeaderIdentity {
 
 export interface MediaWalletAppProps {
   getClient: () => MedialaneClient;
-  provider: ProviderInterface;
   wallet: Pick<MediaWallet, "completeDeployment">;
   useWalletSession: () => MediaWalletSession;
   useWriteAction: () => WalletWriteAction;

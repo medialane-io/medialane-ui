@@ -19,8 +19,7 @@ function deps(receiptEvents: unknown[]) {
     sent,
     executed,
     deps: {
-      client: { api } as never,
-      provider: { getTransactionReceipt: async () => ({ execution_status: "SUCCEEDED", finality_status: "ACCEPTED_ON_L2", events: receiptEvents }) } as never,
+      client: { api, provider: { getTransactionReceipt: async () => ({ execution_status: "SUCCEEDED", finality_status: "ACCEPTED_ON_L2", events: receiptEvents }) } } as never,
       signer: {
         address: "0x2",
         execute: async (calls: unknown, opts: unknown) => { executed.push({ calls, opts }); return { txHash: "0xtx" }; },

@@ -4,7 +4,6 @@ import { DropCreate } from "./drop-create.js";
 
 const props = {
   getClient: () => ({ api: {} }) as never,
-  provider: {} as never,
   getSigner: () => { throw new Error("not used"); },
   walletAddress: "0x1",
   onRequireWallet: () => {},

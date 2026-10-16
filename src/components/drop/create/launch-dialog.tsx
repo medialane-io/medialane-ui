@@ -75,7 +75,7 @@ export function LaunchDialog({ open, onClose, draft, app }: { open: boolean; onC
       }
       setStep({ kind: "launching" });
       const signer = await app.getSigner();
-      const { collection } = await launchDrop({ client, provider: app.provider, signer }, {
+      const { collection } = await launchDrop({ client, signer }, {
         owner: app.walletAddress!,
         name: draft.name.trim(),
         symbol: draft.symbol,

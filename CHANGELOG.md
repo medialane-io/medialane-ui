@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.189.0] — 2026-10-16
+
+### Changed
+
+- Requires `@medialane/sdk` 0.182.0.
+- `MediaWalletAppProps`, `FastMintProps` and `DropAppProps` no longer take `provider`; chain reads go through `getClient().provider`.
+- `createAppWallet` takes `getClient` instead of `provider`.
+- `useErc20Balance`, `useTokenBalance` and `usePopClaimStatus` take `getClient` as their first argument.
+- `readDropState(client, contract, wallet)` and `useDropChain(getClient, contract, wallet)` no longer take a provider.
+
+### Added
+
+- `hasSufficientBalance(rawBalance, requiredHuman, decimals)` in `utils/media-wallet/use-erc20-balance`.
+
+### Removed
+
+- `DropProvider` and the drop module's own `erc20Balance`; use `erc20Balance` from `@medialane/sdk/starknet`.
+
 ## [0.188.0] — 2026-10-12
 
 ### Changed
