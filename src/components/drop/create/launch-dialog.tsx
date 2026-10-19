@@ -16,7 +16,7 @@ import { toDropTerms, priceLabel } from "../../../utils/drop/sale.js";
 import { draftSupply, type DropDraft } from "../../../utils/drop/draft.js";
 import { uploadAll, type UploadTask } from "../../../utils/drop/upload.js";
 import { launchDrop, saveExclusiveContent } from "../../../utils/drop/actions.js";
-import type { DropAppProps } from "../../../utils/drop/types.js";
+import { useMedialaneApp } from "../../../utils/app.js";
 
 type Step =
   | { kind: "review" }
@@ -25,7 +25,8 @@ type Step =
   | { kind: "done"; collection: string; links: PopClaimLink[]; warning: string | null }
   | { kind: "error"; message: string };
 
-export function LaunchDialog({ open, onClose, draft, app }: { open: boolean; onClose: () => void; draft: DropDraft; app: DropAppProps }) {
+export function LaunchDialog({ open, onClose, draft }: { open: boolean; onClose: () => void; draft: DropDraft }) {
+  const app = useMedialaneApp();
   const [step, setStep] = useState<Step>({ kind: "review" });
   const [tasks, setTasks] = useState<UploadTask[]>([]);
   const [baseUri, setBaseUri] = useState<string | null>(null);

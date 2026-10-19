@@ -15,11 +15,12 @@ import { FieldError } from "./artwork-section.js";
 import { EMPTY_DRAFT, draftSupply, validateDropDraft, type DropDraft } from "../../../utils/drop/draft.js";
 import { collectorPriceLine } from "../../../utils/drop/sale.js";
 import { previewUrl } from "../../../utils/drop/preview.js";
-import type { DropAppProps } from "../../../utils/drop/types.js";
+import { useMedialaneApp } from "../../../utils/app.js";
 import { useDropFee } from "../../../utils/use-drops.js";
 
-export function DropCreate(props: DropAppProps) {
-  const feeBps = useDropFee(props.getClient);
+export function DropCreate() {
+  const app = useMedialaneApp();
+  const feeBps = useDropFee(app.getClient);
   const [draft, setDraftState] = useState<DropDraft>(EMPTY_DRAFT);
   const [tried, setTried] = useState(false);
   const [launching, setLaunching] = useState(false);
@@ -27,7 +28,7 @@ export function DropCreate(props: DropAppProps) {
   const errors = tried ? validateDropDraft(draft, Math.floor(Date.now() / 1000)) : {};
 
   const launch = () => {
-    if (!props.walletAddress) return props.onRequireWallet();
+    if (!app.walletAddress) return app.onRequireWallet();
     setTried(true);
     if (Object.keys(validateDropDraft(draft, Math.floor(Date.now() / 1000))).length === 0) setLaunching(true);
   };
@@ -51,9 +52,9 @@ export function DropCreate(props: DropAppProps) {
       </CollapsibleSection>
       {tried && Object.keys(errors).length > 0 && <p className="text-sm font-medium text-destructive">Check the highlighted fields.</p>}
       <GradientButton big onClick={launch}>
-        {props.walletAddress ? "Review and launch" : props.connectLabel ?? "Sign in to launch"}
+        {app.walletAddress ? "Review and launch" : app.connectLabel ?? "Sign in to launch"}
       </GradientButton>
-      {launching && <LaunchDialog open onClose={() => setLaunching(false)} draft={draft} app={props} />}
+      {launching && <LaunchDialog open onClose={() => setLaunching(false)} draft={draft} />}
     </div>
     <div className="order-1 lg:order-2">
       <div className="lg:sticky lg:top-24"><DraftSummary draft={draft} feeBps={feeBps} /></div>
