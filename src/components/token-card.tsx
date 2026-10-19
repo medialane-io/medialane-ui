@@ -19,6 +19,8 @@ import { AnimatedTokenMedia } from "./animated-token-media.js";
 import { isLivingRenderCollection } from "../data/living-render-collections.js";
 import { assetHref as buildAssetHref, collectionHref as buildCollectionHref } from "@medialane/sdk";
 import type { ApiToken, Chain } from "@medialane/sdk";
+import { tokenProfileLink } from "../utils/token-profile-link.js";
+
 
 const BTN_BASE = "h-8 rounded-[9px] flex items-center justify-center gap-1.5 text-xs font-semibold transition-all active:scale-[0.98] shadow-none border-0";
 const BTN_OUTLINE = cn(BTN_BASE, "border border-border/60 text-foreground hover:bg-muted/60");
@@ -58,7 +60,7 @@ export function TokenCard({
 
   const creatorAttr = token.metadata?.attributes?.find((a) => a.trait_type === "Creator");
   const creator = typeof creatorAttr?.value === "string" ? creatorAttr.value : null;
-  const owner = token.balances?.[0]?.owner ?? token.owner ?? null;
+  const profileLink = tokenProfileLink(token);
 
   const chain = token.chain.toUpperCase() as Chain;
   const live = isLivingRenderCollection(chain, token.contractAddress);
@@ -275,11 +277,11 @@ export function TokenCard({
               </Link>
             </DropdownMenuItem>
 
-            {(owner ?? creator) && (
+            {profileLink && (
               <DropdownMenuItem asChild>
-                <Link href={`/account/${owner ?? creator}`} className="flex items-center gap-2">
+                <Link href={profileLink.href} className="flex items-center gap-2">
                   <UserCircle2 className="h-3.5 w-3.5 text-muted-foreground" />
-                  View owner
+                  {profileLink.label}
                 </Link>
               </DropdownMenuItem>
             )}
