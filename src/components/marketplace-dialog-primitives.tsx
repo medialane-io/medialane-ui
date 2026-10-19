@@ -232,14 +232,16 @@ export function MarketplaceDialogHero({
   const name = tokenName || `Token #${tokenId}`;
 
   return (
-    <div className="relative h-32 w-full bg-muted overflow-hidden shrink-0">
-      {tokenImage ? (
-        <Image src={tokenImage} alt={name} fill sizes="384px" className="object-cover" unoptimized />
-      ) : (
-        <div className="h-full w-full bg-gradient-to-br from-brand-blue/20 via-brand-purple/10 to-transparent flex items-center justify-center">
-          {fallbackIcon}
-        </div>
-      )}
+    <div className="relative flex justify-center pt-6 shrink-0">
+      <div className="relative h-32 w-32 rounded-2xl overflow-hidden border border-border bg-muted">
+        {tokenImage ? (
+          <Image src={tokenImage} alt={name} fill sizes="128px" className="object-cover" unoptimized />
+        ) : (
+          <div className="h-full w-full bg-gradient-to-br from-brand-blue/20 via-brand-purple/10 to-transparent flex items-center justify-center">
+            {fallbackIcon}
+          </div>
+        )}
+      </div>
       {badge}
     </div>
   );

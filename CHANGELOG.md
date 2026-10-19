@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.192.0] — 2026-10-19
+
+### Changed
+
+- `MarketplaceDialogHero` shows the asset as a centered square; `badge` is positioned within the hero.
+
 ## [0.191.0] — 2026-10-19
 
 ### Changed
