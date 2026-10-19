@@ -56,9 +56,9 @@ export function CollectionHeroBanner({
       </div>
 
       {loading ? (
-        <Skeleton className={cn("w-full h-[50svh]", className)} />
+        <Skeleton className={cn("w-full h-[67svh]", className)} />
       ) : (
-        <div className={cn("relative w-full overflow-hidden h-[50svh]", className)}>
+        <div className={cn("relative w-full overflow-hidden h-[67svh]", className)}>
           {bannerUrl ? (
             <motion.img
               src={bannerUrl}

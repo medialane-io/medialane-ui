@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.195.0] — 2026-10-19
+
+### Changed
+
+- `CollectionHeroBanner` height `67svh`.
+
 ## [0.194.0] — 2026-10-19
 
 ### Added
