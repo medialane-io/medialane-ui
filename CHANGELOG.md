@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.191.0] — 2026-10-19
+
+### Changed
+
+- `AssetCard` media is square.
+
 ## [0.190.0] — 2026-10-19
 
 ### Changed

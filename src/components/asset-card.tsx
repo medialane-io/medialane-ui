@@ -66,7 +66,7 @@ export function AssetCard({
       )}
     >
 
-      <Link href={href} className="block relative aspect-[4/5] bg-muted overflow-hidden">
+      <Link href={href} className="block relative aspect-square bg-muted overflow-hidden">
         <AnimatedTokenMedia
           image={resolved}
           animationUrl={animationUrl}
@@ -128,7 +128,7 @@ export function AssetCard({
 export function AssetCardSkeleton() {
   return (
     <div className="flex flex-col w-full overflow-hidden rounded-xl border border-border/50 bg-card">
-      <div className="aspect-[4/5] w-full animate-pulse bg-muted" />
+      <div className="aspect-square w-full animate-pulse bg-muted" />
       <div className="px-3 py-3 space-y-1.5">
         <div className="h-4 w-3/4 rounded-md animate-pulse bg-muted" />
         <div className="h-3.5 w-2/5 rounded-md animate-pulse bg-muted" />
