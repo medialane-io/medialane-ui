@@ -59,7 +59,7 @@ export function CollectionCard({ collection, href, settingsHref, className }: Co
         )}
 
         <Link href={href ?? `/collections/${collection.contractAddress}`} className="block relative h-full">
-          <div className="relative aspect-[3/4] w-full overflow-hidden bg-muted">
+          <div className="relative aspect-square w-full overflow-hidden bg-muted">
             {showImage ? (
               <Image
                 src={imageUrl}
@@ -122,7 +122,7 @@ export function CollectionCard({ collection, href, settingsHref, className }: Co
 export function CollectionCardSkeleton() {
   return (
     <div className="card-base overflow-hidden">
-      <div className="relative aspect-[3/4] w-full overflow-hidden bg-muted">
+      <div className="relative aspect-square w-full overflow-hidden bg-muted">
         <div className="absolute inset-0 animate-pulse bg-muted" />
         <div className="absolute bottom-3 left-3 right-3 space-y-1.5">
           <div className="h-4 w-2/3 rounded-md bg-muted-foreground/20 animate-pulse" />

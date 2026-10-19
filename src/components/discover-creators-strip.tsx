@@ -17,7 +17,7 @@ export interface DiscoverCreatorsStripProps {
 
 function CreatorChipSkeleton() {
   return (
-    <div className="shrink-0 w-64 aspect-[3/4] rounded-xl bg-muted animate-pulse" />
+    <div className="shrink-0 w-64 aspect-square rounded-xl bg-muted animate-pulse" />
   );
 }
 
@@ -38,7 +38,7 @@ function CreatorChip({
       href={href}
       className="block shrink-0 w-64 snap-start active:scale-[0.97] transition-transform duration-150 select-none"
     >
-      <div className="relative aspect-[3/4] rounded-xl overflow-hidden bg-muted">
+      <div className="relative aspect-square rounded-xl overflow-hidden bg-muted">
         {bannerUrl && (
           <img
             src={bannerUrl}
