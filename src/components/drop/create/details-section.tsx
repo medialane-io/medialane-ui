@@ -17,6 +17,7 @@ export function DetailsSection({ draft, setDraft, errors }: SectionProps) {
       <div className="space-y-1.5">
         <p className="text-sm font-medium">Cover image <span className="font-normal text-muted-foreground">(optional — the artwork is used otherwise)</span></p>
         <ImagePick file={draft.cover} onPick={(f) => setDraft({ cover: f })} label="Choose a cover" />
+        <FieldError message={errors.cover} />
       </div>
       <div className="space-y-1.5">
         <label className="text-sm font-medium" htmlFor="drop-name">Name</label>

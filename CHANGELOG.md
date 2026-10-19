@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.195.0] — 2026-10-19
+
+### Changed
+
+- Drop drafts report artwork, collection items and covers over the SDK image limit.
+- `FastMint` and `IPTypeFields` check file sizes with `uploadSizeError` and read accepted types and limits from `UPLOAD_LIMITS`.
+- Requires `@medialane/sdk` 0.183.0.
+
+### Removed
+
+- `DocUploadConfig.maxMb`.
+
 ## [0.194.0] — 2026-10-19
 
 ### Added

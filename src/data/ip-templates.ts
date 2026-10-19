@@ -43,7 +43,6 @@ export interface DocUploadConfig {
   traitType: string;
 
   accept: string;
-  maxMb: number;
 
   hint: string;
 }
@@ -64,7 +63,6 @@ export interface IPTemplate {
 export const DOC_UPLOAD: DocUploadConfig = {
   traitType: "Document File",
   accept: ".pdf,.doc,.docx,.txt,.md,.rtf,.odt",
-  maxMb: 20,
   hint: "Stored permanently on IPFS — an immutable, timestamped copy of your work (proof of authorship under the Berne Convention).",
 };
 

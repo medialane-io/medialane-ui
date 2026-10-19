@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
-import { buildAssetMetadata, type ApiCollection } from "@medialane/sdk";
+import { buildAssetMetadata, UPLOAD_LIMITS, uploadSizeError, type ApiCollection } from "@medialane/sdk";
 import { executeIntent, deployedCollectionFromReceipt, mintedTokenIdFromReceipt } from "@medialane/sdk/starknet";
 import { mintableCollections, collectionKey } from "./mintable-collections.js";
 import {
@@ -32,22 +32,8 @@ import { Dropzone } from "./dropzone.js";
 import { SuccessView } from "./success-view.js";
 import type { FastMintProps, FastMintSigner, MediaKind, MintedAsset } from "./types.js";
 
-const MEDIA_ROUTE_MIME_TYPES = new Set([
-  "image/jpeg", "image/png", "image/gif", "image/webp", "image/svg+xml", "image/avif",
-  "video/mp4", "video/webm", "video/ogg",
-  "audio/mpeg", "audio/ogg", "audio/wav", "audio/webm", "audio/flac",
-  "application/pdf",
-]);
-const DOCUMENT_SIGNED_URL_MIME_TYPES = new Set([
-  "application/msword",
-  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-  "application/vnd.oasis.opendocument.text",
-  "application/rtf",
-  "text/plain",
-  "text/markdown",
-]);
-const MEDIA_MAX_BYTES = 100 * 1024 * 1024;
-const DOCUMENT_MAX_BYTES = 20 * 1024 * 1024;
+const MEDIA_ROUTE_MIME_TYPES = new Set(UPLOAD_LIMITS.media.mimeTypes);
+const DOCUMENT_SIGNED_URL_MIME_TYPES = new Set(UPLOAD_LIMITS.document.mimeTypes.filter((t) => t !== "application/octet-stream"));
 
 function detectMediaKind(mime: string): MediaKind | null {
   if (mime.startsWith("image/")) return MEDIA_ROUTE_MIME_TYPES.has(mime) ? "image" : null;
@@ -290,10 +276,10 @@ export function FastMint(props: FastMintProps) {
       setErrorMsg(`Please upload a${mediaKindLock === "image" ? "n" : ""} ${mediaKindLock}.`);
       return;
     }
-    const viaMediaRoute = MEDIA_ROUTE_MIME_TYPES.has(file.type);
-    const maxBytes = viaMediaRoute ? MEDIA_MAX_BYTES : DOCUMENT_MAX_BYTES;
-    if (file.size > maxBytes) {
-      setErrorMsg(`Maximum size is ${maxBytes / (1024 * 1024)} MB.`);
+    const uploadKind = MEDIA_ROUTE_MIME_TYPES.has(file.type) ? "media" : "document";
+    const tooLarge = uploadSizeError(file, uploadKind);
+    if (tooLarge) {
+      setErrorMsg(tooLarge);
       return;
     }
     setMediaFile(file);
@@ -308,7 +294,7 @@ export function FastMint(props: FastMintProps) {
     try {
       const token = await getUploadToken();
       if (!token) throw new Error("Sign in first");
-      const { uri } = await uploadFileToIpfs(client.api, file, viaMediaRoute ? "media" : "document");
+      const { uri } = await uploadFileToIpfs(client.api, file, uploadKind);
       setMediaUri(uri);
     } catch (err) {
       const t = uploadFailureToast(err);

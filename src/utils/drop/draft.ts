@@ -1,3 +1,4 @@
+import { uploadSizeError } from "@medialane/sdk";
 import type { DraftItem } from "../../components/drop-item-list.js";
 import { parseAllowlist } from "./allowlist.js";
 import { MAX_DROP_SUPPLY, type DropKind, type DropLicense } from "./metadata.js";
@@ -38,7 +39,7 @@ export const EMPTY_DRAFT: DropDraft = {
   gated: { enabled: false, title: "", url: "", type: "" },
 };
 
-export type DropDraftErrors = SaleErrors & Partial<Record<"artwork" | "supply" | "name" | "symbol" | "allowlist" | "gated", string>>;
+export type DropDraftErrors = SaleErrors & Partial<Record<"artwork" | "cover" | "supply" | "name" | "symbol" | "allowlist" | "gated", string>>;
 
 export function draftSupply(d: DropDraft): number {
   return d.kind === "edition" ? Number(d.supply) : d.items.length;
@@ -49,13 +50,20 @@ const thousands = MAX_DROP_SUPPLY.toLocaleString("en-US");
 export function validateDropDraft(d: DropDraft, now: number): DropDraftErrors {
   const e: DropDraftErrors = { ...validateSale(d.sale, now) };
   if (d.kind === "edition") {
+    const tooLarge = d.edition && uploadSizeError(d.edition);
     if (!d.edition) e.artwork = "Add the artwork";
+    else if (tooLarge) e.artwork = tooLarge;
     if (!/^[1-9]\d*$/.test(d.supply) || Number(d.supply) > MAX_DROP_SUPPLY) e.supply = `Enter a supply from 1 to ${thousands}`;
   } else if (d.items.length === 0) {
     e.artwork = "Add at least one item";
   } else if (d.items.length > MAX_DROP_SUPPLY) {
     e.artwork = `A collection holds up to ${thousands} items`;
+  } else {
+    const oversized = d.items.find((it) => uploadSizeError(it.file));
+    if (oversized) e.artwork = `${oversized.file.name}: ${uploadSizeError(oversized.file)}`;
   }
+  const coverTooLarge = d.cover && uploadSizeError(d.cover);
+  if (coverTooLarge) e.cover = coverTooLarge;
   if (!d.name.trim()) e.name = "Name your drop";
   if (!/^[A-Z0-9]{1,10}$/.test(d.symbol)) e.symbol = "Use 1–10 capital letters or digits";
   if (d.listOnly) {
