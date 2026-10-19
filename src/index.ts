@@ -12,8 +12,10 @@ export {
   pinAssetMetadata,
   uploadFailureToast,
   isUserRejection,
+  setUploadDiagnosticsReporter,
   type SignedUploadKind,
   type UploadedIpfsFile,
+  type UploadDiagnostics,
   type PinAssetMetadataInput,
   type PinnedAsset,
 } from "./utils/ipfs-upload.js";
