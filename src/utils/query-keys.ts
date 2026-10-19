@@ -35,6 +35,8 @@ export const queryKeys = {
     `${QUERY_PREFIX.tokensOwned}-${address}-${page}-${limit}`,
   tokenHistory: (contract: string, tokenId: string) =>
     `${QUERY_PREFIX.tokenHistory}-${contract}-${tokenId}`,
+  tokenBalance: (contract: string, tokenId: string, owner: string) =>
+    `${QUERY_PREFIX.token}-balance-${contract}-${tokenId}-${owner}`,
   collections: (
     page: number,
     limit: number,

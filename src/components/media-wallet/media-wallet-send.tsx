@@ -15,7 +15,7 @@ import { CurrencySheet } from "./currency-sheet.js";
 import { WALLET_TOKENS, type WalletToken } from "../../utils/media-wallet/wallet-tokens.js";
 import { SuccessDialog } from "./success-dialog.js";
 import { useMediaWalletApp, type MediaWalletView } from "./types.js";
-import { runIntentCalls } from "../../utils/media-wallet/run-intent-calls.js";
+import { runIntentCalls } from "../../utils/run-intent-calls.js";
 
 function isValidStarknetAddress(address: string): boolean {
   try {

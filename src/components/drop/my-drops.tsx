@@ -1,23 +1,16 @@
 "use client";
 
 import { Package } from "lucide-react";
-import type { MedialaneClient } from "@medialane/sdk/starknet";
 import Link from "../link.js";
 import { Button } from "../button.js";
 import { TabEmptyState } from "../tab-empty-state.js";
 import { DropGrid, DropGridSkeleton } from "./drop-card.js";
 import { useMyDrops } from "../../utils/use-drops.js";
 import { useNow } from "../../utils/drop/use-now.js";
+import { useMedialaneApp } from "../medialane-app.js";
 
-export function MyDrops({
-  getClient, walletAddress, onRequireWallet, connectLabel = "Sign in", createHref = "/launchpad/drop/create",
-}: {
-  getClient: () => MedialaneClient;
-  walletAddress: string | null;
-  onRequireWallet: () => void;
-  connectLabel?: string;
-  createHref?: string;
-}) {
+export function MyDrops({ createHref = "/launchpad/drop/create" }: { createHref?: string }) {
+  const { getClient, walletAddress, onRequireWallet, connectLabel = "Sign in" } = useMedialaneApp();
   const { drops, isLoading } = useMyDrops(getClient, walletAddress);
   const now = useNow(60_000);
   if (!walletAddress) {

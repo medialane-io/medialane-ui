@@ -22,12 +22,14 @@ import { useNow } from "../../../utils/drop/use-now.js";
 import { actionBoxView } from "../../../utils/drop/view.js";
 import { claimProofFor } from "../../../utils/drop/claim-proof.js";
 import { manageDrop, mintDrop, saveExclusiveContent } from "../../../utils/drop/actions.js";
-import type { DropAppProps } from "../../../utils/drop/types.js";
+import { useMedialaneApp } from "../../medialane-app.js";
 
 type TokenFile = { image?: string; attributes?: { trait_type?: string; value?: string }[] };
 
-export function DropPage(props: DropAppProps & { contract: string; initialTab?: string; portfolioHref?: string }) {
-  const { contract, getClient, walletAddress } = props;
+export function DropPage(props: { contract: string; initialTab?: string; portfolioHref?: string }) {
+  const app = useMedialaneApp();
+  const { contract } = props;
+  const { getClient, walletAddress } = app;
   const { drop: indexed, isLoading } = useDrop(getClient, contract);
   const chain = useDropChain(getClient, contract, walletAddress);
   const { mints, mutate: refreshMints } = useDropMints(getClient, contract);
@@ -64,11 +66,11 @@ export function DropPage(props: DropAppProps & { contract: string; initialTab?: 
   const isOrganizer = !!walletAddress && !!onchain && BigInt(walletAddress) === BigInt(onchain.organizer);
   const art = firstToken?.image ?? indexed?.image ?? null;
   const name = indexed?.name ?? "Drop";
-  const deps = async () => ({ client: getClient(), signer: await props.getSigner() });
+  const deps = async () => ({ client: getClient(), signer: await app.getSigner() });
 
   const onAction = () => {
     if (!view) return;
-    if (view.button.action === "sign-in") props.onRequireWallet();
+    if (view.button.action === "sign-in") app.onRequireWallet();
     if (view.button.action === "mint") setMinting(true);
   };
 

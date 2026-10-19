@@ -5,7 +5,7 @@ import Link from "../link.js";
 import { useRouter } from "../router.js";
 import { CurrencyIcon } from "../currency-icon.js";
 import { useTokenBalance } from "../../utils/media-wallet/use-erc20-balance.js";
-import { useTokensByOwner } from "../../utils/media-wallet/use-tokens-by-owner.js";
+import { useTokensByOwner } from "../../utils/use-tokens.js";
 import { ActivateCard } from "./activate-card.js";
 import { QuickAction } from "./quick-action.js";
 import { ReceiveCard } from "./receive-card.js";

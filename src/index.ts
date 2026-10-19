@@ -196,7 +196,9 @@ export { DropPage } from "./components/drop/page/drop-page.js";
 export { DropActionBox } from "./components/drop/page/drop-action-box.js";
 export { DropActivityList } from "./components/drop/page/drop-activity.js";
 export { claimProofFor } from "./utils/drop/claim-proof.js";
-export type { DropAppProps, DropSigner } from "./utils/drop/types.js";
+export type { DropSigner } from "./utils/drop/types.js";
+export { MedialaneAppProvider, useMedialaneApp, type MedialaneApp } from "./components/medialane-app.js";
+export { runIntentCalls } from "./utils/run-intent-calls.js";
 export { GATED_CONTENT_TYPES, GATED_CONTENT_TYPE_FALLBACK } from "./data/gated-content-types.js";
 export type { ContentTypeConfig } from "./data/gated-content-types.js";
 export { CollapsibleSection } from "./components/collapsible-section.js";
@@ -472,3 +474,9 @@ export {
   type TierOnchain, type TierListItem,
 } from "./utils/use-tiers.js";
 export { collectSitemapData, type SitemapData, type SitemapLimits } from "./utils/sitemap-data.js";
+export { useToken, useTokenBalance, useTokenHistory, useTokensByOwner } from "./utils/use-tokens.js";
+export { checkIsOwner } from "./utils/ownership.js";
+export { AssetOwnersPanel } from "./components/asset-owners-panel.js";
+export { AssetUnavailable } from "./components/asset-unavailable.js";
+export { AssetProvenanceTab } from "./components/asset-provenance-tab.js";
+export { ASSET_ACCENTS, type AssetAccent, type AssetAccentName } from "./utils/asset-accents.js";
