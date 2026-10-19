@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.193.0] — 2026-10-19
+
+### Changed
+
+- `CollectionCard`, `CollectionCardSkeleton`, `MedialaneCollectionCard` and `DiscoverCreatorsStrip` media is square.
+- `DropGridSkeleton` matches `DropCard`.
+
 ## [0.192.0] — 2026-10-19
 
 ### Changed
