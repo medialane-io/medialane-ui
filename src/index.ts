@@ -6,6 +6,7 @@ export { profileIdentity, type ProfileIdentity, type ProfileIdentitySource } fro
 export { ipfsToHttp, DEFAULT_GATEWAY as PINATA_PUBLIC_GATEWAY } from "./utils/ipfs.js";
 export {
   uploadFileToIpfs,
+  FILE_UPLOAD_FAILED,
   uploadJsonToIpfs,
   uploadDirectoryToIpfs,
   pinAssetMetadata,
@@ -32,6 +33,7 @@ export {
   NOT_SUBMITTED,
   GENERIC,
   NETWORK_BUSY,
+  CONNECTION_FAILED,
 } from "./utils/describe-error.js";
 export type { ErrorNotice } from "./utils/describe-error.js";
 

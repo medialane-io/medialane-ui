@@ -4,8 +4,8 @@ import { describeWalletFailure, passkeyUnsupportedReason } from "./wallet-failur
 
 export const NOT_SUBMITTED = "Request not completed. Nothing was submitted.";
 export const GENERIC = "Something went wrong. Please try again.";
-export const NETWORK_BUSY =
-  "The network is busy right now. Nothing was submitted. Please try again in a moment.";
+export const NETWORK_BUSY = "Our service is very busy right now. Please try again in a minute.";
+export const CONNECTION_FAILED = "We couldn't connect. Check your internet connection and try again.";
 
 export interface ErrorNotice {
   title: string;
@@ -21,13 +21,12 @@ const notice = (title: string, message: string, description?: string): ErrorNoti
   isUserRejection: false,
 });
 
-function isTransient(error: unknown): boolean {
-  if (error instanceof MedialaneApiError) {
-    return error.status === 408 || error.status === 429 || error.status >= 500;
-  }
-  return /-32001|unable to complete request|service unavailable|temporarily unavailable|rate.?limit|too many requests|gateway time-?out|bad gateway|failed to fetch|fetch failed|network ?error|load failed/i.test(
-    collectErrorText(error),
-  );
+function isBusy(error: unknown): boolean {
+  return /-32001|unable to complete request|rate.?limit|too many requests/i.test(collectErrorText(error));
+}
+
+function isConnectionFailure(error: unknown): boolean {
+  return /failed to fetch|fetch failed|load failed|networkerror when attempting/i.test(collectErrorText(error));
 }
 
 function apiReason(error: MedialaneApiError): string | undefined {
@@ -64,16 +63,22 @@ export function describeError(error: unknown, fallback?: string): ErrorNotice {
     );
   }
 
-  if (isTransient(error)) {
-    return notice("Network busy", NETWORK_BUSY);
-  }
-
   if (error instanceof UserFacingError) {
     return notice("Something went wrong", error.message);
   }
 
   if (error instanceof MedialaneApiError) {
+    if (error.status === 429) return notice("Service busy", NETWORK_BUSY);
+    if (error.status >= 500) return notice("Something went wrong", fallback ?? GENERIC);
     return notice("Something went wrong", apiReason(error) ?? fallback ?? GENERIC);
+  }
+
+  if (isBusy(error)) {
+    return notice("Service busy", NETWORK_BUSY);
+  }
+
+  if (isConnectionFailure(error)) {
+    return notice("Connection problem", CONNECTION_FAILED);
   }
 
   const text = collectErrorText(error).toLowerCase();

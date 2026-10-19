@@ -1,6 +1,6 @@
 import { describe, test, expect } from "bun:test";
 import { MedialaneApiError } from "@medialane/sdk";
-import { describeError, UserFacingError, NOT_SUBMITTED, GENERIC } from "./describe-error.js";
+import { describeError, UserFacingError, NOT_SUBMITTED, GENERIC, NETWORK_BUSY, CONNECTION_FAILED } from "./describe-error.js";
 import { WrongNetworkError } from "./wallet-error.js";
 
 test("the reason the API gave is shown as written", () => {
@@ -12,7 +12,26 @@ test("a gateway body never reaches the user", () => {
   const err = new MedialaneApiError(502, "<html>502 Bad Gateway</html>", undefined, "<html>502 Bad Gateway</html>");
   const notice = describeError(err, "Purchase failed");
   expect(notice.message).not.toContain("html");
-  expect(notice.message).toBe("The network is busy right now. Nothing was submitted. Please try again in a moment.");
+  expect(notice.message).toBe("Purchase failed");
+});
+
+test("a server error shows the caller's copy, never a busy network", () => {
+  const err = new MedialaneApiError(500, "boom", undefined, { error: "Internal server error" });
+  expect(describeError(err, "We couldn't create that edition. Please try again.").message)
+    .toBe("We couldn't create that edition. Please try again.");
+  expect(describeError(err).message).toBe(GENERIC);
+});
+
+test("only a rate limit reads as busy", () => {
+  expect(describeError(new MedialaneApiError(429, "slow down", undefined, {})).message).toBe(NETWORK_BUSY);
+  expect(describeError(new Error("RPC: -32001 unable to complete request")).message).toBe(NETWORK_BUSY);
+  expect(describeError(new Error("Gas sponsorship is temporarily unavailable"), "Mint failed").message).toBe("Mint failed");
+});
+
+test("a request the browser could not send reads as a connection problem", () => {
+  expect(describeError(new TypeError("Load failed")).message).toBe(CONNECTION_FAILED);
+  expect(describeError(new TypeError("Failed to fetch")).message).toBe(CONNECTION_FAILED);
+  expect(describeError(new TypeError("Failed to fetch")).message).not.toContain("Nothing was submitted");
 });
 
 test("a 4xx with no reason falls back to the caller's copy", () => {
