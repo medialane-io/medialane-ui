@@ -7,7 +7,7 @@ import { TabEmptyState } from "../tab-empty-state.js";
 import { DropGrid, DropGridSkeleton } from "./drop-card.js";
 import { useMyDrops } from "../../utils/use-drops.js";
 import { useNow } from "../../utils/drop/use-now.js";
-import { useMedialaneApp } from "../../utils/app.js";
+import { useMedialaneApp } from "../medialane-app.js";
 
 export function MyDrops({ createHref = "/launchpad/drop/create" }: { createHref?: string }) {
   const { getClient, walletAddress, onRequireWallet, connectLabel = "Sign in" } = useMedialaneApp();

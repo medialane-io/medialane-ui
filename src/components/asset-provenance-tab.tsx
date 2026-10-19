@@ -7,7 +7,7 @@ import { CreationRecord } from "./creation-record.js";
 import { formatDisplayPrice } from "../utils/format.js";
 import { timeAgo } from "../utils/time.js";
 import { EXPLORER_URL } from "../utils/explorer-url.js";
-import { useMedialaneApp } from "../utils/app.js";
+import { useMedialaneApp } from "./medialane-app.js";
 import {
   ShoppingCart, Tag, HandCoins, ArrowRightLeft, X, CheckCircle,
   TrendingUp, Activity, ArrowRight, ExternalLink, Fingerprint, UserCheck,

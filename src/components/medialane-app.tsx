@@ -2,7 +2,7 @@
 
 import { createContext, useContext, type ReactNode } from "react";
 import type { MedialaneClient } from "@medialane/sdk/starknet";
-import type { FastMintSigner } from "../components/fast-mint/types.js";
+import type { FastMintSigner } from "./fast-mint/types.js";
 
 export interface MedialaneApp {
   getClient: () => MedialaneClient;

@@ -5,7 +5,7 @@ import { expect, test } from "bun:test";
 import type { ReactNode } from "react";
 import { renderHook } from "@testing-library/react";
 import type { MedialaneClient } from "@medialane/sdk/starknet";
-import { MedialaneAppProvider, useMedialaneApp, type MedialaneApp } from "./app.js";
+import { MedialaneAppProvider, useMedialaneApp, type MedialaneApp } from "./medialane-app.js";
 
 const app: MedialaneApp = {
   getClient: () => ({}) as MedialaneClient,

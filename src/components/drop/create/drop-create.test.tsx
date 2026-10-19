@@ -1,7 +1,7 @@
 import { expect, test } from "bun:test";
 import { renderToStaticMarkup } from "react-dom/server";
 import { DropCreate } from "./drop-create.js";
-import { MedialaneAppProvider, type MedialaneApp } from "../../../utils/app.js";
+import { MedialaneAppProvider, type MedialaneApp } from "../../medialane-app.js";
 
 const app: MedialaneApp = {
   getClient: () => ({ api: {} }) as never,

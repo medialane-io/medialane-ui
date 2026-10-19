@@ -16,7 +16,7 @@ import { toDropTerms, priceLabel } from "../../../utils/drop/sale.js";
 import { draftSupply, type DropDraft } from "../../../utils/drop/draft.js";
 import { uploadAll, type UploadTask } from "../../../utils/drop/upload.js";
 import { launchDrop, saveExclusiveContent } from "../../../utils/drop/actions.js";
-import { useMedialaneApp } from "../../../utils/app.js";
+import { useMedialaneApp } from "../../medialane-app.js";
 
 type Step =
   | { kind: "review" }

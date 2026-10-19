@@ -3,7 +3,7 @@
 import Link from "./link.js";
 import { AddressDisplay } from "./address-display.js";
 import { CreatorScoreInline } from "./creator-score-inline.js";
-import { useMedialaneApp } from "../utils/app.js";
+import { useMedialaneApp } from "./medialane-app.js";
 
 interface HolderLike {
   owner: string;

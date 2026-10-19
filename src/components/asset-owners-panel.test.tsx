@@ -1,7 +1,7 @@
 import { expect, test } from "bun:test";
 import { renderToStaticMarkup } from "react-dom/server";
 import { AssetOwnersPanel } from "./asset-owners-panel.js";
-import { MedialaneAppProvider, type MedialaneApp } from "../utils/app.js";
+import { MedialaneAppProvider, type MedialaneApp } from "./medialane-app.js";
 
 const app = { getClient: () => ({ api: {} }) as never, getSigner: () => { throw new Error("unused"); }, walletAddress: null, onRequireWallet: () => {} } as MedialaneApp;
 const holders = Array.from({ length: 50 }, (_, i) => ({ owner: "0x" + (i + 1).toString(16), amount: "1" }));

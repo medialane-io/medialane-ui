@@ -15,7 +15,7 @@ import { FieldError } from "./artwork-section.js";
 import { EMPTY_DRAFT, draftSupply, validateDropDraft, type DropDraft } from "../../../utils/drop/draft.js";
 import { collectorPriceLine } from "../../../utils/drop/sale.js";
 import { previewUrl } from "../../../utils/drop/preview.js";
-import { useMedialaneApp } from "../../../utils/app.js";
+import { useMedialaneApp } from "../../medialane-app.js";
 import { useDropFee } from "../../../utils/use-drops.js";
 
 export function DropCreate() {

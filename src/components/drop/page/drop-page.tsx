@@ -22,7 +22,7 @@ import { useNow } from "../../../utils/drop/use-now.js";
 import { actionBoxView } from "../../../utils/drop/view.js";
 import { claimProofFor } from "../../../utils/drop/claim-proof.js";
 import { manageDrop, mintDrop, saveExclusiveContent } from "../../../utils/drop/actions.js";
-import { useMedialaneApp } from "../../../utils/app.js";
+import { useMedialaneApp } from "../../medialane-app.js";
 
 type TokenFile = { image?: string; attributes?: { trait_type?: string; value?: string }[] };
 
