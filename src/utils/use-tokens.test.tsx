@@ -4,7 +4,7 @@ if (!globalThis.document) GlobalRegistrator.register();
 import { expect, test } from "bun:test";
 import { renderHook, waitFor } from "@testing-library/react";
 import type { MedialaneClient } from "@medialane/sdk/starknet";
-import { useTokenBalance } from "./use-tokens.js";
+import { useTokenBalance, useTokensByOwner } from "./use-tokens.js";
 import { queryKeys } from "./query-keys.js";
 
 const clientWith = (calls: unknown[][]) =>
@@ -36,4 +36,15 @@ test("useTokenBalance without an owner reads nothing", async () => {
 
 test("queryKeys.tokenBalance is revalidated with token keys", () => {
   expect(queryKeys.tokenBalance("0xc", "1", "0xw")).toBe("token-balance-0xc-1-0xw");
+});
+
+test("useTokensByOwner refetches when the page changes", async () => {
+  const pages: unknown[] = [];
+  const client = {
+    api: { getTokensByOwner: async (_a: string, page: number) => { pages.push(page); return { data: [] }; } },
+  } as unknown as MedialaneClient;
+  const { rerender } = renderHook(({ page }) => useTokensByOwner(() => client, "0xowner-pages", page, 20), { initialProps: { page: 1 } });
+  await waitFor(() => expect(pages).toEqual([1]));
+  rerender({ page: 2 });
+  await waitFor(() => expect(pages).toEqual([1, 2]));
 });
