@@ -2,6 +2,7 @@
 
 import { useRef } from "react";
 import { ImagePlus, Upload, LogIn } from "lucide-react";
+import { UPLOAD_LIMITS, formatFileSize } from "@medialane/sdk";
 import { cn } from "../../utils/cn.js";
 import { Button } from "../button.js";
 import type { MediaKind } from "./types.js";
@@ -74,7 +75,9 @@ export function Dropzone({
         )}
       </Button>
       <p className="text-2xs text-muted-foreground/70">
-        {mediaKindLock === "image" ? "JPG, PNG, GIF, WebP, or SVG up to 100 MB" : "Images, audio, video, and PDFs up to 100 MB; other documents up to 20 MB"}
+        {mediaKindLock === "image"
+          ? `JPG, PNG, GIF, WebP, or SVG up to ${formatFileSize(UPLOAD_LIMITS.media.maxBytes)}`
+          : `Images, audio, video, and PDFs up to ${formatFileSize(UPLOAD_LIMITS.media.maxBytes)}; other documents up to ${formatFileSize(UPLOAD_LIMITS.document.maxBytes)}`}
       </p>
       <input
         ref={mediaInputRef}

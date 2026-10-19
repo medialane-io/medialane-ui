@@ -33,3 +33,13 @@ test("sale errors come through", () => {
   const d = { ...EMPTY_DRAFT, edition: img, name: "N", symbol: "N", sale: { ...EMPTY_DRAFT.sale, paid: true, price: "" } };
   expect(validateDropDraft(d, NOW).price).toBe("Enter a price above 0");
 });
+
+test("artwork and cover over the image limit are reported", () => {
+  const big = new File(["x"], "big.jpg", { type: "image/jpeg" });
+  Object.defineProperty(big, "size", { value: 60 * 1024 * 1024 });
+  const ok = { ...EMPTY_DRAFT, name: "N", symbol: "N" };
+  expect(validateDropDraft({ ...ok, edition: big }, NOW).artwork).toBe("That image is 60 MB. Please choose one under 50 MB.");
+  expect(validateDropDraft({ ...ok, kind: "collection", items: [item("a"), { ...item("b"), file: big }] }, NOW).artwork)
+    .toBe("big.jpg: That image is 60 MB. Please choose one under 50 MB.");
+  expect(validateDropDraft({ ...ok, edition: img, cover: big }, NOW)).toEqual({ cover: "That image is 60 MB. Please choose one under 50 MB." });
+});
