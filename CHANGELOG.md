@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.194.0] — 2026-10-19
+
+### Added
+
+- `setUploadDiagnosticsReporter` and `UploadDiagnostics`. When the upload to the signed URL fails before a response, `uploadFileToIpfs` checks whether the file can still be read and whether the upload host is reachable, retries once with a fresh signed URL and an in-memory copy of the file, and passes the results to the registered reporter. If the retry fails, the thrown error carries the same results as `diagnostics`.
+
 ## [0.193.0] — 2026-10-19
 
 ### Changed

@@ -7,6 +7,8 @@ import {
   uploadFailureToast,
   isUserRejection,
   FILE_UPLOAD_FAILED,
+  setUploadDiagnosticsReporter,
+  type UploadDiagnostics,
 } from "./ipfs-upload.js";
 
 function fakeApi(overrides: Partial<Record<keyof ApiClient, unknown>> = {}): ApiClient {
@@ -91,4 +93,109 @@ test("a directory pin returns what the SDK reports", async () => {
     cid: "bafydir",
     baseUri: "ipfs://bafydir/",
   });
+});
+
+function unreadableFile(): File {
+  const file = new File(["x"], "a.jpg", { type: "image/jpeg" });
+  Object.defineProperty(file, "arrayBuffer", {
+    value: async () => {
+      throw new DOMException("The file could not be read", "NotReadableError");
+    },
+  });
+  return file;
+}
+
+test("a failed upload is retried once with a fresh signed URL and a copy of the file", async () => {
+  const reports: UploadDiagnostics[] = [];
+  setUploadDiagnosticsReporter((d) => reports.push(d));
+  const urls: string[] = [];
+  let posts = 0;
+  global.fetch = mock(async (_url: unknown, init?: RequestInit) => {
+    if (init?.method !== "POST") return { ok: true } as Response;
+    posts += 1;
+    if (posts === 1) throw new TypeError("Failed to fetch");
+    return { ok: true, json: async () => ({ data: { cid: "bafyretry" } }) } as Response;
+  }) as unknown as typeof fetch;
+  const api = fakeApi({
+    getMetadataSignedUrl: async () => {
+      urls.push("signed");
+      return { data: { url: `https://upload.example/signed/${urls.length}` } };
+    },
+  });
+
+  const result = await uploadFileToIpfs(api, new File(["xyz"], "a.jpg", { type: "image/jpeg" }));
+
+  expect(result).toEqual({ cid: "bafyretry", uri: "ipfs://bafyretry" });
+  expect(urls.length).toBe(2);
+  expect(reports.length).toBe(1);
+  expect(reports[0]).toMatchObject({
+    kind: "image",
+    fileSize: 3,
+    fileType: "image/jpeg",
+    error: "TypeError: Failed to fetch",
+    fileReadable: "ok",
+    uploadHostReachable: "ok",
+    retry: "ok",
+  });
+  setUploadDiagnosticsReporter(null);
+});
+
+test("an upload that keeps failing reports every check and carries the diagnostics on the error", async () => {
+  const reports: UploadDiagnostics[] = [];
+  setUploadDiagnosticsReporter((d) => reports.push(d));
+  global.fetch = mock(async () => {
+    throw new TypeError("Failed to fetch");
+  }) as unknown as typeof fetch;
+
+  const err = await uploadFileToIpfs(fakeApi(), new File(["x"], "a.jpg", { type: "image/jpeg" })).catch((e) => e);
+
+  expect(err.message).toBe(FILE_UPLOAD_FAILED);
+  expect(err.diagnostics).toMatchObject({
+    fileReadable: "ok",
+    uploadHostReachable: "TypeError: Failed to fetch",
+    retry: "TypeError: Failed to fetch",
+  });
+  expect(reports).toEqual([err.diagnostics]);
+  setUploadDiagnosticsReporter(null);
+});
+
+test("a file the browser can no longer read is reported and not retried", async () => {
+  const reports: UploadDiagnostics[] = [];
+  setUploadDiagnosticsReporter((d) => reports.push(d));
+  let signedUrls = 0;
+  global.fetch = mock(async (_url: unknown, init?: RequestInit) => {
+    if (init?.method === "POST") throw new TypeError("Failed to fetch");
+    return { ok: true } as Response;
+  }) as unknown as typeof fetch;
+  const api = fakeApi({
+    getMetadataSignedUrl: async () => {
+      signedUrls += 1;
+      return { data: { url: "https://upload.example/signed" } };
+    },
+  });
+
+  const err = await uploadFileToIpfs(api, unreadableFile()).catch((e) => e);
+
+  expect(err.message).toBe(FILE_UPLOAD_FAILED);
+  expect(signedUrls).toBe(1);
+  expect(reports[0]).toMatchObject({
+    fileReadable: "NotReadableError: The file could not be read",
+    uploadHostReachable: "ok",
+    retry: "not attempted",
+  });
+  setUploadDiagnosticsReporter(null);
+});
+
+test("a reporter that throws does not change the upload result", async () => {
+  setUploadDiagnosticsReporter(() => {
+    throw new Error("reporter down");
+  });
+  global.fetch = mock(async () => {
+    throw new TypeError("Failed to fetch");
+  }) as unknown as typeof fetch;
+
+  const err = await uploadFileToIpfs(fakeApi(), new File(["x"], "a.jpg")).catch((e) => e);
+
+  expect(err.message).toBe(FILE_UPLOAD_FAILED);
+  setUploadDiagnosticsReporter(null);
 });
