@@ -4,9 +4,8 @@
 
 ### Changed
 
-- `describeError` reads as busy only for a rate limit; server errors show the caller's copy and a request the browser could not send reads as a connection problem.
-- `NETWORK_BUSY` copy no longer claims nothing was submitted.
-- `uploadFileToIpfs` throws a `UserFacingError` with the failure as its `cause`.
+- `describeError`, `NETWORK_BUSY`.
+- `uploadFileToIpfs` throws `UserFacingError`.
 
 ### Added
 
