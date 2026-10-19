@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.197.0] — 2026-10-19
+
+### Changed
+
+- `TokenCard`: profile link from `tokenProfileLink` (`View owner` / `View creator`).
+
 ## [0.196.0] — 2026-10-19
 
 ### Added
