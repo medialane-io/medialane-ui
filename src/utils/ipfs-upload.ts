@@ -1,4 +1,11 @@
-import { buildAssetMetadata, type ApiClient, type BuildAssetMetadataInput } from "@medialane/sdk";
+import { buildAssetMetadata, UserFacingError, type ApiClient, type BuildAssetMetadataInput } from "@medialane/sdk";
+
+export const FILE_UPLOAD_FAILED =
+  "We couldn't upload your file. Check your connection and try again, or choose a different file.";
+
+function uploadFailed(cause: unknown): UserFacingError {
+  return Object.assign(new UserFacingError(FILE_UPLOAD_FAILED), { cause });
+}
 
 export interface UploadedIpfsFile {
   cid: string;
@@ -20,11 +27,16 @@ export async function uploadFileToIpfs(
   formData.append("network", "public");
   formData.append("name", file.name);
 
-  const uploadRes = await fetch(signedUrl, { method: "POST", body: formData });
+  let uploadRes: Response;
+  try {
+    uploadRes = await fetch(signedUrl, { method: "POST", body: formData });
+  } catch (err) {
+    throw uploadFailed(err);
+  }
   const uploadJson = (await uploadRes.json().catch(() => ({}))) as { data?: { cid?: string } };
   const cid = uploadJson.data?.cid;
   if (!uploadRes.ok || !cid) {
-    throw new Error("Upload to IPFS failed");
+    throw uploadFailed(new Error(`File upload returned HTTP ${uploadRes.status}${cid ? "" : " without a cid"}`));
   }
 
   return { cid, uri: `ipfs://${cid}` };

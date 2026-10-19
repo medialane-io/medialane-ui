@@ -1,11 +1,12 @@
 import { test, expect, mock } from "bun:test";
-import type { ApiClient } from "@medialane/sdk";
+import { UserFacingError, type ApiClient } from "@medialane/sdk";
 import {
   uploadFileToIpfs,
   uploadJsonToIpfs,
   uploadDirectoryToIpfs,
   uploadFailureToast,
   isUserRejection,
+  FILE_UPLOAD_FAILED,
 } from "./ipfs-upload.js";
 
 function fakeApi(overrides: Partial<Record<keyof ApiClient, unknown>> = {}): ApiClient {
@@ -42,7 +43,22 @@ test("uploadFileToIpfs throws the backend's error when the signed-url request fa
 
 test("uploadFileToIpfs throws when the upload step returns no cid", async () => {
   pinataReturns({});
-  await expect(uploadFileToIpfs(fakeApi(), new File(["x"], "a.png"))).rejects.toThrow("Upload to IPFS failed");
+  await expect(uploadFileToIpfs(fakeApi(), new File(["x"], "a.png"))).rejects.toThrow(FILE_UPLOAD_FAILED);
+});
+
+test("an upload the browser cannot read says the file was not uploaded and keeps the cause", async () => {
+  global.fetch = mock(async () => { throw new TypeError("Load failed"); }) as unknown as typeof fetch;
+  const err = await uploadFileToIpfs(fakeApi(), new File(["x"], "a.jpg")).catch((e) => e);
+  expect(err).toBeInstanceOf(UserFacingError);
+  expect(err.message).toBe(FILE_UPLOAD_FAILED);
+  expect((err.cause as Error).message).toBe("Load failed");
+});
+
+test("a rejected upload keeps the HTTP status as the cause", async () => {
+  global.fetch = mock(async () => ({ ok: false, status: 413, json: async () => ({}) } as Response)) as unknown as typeof fetch;
+  const err = await uploadFileToIpfs(fakeApi(), new File(["x"], "a.jpg")).catch((e) => e);
+  expect(err.message).toBe(FILE_UPLOAD_FAILED);
+  expect((err.cause as Error).message).toContain("413");
 });
 
 test("uploadJsonToIpfs returns the uri the SDK reports", async () => {
