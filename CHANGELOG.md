@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.196.0] — 2026-10-19
+
+### Added
+
+- `MedialaneAppProvider`, `useMedialaneApp`, `MedialaneApp`, `runIntentCalls`.
+- `useToken`, `useTokenBalance`, `useTokenHistory`, `useTokensByOwner`, `checkIsOwner`, `queryKeys.tokenBalance`.
+- `AssetOwnersPanel`, `AssetUnavailable`, `AssetProvenanceTab`, `ASSET_ACCENTS`.
+
+### Changed
+
+- `DropPage`, `DropCreate`, `MyDrops` read `MedialaneApp` from `MedialaneAppProvider`.
+- Peer `@medialane/sdk` `>=0.184.0`.
+
+### Removed
+
+- `DropAppProps`.
+
 ## [0.195.0] — 2026-10-19
 
 ### Changed
