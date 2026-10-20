@@ -39,7 +39,7 @@ export function AssetOwnersPanel({ balances, total = balances.length, editions }
   if (balances.length === 0) return null;
 
   const owners = plural(total, "owner");
-  const label = editions ? `${plural(editions, "edition")} · ${owners}` : owners;
+  const label = editions && editions !== total ? `${plural(editions, "edition")} · ${owners}` : owners;
 
   return (
     <div className="rounded-xl border border-border px-4 py-3 space-y-2">

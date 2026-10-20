@@ -27,3 +27,8 @@ test("shows five owners", () => {
   expect(html).toContain(">0x5<");
   expect(html).not.toContain(">0x6<");
 });
+
+test("editions equal to owners are not repeated", () => {
+  expect(render({ total: 2, editions: 2 })).not.toContain("editions");
+  expect(render({ total: 2, editions: 2 })).toContain("2 owners");
+});
