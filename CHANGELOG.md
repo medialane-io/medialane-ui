@@ -1,6 +1,6 @@
 # Changelog
 
-## [Unreleased]
+## [0.202.0] — 2026-10-20
 
 ### Added
 
@@ -17,6 +17,7 @@
 - `ActivityRow`, `ActivityCard` and `ActivityTimelineRow` link assets on the activity's own chain; `getAssetHref` / `getActorHref` props removed (also from `DiscoverFeedSection`).
 - `formatActivity` and the notification formatters take an optional image resolver.
 - Tests register the DOM once (`bunfig.toml` preload).
+- Requires `@medialane/sdk` 0.187.0 (`profileHref`).
 ## [0.201.10] — 2026-10-20
 
 ### Fixed
