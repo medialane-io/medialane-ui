@@ -26,7 +26,7 @@ export function PageBackdrop({ image }: { image: string | null }) {
   );
 }
 
-const THUMB = "w-full sm:w-44 lg:w-56 aspect-square shrink-0 rounded-2xl overflow-hidden bg-muted";
+const FRAME = "w-full sm:w-44 lg:w-56 shrink-0 rounded-2xl overflow-hidden bg-muted";
 
 export function MediaHeader({ image, imageAlt, fallbackIcon: FallbackIcon, loading = false, children }: MediaHeaderProps) {
   const [imgError, setImgError] = useState(false);
@@ -34,7 +34,7 @@ export function MediaHeader({ image, imageAlt, fallbackIcon: FallbackIcon, loadi
   if (loading) {
     return (
       <div className="flex flex-col sm:flex-row gap-6 lg:gap-8 items-start lg:max-w-5xl lg:mx-auto">
-        <Skeleton className={THUMB} />
+        <Skeleton className={`${FRAME} aspect-square`} />
         <div className="flex-1 w-full space-y-3">
           <Skeleton className="h-6 w-40" />
           <Skeleton className="h-10 w-2/3" />
@@ -48,11 +48,11 @@ export function MediaHeader({ image, imageAlt, fallbackIcon: FallbackIcon, loadi
     <div className="flex flex-col sm:flex-row gap-6 lg:gap-8 items-start lg:max-w-5xl lg:mx-auto">
       <PageBackdrop image={image} />
 
-      <div className={THUMB}>
+      <div className={FRAME}>
         {image && !imgError ? (
-          <img src={image} alt={imageAlt} onError={() => setImgError(true)} className="h-full w-full object-cover" />
+          <img src={image} alt={imageAlt} onError={() => setImgError(true)} className="block w-full h-auto max-h-[80vh] object-contain sm:aspect-square sm:h-full sm:object-cover" />
         ) : (
-          <div className="h-full w-full flex items-center justify-center">
+          <div className="aspect-square w-full flex items-center justify-center">
             <FallbackIcon className="h-1/3 w-1/3 text-muted-foreground/40" />
           </div>
         )}
