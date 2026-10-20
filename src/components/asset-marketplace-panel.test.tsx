@@ -21,7 +21,7 @@ const noop = () => {};
 
 const listing = { orderHash: "0x1", offerer: "0xseller", endTime: "2999-01-01T00:00:00Z", price: { formatted: "119", currency: "STRK" } };
 
-const render = (app0: MedialaneApp, isSignedIn: boolean, extra: { cheapest?: typeof listing; myListing?: typeof listing | null; isOwner?: boolean } = {}) =>
+const render = (app0: MedialaneApp, isSignedIn: boolean, extra: { cheapest?: typeof listing; myListing?: typeof listing | null; isOwner?: boolean; remix?: boolean } = {}) =>
   renderToStaticMarkup(
     <MedialaneAppProvider value={{ ...app0, walletAddress: isSignedIn ? "0xme" : null }}>
       <AssetMarketplacePanel
@@ -29,6 +29,8 @@ const render = (app0: MedialaneApp, isSignedIn: boolean, extra: { cheapest?: typ
         cheapest={extra.cheapest}
         usdValue="$6.66"
         isOwner={extra.isOwner ?? false}
+        remixEnabled={extra.remix ?? false}
+        onOpenRemix={() => {}}
         isProcessing={false}
         isERC1155={false}
         myListing={extra.myListing ?? null}
@@ -84,4 +86,10 @@ test("signed out shows the price above the sign-in cards", () => {
   expect(html).toContain("Price");
   expect(html).toContain("119");
   expect(html).not.toContain(">Buy<");
+});
+
+test("with Buy, Make offer and Remix, Buy takes the full row", () => {
+  const html = render(base, true, { cheapest: listing, remix: true });
+  expect(html.indexOf(">Buy<")).toBeLessThan(html.indexOf("Remix"));
+  expect(html).toContain("grid grid-cols-2 gap-2 [&amp;&gt;*:first-child]:col-span-2");
 });

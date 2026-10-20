@@ -1,6 +1,6 @@
 "use client";
 
-import type { ReactNode } from "react";
+import { Children, type ReactNode } from "react";
 import {
   ArrowRightLeft, CheckCircle, Clock, GitBranch, HandCoins, Handshake, Loader2,
   Tag, X,
@@ -11,6 +11,7 @@ import { ActionButton } from "./action-button.js";
 import { formatDisplayPrice, parsePriceDisplay } from "../utils/format.js";
 import { isExpired, timeUntil } from "../utils/time.js";
 import { isSameAddress } from "../utils/same-address.js";
+import { cn } from "../utils/cn.js";
 import { AssetAccessCards, CompanionAppCard } from "./asset-access-cards.js";
 import { useMedialaneApp, type AssetRef } from "./medialane-app.js";
 import { HelpIcon } from "./help-icon.js";
@@ -80,7 +81,8 @@ function StatRow({ floorPriceRaw, lastSaleRaw }: { floorPriceRaw?: string | null
 }
 
 function ActionRow({ children }: { children: ReactNode }) {
-  return <div className="flex flex-wrap gap-2 [&>*]:flex-1">{children}</div>;
+  const odd = Children.toArray(children).length % 2 === 1;
+  return <div className={cn("grid grid-cols-2 gap-2", odd && "[&>*:first-child]:col-span-2")}>{children}</div>;
 }
 
 function PriceLine({ label, order, usdValue }: { label: string; order: ApiOrderLike; usdValue?: string | null }) {
