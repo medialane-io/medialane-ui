@@ -91,9 +91,7 @@ export function ListingCard({ order: rawOrder, inCart = false, onBuy, onCart, ov
               imgError={imgError}
               onImageError={() => setImgError(true)}
               fallback={
-                <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-brand-purple/15 to-brand-blue/15">
-                  <span className="text-xl font-mono text-muted-foreground">#{order.nftTokenId}</span>
-                </div>
+                <div className="absolute inset-0 bg-gradient-to-br from-brand-purple/15 to-brand-blue/15" />
               }
             />
           </div>
@@ -122,9 +120,7 @@ export function ListingCard({ order: rawOrder, inCart = false, onBuy, onCart, ov
             imgError={imgError}
             onImageError={() => setImgError(true)}
             fallback={
-              <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-brand-purple/15 to-brand-blue/15">
-                <span className="text-2xl font-mono text-muted-foreground">#{order.nftTokenId}</span>
-              </div>
+              <div className="absolute inset-0 bg-gradient-to-br from-brand-purple/15 to-brand-blue/15" />
             }
           />
         </div>
@@ -132,9 +128,6 @@ export function ListingCard({ order: rawOrder, inCart = false, onBuy, onCart, ov
         <div className="p-3.5 space-y-3">
           <div className="min-w-0">
             <p className="font-semibold text-base truncate leading-snug">{name}</p>
-            <p className="text-2xs text-muted-foreground truncate leading-snug mt-0.5">
-              {order.token?.description ? order.token.description : `#${order.nftTokenId}`}
-            </p>
           </div>
 
           {order.price?.formatted && (
