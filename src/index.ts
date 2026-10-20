@@ -257,6 +257,7 @@ export type { ServiceDefinition, ServiceStatus, ServiceGroup, ServiceGroupDefini
 
 export { NavCommandMenu, useNavCommandMenu, relevanceFilter, matchCommands } from "./components/nav-command-menu.js";
 export { SearchPage } from "./components/search-page.js";
+export { NAV_ITEMS, navGroups, type NavItemId, type NavGroupSpec } from "./data/nav-commands.js";
 export { ResultThumbnail } from "./components/result-thumbnail.js";
 export type { NavCommand, NavCommandGroup, NavCommandMenuProps } from "./components/nav-command-menu.js";
 
