@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.201.3] — 2026-10-20
+
+### Removed
+
+- The owners dialog behind `+N more owners`, and `useTokenOwners`. `AssetOwnersPanel` no longer takes `contract` and `tokenId`.
+
 ## [0.201.2] — 2026-10-20
 
 ### Changed

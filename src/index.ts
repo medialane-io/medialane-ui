@@ -487,7 +487,7 @@ export {
   type TierOnchain, type TierListItem,
 } from "./utils/use-tiers.js";
 export { collectSitemapData, type SitemapData, type SitemapLimits } from "./utils/sitemap-data.js";
-export { useToken, useTokenBalance, useTokenHistory, useTokensByOwner, useTokenOwners } from "./utils/use-tokens.js";
+export { useToken, useTokenBalance, useTokenHistory, useTokensByOwner } from "./utils/use-tokens.js";
 export { checkIsOwner } from "./utils/ownership.js";
 export { AssetOwnersPanel } from "./components/asset-owners-panel.js";
 export { AssetUnavailable } from "./components/asset-unavailable.js";
