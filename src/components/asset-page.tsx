@@ -285,7 +285,7 @@ function AssetPageView({
             {kind === "pop" && market.isOwner ? <PopBurn collectionAddress={contract} tokenId={tokenId} /> : null}
 
             {market.isERC1155 && holders.length > 0 ? (
-              <AssetOwnersPanel contract={contract} tokenId={tokenId} balances={holders} total={token.holderCount} editions={Number(token.supply ?? 0)} />
+              <AssetOwnersPanel balances={holders} total={token.holderCount} editions={Number(token.supply ?? 0)} />
             ) : null}
 
             <div className="pt-5 space-y-5">
