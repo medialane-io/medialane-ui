@@ -118,6 +118,7 @@ export function AssetMediaColumn({
 
 interface AssetHeaderBlockProps {
   name: string;
+  badges?: React.ReactNode;
   utilities?: React.ReactNode;
   description?: string | null;
   ipType?: string | null;
@@ -127,6 +128,7 @@ interface AssetHeaderBlockProps {
 
 export function AssetHeaderBlock({
   name,
+  badges,
   utilities,
   description,
   ipType,
@@ -135,9 +137,12 @@ export function AssetHeaderBlock({
 }: AssetHeaderBlockProps) {
   return (
     <div className="min-w-0 flex-1">
-      {ipType || utilities ? (
+      {ipType || badges || utilities ? (
         <div className="flex items-center justify-between gap-2 mb-2">
-          {ipType ? <IpTypeBadge ipType={ipType} size="md" /> : <span />}
+          <div className="flex items-center gap-2 flex-wrap">
+            {ipType ? <IpTypeBadge ipType={ipType} size="md" /> : null}
+            {badges}
+          </div>
           {utilities}
         </div>
       ) : null}

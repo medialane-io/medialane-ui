@@ -58,6 +58,7 @@ export { ParentAttributionBanner } from "./components/parent-attribution-banner.
 export type { ParentBannerProps } from "./components/parent-attribution-banner.js";
 export { AssetMediaColumn, AssetHeaderBlock, AssetOwnerRow } from "./components/asset-top-sections.js";
 export { ExpandableText } from "./components/expandable-text.js";
+export { CollectionHeader, type CollectionHeaderProps } from "./components/collection-header.js";
 export type { AssetOwnerRowProps } from "./components/asset-top-sections.js";
 export { AssetCollectionBar } from "./components/asset-collection-bar.js";
 export type { AssetCollectionBarProps, AssetCollectionBarSibling } from "./components/asset-collection-bar.js";
