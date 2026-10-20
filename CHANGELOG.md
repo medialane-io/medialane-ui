@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.199.0] — 2026-10-20
+
+### Added
+
+- `MedialaneApp.connectDescription` and `MedialaneApp.companion` (`CompanionApp`), `AssetRef`.
+
+### Changed
+
+- `AssetMarketplacePanel` takes `asset` and renders the signed-out state from `MedialaneApp`: a sign-in card (`connectLabel`, `connectDescription`, `onRequireWallet`) and a link to the asset in the companion app. Signed in, the companion app link stays below the actions.
+
+### Removed
+
+- `AssetMarketplacePanel` `renderAuthAction`.
+
 ## [0.197.0] — 2026-10-19
 
 ### Changed

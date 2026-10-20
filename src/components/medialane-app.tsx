@@ -1,8 +1,22 @@
 "use client";
 
-import { createContext, useContext, type ReactNode } from "react";
+import { createContext, useContext, type ElementType, type ReactNode } from "react";
 import type { MedialaneClient } from "@medialane/sdk/starknet";
 import type { FastMintSigner } from "./fast-mint/types.js";
+import type { Chain } from "@medialane/sdk";
+
+export interface AssetRef {
+  chain: Chain;
+  contract: string;
+  tokenId: string;
+}
+
+export interface CompanionApp {
+  title: string;
+  description: string;
+  icon: ElementType;
+  assetUrl: (asset: AssetRef) => string;
+}
 
 export interface MedialaneApp {
   getClient: () => MedialaneClient;
@@ -10,6 +24,8 @@ export interface MedialaneApp {
   walletAddress: string | null;
   onRequireWallet: () => void;
   connectLabel?: string;
+  connectDescription?: string;
+  companion?: CompanionApp;
 }
 
 const MedialaneAppContext = createContext<MedialaneApp | null>(null);
