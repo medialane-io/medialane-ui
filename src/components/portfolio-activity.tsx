@@ -2,7 +2,6 @@
 
 import { useState, useMemo } from "react";
 import { Activity } from "lucide-react";
-import { assetHref } from "@medialane/sdk";
 import { useActivitiesByAddress } from "../utils/use-activities.js";
 import { EmptyOrError } from "./empty-or-error.js";
 import { ACTIVITY_TYPE_CONFIG, TYPE_FILTERS } from "../data/activity.js";
@@ -95,7 +94,6 @@ export function PortfolioActivity({ address }: PortfolioActivityProps) {
               showActor={false}
               showExplorer
               explorerUrl={EXPLORER_URL}
-              getAssetHref={(c, t) => assetHref("STARKNET", c, t)}
             />
           ))}
         </div>

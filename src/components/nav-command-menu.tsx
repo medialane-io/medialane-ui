@@ -11,6 +11,7 @@ import { cn } from "../utils/cn.js";
 import { ipfsToHttp } from "../utils/ipfs.js";
 import { profileIdentity } from "../utils/profile-identity.js";
 import { useSearch, SEARCH_MIN_LENGTH } from "../utils/use-search.js";
+import { profileHref } from "@medialane/sdk";
 
 export interface NavCommand {
   id: string;
@@ -190,7 +191,7 @@ function SearchResults({ query, debouncedQuery, onNavigate }: {
                 label={identity}
                 description={name}
                 leading={<Thumbnail src={creator.avatarImage} label={identity} round />}
-                onSelect={() => onNavigate(`/creator/${creator.username ?? creator.walletAddress}`)}
+                onSelect={() => onNavigate(profileHref({ username: creator.username, address: creator.walletAddress }))}
               />
             );
           })}

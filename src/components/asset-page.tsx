@@ -37,6 +37,7 @@ import { ASSET_ACCENTS } from "../utils/asset-accents.js";
 import { isLivingRenderCollection } from "../data/living-render-collections.js";
 import { EXPLORER_URL } from "../utils/explorer-url.js";
 import { ipfsToHttp } from "../utils/ipfs.js";
+import { profileHref } from "@medialane/sdk";
 
 export type AssetKind = "standard" | "edition" | "ticket" | "membership" | "pop";
 
@@ -284,7 +285,7 @@ function AssetPageView({
             ) : null}
 
             <div className="pt-5 space-y-5">
-              {ownerAddress ? <AssetOwnerRow ownerAddress={ownerAddress} ownerHref={`/creator/${ownerAddress}`} /> : null}
+              {ownerAddress ? <AssetOwnerRow ownerAddress={ownerAddress} ownerHref={profileHref({ address: ownerAddress })} /> : null}
               {collection?.service === "drop-collection" ? <DropTokenLink contract={contract} name={collection.name ?? null} /> : null}
               <AssetCollectionBar
                 collectionName={collection?.name ?? contract.slice(0, 8) + "…"}

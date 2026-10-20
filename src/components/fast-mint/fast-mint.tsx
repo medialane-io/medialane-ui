@@ -31,6 +31,7 @@ import { cn } from "../../utils/cn.js";
 import { Dropzone } from "./dropzone.js";
 import { SuccessView } from "./success-view.js";
 import type { FastMintProps, FastMintSigner, MediaKind, MintedAsset } from "./types.js";
+import { profileHref } from "@medialane/sdk";
 
 const MEDIA_ROUTE_MIME_TYPES = new Set([
   "image/jpeg", "image/png", "image/gif", "image/webp", "image/svg+xml", "image/avif",
@@ -925,7 +926,7 @@ export function FastMint(props: FastMintProps) {
               name={name}
               collection={collectionLabel}
               creator={walletAddress ? `${walletAddress.slice(0, 6)}…${walletAddress.slice(-4)}` : undefined}
-              creatorHref={walletAddress ? `/account/${walletAddress}` : undefined}
+              creatorHref={walletAddress ? profileHref({ address: walletAddress }) : undefined}
             />
           </div>
         </div>

@@ -10,7 +10,7 @@ import { isLivingRenderCollection } from "../data/living-render-collections.js";
 import { timeAgo } from "../utils/time.js";
 import { formatDisplayPrice } from "../utils/format.js";
 import { cn } from "../utils/cn.js";
-import type { ApiActivity, Chain } from "@medialane/sdk";
+import { assetHref, type ApiActivity, type Chain } from "@medialane/sdk";
 
 type ActivityWithEnrichment = ApiActivity & {
   chain?: Chain;
@@ -42,12 +42,10 @@ export function ActivityCardSkeleton() {
 export interface ActivityCardProps {
   activity: ApiActivity;
 
-  getAssetHref?: (contract: string, tokenId: string) => string;
 }
 
 export function ActivityCard({
   activity: rawActivity,
-  getAssetHref = (c, t) => `/asset/${c}/${t}`,
 }: ActivityCardProps) {
   const activity = rawActivity as ActivityWithEnrichment;
   const config = ACTIVITY_TYPE_CONFIG[activity.type] ?? {
@@ -129,7 +127,7 @@ export function ActivityCard({
   const className = "card-base block active:scale-[0.99] transition-all";
 
   return contract && tokenId ? (
-    <Link href={getAssetHref(contract, tokenId)} className={className}>
+    <Link href={assetHref(activity.chain, contract, tokenId)} className={className}>
       {body}
     </Link>
   ) : (

@@ -12,6 +12,7 @@ import { timeAgo } from "../utils/time.js";
 import { formatDisplayPrice } from "../utils/format.js";
 import { cn } from "../utils/cn.js";
 import type { ApiActivity, ApiRewardsBatchEntry } from "@medialane/sdk";
+import { assetHref, profileHref } from "@medialane/sdk";
 
 const ACTIVITY_MESSAGES: Record<string, string> = {
   mint: "Newly minted",
@@ -29,8 +30,6 @@ export interface ActivityRowProps {
   compact?: boolean;
   actorLevel?: ApiRewardsBatchEntry;
   explorerUrl?: string;
-  getAssetHref?: (contract: string, tokenId: string) => string;
-  getActorHref?: (address: string) => string;
 }
 
 export function ActivityRow({
@@ -40,8 +39,6 @@ export function ActivityRow({
   compact = false,
   actorLevel,
   explorerUrl = "https://voyager.online",
-  getAssetHref = (contract, tokenId) => `/asset/STARKNET/${contract}/${tokenId}`,
-  getActorHref = (address) => `/creator/${address}`,
 }: ActivityRowProps) {
   const config = ACTIVITY_TYPE_CONFIG[activity.type] ?? {
     label: activity.type,
@@ -124,7 +121,7 @@ export function ActivityRow({
         <div className="flex items-center gap-1.5 leading-tight">
           {contract && tokenId ? (
             <Link
-              href={getAssetHref(contract, tokenId)}
+              href={assetHref(activity.chain, contract, tokenId)}
               className="text-sm font-semibold hover:text-primary transition-colors truncate block"
             >
               {tokenName}
@@ -143,7 +140,7 @@ export function ActivityRow({
           {showActor && actor && (
             <>
               <Link
-                href={getActorHref(actor)}
+                href={profileHref({ address: actor })}
                 className="hover:text-primary transition-colors tabular-nums shrink-0"
               >
                 <AddressDisplay address={actor} chars={4} showCopy={false} />

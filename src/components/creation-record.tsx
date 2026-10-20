@@ -4,6 +4,7 @@ import { Award, ExternalLink } from "lucide-react";
 import Link from "./link.js";
 import { normalizeAddress } from "@medialane/sdk";
 import { EXPLORER_URL } from "../utils/explorer-url.js";
+import { profileHref } from "@medialane/sdk";
 
 export interface CreationRecordProps {
   originalCreator: string;
@@ -33,7 +34,7 @@ export function CreationRecord({ originalCreator, registeredAt }: CreationRecord
         <div className="flex items-center justify-between">
           <dt className="text-muted-foreground">Original creator</dt>
           <dd className="tabular-nums">
-            <Link href={`/creator/${creator}`} className="hover:underline">
+            <Link href={profileHref({ address: creator })} className="hover:underline">
               {creator.slice(0, 6)}…{creator.slice(-4)}
             </Link>
           </dd>
