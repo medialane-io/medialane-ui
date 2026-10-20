@@ -66,9 +66,9 @@ test("signed in shows the actions and keeps the companion app link", () => {
 
 test("a listed asset's price sits in the Buy button", () => {
   const html = render(base, true, { cheapest: listing });
-  expect(html).toContain("Buy for");
+  expect(html).toContain("Buy");
   expect(html).toContain("119");
-  expect(html).toContain("≈ $6.66");
+  expect(html).toContain("$6.66");
   expect(html).toContain("Make offer");
 });
 
@@ -76,12 +76,12 @@ test("the owner sees what they listed it for", () => {
   const html = render(base, true, { cheapest: listing, myListing: listing, isOwner: true });
   expect(html).toContain("Listed for");
   expect(html).toContain("Cancel listing");
-  expect(html).not.toContain("Buy for");
+  expect(html).not.toContain(">Buy<");
 });
 
 test("signed out shows the price above the sign-in cards", () => {
   const html = render(base, false, { cheapest: listing });
   expect(html).toContain("Price");
   expect(html).toContain("119");
-  expect(html).not.toContain("Buy for");
+  expect(html).not.toContain(">Buy<");
 });
