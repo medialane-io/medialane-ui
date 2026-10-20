@@ -1,5 +1,22 @@
 # Changelog
 
+## [Unreleased]
+
+### Added
+
+- `NavCommandMenu` `search` prop: typing two or more characters also lists matching creators, collections and assets, plus a row that opens the full search page.
+- `useSearch(query, { limit, keepPrevious })` — search reads through SWR.
+- `SearchPage` — the full search page; `ResultThumbnail` shared with the menu.
+- `createImageResolver`, `useImageUrl` and `MedialaneApp.resolveImage` — components resolve images the way the app configures them (gateway, image proxy).
+- `NAV_ITEMS` and `navGroups` — the command menu entries both apps list.
+- `matchCommands` — the menu's command ranking, exported.
+
+### Changed
+
+- Profile links use `profileHref` from `@medialane/sdk` (`/creator/<username>`, else `/account/<address>`).
+- `ActivityRow`, `ActivityCard` and `ActivityTimelineRow` link assets on the activity's own chain; `getAssetHref` / `getActorHref` props removed (also from `DiscoverFeedSection`).
+- `formatActivity` and the notification formatters take an optional image resolver.
+- Tests register the DOM once (`bunfig.toml` preload).
 ## [0.201.10] — 2026-10-20
 
 ### Fixed
