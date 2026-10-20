@@ -1,1 +1,1 @@
-export { useRouter } from "next/navigation";
+export { useRouter, useSearchParams } from "next/navigation";

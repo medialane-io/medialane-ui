@@ -2,16 +2,14 @@
 
 import * as React from "react";
 import { Command, defaultFilter } from "cmdk";
-import { assetHref, collectionHref } from "@medialane/sdk";
+import { assetHref, collectionHref, profileHref } from "@medialane/sdk";
 import { useRouter } from "./router.js";
-import Image from "./image.js";
 import { Search, X, ArrowRight, Loader2 } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { cn } from "../utils/cn.js";
 import { profileIdentity } from "../utils/profile-identity.js";
 import { useSearch, SEARCH_MIN_LENGTH } from "../utils/use-search.js";
-import { profileHref } from "@medialane/sdk";
-import { useImageUrl } from "../utils/use-image-url.js";
+import { ResultThumbnail } from "./result-thumbnail.js";
 
 export interface NavCommand {
   id: string;
@@ -122,27 +120,6 @@ function SearchIcon({ query, active }: { query: string; active: boolean }) {
   );
 }
 
-function Thumbnail({ src, label, round }: { src: string | null; label: string; round?: boolean }) {
-  const resolveImage = useImageUrl();
-  const [failed, setFailed] = React.useState(false);
-  const url = src && !failed ? resolveImage(src, { width: 96 }) : null;
-  return (
-    <span
-      className={cn(
-        "relative flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden bg-muted/50",
-        "text-xs font-semibold text-muted-foreground",
-        round ? "rounded-full" : "rounded-lg"
-      )}
-    >
-      {url ? (
-        <Image src={url} alt="" fill sizes="32px" className="object-cover" unoptimized onError={() => setFailed(true)} />
-      ) : (
-        label.replace("@", "").charAt(0).toUpperCase()
-      )}
-    </span>
-  );
-}
-
 function ResultRow({ value, label, description, leading, onSelect }: {
   value: string;
   label: string;
@@ -191,7 +168,7 @@ function SearchResults({ query, debouncedQuery, onNavigate }: {
                 value={`creator:${creator.walletAddress}`}
                 label={identity}
                 description={name}
-                leading={<Thumbnail src={creator.avatarImage} label={identity} round />}
+                leading={<ResultThumbnail src={creator.avatarImage} label={identity} round />}
                 onSelect={() => onNavigate(profileHref({ username: creator.username, address: creator.walletAddress }))}
               />
             );
@@ -201,13 +178,13 @@ function SearchResults({ query, debouncedQuery, onNavigate }: {
       {collections.length > 0 && (
         <Command.Group heading="Collections" className={GROUP_HEADING_CLASSES}>
           {collections.map((col) => {
-            const label = col.name ?? "Unnamed";
+            const label = col.name ?? "Untitled";
             return (
               <ResultRow
                 key={col.contractAddress}
                 value={`collection:${col.contractAddress}`}
                 label={label}
-                leading={<Thumbnail src={col.image} label={label} />}
+                leading={<ResultThumbnail src={col.image} label={label} />}
                 onSelect={() => onNavigate(collectionHref("STARKNET", col.contractAddress))}
               />
             );
@@ -223,7 +200,7 @@ function SearchResults({ query, debouncedQuery, onNavigate }: {
                 key={`${token.contractAddress}-${token.tokenId}`}
                 value={`asset:${token.contractAddress}:${token.tokenId}`}
                 label={label}
-                leading={<Thumbnail src={token.image} label={label} />}
+                leading={<ResultThumbnail src={token.image} label={label} />}
                 onSelect={() => onNavigate(assetHref("STARKNET", token.contractAddress, token.tokenId))}
               />
             );
