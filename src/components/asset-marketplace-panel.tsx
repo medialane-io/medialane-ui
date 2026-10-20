@@ -248,11 +248,6 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
                 </ActionButton>
               ) : null}
             </ActionRow>
-            {!remixEnabled && !showDealOption ? (
-              <p className="text-xs text-muted-foreground leading-relaxed">
-                The creator marked this asset as no-derivatives.
-              </p>
-            ) : null}
           </div>
         ) : (
           <AssetAccessCards asset={asset} />

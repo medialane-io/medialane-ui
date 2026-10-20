@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.201.4] — 2026-10-20
+
+### Changed
+
+- `AssetOwnersPanel` shows the editions count only when it differs from the owner count.
+
+### Removed
+
+- `AssetMarketplacePanel` no-derivatives note.
+
 ## [0.201.3] — 2026-10-20
 
 ### Removed
