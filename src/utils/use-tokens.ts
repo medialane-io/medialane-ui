@@ -94,3 +94,13 @@ export function useTokenHistory( contract: string | null, tokenId: string | null
 
   return { history: data?.data ?? [], isLoading, error };
 }
+
+export function useTokenOwners(contract: string | null, tokenId: string | null, page: number) {
+  const client = useMedialaneClient();
+  const { data, error, isLoading } = useSWR(
+    contract && tokenId ? ["token-owners", contract, tokenId, page] : null,
+    () => client.api.getTokenOwners(contract!, tokenId!, page),
+    { revalidateOnFocus: false },
+  );
+  return { owners: data?.data ?? [], total: data?.meta?.total ?? 0, isLoading, error };
+}

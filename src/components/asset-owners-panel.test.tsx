@@ -6,7 +6,7 @@ import { MedialaneAppProvider, type MedialaneApp } from "./medialane-app.js";
 const app = { getClient: () => ({ api: {} }) as never, getSigner: () => { throw new Error("unused"); }, walletAddress: null, onRequireWallet: () => {} } as MedialaneApp;
 const holders = Array.from({ length: 50 }, (_, i) => ({ owner: "0x" + (i + 1).toString(16), amount: "1" }));
 const render = (props: { total?: number; editions?: number } = {}) =>
-  renderToStaticMarkup(<MedialaneAppProvider value={app}><AssetOwnersPanel balances={holders} {...props} /></MedialaneAppProvider>);
+  renderToStaticMarkup(<MedialaneAppProvider value={app}><AssetOwnersPanel contract="0xc0" tokenId="1" balances={holders} {...props} /></MedialaneAppProvider>);
 
 test("the owners count is the total, not the listed holders", () => {
   const html = render({ total: 1234 });
