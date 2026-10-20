@@ -21,20 +21,18 @@ const noop = () => {};
 
 const listing = { orderHash: "0x1", offerer: "0xseller", endTime: "2999-01-01T00:00:00Z", price: { formatted: "119", currency: "STRK" } };
 
-const render = (app: MedialaneApp, isSignedIn: boolean, extra: { cheapest?: typeof listing; myListing?: typeof listing | null; isOwner?: boolean } = {}) =>
+const render = (app0: MedialaneApp, isSignedIn: boolean, extra: { cheapest?: typeof listing; myListing?: typeof listing | null; isOwner?: boolean } = {}) =>
   renderToStaticMarkup(
-    <MedialaneAppProvider value={app}>
+    <MedialaneAppProvider value={{ ...app0, walletAddress: isSignedIn ? "0xme" : null }}>
       <AssetMarketplacePanel
         asset={{ chain: "STARKNET", contractAddress: "0xabc", tokenId: "7" }}
         cheapest={extra.cheapest}
         usdValue="$6.66"
         isOwner={extra.isOwner ?? false}
-        isSignedIn={isSignedIn}
         isProcessing={false}
         isERC1155={false}
         myListing={extra.myListing ?? null}
         activeBids={[]}
-        renderHelp={() => null}
         onCancelClick={noop}
         onAcceptBid={noop}
         onOpenListing={noop}

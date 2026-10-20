@@ -1,6 +1,7 @@
 "use client";
 
 import { cn } from "../utils/cn.js";
+import { HelpIcon } from "./help-icon.js";
 
 const ACTION_GRADIENTS: Record<string, [string, string, string]> = {
   buy:     ['#3b7bff', '#8a5cf6', '#3b7bff'],
@@ -49,7 +50,6 @@ export interface ActionButtonProps extends React.ButtonHTMLAttributes<HTMLButton
   ghost?: boolean;
 
   helpContent?: string;
-  renderHelp?: (content: string) => React.ReactNode;
 }
 
 export function ActionButton({
@@ -59,7 +59,6 @@ export function ActionButton({
   big,
   ghost,
   helpContent,
-  renderHelp,
   disabled,
   children,
   className,
@@ -84,7 +83,7 @@ export function ActionButton({
         style={style}
       >
         {icon}{children}
-        {helpContent && renderHelp ? renderHelp(helpContent) : null}
+        {helpContent ? <HelpIcon content={helpContent} /> : null}
       </button>
     );
   }
@@ -115,7 +114,7 @@ export function ActionButton({
     >
       {icon && <span className="inline-flex" style={{ color: fg }}>{icon}</span>}
       {children}
-      {helpContent && renderHelp ? renderHelp(helpContent) : null}
+      {helpContent ? <HelpIcon content={helpContent} /> : null}
     </button>
   );
 }

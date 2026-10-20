@@ -13,7 +13,8 @@ import { formatDisplayPrice, parsePriceDisplay } from "../utils/format.js";
 import { isExpired, timeUntil } from "../utils/time.js";
 import { isSameAddress } from "../utils/same-address.js";
 import { AssetAccessCards, CompanionAppCard } from "./asset-access-cards.js";
-import type { AssetRef } from "./medialane-app.js";
+import { useMedialaneApp, type AssetRef } from "./medialane-app.js";
+import { HelpIcon } from "./help-icon.js";
 
 export interface ApiOrderLike {
   orderHash: string;
@@ -26,20 +27,17 @@ export interface AssetMarketplacePanelProps<T extends ApiOrderLike = ApiOrderLik
   asset: AssetRef;
   cheapest?: T;
   isOwner: boolean;
-  isSignedIn: boolean;
   isProcessing: boolean;
   isERC1155: boolean;
   canListMoreEditions?: boolean;
   isMarketLoading?: boolean;
   myListing: T | null;
   activeBids: T[];
-  walletAddress?: string | null;
   remixEnabled?: boolean;
   showDealOption?: boolean;
 
   usdValue?: string | null;
 
-  renderHelp: (content: string) => ReactNode;
   onCancelClick: (order: T) => void;
   onAcceptBid: (order: T) => void;
   onOpenListing: () => void;
@@ -86,14 +84,14 @@ function ActionRow({ children }: { children: ReactNode }) {
   return <div className="flex flex-wrap gap-2 [&>*]:flex-1">{children}</div>;
 }
 
-function PriceLine({ label, order, usdValue, renderHelp }: { label: string; order: ApiOrderLike; usdValue?: string | null; renderHelp: (content: string) => ReactNode }) {
+function PriceLine({ label, order, usdValue }: { label: string; order: ApiOrderLike; usdValue?: string | null }) {
   return (
     <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-muted-foreground">
       <span>{label}</span>
       <CurrencyAmount amount={formatDisplayPrice(order.price.formatted)} symbol={order.price.currency ?? ""} iconSize={14} amountClassName="text-base font-bold text-foreground tabular-nums" />
       <span className="font-semibold text-foreground">{order.price.currency}</span>
       {usdValue ? <span className="tabular-nums">· {usdValue}</span> : null}
-      {renderHelp(`Expires ${timeUntil(order.endTime)}`)}
+      <HelpIcon content={`Expires ${timeUntil(order.endTime)}`} />
     </div>
   );
 }
@@ -102,14 +100,12 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
   asset,
   cheapest,
   isOwner,
-  isSignedIn,
   isProcessing,
   isERC1155,
   canListMoreEditions,
   isMarketLoading = false,
   myListing,
   activeBids,
-  walletAddress,
   remixEnabled = false,
   showDealOption = false,
   showSponsorOption = false,
@@ -119,7 +115,6 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
   floorPriceRaw,
   lastSaleRaw,
   usdValue,
-  renderHelp,
   onCancelClick,
   onAcceptBid,
   onOpenListing,
@@ -129,6 +124,8 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
   onOpenRemix,
   onProposeDeal,
 }: AssetMarketplacePanelProps<T>) {
+  const { walletAddress } = useMedialaneApp();
+  const isSignedIn = !!walletAddress;
   const liveBids = activeBids.filter((bid) => !isExpired(bid.endTime));
   const liveCheapest = cheapest && !isExpired(cheapest.endTime) ? cheapest : undefined;
   const liveMyListing = myListing && !isExpired(myListing.endTime) ? myListing : null;
@@ -156,14 +153,13 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
       icon={<GitBranch className="h-4 w-4" />}
       onClick={onOpenRemix}
       helpContent="Create your own attributed derivative of this work."
-      renderHelp={renderHelp}
     >
       Remix
     </ActionButton>
   ) : null;
 
   const offerButton = (
-    <ActionButton action="offer" icon={<HandCoins className="h-4 w-4" />} onClick={onOpenOffer} renderHelp={renderHelp}>
+    <ActionButton action="offer" icon={<HandCoins className="h-4 w-4" />} onClick={onOpenOffer}>
       Make offer
     </ActionButton>
   );
@@ -183,10 +179,9 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
       label="Listed for"
       order={liveMyListing}
       usdValue={liveMyListing.orderHash === liveCheapest?.orderHash ? usdValue : null}
-      renderHelp={renderHelp}
     />
   ) : !isSignedIn && liveCheapest ? (
-    <PriceLine label="Price" order={liveCheapest} usdValue={usdValue} renderHelp={renderHelp} />
+    <PriceLine label="Price" order={liveCheapest} usdValue={usdValue} />
   ) : null;
 
   return (
@@ -205,17 +200,16 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
                   onClick={() => onCancelClick(liveMyListing)}
                   disabled={isProcessing}
                   tone="red"
-                  renderHelp={renderHelp}
                 >
                   Cancel listing
                 </ActionButton>
               ) : null}
               {!liveMyListing || (isERC1155 && canListMoreEditions !== false) ? (
-                <ActionButton tone="blue" icon={<Tag className="h-4 w-4" />} onClick={onOpenListing} renderHelp={renderHelp}>
+                <ActionButton tone="blue" icon={<Tag className="h-4 w-4" />} onClick={onOpenListing}>
                   {liveMyListing ? "List more" : "List for sale"}
                 </ActionButton>
               ) : null}
-              <ActionButton tone="orange" icon={<ArrowRightLeft className="h-4 w-4" />} onClick={onOpenTransfer} renderHelp={renderHelp}>Transfer</ActionButton>
+              <ActionButton tone="orange" icon={<ArrowRightLeft className="h-4 w-4" />} onClick={onOpenTransfer}>Transfer</ActionButton>
               {remixButton}
               {showSponsorSolicitOption && onOpenSponsorSolicit ? (
                 <ActionButton
@@ -223,7 +217,6 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
                   icon={<Handshake className="h-4 w-4" />}
                   onClick={onOpenSponsorSolicit}
                   helpContent="Let sponsors bid on a license for this asset."
-                  renderHelp={renderHelp}
                 >
                   Open for sponsorship
                 </ActionButton>
@@ -243,7 +236,6 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
                   icon={<HandCoins className="h-4 w-4" />}
                   onClick={onProposeDeal}
                   helpContent="Propose a license deal to the creator to use this work."
-                  renderHelp={renderHelp}
                 >
                   License
                 </ActionButton>
@@ -254,7 +246,6 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
                   icon={<Handshake className="h-4 w-4" />}
                   onClick={onOpenSponsorProposal}
                   helpContent="Propose to sponsor this creator's work — pay them directly for a license, no escrow."
-                  renderHelp={renderHelp}
                 >
                   Sponsor
                 </ActionButton>
