@@ -1,5 +1,12 @@
 # Changelog
 
+## [Unreleased]
+
+### Changed
+
+- `AssetMarketplacePanel`: a listed asset's price sits in the Buy button (`GradientButton`, with the USD value); the other actions sit in one wrapping row of standard-size buttons; owners see `Listed for …` and signed-out visitors see `Price …` above the sign-in cards. Floor and last sale show whenever known.
+- `AssetHeaderBlock` takes `utilities`, shown at the right of the IP type row, so the title and description use the full width.
+
 ## [0.200.1] — 2026-10-20
 
 ### Added

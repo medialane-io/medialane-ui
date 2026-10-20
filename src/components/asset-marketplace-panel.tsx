@@ -8,7 +8,7 @@ import {
 import { CurrencyIcon, CurrencyAmount } from "./currency-icon.js";
 import { AddressDisplay } from "./address-display.js";
 import { ActionButton } from "./action-button.js";
-import { DualPrice } from "./dual-price.js";
+import { GradientButton } from "./gradient-button.js";
 import { formatDisplayPrice, parsePriceDisplay } from "../utils/format.js";
 import { isExpired, timeUntil } from "../utils/time.js";
 import { isSameAddress } from "../utils/same-address.js";
@@ -82,6 +82,22 @@ function StatRow({ floorPriceRaw, lastSaleRaw }: { floorPriceRaw?: string | null
   );
 }
 
+function ActionRow({ children }: { children: ReactNode }) {
+  return <div className="flex flex-wrap gap-2 [&>*]:flex-1">{children}</div>;
+}
+
+function PriceLine({ label, order, usdValue, renderHelp }: { label: string; order: ApiOrderLike; usdValue?: string | null; renderHelp: (content: string) => ReactNode }) {
+  return (
+    <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-muted-foreground">
+      <span>{label}</span>
+      <CurrencyAmount amount={formatDisplayPrice(order.price.formatted)} symbol={order.price.currency ?? ""} iconSize={14} amountClassName="text-base font-bold text-foreground tabular-nums" />
+      <span className="font-semibold text-foreground">{order.price.currency}</span>
+      {usdValue ? <span className="tabular-nums">· {usdValue}</span> : null}
+      {renderHelp(`Expires ${timeUntil(order.endTime)}`)}
+    </div>
+  );
+}
+
 export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
   asset,
   cheapest,
@@ -134,186 +150,124 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
     );
   }
 
+  const remixButton = remixEnabled && onOpenRemix ? (
+    <ActionButton
+      action="remix"
+      icon={<GitBranch className="h-4 w-4" />}
+      onClick={onOpenRemix}
+      helpContent="Create your own attributed derivative of this work."
+      renderHelp={renderHelp}
+    >
+      Remix
+    </ActionButton>
+  ) : null;
+
+  const offerButton = (
+    <ActionButton action="offer" icon={<HandCoins className="h-4 w-4" />} onClick={onOpenOffer} renderHelp={renderHelp}>
+      Make offer
+    </ActionButton>
+  );
+
+  const buyButton = liveCheapest && (!isOwner || canBuyMore) ? (
+    <GradientButton big onClick={() => onOpenPurchase(liveCheapest)}>
+      <ShoppingCart className="h-4 w-4" />
+      <span>Buy for</span>
+      <CurrencyAmount amount={formatDisplayPrice(liveCheapest.price.formatted)} symbol={liveCheapest.price.currency ?? ""} iconSize={16} amountClassName="tabular-nums" />
+      {liveCheapest.price.currency}
+      {usdValue ? <span className="ml-auto pl-3 text-sm font-medium text-white/70 tabular-nums">≈ {usdValue}</span> : null}
+    </GradientButton>
+  ) : null;
+
+  const listedPrice = isOwner && liveMyListing ? (
+    <PriceLine
+      label="Listed for"
+      order={liveMyListing}
+      usdValue={liveMyListing.orderHash === liveCheapest?.orderHash ? usdValue : null}
+      renderHelp={renderHelp}
+    />
+  ) : !isSignedIn && liveCheapest ? (
+    <PriceLine label="Price" order={liveCheapest} usdValue={usdValue} renderHelp={renderHelp} />
+  ) : null;
+
   return (
     <div className="relative">
 
       <div className="relative space-y-4">
-        {liveCheapest ? (
-          <div className="space-y-4">
-            <DualPrice
-              amountFormatted={liveCheapest.price.formatted}
-              currency={liveCheapest.price.currency}
-              usdValue={usdValue}
-              scale="hero"
-              trailing={renderHelp(
-                `${isOwner && !canBuyMore ? "Your listing" : "Current price"} · Expires ${timeUntil(liveCheapest.endTime)}`
-              )}
-            />
+        <StatRow floorPriceRaw={floorPriceRaw} lastSaleRaw={lastSaleRaw} />
+        {listedPrice}
 
-            {isOwner ? (
-              <div className="space-y-2">
-                <div className="grid grid-cols-2 gap-2">
-                  {liveMyListing ? (
-                    <ActionButton big
-                      icon={isProcessing ? <Loader2 className="h-4 w-4 animate-spin" /> : <X className="h-4 w-4" />}
-                      onClick={() => onCancelClick(liveMyListing)}
-                      disabled={isProcessing}
-                      tone="red"
-                      renderHelp={renderHelp}
-                    >
-                      {isERC1155 ? "Cancel My Listing" : "Cancel Listing"}
-                    </ActionButton>
-                  ) : null}
-
-                  {(!liveMyListing || (isERC1155 && canListMoreEditions !== false)) ? (
-                    <ActionButton big tone="blue" icon={<Tag className="h-4 w-4" />} onClick={onOpenListing} renderHelp={renderHelp}>
-                      {liveMyListing ? "List More Editions" : "List on Marketplace"}
-                    </ActionButton>
-                  ) : null}
-                  <ActionButton big tone="orange" icon={<ArrowRightLeft className="h-4 w-4" />} onClick={onOpenTransfer} renderHelp={renderHelp}>Transfer</ActionButton>
-                  {remixEnabled && onOpenRemix ? (
-                    <ActionButton big
-                      action="remix"
-                      icon={<GitBranch className="h-4 w-4" />}
-                      onClick={onOpenRemix}
-                      helpContent="Build a licensed derivative of this digital asset — your remix is minted as a new onchain NFT linked to the original"
-                      renderHelp={renderHelp}
-                    >
-                      Remix
-                    </ActionButton>
-                  ) : null}
-                  {showSponsorSolicitOption && onOpenSponsorSolicit ? (
-                    <ActionButton big
-                      tone="blue"
-                      icon={<Handshake className="h-4 w-4" />}
-                      onClick={onOpenSponsorSolicit}
-                      helpContent="Let sponsors bid on a license for this asset."
-                      renderHelp={renderHelp}
-                    >
-                      Open for Sponsorship
-                    </ActionButton>
-                  ) : null}
-                </div>
-
-                {canBuyMore && (
-                  <>
-                    <div className="border-t border-border/40 pt-2 mt-1" />
-                    <div className="grid grid-cols-2 gap-2">
-                      <ActionButton big action="buy" icon={<ShoppingCart className="h-4 w-4" />} onClick={() => onOpenPurchase(liveCheapest!)} renderHelp={renderHelp}>Buy</ActionButton>
-                      <ActionButton big action="offer" icon={<HandCoins className="h-4 w-4" />} onClick={onOpenOffer} renderHelp={renderHelp}>Make offer</ActionButton>
-                    </div>
-                  </>
-                )}
-              </div>
-            ) : isSignedIn ? (
-              <>
-                <div className="grid grid-cols-2 gap-2">
-                  <ActionButton big action="buy" icon={<ShoppingCart className="h-4 w-4" />} onClick={() => onOpenPurchase(liveCheapest)} renderHelp={renderHelp}>Buy</ActionButton>
-                  <ActionButton big action="offer" icon={<HandCoins className="h-4 w-4" />} onClick={onOpenOffer} renderHelp={renderHelp}>Make offer</ActionButton>
-                  {remixEnabled && onOpenRemix ? (
-                    <ActionButton big
-                      action="remix"
-                      icon={<GitBranch className="h-4 w-4" />}
-                      onClick={onOpenRemix}
-                      helpContent="Create your own attributed derivative of this work."
-                      renderHelp={renderHelp}
-                    >
-                      Remix
-                    </ActionButton>
-                  ) : null}
-                  {showDealOption && onProposeDeal ? (
-                    <ActionButton big
-                      action="license"
-                      icon={<HandCoins className="h-4 w-4" />}
-                      onClick={onProposeDeal}
-                      helpContent="Propose a license deal to the creator to use this work."
-                      renderHelp={renderHelp}
-                    >
-                      License
-                    </ActionButton>
-                  ) : null}
-                  {showSponsorOption && onOpenSponsorProposal ? (
-                    <ActionButton big
-                      tone="blue"
-                      icon={<Handshake className="h-4 w-4" />}
-                      onClick={onOpenSponsorProposal}
-                      helpContent="Propose to sponsor this creator's work — pay them directly for a license, no escrow."
-                      renderHelp={renderHelp}
-                    >
-                      Sponsor this IP
-                    </ActionButton>
-                  ) : null}
-                </div>
-                {!remixEnabled && !showDealOption ? (
-                  <p className="text-xs text-muted-foreground mt-2 leading-relaxed">
-                    The creator marked this asset as no-derivatives.
-                  </p>
-                ) : null}
-              </>
-            ) : (
-              <AssetAccessCards asset={asset} />
-            )}
+        {isOwner ? (
+          <div className="space-y-3">
+            <ActionRow>
+              {liveMyListing ? (
+                <ActionButton
+                  icon={isProcessing ? <Loader2 className="h-4 w-4 animate-spin" /> : <X className="h-4 w-4" />}
+                  onClick={() => onCancelClick(liveMyListing)}
+                  disabled={isProcessing}
+                  tone="red"
+                  renderHelp={renderHelp}
+                >
+                  Cancel listing
+                </ActionButton>
+              ) : null}
+              {!liveMyListing || (isERC1155 && canListMoreEditions !== false) ? (
+                <ActionButton tone="blue" icon={<Tag className="h-4 w-4" />} onClick={onOpenListing} renderHelp={renderHelp}>
+                  {liveMyListing ? "List more" : "List for sale"}
+                </ActionButton>
+              ) : null}
+              <ActionButton tone="orange" icon={<ArrowRightLeft className="h-4 w-4" />} onClick={onOpenTransfer} renderHelp={renderHelp}>Transfer</ActionButton>
+              {remixButton}
+              {showSponsorSolicitOption && onOpenSponsorSolicit ? (
+                <ActionButton
+                  tone="blue"
+                  icon={<Handshake className="h-4 w-4" />}
+                  onClick={onOpenSponsorSolicit}
+                  helpContent="Let sponsors bid on a license for this asset."
+                  renderHelp={renderHelp}
+                >
+                  Open for sponsorship
+                </ActionButton>
+              ) : null}
+            </ActionRow>
+            {buyButton}
+          </div>
+        ) : isSignedIn ? (
+          <div className="space-y-3">
+            {buyButton}
+            <ActionRow>
+              {offerButton}
+              {remixButton}
+              {showDealOption && onProposeDeal ? (
+                <ActionButton
+                  action="license"
+                  icon={<HandCoins className="h-4 w-4" />}
+                  onClick={onProposeDeal}
+                  helpContent="Propose a license deal to the creator to use this work."
+                  renderHelp={renderHelp}
+                >
+                  License
+                </ActionButton>
+              ) : null}
+              {showSponsorOption && onOpenSponsorProposal ? (
+                <ActionButton
+                  tone="blue"
+                  icon={<Handshake className="h-4 w-4" />}
+                  onClick={onOpenSponsorProposal}
+                  helpContent="Propose to sponsor this creator's work — pay them directly for a license, no escrow."
+                  renderHelp={renderHelp}
+                >
+                  Sponsor
+                </ActionButton>
+              ) : null}
+            </ActionRow>
+            {!remixEnabled && !showDealOption ? (
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                The creator marked this asset as no-derivatives.
+              </p>
+            ) : null}
           </div>
         ) : (
-          <div className="space-y-3">
-            <StatRow floorPriceRaw={floorPriceRaw} lastSaleRaw={lastSaleRaw} />
-            {isOwner ? (
-              <div className="grid grid-cols-2 gap-2">
-                <ActionButton big tone="blue" icon={<Tag className="h-4 w-4" />} onClick={onOpenListing} renderHelp={renderHelp}>List on Marketplace</ActionButton>
-                <ActionButton big tone="orange" icon={<ArrowRightLeft className="h-4 w-4" />} onClick={onOpenTransfer} renderHelp={renderHelp}>Transfer</ActionButton>
-                {remixEnabled && onOpenRemix ? (
-                  <ActionButton big
-                    action="remix"
-                    icon={<GitBranch className="h-4 w-4" />}
-                    onClick={onOpenRemix}
-                    helpContent="Build a licensed derivative of this digital asset — your remix is minted as a new onchain NFT linked to the original"
-                    renderHelp={renderHelp}
-                  >
-                    Remix
-                  </ActionButton>
-                ) : null}
-                {showSponsorSolicitOption && onOpenSponsorSolicit ? (
-                  <ActionButton big
-                    tone="blue"
-                    icon={<Handshake className="h-4 w-4" />}
-                    onClick={onOpenSponsorSolicit}
-                    helpContent="Let sponsors bid on a license for this asset."
-                    renderHelp={renderHelp}
-                  >
-                    Open for Sponsorship
-                  </ActionButton>
-                ) : null}
-              </div>
-            ) : isSignedIn ? (
-              <div className="grid grid-cols-2 gap-2">
-                <ActionButton big action="offer" icon={<HandCoins className="h-4 w-4" />} onClick={onOpenOffer} renderHelp={renderHelp}>Make offer</ActionButton>
-                {remixEnabled && onOpenRemix ? (
-                  <ActionButton big
-                    action="remix"
-                    icon={<GitBranch className="h-4 w-4" />}
-                    onClick={onOpenRemix}
-                    helpContent="Build a licensed derivative of this digital asset — your remix is minted as a new onchain NFT linked to the original"
-                    renderHelp={renderHelp}
-                  >
-                    Remix
-                  </ActionButton>
-                ) : null}
-                {showSponsorOption && onOpenSponsorProposal ? (
-                  <ActionButton big
-                    tone="blue"
-                    icon={<Handshake className="h-4 w-4" />}
-                    onClick={onOpenSponsorProposal}
-                    helpContent="Propose to sponsor this creator's work — pay them directly for a license, no escrow."
-                    renderHelp={renderHelp}
-                  >
-                    Sponsor this IP
-                  </ActionButton>
-                ) : null}
-              </div>
-            ) : (
-              <AssetAccessCards asset={asset} />
-            )}
-          </div>
+          <AssetAccessCards asset={asset} />
         )}
 
         {myBid ? (
