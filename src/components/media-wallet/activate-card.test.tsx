@@ -1,6 +1,4 @@
 import { afterEach, expect, test } from "bun:test";
-import { GlobalRegistrator } from "@happy-dom/global-registrator";
-if (!GlobalRegistrator.isRegistered) GlobalRegistrator.register({ url: "http://localhost:3000" });
 
 import { cleanup, render } from "@testing-library/react";
 import { ActivateCard } from "./activate-card.js";

@@ -1,6 +1,4 @@
 import { afterEach, expect, test, mock } from "bun:test";
-import { GlobalRegistrator } from "@happy-dom/global-registrator";
-if (!GlobalRegistrator.isRegistered) GlobalRegistrator.register({ url: "http://localhost:3000" });
 
 mock.module("next/image", () => ({
   default: ({ src, alt }: { src?: string; alt?: string }) => <div data-testid="asset-image" data-src={src} data-alt={alt} />,

@@ -1,6 +1,4 @@
 import { afterEach, expect, test } from "bun:test";
-import { GlobalRegistrator } from "@happy-dom/global-registrator";
-if (!GlobalRegistrator.isRegistered) GlobalRegistrator.register();
 
 import { cleanup, render } from "@testing-library/react";
 import { QuickAction } from "./quick-action.js";
