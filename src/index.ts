@@ -254,7 +254,7 @@ export { LAUNCHPAD_ROUTE_OVERRIDES } from "./components/launchpad-services.js";
 export { LAUNCHPAD_SERVICE_DEFINITIONS, LAUNCHPAD_SERVICE_GROUPS } from "./data/launchpad-services.js";
 export type { ServiceDefinition, ServiceStatus, ServiceGroup, ServiceGroupDefinition } from "./data/launchpad-services.js";
 
-export { NavCommandMenu, useNavCommandMenu, relevanceFilter } from "./components/nav-command-menu.js";
+export { NavCommandMenu, useNavCommandMenu, relevanceFilter, matchCommands } from "./components/nav-command-menu.js";
 export type { NavCommand, NavCommandGroup, NavCommandMenuProps } from "./components/nav-command-menu.js";
 
 export {
@@ -447,6 +447,7 @@ export type {
   WalletWriteStatus,
 } from "./components/media-wallet/types.js";
 export { useCreators } from "./utils/use-creators.js";
+export { useSearch, SEARCH_MIN_LENGTH, type UseSearchOptions } from "./utils/use-search.js";
 export {
   useRewards, useLeaderboard, useRewardsEvents, useRewardsConfig, useRewardsBatch,
 } from "./utils/use-rewards.js";

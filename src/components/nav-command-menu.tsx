@@ -2,10 +2,15 @@
 
 import * as React from "react";
 import { Command, defaultFilter } from "cmdk";
+import { assetHref, collectionHref } from "@medialane/sdk";
 import { useRouter } from "./router.js";
-import { Search, X, ArrowRight } from "lucide-react";
+import Image from "./image.js";
+import { Search, X, ArrowRight, Loader2 } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { cn } from "../utils/cn.js";
+import { ipfsToHttp } from "../utils/ipfs.js";
+import { profileIdentity } from "../utils/profile-identity.js";
+import { useSearch, SEARCH_MIN_LENGTH } from "../utils/use-search.js";
 
 export interface NavCommand {
   id: string;
@@ -37,6 +42,8 @@ export interface NavCommandMenuProps {
   showKeyboardHints?: boolean;
 
   brandSlot?: React.ReactNode;
+
+  search?: boolean;
 }
 
 const ML_NAV_OPEN  = "ml:nav-open";
@@ -70,10 +77,177 @@ export function relevanceFilter(value: string, search: string, keywords?: string
   return score >= RELEVANCE_FLOOR ? score : 0;
 }
 
+function commandValue(item: NavCommand) {
+  return [item.label, ...(item.keywords ?? [])].join(" ");
+}
+
+export function matchCommands(commands: NavCommandGroup[], query: string): NavCommand[] {
+  const q = query.trim();
+  if (!q) return [];
+  return commands
+    .flatMap((group) => group.items)
+    .map((item) => ({ item, score: relevanceFilter(commandValue(item), q) }))
+    .filter(({ score }) => score > 0)
+    .sort((a, b) => b.score - a.score)
+    .map(({ item }) => item);
+}
+
+const SEARCH_DEBOUNCE_MS = 250;
+const SEARCH_LIMIT = 4;
+
+function useDebouncedQuery(query: string) {
+  const [debounced, setDebounced] = React.useState(query);
+  React.useEffect(() => {
+    if (!query.trim()) {
+      setDebounced(query);
+      return;
+    }
+    const t = setTimeout(() => setDebounced(query), SEARCH_DEBOUNCE_MS);
+    return () => clearTimeout(t);
+  }, [query]);
+  return debounced;
+}
+
+function useMenuSearch(query: string) {
+  return useSearch(query, { limit: SEARCH_LIMIT, keepPrevious: true });
+}
+
+function SearchIcon({ query, active }: { query: string; active: boolean }) {
+  const { isLoading } = useMenuSearch(query);
+  return isLoading ? (
+    <Loader2 className="h-[18px] w-[18px] shrink-0 animate-spin text-primary" />
+  ) : (
+    <Search className={cn("h-[18px] w-[18px] shrink-0 transition-colors", active ? "text-primary" : "text-muted-foreground")} />
+  );
+}
+
+function Thumbnail({ src, label, round }: { src: string | null; label: string; round?: boolean }) {
+  const [failed, setFailed] = React.useState(false);
+  const url = src && !failed ? ipfsToHttp(src, { width: 96 }) || null : null;
+  return (
+    <span
+      className={cn(
+        "relative flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden bg-muted/50",
+        "text-xs font-semibold text-muted-foreground",
+        round ? "rounded-full" : "rounded-lg"
+      )}
+    >
+      {url ? (
+        <Image src={url} alt="" fill sizes="32px" className="object-cover" unoptimized onError={() => setFailed(true)} />
+      ) : (
+        label.replace("@", "").charAt(0).toUpperCase()
+      )}
+    </span>
+  );
+}
+
+function ResultRow({ value, label, description, leading, onSelect }: {
+  value: string;
+  label: string;
+  description?: string | null;
+  leading: React.ReactNode;
+  onSelect: () => void;
+}) {
+  return (
+    <Command.Item
+      value={value}
+      onSelect={onSelect}
+      className="group/item flex cursor-pointer items-center gap-3 rounded-xl px-2.5 py-2 transition-colors duration-150 aria-selected:bg-primary/10"
+    >
+      {leading}
+      <span className="min-w-0 flex-1">
+        <span className="block truncate text-sm leading-tight">{label}</span>
+        {description && (
+          <span className="mt-0.5 block truncate text-[11.5px] leading-tight text-muted-foreground">{description}</span>
+        )}
+      </span>
+      <ArrowRight className="h-3.5 w-3.5 shrink-0 text-muted-foreground/30 transition-colors group-aria-selected/item:text-primary/70" />
+    </Command.Item>
+  );
+}
+
+function SearchResults({ query, debouncedQuery, onNavigate }: {
+  query: string;
+  debouncedQuery: string;
+  onNavigate: (href: string) => void;
+}) {
+  const { results } = useMenuSearch(debouncedQuery);
+  const creators = results?.creators ?? [];
+  const collections = results?.collections ?? [];
+  const tokens = results?.tokens ?? [];
+  const q = query.trim();
+
+  return (
+    <>
+      {creators.length > 0 && (
+        <Command.Group heading="Creators" className={GROUP_HEADING_CLASSES}>
+          {creators.map((creator) => {
+            const { identity, name } = profileIdentity(creator);
+            return (
+              <ResultRow
+                key={creator.walletAddress}
+                value={`creator:${creator.walletAddress}`}
+                label={identity}
+                description={name}
+                leading={<Thumbnail src={creator.avatarImage} label={identity} round />}
+                onSelect={() => onNavigate(`/creator/${creator.username ?? creator.walletAddress}`)}
+              />
+            );
+          })}
+        </Command.Group>
+      )}
+      {collections.length > 0 && (
+        <Command.Group heading="Collections" className={GROUP_HEADING_CLASSES}>
+          {collections.map((col) => {
+            const label = col.name ?? "Unnamed";
+            return (
+              <ResultRow
+                key={col.contractAddress}
+                value={`collection:${col.contractAddress}`}
+                label={label}
+                leading={<Thumbnail src={col.image} label={label} />}
+                onSelect={() => onNavigate(collectionHref("STARKNET", col.contractAddress))}
+              />
+            );
+          })}
+        </Command.Group>
+      )}
+      {tokens.length > 0 && (
+        <Command.Group heading="Assets" className={GROUP_HEADING_CLASSES}>
+          {tokens.map((token) => {
+            const label = token.name ?? `#${token.tokenId}`;
+            return (
+              <ResultRow
+                key={`${token.contractAddress}-${token.tokenId}`}
+                value={`asset:${token.contractAddress}:${token.tokenId}`}
+                label={label}
+                leading={<Thumbnail src={token.image} label={label} />}
+                onSelect={() => onNavigate(assetHref("STARKNET", token.contractAddress, token.tokenId))}
+              />
+            );
+          })}
+        </Command.Group>
+      )}
+      <Command.Group className={GROUP_HEADING_CLASSES}>
+        <ResultRow
+          value="search:all"
+          label={`All results for "${q}"`}
+          leading={
+            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-muted/50 group-aria-selected/item:bg-primary/15">
+              <Search className="h-4 w-4 text-foreground/80 transition-colors group-aria-selected/item:text-primary" />
+            </span>
+          }
+          onSelect={() => onNavigate(`/search?q=${encodeURIComponent(q)}`)}
+        />
+      </Command.Group>
+    </>
+  );
+}
+
 function CommandRow({ item, primary, onSelect }: { item: NavCommand; primary: boolean; onSelect: () => void }) {
   return (
     <Command.Item
-      value={[item.label, ...(item.keywords ?? [])].join(" ")}
+      value={commandValue(item)}
       onSelect={onSelect}
       className={cn(
         "group/item flex cursor-pointer items-center gap-3 rounded-xl",
@@ -133,10 +307,14 @@ export function NavCommandMenu({
   footerSlot,
   showKeyboardHints = true,
   brandSlot,
+  search = false,
 }: NavCommandMenuProps) {
   const [open, setOpen] = React.useState(false);
   const [query, setQuery] = React.useState("");
+  const debouncedQuery = useDebouncedQuery(query);
   const searching = query.trim().length > 0;
+  const searchingContent = search && query.trim().length >= SEARCH_MIN_LENGTH;
+  const matches = React.useMemo(() => matchCommands(commands, query), [commands, query]);
   const router = useRouter();
   const inputRef = React.useRef<HTMLInputElement>(null);
 
@@ -168,13 +346,21 @@ export function NavCommandMenu({
     };
   }, []);
 
-  const runCommand = React.useCallback(
-    (cmd: NavCommand) => {
+  const navigate = React.useCallback(
+    (href: string) => {
       setOpen(false);
-      if (cmd.href) router.push(cmd.href);
-      else cmd.action?.();
+      router.push(href);
     },
     [router]
+  );
+
+  const runCommand = React.useCallback(
+    (cmd: NavCommand) => {
+      if (cmd.href) return navigate(cmd.href);
+      setOpen(false);
+      cmd.action?.();
+    },
+    [navigate]
   );
 
   return (
@@ -209,19 +395,23 @@ export function NavCommandMenu({
                 )}
                 onClick={(e) => e.stopPropagation()}
               >
-                <Command shouldFilter filter={relevanceFilter} label="Medialane navigation" className="flex min-h-0 flex-1 flex-col">
+                <Command shouldFilter={false} label="Medialane navigation" className="flex min-h-0 flex-1 flex-col">
 
                   <div className="flex justify-center pt-2.5 sm:hidden" aria-hidden="true">
                     <span className="h-1 w-9 rounded-full bg-muted-foreground/30" />
                   </div>
 
                   <div className="flex items-center gap-3 border-b border-border/40 px-4 py-3.5">
-                    <Search
-                      className={cn(
-                        "h-[18px] w-[18px] shrink-0 transition-colors",
-                        query ? "text-primary" : "text-muted-foreground"
-                      )}
-                    />
+                    {search ? (
+                      <SearchIcon query={debouncedQuery} active={Boolean(query)} />
+                    ) : (
+                      <Search
+                        className={cn(
+                          "h-[18px] w-[18px] shrink-0 transition-colors",
+                          query ? "text-primary" : "text-muted-foreground"
+                        )}
+                      />
+                    )}
                     <Command.Input
                       ref={inputRef}
                       value={query}
@@ -245,16 +435,23 @@ export function NavCommandMenu({
                     </Command.Empty>
 
                     {searching ? (
-                      <Command.Group className={GROUP_HEADING_CLASSES}>
-                        {commands.flatMap((group) => group.items).map((item) => (
-                          <CommandRow
-                            key={item.id}
-                            item={item}
-                            primary={false}
-                            onSelect={() => runCommand(item)}
-                          />
-                        ))}
-                      </Command.Group>
+                      <>
+                        {matches.length > 0 && (
+                          <Command.Group className={GROUP_HEADING_CLASSES}>
+                            {matches.map((item) => (
+                              <CommandRow
+                                key={item.id}
+                                item={item}
+                                primary={false}
+                                onSelect={() => runCommand(item)}
+                              />
+                            ))}
+                          </Command.Group>
+                        )}
+                        {searchingContent && (
+                          <SearchResults query={query} debouncedQuery={debouncedQuery} onNavigate={navigate} />
+                        )}
+                      </>
                     ) : (
                       commands.map((group, i) => {
                         const primary = !group.heading;
