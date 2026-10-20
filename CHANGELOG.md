@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.201.10] — 2026-10-20
+
+### Fixed
+
+- `AssetMediaColumn`, `AssetLightbox` and `AnimatedTokenMedia` load images without `crossOrigin`, so images from hosts that send no CORS headers display.
+
+### Changed
+
+- The asset page placeholder is a plain panel, without an icon.
+
 ## [0.201.9] — 2026-10-20
 
 ### Changed

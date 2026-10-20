@@ -100,7 +100,6 @@ export function AnimatedTokenMedia({
               height={0}
               sizes={sizes}
               priority={priority}
-              crossOrigin="anonymous"
               className={cn(className ?? "w-full h-auto", "transition-opacity duration-300", loaded ? "opacity-100" : "opacity-0")}
               onLoad={() => setLoaded(true)}
               onError={handleImageError}

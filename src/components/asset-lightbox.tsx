@@ -25,7 +25,6 @@ export function AssetLightbox({ open, onOpenChange, image, alt }: AssetLightboxP
           <img
             src={image}
             alt={alt}
-            crossOrigin="anonymous"
             style={{ maxHeight: "92svh", maxWidth: "96vw" }}
             className="block h-auto w-auto object-contain rounded-2xl"
           />

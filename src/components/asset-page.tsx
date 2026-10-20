@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState, type ComponentType, type ElementType, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ComponentType, type ReactNode } from "react";
 import { motion, useReducedMotion } from "framer-motion";
-import { Award, Image as ImageIcon, Layers, Ticket, Users } from "lucide-react";
+import { Award } from "lucide-react";
 import { assetHref, collectionHref, getDerivativesTerm, getService, resolveRemixPolicy, type ApiActivity, type ApiCollection, type ApiOrder, type ApiToken, type Chain } from "@medialane/sdk";
 import { useRouter } from "./router.js";
 import { PageContainer } from "./page-container.js";
@@ -70,7 +70,6 @@ export interface AssetPageSlots {
 
 interface KindConfig {
   namePrefix: string;
-  icon: ElementType;
   accents: (typeof ASSET_ACCENTS)[keyof typeof ASSET_ACCENTS];
   market: boolean;
   remix: boolean;
@@ -78,11 +77,11 @@ interface KindConfig {
 }
 
 const KINDS: Record<AssetKind, KindConfig> = {
-  standard: { namePrefix: "Token", icon: ImageIcon, accents: ASSET_ACCENTS.standard, market: true, remix: true },
-  edition: { namePrefix: "Edition", icon: Layers, accents: ASSET_ACCENTS.edition, market: true, remix: false },
-  ticket: { namePrefix: "Ticket", icon: Ticket, accents: ASSET_ACCENTS.ticket, market: true, remix: false, Panel: TicketPanel },
-  membership: { namePrefix: "Membership", icon: Users, accents: ASSET_ACCENTS.membership, market: true, remix: false, Panel: MembershipPanel },
-  pop: { namePrefix: "POP", icon: Award, accents: ASSET_ACCENTS.standard, market: false, remix: false },
+  standard: { namePrefix: "Token", accents: ASSET_ACCENTS.standard, market: true, remix: true },
+  edition: { namePrefix: "Edition", accents: ASSET_ACCENTS.edition, market: true, remix: false },
+  ticket: { namePrefix: "Ticket", accents: ASSET_ACCENTS.ticket, market: true, remix: false, Panel: TicketPanel },
+  membership: { namePrefix: "Membership", accents: ASSET_ACCENTS.membership, market: true, remix: false, Panel: MembershipPanel },
+  pop: { namePrefix: "POP", accents: ASSET_ACCENTS.standard, market: false, remix: false },
 };
 
 const VARIANT_KINDS: Partial<Record<string, AssetKind>> = { edition: "edition", ticket: "ticket", club: "membership", pop: "pop" };
@@ -201,7 +200,7 @@ function AssetPageView({
   const holders = token.balances ?? [];
   const ownerAddress = !market.isERC1155 ? (holders[0]?.owner ?? token.owner ?? null) : null;
   const marketCount = market.activeListings.length + market.activeBids.length;
-  const { Panel, icon: FallbackIcon } = config;
+  const { Panel } = config;
   const { Comments, PopBurn } = slots;
 
   return (
@@ -220,11 +219,7 @@ function AssetPageView({
             onZoom={() => setLightboxOpen(true)}
             animationUrl={token.metadata?.animationUrl}
             live={isLivingRenderCollection(token.chain as Chain, token.contractAddress)}
-            fallback={(
-              <div className="aspect-square flex items-center justify-center bg-muted">
-                <FallbackIcon className="h-24 w-24 text-muted-foreground/40" />
-              </div>
-            )}
+            fallback={<div className="aspect-square bg-muted" />}
           />
 
           <motion.div

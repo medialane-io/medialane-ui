@@ -80,7 +80,6 @@ export function AssetMediaColumn({
           <img
             src={image}
             alt={imageAlt}
-            crossOrigin="anonymous"
             onLoad={() => setLoaded(true)}
             onError={onImageError}
             className={cn(
@@ -101,7 +100,6 @@ export function AssetMediaColumn({
           <img
             src={image}
             alt={imageAlt}
-            crossOrigin="anonymous"
             onLoad={() => setLoaded(true)}
             onError={onImageError}
             className={cn(
