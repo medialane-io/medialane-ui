@@ -44,6 +44,7 @@ export interface DisplayUrlOptions {
   gateway?: string;
   proxyPath?: string;
   placeholder?: string;
+  width?: number;
 }
 
 export function toDisplayUrl(
@@ -57,7 +58,7 @@ export function toDisplayUrl(
   if (!uri) return placeholder;
   if (uri.startsWith("data:image/")) return uri;
 
-  const resolved = ipfsToHttp(uri, { gateway });
+  const resolved = ipfsToHttp(uri, { gateway, width: opts.width });
   if (resolved.startsWith(gateway)) return resolved;
 
   if (uri.startsWith("https://") || uri.startsWith("http://")) {
@@ -79,4 +80,10 @@ export function toDisplayUrlOrNull(
 export function toAbsoluteImageUrl(uri: string | null | undefined): string {
   if (!uri) return "";
   return ipfsToHttp(uri) || "";
+}
+
+export type ImageResolver = (uri: string | null | undefined, opts?: { width?: number }) => string | null;
+
+export function createImageResolver(base: DisplayUrlOptions = {}): ImageResolver {
+  return (uri, opts) => toDisplayUrlOrNull(uri, { ...base, ...opts });
 }

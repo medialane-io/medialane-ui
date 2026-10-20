@@ -5,12 +5,12 @@ import { ExternalLink } from "lucide-react";
 import { CurrencyIcon } from "./currency-icon.js";
 import { AnimatedTokenMedia } from "./animated-token-media.js";
 import { ACTIVITY_TYPE_CONFIG } from "../data/activity.js";
-import { ipfsToHttp } from "../utils/ipfs.js";
 import { isLivingRenderCollection } from "../data/living-render-collections.js";
 import { timeAgo } from "../utils/time.js";
 import { formatDisplayPrice } from "../utils/format.js";
 import { cn } from "../utils/cn.js";
 import { assetHref, type ApiActivity, type Chain } from "@medialane/sdk";
+import { useImageUrl } from "../utils/use-image-url.js";
 
 type ActivityWithEnrichment = ApiActivity & {
   chain?: Chain;
@@ -47,6 +47,7 @@ export interface ActivityCardProps {
 export function ActivityCard({
   activity: rawActivity,
 }: ActivityCardProps) {
+  const resolveImage = useImageUrl();
   const activity = rawActivity as ActivityWithEnrichment;
   const config = ACTIVITY_TYPE_CONFIG[activity.type] ?? {
     label: activity.type,
@@ -67,7 +68,7 @@ export function ActivityCard({
 
   const tokenName = activity.token?.name ?? (tokenId ? `#${tokenId}` : "—");
   const rawImage = activity.token?.image ?? null;
-  const tokenImage = rawImage ? ipfsToHttp(rawImage) : null;
+  const tokenImage = resolveImage(rawImage);
 
   const animationUrl = activity.token?.animationUrl ?? null;
   const live = !!(activity.chain && contract) && isLivingRenderCollection(activity.chain.toUpperCase() as Chain, contract);

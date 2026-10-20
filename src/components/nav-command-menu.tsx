@@ -8,10 +8,10 @@ import Image from "./image.js";
 import { Search, X, ArrowRight, Loader2 } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { cn } from "../utils/cn.js";
-import { ipfsToHttp } from "../utils/ipfs.js";
 import { profileIdentity } from "../utils/profile-identity.js";
 import { useSearch, SEARCH_MIN_LENGTH } from "../utils/use-search.js";
 import { profileHref } from "@medialane/sdk";
+import { useImageUrl } from "../utils/use-image-url.js";
 
 export interface NavCommand {
   id: string;
@@ -123,8 +123,9 @@ function SearchIcon({ query, active }: { query: string; active: boolean }) {
 }
 
 function Thumbnail({ src, label, round }: { src: string | null; label: string; round?: boolean }) {
+  const resolveImage = useImageUrl();
   const [failed, setFailed] = React.useState(false);
-  const url = src && !failed ? ipfsToHttp(src, { width: 96 }) || null : null;
+  const url = src && !failed ? resolveImage(src, { width: 96 }) : null;
   return (
     <span
       className={cn(

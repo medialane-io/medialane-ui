@@ -3,8 +3,8 @@
 import { useState } from "react";
 import { Users, ArrowRight } from "lucide-react";
 import { FadeIn } from "./motion-primitives.js";
-import { ipfsToHttp } from "../utils/ipfs.js";
 import type { ApiCreatorProfile } from "@medialane/sdk";
+import { useImageUrl } from "../utils/use-image-url.js";
 
 export interface DiscoverCreatorsStripProps {
   creators: ApiCreatorProfile[];
@@ -28,10 +28,11 @@ function CreatorChip({
   creator: ApiCreatorProfile;
   href: string;
 }) {
+  const resolveImage = useImageUrl();
   const [bannerError, setBannerError] = useState(false);
 
   const rawSrc = creator.avatarImage || creator.collectionImage || null;
-  const bannerUrl = rawSrc && !bannerError ? ipfsToHttp(rawSrc) : null;
+  const bannerUrl = rawSrc && !bannerError ? resolveImage(rawSrc) : null;
 
   return (
     <a

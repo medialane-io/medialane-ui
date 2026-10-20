@@ -5,11 +5,11 @@ import Link from "./link.js";
 import Image from "./image.js";
 import { Loader2, Settings2 } from "lucide-react";
 import { cn } from "../utils/cn.js";
-import { ipfsToHttp } from "../utils/ipfs.js";
 import { formatDisplayPrice } from "../utils/format.js";
 import { MotionCard } from "./motion-primitives.js";
 import { CurrencyIcon } from "./currency-icon.js";
 import type { ApiCollection } from "@medialane/sdk";
+import { useImageUrl } from "../utils/use-image-url.js";
 
 function parseFloorPrice(floor: string | null | undefined): { amount: string; symbol: string } | null {
   if (!floor) return null;
@@ -35,8 +35,9 @@ export interface CollectionCardProps {
 }
 
 export function CollectionCard({ collection, href, settingsHref, className }: CollectionCardProps) {
+  const resolveImage = useImageUrl();
   const [imgError, setImgError] = useState(false);
-  const imageUrl = collection.image ? ipfsToHttp(collection.image, { width: 480 }) : null;
+  const imageUrl = resolveImage(collection.image, { width: 480 });
   const showImage = imageUrl && !imgError;
   const initial = (collection.name ?? collection.contractAddress).charAt(0).toUpperCase();
   const floor = parseFloorPrice(collection.floorPrice);

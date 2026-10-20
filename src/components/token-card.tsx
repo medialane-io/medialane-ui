@@ -10,7 +10,6 @@ import {
   DropdownMenuSeparator, DropdownMenuTrigger,
 } from "./dropdown-menu.js";
 import { cn } from "../utils/cn.js";
-import { ipfsToHttp } from "../utils/ipfs.js";
 import { formatDisplayPrice } from "../utils/format.js";
 import { CurrencyIcon } from "./currency-icon.js";
 import { PriceChipContent } from "./dual-price.js";
@@ -20,6 +19,7 @@ import { isLivingRenderCollection } from "../data/living-render-collections.js";
 import { assetHref as buildAssetHref, collectionHref as buildCollectionHref } from "@medialane/sdk";
 import type { ApiToken, Chain } from "@medialane/sdk";
 import { tokenProfileLink } from "../utils/token-profile-link.js";
+import { useImageUrl } from "../utils/use-image-url.js";
 
 
 const BTN_BASE = "h-8 rounded-[9px] flex items-center justify-center gap-1.5 text-xs font-semibold transition-all active:scale-[0.98] shadow-none border-0";
@@ -49,8 +49,9 @@ export function TokenCard({
   onReport,
   usdValue,
 }: TokenCardProps) {
+  const resolveImage = useImageUrl();
   const name = token.metadata?.name || `Token #${token.tokenId}`;
-  const image = ipfsToHttp(token.metadata?.image, { width: 480 });
+  const image = resolveImage(token.metadata?.image, { width: 480 });
   const animationUrl = token.metadata?.animationUrl ?? null;
   const ipType = token.metadata?.ipType;
 

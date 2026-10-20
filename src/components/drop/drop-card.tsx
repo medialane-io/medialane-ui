@@ -4,9 +4,9 @@ import { dropHref, type ApiDrop } from "@medialane/sdk";
 import Image from "../image.js";
 import Link from "../link.js";
 import { DropStatusBadge } from "./drop-status.js";
-import { ipfsToHttp } from "../../utils/ipfs.js";
 import { dropPhase } from "../../utils/drop/view.js";
 import { priceLabel, supplyLabel } from "../../utils/drop/sale.js";
+import { useImageUrl } from "../../utils/use-image-url.js";
 
 export interface DropCardProps {
   drop: ApiDrop;
@@ -16,6 +16,7 @@ export interface DropCardProps {
 }
 
 export function DropCard({ drop, now, manage }: DropCardProps) {
+  const image = useImageUrl()(drop.image);
   const phase = dropPhase(drop.terms, BigInt(drop.maxSupply), BigInt(drop.minted), now);
   return (
     <Link
@@ -23,8 +24,8 @@ export function DropCard({ drop, now, manage }: DropCardProps) {
       className="group block rounded-2xl border border-border bg-card overflow-hidden transition-colors hover:border-primary/40"
     >
       <div className="relative aspect-square bg-muted">
-        {drop.image && (
-          <Image src={ipfsToHttp(drop.image)} alt={drop.name ?? "Drop"} fill unoptimized className="object-cover transition-transform group-hover:scale-[1.02]" />
+        {image && (
+          <Image src={image} alt={drop.name ?? "Drop"} fill unoptimized className="object-cover transition-transform group-hover:scale-[1.02]" />
         )}
         <div className="absolute left-3 top-3"><DropStatusBadge phase={phase} /></div>
       </div>

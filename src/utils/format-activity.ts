@@ -1,7 +1,9 @@
 import type { ApiActivity, ApiOrder } from "@medialane/sdk";
 import { assetHref } from "@medialane/sdk";
 import { formatDisplayPrice } from "./format.js";
-import { ipfsToHttp } from "./ipfs.js";
+import { createImageResolver, type ImageResolver } from "./ipfs.js";
+
+const defaultResolver = createImageResolver();
 
 export interface FormattedEvent {
   title: string;
@@ -19,12 +21,12 @@ function price(p?: { formatted?: string | null; currency?: string | null } | nul
   return `${formatDisplayPrice(p.formatted)} ${p.currency}`;
 }
 
-export function formatActivity(event: ApiActivity): FormattedEvent {
+export function formatActivity(event: ApiActivity, resolveImage: ImageResolver = defaultResolver): FormattedEvent {
   const contract = event.nftContract ?? event.contractAddress ?? "";
   const tokenId  = event.nftTokenId ?? event.tokenId ?? "";
   const href     = contract && tokenId ? assetHref("STARKNET", contract, tokenId) : "/activities";
   const raw      = event.token?.image ?? null;
-  const image    = raw ? ipfsToHttp(raw) : null;
+  const image    = resolveImage(raw);
   const name     = event.token?.name ?? (tokenId ? `#${tokenId}` : "token");
   const p        = price(event.price);
 
@@ -82,10 +84,10 @@ export function formatActivity(event: ApiActivity): FormattedEvent {
   }
 }
 
-export function formatOrderNotification(order: ApiOrder): FormattedEvent {
+export function formatOrderNotification(order: ApiOrder, resolveImage: ImageResolver = defaultResolver): FormattedEvent {
   const name   = order.token?.name ?? `#${order.consideration.identifier}`;
   const raw    = order.token?.image ?? null;
-  const image  = raw ? ipfsToHttp(raw) : null;
+  const image  = resolveImage(raw);
   const href   = assetHref("STARKNET", order.consideration.token, order.consideration.identifier);
   const p      = price(order.price);
   const from   = short(order.offerer);
@@ -98,10 +100,10 @@ export function formatOrderNotification(order: ApiOrder): FormattedEvent {
   };
 }
 
-export function formatOfferAcceptedNotification(order: ApiOrder): FormattedEvent {
+export function formatOfferAcceptedNotification(order: ApiOrder, resolveImage: ImageResolver = defaultResolver): FormattedEvent {
   const name  = order.token?.name ?? `#${order.nftTokenId}`;
   const raw   = order.token?.image ?? null;
-  const image = raw ? ipfsToHttp(raw) : null;
+  const image = resolveImage(raw);
   const href  = order.nftContract && order.nftTokenId
     ? assetHref("STARKNET", order.nftContract, order.nftTokenId)
     : "/portfolio/assets";
@@ -115,12 +117,12 @@ export function formatOfferAcceptedNotification(order: ApiOrder): FormattedEvent
   };
 }
 
-export function formatAssetReceivedNotification(event: ApiActivity): FormattedEvent {
+export function formatAssetReceivedNotification(event: ApiActivity, resolveImage: ImageResolver = defaultResolver): FormattedEvent {
   const contract = event.nftContract ?? event.contractAddress ?? "";
   const tokenId  = event.nftTokenId ?? event.tokenId ?? "";
   const href     = contract && tokenId ? assetHref("STARKNET", contract, tokenId) : "/portfolio/assets";
   const raw      = event.token?.image ?? null;
-  const image    = raw ? ipfsToHttp(raw) : null;
+  const image    = resolveImage(raw);
   const name     = event.token?.name ?? (tokenId ? `#${tokenId}` : "an asset");
   const from     = event.from ? short(event.from) : null;
 

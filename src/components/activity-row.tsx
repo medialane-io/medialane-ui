@@ -7,12 +7,12 @@ import { AddressDisplay } from "./address-display.js";
 import { CurrencyIcon } from "./currency-icon.js";
 import { LevelBadge } from "./rewards/level-badge.js";
 import { ACTIVITY_TYPE_CONFIG } from "../data/activity.js";
-import { ipfsToHttp } from "../utils/ipfs.js";
 import { timeAgo } from "../utils/time.js";
 import { formatDisplayPrice } from "../utils/format.js";
 import { cn } from "../utils/cn.js";
 import type { ApiActivity, ApiRewardsBatchEntry } from "@medialane/sdk";
 import { assetHref, profileHref } from "@medialane/sdk";
+import { useImageUrl } from "../utils/use-image-url.js";
 
 const ACTIVITY_MESSAGES: Record<string, string> = {
   mint: "Newly minted",
@@ -40,6 +40,7 @@ export function ActivityRow({
   actorLevel,
   explorerUrl = "https://voyager.online",
 }: ActivityRowProps) {
+  const resolveImage = useImageUrl();
   const config = ACTIVITY_TYPE_CONFIG[activity.type] ?? {
     label: activity.type,
     variant: "outline" as const,
@@ -60,7 +61,7 @@ export function ActivityRow({
 
   const tokenName = activity.token?.name ?? (tokenId ? `#${tokenId}` : "—");
   const rawImage = activity.token?.image ?? null;
-  const tokenImage = rawImage ? ipfsToHttp(rawImage) : null;
+  const tokenImage = resolveImage(rawImage);
 
   const is1155 = activity.tokenStandard === "ERC1155" ||
     (activity.type === "mint" || activity.type === "transfer") && Number(activity.amount ?? "1") > 1;

@@ -8,9 +8,10 @@ import { Button } from "./button.js";
 import { Input } from "./input.js";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "./sheet.js";
 import { useCollectionTokens } from "../utils/use-collections.js";
-import { ipfsToHttp } from "../utils/ipfs.js";
+import { useImageUrl } from "../utils/use-image-url.js";
 
 export function MakeOfferPicker({ contract, onPick }: { contract: string; onPick: (token: ApiToken) => void }) {
+  const resolveImage = useImageUrl();
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const { tokens, isLoading } = useCollectionTokens(contract, 1, 60, "recent");
@@ -47,7 +48,7 @@ export function MakeOfferPicker({ contract, onPick }: { contract: string; onPick
             {isLoading && tokens.length === 0
               ? Array.from({ length: 9 }).map((_, i) => <div key={i} className="aspect-square rounded-lg bg-muted animate-pulse" />)
               : filtered.map((t) => {
-                  const image = t.metadata?.image ? ipfsToHttp(t.metadata.image) : null;
+                  const image = resolveImage(t.metadata?.image);
                   return (
                     <button
                       key={`${t.contractAddress}-${t.tokenId}`}

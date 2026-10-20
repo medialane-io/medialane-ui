@@ -26,12 +26,12 @@ import {
 import { IP_TEMPLATES } from "../../data/ip-templates.js";
 import { suggestLaunchpadSymbol } from "../../utils/launchpad-defaults.js";
 import { uploadFileToIpfs, uploadJsonToIpfs, uploadFailureToast } from "../../utils/ipfs-upload.js";
-import { ipfsToHttp } from "../../utils/ipfs.js";
 import { cn } from "../../utils/cn.js";
 import { Dropzone } from "./dropzone.js";
 import { SuccessView } from "./success-view.js";
 import type { FastMintProps, FastMintSigner, MediaKind, MintedAsset } from "./types.js";
 import { profileHref } from "@medialane/sdk";
+import { useImageUrl } from "../../utils/use-image-url.js";
 
 const MEDIA_ROUTE_MIME_TYPES = new Set([
   "image/jpeg", "image/png", "image/gif", "image/webp", "image/svg+xml", "image/avif",
@@ -100,7 +100,8 @@ function collectionDisplayLabel(col: ApiCollection) {
 }
 
 function CollectionThumb({ image }: { image: string | null | undefined }) {
-  const imageUrl = image ? ipfsToHttp(image) : null;
+  const resolveImage = useImageUrl();
+  const imageUrl = resolveImage(image);
   return (
     <div className="relative h-10 w-10 rounded-lg overflow-hidden bg-muted shrink-0">
       {imageUrl ? (

@@ -142,7 +142,8 @@ export {
 } from "./components/coins-explorer.js";
 
 export { timeAgo, timeUntil, isExpired } from "./utils/time.js";
-export { toDisplayUrl, toDisplayUrlOrNull, toAbsoluteImageUrl, type DisplayUrlOptions } from "./utils/ipfs.js";
+export { toDisplayUrl, toDisplayUrlOrNull, toAbsoluteImageUrl, createImageResolver, type DisplayUrlOptions, type ImageResolver } from "./utils/ipfs.js";
+export { useImageUrl } from "./utils/use-image-url.js";
 export { isSameAddress } from "./utils/same-address.js";
 export { createAppWallet } from "./utils/app-wallet.js";
 export type { AppWalletConfig } from "./utils/app-wallet.js";

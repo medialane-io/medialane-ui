@@ -3,10 +3,10 @@
 import Link from "./link.js";
 import { Loader2 } from "lucide-react";
 import { cn } from "../utils/cn.js";
-import { ipfsToHttp } from "../utils/ipfs.js";
 import { PriceChipContent } from "./dual-price.js";
 import { IpTypeBadge } from "./ip-type-badge.js";
 import { AnimatedTokenMedia } from "./animated-token-media.js";
+import { useImageUrl } from "../utils/use-image-url.js";
 
 export interface AssetCardPrice {
   formatted?: string | null;
@@ -55,7 +55,8 @@ export function AssetCard({
   ipTypeBaseUrl = "",
   className,
 }: AssetCardProps) {
-  const resolved = image ? ipfsToHttp(image, { width: 480 }) : null;
+  const resolveImage = useImageUrl();
+  const resolved = resolveImage(image, { width: 480 });
   const hasPrice = !!price?.formatted;
 
   return (

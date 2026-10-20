@@ -9,9 +9,9 @@ import { AssetUtilityIcons } from "./asset-utility-icons.js";
 import { AddressDisplay } from "./address-display.js";
 import { CreatorChip } from "./creator-chip.js";
 import { CurrencyAmount } from "./currency-icon.js";
-import { ipfsToHttp } from "../utils/ipfs.js";
 import { parsePriceDisplay } from "../utils/format.js";
 import { EXPLORER_URL } from "../utils/explorer-url.js";
+import { useImageUrl } from "../utils/use-image-url.js";
 
 const CHIP = "text-2xs font-semibold px-2.5 py-1 rounded-full bg-muted text-muted-foreground";
 
@@ -33,7 +33,8 @@ function PriceStat({ label, raw }: { label: string; raw: string | null }) {
 }
 
 export function CollectionHeader({ collection, loading = false, onReportClick, children }: CollectionHeaderProps) {
-  const image = collection?.image ? ipfsToHttp(collection.image) : null;
+  const resolveImage = useImageUrl();
+  const image = resolveImage(collection?.image);
   const name = collection?.name ?? "Unnamed Collection";
 
   return (
