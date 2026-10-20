@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.201.5] — 2026-10-20
+
+### Removed
+
+- Quantity and royalty from the ticket and membership panels on `AssetPage`.
+
 ## [0.201.4] — 2026-10-20
 
 ### Changed

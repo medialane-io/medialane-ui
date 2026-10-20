@@ -91,7 +91,7 @@ test("a standard asset shows the header, marketplace and the app's slots", async
 test("a ticket shows its ticket panel", async () => {
   const { getByText } = renderPage(token({ standard: "ERC1155" }), collection({ standard: "ERC1155", service: "ip-tickets" }));
   await waitFor(() => expect(getByText("Ticket")).toBeTruthy());
-  expect(getByText("500")).toBeTruthy();
+  expect(getByText("Always valid")).toBeTruthy();
 });
 
 test("a POP has no marketplace", async () => {

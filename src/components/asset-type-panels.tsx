@@ -61,16 +61,6 @@ function TierPanel({
         </span>
       </div>
       {window ? <p className="text-sm text-muted-foreground">{window}</p> : null}
-      <div className="flex gap-8">
-        <div>
-          <p className="text-xs text-muted-foreground">Quantity</p>
-          <p className="text-sm font-semibold tabular-nums">{tier.maxSupply.toString()}</p>
-        </div>
-        <div>
-          <p className="text-xs text-muted-foreground">Royalty</p>
-          <p className="text-sm font-semibold tabular-nums">{(tier.royaltyBps / 100).toFixed(1)}%</p>
-        </div>
-      </div>
       {footer}
     </div>
   );
