@@ -9,16 +9,14 @@ globalThis.fetch = (async () => new Response(JSON.stringify({ data: { usd: {} } 
 const { cleanup, render } = await import("@testing-library/react");
 const { MediaWalletHome } = await import("./media-wallet-home.js");
 const { MediaWalletAppContext } = await import("./types.js");
+const { MedialaneAppProvider } = await import("../medialane-app.js");
 import type { MediaWalletAppProps } from "./types.js";
+import type { MedialaneApp } from "../medialane-app.js";
 
 afterEach(() => cleanup());
 
 const app = (over: Partial<MediaWalletAppProps>): MediaWalletAppProps =>
   ({
-    getClient: () => ({
-      api: { getTokensByOwner: async () => ({ data: [] }) },
-      provider: { callContract: async () => ["0x0", "0x0"] },
-    }),
     useWalletSession: () => ({ address: "0x36a8000000000000000000000000000000000020d2", hasWallet: true, isDeployed: true, signer: null }),
     resolveImage: () => null,
     useAccountEmail: () => null,
@@ -28,11 +26,23 @@ const app = (over: Partial<MediaWalletAppProps>): MediaWalletAppProps =>
     ...over,
   }) as unknown as MediaWalletAppProps;
 
+const medialaneApp = {
+  getClient: () => ({
+    api: { getTokensByOwner: async () => ({ data: [] }) },
+    provider: { callContract: async () => ["0x0", "0x0"] },
+  }),
+  getSigner: () => { throw new Error("unused"); },
+  walletAddress: null,
+  onRequireWallet: () => {},
+} as unknown as MedialaneApp;
+
 const renderHome = (props: MediaWalletAppProps) =>
   render(
-    <MediaWalletAppContext.Provider value={props}>
-      <MediaWalletHome onNavigate={() => {}} onClose={() => {}} />
-    </MediaWalletAppContext.Provider>,
+    <MedialaneAppProvider value={medialaneApp}>
+      <MediaWalletAppContext.Provider value={props}>
+        <MediaWalletHome onNavigate={() => {}} onClose={() => {}} />
+      </MediaWalletAppContext.Provider>
+    </MedialaneAppProvider>,
   );
 
 test("the email banner uses the app's link and text", () => {

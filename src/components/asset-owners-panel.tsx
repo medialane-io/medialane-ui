@@ -3,7 +3,6 @@
 import Link from "./link.js";
 import { AddressDisplay } from "./address-display.js";
 import { CreatorScoreInline } from "./creator-score-inline.js";
-import { useMedialaneApp } from "./medialane-app.js";
 
 interface HolderLike {
   owner: string;
@@ -23,7 +22,6 @@ function plural(count: number, word: string) {
 }
 
 export function AssetOwnersPanel({ balances, total = balances.length, editions }: AssetOwnersPanelProps) {
-  const { getClient } = useMedialaneApp();
   if (balances.length === 0) return null;
 
   const owners = plural(total, "owner");
@@ -44,7 +42,7 @@ export function AssetOwnersPanel({ balances, total = balances.length, editions }
               >
                 <AddressDisplay address={balance.owner} chars={6} showCopy={false} />
               </Link>
-              <CreatorScoreInline getClient={getClient} address={balance.owner} size="sm" />
+              <CreatorScoreInline address={balance.owner} size="sm" />
             </div>
             <span className="text-xs text-muted-foreground shrink-0 tabular-nums">
               × {balance.amount}

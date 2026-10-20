@@ -5,6 +5,12 @@ import { expect, test } from "bun:test";
 import { renderHook, waitFor } from "@testing-library/react";
 import type { MedialaneClient } from "@medialane/sdk/starknet";
 import { hasSufficientBalance, useErc20Balance } from "./use-erc20-balance.js";
+import { MedialaneAppProvider, type MedialaneApp } from "../../components/medialane-app.js";
+
+const withClient = (client: MedialaneClient) =>
+  function Wrapper({ children }: { children: React.ReactNode }) {
+    return <MedialaneAppProvider value={{ getClient: () => client, getSigner: () => { throw new Error("unused"); }, walletAddress: null, onRequireWallet: () => {} } as MedialaneApp}>{children}</MedialaneAppProvider>;
+  };
 
 test("reads the balance through the client's provider", async () => {
   const calls: unknown[] = [];
@@ -17,7 +23,7 @@ test("reads the balance through the client's provider", async () => {
     },
   } as unknown as MedialaneClient;
 
-  const { result } = renderHook(() => useErc20Balance(() => client, "0xtoken", "0xholder"));
+  const { result } = renderHook(() => useErc20Balance("0xtoken", "0xholder"), { wrapper: withClient(client) });
 
   await waitFor(() => expect(result.current.rawBalance).toBe(5n + (1n << 128n)));
   expect(calls).toEqual([{ contractAddress: "0xtoken", entrypoint: "balanceOf", calldata: ["0xholder"] }]);

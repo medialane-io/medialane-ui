@@ -2,11 +2,11 @@
 
 import useSWR from "swr";
 import type { ApiCollection, ApiMeta } from "@medialane/sdk";
-import { popHasClaimed, type MedialaneClient } from "@medialane/sdk/starknet";
+import { popHasClaimed } from "@medialane/sdk/starknet";
 import { useMedialaneClient } from "./use-medialane-client.js";
 
-export function usePopCollections(getClient: () => MedialaneClient) {
-  const client = useMedialaneClient(getClient);
+export function usePopCollections() {
+  const client = useMedialaneClient();
   const { data, error, isLoading, mutate } = useSWR<{ data: ApiCollection[]; meta?: ApiMeta }>(
     "pop-collections",
     () => client.api.listCollections({ service: "pop-protocol", hideEmpty: false, limit: 50 }),
@@ -15,8 +15,8 @@ export function usePopCollections(getClient: () => MedialaneClient) {
   return { collections: data?.data ?? [], meta: data?.meta, isLoading, error, mutate };
 }
 
-export function useMyPopEvents(getClient: () => MedialaneClient, owner: string | null) {
-  const client = useMedialaneClient(getClient);
+export function useMyPopEvents( owner: string | null) {
+  const client = useMedialaneClient();
   const { data, error, isLoading, mutate } = useSWR<ApiCollection[]>(
     owner ? `my-pop-events-${owner}` : null,
     async () => (await client.api.listCollections({ service: "pop-protocol", owner: owner!, limit: 50 })).data ?? [],
@@ -31,11 +31,10 @@ export function popClaimedKey(collection: string | null, wallet: string | null):
 
 /** Whether `wallet` already holds this collection's credential, read from chain. */
 export function usePopClaimStatus(
-  getClient: () => MedialaneClient,
   collection: string | null,
   wallet: string | null,
 ) {
-  const client = useMedialaneClient(getClient);
+  const client = useMedialaneClient();
   const { data, error, isLoading, mutate } = useSWR<boolean>(
     popClaimedKey(collection, wallet),
     () => popHasClaimed(client.provider, collection!, wallet!),

@@ -20,7 +20,7 @@ import { useDropFee } from "../../../utils/use-drops.js";
 
 export function DropCreate() {
   const app = useMedialaneApp();
-  const feeBps = useDropFee(app.getClient);
+  const feeBps = useDropFee();
   const [draft, setDraftState] = useState<DropDraft>(EMPTY_DRAFT);
   const [tried, setTried] = useState(false);
   const [launching, setLaunching] = useState(false);

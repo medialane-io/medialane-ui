@@ -2,7 +2,6 @@
 
 import useSWR from "swr";
 import type { ApiClient, ApiCollection, ApiTierOnchain } from "@medialane/sdk";
-import type { MedialaneClient } from "@medialane/sdk/starknet";
 import { useMedialaneClient } from "./use-medialane-client.js";
 
 /** An IP Ticket type or IP Club membership tier, with amounts as bigint. */
@@ -34,8 +33,8 @@ async function readAll(count: number, read: (id: string) => Promise<ApiTierOncha
   return tiers.map((tier, i) => ({ id: ids[i]!, ...toTier(tier) }));
 }
 
-function useMyCollectionsOf(getClient: () => MedialaneClient, service: string, owner: string | null) {
-  const client = useMedialaneClient(getClient);
+function useMyCollectionsOf( service: string, owner: string | null) {
+  const client = useMedialaneClient();
   const { data, error, isLoading, mutate } = useSWR<ApiCollection[]>(
     owner ? `my-${service}-collections-${owner}` : null,
     async () => (await client.api.listCollections({ owner: owner!, service, limit: 50 })).data ?? [],
@@ -54,16 +53,16 @@ export async function predictNextTicketId(api: ApiClient, contract: string): Pro
   return (await api.getTicketCount(contract)) + 1;
 }
 
-export function useMyClubCollections(getClient: () => MedialaneClient, owner: string | null) {
-  return useMyCollectionsOf(getClient, "ip-club", owner);
+export function useMyClubCollections( owner: string | null) {
+  return useMyCollectionsOf("ip-club", owner);
 }
 
-export function useMyTicketCollections(getClient: () => MedialaneClient, owner: string | null) {
-  return useMyCollectionsOf(getClient, "ip-tickets", owner);
+export function useMyTicketCollections( owner: string | null) {
+  return useMyCollectionsOf("ip-tickets", owner);
 }
 
-export function useMembershipList(getClient: () => MedialaneClient, contract: string | null) {
-  const client = useMedialaneClient(getClient);
+export function useMembershipList( contract: string | null) {
+  const client = useMedialaneClient();
   const { data, error, isLoading, mutate } = useSWR<TierListItem[]>(
     contract ? `membership-list-${contract}` : null,
     async () =>
@@ -73,8 +72,8 @@ export function useMembershipList(getClient: () => MedialaneClient, contract: st
   return { memberships: data ?? [], isLoading, error, mutate };
 }
 
-export function useTicketList(getClient: () => MedialaneClient, contract: string | null) {
-  const client = useMedialaneClient(getClient);
+export function useTicketList( contract: string | null) {
+  const client = useMedialaneClient();
   const { data, error, isLoading, mutate } = useSWR<TierListItem[]>(
     contract ? `ticket-list-${contract}` : null,
     async () => readAll(await client.api.getTicketCount(contract!), (id) => client.api.getTicket(contract!, id)),
@@ -83,8 +82,8 @@ export function useTicketList(getClient: () => MedialaneClient, contract: string
   return { tickets: data ?? [], isLoading, error, mutate };
 }
 
-export function useMembershipOnchain(getClient: () => MedialaneClient, contract: string | null, tokenId: string | null) {
-  const client = useMedialaneClient(getClient);
+export function useMembershipOnchain( contract: string | null, tokenId: string | null) {
+  const client = useMedialaneClient();
   const { data, error, isLoading } = useSWR<TierOnchain>(
     contract && tokenId ? `membership-onchain-${contract}-${tokenId}` : null,
     async () => toTier(await client.api.getClubMembership(contract!, tokenId!)),
@@ -93,8 +92,8 @@ export function useMembershipOnchain(getClient: () => MedialaneClient, contract:
   return { membership: data ?? null, isLoading, error };
 }
 
-export function useTicketOnchain(getClient: () => MedialaneClient, contract: string | null, tokenId: string | null) {
-  const client = useMedialaneClient(getClient);
+export function useTicketOnchain( contract: string | null, tokenId: string | null) {
+  const client = useMedialaneClient();
   const { data, error, isLoading } = useSWR<TierOnchain>(
     contract && tokenId ? `ticket-onchain-${contract}-${tokenId}` : null,
     async () => toTier(await client.api.getTicket(contract!, tokenId!)),
@@ -104,12 +103,11 @@ export function useTicketOnchain(getClient: () => MedialaneClient, contract: str
 }
 
 export function useIsMemberOf(
-  getClient: () => MedialaneClient,
   contract: string | null,
   tokenId: string | null,
   wallet: string | null
 ) {
-  const client = useMedialaneClient(getClient);
+  const client = useMedialaneClient();
   const { data, error, isLoading } = useSWR<boolean>(
     contract && tokenId && wallet ? `is-member-of-${contract}-${tokenId}-${wallet}` : null,
     () => client.api.isClubMember(contract!, tokenId!, wallet!),

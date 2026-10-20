@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { Package, Plus } from "lucide-react";
 import type { ApiDropListStatus } from "@medialane/sdk";
-import type { MedialaneClient } from "@medialane/sdk/starknet";
 import Link from "../link.js";
 import { Tabs, TabsList, TabsTrigger } from "../tabs.js";
 import { TabEmptyState } from "../tab-empty-state.js";
@@ -18,16 +17,14 @@ const EMPTY: Record<ApiDropListStatus, { heading: string; body: string }> = {
 };
 
 export function DropListing({
-  getClient,
   createHref = "/launchpad/drop/create",
   myDropsHref = "/launchpad/drop/my-drops",
 }: {
-  getClient: () => MedialaneClient;
   createHref?: string;
   myDropsHref?: string;
 }) {
   const [tab, setTab] = useState<ApiDropListStatus>("live");
-  const { drops, isLoading } = useDrops(getClient, tab);
+  const { drops, isLoading } = useDrops(tab);
   const now = useNow(60_000);
   return (
     <div className="space-y-6">

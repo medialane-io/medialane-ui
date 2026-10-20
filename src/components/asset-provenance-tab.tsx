@@ -7,7 +7,6 @@ import { CreationRecord } from "./creation-record.js";
 import { formatDisplayPrice } from "../utils/format.js";
 import { timeAgo } from "../utils/time.js";
 import { EXPLORER_URL } from "../utils/explorer-url.js";
-import { useMedialaneApp } from "./medialane-app.js";
 import {
   ShoppingCart, Tag, HandCoins, ArrowRightLeft, X, CheckCircle,
   TrendingUp, Activity, ArrowRight, ExternalLink, Fingerprint, UserCheck,
@@ -48,7 +47,6 @@ export function AssetProvenanceTab({
   originalCreator,
   registeredAt,
 }: AssetProvenanceTabProps) {
-  const { getClient } = useMedialaneApp();
   const sales = history.filter((e) => e.type === "sale");
 
   const totalVolumeParts = sales.reduce<Record<string, { amount: number; currency: string }>>((acc, e) => {
@@ -128,7 +126,7 @@ export function AssetProvenanceTab({
       {remixCount > 0 && (
         <div className="space-y-2">
           <p className="text-xs font-semibold text-muted-foreground">Remixes ({remixCount})</p>
-          <RemixesTab getClient={getClient} contractAddress={contract} tokenId={tokenId} />
+          <RemixesTab contractAddress={contract} tokenId={tokenId} />
         </div>
       )}
 

@@ -7,40 +7,40 @@ import { useMedialaneClient } from "./use-medialane-client.js";
 
 const quiet = { revalidateOnFocus: false, shouldRetryOnError: false } as const;
 
-export function useDrops(getClient: () => MedialaneClient, status: ApiDropListStatus) {
-  const client = useMedialaneClient(getClient);
+export function useDrops( status: ApiDropListStatus) {
+  const client = useMedialaneClient();
   const { data, error, isLoading } = useSWR(["drops", status], () => client.api.getDrops({ status, limit: 48 }), quiet);
   return { drops: data?.data ?? ([] as ApiDrop[]), isLoading, error };
 }
 
-export function useMyDrops(getClient: () => MedialaneClient, organizer: string | null) {
-  const client = useMedialaneClient(getClient);
+export function useMyDrops( organizer: string | null) {
+  const client = useMedialaneClient();
   const { data, error, isLoading } = useSWR(organizer ? ["my-drops", organizer] : null, () => client.api.getDrops({ organizer: organizer!, limit: 100 }), quiet);
   return { drops: data?.data ?? ([] as ApiDrop[]), isLoading, error };
 }
 
-export function useDrop(getClient: () => MedialaneClient, contract: string | null) {
-  const client = useMedialaneClient(getClient);
+export function useDrop( contract: string | null) {
+  const client = useMedialaneClient();
   const { data, error, isLoading, mutate } = useSWR(contract ? ["drop", contract] : null, () => client.api.getDrop(contract!), { ...quiet, refreshInterval: 30_000 });
   return { drop: data ?? null, isLoading, error, mutate };
 }
 
-export function useDropMints(getClient: () => MedialaneClient, contract: string | null) {
-  const client = useMedialaneClient(getClient);
+export function useDropMints( contract: string | null) {
+  const client = useMedialaneClient();
   const { data, isLoading, mutate } = useSWR(contract ? ["drop-mints", contract] : null, () => client.api.getDropMints(contract!, { limit: 20 }), { ...quiet, refreshInterval: 30_000 });
   return { mints: data?.data ?? ([] as ApiDropMint[]), isLoading, mutate };
 }
 
 /** The platform fee, in basis points, the backend adds to a mint for this app; null until known. */
-export function useDropFee(getClient: () => MedialaneClient): number | null {
-  const client = useMedialaneClient(getClient);
+export function useDropFee(): number | null {
+  const client = useMedialaneClient();
   const { data } = useSWR("drop-fee", () => client.api.getDropFee(), { revalidateOnFocus: false });
   return data?.launchpadBps ?? null;
 }
 
 /** A file from the drop's metadata folder ("1" or "collection.json"). */
-export function useDropFile<T = Record<string, unknown>>(getClient: () => MedialaneClient, baseUri: string | null, name: string) {
-  const client = useMedialaneClient(getClient);
+export function useDropFile<T = Record<string, unknown>>(baseUri: string | null, name: string) {
+  const client = useMedialaneClient();
   const { data } = useSWR(baseUri ? ["drop-file", baseUri, name] : null, async () => (await client.api.resolveMetadata(`${baseUri}${name}`)).data as T, quiet);
   return data ?? null;
 }
@@ -66,11 +66,10 @@ export async function readDropState(
 }
 
 export function useDropChain(
-  getClient: () => MedialaneClient,
   contract: string | null,
   wallet: string | null,
 ) {
-  const client = useMedialaneClient(getClient);
+  const client = useMedialaneClient();
   const { data, mutate, error } = useSWR(
     contract ? ["drop-chain", contract, wallet] : null,
     () => readDropState(client, contract!, wallet),

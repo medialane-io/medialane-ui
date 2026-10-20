@@ -1,7 +1,6 @@
 "use client";
 
 import useSWR from "swr";
-import type { MedialaneClient } from "@medialane/sdk/starknet";
 import type {
   ApiUserRewards,
   ApiRewardsLeaderboardEntry,
@@ -9,13 +8,15 @@ import type {
   ApiRewardsBatchEntry,
   ApiPointEvent,
 } from "@medialane/sdk";
+import { useMedialaneApp } from "../components/medialane-app.js";
 
 export type UserRewards = ApiUserRewards;
 export type LeaderboardEntry = ApiRewardsLeaderboardEntry;
 export type BadgeSummary = ApiUserRewards["badges"][number];
 export type LevelSummary = NonNullable<ApiUserRewards["nextLevel"]>;
 
-export function useRewards(getClient: () => MedialaneClient, address: string | null | undefined) {
+export function useRewards( address: string | null | undefined) {
+  const { getClient } = useMedialaneApp();
   return useSWR<ApiUserRewards>(
     address ? `rewards:${address}` : null,
     () => getClient().api.getRewards(address!),
@@ -23,7 +24,8 @@ export function useRewards(getClient: () => MedialaneClient, address: string | n
   );
 }
 
-export function useLeaderboard(getClient: () => MedialaneClient, page = 1, limit = 50) {
+export function useLeaderboard( page = 1, limit = 50) {
+  const { getClient } = useMedialaneApp();
   return useSWR<{ data: ApiRewardsLeaderboardEntry[]; meta: { page: number; limit: number; total: number } }>(
     `rewards-leaderboard:${page}:${limit}`,
     async () => {
@@ -38,11 +40,11 @@ export function useLeaderboard(getClient: () => MedialaneClient, page = 1, limit
 }
 
 export function useRewardsEvents(
-  getClient: () => MedialaneClient,
   address: string | null | undefined,
   page = 1,
   limit = 20
 ) {
+  const { getClient } = useMedialaneApp();
   return useSWR<{ data: ApiPointEvent[]; meta: { page: number; limit: number; total: number } }>(
     address ? `rewards-events:${address}:${page}:${limit}` : null,
     async () => {
@@ -56,7 +58,8 @@ export function useRewardsEvents(
   );
 }
 
-export function useRewardsConfig(getClient: () => MedialaneClient) {
+export function useRewardsConfig() {
+  const { getClient } = useMedialaneApp();
   return useSWR<ApiRewardsConfig>(
     "rewards-config",
     () => getClient().api.getRewardsConfig(),
@@ -64,7 +67,8 @@ export function useRewardsConfig(getClient: () => MedialaneClient) {
   );
 }
 
-export function useRewardsBatch(getClient: () => MedialaneClient, addresses: string[]) {
+export function useRewardsBatch( addresses: string[]) {
+  const { getClient } = useMedialaneApp();
   const unique = [...new Set(addresses)].slice(0, 50);
   const key = unique.length ? `rewards-batch:${[...unique].sort().join(",")}` : null;
   return useSWR<Map<string, ApiRewardsBatchEntry>>(

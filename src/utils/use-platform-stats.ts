@@ -2,11 +2,10 @@
 
 import useSWR from "swr";
 import type { ApiPlatformStats } from "@medialane/sdk";
-import type { MedialaneClient } from "@medialane/sdk/starknet";
 import { useMedialaneClient } from "./use-medialane-client.js";
 
-export function usePlatformStats(getClient: () => MedialaneClient) {
-  const client = useMedialaneClient(getClient);
+export function usePlatformStats() {
+  const client = useMedialaneClient();
   const { data, isLoading } = useSWR<ApiPlatformStats>(
     "platform-stats",
     () => client.api.getPlatformStats(),

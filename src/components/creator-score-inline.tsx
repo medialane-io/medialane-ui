@@ -1,13 +1,11 @@
 "use client";
 
 import Link from "./link.js";
-import type { MedialaneClient } from "@medialane/sdk/starknet";
 import { LevelBadge } from "./rewards/level-badge.js";
 import { BadgeShelf } from "./rewards/badge-shelf.js";
 import { useRewards } from "../utils/use-rewards.js";
 
 export interface CreatorScoreInlineProps {
-  getClient: () => MedialaneClient;
   address: string | null | undefined;
   size?: "sm" | "md" | "lg";
 
@@ -17,8 +15,8 @@ export interface CreatorScoreInlineProps {
   className?: string;
 }
 
-export function CreatorScoreInline({ getClient, address, size = "sm", showBadges = false, maxBadges = 6, className }: CreatorScoreInlineProps) {
-  const { data } = useRewards(getClient, address);
+export function CreatorScoreInline({ address, size = "sm", showBadges = false, maxBadges = 6, className }: CreatorScoreInlineProps) {
+  const { data } = useRewards(address);
   if (!data || data.totalXp <= 0) return null;
 
   return (

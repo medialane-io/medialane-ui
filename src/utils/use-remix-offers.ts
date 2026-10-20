@@ -1,12 +1,11 @@
 "use client";
 
 import useSWR from "swr";
-import type { MedialaneClient } from "@medialane/sdk/starknet";
 import { useMedialaneClient } from "./use-medialane-client.js";
 import type { ApiPublicRemix, ApiResponse } from "@medialane/sdk";
 
-export function useTokenRemixes(getClient: () => MedialaneClient, contract: string | null, tokenId: string | null) {
-  const client = useMedialaneClient(getClient);
+export function useTokenRemixes( contract: string | null, tokenId: string | null) {
+  const client = useMedialaneClient();
   const { data, error, isLoading, mutate } = useSWR<ApiResponse<ApiPublicRemix[]>>(
     contract && tokenId ? `token-remixes-${contract}-${tokenId}` : null,
     () => client.api.getTokenRemixes(contract!, tokenId!),

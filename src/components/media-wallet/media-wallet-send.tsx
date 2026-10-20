@@ -16,6 +16,7 @@ import { WALLET_TOKENS, type WalletToken } from "../../utils/media-wallet/wallet
 import { SuccessDialog } from "./success-dialog.js";
 import { useMediaWalletApp, type MediaWalletView } from "./types.js";
 import { runIntentCalls } from "../../utils/run-intent-calls.js";
+import { useMedialaneApp } from "../medialane-app.js";
 
 function isValidStarknetAddress(address: string): boolean {
   try {
@@ -46,21 +47,22 @@ export function MediaWalletSend({
   onNavigate: (view: MediaWalletView) => void;
   onDone: () => void;
 }) {
-  const { useWalletSession, getClient, useWriteAction } = useMediaWalletApp();
+  const { useWalletSession, useWriteAction } = useMediaWalletApp();
+  const { getClient } = useMedialaneApp();
   const { address } = useWalletSession();
   const { run, status, reset, error } = useWriteAction();
 
   const [currency, setCurrency] = useState<WalletToken>(initialToken ?? WALLET_TOKENS[0]);
   const [pickerOpen, setPickerOpen] = useState(false);
-  const strk = useTokenBalance(getClient, "STRK", address);
-  const eth = useTokenBalance(getClient, "ETH", address);
-  const usdc = useTokenBalance(getClient, "USDC", address);
-  const wbtc = useTokenBalance(getClient, "WBTC", address);
+  const strk = useTokenBalance("STRK", address);
+  const eth = useTokenBalance("ETH", address);
+  const usdc = useTokenBalance("USDC", address);
+  const wbtc = useTokenBalance("WBTC", address);
   
   const pinnedBalancesBySymbol: Record<string, bigint | null> = {
     STRK: strk.rawBalance, ETH: eth.rawBalance, USDC: usdc.rawBalance, WBTC: wbtc.rawBalance,
   };
-  const { rawBalance: currencyBalance } = useErc20Balance(getClient, currency.address, address);
+  const { rawBalance: currencyBalance } = useErc20Balance(currency.address, address);
 
   const [to, setTo] = useState("");
   const [amount, setAmount] = useState("");

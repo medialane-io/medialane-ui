@@ -5,6 +5,7 @@ import { expect, test } from "bun:test";
 import { renderHook, waitFor } from "@testing-library/react";
 import type { MedialaneClient } from "@medialane/sdk/starknet";
 import { usePopClaimStatus } from "./use-pop.js";
+import { MedialaneAppProvider, type MedialaneApp } from "../components/medialane-app.js";
 
 test("usePopClaimStatus reads the claim through the client's provider", async () => {
   const entrypoints: string[] = [];
@@ -17,7 +18,11 @@ test("usePopClaimStatus reads the claim through the client's provider", async ()
     },
   } as unknown as MedialaneClient;
 
-  const { result } = renderHook(() => usePopClaimStatus(() => client, "0xc0", "0xa0"));
+  const { result } = renderHook(() => usePopClaimStatus("0xc0", "0xa0"), {
+    wrapper: ({ children }: { children: React.ReactNode }) => (
+      <MedialaneAppProvider value={{ getClient: () => client, getSigner: () => { throw new Error("unused"); }, walletAddress: null, onRequireWallet: () => {} } as MedialaneApp}>{children}</MedialaneAppProvider>
+    ),
+  });
 
   await waitFor(() => expect(result.current.hasClaimed).not.toBeNull());
   expect(entrypoints).toEqual(["has_claimed"]);

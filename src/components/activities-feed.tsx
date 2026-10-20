@@ -6,7 +6,6 @@ import Link from "next/link";
 import { useActivities } from "../utils/use-activities.js";
 import { useRewardsBatch } from "../utils/use-rewards.js";
 import type { ApiActivitiesQuery, ApiActivity } from "@medialane/sdk";
-import type { MedialaneClient } from "@medialane/sdk/starknet";
 import { Skeleton } from "./skeleton.js";
 import { LoadMoreSentinel } from "./load-more-sentinel.js";
 import { Zap, Megaphone, ArrowRight, Pin } from "lucide-react";
@@ -52,11 +51,7 @@ function AnnouncementsBanner({ announcements }: { announcements: Announcement[] 
 
 const PAGE_SIZE = 30;
 
-export interface ActivitiesFeedProps {
-  getClient: () => MedialaneClient;
-}
-
-export function ActivitiesFeed({ getClient }: ActivitiesFeedProps) {
+export function ActivitiesFeed() {
   const [page, setPage] = useState(1);
   const [typeFilter, setTypeFilter] = useState("");
   const [allActivities, setAllActivities] = useState<ApiActivity[]>([]);
@@ -75,7 +70,7 @@ export function ActivitiesFeed({ getClient }: ActivitiesFeedProps) {
     }
   }, [typeFilter]);
 
-  const { activities, meta, isLoading } = useActivities(getClient, {
+  const { activities, meta, isLoading } = useActivities({
     limit: PAGE_SIZE,
     page,
     type: (typeFilter as ApiActivitiesQuery["type"]) || undefined,
@@ -101,7 +96,7 @@ export function ActivitiesFeed({ getClient }: ActivitiesFeedProps) {
   const pageActors = allActivities
     .map((a) => a.offerer ?? a.fulfiller ?? (a.type === "mint" ? a.to : a.from))
     .filter((a): a is string => Boolean(a));
-  const { data: actorLevels } = useRewardsBatch(getClient, pageActors);
+  const { data: actorLevels } = useRewardsBatch(pageActors);
 
   const isInitialLoading = isLoading && allActivities.length === 0;
   const isLoadingMore = isLoading && allActivities.length > 0;

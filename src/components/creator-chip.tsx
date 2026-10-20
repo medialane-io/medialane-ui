@@ -1,17 +1,15 @@
 "use client";
 
 import Link from "./link.js";
-import type { MedialaneClient } from "@medialane/sdk/starknet";
 import { useCreatorProfile } from "../utils/use-profiles.js";
 import { AddressDisplay } from "./address-display.js";
 
 export interface CreatorChipProps {
-  getClient: () => MedialaneClient;
   address: string;
 }
 
-export function CreatorChip({ getClient, address }: CreatorChipProps) {
-  const { profile } = useCreatorProfile(getClient, address);
+export function CreatorChip({ address }: CreatorChipProps) {
+  const { profile } = useCreatorProfile(address);
   const label = profile?.name || profile?.username || null;
 
   return (

@@ -14,6 +14,7 @@ import { WalletActivityIcon } from "./wallet-activity-icon.js";
 import { useUsdPrices, usdPriceFor } from "../../utils/use-usd-prices.js";
 import type { WalletToken } from "../../utils/media-wallet/wallet-tokens.js";
 import { useMediaWalletApp, type MediaWalletView } from "./types.js";
+import { useMedialaneApp } from "../medialane-app.js";
 
 export function MediaWalletTokenDetail({
   token,
@@ -22,9 +23,9 @@ export function MediaWalletTokenDetail({
   token: WalletToken;
   onNavigate: (view: MediaWalletView) => void;
 }) {
-  const { useWalletSession, getClient, explorerUrl } = useMediaWalletApp();
+  const { useWalletSession, explorerUrl } = useMediaWalletApp();
   const { address: walletAddress } = useWalletSession();
-  const { rawBalance: bal } = useErc20Balance(getClient, token.address, walletAddress);
+  const { rawBalance: bal } = useErc20Balance(token.address, walletAddress);
   const usdPrices = useUsdPrices();
   const price = usdPriceFor(usdPrices, token.symbol) ?? null;
 
@@ -105,7 +106,7 @@ export function MediaWalletTokenDetail({
 }
 
 function TokenActivity({ tokenAddress, walletAddress }: { tokenAddress: string; walletAddress: string | null }) {
-  const { getClient } = useMediaWalletApp();
+  const { getClient } = useMedialaneApp();
   const [items, setItems] = useState<ApiWalletActivity[] | null>(null);
   const [error, setError] = useState(false);
 

@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import type { MedialaneClient } from "@medialane/sdk/starknet";
 import type { ApiToken } from "@medialane/sdk";
 import { Sparkles } from "lucide-react";
 import { useCollectionTokens } from "../utils/use-collections.js";
@@ -12,14 +11,13 @@ const FETCH_PAGE_SIZE = 100;
 const MAX_TOKENS_FOR_RARITY = 2000;
 
 export interface CollectionTraitsTabProps {
-  getClient: () => MedialaneClient;
   contract: string;
 }
 
-export function CollectionTraitsTab({ getClient, contract }: CollectionTraitsTabProps) {
+export function CollectionTraitsTab({ contract }: CollectionTraitsTabProps) {
   const [page, setPage] = useState(1);
   const [all, setAll] = useState<ApiToken[]>([]);
-  const { tokens, meta, isLoading } = useCollectionTokens(getClient, contract, page, FETCH_PAGE_SIZE, "recent");
+  const { tokens, meta, isLoading } = useCollectionTokens(contract, page, FETCH_PAGE_SIZE, "recent");
 
   useEffect(() => {
     if (tokens.length === 0) return;

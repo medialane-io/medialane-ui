@@ -3,7 +3,6 @@
 import { useState } from "react";
 import useSWR from "swr";
 import type { ApiToken } from "@medialane/sdk";
-import type { MedialaneClient } from "@medialane/sdk/starknet";
 import { useMedialaneClient } from "./use-medialane-client.js";
 import { queryKeys } from "./query-keys.js";
 
@@ -18,8 +17,8 @@ function isNotIndexedYet(error: unknown): boolean {
   );
 }
 
-export function useToken(getClient: () => MedialaneClient, contract: string | null, tokenId: string | null) {
-  const client = useMedialaneClient(getClient);
+export function useToken( contract: string | null, tokenId: string | null) {
+  const client = useMedialaneClient();
   const [startedAt] = useState(() => Date.now());
 
   const { data, error, isLoading, mutate } = useSWR(
@@ -46,12 +45,11 @@ export function useToken(getClient: () => MedialaneClient, contract: string | nu
 }
 
 export function useTokenBalance(
-  getClient: () => MedialaneClient,
   contract: string | null,
   tokenId: string | null,
   owner: string | null | undefined,
 ) {
-  const client = useMedialaneClient(getClient);
+  const client = useMedialaneClient();
 
   const { data, mutate } = useSWR(
     contract && tokenId && owner ? queryKeys.tokenBalance(contract, tokenId, owner) : null,
@@ -63,13 +61,12 @@ export function useTokenBalance(
 }
 
 export function useTokensByOwner(
-  getClient: () => MedialaneClient,
   address: string | null,
   page = 1,
   limit = 20,
   refreshMs = 60_000,
 ) {
-  const client = useMedialaneClient(getClient);
+  const client = useMedialaneClient();
 
   const { data, error, isLoading, mutate } = useSWR(
     address ? queryKeys.tokensOwned(address, page, limit) : null,
@@ -86,8 +83,8 @@ export function useTokensByOwner(
   };
 }
 
-export function useTokenHistory(getClient: () => MedialaneClient, contract: string | null, tokenId: string | null) {
-  const client = useMedialaneClient(getClient);
+export function useTokenHistory( contract: string | null, tokenId: string | null) {
+  const client = useMedialaneClient();
 
   const { data, error, isLoading } = useSWR(
     contract && tokenId ? queryKeys.tokenHistory(contract, tokenId) : null,

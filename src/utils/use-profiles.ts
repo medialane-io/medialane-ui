@@ -1,9 +1,10 @@
 "use client";
 
 import useSWR from "swr";
-import type { MedialaneClient } from "@medialane/sdk/starknet";
+import { useMedialaneApp } from "../components/medialane-app.js";
 
-export function useCollectionProfile(getClient: () => MedialaneClient, contractAddress: string | undefined) {
+export function useCollectionProfile( contractAddress: string | undefined) {
+  const { getClient } = useMedialaneApp();
   const { data, error, isLoading, mutate } = useSWR(
     contractAddress ? `profile-collection-${contractAddress}` : null,
     () => getClient().api.getCollectionProfile(contractAddress!),
@@ -12,7 +13,8 @@ export function useCollectionProfile(getClient: () => MedialaneClient, contractA
   return { profile: data ?? null, isLoading, error, mutate };
 }
 
-export function useCreatorProfile(getClient: () => MedialaneClient, walletAddress: string | undefined) {
+export function useCreatorProfile( walletAddress: string | undefined) {
+  const { getClient } = useMedialaneApp();
   const { data, error, isLoading, mutate } = useSWR(
     walletAddress ? `profile-creator-${walletAddress}` : null,
     async () => {

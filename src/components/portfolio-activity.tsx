@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import type { MedialaneClient } from "@medialane/sdk/starknet";
 import { Activity } from "lucide-react";
 import { assetHref } from "@medialane/sdk";
 import { useActivitiesByAddress } from "../utils/use-activities.js";
@@ -12,12 +11,11 @@ import { cn } from "../utils/cn.js";
 import { EXPLORER_URL } from "../utils/explorer-url.js";
 
 export interface PortfolioActivityProps {
-  getClient: () => MedialaneClient;
   address: string | null;
 }
 
-export function PortfolioActivity({ getClient, address }: PortfolioActivityProps) {
-  const { activities, isLoading, error, mutate } = useActivitiesByAddress(getClient, address);
+export function PortfolioActivity({ address }: PortfolioActivityProps) {
+  const { activities, isLoading, error, mutate } = useActivitiesByAddress(address);
   const [typeFilter, setTypeFilter] = useState("");
 
   const displayed = typeFilter

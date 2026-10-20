@@ -10,7 +10,6 @@ import { AddressDisplay } from "./address-display.js";
 import { CreatorChip } from "./creator-chip.js";
 import { CurrencyAmount } from "./currency-icon.js";
 import { Skeleton } from "./skeleton.js";
-import { useMedialaneApp } from "./medialane-app.js";
 import { ipfsToHttp } from "../utils/ipfs.js";
 import { parsePriceDisplay } from "../utils/format.js";
 import { EXPLORER_URL } from "../utils/explorer-url.js";
@@ -44,7 +43,6 @@ function PriceStat({ label, raw }: { label: string; raw: string | null }) {
 }
 
 export function CollectionHeader({ collection, loading = false, onReportClick, children }: CollectionHeaderProps) {
-  const { getClient } = useMedialaneApp();
   const shouldReduce = useReducedMotion();
   const [imgError, setImgError] = useState(false);
 
@@ -118,7 +116,7 @@ export function CollectionHeader({ collection, loading = false, onReportClick, c
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
-          {collection.owner ? <CreatorChip getClient={getClient} address={collection.owner} /> : null}
+          {collection.owner ? <CreatorChip address={collection.owner} /> : null}
           <AddressDisplay address={collection.contractAddress} chars={6} className="text-xs text-muted-foreground" />
         </div>
 
