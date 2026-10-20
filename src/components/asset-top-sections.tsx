@@ -8,6 +8,7 @@ import { cn } from "../utils/cn.js";
 import { AddressDisplay } from "./address-display.js";
 import { ParentAttributionBanner } from "./parent-attribution-banner.js";
 import { IpTypeBadge } from "./ip-type-badge.js";
+import { ExpandableText } from "./expandable-text.js";
 
 interface AssetMediaColumnProps {
   shouldReduce: boolean;
@@ -147,9 +148,7 @@ export function AssetHeaderBlock({
         </div>
       ) : null}
       <h1 className="text-2xl lg:text-4xl font-bold break-words">{name}</h1>
-      {description ? (
-        <p className="text-sm text-muted-foreground leading-relaxed mt-1">{description}</p>
-      ) : null}
+      {description ? <ExpandableText text={description} className="mt-1" /> : null}
     </div>
   );
 }

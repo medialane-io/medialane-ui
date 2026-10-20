@@ -2,7 +2,13 @@
 
 ## [0.200.0] — 2026-10-20
 
+### Added
+
+- `ExpandableText`: three lines, then `Show more` / `Show less` when the text overflows.
+
 ### Changed
+
+- `AssetHeaderBlock` description uses `ExpandableText`.
 
 - `AssetOwnersPanel` takes `editions`; the header reads `100 editions · 2 owners`. Shows five owners, then `+N more owners`.
 

@@ -57,6 +57,7 @@ export { AssetMarketsTab } from "./components/asset-markets-tab.js";
 export { ParentAttributionBanner } from "./components/parent-attribution-banner.js";
 export type { ParentBannerProps } from "./components/parent-attribution-banner.js";
 export { AssetMediaColumn, AssetHeaderBlock, AssetOwnerRow } from "./components/asset-top-sections.js";
+export { ExpandableText } from "./components/expandable-text.js";
 export type { AssetOwnerRowProps } from "./components/asset-top-sections.js";
 export { AssetCollectionBar } from "./components/asset-collection-bar.js";
 export type { AssetCollectionBarProps, AssetCollectionBarSibling } from "./components/asset-collection-bar.js";
