@@ -7,12 +7,12 @@ import { MotionCard } from "./motion-primitives.js";
 import { CurrencyIcon } from "./currency-icon.js";
 import { AnimatedTokenMedia } from "./animated-token-media.js";
 import { cn } from "../utils/cn.js";
-import { ipfsToHttp } from "../utils/ipfs.js";
 import { formatDisplayPrice, isStableCurrency } from "../utils/format.js";
 import { DualPrice } from "./dual-price.js";
 import { timeAgo } from "../utils/time.js";
 import { isLivingRenderCollection } from "../data/living-render-collections.js";
 import { assetHref as buildAssetHref, type ApiOrder, type Chain } from "@medialane/sdk";
+import { useImageUrl } from "../utils/use-image-url.js";
 
 type OrderWithAnimation = ApiOrder & { token: (ApiOrder["token"] & { animationUrl?: string | null }) | null };
 
@@ -63,11 +63,12 @@ export interface ListingCardProps {
 }
 
 export function ListingCard({ order: rawOrder, inCart = false, onBuy, onCart, overflowMenu, primaryAction, compact = false, imageUrl, usdValue }: ListingCardProps) {
+  const resolveImage = useImageUrl();
   const order = rawOrder as OrderWithAnimation;
   const [imgError, setImgError] = useState(false);
   const isListing = order.offer.itemType === "ERC721" || order.offer.itemType === "ERC1155";
   const name = order.token?.name ?? `Token #${order.nftTokenId}`;
-  const image = imageUrl !== undefined ? imageUrl : (order.token?.image ? ipfsToHttp(order.token.image, { width: 480 }) : null);
+  const image = imageUrl !== undefined ? imageUrl : (order.token?.image ? resolveImage(order.token.image, { width: 480 }) : null);
 
   const animationUrl = order.token?.animationUrl ?? null;
   const live = !!(order.chain && order.nftContract) && isLivingRenderCollection(order.chain.toUpperCase() as Chain, order.nftContract!);

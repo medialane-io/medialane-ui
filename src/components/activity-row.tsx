@@ -7,11 +7,12 @@ import { AddressDisplay } from "./address-display.js";
 import { CurrencyIcon } from "./currency-icon.js";
 import { LevelBadge } from "./rewards/level-badge.js";
 import { ACTIVITY_TYPE_CONFIG } from "../data/activity.js";
-import { ipfsToHttp } from "../utils/ipfs.js";
 import { timeAgo } from "../utils/time.js";
 import { formatDisplayPrice } from "../utils/format.js";
 import { cn } from "../utils/cn.js";
 import type { ApiActivity, ApiRewardsBatchEntry } from "@medialane/sdk";
+import { assetHref, profileHref } from "@medialane/sdk";
+import { useImageUrl } from "../utils/use-image-url.js";
 
 const ACTIVITY_MESSAGES: Record<string, string> = {
   mint: "Newly minted",
@@ -29,8 +30,6 @@ export interface ActivityRowProps {
   compact?: boolean;
   actorLevel?: ApiRewardsBatchEntry;
   explorerUrl?: string;
-  getAssetHref?: (contract: string, tokenId: string) => string;
-  getActorHref?: (address: string) => string;
 }
 
 export function ActivityRow({
@@ -40,9 +39,8 @@ export function ActivityRow({
   compact = false,
   actorLevel,
   explorerUrl = "https://voyager.online",
-  getAssetHref = (contract, tokenId) => `/asset/STARKNET/${contract}/${tokenId}`,
-  getActorHref = (address) => `/creator/${address}`,
 }: ActivityRowProps) {
+  const resolveImage = useImageUrl();
   const config = ACTIVITY_TYPE_CONFIG[activity.type] ?? {
     label: activity.type,
     variant: "outline" as const,
@@ -63,7 +61,7 @@ export function ActivityRow({
 
   const tokenName = activity.token?.name ?? (tokenId ? `#${tokenId}` : "—");
   const rawImage = activity.token?.image ?? null;
-  const tokenImage = rawImage ? ipfsToHttp(rawImage) : null;
+  const tokenImage = resolveImage(rawImage);
 
   const is1155 = activity.tokenStandard === "ERC1155" ||
     (activity.type === "mint" || activity.type === "transfer") && Number(activity.amount ?? "1") > 1;
@@ -124,7 +122,7 @@ export function ActivityRow({
         <div className="flex items-center gap-1.5 leading-tight">
           {contract && tokenId ? (
             <Link
-              href={getAssetHref(contract, tokenId)}
+              href={assetHref(activity.chain ?? "STARKNET", contract, tokenId)}
               className="text-sm font-semibold hover:text-primary transition-colors truncate block"
             >
               {tokenName}
@@ -143,7 +141,7 @@ export function ActivityRow({
           {showActor && actor && (
             <>
               <Link
-                href={getActorHref(actor)}
+                href={profileHref({ address: actor })}
                 className="hover:text-primary transition-colors tabular-nums shrink-0"
               >
                 <AddressDisplay address={actor} chars={4} showCopy={false} />

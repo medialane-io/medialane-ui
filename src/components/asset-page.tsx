@@ -36,7 +36,8 @@ import { assetAttributes } from "../utils/asset-attributes.js";
 import { ASSET_ACCENTS } from "../utils/asset-accents.js";
 import { isLivingRenderCollection } from "../data/living-render-collections.js";
 import { EXPLORER_URL } from "../utils/explorer-url.js";
-import { ipfsToHttp } from "../utils/ipfs.js";
+import { profileHref } from "@medialane/sdk";
+import { useImageUrl } from "../utils/use-image-url.js";
 
 export type AssetKind = "standard" | "edition" | "ticket" | "membership" | "pop";
 
@@ -145,6 +146,7 @@ function AssetPageView({
   kind: AssetKind;
   slots: AssetPageSlots;
 }) {
+  const resolveImage = useImageUrl();
   const config = KINDS[kind];
   const router = useRouter();
   const shouldReduce = useReducedMotion();
@@ -165,7 +167,7 @@ function AssetPageView({
   const [imgError, setImgError] = useState(false);
 
   const name = token.metadata?.name || `${config.namePrefix} #${token.tokenId}`;
-  const image = token.metadata?.image ? ipfsToHttp(token.metadata.image) : null;
+  const image = resolveImage(token.metadata?.image);
   const tokenStandard = kind === "standard" || kind === "pop"
     ? ((token.standard ?? collection?.standard ?? "UNKNOWN") as AssetMarketContext["tokenStandard"])
     : "ERC1155";
@@ -284,16 +286,16 @@ function AssetPageView({
             ) : null}
 
             <div className="pt-5 space-y-5">
-              {ownerAddress ? <AssetOwnerRow ownerAddress={ownerAddress} ownerHref={`/creator/${ownerAddress}`} /> : null}
+              {ownerAddress ? <AssetOwnerRow ownerAddress={ownerAddress} ownerHref={profileHref({ address: ownerAddress })} /> : null}
               {collection?.service === "drop-collection" ? <DropTokenLink contract={contract} name={collection.name ?? null} /> : null}
               <AssetCollectionBar
                 collectionName={collection?.name ?? contract.slice(0, 8) + "…"}
-                collectionImage={collection?.image ? ipfsToHttp(collection.image) : null}
+                collectionImage={resolveImage(collection?.image)}
                 collectionHref={collectionHref("STARKNET", contract)}
                 currentTokenId={tokenId}
                 siblingTokens={collectionTokens.map((t) => ({
                   tokenId: t.tokenId,
-                  image: t.metadata?.image ? ipfsToHttp(t.metadata.image) : null,
+                  image: resolveImage(t.metadata?.image),
                 }))}
                 onNavigate={(id) => router.push(assetHref("STARKNET", contract, id))}
               />

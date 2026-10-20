@@ -5,8 +5,8 @@ import Link from "./link.js";
 import Image from "./image.js";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "../utils/cn.js";
-import { ipfsToHttp } from "../utils/ipfs.js";
 import type { ApiCollection } from "@medialane/sdk";
+import { useImageUrl } from "../utils/use-image-url.js";
 
 export interface HeroSliderProps {
   collections: ApiCollection[];
@@ -37,7 +37,8 @@ function HeroPlaceholder({ hrefs }: { hrefs: Required<HeroSliderProps>["placehol
 }
 
 function HeroSlide({ collection, active, getHref }: { collection: ApiCollection; active: boolean; getHref: (col: ApiCollection) => string }) {
-  const imageUrl = collection.image ? ipfsToHttp(collection.image) : null;
+  const resolveImage = useImageUrl();
+  const imageUrl = resolveImage(collection.image);
   const name = collection.name ?? "Collection";
   const supply = collection.totalSupply;
 

@@ -4,9 +4,9 @@ import { useState } from "react";
 import Link from "./link.js";
 import { CurrencyIcon } from "./currency-icon.js";
 import { formatDisplayPrice } from "../utils/format.js";
-import { ipfsToHttp } from "../utils/ipfs.js";
 import { cn } from "../utils/cn.js";
 import type { ApiOrder } from "@medialane/sdk";
+import { useImageUrl } from "../utils/use-image-url.js";
 
 export interface ActivityTickerProps {
   orders: ApiOrder[];
@@ -17,8 +17,9 @@ export interface ActivityTickerProps {
 }
 
 function ActivityPill({ listing, getHref }: { listing: ApiOrder; getHref: (order: ApiOrder) => string }) {
+  const resolveImage = useImageUrl();
   const [imgError, setImgError] = useState(false);
-  const image = listing.token?.image && !imgError ? ipfsToHttp(listing.token.image) : null;
+  const image = listing.token?.image && !imgError ? resolveImage(listing.token.image) : null;
 
   return (
     <Link

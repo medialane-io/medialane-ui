@@ -3,6 +3,7 @@
 import Link from "./link.js";
 import { AddressDisplay } from "./address-display.js";
 import { CreatorScoreInline } from "./creator-score-inline.js";
+import { profileHref } from "@medialane/sdk";
 
 interface HolderLike {
   owner: string;
@@ -25,7 +26,7 @@ function OwnerRow({ owner, amount }: HolderLike) {
   return (
     <div className="flex items-center justify-between gap-2">
       <div className="flex min-w-0 items-center gap-1.5">
-        <Link href={`/creator/${owner}`} className="hover:text-primary transition-colors font-medium text-sm truncate">
+        <Link href={profileHref({ address: owner })} className="hover:text-primary transition-colors font-medium text-sm truncate">
           <AddressDisplay address={owner} chars={6} showCopy={false} />
         </Link>
         <CreatorScoreInline address={owner} size="sm" />

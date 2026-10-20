@@ -1,5 +1,17 @@
-import { describe, expect, test } from "bun:test";
+import { afterEach, describe, expect, test } from "bun:test";
 import { APP_WALLET_DEFAULTS, createAppWallet } from "./app-wallet.js";
+
+const originalNavigator = globalThis.navigator;
+const originalLocalStorage = globalThis.localStorage;
+const navigatorDescriptor = Object.getOwnPropertyDescriptor(globalThis, "navigator");
+const localStorageDescriptor = Object.getOwnPropertyDescriptor(globalThis, "localStorage");
+
+afterEach(() => {
+  for (const [key, descriptor] of [["navigator", navigatorDescriptor], ["localStorage", localStorageDescriptor]] as const) {
+    if (descriptor) Object.defineProperty(globalThis, key, descriptor);
+    else delete (globalThis as Record<string, unknown>)[key];
+  }
+});
 
 type CreateOptions = { publicKey: PublicKeyCredentialCreationOptions };
 
@@ -67,4 +79,9 @@ test("the wallet talks to the backend only through the app gateway", () => {
     sponsoredInvokeUrl: "/api/proxy/v1/paymaster/invoke",
     deployProxyUrl: "/api/proxy/v1/paymaster/deploy",
   });
+});
+
+test("the tests leave the global navigator and localStorage as they found them", () => {
+  expect(globalThis.navigator).toBe(originalNavigator);
+  expect(globalThis.localStorage).toBe(originalLocalStorage);
 });

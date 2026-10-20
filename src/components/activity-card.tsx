@@ -5,12 +5,12 @@ import { ExternalLink } from "lucide-react";
 import { CurrencyIcon } from "./currency-icon.js";
 import { AnimatedTokenMedia } from "./animated-token-media.js";
 import { ACTIVITY_TYPE_CONFIG } from "../data/activity.js";
-import { ipfsToHttp } from "../utils/ipfs.js";
 import { isLivingRenderCollection } from "../data/living-render-collections.js";
 import { timeAgo } from "../utils/time.js";
 import { formatDisplayPrice } from "../utils/format.js";
 import { cn } from "../utils/cn.js";
-import type { ApiActivity, Chain } from "@medialane/sdk";
+import { assetHref, type ApiActivity, type Chain } from "@medialane/sdk";
+import { useImageUrl } from "../utils/use-image-url.js";
 
 type ActivityWithEnrichment = ApiActivity & {
   chain?: Chain;
@@ -42,13 +42,12 @@ export function ActivityCardSkeleton() {
 export interface ActivityCardProps {
   activity: ApiActivity;
 
-  getAssetHref?: (contract: string, tokenId: string) => string;
 }
 
 export function ActivityCard({
   activity: rawActivity,
-  getAssetHref = (c, t) => `/asset/${c}/${t}`,
 }: ActivityCardProps) {
+  const resolveImage = useImageUrl();
   const activity = rawActivity as ActivityWithEnrichment;
   const config = ACTIVITY_TYPE_CONFIG[activity.type] ?? {
     label: activity.type,
@@ -69,7 +68,7 @@ export function ActivityCard({
 
   const tokenName = activity.token?.name ?? (tokenId ? `#${tokenId}` : "—");
   const rawImage = activity.token?.image ?? null;
-  const tokenImage = rawImage ? ipfsToHttp(rawImage) : null;
+  const tokenImage = resolveImage(rawImage);
 
   const animationUrl = activity.token?.animationUrl ?? null;
   const live = !!(activity.chain && contract) && isLivingRenderCollection(activity.chain.toUpperCase() as Chain, contract);
@@ -129,7 +128,7 @@ export function ActivityCard({
   const className = "card-base block active:scale-[0.99] transition-all";
 
   return contract && tokenId ? (
-    <Link href={getAssetHref(contract, tokenId)} className={className}>
+    <Link href={assetHref(activity.chain ?? "STARKNET", contract, tokenId)} className={className}>
       {body}
     </Link>
   ) : (

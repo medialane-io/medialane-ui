@@ -15,7 +15,6 @@ import { DropActivityList } from "./drop-activity.js";
 import { DropManage } from "./drop-manage.js";
 import { DropMintDialog } from "./drop-mint-dialog.js";
 import { GradientButton } from "../../gradient-button.js";
-import { ipfsToHttp } from "../../../utils/ipfs.js";
 import { useCollectionTokens } from "../../../utils/use-collections.js";
 import { useDrop, useDropChain, useDropFee, useDropFile, useDropMints } from "../../../utils/use-drops.js";
 import { useNow } from "../../../utils/drop/use-now.js";
@@ -23,10 +22,12 @@ import { actionBoxView } from "../../../utils/drop/view.js";
 import { claimProofFor } from "../../../utils/drop/claim-proof.js";
 import { manageDrop, mintDrop, saveExclusiveContent } from "../../../utils/drop/actions.js";
 import { useMedialaneApp } from "../../medialane-app.js";
+import { useImageUrl } from "../../../utils/use-image-url.js";
 
 type TokenFile = { image?: string; attributes?: { trait_type?: string; value?: string }[] };
 
 export function DropPage(props: { contract: string; initialTab?: string; portfolioHref?: string }) {
+  const resolveImage = useImageUrl();
   const app = useMedialaneApp();
   const { contract } = props;
   const { getClient, walletAddress } = app;
@@ -64,7 +65,7 @@ export function DropPage(props: { contract: string; initialTab?: string; portfol
   const mint = dropMintState({ drop: priced, wallet: walletAddress, claimed: chain.claimed, proof, balance: chain.balance, feeBps: feeBps ?? 0, now });
   const view = priced ? actionBoxView({ drop: priced, mint, quantity, feeBps: feeBps!, now }) : null;
   const isOrganizer = !!walletAddress && !!onchain && BigInt(walletAddress) === BigInt(onchain.organizer);
-  const art = firstToken?.image ?? indexed?.image ?? null;
+  const art = resolveImage(firstToken?.image ?? indexed?.image);
   const name = indexed?.name ?? "Drop";
   const deps = async () => ({ client: getClient(), signer: await app.getSigner() });
 
@@ -78,7 +79,7 @@ export function DropPage(props: { contract: string; initialTab?: string; portfol
     <div className="space-y-10 pb-28 lg:pb-0">
       <div className="grid gap-8 lg:grid-cols-2 lg:gap-10">
         <div className="relative aspect-square overflow-hidden rounded-2xl bg-muted">
-          {art && <Image src={ipfsToHttp(art)} alt={name} fill unoptimized className="object-cover" />}
+          {art && <Image src={art} alt={name} fill unoptimized className="object-cover" />}
         </div>
         <div className="space-y-5">
           <div className="flex items-start justify-between gap-3">

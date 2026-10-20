@@ -15,6 +15,7 @@ import {
   formatAssetReceivedNotification,
 } from "./format-activity.js";
 import type { Notification, Announcement } from "../data/notification.js";
+import { useImageUrl } from "./use-image-url.js";
 
 async function fetchAnnouncements(): Promise<Announcement[]> {
   const res = await fetch("/api/announcements");
@@ -25,6 +26,7 @@ async function fetchAnnouncements(): Promise<Announcement[]> {
 export function useNotifications(
   address: string | null | undefined
 ) {
+  const resolveImage = useImageUrl();
   const [readIds, setReadIds] = useState<Set<string>>(() => new Set<string>());
 
   useEffect(() => {
@@ -48,7 +50,7 @@ export function useNotifications(
       .filter((o) => o.offer.itemType === "ERC20" && o.status === "FULFILLED")
       .forEach((order) => {
         const id = `offer-accepted-${order.orderHash}`;
-        const fmt = formatOfferAcceptedNotification(order);
+        const fmt = formatOfferAcceptedNotification(order, resolveImage);
         items.push({
           id,
           type: "offer_accepted",
@@ -68,7 +70,7 @@ export function useNotifications(
 
     receivedOffers.forEach((order) => {
       const id = `order-${order.orderHash}`;
-      const fmt = formatOrderNotification(order);
+      const fmt = formatOrderNotification(order, resolveImage);
       items.push({
         id,
         type: "offer",
@@ -93,7 +95,7 @@ export function useNotifications(
         address &&
         !!event.to && normalizeAddress("STARKNET", event.to) === normalizeAddress("STARKNET", address)
       ) {
-        const fmt = formatAssetReceivedNotification(event);
+        const fmt = formatAssetReceivedNotification(event, resolveImage);
         items.push({
           id,
           type: "asset_received",
@@ -116,7 +118,7 @@ export function useNotifications(
         ((!!event.offerer && normalizeAddress("STARKNET", event.offerer) === normalizeAddress("STARKNET", address)) ||
           (!!event.from && normalizeAddress("STARKNET", event.from) === normalizeAddress("STARKNET", address)));
 
-      const fmt = formatActivity(event);
+      const fmt = formatActivity(event, resolveImage);
       items.push({
         id,
         type: event.type as Notification["type"],
@@ -155,7 +157,7 @@ export function useNotifications(
     );
 
     return items;
-  }, [userOrders, receivedOffers, activities, announcements, address, readIds]);
+  }, [userOrders, receivedOffers, activities, announcements, address, readIds, resolveImage]);
 
   const unreadCount = notifications.filter((n) => n.isUnread).length;
 

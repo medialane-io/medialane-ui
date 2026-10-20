@@ -1,5 +1,5 @@
-import { test, expect } from "bun:test";
-import { ipfsToHttp, DEFAULT_GATEWAY, toDisplayUrl } from "./ipfs.js";
+import { describe, test, expect } from "bun:test";
+import { ipfsToHttp, DEFAULT_GATEWAY, toDisplayUrl, createImageResolver } from "./ipfs.js";
 
 test("resolves ipfs:// URIs to the public gateway with a default resize", () => {
   expect(ipfsToHttp("ipfs://QmXxx")).toBe(`${DEFAULT_GATEWAY}QmXxx?img-width=1200&img-format=webp&img-quality=80`);
@@ -54,4 +54,35 @@ test("no gateway url ever carries a token", () => {
   for (const url of urls) {
     expect(url.toLowerCase()).not.toContain("token");
   }
+});
+
+describe("createImageResolver", () => {
+  const resolve = createImageResolver({ gateway: "https://gw.example/ipfs/", proxyPath: "/api/img" });
+
+  test("ipfs URIs resolve through the gateway at the requested width", () => {
+    expect(resolve("ipfs://Qm1", { width: 96 })).toBe("https://gw.example/ipfs/Qm1?img-width=96&img-format=webp&img-quality=80");
+  });
+
+  test("ipfs URIs default to 1200px", () => {
+    expect(resolve("ipfs://Qm1")).toBe("https://gw.example/ipfs/Qm1?img-width=1200&img-format=webp&img-quality=80");
+  });
+
+  test("other https hosts go through the image proxy", () => {
+    expect(resolve("https://cdn.example.com/a.png")).toBe("/api/img?url=https%3A%2F%2Fcdn.example.com%2Fa.png");
+  });
+
+  test("data and relative URLs pass through", () => {
+    expect(resolve("data:image/png;base64,AA")).toBe("data:image/png;base64,AA");
+    expect(resolve("/placeholder.svg")).toBe("/placeholder.svg");
+  });
+
+  test("empty input resolves to null", () => {
+    expect(resolve("")).toBeNull();
+    expect(resolve(null)).toBeNull();
+    expect(resolve(undefined)).toBeNull();
+  });
+
+  test("unsupported schemes resolve to the placeholder", () => {
+    expect(resolve("javascript:alert(1)")).toBe("/placeholder.svg");
+  });
 });

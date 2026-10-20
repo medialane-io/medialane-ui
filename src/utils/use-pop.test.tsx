@@ -1,6 +1,3 @@
-import { GlobalRegistrator } from "@happy-dom/global-registrator";
-if (!globalThis.document) GlobalRegistrator.register();
-
 import { expect, test } from "bun:test";
 import { renderHook, waitFor } from "@testing-library/react";
 import type { MedialaneClient } from "@medialane/sdk/starknet";

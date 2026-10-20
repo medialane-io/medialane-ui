@@ -6,7 +6,7 @@ import {
 } from "lucide-react";
 import { timeAgo } from "../utils/time.js";
 import { formatDisplayPrice } from "../utils/format.js";
-import type { ApiActivity } from "@medialane/sdk";
+import { assetHref, type ApiActivity } from "@medialane/sdk";
 import { cn } from "../utils/cn.js";
 
 
@@ -31,13 +31,11 @@ const ACTIVITY_ICONS: Record<string, React.ElementType> = {
 export interface ActivityTimelineRowProps {
   event: ApiActivity;
   isLast: boolean;
-  getAssetHref?: (contract: string, tokenId: string) => string;
 }
 
 export function ActivityTimelineRow({
   event,
   isLast,
-  getAssetHref = (contract, tokenId) => `/asset/STARKNET/${contract}/${tokenId}`,
 }: ActivityTimelineRowProps) {
   const meta = ACTIVITY_META[event.type] ?? ACTIVITY_META.transfer;
   const Icon = ACTIVITY_ICONS[event.type] ?? ArrowRightLeft;
@@ -60,7 +58,7 @@ export function ActivityTimelineRow({
                 {meta.label}
               </span>
               {contract && tokenId && (
-                <Link href={getAssetHref(contract, tokenId)} className="text-xs text-muted-foreground hover:text-foreground transition-colors">
+                <Link href={assetHref(event.chain ?? "STARKNET", contract, tokenId)} className="text-xs text-muted-foreground hover:text-foreground transition-colors">
                   View asset
                 </Link>
               )}

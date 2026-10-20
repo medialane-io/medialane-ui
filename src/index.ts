@@ -142,7 +142,8 @@ export {
 } from "./components/coins-explorer.js";
 
 export { timeAgo, timeUntil, isExpired } from "./utils/time.js";
-export { toDisplayUrl, toDisplayUrlOrNull, toAbsoluteImageUrl, type DisplayUrlOptions } from "./utils/ipfs.js";
+export { toDisplayUrl, toDisplayUrlOrNull, toAbsoluteImageUrl, createImageResolver, type DisplayUrlOptions, type ImageResolver } from "./utils/ipfs.js";
+export { useImageUrl } from "./utils/use-image-url.js";
 export { isSameAddress } from "./utils/same-address.js";
 export { createAppWallet } from "./utils/app-wallet.js";
 export type { AppWalletConfig } from "./utils/app-wallet.js";
@@ -254,7 +255,10 @@ export { LAUNCHPAD_ROUTE_OVERRIDES } from "./components/launchpad-services.js";
 export { LAUNCHPAD_SERVICE_DEFINITIONS, LAUNCHPAD_SERVICE_GROUPS } from "./data/launchpad-services.js";
 export type { ServiceDefinition, ServiceStatus, ServiceGroup, ServiceGroupDefinition } from "./data/launchpad-services.js";
 
-export { NavCommandMenu, useNavCommandMenu, relevanceFilter } from "./components/nav-command-menu.js";
+export { NavCommandMenu, useNavCommandMenu, relevanceFilter, matchCommands } from "./components/nav-command-menu.js";
+export { SearchPage } from "./components/search-page.js";
+export { NAV_ITEMS, navGroups, type NavItemId, type NavGroupSpec } from "./data/nav-commands.js";
+export { ResultThumbnail } from "./components/result-thumbnail.js";
 export type { NavCommand, NavCommandGroup, NavCommandMenuProps } from "./components/nav-command-menu.js";
 
 export {
@@ -447,6 +451,7 @@ export type {
   WalletWriteStatus,
 } from "./components/media-wallet/types.js";
 export { useCreators } from "./utils/use-creators.js";
+export { useSearch, SEARCH_MIN_LENGTH, type UseSearchOptions } from "./utils/use-search.js";
 export {
   useRewards, useLeaderboard, useRewardsEvents, useRewardsConfig, useRewardsBatch,
 } from "./utils/use-rewards.js";

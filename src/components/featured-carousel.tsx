@@ -4,9 +4,9 @@ import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight, ArrowRight, Sparkles } from "lucide-react";
 import { FadeIn, EASE_OUT } from "./motion-primitives.js";
-import { ipfsToHttp } from "../utils/ipfs.js";
 import { formatDisplayPrice } from "../utils/format.js";
 import type { ApiCollection } from "@medialane/sdk";
+import { useImageUrl } from "../utils/use-image-url.js";
 
 export interface FeaturedCarouselProps {
   collections: ApiCollection[];
@@ -16,8 +16,9 @@ export interface FeaturedCarouselProps {
 }
 
 function Slide({ collection, href }: { collection: ApiCollection; href: string }) {
+  const resolveImage = useImageUrl();
   const name = collection.name ?? "Featured Collection";
-  const image = collection.image ? ipfsToHttp(collection.image) : null;
+  const image = resolveImage(collection.image);
 
   return (
     <div className="relative w-full h-full">

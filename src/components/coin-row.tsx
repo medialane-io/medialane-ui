@@ -3,13 +3,13 @@
 import Link from "./link.js";
 import Image from "./image.js";
 import { cn } from "../utils/cn.js";
-import { ipfsToHttp } from "../utils/ipfs.js";
 import { DualPrice } from "./dual-price.js";
 import {
   coinKind, coinKindLabel, coinAccentToken,
   type CoinCollectionLike, type CoinPriceLike,
 } from "../data/coins.js";
 import { formatUsdPrice } from "../utils/format.js";
+import { useImageUrl } from "../utils/use-image-url.js";
 
 export type CoinMarketStatus = "live" | "pre-launch" | "unavailable";
 
@@ -29,8 +29,9 @@ export interface CoinRowProps {
 }
 
 export function CoinAvatar({ collection, size = 36 }: { collection: CoinCollectionLike; size?: number }) {
+  const resolveImage = useImageUrl();
   const logoUri = collection.profile?.image ?? collection.image;
-  const logo = logoUri ? ipfsToHttp(logoUri) : null;
+  const logo = resolveImage(logoUri);
   const initials = (collection.symbol ?? collection.name ?? "?").trim().slice(0, 2).toUpperCase();
   const accent = coinAccentToken(collection.symbol ?? collection.name ?? collection.contractAddress);
 

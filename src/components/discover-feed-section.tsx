@@ -14,8 +14,6 @@ export interface DiscoverFeedSectionProps {
   activities: ApiActivity[];
   activitiesLoading: boolean;
   lastUpdated: string;
-  getAssetHref?: (contract: string, tokenId: string) => string;
-  getActorHref?: (address: string) => string;
   explorerUrl?: string;
   marketplaceHref?: string;
   activitiesHref?: string;
@@ -127,7 +125,6 @@ export function DiscoverFeedSection({
   activities,
   activitiesLoading,
   lastUpdated,
-  getAssetHref = (c, t) => `/asset/${c}/${t}`,
   marketplaceHref = "/marketplace",
   activitiesHref = "/activities",
   onBuyOrder,
@@ -175,7 +172,7 @@ export function DiscoverFeedSection({
                   : `activity-${i}`;
                 return (
                   <div key={key} className="w-56 sm:w-64 snap-start shrink-0">
-                    <ActivityCard activity={act} getAssetHref={getAssetHref} />
+                    <ActivityCard activity={act} />
                   </div>
                 );
               })}
