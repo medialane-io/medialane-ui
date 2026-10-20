@@ -59,6 +59,7 @@ export type { ParentBannerProps } from "./components/parent-attribution-banner.j
 export { AssetMediaColumn, AssetHeaderBlock, AssetOwnerRow } from "./components/asset-top-sections.js";
 export { ExpandableText } from "./components/expandable-text.js";
 export { CollectionHeader, type CollectionHeaderProps } from "./components/collection-header.js";
+export { CreatorHeader, type CreatorHeaderProps, type CreatorHeaderStat } from "./components/creator-header.js";
 export type { AssetOwnerRowProps } from "./components/asset-top-sections.js";
 export { AssetCollectionBar } from "./components/asset-collection-bar.js";
 export type { AssetCollectionBarProps, AssetCollectionBarSibling } from "./components/asset-collection-bar.js";
@@ -330,8 +331,6 @@ export { ActionDialog } from "./components/action-dialog.js";
 export type { ActionDialogProps } from "./components/action-dialog.js";
 
 export { HiddenContentBanner } from "./components/hidden-content-banner.js";
-export { CollectionHeroBanner } from "./components/collection-hero-banner.js";
-export type { CollectionHeroBannerProps, CollectionHeroStat } from "./components/collection-hero-banner.js";
 
 export { useRewardsCelebrations } from "./components/rewards/use-rewards-celebrations.js";
 export { LevelUpCelebration } from "./components/rewards/level-up-celebration.js";

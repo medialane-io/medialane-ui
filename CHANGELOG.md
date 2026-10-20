@@ -2,14 +2,24 @@
 
 ## [Unreleased]
 
-### Changed
-
-- `AssetMarketplacePanel`: a listed asset's price sits in the Buy button (`GradientButton`, with the USD value); the other actions sit in one wrapping row of standard-size buttons; owners see `Listed for …` and signed-out visitors see `Price …` above the sign-in cards. Floor and last sale show whenever known.
-- `AssetHeaderBlock` takes `utilities`, shown at the right of the IP type row, so the title and description use the full width, and `badges`, shown beside the IP type.
-
 ### Added
 
-- `CollectionHeader`: the collection image in one column and its details (type, symbol, name, description, items, holders, floor, volume, creator, contract) in the other, with the page's blurred background. Children render below the details.
+- `CollectionHeader`: the collection image in one column and its details (type, symbol, name, description, items, holders, floor, volume, creator, contract) in the other. Children render below the details.
+- `CreatorHeader`: the creator image in one column and name, username, address, bio, stats and social links in the other. Children render below.
+- `MediaHeader`, `HeaderStats`, `HeaderStat`: the shared two-column layout with the page's blurred background, used by both headers.
+
+### Changed
+
+- `AssetMarketplacePanel`: a listed asset's price sits in the Buy button (`GradientButton`, with the USD value); the other actions sit in one wrapping row of standard-size buttons; owners see `Listed for …` and signed-out visitors see `Price …` above the sign-in cards. Floor and last sale show whenever known. Reads the wallet from `MedialaneApp`.
+- `AssetHeaderBlock` takes `utilities`, shown at the right of the IP type row, so the title and description use the full width, and `badges`, shown beside the IP type.
+- Hooks and components read `getClient` from `MedialaneApp` (`MedialaneAppProvider`); they no longer take it as an argument or prop. `MediaWalletAppProps` no longer has `getClient`.
+- `ActionButton` and `AssetMarketplacePanel` render `HelpIcon` themselves.
+
+### Removed
+
+- `CollectionHeroBanner`, `CollectionHeroBannerProps`, `CollectionHeroStat`.
+- `ActivitiesFeedProps`.
+- `AssetMarketplacePanel` `isSignedIn`, `walletAddress`, `renderHelp`; `ActionButton` `renderHelp`.
 
 ## [0.200.1] — 2026-10-20
 
