@@ -59,12 +59,10 @@ export function ActivityTimelineRow({
               <span className={cn("text-[11px] font-bold", meta.textColor)}>
                 {meta.label}
               </span>
-              {contract && tokenId ? (
-                <Link href={getAssetHref(contract, tokenId)} className="text-xs text-muted-foreground tabular-nums hover:text-foreground transition-colors">
-                  Token #{tokenId}
+              {contract && tokenId && (
+                <Link href={getAssetHref(contract, tokenId)} className="text-xs text-muted-foreground hover:text-foreground transition-colors">
+                  View asset
                 </Link>
-              ) : (
-                <span className="text-xs text-muted-foreground tabular-nums">Token #{tokenId ?? "—"}</span>
               )}
             </div>
             {contract && (

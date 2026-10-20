@@ -95,9 +95,7 @@ export function TokenCard({
             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 22vw"
             className="object-cover"
             fallback={
-              <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-brand-purple/15 to-brand-blue/15">
-                <span className="text-2xl tabular-nums text-muted-foreground">#{token.tokenId}</span>
-              </div>
+              <div className="absolute inset-0 bg-gradient-to-br from-brand-purple/15 to-brand-blue/15" />
             }
           />
 

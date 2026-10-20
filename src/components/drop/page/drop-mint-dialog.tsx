@@ -48,7 +48,6 @@ export function DropMintDialog({
         {step.kind === "done" && (
           <>
             <h2 className="flex items-center gap-2 text-lg font-semibold"><CheckCircle2 className="h-5 w-5 text-green-500" />Minted</h2>
-            {step.tokenIds.length > 0 && <p className="text-sm text-muted-foreground">Token{step.tokenIds.length > 1 ? "s" : ""} #{step.tokenIds.join(", #")}</p>}
             <Button asChild><a href={portfolioHref}>View in portfolio</a></Button>
           </>
         )}
