@@ -22,9 +22,9 @@ function tierStatus(t: TierOnchain): TierStatus {
 const fmtDate = (ts: number) => new Date(ts * 1000).toLocaleString(undefined, { dateStyle: "medium", timeStyle: "short" });
 
 function windowLabel(t: TierOnchain): string | null {
-  if (t.startTime != null && t.endTime != null) return `Valid from ${fmtDate(t.startTime)} to ${fmtDate(t.endTime)}`;
-  if (t.startTime != null) return `Valid from ${fmtDate(t.startTime)}`;
-  if (t.endTime != null) return `Valid until ${fmtDate(t.endTime)}`;
+  if (t.startTime != null && t.endTime != null) return `${fmtDate(t.startTime)} – ${fmtDate(t.endTime)}`;
+  if (t.startTime != null) return `From ${fmtDate(t.startTime)}`;
+  if (t.endTime != null) return `Until ${fmtDate(t.endTime)}`;
   return null;
 }
 
@@ -42,7 +42,7 @@ function TierPanel({
   icon: ElementType;
   iconClassName: string;
   title: string;
-  labels: Record<TierStatus, string>;
+  labels: Partial<Record<TierStatus, string>>;
   footer?: React.ReactNode;
 }) {
   const status = tierStatus(tier);
@@ -55,10 +55,12 @@ function TierPanel({
           <Icon className={cn("h-4 w-4", iconClassName)} />
           <span className="text-sm font-semibold">{title}</span>
         </div>
-        <span className={cn("inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium border", status === "upcoming" || status === "ended" ? OFF : ON)}>
-          <StatusIcon className="h-3.5 w-3.5" />
-          {labels[status]}
-        </span>
+        {labels[status] ? (
+          <span className={cn("inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium border", status === "upcoming" || status === "ended" ? OFF : ON)}>
+            <StatusIcon className="h-3.5 w-3.5" />
+            {labels[status]}
+          </span>
+        ) : null}
       </div>
       {window ? <p className="text-sm text-muted-foreground">{window}</p> : null}
       {footer}
@@ -81,7 +83,7 @@ export function TicketPanel({ contract, tokenId }: AssetTypePanelProps) {
       icon={Ticket}
       iconClassName="text-brand-blue"
       title="Ticket"
-      labels={{ upcoming: "Upcoming", active: "Valid now", ended: "Ended", always: "Always valid" }}
+      labels={{ upcoming: "Upcoming", active: "Happening now", ended: "Ended" }}
     />
   );
 }
@@ -111,7 +113,7 @@ export function MembershipPanel({ contract, tokenId, quantityOwned }: AssetTypeP
           ) : (
             <>
               <Clock className="h-4 w-4 text-muted-foreground" />
-              <p className="text-sm text-muted-foreground">{status === "upcoming" ? "Not yet valid" : "Membership ended"} · {cardLabel}</p>
+              <p className="text-sm text-muted-foreground">{status === "upcoming" ? "Starts soon" : "Ended"} · {cardLabel}</p>
             </>
           )}
         </div>

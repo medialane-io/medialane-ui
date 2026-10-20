@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.201.6] — 2026-10-20
+
+### Changed
+
+- Ticket and membership panels show dates as a plain range (`From …`, `Until …`); ticket status reads `Upcoming`, `Happening now` or `Ended`, with no status when there are no dates; membership holder line reads `Starts soon` or `Ended`.
+
 ## [0.201.5] — 2026-10-20
 
 ### Removed
