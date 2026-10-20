@@ -3,19 +3,15 @@
 import { createContext, useContext, type ElementType, type ReactNode } from "react";
 import type { MedialaneClient } from "@medialane/sdk/starknet";
 import type { FastMintSigner } from "./fast-mint/types.js";
-import type { Chain } from "@medialane/sdk";
+import type { ApiToken } from "@medialane/sdk";
 
-export interface AssetRef {
-  chain: Chain;
-  contract: string;
-  tokenId: string;
-}
+export type AssetRef = Pick<ApiToken, "chain" | "contractAddress" | "tokenId">;
 
 export interface CompanionApp {
   title: string;
   description: string;
   icon: ElementType;
-  assetUrl: (asset: AssetRef) => string;
+  origin: string;
 }
 
 export interface MedialaneApp {

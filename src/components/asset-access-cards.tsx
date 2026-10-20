@@ -2,6 +2,7 @@
 
 import type { ElementType } from "react";
 import { Wallet } from "lucide-react";
+import { assetHref, type Chain } from "@medialane/sdk";
 import { useMedialaneApp, type AssetRef } from "./medialane-app.js";
 import { cn } from "../utils/cn.js";
 
@@ -26,7 +27,7 @@ export function CompanionAppCard({ asset }: { asset: AssetRef }) {
   if (!companion) return null;
   return (
     <a
-      href={companion.assetUrl(asset)}
+      href={`${companion.origin}${assetHref(asset.chain.toUpperCase() as Chain, asset.contractAddress, asset.tokenId)}`}
       target="_blank"
       rel="noopener noreferrer"
       className={cn(CARD, "bg-gradient-to-br from-brand-rose/15 via-brand-orange/10 to-transparent hover:border-brand-orange/30")}

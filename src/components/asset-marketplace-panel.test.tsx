@@ -9,7 +9,7 @@ const companion = {
   title: "Open in the other app",
   description: "Same asset, other app.",
   icon: Mail,
-  assetUrl: ({ chain, contract, tokenId }: { chain: string; contract: string; tokenId: string }) => `https://other.example/asset/${chain.toLowerCase()}/${contract}/${tokenId}`,
+  origin: "https://other.example",
 };
 const noop = () => {};
 
@@ -17,7 +17,7 @@ const render = (app: MedialaneApp, isSignedIn: boolean) =>
   renderToStaticMarkup(
     <MedialaneAppProvider value={app}>
       <AssetMarketplacePanel
-        asset={{ chain: "STARKNET", contract: "0xabc", tokenId: "7" }}
+        asset={{ chain: "STARKNET", contractAddress: "0xabc", tokenId: "7" }}
         isOwner={false}
         isSignedIn={isSignedIn}
         isProcessing={false}
