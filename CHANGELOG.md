@@ -7,6 +7,8 @@
 - `CollectionHeader`: the collection image in one column and its details (type, symbol, name, description, items, holders, floor, volume, creator, contract) in the other. Children render below the details.
 - `CreatorHeader`: the creator image in one column and name, username, address, bio, stats and social links in the other. Children render below.
 - `MediaHeader`, `HeaderStats`, `HeaderStat`: the shared two-column layout with the page's blurred background, used by both headers.
+- `AssetPage`: the asset page for every asset kind (standard, edition, ticket, membership, POP). Loads its data through the ui hooks and `MedialaneApp`; the app passes `slots`: `useMarketActions` (buy, list, offer, transfer, cancel, accept bid and their dialogs), `Comments`, `Report`, `PopBurn`. Also `AssetPageSkeleton`, `detectAssetKind`, `AssetCommentsDialog`, `FloatingCommentsButton`, `PageBackdrop`.
+- `useComments`, `useFullTokenData`, `useAssetMarketState`, `assetAttributes`.
 
 ### Changed
 

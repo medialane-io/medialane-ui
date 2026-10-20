@@ -60,6 +60,14 @@ export { AssetMediaColumn, AssetHeaderBlock, AssetOwnerRow } from "./components/
 export { ExpandableText } from "./components/expandable-text.js";
 export { CollectionHeader, type CollectionHeaderProps } from "./components/collection-header.js";
 export { CreatorHeader, type CreatorHeaderProps, type CreatorHeaderStat } from "./components/creator-header.js";
+export { AssetPage, AssetPageSkeleton, detectAssetKind, type AssetPageProps, type AssetPageSlots, type AssetKind, type AssetMarketContext, type AssetMarketActions, type AssetReportTarget } from "./components/asset-page.js";
+export { AssetCommentsDialog, type AssetCommentsDialogProps, type AssetCommentsProps } from "./components/asset-comments-dialog.js";
+export { FloatingCommentsButton } from "./components/floating-comments-button.js";
+export { PageBackdrop } from "./components/media-header.js";
+export { useComments, type UseCommentsResult } from "./utils/use-comments.js";
+export { useFullTokenData } from "./utils/use-full-token-data.js";
+export { useAssetMarketState, type AssetMarketState } from "./utils/asset-market-state.js";
+export { assetAttributes, type AssetAttribute } from "./utils/asset-attributes.js";
 export type { AssetOwnerRowProps } from "./components/asset-top-sections.js";
 export { AssetCollectionBar } from "./components/asset-collection-bar.js";
 export type { AssetCollectionBarProps, AssetCollectionBarSibling } from "./components/asset-collection-bar.js";

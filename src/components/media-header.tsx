@@ -13,6 +13,21 @@ export interface MediaHeaderProps {
   children: ReactNode;
 }
 
+export function PageBackdrop({ image }: { image: string | null }) {
+  if (!image) return null;
+  return (
+    <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
+      <img
+        src={image}
+        alt=""
+        aria-hidden
+        className="absolute inset-0 w-full h-full object-cover opacity-20 scale-110"
+        style={{ filter: "blur(60px) saturate(1.5)" }}
+      />
+    </div>
+  );
+}
+
 export function MediaHeader({ image, imageAlt, fallbackIcon: FallbackIcon, loading = false, children }: MediaHeaderProps) {
   const shouldReduce = useReducedMotion();
   const [imgError, setImgError] = useState(false);
@@ -32,17 +47,7 @@ export function MediaHeader({ image, imageAlt, fallbackIcon: FallbackIcon, loadi
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 items-start">
-      <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
-        {image && (
-          <img
-            src={image}
-            alt=""
-            aria-hidden
-            className="absolute inset-0 w-full h-full object-cover opacity-20 scale-110"
-            style={{ filter: "blur(60px) saturate(1.5)" }}
-          />
-        )}
-      </div>
+      <PageBackdrop image={image} />
 
       <AssetMediaColumn
         shouldReduce={Boolean(shouldReduce)}
