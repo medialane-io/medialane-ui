@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.201.8] — 2026-10-20
+
+### Changed
+
+- `MediaHeader` image keeps its own shape at full width on phones, like the asset page; square from `sm` up.
+
 ## [0.201.7] — 2026-10-20
 
 ### Changed
