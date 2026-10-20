@@ -128,7 +128,7 @@ export function ActivityCard({
   const className = "card-base block active:scale-[0.99] transition-all";
 
   return contract && tokenId ? (
-    <Link href={assetHref(activity.chain, contract, tokenId)} className={className}>
+    <Link href={assetHref(activity.chain ?? "STARKNET", contract, tokenId)} className={className}>
       {body}
     </Link>
   ) : (

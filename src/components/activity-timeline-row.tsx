@@ -58,7 +58,7 @@ export function ActivityTimelineRow({
                 {meta.label}
               </span>
               {contract && tokenId && (
-                <Link href={assetHref(event.chain, contract, tokenId)} className="text-xs text-muted-foreground hover:text-foreground transition-colors">
+                <Link href={assetHref(event.chain ?? "STARKNET", contract, tokenId)} className="text-xs text-muted-foreground hover:text-foreground transition-colors">
                   View asset
                 </Link>
               )}

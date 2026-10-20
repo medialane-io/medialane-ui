@@ -32,3 +32,10 @@ test("activity card links the asset on its chain", () => {
 test("activity timeline row links the asset on its chain", () => {
   expect(renderToStaticMarkup(<ActivityTimelineRow event={sale} isLast />)).toContain('href="/asset/starknet/0xc/7"');
 });
+
+test("an activity without a chain still links on Starknet", () => {
+  const noChain = { ...sale, chain: undefined } as unknown as ApiActivity;
+  expect(renderToStaticMarkup(<ActivityRow activity={noChain} />)).toContain('href="/asset/starknet/0xc/7"');
+  expect(renderToStaticMarkup(<ActivityCard activity={noChain} />)).toContain('href="/asset/starknet/0xc/7"');
+  expect(renderToStaticMarkup(<ActivityTimelineRow event={noChain} isLast />)).toContain('href="/asset/starknet/0xc/7"');
+});

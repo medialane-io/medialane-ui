@@ -122,7 +122,7 @@ export function ActivityRow({
         <div className="flex items-center gap-1.5 leading-tight">
           {contract && tokenId ? (
             <Link
-              href={assetHref(activity.chain, contract, tokenId)}
+              href={assetHref(activity.chain ?? "STARKNET", contract, tokenId)}
               className="text-sm font-semibold hover:text-primary transition-colors truncate block"
             >
               {tokenName}
