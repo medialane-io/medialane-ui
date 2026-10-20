@@ -8,7 +8,6 @@ import { cn } from "../utils/cn.js";
 import { AddressDisplay } from "./address-display.js";
 import { ParentAttributionBanner } from "./parent-attribution-banner.js";
 import { IpTypeBadge } from "./ip-type-badge.js";
-import { Layers, Users } from "lucide-react";
 
 interface AssetMediaColumnProps {
   shouldReduce: boolean;
@@ -23,11 +22,6 @@ interface AssetMediaColumnProps {
   animationUrl?: string | null;
 
   live?: boolean;
-  stats?: Array<{
-    value: string;
-    label: string;
-    icon: React.ReactNode;
-  }>;
 }
 
 export function AssetMediaColumn({
@@ -40,7 +34,6 @@ export function AssetMediaColumn({
   onZoom,
   animationUrl,
   live = false,
-  stats,
 }: AssetMediaColumnProps) {
   const [ref, isVisible] = useIntersectionActive<HTMLDivElement>();
   const [loaded, setLoaded] = useState(false);
@@ -118,19 +111,6 @@ export function AssetMediaColumn({
         </motion.div>
       )}
 
-      {stats && stats.length > 0 ? (
-        <div className={`grid gap-3 mt-4 ${stats.length === 2 ? "grid-cols-2" : "grid-cols-1"}`}>
-          {stats.map((stat) => (
-            <div key={stat.label} className="rounded-xl border border-border bg-muted/20 p-4 text-center">
-              <p className="text-2xl font-black">{stat.value}</p>
-              <div className="flex items-center justify-center gap-1 text-xs text-muted-foreground mt-1">
-                {stat.icon}
-                {stat.label}
-              </div>
-            </div>
-          ))}
-        </div>
-      ) : null}
     </div>
   );
 }
@@ -139,7 +119,6 @@ interface AssetHeaderBlockProps {
   name: string;
   description?: string | null;
   ipType?: string | null;
-  showMultiEditionBadge?: boolean;
   parentContract?: string | null;
   parentTokenId?: string | null;
 }
@@ -148,21 +127,14 @@ export function AssetHeaderBlock({
   name,
   description,
   ipType,
-  showMultiEditionBadge = false,
   parentContract,
   parentTokenId,
 }: AssetHeaderBlockProps) {
   return (
     <div className="min-w-0 flex-1">
-      {ipType || showMultiEditionBadge ? (
+      {ipType ? (
         <div className="flex items-center gap-2 flex-wrap mb-2">
-          {ipType ? <IpTypeBadge ipType={ipType} size="md" /> : null}
-          {showMultiEditionBadge ? (
-            <span className="inline-flex items-center gap-1 text-2xs font-semibold px-2.5 py-1 rounded-full border border-violet-500/30 bg-violet-500/10 text-violet-500">
-              <Layers className="h-3 w-3" />
-              Multi-edition
-            </span>
-          ) : null}
+          <IpTypeBadge ipType={ipType} size="md" />
         </div>
       ) : null}
       {parentContract && parentTokenId ? (
@@ -196,19 +168,4 @@ export function AssetOwnerRow({ ownerAddress, ownerHref }: AssetOwnerRowProps) {
       </Link>
     </div>
   );
-}
-
-export function buildEditionStats(totalEditions: number, uniqueOwners: number) {
-  return [
-    {
-      value: totalEditions.toLocaleString(),
-      label: "editions minted",
-      icon: <Layers className="h-3 w-3" />,
-    },
-    {
-      value: uniqueOwners.toLocaleString(),
-      label: "unique owners",
-      icon: <Users className="h-3 w-3" />,
-    },
-  ];
 }

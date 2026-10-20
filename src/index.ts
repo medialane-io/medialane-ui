@@ -56,7 +56,7 @@ export { AssetLicenseSummary } from "./components/asset-license-summary.js";
 export { AssetMarketsTab } from "./components/asset-markets-tab.js";
 export { ParentAttributionBanner } from "./components/parent-attribution-banner.js";
 export type { ParentBannerProps } from "./components/parent-attribution-banner.js";
-export { AssetMediaColumn, AssetHeaderBlock, AssetOwnerRow, buildEditionStats } from "./components/asset-top-sections.js";
+export { AssetMediaColumn, AssetHeaderBlock, AssetOwnerRow } from "./components/asset-top-sections.js";
 export type { AssetOwnerRowProps } from "./components/asset-top-sections.js";
 export { AssetCollectionBar } from "./components/asset-collection-bar.js";
 export type { AssetCollectionBarProps, AssetCollectionBarSibling } from "./components/asset-collection-bar.js";
