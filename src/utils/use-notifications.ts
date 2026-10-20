@@ -4,7 +4,6 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import useSWR from "swr";
 import { normalizeAddress } from "@medialane/sdk";
 import type { ApiActivity } from "@medialane/sdk";
-import type { MedialaneClient } from "@medialane/sdk/starknet";
 import { useUserOrders, useReceivedOffers } from "./use-orders.js";
 import { useActivitiesByAddress } from "./use-activities.js";
 import { getReadIds, markRead } from "./notification-storage.js";
@@ -24,7 +23,6 @@ async function fetchAnnouncements(): Promise<Announcement[]> {
 }
 
 export function useNotifications(
-  getClient: () => MedialaneClient,
   address: string | null | undefined
 ) {
   const [readIds, setReadIds] = useState<Set<string>>(() => new Set<string>());
@@ -33,10 +31,10 @@ export function useNotifications(
     setReadIds(getReadIds());
   }, []);
 
-  const { orders: userOrders, isLoading: ordersLoading } = useUserOrders(getClient, address ?? null);
+  const { orders: userOrders, isLoading: ordersLoading } = useUserOrders(address ?? null);
 
-  const { orders: receivedOffers, isLoading: receivedLoading } = useReceivedOffers(getClient, address ?? null);
-  const { activities, isLoading: activitiesLoading } = useActivitiesByAddress(getClient, address ?? null);
+  const { orders: receivedOffers, isLoading: receivedLoading } = useReceivedOffers(address ?? null);
+  const { activities, isLoading: activitiesLoading } = useActivitiesByAddress(address ?? null);
   const { data: announcements = [] } = useSWR<Announcement[]>(
     "announcements",
     fetchAnnouncements,

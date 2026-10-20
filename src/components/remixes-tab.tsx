@@ -5,16 +5,14 @@ import { assetHref } from "@medialane/sdk";
 import { GitBranch } from "lucide-react";
 import { useTokenRemixes } from "../utils/use-remix-offers.js";
 import { Skeleton } from "./skeleton.js";
-import type { MedialaneClient } from "@medialane/sdk/starknet";
 
 export interface RemixesTabProps {
-  getClient: () => MedialaneClient;
   contractAddress: string;
   tokenId: string;
 }
 
-export function RemixesTab({ getClient, contractAddress, tokenId }: RemixesTabProps) {
-  const { remixes, total, isLoading } = useTokenRemixes(getClient, contractAddress, tokenId);
+export function RemixesTab({ contractAddress, tokenId }: RemixesTabProps) {
+  const { remixes, total, isLoading } = useTokenRemixes(contractAddress, tokenId);
 
   if (isLoading) {
     return (

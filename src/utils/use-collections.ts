@@ -2,14 +2,12 @@
 
 import useSWR from "swr";
 import { useMedialaneClient } from "./use-medialane-client.js";
-import type { MedialaneClient } from "@medialane/sdk/starknet";
 import type { ApiCollection, ApiResponse, CollectionTokensSort } from "@medialane/sdk";
 import { queryKeys } from "./query-keys.js";
 
 export type CollectionSort = "recent" | "supply" | "floor" | "volume" | "name";
 
 export function useCollections(
-  getClient: () => MedialaneClient,
   page = 1,
   limit = 20,
   isFeatured?: boolean,
@@ -21,7 +19,7 @@ export function useCollections(
 
   fallback?: ApiCollection[]
 ) {
-  const client = useMedialaneClient(getClient);
+  const client = useMedialaneClient();
   const key = `${queryKeys.collections(page, limit, isFeatured, sort, hideEmpty, service)}-${standard ?? ""}`;
 
   const { data, error, isLoading, mutate } = useSWR<ApiResponse<ApiCollection[]>>(
@@ -47,8 +45,8 @@ export function useCollections(
   };
 }
 
-export function useCollection(getClient: () => MedialaneClient, contract: string | null) {
-  const client = useMedialaneClient(getClient);
+export function useCollection( contract: string | null) {
+  const client = useMedialaneClient();
 
   const { data, error, isLoading } = useSWR(
     contract ? queryKeys.collection(contract) : null,
@@ -59,8 +57,8 @@ export function useCollection(getClient: () => MedialaneClient, contract: string
   return { collection: data?.data ?? null, isLoading, error };
 }
 
-export function useCollectionsByOwner(getClient: () => MedialaneClient, owner: string | null) {
-  const client = useMedialaneClient(getClient);
+export function useCollectionsByOwner( owner: string | null) {
+  const client = useMedialaneClient();
 
   const { data, error, isLoading, mutate } = useSWR(
     owner ? queryKeys.collectionsOwner(owner) : null,
@@ -72,13 +70,12 @@ export function useCollectionsByOwner(getClient: () => MedialaneClient, owner: s
 }
 
 export function useCollectionTokens(
-  getClient: () => MedialaneClient,
   contract: string | null,
   page = 1,
   limit = 24,
   sort: CollectionTokensSort = "recent"
 ) {
-  const client = useMedialaneClient(getClient);
+  const client = useMedialaneClient();
 
   const { data, error, isLoading, mutate } = useSWR(
     contract ? queryKeys.collectionTokens(contract, page, limit, sort) : null,
@@ -109,12 +106,11 @@ function pickNearbyTokens<T extends { tokenId: string }>(
 }
 
 export function useNearbyCollectionTokens(
-  getClient: () => MedialaneClient,
   contract: string | null,
   currentTokenId: string | null,
   count = 4,
   poolSize = 60
 ) {
-  const { tokens, isLoading, error } = useCollectionTokens(getClient, contract, 1, poolSize, "oldest");
+  const { tokens, isLoading, error } = useCollectionTokens(contract, 1, poolSize, "oldest");
   return { tokens: pickNearbyTokens(tokens, currentTokenId, count), isLoading, error };
 }

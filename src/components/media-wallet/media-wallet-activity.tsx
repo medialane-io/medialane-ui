@@ -12,6 +12,7 @@ import { BackButton } from "./back-button.js";
 import { WalletActivityIcon } from "./wallet-activity-icon.js";
 import { ActionModal } from "./action-modal.js";
 import { useMediaWalletApp, type MediaWalletView } from "./types.js";
+import { useMedialaneApp } from "../medialane-app.js";
 
 const GRADS = [
   "linear-gradient(135deg,#3b7bff,#8a5cf6)",
@@ -26,7 +27,8 @@ const gradFor = (seed: string) => {
 };
 
 export function MediaWalletActivity({ onNavigate }: { onNavigate: (view: MediaWalletView) => void }) {
-  const { useWalletSession, getClient } = useMediaWalletApp();
+  const { useWalletSession } = useMediaWalletApp();
+  const { getClient } = useMedialaneApp();
   const { address } = useWalletSession();
   const [items, setItems] = useState<MergedActivityItem[] | null>(null);
   const [error, setError] = useState<string | null>(null);

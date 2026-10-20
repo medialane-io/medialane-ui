@@ -2,7 +2,6 @@
 
 import useSWR from "swr";
 import { normalizeAddress } from "@medialane/sdk";
-import type { MedialaneClient } from "@medialane/sdk/starknet";
 import type { ApiOrdersQuery, ApiOrder, ApiResponse } from "@medialane/sdk";
 import { useMedialaneClient } from "./use-medialane-client.js";
 import { queryKeys } from "./query-keys.js";
@@ -10,8 +9,8 @@ import { queryKeys } from "./query-keys.js";
 const ACTIVE_ORDER_REFRESH_INTERVAL = 60_000;
 const ACTIVE_ORDER_DEDUPING_INTERVAL = 10_000;
 
-export function useOrders(getClient: () => MedialaneClient, query: ApiOrdersQuery = {}) {
-  const client = useMedialaneClient(getClient);
+export function useOrders( query: ApiOrdersQuery = {}) {
+  const client = useMedialaneClient();
   const key = queryKeys.orders(query);
 
   const { data, error, isLoading, mutate } = useSWR<ApiResponse<ApiOrder[]>>(
@@ -29,8 +28,8 @@ export function useOrders(getClient: () => MedialaneClient, query: ApiOrdersQuer
   };
 }
 
-export function useOrder(getClient: () => MedialaneClient, orderHash: string | null) {
-  const client = useMedialaneClient(getClient);
+export function useOrder( orderHash: string | null) {
+  const client = useMedialaneClient();
 
   const { data, error, isLoading } = useSWR(
     orderHash ? queryKeys.order(orderHash) : null,
@@ -41,8 +40,8 @@ export function useOrder(getClient: () => MedialaneClient, orderHash: string | n
   return { order: data?.data ?? null, isLoading, error };
 }
 
-export function useTokenListings(getClient: () => MedialaneClient, contract: string | null, tokenId: string | null) {
-  const client = useMedialaneClient(getClient);
+export function useTokenListings( contract: string | null, tokenId: string | null) {
+  const client = useMedialaneClient();
 
   const { data, error, isLoading, mutate } = useSWR(
     contract && tokenId ? queryKeys.listings(contract, tokenId) : null,
@@ -53,8 +52,8 @@ export function useTokenListings(getClient: () => MedialaneClient, contract: str
   return { listings: data?.data ?? [], isLoading, error, mutate };
 }
 
-export function useUserOrders(getClient: () => MedialaneClient, address: string | null) {
-  const client = useMedialaneClient(getClient);
+export function useUserOrders( address: string | null) {
+  const client = useMedialaneClient();
   const normalized = address ? normalizeAddress("STARKNET", address) : null;
 
   const { data, error, isLoading, mutate } = useSWR(
@@ -67,7 +66,6 @@ export function useUserOrders(getClient: () => MedialaneClient, address: string 
 }
 
 export function useCounterOffers(
-  getClient: () => MedialaneClient,
   {
     originalOrderHash,
     sellerAddress,
@@ -76,7 +74,7 @@ export function useCounterOffers(
     sellerAddress?: string | null;
   }
 ) {
-  const client = useMedialaneClient(getClient);
+  const client = useMedialaneClient();
   const normalized = sellerAddress ? normalizeAddress("STARKNET", sellerAddress) : null;
   const key =
     originalOrderHash
@@ -103,8 +101,8 @@ export function useCounterOffers(
   };
 }
 
-export function useReceivedOffers(getClient: () => MedialaneClient, address: string | null) {
-  const client = useMedialaneClient(getClient);
+export function useReceivedOffers( address: string | null) {
+  const client = useMedialaneClient();
   const normalized = address ? normalizeAddress("STARKNET", address) : null;
 
   const { data, error, isLoading, mutate } = useSWR<ApiResponse<ApiOrder[]>>(
@@ -116,8 +114,8 @@ export function useReceivedOffers(getClient: () => MedialaneClient, address: str
   return { orders: data?.data ?? [], isLoading, error, mutate };
 }
 
-export function useCollectionFloorListings(getClient: () => MedialaneClient, contract: string | null, limit = 20) {
-  const client = useMedialaneClient(getClient);
+export function useCollectionFloorListings( contract: string | null, limit = 20) {
+  const client = useMedialaneClient();
   const key = contract ? queryKeys.floorListings(contract, limit) : null;
 
   const { data, error, isLoading } = useSWR<ApiResponse<ApiOrder[]>>(

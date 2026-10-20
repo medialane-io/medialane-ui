@@ -2,7 +2,6 @@
 
 import useSWR from "swr";
 import { getTokenBySymbol, type ApiCoinPrices } from "@medialane/sdk";
-import type { MedialaneClient } from "@medialane/sdk/starknet";
 import type { CoinMarketStatus } from "../components/coin-row.js";
 import type { CoinCollectionLike, CoinPriceLike } from "../data/coins.js";
 import { useMedialaneClient } from "./use-medialane-client.js";
@@ -10,8 +9,8 @@ import { normalizeAddress } from "@medialane/sdk";
 
 const REFRESH_MS = 60_000;
 
-function useAllCoinPrices(getClient: () => MedialaneClient) {
-  const client = useMedialaneClient(getClient);
+function useAllCoinPrices() {
+  const client = useMedialaneClient();
   const { data, isLoading } = useSWR<ApiCoinPrices>(
     "coin-prices",
     async () => (await client.api.getCoinPrices()).data,
@@ -20,8 +19,8 @@ function useAllCoinPrices(getClient: () => MedialaneClient) {
   return { prices: data ?? null, isLoading };
 }
 
-export function usePriceMap(getClient: () => MedialaneClient) {
-  const { prices, isLoading } = useAllCoinPrices(getClient);
+export function usePriceMap() {
+  const { prices, isLoading } = useAllCoinPrices();
   const map: Record<string, number | null> = {};
   if (prices) {
     for (const [address, entry] of Object.entries(prices)) {
@@ -31,12 +30,12 @@ export function usePriceMap(getClient: () => MedialaneClient) {
   return { prices: map, isLoading };
 }
 
-export function useCoinPrice(getClient: () => MedialaneClient, coin: CoinCollectionLike): {
+export function useCoinPrice(coin: CoinCollectionLike): {
   price: CoinPriceLike | null;
   status: CoinMarketStatus;
   isLoading: boolean;
 } {
-  const { prices, isLoading } = useAllCoinPrices(getClient);
+  const { prices, isLoading } = useAllCoinPrices();
 
   if (isLoading || !prices) return { price: null, status: "unavailable", isLoading };
 

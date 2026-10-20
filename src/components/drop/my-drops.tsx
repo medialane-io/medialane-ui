@@ -10,8 +10,8 @@ import { useNow } from "../../utils/drop/use-now.js";
 import { useMedialaneApp } from "../medialane-app.js";
 
 export function MyDrops({ createHref = "/launchpad/drop/create" }: { createHref?: string }) {
-  const { getClient, walletAddress, onRequireWallet, connectLabel = "Sign in" } = useMedialaneApp();
-  const { drops, isLoading } = useMyDrops(getClient, walletAddress);
+  const { walletAddress, onRequireWallet, connectLabel = "Sign in" } = useMedialaneApp();
+  const { drops, isLoading } = useMyDrops(walletAddress);
   const now = useNow(60_000);
   if (!walletAddress) {
     return (

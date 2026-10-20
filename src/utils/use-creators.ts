@@ -1,14 +1,14 @@
 "use client";
 
 import useSWR from "swr";
-import type { MedialaneClient } from "@medialane/sdk/starknet";
+import { useMedialaneApp } from "../components/medialane-app.js";
 
 export function useCreators(
-  getClient: () => MedialaneClient,
   search?: string,
   page = 1,
   limit = 20
 ) {
+  const { getClient } = useMedialaneApp();
   const { data, error, isLoading } = useSWR(
     `creators-${search ?? ""}-${page}-${limit}`,
     () => getClient().api.getCreators({ search, page, limit }),

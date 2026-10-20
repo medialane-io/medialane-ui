@@ -30,14 +30,14 @@ export function DropPage(props: { contract: string; initialTab?: string; portfol
   const app = useMedialaneApp();
   const { contract } = props;
   const { getClient, walletAddress } = app;
-  const { drop: indexed, isLoading } = useDrop(getClient, contract);
-  const chain = useDropChain(getClient, contract, walletAddress);
-  const { mints, mutate: refreshMints } = useDropMints(getClient, contract);
-  const feeBps = useDropFee(getClient);
-  const collectionFile = useDropFile<{ drop_kind?: string }>(getClient, indexed?.baseUri ?? null, "collection.json");
+  const { drop: indexed, isLoading } = useDrop(contract);
+  const chain = useDropChain(contract, walletAddress);
+  const { mints, mutate: refreshMints } = useDropMints(contract);
+  const feeBps = useDropFee();
+  const collectionFile = useDropFile<{ drop_kind?: string }>(indexed?.baseUri ?? null, "collection.json");
   const isCollection = collectionFile?.drop_kind === "collection";
-  const firstToken = useDropFile<TokenFile>(getClient, indexed?.baseUri ?? null, "1");
-  const { tokens } = useCollectionTokens(getClient, isCollection ? contract : null, 1, 24);
+  const firstToken = useDropFile<TokenFile>(indexed?.baseUri ?? null, "1");
+  const { tokens } = useCollectionTokens(isCollection ? contract : null, 1, 24);
   const now = useNow();
   const [quantity, setQuantity] = useState(1n);
   const [minting, setMinting] = useState(false);
@@ -84,7 +84,7 @@ export function DropPage(props: { contract: string; initialTab?: string; portfol
           <div className="flex items-start justify-between gap-3">
             <div className="space-y-1">
               <h1 className="text-3xl font-semibold">{name}</h1>
-              {onchain && <CreatorChip getClient={getClient} address={onchain.organizer} />}
+              {onchain && <CreatorChip address={onchain.organizer} />}
             </div>
             <ShareButton title={name} variant="outline" size="sm" />
           </div>

@@ -2,11 +2,10 @@
 
 import useSWR from "swr";
 import { useMedialaneClient } from "./use-medialane-client.js";
-import type { MedialaneClient } from "@medialane/sdk/starknet";
 import type { ApiActivitiesQuery, ApiActivity, ApiResponse } from "@medialane/sdk";
 
-export function useActivities(getClient: () => MedialaneClient, query: ApiActivitiesQuery = {}) {
-  const client = useMedialaneClient(getClient);
+export function useActivities( query: ApiActivitiesQuery = {}) {
+  const client = useMedialaneClient();
   const key = JSON.stringify({ op: "activities", ...query });
 
   const { data, error, isLoading, mutate } = useSWR<ApiResponse<ApiActivity[]>>(
@@ -24,8 +23,8 @@ export function useActivities(getClient: () => MedialaneClient, query: ApiActivi
   };
 }
 
-export function useActivitiesByAddress(getClient: () => MedialaneClient, address: string | null) {
-  const client = useMedialaneClient(getClient);
+export function useActivitiesByAddress( address: string | null) {
+  const client = useMedialaneClient();
 
   const { data, error, isLoading, mutate } = useSWR(
     address ? `activities-${address}` : null,

@@ -2,9 +2,11 @@
 
 import useSWR from "swr";
 import { getListableTokens, parseAmount } from "@medialane/sdk";
-import { erc20Balance, type MedialaneClient } from "@medialane/sdk/starknet";
+import { erc20Balance } from "@medialane/sdk/starknet";
+import { useMedialaneApp } from "../../components/medialane-app.js";
 
-export function useErc20Balance(getClient: () => MedialaneClient, tokenAddress: string | null, holderAddress: string | null) {
+export function useErc20Balance( tokenAddress: string | null, holderAddress: string | null) {
+  const { getClient } = useMedialaneApp();
   const { data, error, isLoading } = useSWR(
     tokenAddress && holderAddress ? ["erc20-balance", tokenAddress, holderAddress] : null,
     ([, addr, holder]) => erc20Balance(getClient().provider, addr, holder),
@@ -18,9 +20,9 @@ export function useErc20Balance(getClient: () => MedialaneClient, tokenAddress: 
   return { rawBalance: data ?? null, isLoading, error };
 }
 
-export function useTokenBalance(getClient: () => MedialaneClient, symbol: string | null, holderAddress: string | null) {
+export function useTokenBalance( symbol: string | null, holderAddress: string | null) {
   const token = symbol ? getListableTokens().find((t) => t.symbol === symbol) ?? null : null;
-  const { rawBalance, isLoading, error } = useErc20Balance(getClient, token?.address ?? null, holderAddress);
+  const { rawBalance, isLoading, error } = useErc20Balance(token?.address ?? null, holderAddress);
   return { rawBalance, isLoading, error, decimals: token?.decimals ?? 18 };
 }
 

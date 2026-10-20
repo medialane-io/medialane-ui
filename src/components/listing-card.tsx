@@ -12,7 +12,7 @@ import { formatDisplayPrice, isStableCurrency } from "../utils/format.js";
 import { DualPrice } from "./dual-price.js";
 import { timeAgo } from "../utils/time.js";
 import { isLivingRenderCollection } from "../data/living-render-collections.js";
-import type { ApiOrder, Chain } from "@medialane/sdk";
+import { assetHref as buildAssetHref, type ApiOrder, type Chain } from "@medialane/sdk";
 
 type OrderWithAnimation = ApiOrder & { token: (ApiOrder["token"] & { animationUrl?: string | null }) | null };
 
@@ -71,7 +71,7 @@ export function ListingCard({ order: rawOrder, inCart = false, onBuy, onCart, ov
 
   const animationUrl = order.token?.animationUrl ?? null;
   const live = !!(order.chain && order.nftContract) && isLivingRenderCollection(order.chain.toUpperCase() as Chain, order.nftContract!);
-  const assetHref = `/asset/${order.nftContract}/${order.nftTokenId}`;
+  const assetHref = buildAssetHref("STARKNET", order.nftContract ?? "", order.nftTokenId ?? "");
 
   const showActionBar = !!(onBuy || onCart || overflowMenu || primaryAction);
 

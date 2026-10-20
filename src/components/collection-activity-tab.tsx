@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import type { MedialaneClient } from "@medialane/sdk/starknet";
 import type { ApiActivity } from "@medialane/sdk";
 import { Inbox } from "lucide-react";
 import { useActivities } from "../utils/use-activities.js";
@@ -11,14 +10,13 @@ import { LoadMoreSentinel } from "./load-more-sentinel.js";
 const PAGE_SIZE = 24;
 
 export interface CollectionActivityTabProps {
-  getClient: () => MedialaneClient;
   contract: string;
 }
 
-export function CollectionActivityTab({ getClient, contract }: CollectionActivityTabProps) {
+export function CollectionActivityTab({ contract }: CollectionActivityTabProps) {
   const [page, setPage] = useState(1);
   const [all, setAll] = useState<ApiActivity[]>([]);
-  const { activities, meta, isLoading } = useActivities(getClient, { contract, page, limit: PAGE_SIZE });
+  const { activities, meta, isLoading } = useActivities({ contract, page, limit: PAGE_SIZE });
 
   useEffect(() => {
     if (activities.length === 0) return;

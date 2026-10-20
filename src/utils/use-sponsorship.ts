@@ -2,7 +2,6 @@
 
 import useSWR from "swr";
 import type { ApiSponsorshipOffer, ApiSponsorshipBid, ApiSponsorshipProposal, ApiSponsorshipLicense, ApiResponse } from "@medialane/sdk";
-import type { MedialaneClient } from "@medialane/sdk/starknet";
 import { useMedialaneClient } from "./use-medialane-client.js";
 
 export type {
@@ -12,9 +11,9 @@ export type {
   ApiSponsorshipLicense as SponsorshipLicense,
 } from "@medialane/sdk";
 
-export function useSponsorshipOffers(getClient: () => MedialaneClient, params?: { nftContract?: string; author?: string; owner?: string; open?: boolean }) {
+export function useSponsorshipOffers( params?: { nftContract?: string; author?: string; owner?: string; open?: boolean }) {
   const key = `sponsorship-offers-${JSON.stringify(params ?? {})}`;
-  const client = useMedialaneClient(getClient);
+  const client = useMedialaneClient();
   const { data, error, isLoading, mutate } = useSWR<ApiResponse<ApiSponsorshipOffer[]>>(
     key,
     () => client.api.getSponsorshipOffers({ ...params, limit: 50 }),
@@ -24,8 +23,8 @@ export function useSponsorshipOffers(getClient: () => MedialaneClient, params?: 
   return { offers: data?.data ?? [], meta: data?.meta, isLoading, error, mutate };
 }
 
-export function useSponsorshipOffer(getClient: () => MedialaneClient, offerId: string | null) {
-  const client = useMedialaneClient(getClient);
+export function useSponsorshipOffer( offerId: string | null) {
+  const client = useMedialaneClient();
   const { data, error, isLoading, mutate } = useSWR<ApiSponsorshipOffer | null>(
     offerId ? `sponsorship-offer-${offerId}` : null,
     () => client.api.getSponsorshipOffer(offerId!),
@@ -35,8 +34,8 @@ export function useSponsorshipOffer(getClient: () => MedialaneClient, offerId: s
   return { offer: data ?? null, isLoading, error, mutate };
 }
 
-export function useSponsorshipBids(getClient: () => MedialaneClient, offerId: string | null) {
-  const client = useMedialaneClient(getClient);
+export function useSponsorshipBids( offerId: string | null) {
+  const client = useMedialaneClient();
   const { data, error, isLoading, mutate } = useSWR<ApiSponsorshipBid[]>(
     offerId ? `sponsorship-bids-${offerId}` : null,
     () => client.api.getSponsorshipBids(offerId!),
@@ -46,9 +45,9 @@ export function useSponsorshipBids(getClient: () => MedialaneClient, offerId: st
   return { bids: data ?? [], isLoading, error, mutate };
 }
 
-export function useSponsorshipProposals(getClient: () => MedialaneClient, params?: { nftContract?: string; proposer?: string; owner?: string; open?: boolean }) {
+export function useSponsorshipProposals( params?: { nftContract?: string; proposer?: string; owner?: string; open?: boolean }) {
   const key = `sponsorship-proposals-${JSON.stringify(params ?? {})}`;
-  const client = useMedialaneClient(getClient);
+  const client = useMedialaneClient();
   const { data, error, isLoading, mutate } = useSWR<ApiResponse<ApiSponsorshipProposal[]>>(
     key,
     () => client.api.getSponsorshipProposals({ ...params, limit: 50 }),
@@ -58,8 +57,8 @@ export function useSponsorshipProposals(getClient: () => MedialaneClient, params
   return { proposals: data?.data ?? [], meta: data?.meta, isLoading, error, mutate };
 }
 
-export function useSponsorshipProposal(getClient: () => MedialaneClient, proposalId: string | null) {
-  const client = useMedialaneClient(getClient);
+export function useSponsorshipProposal( proposalId: string | null) {
+  const client = useMedialaneClient();
   const { data, error, isLoading, mutate } = useSWR<ApiSponsorshipProposal | null>(
     proposalId ? `sponsorship-proposal-${proposalId}` : null,
     () => client.api.getSponsorshipProposal(proposalId!),
@@ -69,17 +68,16 @@ export function useSponsorshipProposal(getClient: () => MedialaneClient, proposa
   return { proposal: data ?? null, isLoading, error, mutate };
 }
 
-export function usePendingProposalsForAsset(getClient: () => MedialaneClient, nftContract: string | null) {
+export function usePendingProposalsForAsset( nftContract: string | null) {
   const { proposals, isLoading, error, mutate } = useSponsorshipProposals(
-    getClient,
     nftContract ? { nftContract, open: true } : undefined
   );
   return { proposals: nftContract ? proposals : [], isLoading, error, mutate };
 }
 
-export function useSponsorshipLicenses(getClient: () => MedialaneClient, params?: { holder?: string; author?: string }) {
+export function useSponsorshipLicenses( params?: { holder?: string; author?: string }) {
   const key = `sponsorship-licenses-${JSON.stringify(params ?? {})}`;
-  const client = useMedialaneClient(getClient);
+  const client = useMedialaneClient();
   const { data, error, isLoading, mutate } = useSWR<ApiResponse<ApiSponsorshipLicense[]>>(
     key,
     () => client.api.getSponsorshipLicenses({ ...params, limit: 50 }),
@@ -89,13 +87,11 @@ export function useSponsorshipLicenses(getClient: () => MedialaneClient, params?
   return { licenses: data?.data ?? [], meta: data?.meta, isLoading, error, mutate };
 }
 
-export function useMySponsorshipDealCounts(getClient: () => MedialaneClient, walletAddress: string | null) {
+export function useMySponsorshipDealCounts( walletAddress: string | null) {
   const { proposals, isLoading: proposalsLoading } = useSponsorshipProposals(
-    getClient,
     walletAddress ? { owner: walletAddress, open: true } : undefined
   );
   const { offers, isLoading: offersLoading } = useSponsorshipOffers(
-    getClient,
     walletAddress ? { author: walletAddress, open: true } : undefined
   );
 
