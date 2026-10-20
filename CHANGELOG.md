@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.201.9] — 2026-10-20
+
+### Changed
+
+- `AssetMarketplacePanel` actions sit in a two-column grid; with an odd number the first (Buy, or List for owners) takes the full row.
+
 ## [0.201.8] — 2026-10-20
 
 ### Changed
