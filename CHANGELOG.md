@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.201.2] — 2026-10-20
+
+### Changed
+
+- `MediaHeader` (`CollectionHeader`, `CreatorHeader`) is centered on large screens (`max-w-5xl`).
+
 ## [0.201.1] — 2026-10-20
 
 ### Changed

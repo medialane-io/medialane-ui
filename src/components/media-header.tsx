@@ -33,7 +33,7 @@ export function MediaHeader({ image, imageAlt, fallbackIcon: FallbackIcon, loadi
 
   if (loading) {
     return (
-      <div className="flex flex-col sm:flex-row gap-6 lg:gap-8 items-start">
+      <div className="flex flex-col sm:flex-row gap-6 lg:gap-8 items-start lg:max-w-5xl lg:mx-auto">
         <Skeleton className={THUMB} />
         <div className="flex-1 w-full space-y-3">
           <Skeleton className="h-6 w-40" />
@@ -45,7 +45,7 @@ export function MediaHeader({ image, imageAlt, fallbackIcon: FallbackIcon, loadi
   }
 
   return (
-    <div className="flex flex-col sm:flex-row gap-6 lg:gap-8 items-start">
+    <div className="flex flex-col sm:flex-row gap-6 lg:gap-8 items-start lg:max-w-5xl lg:mx-auto">
       <PageBackdrop image={image} />
 
       <div className={THUMB}>
