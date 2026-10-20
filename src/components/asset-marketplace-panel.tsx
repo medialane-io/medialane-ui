@@ -12,6 +12,8 @@ import { DualPrice } from "./dual-price.js";
 import { formatDisplayPrice, parsePriceDisplay } from "../utils/format.js";
 import { isExpired, timeUntil } from "../utils/time.js";
 import { isSameAddress } from "../utils/same-address.js";
+import { AssetAccessCards, CompanionAppCard } from "./asset-access-cards.js";
+import type { AssetRef } from "./medialane-app.js";
 
 export interface ApiOrderLike {
   orderHash: string;
@@ -21,6 +23,7 @@ export interface ApiOrderLike {
 }
 
 export interface AssetMarketplacePanelProps<T extends ApiOrderLike = ApiOrderLike> {
+  asset: AssetRef;
   cheapest?: T;
   isOwner: boolean;
   isSignedIn: boolean;
@@ -35,8 +38,6 @@ export interface AssetMarketplacePanelProps<T extends ApiOrderLike = ApiOrderLik
   showDealOption?: boolean;
 
   usdValue?: string | null;
-
-  renderAuthAction: (label: string) => ReactNode;
 
   renderHelp: (content: string) => ReactNode;
   onCancelClick: (order: T) => void;
@@ -82,6 +83,7 @@ function StatRow({ floorPriceRaw, lastSaleRaw }: { floorPriceRaw?: string | null
 }
 
 export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
+  asset,
   cheapest,
   isOwner,
   isSignedIn,
@@ -101,7 +103,6 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
   floorPriceRaw,
   lastSaleRaw,
   usdValue,
-  renderAuthAction,
   renderHelp,
   onCancelClick,
   onAcceptBid,
@@ -250,7 +251,7 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
                 ) : null}
               </>
             ) : (
-              renderAuthAction("Sign in to trade")
+              <AssetAccessCards asset={asset} />
             )}
           </div>
         ) : (
@@ -310,7 +311,7 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
                 ) : null}
               </div>
             ) : (
-              renderAuthAction("Sign in to make an offer")
+              <AssetAccessCards asset={asset} />
             )}
           </div>
         )}
@@ -379,6 +380,8 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
             </div>
           </div>
         ) : null}
+
+        {isSignedIn ? <CompanionAppCard asset={asset} /> : null}
       </div>
     </div>
   );

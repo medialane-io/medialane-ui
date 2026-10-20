@@ -197,7 +197,7 @@ export { DropActionBox } from "./components/drop/page/drop-action-box.js";
 export { DropActivityList } from "./components/drop/page/drop-activity.js";
 export { claimProofFor } from "./utils/drop/claim-proof.js";
 export type { DropSigner } from "./utils/drop/types.js";
-export { MedialaneAppProvider, useMedialaneApp, type MedialaneApp } from "./components/medialane-app.js";
+export { MedialaneAppProvider, useMedialaneApp, type MedialaneApp, type CompanionApp, type AssetRef } from "./components/medialane-app.js";
 export { runIntentCalls } from "./utils/run-intent-calls.js";
 export { GATED_CONTENT_TYPES, GATED_CONTENT_TYPE_FALLBACK } from "./data/gated-content-types.js";
 export type { ContentTypeConfig } from "./data/gated-content-types.js";
