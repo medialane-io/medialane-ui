@@ -62,17 +62,9 @@ export interface AssetMarketActions {
   dialogs: ReactNode;
 }
 
-export interface AssetReportTarget {
-  type: "TOKEN";
-  contract: string;
-  tokenId: string;
-  name?: string;
-}
-
 export interface AssetPageSlots {
   useMarketActions: (context: AssetMarketContext) => AssetMarketActions;
   Comments: ComponentType<AssetCommentsProps>;
-  Report: ComponentType<{ open: boolean; onOpenChange: (open: boolean) => void; target: AssetReportTarget }>;
   PopBurn: ComponentType<{ collectionAddress: string; tokenId: string }>;
 }
 
@@ -157,7 +149,7 @@ function AssetPageView({
   const config = KINDS[kind];
   const router = useRouter();
   const shouldReduce = useReducedMotion();
-  const { walletAddress } = useMedialaneApp();
+  const { walletAddress, ReportDialog } = useMedialaneApp();
 
   const { listings, mutate: mutateListings, isLoading: listingsLoading } = useTokenListings(contract, tokenId);
   const { history } = useTokenHistory(contract, tokenId);
@@ -210,7 +202,7 @@ function AssetPageView({
   const ownerAddress = !market.isERC1155 ? (holders[0]?.owner ?? token.owner ?? null) : null;
   const marketCount = market.activeListings.length + market.activeBids.length;
   const { Panel, icon: FallbackIcon } = config;
-  const { Comments, Report, PopBurn } = slots;
+  const { Comments, PopBurn } = slots;
 
   return (
     <div className="relative z-0 min-h-screen">
@@ -366,7 +358,7 @@ function AssetPageView({
         Comments={Comments}
         {...config.accents}
       />
-      <Report open={reportOpen} onOpenChange={setReportOpen} target={{ type: "TOKEN", contract: token.contractAddress, tokenId: token.tokenId, name }} />
+      {ReportDialog ? <ReportDialog open={reportOpen} onOpenChange={setReportOpen} target={{ type: "TOKEN", contract: token.contractAddress, tokenId: token.tokenId, name }} /> : null}
       {actions.dialogs}
     </div>
   );

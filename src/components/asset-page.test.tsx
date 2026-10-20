@@ -58,7 +58,6 @@ const slots: AssetPageSlots = {
     dialogs: <div>app dialogs</div>,
   }),
   Comments: () => <div>app comments</div>,
-  Report: () => <div>app report</div>,
   PopBurn: () => <div>app burn</div>,
 };
 

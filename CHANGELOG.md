@@ -9,9 +9,12 @@
 - `MediaHeader`, `HeaderStats`, `HeaderStat`: the shared two-column layout with the page's blurred background, used by both headers.
 - `AssetPage`: the asset page for every asset kind (standard, edition, ticket, membership, POP). Loads its data through the ui hooks and `MedialaneApp`; the app passes `slots`: `useMarketActions` (buy, list, offer, transfer, cancel, accept bid and their dialogs), `Comments`, `Report`, `PopBurn`. Also `AssetPageSkeleton`, `detectAssetKind`, `AssetCommentsDialog`, `FloatingCommentsButton`, `PageBackdrop`.
 - `useComments`, `useFullTokenData`, `useAssetMarketState`, `assetAttributes`.
+- `CollectionPage`: the collection page (header, owner tools, service action, gated content, assets with filters, market listings and offers, provenance, exclusive tab). The app passes `slots`: `useMarketActions` (buy, offer and their dialogs), `useGatedContent`, `ServiceAction`, `TransferOwnership`. Also `canTransferCollectionOwnership`, `CollectionFiltersDialog`, `GatedContentHero`, `GatedContentPanel`, `MakeOfferPicker`, `ListingCardMenu`.
+- `MedialaneApp.ReportDialog` (`ReportDialogSlot`, `ReportTarget`): the app's report dialog, used by `AssetPage`, `CollectionPage` and `ListingCardMenu`.
 
 ### Changed
 
+- `ListingCard` links to the asset with its chain.
 - `AssetMarketplacePanel`: a listed asset's price sits in the Buy button (`GradientButton`, with the USD value); the other actions sit in one wrapping row of standard-size buttons; owners see `Listed for …` and signed-out visitors see `Price …` above the sign-in cards. Floor and last sale show whenever known. Reads the wallet from `MedialaneApp`.
 - `AssetHeaderBlock` takes `utilities`, shown at the right of the IP type row, so the title and description use the full width, and `badges`, shown beside the IP type.
 - Hooks and components read `getClient` from `MedialaneApp` (`MedialaneAppProvider`); they no longer take it as an argument or prop. `MediaWalletAppProps` no longer has `getClient`.
