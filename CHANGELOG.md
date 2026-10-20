@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.201.1] — 2026-10-20
+
+### Changed
+
+- `MediaHeader` (`CollectionHeader`, `CreatorHeader`): a small square image beside the details instead of a half-width column.
+- `AssetMarketplacePanel`: Buy is a standard-size button in the action row, showing the price and USD value; no cart icon.
+
 ## [0.201.0] — 2026-10-20
 
 ### Added

@@ -3,12 +3,11 @@
 import type { ReactNode } from "react";
 import {
   ArrowRightLeft, CheckCircle, Clock, GitBranch, HandCoins, Handshake, Loader2,
-  ShoppingCart, Tag, X,
+  Tag, X,
 } from "lucide-react";
 import { CurrencyIcon, CurrencyAmount } from "./currency-icon.js";
 import { AddressDisplay } from "./address-display.js";
 import { ActionButton } from "./action-button.js";
-import { GradientButton } from "./gradient-button.js";
 import { formatDisplayPrice, parsePriceDisplay } from "../utils/format.js";
 import { isExpired, timeUntil } from "../utils/time.js";
 import { isSameAddress } from "../utils/same-address.js";
@@ -165,13 +164,11 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
   );
 
   const buyButton = liveCheapest && (!isOwner || canBuyMore) ? (
-    <GradientButton big onClick={() => onOpenPurchase(liveCheapest)}>
-      <ShoppingCart className="h-4 w-4" />
-      <span>Buy for</span>
-      <CurrencyAmount amount={formatDisplayPrice(liveCheapest.price.formatted)} symbol={liveCheapest.price.currency ?? ""} iconSize={16} amountClassName="tabular-nums" />
-      {liveCheapest.price.currency}
-      {usdValue ? <span className="ml-auto pl-3 text-sm font-medium text-white/70 tabular-nums">≈ {usdValue}</span> : null}
-    </GradientButton>
+    <ActionButton action="buy" onClick={() => onOpenPurchase(liveCheapest)}>
+      <span>Buy</span>
+      <CurrencyAmount amount={formatDisplayPrice(liveCheapest.price.formatted)} symbol={liveCheapest.price.currency ?? ""} iconSize={14} amountClassName="tabular-nums" />
+      {usdValue ? <span className="font-normal text-muted-foreground tabular-nums">· {usdValue}</span> : null}
+    </ActionButton>
   ) : null;
 
   const listedPrice = isOwner && liveMyListing ? (
@@ -222,12 +219,12 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
                 </ActionButton>
               ) : null}
             </ActionRow>
-            {buyButton}
+            {buyButton ? <ActionRow>{buyButton}</ActionRow> : null}
           </div>
         ) : isSignedIn ? (
           <div className="space-y-3">
-            {buyButton}
             <ActionRow>
+              {buyButton}
               {offerButton}
               {remixButton}
               {showDealOption && onProposeDeal ? (
