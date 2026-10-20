@@ -49,13 +49,6 @@ export function CollectionHeader({ collection, loading = false, onReportClick, c
                 {collection.symbol ? <span className={CHIP}>{collection.symbol}</span> : null}
               </>
             )}
-            utilities={(
-              <AssetUtilityIcons
-                contractExplorerHref={`${EXPLORER_URL}/contract/${collection.contractAddress}`}
-                shareTitle={name}
-                onReportClick={onReportClick}
-              />
-            )}
           />
 
           <HeaderStats>
@@ -68,6 +61,14 @@ export function CollectionHeader({ collection, loading = false, onReportClick, c
           <div className="flex flex-wrap items-center gap-2">
             {collection.owner ? <CreatorChip address={collection.owner} /> : null}
             <AddressDisplay address={collection.contractAddress} chars={6} className="text-xs text-muted-foreground" />
+          </div>
+
+          <div className="-ml-3">
+            <AssetUtilityIcons
+              contractExplorerHref={`${EXPLORER_URL}/contract/${collection.contractAddress}`}
+              shareTitle={name}
+              onReportClick={onReportClick}
+            />
           </div>
 
           {children}

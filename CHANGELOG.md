@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.201.7] — 2026-10-20
+
+### Changed
+
+- `MediaHeader` image is full width on phones, small from `sm` up.
+- `CollectionHeader` and `CreatorHeader` show the external link, share and report icons after the details instead of in the top row.
+
 ## [0.201.6] — 2026-10-20
 
 ### Changed

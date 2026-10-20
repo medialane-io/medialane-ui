@@ -46,7 +46,6 @@ export function CreatorHeader({ creator, image, stats, loading = false, children
             name={name ?? identity}
             description={creator.bio}
             badges={<CreatorScoreInline address={creator.walletAddress} size="sm" />}
-            utilities={<ShareButton title={name ?? identity} variant="ghost" size="icon" />}
           />
 
           <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
@@ -74,6 +73,10 @@ export function CreatorHeader({ creator, image, stats, loading = false, children
               ))}
             </div>
           ) : null}
+
+          <div className="-ml-3">
+            <ShareButton title={name ?? identity} variant="ghost" size="icon" />
+          </div>
 
           {children}
         </>
