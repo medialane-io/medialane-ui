@@ -26,7 +26,7 @@ export function PageBackdrop({ image }: { image: string | null }) {
   );
 }
 
-const THUMB = "w-32 sm:w-44 lg:w-56 aspect-square shrink-0 rounded-2xl overflow-hidden bg-muted";
+const THUMB = "w-full sm:w-44 lg:w-56 aspect-square shrink-0 rounded-2xl overflow-hidden bg-muted";
 
 export function MediaHeader({ image, imageAlt, fallbackIcon: FallbackIcon, loading = false, children }: MediaHeaderProps) {
   const [imgError, setImgError] = useState(false);
