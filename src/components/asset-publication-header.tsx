@@ -67,7 +67,7 @@ export function AssetPublicationHeader({
       </div>
       {image && !imgError ? (
         <button type="button" onClick={onZoom} aria-label="View full image" className="block w-full overflow-hidden rounded-2xl cursor-zoom-in focus:outline-none">
-          <img src={image} alt={name} onError={onImageError} className="w-full h-auto max-h-56 object-cover" />
+          <img src={image} alt={name} onError={onImageError} className="w-full h-auto max-h-72 object-cover" />
         </button>
       ) : null}
     </header>

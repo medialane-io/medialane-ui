@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.211.2] — 2026-10-21
+
+### Changed
+
+- Asset page: publications and posts use the two-column layout, with the article on the left and the marketplace panel and collection card on the right.
+
 ## [0.211.1] — 2026-10-21
 
 ### Changed
