@@ -96,6 +96,8 @@ export interface CollectionFiltersTriggerProps {
   onSortReset: () => void;
   onRemoveFilter: (traitType: string, value: string) => void;
   onClearAll: () => void;
+  showButton?: boolean;
+  showChips?: boolean;
 }
 
 export function CollectionFiltersTrigger({
@@ -107,18 +109,25 @@ export function CollectionFiltersTrigger({
   onSortReset,
   onRemoveFilter,
   onClearAll,
+  showButton = true,
+  showChips = true,
 }: CollectionFiltersTriggerProps) {
+  if (!showButton && (!showChips || (sortIsDefault && activeEntries.length === 0))) return null;
   return (
     <div className="flex items-center justify-end gap-2 flex-wrap">
-      <button onClick={onOpen} className={TRIGGER_BTN}>
-        <SlidersHorizontal className="h-3.5 w-3.5" />
-        Filters
-        {totalActiveCount > 0 && (
-          <span className="h-4 min-w-4 rounded-full bg-primary text-2xs font-bold text-primary-foreground flex items-center justify-center px-1 -mr-1">
-            {totalActiveCount}
-          </span>
-        )}
-      </button>
+      {showButton && (
+        <button onClick={onOpen} className={TRIGGER_BTN} aria-label="Filters">
+          <SlidersHorizontal className="h-3.5 w-3.5" />
+          <span className="hidden sm:inline">Filters</span>
+          {totalActiveCount > 0 && (
+            <span className="h-4 min-w-4 rounded-full bg-primary text-2xs font-bold text-primary-foreground flex items-center justify-center px-1 -mr-1">
+              {totalActiveCount}
+            </span>
+          )}
+        </button>
+      )}
+      {showChips && (
+        <>
 
       {!sortIsDefault && (
         <button
@@ -150,6 +159,8 @@ export function CollectionFiltersTrigger({
         >
           Clear all
         </button>
+      )}
+        </>
       )}
     </div>
   );

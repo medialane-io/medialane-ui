@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Share2, Check } from "lucide-react";
 import { cn } from "../utils/cn.js";
+import { shareOrCopy } from "../utils/share.js";
 
 export interface ShareButtonProps {
   title: string;
@@ -35,15 +36,7 @@ export function ShareButton({
   const [copied, setCopied] = useState(false);
 
   const handleShare = async () => {
-    const shareUrl = url ?? (typeof window !== "undefined" ? window.location.href : "");
-    if (typeof navigator !== "undefined" && navigator.share) {
-      try {
-        await navigator.share({ title, url: shareUrl });
-      } catch {
-
-      }
-    } else {
-      await navigator.clipboard.writeText(shareUrl);
+    if ((await shareOrCopy(title, url)) === "copied") {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     }

@@ -5,12 +5,9 @@ import { Layers } from "lucide-react";
 import type { ApiCollection } from "@medialane/sdk";
 import { AssetHeaderBlock } from "./asset-top-sections.js";
 import { MediaHeader, HeaderStats, HeaderStat } from "./media-header.js";
-import { AssetUtilityIcons } from "./asset-utility-icons.js";
-import { AddressDisplay } from "./address-display.js";
 import { CreatorChip } from "./creator-chip.js";
 import { CurrencyAmount } from "./currency-icon.js";
 import { parsePriceDisplay } from "../utils/format.js";
-import { EXPLORER_URL } from "../utils/explorer-url.js";
 import { useImageUrl } from "../utils/use-image-url.js";
 
 const CHIP = "text-2xs font-semibold px-2.5 py-1 rounded-full bg-muted text-muted-foreground";
@@ -18,7 +15,6 @@ const CHIP = "text-2xs font-semibold px-2.5 py-1 rounded-full bg-muted text-mute
 export interface CollectionHeaderProps {
   collection: ApiCollection | null | undefined;
   loading?: boolean;
-  onReportClick: () => void;
   children?: ReactNode;
 }
 
@@ -32,7 +28,7 @@ function PriceStat({ label, raw }: { label: string; raw: string | null }) {
   );
 }
 
-export function CollectionHeader({ collection, loading = false, onReportClick, children }: CollectionHeaderProps) {
+export function CollectionHeader({ collection, loading = false, children }: CollectionHeaderProps) {
   const resolveImage = useImageUrl();
   const image = resolveImage(collection?.image);
   const name = collection?.name ?? "Unnamed Collection";
@@ -59,18 +55,7 @@ export function CollectionHeader({ collection, loading = false, onReportClick, c
             <PriceStat label="Volume" raw={collection.totalVolume} />
           </HeaderStats>
 
-          <div className="flex flex-wrap items-center gap-2">
-            {collection.owner ? <CreatorChip address={collection.owner} /> : null}
-            <AddressDisplay address={collection.contractAddress} chars={6} className="text-xs text-muted-foreground" />
-          </div>
-
-          <div className="-ml-3">
-            <AssetUtilityIcons
-              contractExplorerHref={`${EXPLORER_URL}/contract/${collection.contractAddress}`}
-              shareTitle={name}
-              onReportClick={onReportClick}
-            />
-          </div>
+          {collection.owner ? <CreatorChip address={collection.owner} /> : null}
 
           {children}
         </>

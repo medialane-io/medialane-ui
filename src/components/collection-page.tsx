@@ -1,12 +1,14 @@
 "use client";
 
 import { useEffect, useMemo, useState, type ComponentType, type ReactNode } from "react";
-import { Inbox, Lock, Settings, Sparkles, Ticket } from "lucide-react";
+import { Inbox, Lock, Sparkles, Ticket } from "lucide-react";
 import { assetHref, getService, type ApiCollection, type ApiOrder, type ApiToken, type Chain, type CollectionTokensSort } from "@medialane/sdk";
 import Link from "./link.js";
 import { AssetCard, AssetCardSkeleton } from "./asset-card.js";
 import { CollectionHeader } from "./collection-header.js";
-import { CollectionFiltersDialog } from "./collection-filters-dialog.js";
+import { CollectionFiltersDialog, CollectionActiveFilters } from "./collection-filters-dialog.js";
+import { CollectionMoreMenu } from "./collection-more-menu.js";
+import { EXPLORER_URL } from "../utils/explorer-url.js";
 import { CollectionActivityTab } from "./collection-activity-tab.js";
 import { CollectionTraitsTab } from "./collection-traits-tab.js";
 import { ClubOwnerActions } from "./club-owner-actions.js";
@@ -79,14 +81,12 @@ function EmptyState({ title, body, action }: { title: string; body: string; acti
   );
 }
 
-function CollectionItems({ collection, activeListings, mintHref }: { collection: ApiCollection; activeListings: ApiOrder[]; mintHref: string | null }) {
-  const contract = collection.contractAddress;
+function useCollectionItems(contract: string) {
   const [page, setPage] = useState(1);
   const [sort, setSort] = useState<CollectionTokensSort>("recent");
   const [allTokens, setAllTokens] = useState<ApiToken[]>([]);
   const [selectedFilters, setSelectedFilters] = useState<Record<string, string[]>>({});
   const { tokens, meta, isLoading } = useCollectionTokens(contract, page, PAGE_SIZE, sort);
-  const usdPrices = useUsdPrices();
 
   const handleSortChange = (next: CollectionTokensSort) => {
     setSort(next);
@@ -101,6 +101,15 @@ function CollectionItems({ collection, activeListings, mintHref }: { collection:
       return page === 1 ? tokens : [...prev, ...tokens.filter((t) => !ids.has(`${t.contractAddress}-${t.tokenId}`))];
     });
   }, [tokens, page]);
+
+  return { meta, isLoading, setPage, sort, handleSortChange, allTokens, selectedFilters, setSelectedFilters };
+}
+
+type CollectionItemsState = ReturnType<typeof useCollectionItems>;
+
+function CollectionItems({ items, activeListings, mintHref }: { items: CollectionItemsState; activeListings: ApiOrder[]; mintHref: string | null }) {
+  const { meta, isLoading, setPage, sort, handleSortChange, allTokens, selectedFilters, setSelectedFilters } = items;
+  const usdPrices = useUsdPrices();
 
   const listingByTokenId = useMemo(() => new Map(activeListings.filter((o) => o.nftTokenId).map((o) => [o.nftTokenId!, o])), [activeListings]);
 
@@ -127,9 +136,7 @@ function CollectionItems({ collection, activeListings, mintHref }: { collection:
 
   return (
     <div className="space-y-3">
-      <div className="flex items-center justify-end gap-2">
-        <CollectionFiltersDialog tokens={allTokens} selected={selectedFilters} onChange={setSelectedFilters} sort={sort} onSortChange={handleSortChange} />
-      </div>
+      <CollectionActiveFilters tokens={allTokens} selected={selectedFilters} onChange={setSelectedFilters} sort={sort} onSortChange={handleSortChange} />
       {visibleTokens.length === 0 ? (
         <EmptyState title="No items match these filters" body="Try removing some filters to see more results." />
       ) : (
@@ -162,27 +169,16 @@ function CollectionItems({ collection, activeListings, mintHref }: { collection:
 function OwnerActions({ collection }: { collection: ApiCollection }) {
   const service = getService(collection.service)?.id;
   const contract = collection.contractAddress;
-  return (
-    <div className="flex flex-wrap items-center gap-2">
-      {service === "ip-tickets" ? (
-        <Link href={`/launchpad/tickets/${contract}/mint`} className="flex items-center gap-1.5 h-8 px-3 rounded-lg text-xs font-semibold text-white bg-brand-blue hover:brightness-110 active:scale-[0.98] transition">
-          <Ticket className="h-3.5 w-3.5" />
-          Mint tickets
-        </Link>
-      ) : null}
-      {service === "ip-club" ? <ClubOwnerActions contractAddress={contract} isOwner /> : null}
-      {service === "mip-erc1155" ? (
-        <Link href={`/launchpad/nfteditions/${contract}/mint`} className="flex items-center gap-1.5 h-8 px-3 rounded-lg text-xs font-semibold text-white bg-brand-purple hover:brightness-110 active:scale-[0.98] transition">
-          <Sparkles className="h-3.5 w-3.5" />
-          Mint editions
-        </Link>
-      ) : null}
-      <Link href={`/portfolio/collections/${contract}/settings`} className="flex items-center gap-1.5 h-8 px-3 rounded-lg text-xs font-semibold border border-border hover:bg-muted active:scale-[0.98] transition text-muted-foreground hover:text-foreground">
-        <Settings className="h-3.5 w-3.5" />
-        Settings
+  if (service === "ip-tickets") {
+    return (
+      <Link href={`/launchpad/tickets/${contract}/mint`} className="flex w-fit items-center gap-1.5 h-8 px-3 rounded-lg text-xs font-semibold text-white bg-brand-blue hover:brightness-110 active:scale-[0.98] transition">
+        <Ticket className="h-3.5 w-3.5" />
+        Mint tickets
       </Link>
-    </div>
-  );
+    );
+  }
+  if (service === "ip-club") return <ClubOwnerActions contractAddress={contract} isOwner />;
+  return null;
 }
 
 export interface CollectionPageProps {
@@ -205,6 +201,7 @@ export function CollectionPage({ contract, slots }: CollectionPageProps) {
   const [listingsSort, setListingsSort] = useState<OrderSort>("recent");
   const [offersSort, setOffersSort] = useState<OrderSort>("recent");
   const usdPrices = useUsdPrices();
+  const items = useCollectionItems(contract);
 
   const activeListings = orders.filter((o) => o.status === "ACTIVE" && (o.offer.itemType === "ERC721" || o.offer.itemType === "ERC1155"));
   const activeBids = orders.filter((o) => o.status === "ACTIVE" && o.offer.itemType === "ERC20");
@@ -232,7 +229,7 @@ export function CollectionPage({ contract, slots }: CollectionPageProps) {
       {(collection as { isHidden?: boolean } | null | undefined)?.isHidden ? <HiddenContentBanner /> : null}
 
       <div className="px-4 sm:px-6 pt-20 pb-6 space-y-4">
-        <CollectionHeader collection={collection} loading={collectionLoading} onReportClick={() => setReportOpen(true)}>
+        <CollectionHeader collection={collection} loading={collectionLoading}>
           {collection && isOwner ? <OwnerActions collection={collection} /> : null}
           {collection ? <ServiceAction service={collection.service} contractAddress={collection.contractAddress} /> : null}
         </CollectionHeader>
@@ -241,8 +238,8 @@ export function CollectionPage({ contract, slots }: CollectionPageProps) {
 
       <div className="px-4 sm:px-6 pb-12">
         <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <div className="sticky top-0 z-10 pt-3 pb-1">
-            <TabsList className="w-full sm:w-auto">
+          <div className="sticky top-0 z-10 flex items-center gap-2 pt-3 pb-1">
+            <TabsList className="min-w-0 flex-1 justify-start overflow-x-auto sm:flex-none">
               <TabsTrigger value="assets" className="flex-1 sm:flex-none">
                 Assets{collection?.totalSupply ? ` (${collection.totalSupply.toLocaleString()})` : ""}
               </TabsTrigger>
@@ -257,10 +254,22 @@ export function CollectionPage({ contract, slots }: CollectionPageProps) {
                 </TabsTrigger>
               ) : null}
             </TabsList>
+            <div className="ml-auto flex shrink-0 items-center gap-2">
+              {activeTab === "assets" && items.allTokens.length > 0 ? (
+                <CollectionFiltersDialog tokens={items.allTokens} selected={items.selectedFilters} onChange={items.setSelectedFilters} sort={items.sort} onSortChange={items.handleSortChange} chips={false} />
+              ) : null}
+              {collection ? (
+                <CollectionMoreMenu
+                  explorerHref={`${EXPLORER_URL}/contract/${collection.contractAddress}`}
+                  shareTitle={collection.name ?? "Collection"}
+                  onReport={() => setReportOpen(true)}
+                />
+              ) : null}
+            </div>
           </div>
 
           <TabsContent value="assets" className="mt-4">
-            {collection ? <CollectionItems collection={collection} activeListings={activeListings} mintHref={mintHref} /> : null}
+            {collection ? <CollectionItems items={items} activeListings={activeListings} mintHref={mintHref} /> : null}
           </TabsContent>
 
           <TabsContent value="market" className="mt-4">

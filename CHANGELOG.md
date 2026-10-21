@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.205.0] — 2026-10-21
+
+### Changed
+
+- Collection header: no owner buttons for editions and settings, no contract address line.
+- Collection tab row: Filters sits at the end of the row (icon only on phones; active filter chips stay above the grid), with a "More options" menu for View on explorer, Share and Report. Tabs start at the left and scroll on phones.
+- `CollectionHeader` no longer takes `onReportClick`.
+
+### Added
+
+- `CollectionMoreMenu`, `CollectionActiveFilters`, and `shareOrCopy` (used by `ShareButton` and the menu).
+
 ## [0.204.0] — 2026-10-21
 
 ### Added
