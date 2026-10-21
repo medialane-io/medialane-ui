@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.204.0] — 2026-10-21
+
+### Added
+
+- `RewardsDashboard`, `REWARD_ACTION_LABELS` and `LeaderboardPanel` — rewards sign in through `MedialaneApp`; leaderboard rows show names and avatars and link to profiles.
+- `DiscoverPage`, `DiscoverCommunitySection`, `IpTypeNav`, `HomePage` and `CreatorsPage` — the app passes its market actions (Buy) and hero wording.
+- `CollectionNameClaim`.
+- `orderUsd` — a listing's USD value.
+
+### Changed
+
+- `ActivityRow` links to the configured explorer (`NEXT_PUBLIC_EXPLORER_URL`) by default.
+- Tests skip animations; every `next/navigation` test mock provides `useRouter`, `useSearchParams` and `usePathname`.
+
 ## [0.203.0] — 2026-10-20
 
 ### Added
