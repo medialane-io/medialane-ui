@@ -283,9 +283,9 @@ function AssetPageView({
       {token.isHidden ? <HiddenContentBanner /> : null}
       <PageBackdrop image={image} />
 
-      <PageContainer className="pt-20 space-y-8 pb-8">
+      <PageContainer className={isPublication ? "pt-20 space-y-8 pb-8 lg:px-16 xl:px-24" : "pt-20 space-y-8 pb-8"}>
         {isPublication ? (
-        <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_22rem] lg:gap-16 gap-8 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] lg:gap-20 gap-8 items-start">
           <AssetPublication
             name={name}
             text={articleText!}
