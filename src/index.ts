@@ -260,6 +260,8 @@ export { SearchPage } from "./components/search-page.js";
 export { PortfolioOrders, type PortfolioOrdersView, type PortfolioOrderActions, type UsePortfolioOrderActions } from "./components/portfolio-orders.js";
 export { PortfolioAssets, type PortfolioAssetActions, type UsePortfolioAssetActions } from "./components/portfolio-assets.js";
 export { PortfolioShell, PORTFOLIO_TABS, type PortfolioTab } from "./components/portfolio-shell.js";
+export { RewardsDashboard, REWARD_ACTION_LABELS } from "./components/rewards/rewards-dashboard.js";
+export { LeaderboardPanel, type LeaderboardPanelProps } from "./components/rewards/leaderboard-panel.js";
 export { getSeenOffers, markOffersAsSeen } from "./utils/seen-offers.js";
 export { NAV_ITEMS, navGroups, type NavItemId, type NavGroupSpec } from "./data/nav-commands.js";
 export { ResultThumbnail } from "./components/result-thumbnail.js";
