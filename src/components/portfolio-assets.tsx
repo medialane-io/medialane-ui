@@ -7,8 +7,8 @@ import { EmptyOrError } from "./empty-or-error.js";
 import { LoadMoreSentinel } from "./load-more-sentinel.js";
 import { TokenCard } from "./token-card.js";
 import { useMedialaneApp } from "./medialane-app.js";
-import { formatUsd } from "../utils/format.js";
-import { usdPriceFor, useUsdPrices } from "../utils/use-usd-prices.js";
+import { orderUsd } from "../utils/order-usd.js";
+import { useUsdPrices } from "../utils/use-usd-prices.js";
 import { useTokensByOwner } from "../utils/use-tokens.js";
 
 export interface PortfolioAssetActions {
@@ -25,10 +25,7 @@ const GRID = "grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-
 
 function usdFor(token: ApiToken, prices: ReturnType<typeof useUsdPrices>): string | null {
   const order = token.activeOrders?.find((o) => o.offer.itemType === "ERC721" || o.offer.itemType === "ERC1155");
-  const currency = order?.price.currency;
-  const amount = order?.price.formatted ? parseFloat(order.price.formatted) : NaN;
-  const rate = currency ? usdPriceFor(prices, currency.toUpperCase()) : undefined;
-  return rate == null || isNaN(amount) ? null : formatUsd(amount * rate);
+  return orderUsd(order?.price, prices);
 }
 
 export function PortfolioAssets({ address, useActions }: { address: string; useActions: UsePortfolioAssetActions }) {

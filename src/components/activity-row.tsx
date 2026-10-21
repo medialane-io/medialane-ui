@@ -10,6 +10,7 @@ import { ACTIVITY_TYPE_CONFIG } from "../data/activity.js";
 import { timeAgo } from "../utils/time.js";
 import { formatDisplayPrice } from "../utils/format.js";
 import { cn } from "../utils/cn.js";
+import { EXPLORER_URL } from "../utils/explorer-url.js";
 import type { ApiActivity, ApiRewardsBatchEntry } from "@medialane/sdk";
 import { assetHref, profileHref } from "@medialane/sdk";
 import { useImageUrl } from "../utils/use-image-url.js";
@@ -38,7 +39,7 @@ export function ActivityRow({
   showExplorer = true,
   compact = false,
   actorLevel,
-  explorerUrl = "https://voyager.online",
+  explorerUrl = EXPLORER_URL,
 }: ActivityRowProps) {
   const resolveImage = useImageUrl();
   const config = ACTIVITY_TYPE_CONFIG[activity.type] ?? {
