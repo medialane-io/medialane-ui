@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.209.1] — 2026-10-21
+
+### Changed
+
+- Asset page: incoming offers sit on the page without background panels (rows split by a thin divider); the explorer, share and report icons move below the collection card.
+
 ## [0.209.0] — 2026-10-21
 
 ### Changed
