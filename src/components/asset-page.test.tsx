@@ -120,7 +120,7 @@ test("a publication reads as an article, with the text in paragraphs and no cut-
   await waitFor(() => expect(getByText("Essay")).toBeTruthy());
   expect(getByText("First paragraph.")).toBeTruthy();
   expect(getByText("Second paragraph.")).toBeTruthy();
-  expect(getAllByText("Ambrosia").length).toBe(2);
+  expect(getAllByText("Ambrosia").length).toBe(1);
   expect(queryByText("Show more")).toBeNull();
   expect(getByText("Markets")).toBeTruthy();
   expect(getByText("app dialogs")).toBeTruthy();
@@ -139,28 +139,33 @@ test("other types keep the standard layout", async () => {
   expect(container.querySelector("article")).toBeNull();
 });
 
-test("a publication shows its website beside the byline and not again in the overview", async () => {
+test("a publication offers its website as a Read more button after the text, not in the overview", async () => {
   const { getByText, queryByText, container } = renderPage(
     publication({ description: "Text", attributes: [{ trait_type: "Website", value: "https://www.ambrosia.com.br/post" }] }),
     collection(),
   );
-  await waitFor(() => expect(getByText("ambrosia.com.br")).toBeTruthy());
-  expect(container.querySelector('article a[href="https://www.ambrosia.com.br/post"]')).toBeTruthy();
+  await waitFor(() => expect(getByText("Read more")).toBeTruthy());
+  const link = container.querySelector('article a[href="https://www.ambrosia.com.br/post"]')!;
+  expect(link.textContent).toBe("Read more");
+  expect(link.getAttribute("rel")).toContain("noopener");
   expect(queryByText("Website")).toBeNull();
   expect(queryByText("Links")).toBeNull();
 });
 
-test("a publication shows its licence terms beside the article, once", async () => {
+test("a publication keeps its rights in the overview like other assets", async () => {
   const attributes = [
     { trait_type: "License", value: "CC BY-SA" },
     { trait_type: "Commercial Use", value: "Yes" },
     { trait_type: "Derivatives", value: "Share-Alike" },
-    { trait_type: "Territory", value: "Worldwide" },
   ];
-  const { getByText, getAllByText, queryByText } = renderPage(publication({ description: "Lead.\n\nBody.", attributes }), collection());
+  const { getByText } = renderPage(publication({ description: "Lead.\n\nBody.", attributes }), collection());
   await waitFor(() => expect(getByText("Lead.")).toBeTruthy());
-  expect(getAllByText("CC BY-SA").length).toBe(1);
-  expect(getByText("Open to remix and commercial use, worldwide.")).toBeTruthy();
-  expect(getByText("Share-Alike")).toBeTruthy();
-  expect(queryByText("Rights")).toBeNull();
+  expect(getByText("Rights")).toBeTruthy();
+  expect(getByText("CC BY-SA")).toBeTruthy();
+});
+
+test("a publication has no publisher row above the title", async () => {
+  const { getByText, getAllByText } = renderPage(publication({ description: "Lead.\n\nBody." }), collection({ name: "Ambrosia" }));
+  await waitFor(() => expect(getByText("Lead.")).toBeTruthy());
+  expect(getAllByText("Ambrosia").length).toBe(1);
 });

@@ -37,10 +37,10 @@ export function CompanionAppCard({ asset }: { asset: AssetRef }) {
   );
 }
 
-export function AssetAccessCards({ asset }: { asset: AssetRef }) {
+export function AssetAccessCards({ asset, stacked = false }: { asset: AssetRef; stacked?: boolean }) {
   const { onRequireWallet, connectLabel = "Sign in", connectDescription, companion } = useMedialaneApp();
   return (
-    <div className={cn("grid grid-cols-1 gap-3 items-stretch", companion && "sm:grid-cols-2")}>
+    <div className={cn("grid grid-cols-1 gap-3 items-stretch", companion && !stacked && "sm:grid-cols-2")}>
       <button
         type="button"
         onClick={onRequireWallet}
