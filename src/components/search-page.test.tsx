@@ -4,7 +4,7 @@ import type { MedialaneClient } from "@medialane/sdk/starknet";
 import type { MedialaneApp } from "./medialane-app.js";
 
 let params = new URLSearchParams();
-mock.module("next/navigation", () => ({
+mock.module("next/navigation", () => ({ usePathname: () => "/",
   useRouter: () => ({ push: () => {}, replace: () => {} }),
   useSearchParams: () => params,
 }));

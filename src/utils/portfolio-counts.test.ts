@@ -17,19 +17,19 @@ function order(overrides: Partial<CountableOrder>): CountableOrder {
 describe("derivePortfolioCounts", () => {
   it("does not count a self-offer as received, even when the two address strings differ only by zero-padding", () => {
     const orders = [order({ offerer: SELF })];
-    const counts = derivePortfolioCounts(orders, [], SELF_UNPADDED);
+    const counts = derivePortfolioCounts({ orders: orders, receivedOffers: orders, remixOffers: [], address: SELF_UNPADDED });
     expect(counts.received).toBe(0);
   });
 
   it("counts an offer from a different address as received", () => {
     const orders = [order({ offerer: OTHER })];
-    const counts = derivePortfolioCounts(orders, [], SELF_UNPADDED);
+    const counts = derivePortfolioCounts({ orders: orders, receivedOffers: orders, remixOffers: [], address: SELF_UNPADDED });
     expect(counts.received).toBe(1);
   });
 
   it("counts a padding-mismatched self counter-offer as mine, not someone else's", () => {
     const orders = [order({ offerer: SELF, hasActiveCounterOffer: true })];
-    const counts = derivePortfolioCounts(orders, [], SELF_UNPADDED);
+    const counts = derivePortfolioCounts({ orders: orders, receivedOffers: orders, remixOffers: [], address: SELF_UNPADDED });
     expect(counts.counter).toBe(1);
     expect(counts.received).toBe(0);
   });
@@ -39,18 +39,25 @@ describe("derivePortfolioCounts", () => {
       order({ offerer: OTHER, offer: { itemType: "ERC721" } }),
       order({ offerer: OTHER, status: "CANCELLED" }),
     ];
-    const counts = derivePortfolioCounts(orders, [], SELF_UNPADDED);
+    const counts = derivePortfolioCounts({ orders: orders, receivedOffers: orders, remixOffers: [], address: SELF_UNPADDED });
     expect(counts.received).toBe(0);
     expect(counts.listings).toBe(1);
   });
 
   it("handles a null/missing address without throwing", () => {
     const orders = [order({ offerer: OTHER })];
-    expect(() => derivePortfolioCounts(orders, [], null)).not.toThrow();
+    expect(() => derivePortfolioCounts({ orders: orders, receivedOffers: orders, remixOffers: [], address: null })).not.toThrow();
   });
 
   it("handles malformed offerer addresses without throwing", () => {
     const orders = [order({ offerer: "not-an-address" })];
-    expect(() => derivePortfolioCounts(orders, [], SELF_UNPADDED)).not.toThrow();
+    expect(() => derivePortfolioCounts({ orders: orders, receivedOffers: orders, remixOffers: [], address: SELF_UNPADDED })).not.toThrow();
+  });
+
+  it("counts received offers from offers on my tokens, not from my own orders", () => {
+    const mine = [order({ offerer: SELF })];
+    const onMyTokens = [order({ offerer: OTHER }), order({ offerer: OTHER })];
+    const counts = derivePortfolioCounts({ orders: mine, receivedOffers: onMyTokens, remixOffers: [], address: SELF });
+    expect(counts.received).toBe(2);
   });
 });

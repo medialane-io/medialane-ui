@@ -25,6 +25,7 @@ export interface MedialaneApp {
   getClient: () => MedialaneClient;
   getSigner: () => Promise<FastMintSigner> | FastMintSigner;
   walletAddress: string | null;
+  walletLoading?: boolean;
   onRequireWallet: () => void;
   connectLabel?: string;
   connectDescription?: string;
