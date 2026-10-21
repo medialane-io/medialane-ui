@@ -3,6 +3,8 @@
 import Image from "./image.js";
 import Link from "./link.js";
 import { ArrowRight } from "lucide-react";
+import { CurrencyAmount } from "./currency-icon.js";
+import { parsePriceDisplay } from "../utils/format.js";
 export interface AssetCollectionBarSibling {
   tokenId: string;
 
@@ -16,6 +18,7 @@ export interface AssetCollectionBarProps {
   currentTokenId: string;
   siblingTokens: AssetCollectionBarSibling[];
   onNavigate: (tokenId: string) => void;
+  floorPriceRaw?: string | null;
 }
 
 export function AssetCollectionBar({
@@ -25,7 +28,9 @@ export function AssetCollectionBar({
   currentTokenId,
   siblingTokens,
   onNavigate,
+  floorPriceRaw,
 }: AssetCollectionBarProps) {
+  const floor = floorPriceRaw ? parsePriceDisplay(floorPriceRaw) : null;
 
   const others = siblingTokens.filter(
     (t) => String(t.tokenId) !== String(currentTokenId)
@@ -41,9 +46,17 @@ export function AssetCollectionBar({
             <Image src={collectionImage} alt="" fill className="object-cover" unoptimized />
           ) : null}
         </div>
-        <p className="text-base font-bold leading-tight truncate min-w-0 flex-1 group-hover:text-primary transition-colors">
-          {collectionName}
-        </p>
+        <div className="min-w-0 flex-1">
+          <p className="text-base font-bold leading-tight truncate group-hover:text-primary transition-colors">
+            {collectionName}
+          </p>
+          {floor?.symbol ? (
+            <p className="mt-0.5 flex items-center gap-1.5 text-xs text-muted-foreground">
+              <span>Floor</span>
+              <CurrencyAmount amount={floor.numStr} symbol={floor.symbol} iconSize={11} amountClassName="font-semibold text-foreground" />
+            </p>
+          ) : null}
+        </div>
         <div className="shrink-0 h-8 w-8 rounded-xl bg-background/40 flex items-center justify-center text-muted-foreground group-hover:bg-background/70 group-hover:text-foreground transition-all">
           <ArrowRight className="h-3.5 w-3.5" />
         </div>
