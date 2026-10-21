@@ -74,11 +74,15 @@ test("a listed asset's price sits in the Buy button", () => {
   expect(html).toContain("Make offer");
 });
 
-test("the owner sees what they listed it for", () => {
+test("the owner's listed price sits in the Cancel listing button", () => {
   const html = render(base, true, { cheapest: listing, myListing: listing, isOwner: true });
-  expect(html).toContain("Listed for");
-  expect(html).toContain("Cancel listing");
+  expect(html).not.toContain("Listed for");
+  const button = html.match(/<button[^>]*>(?:(?!<\/button>).)*Cancel listing(?:(?!<\/button>).)*<\/button>/s)?.[0] ?? "";
+  expect(button).toContain("119");
+  expect(button).toContain("$6.66");
   expect(html).not.toContain(">Buy<");
+  expect(html).not.toContain("Last sale");
+  expect(html).not.toContain("Floor");
 });
 
 test("signed out shows the price above the sign-in cards", () => {

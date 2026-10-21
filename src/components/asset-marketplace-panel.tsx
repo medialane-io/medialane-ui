@@ -8,7 +8,7 @@ import {
 import { CurrencyIcon, CurrencyAmount } from "./currency-icon.js";
 import { AddressDisplay } from "./address-display.js";
 import { ActionButton } from "./action-button.js";
-import { formatDisplayPrice, parsePriceDisplay } from "../utils/format.js";
+import { formatDisplayPrice } from "../utils/format.js";
 import { isExpired, timeUntil } from "../utils/time.js";
 import { isSameAddress } from "../utils/same-address.js";
 import { cn } from "../utils/cn.js";
@@ -53,31 +53,7 @@ export interface AssetMarketplacePanelProps<T extends ApiOrderLike = ApiOrderLik
   showSponsorSolicitOption?: boolean;
   onOpenSponsorSolicit?: () => void;
 
-  floorPriceRaw?: string | null;
-  lastSaleRaw?: string | null;
 
-}
-
-function StatRow({ floorPriceRaw, lastSaleRaw }: { floorPriceRaw?: string | null; lastSaleRaw?: string | null }) {
-  const floor = floorPriceRaw ? parsePriceDisplay(floorPriceRaw) : null;
-  const lastSale = lastSaleRaw ? parsePriceDisplay(lastSaleRaw) : null;
-  if (!floor?.symbol && !lastSale?.symbol) return null;
-  return (
-    <div className="flex items-center gap-4 text-sm text-muted-foreground">
-      {floor?.symbol && (
-        <span className="flex items-center gap-1.5">
-          <span>Floor</span>
-          <CurrencyAmount amount={floor.numStr} symbol={floor.symbol} iconSize={12} amountClassName="text-foreground font-semibold" />
-        </span>
-      )}
-      {lastSale?.symbol && (
-        <span className="flex items-center gap-1.5">
-          <span>Last sale</span>
-          <CurrencyAmount amount={lastSale.numStr} symbol={lastSale.symbol} iconSize={12} amountClassName="text-foreground font-semibold" />
-        </span>
-      )}
-    </div>
-  );
 }
 
 function ActionRow({ children }: { children: ReactNode }) {
@@ -113,8 +89,6 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
   onOpenSponsorProposal,
   showSponsorSolicitOption = false,
   onOpenSponsorSolicit,
-  floorPriceRaw,
-  lastSaleRaw,
   usdValue,
   onCancelClick,
   onAcceptBid,
@@ -173,13 +147,7 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
     </ActionButton>
   ) : null;
 
-  const listedPrice = isOwner && liveMyListing ? (
-    <PriceLine
-      label="Listed for"
-      order={liveMyListing}
-      usdValue={liveMyListing.orderHash === liveCheapest?.orderHash ? usdValue : null}
-    />
-  ) : !isSignedIn && liveCheapest ? (
+  const listedPrice = !isOwner && !isSignedIn && liveCheapest ? (
     <PriceLine label="Price" order={liveCheapest} usdValue={usdValue} />
   ) : null;
 
@@ -187,7 +155,6 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
     <div className="relative">
 
       <div className="relative space-y-4">
-        <StatRow floorPriceRaw={floorPriceRaw} lastSaleRaw={lastSaleRaw} />
         {listedPrice}
 
         {isOwner ? (
@@ -199,8 +166,11 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
                   onClick={() => onCancelClick(liveMyListing)}
                   disabled={isProcessing}
                   tone="red"
+                  helpContent={`Expires ${timeUntil(liveMyListing.endTime)}`}
                 >
-                  Cancel listing
+                  <span>Cancel listing</span>
+                  <CurrencyAmount amount={formatDisplayPrice(liveMyListing.price.formatted)} symbol={liveMyListing.price.currency ?? ""} iconSize={14} amountClassName="tabular-nums" />
+                  {liveMyListing.orderHash === liveCheapest?.orderHash && usdValue ? <span className="font-normal text-muted-foreground tabular-nums">· {usdValue}</span> : null}
                 </ActionButton>
               ) : null}
               {!liveMyListing || (isERC1155 && canListMoreEditions !== false) ? (

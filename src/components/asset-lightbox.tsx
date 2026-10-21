@@ -17,7 +17,7 @@ export function AssetLightbox({ open, onOpenChange, image, alt }: AssetLightboxP
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
         hideClose
-        className="max-w-[96vw] w-fit max-h-none overflow-visible border-0 bg-transparent p-0 shadow-none"
+        className="max-w-[96vw] sm:max-w-[96vw] w-fit max-h-none overflow-visible border-0 bg-transparent p-0 shadow-none"
       >
         <DialogTitle className="sr-only">{alt}</DialogTitle>
         <div className="relative">

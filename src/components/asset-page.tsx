@@ -267,8 +267,6 @@ function AssetPageView({
                 activeBids={market.activeBids}
                 remixEnabled={config.remix && remixPolicy.canRemixDirect}
                 showDealOption={config.remix && remixPolicy.showDealOption}
-                floorPriceRaw={collection?.floorPrice}
-                lastSaleRaw={market.lastSaleRaw}
                 onCancelClick={actions.cancel}
                 onAcceptBid={actions.acceptBid}
                 onOpenListing={actions.list}
@@ -298,6 +296,7 @@ function AssetPageView({
                   image: resolveImage(t.metadata?.image),
                 }))}
                 onNavigate={(id) => router.push(assetHref("STARKNET", contract, id))}
+                floorPriceRaw={collection?.floorPrice}
               />
             </div>
           </motion.div>
