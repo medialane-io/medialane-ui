@@ -29,7 +29,7 @@ const collection = {
 const render = (c: ApiCollection | null, loading = false) =>
   renderToStaticMarkup(
     <MedialaneAppProvider value={app}>
-      <CollectionHeader collection={c} loading={loading} onReportClick={() => {}}>
+      <CollectionHeader collection={c} loading={loading}>
         <span>owner actions</span>
       </CollectionHeader>
     </MedialaneAppProvider>,

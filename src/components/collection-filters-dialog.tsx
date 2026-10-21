@@ -13,6 +13,7 @@ export interface CollectionFiltersDialogProps {
   onChange: (filters: Record<string, string[]>) => void;
   sort: CollectionTokensSort;
   onSortChange: (sort: CollectionTokensSort) => void;
+  chips?: boolean;
 }
 
 export function CollectionFiltersDialog({
@@ -21,6 +22,7 @@ export function CollectionFiltersDialog({
   onChange,
   sort,
   onSortChange,
+  chips = true,
 }: CollectionFiltersDialogProps) {
   const [open, setOpen] = useState(false);
   const { traitSections, activeEntries, totalActiveCount, sortIsDefault, toggleValue, clearAll, removeFilter } =
@@ -37,6 +39,7 @@ export function CollectionFiltersDialog({
         onSortReset={() => onSortChange("recent")}
         onRemoveFilter={removeFilter}
         onClearAll={clearAll}
+        showChips={chips}
       />
 
       <Dialog open={open} onOpenChange={setOpen}>
@@ -84,5 +87,23 @@ export function CollectionFiltersDialog({
         </DialogContent>
       </Dialog>
     </>
+  );
+}
+
+export function CollectionActiveFilters({ tokens, selected, onChange, sort, onSortChange }: Omit<CollectionFiltersDialogProps, "chips">) {
+  const { activeEntries, totalActiveCount, sortIsDefault, clearAll, removeFilter } =
+    useCollectionFilters(tokens, selected, onChange, sort, onSortChange);
+  return (
+    <CollectionFiltersTrigger
+      totalActiveCount={totalActiveCount}
+      sortIsDefault={sortIsDefault}
+      sort={sort}
+      activeEntries={activeEntries}
+      onOpen={() => {}}
+      onSortReset={() => onSortChange("recent")}
+      onRemoveFilter={removeFilter}
+      onClearAll={clearAll}
+      showButton={false}
+    />
   );
 }

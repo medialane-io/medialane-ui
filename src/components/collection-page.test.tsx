@@ -6,7 +6,7 @@ const { MotionGlobalConfig } = await import("framer-motion");
 MotionGlobalConfig.skipAnimations = true;
 globalThis.fetch = (async () => new Response(JSON.stringify({ data: { usd: {} } }))) as unknown as typeof fetch;
 
-const { cleanup, render, waitFor } = await import("@testing-library/react");
+const { cleanup, fireEvent, render, waitFor } = await import("@testing-library/react");
 const { SWRConfig } = await import("swr");
 const { CollectionPage, canTransferCollectionOwnership } = await import("./collection-page.js");
 const { MedialaneAppProvider } = await import("./medialane-app.js");
@@ -68,9 +68,29 @@ test("a visitor sees the header, the items and the app's service action", async 
   expect(queryByText("app transfer")).toBeNull();
 });
 
-test("the owner of an empty collection gets the mint link and owner tools", async () => {
+test("the owner of an empty collection gets the mint link and the transfer tool", async () => {
   const { getByText } = renderPage(collection(), [], "0xowner");
   await waitFor(() => expect(getByText("Mint your first work")).toBeTruthy());
-  expect(getByText("Settings")).toBeTruthy();
   expect(getByText("app transfer")).toBeTruthy();
+});
+
+test("the header has no owner buttons and no contract address line", async () => {
+  const c = collection({ standard: "ERC1155", service: "mip-erc1155" });
+  const { getByText, queryByText, container } = renderPage(c, [token("1")], "0xowner");
+  await waitFor(() => expect(getByText("Hero 1")).toBeTruthy());
+  expect(queryByText("Mint editions")).toBeNull();
+  expect(queryByText("Settings")).toBeNull();
+  expect(container.textContent).not.toContain("0xc0");
+  expect(getByText("by")).toBeTruthy();
+});
+
+test("the tab row holds the filters and a menu with explorer, share and report", async () => {
+  const { getByText, getByRole, findByText } = renderPage(collection(), [token("1")], null);
+  await waitFor(() => expect(getByText("Hero 1")).toBeTruthy());
+  expect(getByRole("button", { name: /Filters/ })).toBeTruthy();
+  const more = getByRole("button", { name: "More options" });
+  fireEvent.pointerDown(more, { button: 0, pointerType: "mouse" });
+  expect(await findByText("View on explorer")).toBeTruthy();
+  expect(getByText("Share")).toBeTruthy();
+  expect(getByText("Report")).toBeTruthy();
 });
