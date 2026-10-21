@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.212.0] — 2026-10-21
+
+### Changed
+
+- Asset page: publications and posts read as an article, with the publisher, date and website above the headline, the first paragraph as the lead, and the cover after it. The licence terms sit in the right column beside the marketplace panel, and no longer in the overview.
+- `AssetPublication` and `AssetRightsCard` replace `AssetPublicationHeader` and `AssetPublicationText`.
+
 ## [0.211.2] — 2026-10-21
 
 ### Changed
