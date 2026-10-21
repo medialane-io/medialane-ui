@@ -5,7 +5,7 @@ import { Check, ExternalLink, Flag, MoreHorizontal, Share2 } from "lucide-react"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./dropdown-menu.js";
 import { shareOrCopy } from "../utils/share.js";
 
-export function CollectionMoreMenu({ explorerHref, shareTitle, onReport }: { explorerHref: string; shareTitle: string; onReport: () => void }) {
+export function MoreMenu({ explorerHref, shareTitle, onReport }: { explorerHref: string; shareTitle: string; onReport: () => void }) {
   const [copied, setCopied] = useState(false);
   return (
     <DropdownMenu>

@@ -42,6 +42,7 @@ test("shows the creator beside their image", () => {
   expect(html).toContain("Assets");
   expect(html).toContain("https://example.com");
   expect(html).toContain("app actions");
+  expect(html).not.toContain("0x0123");
 });
 
 test("unknown stats are hidden", () => {

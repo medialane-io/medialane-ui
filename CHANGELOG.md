@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.207.0] — 2026-10-21
+
+### Added
+
+- `CreatorPage` — one page for `/account/[address]` and `/creator/[username]`: profile header, assets (USD values; owner list/transfer/cancel through the app's `useAssetActions`, visitor Buy/Offer through the app's `useMarketActions`), collections, edition and unique listings, analytics, activity, and a More options menu (explorer, share, report).
+- `MoreMenu` (shared by the collection and creator pages), `useCreatorByUsername`, and a `CREATOR` report target.
+
+### Changed
+
+- `CreatorHeader` no longer shows the raw wallet address line or its own share button (share is in the More options menu).
+- `TokenCard` shows Buy or Offer to visitors only when the page passes `onBuy` / `onOffer`, and View otherwise.
+
 ## [0.206.0] — 2026-10-21
 
 ### Added

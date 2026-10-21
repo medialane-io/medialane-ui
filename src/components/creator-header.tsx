@@ -5,9 +5,7 @@ import { Globe, MessageCircle, Send, Twitter, UserRound } from "lucide-react";
 import type { ApiCreatorProfile } from "@medialane/sdk";
 import { AssetHeaderBlock } from "./asset-top-sections.js";
 import { MediaHeader, HeaderStats, HeaderStat } from "./media-header.js";
-import { AddressDisplay } from "./address-display.js";
 import { CreatorScoreInline } from "./creator-score-inline.js";
-import { ShareButton } from "./share-button.js";
 import { profileIdentity } from "../utils/profile-identity.js";
 
 export interface CreatorHeaderStat {
@@ -48,10 +46,7 @@ export function CreatorHeader({ creator, image, stats, loading = false, children
             badges={<CreatorScoreInline address={creator.walletAddress} size="sm" />}
           />
 
-          <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
-            {name ? <span className="tabular-nums">{identity}</span> : null}
-            <AddressDisplay address={creator.walletAddress} chars={6} className="text-xs text-muted-foreground" />
-          </div>
+          {name ? <p className="text-sm tabular-nums text-muted-foreground">{identity}</p> : null}
 
           <HeaderStats>
             {stats.map((s) => (s.value != null ? <HeaderStat key={s.label} label={s.label}>{s.value.toLocaleString()}</HeaderStat> : null))}
@@ -73,10 +68,6 @@ export function CreatorHeader({ creator, image, stats, loading = false, children
               ))}
             </div>
           ) : null}
-
-          <div className="-ml-3">
-            <ShareButton title={name ?? identity} variant="ghost" size="icon" />
-          </div>
 
           {children}
         </>

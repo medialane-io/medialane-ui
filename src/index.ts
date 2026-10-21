@@ -276,6 +276,8 @@ export { ServiceCollectionsPage } from "./components/service-collections-page.js
 export { EditionsPage } from "./components/editions-page.js";
 export { DropsPage } from "./components/drops-page.js";
 export { PopMyEventsPage } from "./components/pop-my-events-page.js";
+export { CreatorPage, type CreatorPageProps } from "./components/creator-page.js";
+export { MoreMenu } from "./components/more-menu.js";
 export { orderUsd } from "./utils/order-usd.js";
 export { getSeenOffers, markOffersAsSeen } from "./utils/seen-offers.js";
 export { NAV_ITEMS, navGroups, type NavItemId, type NavGroupSpec } from "./data/nav-commands.js";
@@ -443,7 +445,7 @@ export {
 export type { FormattedEvent } from "./utils/format-activity.js";
 
 export { queryKeys, queryKeyPrefix, QUERY_PREFIX } from "./utils/query-keys.js";
-export { useCollectionProfile, useCreatorProfile } from "./utils/use-profiles.js";
+export { useCollectionProfile, useCreatorProfile, useCreatorByUsername } from "./utils/use-profiles.js";
 export { useActivities, useActivitiesByAddress } from "./utils/use-activities.js";
 export {
   useCollections, useCollection, useCollectionsByOwner, useCollectionTokens, useNearbyCollectionTokens,
