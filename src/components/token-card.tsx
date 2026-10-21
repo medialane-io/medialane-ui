@@ -163,7 +163,7 @@ export function TokenCard({
               List
             </button>
           )
-        ) : listingOrder ? (
+        ) : listingOrder && onBuy ? (
           <div className="btn-border-animated p-[1.5px] rounded-[10px] flex-1 h-8">
             <button
               className="w-full h-full rounded-[9px] bg-background flex items-center justify-center gap-1.5 text-xs font-semibold text-foreground hover:bg-muted/60 transition-all active:scale-[0.98]"
@@ -173,7 +173,7 @@ export function TokenCard({
               Buy
             </button>
           </div>
-        ) : (
+        ) : !listingOrder && onOffer ? (
           <button
             className={cn(BTN_OUTLINE, "flex-1 text-brand-orange border-brand-orange/30 hover:bg-brand-orange/10 hover:text-brand-orange")}
             onClick={handleOffer}
@@ -181,6 +181,11 @@ export function TokenCard({
             <HandCoins className="h-3.5 w-3.5 mr-1.5" />
             Offer
           </button>
+        ) : (
+          <Link href={assetHref} className={cn(BTN_OUTLINE, "flex-1")}>
+            <ArrowUpRight className="h-3.5 w-3.5 mr-1.5" />
+            View
+          </Link>
         )}
 
         <DropdownMenu>

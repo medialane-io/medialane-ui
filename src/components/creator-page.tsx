@@ -20,6 +20,7 @@ import { ActivityTimelineRow } from "./activity-timeline-row.js";
 import { MoreMenu } from "./more-menu.js";
 import { useMedialaneApp } from "./medialane-app.js";
 import type { UsePortfolioAssetActions } from "./portfolio-assets.js";
+import type { CollectionMarketActions } from "./collection-page.js";
 import { cn } from "../utils/cn.js";
 import { EXPLORER_URL } from "../utils/explorer-url.js";
 import { isSameAddress } from "../utils/same-address.js";
@@ -53,15 +54,17 @@ export interface CreatorPageProps {
   address?: string;
   username?: string;
   useAssetActions: UsePortfolioAssetActions;
+  useMarketActions: () => CollectionMarketActions;
 }
 
-export function CreatorPage({ address: addressProp, username, useAssetActions }: CreatorPageProps) {
+export function CreatorPage({ address: addressProp, username, useAssetActions, useMarketActions }: CreatorPageProps) {
   const { walletAddress, ReportDialog } = useMedialaneApp();
   const client = useMedialaneClient();
   const resolveImage = useImageUrl();
   const prices = useUsdPrices();
   const [activeTab, setActiveTab] = useState<TabId>("assets");
   const [reportOpen, setReportOpen] = useState(false);
+  const [reportToken, setReportToken] = useState<ApiToken | null>(null);
 
   const byName = useCreatorByUsername(username);
   const byAddress = useCreatorProfile(username ? undefined : addressProp);
@@ -75,6 +78,7 @@ export function CreatorPage({ address: addressProp, username, useAssetActions }:
   const { activities, isLoading: activitiesLoading } = useActivitiesByAddress(activeTab === "activity" || activeTab === "analytics" ? address : null);
   const { data: hidden } = useSWR(address ? `creator-hidden-${address}` : null, () => client.api.isCreatorHidden(address!).catch(() => false));
   const actions = useAssetActions({ refresh: () => void refreshTokens() });
+  const market = useMarketActions();
 
   const listings = orders.filter((o) => o.status === "ACTIVE" && isNft(o.offer.itemType));
   const identity = profileIdentity({ username: creator?.username, name: creator?.name, walletAddress: address });
@@ -174,6 +178,9 @@ export function CreatorPage({ address: addressProp, username, useAssetActions }:
                     onList={isOwner ? actions.list : undefined}
                     onTransfer={isOwner ? actions.transfer : undefined}
                     onCancel={isOwner ? actions.cancel : undefined}
+                    onBuy={!isOwner && listing ? () => market.buy(listing) : undefined}
+                    onOffer={isOwner ? undefined : market.offer}
+                    onReport={ReportDialog ? setReportToken : undefined}
                   />
                 );
               })}
@@ -198,7 +205,7 @@ export function CreatorPage({ address: addressProp, username, useAssetActions }:
             <TabEmptyState icon={ShoppingBag} heading="No active listings" body="Works this creator lists for sale appear here." />
           ) : (
             <div className={GRID}>
-              {listings.map((o) => <ListingCard key={o.orderHash} order={o} usdValue={orderUsd(o.price, prices)} overflowMenu={<ListingCardMenu order={o} />} />)}
+              {listings.map((o) => <ListingCard key={o.orderHash} order={o} onBuy={isOwner ? undefined : market.buy} usdValue={orderUsd(o.price, prices)} overflowMenu={<ListingCardMenu order={o} />} />)}
             </div>
           )
         )}
@@ -225,6 +232,14 @@ export function CreatorPage({ address: addressProp, username, useAssetActions }:
       </div>
 
       {actions.dialogs}
+      {market.dialogs}
+      {ReportDialog && reportToken ? (
+        <ReportDialog
+          open={!!reportToken}
+          onOpenChange={(open) => { if (!open) setReportToken(null); }}
+          target={{ type: "TOKEN", contract: reportToken.contractAddress, tokenId: reportToken.tokenId, name: reportToken.metadata?.name ?? undefined }}
+        />
+      ) : null}
       {ReportDialog && address ? (
         <ReportDialog open={reportOpen} onOpenChange={setReportOpen} target={{ type: "CREATOR", address, name: identity.name ?? identity.identity }} />
       ) : null}

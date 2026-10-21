@@ -31,7 +31,8 @@ function renderPage(props: { username?: string; address?: string }, app: Partial
   const value = { getClient: () => client, getSigner: () => { throw new Error("unused"); }, walletAddress: null, onRequireWallet: () => {}, ...app } as MedialaneApp;
   const calls: string[] = [];
   const useAssetActions = () => ({ list: (t: ApiToken) => calls.push(`list ${t.tokenId}`), transfer: () => {}, cancel: () => {}, dialogs: null });
-  const view = render(<SWRConfig value={{ provider: () => new Map() }}><MedialaneAppProvider value={value}><CreatorPage {...props} useAssetActions={useAssetActions} /></MedialaneAppProvider></SWRConfig>);
+  const useMarketActions = () => ({ buy: (o: { orderHash: string }) => calls.push(`buy ${o.orderHash}`), offer: (t: ApiToken) => calls.push(`offer ${t.tokenId}`), dialogs: null });
+  const view = render(<SWRConfig value={{ provider: () => new Map() }}><MedialaneAppProvider value={value}><CreatorPage {...props} useAssetActions={useAssetActions} useMarketActions={useMarketActions} /></MedialaneAppProvider></SWRConfig>);
   return { view, calls };
 }
 
@@ -64,4 +65,11 @@ test("the more menu reports the creator through the app", async () => {
   fireEvent.pointerDown(view.getByRole("button", { name: "More options" }), { button: 0, pointerType: "mouse" });
   fireEvent.click(await view.findByText("Report"));
   await waitFor(() => expect(reports[reports.length - 1]).toEqual(expect.objectContaining({ type: "CREATOR", address: A })));
+});
+
+test("a visitor's Offer opens the app's offer", async () => {
+  const { view, calls } = renderPage({ address: A });
+  await waitFor(() => expect(view.getByText("Piece 1")).toBeTruthy());
+  fireEvent.click(view.getAllByText("Offer")[0]!);
+  expect(calls).toEqual(["offer 1"]);
 });
