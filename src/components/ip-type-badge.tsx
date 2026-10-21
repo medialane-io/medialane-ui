@@ -42,15 +42,21 @@ const SIZE = {
   md: { container: "h-8 w-8", icon: "h-4 w-4" },
 };
 
+const PILL = {
+  sm: "h-6 gap-1.5 px-2.5",
+  md: "h-8 gap-2 px-3",
+};
+
 export interface IpTypeBadgeProps {
   ipType: string;
   size?: "sm" | "md";
+  showLabel?: boolean;
   className?: string;
 
   baseUrl?: string;
 }
 
-export function IpTypeBadge({ ipType, size = "sm", className, baseUrl = "" }: IpTypeBadgeProps) {
+export function IpTypeBadge({ ipType, size = "sm", showLabel = false, className, baseUrl = "" }: IpTypeBadgeProps) {
   const config = IP_TYPE_CONFIG.find(
     (c) => c.label === ipType || c.apiValue === ipType
   );
@@ -65,12 +71,13 @@ export function IpTypeBadge({ ipType, size = "sm", className, baseUrl = "" }: Ip
         "inline-flex items-center justify-center rounded-full",
         "transition-opacity hover:opacity-80",
         bgClass,
-        container,
+        showLabel ? PILL[size] : container,
         className
       )}
       onClick={(e) => e.stopPropagation()}
     >
       <Icon className={cn(colorClass, icon)} />
+      {showLabel ? <span className={cn("text-xs font-semibold", colorClass)}>{label}</span> : null}
     </a>
   );
 }

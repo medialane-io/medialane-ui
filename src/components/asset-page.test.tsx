@@ -169,3 +169,13 @@ test("a publication has no publisher row above the title", async () => {
   await waitFor(() => expect(getByText("Lead.")).toBeTruthy());
   expect(getAllByText("Ambrosia").length).toBe(1);
 });
+
+test("the type icon carries its label on publications and on other assets", async () => {
+  const first = renderPage(publication({ description: "Lead.\n\nBody." }), collection());
+  await waitFor(() => expect(first.getByText("Lead.")).toBeTruthy());
+  expect(first.getByText("Publications")).toBeTruthy();
+  cleanup();
+  const second = renderPage(publication({ ipType: "Art", description: "Plain" }), collection());
+  await waitFor(() => expect(second.getByText("Plain")).toBeTruthy());
+  expect(second.getByText("Art")).toBeTruthy();
+});

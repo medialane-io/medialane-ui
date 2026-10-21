@@ -138,7 +138,7 @@ export function AssetHeaderBlock({
       {ipType || badges || utilities ? (
         <div className="flex items-center justify-between gap-2 mb-2">
           <div className="flex items-center gap-2 flex-wrap">
-            {ipType ? <IpTypeBadge ipType={ipType} size="md" /> : null}
+            {ipType ? <IpTypeBadge ipType={ipType} size="md" showLabel /> : null}
             {badges}
           </div>
           {utilities}

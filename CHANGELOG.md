@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.212.3] — 2026-10-21
+
+### Changed
+
+- Asset page: the type icon shows its label beside it (`IpTypeBadge` takes `showLabel`).
+
 ## [0.212.2] — 2026-10-21
 
 ### Changed
