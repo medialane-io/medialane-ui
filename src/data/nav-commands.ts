@@ -42,6 +42,7 @@ export const NAV_ITEMS = {
   art: { id: "art", label: "Art", icon: Palette, href: "/art", keywords: ["illustration", "drawing", "painting", "digital art"] },
   video: { id: "video", label: "Video", icon: Film, href: "/video", keywords: ["film", "clip", "animation", "short"] },
   photography: { id: "photography", label: "Photography", icon: Camera, href: "/photography", keywords: ["photo", "image", "picture", "shot"] },
+  publications: { id: "publications", label: "Publications", icon: BookOpen, href: "/publications", keywords: ["article", "articles", "blog", "news", "writing", "book", "journal"] },
   nft: { id: "nft", label: "NFT", icon: Gem, href: "/nft", keywords: ["collectible", "token", "generative"] },
   docs: { id: "docs", label: "Docs — Overview", icon: BookOpen, action: () => window.open("https://docs.medialane.io", "_blank"), keywords: ["docs", "help", "guide", "documentation"] },
   "docs-market": { id: "docs-market", label: "Docs — Marketplace", icon: Store, action: () => window.open("https://docs.medialane.io/marketplace", "_blank"), keywords: ["docs", "buy", "sell", "orders", "guide"] },

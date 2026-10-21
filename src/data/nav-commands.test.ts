@@ -26,3 +26,8 @@ test("navGroups resolves shared ids in the app's order and keeps the app's own e
   expect(groups[1]!.items[1]).toBe(own);
   expect(groups[0]!.items[0]).toBe(NAV_ITEMS.home);
 });
+
+test("every content type with a page has a shared entry that opens it", () => {
+  expect(NAV_ITEMS.publications.href).toBe("/publications");
+  expect(NAV_ITEMS.publications.label).toBe("Publications");
+});

@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.213.1] — 2026-10-21
+
+### Added
+
+- `NAV_ITEMS.publications`: a Publications entry for the nav search.
+
 ## [0.213.0] — 2026-10-21
 
 ### Added
