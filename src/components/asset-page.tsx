@@ -297,7 +297,7 @@ function AssetPageView({
             websiteUrl={websiteUrl}
           />
           <aside className="space-y-6 min-w-0 lg:sticky lg:top-16">
-            <IpTypeBadge ipType={token.metadata?.ipType ?? "Publications"} size="md" />
+            <IpTypeBadge ipType={token.metadata?.ipType ?? "Publications"} size="md" showLabel />
             {marketBlock}
             {detailsBlock}
           </aside>
