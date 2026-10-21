@@ -98,3 +98,13 @@ test("a POP has no marketplace", async () => {
   expect(getByText("POP")).toBeTruthy();
   expect(queryByText("Markets")).toBeNull();
 });
+
+test("the explorer, share and report icons sit below the collection card", async () => {
+  const { container, getByText } = renderPage(token(), collection());
+  await waitFor(() => expect(getByText("Stones")).toBeTruthy());
+  const html = container.innerHTML;
+  const icons = html.indexOf('title="View contract"');
+  const card = html.lastIndexOf('href="/collections/');
+  expect(icons).toBeGreaterThan(-1);
+  expect(icons).toBeGreaterThan(card);
+});

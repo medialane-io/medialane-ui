@@ -21,7 +21,7 @@ const noop = () => {};
 
 const listing = { orderHash: "0x1", offerer: "0xseller", endTime: "2999-01-01T00:00:00Z", price: { formatted: "119", currency: "STRK" } };
 
-const render = (app0: MedialaneApp, isSignedIn: boolean, extra: { cheapest?: typeof listing; myListing?: typeof listing | null; isOwner?: boolean; remix?: boolean } = {}) =>
+const render = (app0: MedialaneApp, isSignedIn: boolean, extra: { cheapest?: typeof listing; myListing?: typeof listing | null; isOwner?: boolean; remix?: boolean; bids?: unknown[] } = {}) =>
   renderToStaticMarkup(
     <MedialaneAppProvider value={{ ...app0, walletAddress: isSignedIn ? "0xme" : null }}>
       <AssetMarketplacePanel
@@ -34,7 +34,7 @@ const render = (app0: MedialaneApp, isSignedIn: boolean, extra: { cheapest?: typ
         isProcessing={false}
         isERC1155={false}
         myListing={extra.myListing ?? null}
-        activeBids={[]}
+        activeBids={(extra.bids ?? []) as never[]}
         onCancelClick={noop}
         onAcceptBid={noop}
         onOpenListing={noop}
@@ -96,4 +96,13 @@ test("with Buy, Make offer and Remix, Buy takes the full row", () => {
   const html = render(base, true, { cheapest: listing, remix: true });
   expect(html.indexOf(">Buy<")).toBeLessThan(html.indexOf("Remix"));
   expect(html).toContain("grid grid-cols-2 gap-2 [&amp;&gt;*:first-child]:col-span-2");
+});
+
+test("incoming offers sit on the page without background panels", () => {
+  const bid = { orderHash: "0xb1", offerer: "0xbuyer", endTime: "2999-01-01T00:00:00Z", price: { formatted: "0.99", currency: "USDC" } };
+  const html = render(base, true, { isOwner: true, bids: [bid] });
+  expect(html).toContain("Incoming offers");
+  const section = html.slice(html.indexOf("Incoming offers") - 300);
+  expect(section).not.toContain("bg-card/40");
+  expect(section).not.toContain("bg-muted/30");
 });

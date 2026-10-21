@@ -242,13 +242,6 @@ function AssetPageView({
                   POP
                 </span>
               ) : null}
-              utilities={(
-                <AssetUtilityIcons
-                  contractExplorerHref={`${EXPLORER_URL}/contract/${token.contractAddress}`}
-                  shareTitle={name}
-                  onReportClick={() => setReportOpen(true)}
-                />
-              )}
             />
 
             {Panel ? <Panel contract={contract} tokenId={tokenId} quantityOwned={market.quantityOwned} /> : null}
@@ -298,6 +291,13 @@ function AssetPageView({
                 onNavigate={(id) => router.push(assetHref("STARKNET", contract, id))}
                 floorPriceRaw={collection?.floorPrice}
               />
+              <div className="-ml-3">
+                <AssetUtilityIcons
+                  contractExplorerHref={`${EXPLORER_URL}/contract/${token.contractAddress}`}
+                  shareTitle={name}
+                  onReportClick={() => setReportOpen(true)}
+                />
+              </div>
             </div>
           </motion.div>
         </div>
