@@ -39,8 +39,8 @@ export function AssetPublication({ name, text, image, imgError, onImageError, on
       {lead ? <p className="max-w-3xl text-base leading-relaxed text-foreground whitespace-pre-line">{lead}</p> : null}
 
       {image && !imgError ? (
-        <button type="button" onClick={onZoom} aria-label="View full image" className="block w-full overflow-hidden rounded-2xl cursor-zoom-in focus:outline-none">
-          <img src={image} alt={name} onError={onImageError} className="h-auto max-h-[28rem] w-full object-cover" />
+        <button type="button" onClick={onZoom} aria-label="View full image" className="block w-full overflow-hidden rounded-3xl cursor-zoom-in focus:outline-none">
+          <img src={image} alt={name} onError={onImageError} className="w-full h-auto max-h-[80vh] object-contain" />
         </button>
       ) : null}
 

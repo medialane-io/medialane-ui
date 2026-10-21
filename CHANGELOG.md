@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.212.2] — 2026-10-21
+
+### Changed
+
+- Asset page: publications and posts split two thirds article, one third sidebar, with wider page margins and column spacing. The cover keeps its original proportions, as on other assets.
+
 ## [0.212.1] — 2026-10-21
 
 ### Changed
