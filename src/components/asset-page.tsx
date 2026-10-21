@@ -281,9 +281,10 @@ function AssetPageView({
       {token.isHidden ? <HiddenContentBanner /> : null}
       <PageBackdrop image={image} />
 
-      <PageContainer className={isPublication ? "pt-20 space-y-6 pb-8 mx-auto max-w-2xl" : "pt-20 space-y-8 pb-8"}>
+      <PageContainer className="pt-20 space-y-8 pb-8">
         {isPublication ? (
-          <>
+        <div className="grid grid-cols-1 lg:grid-cols-2 lg:gap-10 gap-8 items-start">
+          <div className="space-y-6 min-w-0">
             <AssetPublicationHeader
               name={name}
               ipType={token.metadata?.ipType ?? "Publications"}
@@ -298,10 +299,13 @@ function AssetPageView({
               publishedAt={fullTokenData?.registeredAt}
               websiteUrl={websiteUrl}
             />
-            <div className="space-y-6">{marketBlock}</div>
             <AssetPublicationText text={articleText!} />
+          </div>
+          <div className="space-y-6 min-w-0 lg:sticky lg:top-16">
+            {marketBlock}
             {detailsBlock}
-          </>
+          </div>
+        </div>
         ) : (
         <div className="grid grid-cols-1 lg:grid-cols-2 lg:gap-10 gap-8 items-start">
           <AssetMediaColumn
