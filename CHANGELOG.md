@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.211.0] — 2026-10-21
+
+### Added
+
+- Asset page: publications and posts open in a reading layout, with the description as the article and the marketplace panel and collection card beside it.
+- `AssetPublicationHeader` and `AssetPublicationText`.
+
 ## [0.209.1] — 2026-10-21
 
 ### Changed
