@@ -38,7 +38,7 @@ const render = (c: ApiCollection | null, loading = false) =>
 test("shows the collection beside its image", () => {
   const html = render(collection);
   expect(html).toContain("Ambrosia");
-  expect(html).toContain("Single NFT");
+  expect(html).not.toContain("Single NFT");
   expect(html).toContain("AMBROSIA");
   expect(html).toContain("Cultura colaborativa");
   expect(html).toContain("2,085");

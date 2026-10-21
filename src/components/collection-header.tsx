@@ -42,7 +42,7 @@ export function CollectionHeader({ collection, loading = false, children }: Coll
             description={collection.description}
             badges={(
               <>
-                <span className={CHIP}>{collection.standard === "ERC1155" ? "Multi-edition" : "Single NFT"}</span>
+                {collection.standard === "ERC1155" ? <span className={CHIP}>Multi-edition</span> : null}
                 {collection.symbol ? <span className={CHIP}>{collection.symbol}</span> : null}
               </>
             )}
