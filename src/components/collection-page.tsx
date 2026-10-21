@@ -7,7 +7,7 @@ import Link from "./link.js";
 import { AssetCard, AssetCardSkeleton } from "./asset-card.js";
 import { CollectionHeader } from "./collection-header.js";
 import { CollectionFiltersDialog, CollectionActiveFilters } from "./collection-filters-dialog.js";
-import { CollectionMoreMenu } from "./collection-more-menu.js";
+import { MoreMenu } from "./more-menu.js";
 import { EXPLORER_URL } from "../utils/explorer-url.js";
 import { CollectionActivityTab } from "./collection-activity-tab.js";
 import { CollectionTraitsTab } from "./collection-traits-tab.js";
@@ -259,7 +259,7 @@ export function CollectionPage({ contract, slots }: CollectionPageProps) {
                 <CollectionFiltersDialog tokens={items.allTokens} selected={items.selectedFilters} onChange={items.setSelectedFilters} sort={items.sort} onSortChange={items.handleSortChange} chips={false} />
               ) : null}
               {collection ? (
-                <CollectionMoreMenu
+                <MoreMenu
                   explorerHref={`${EXPLORER_URL}/contract/${collection.contractAddress}`}
                   shareTitle={collection.name ?? "Collection"}
                   onReport={() => setReportOpen(true)}
