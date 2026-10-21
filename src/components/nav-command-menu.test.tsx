@@ -5,7 +5,7 @@ import { Home, Search } from "lucide-react";
 import type { MedialaneApp } from "./medialane-app.js";
 
 const pushed: string[] = [];
-mock.module("next/navigation", () => ({ useRouter: () => ({ push: (href: string) => pushed.push(href) }) }));
+mock.module("next/navigation", () => ({ useSearchParams: () => new URLSearchParams(), usePathname: () => "/", useRouter: () => ({ push: (href: string) => pushed.push(href) }) }));
 
 const { NavCommandMenu, matchCommands, useNavCommandMenu } = await import("./nav-command-menu.js");
 const { MedialaneAppProvider } = await import("./medialane-app.js");

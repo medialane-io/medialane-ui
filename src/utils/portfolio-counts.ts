@@ -28,16 +28,23 @@ function safeNormalize(address: string): string | null {
   }
 }
 
-export function derivePortfolioCounts(
-  orders: ReadonlyArray<CountableOrder> | null | undefined,
-  remixOffers: ReadonlyArray<{ status: string }> | null | undefined,
-  address: string | null | undefined,
+export function derivePortfolioCounts({
+  orders,
+  receivedOffers,
+  remixOffers,
+  address,
   sponsorshipPendingCount = 0,
-): PortfolioCounts {
+}: {
+  orders: ReadonlyArray<CountableOrder> | null | undefined;
+  receivedOffers: ReadonlyArray<CountableOrder> | null | undefined;
+  remixOffers: ReadonlyArray<{ status: string }> | null | undefined;
+  address: string | null | undefined;
+  sponsorshipPendingCount?: number;
+}): PortfolioCounts {
   const list = Array.isArray(orders) ? orders : [];
   const addr = address ? safeNormalize(address) : null;
 
-  const received = list.filter(
+  const received = (Array.isArray(receivedOffers) ? receivedOffers : []).filter(
     (o) =>
       o.status === "ACTIVE" &&
       o.offer.itemType === "ERC20" &&

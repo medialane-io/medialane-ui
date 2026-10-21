@@ -1,6 +1,6 @@
 import { afterEach, expect, test, mock } from "bun:test";
 
-mock.module("next/navigation", () => ({ useRouter: () => ({ push: () => {} }) }));
+mock.module("next/navigation", () => ({ useSearchParams: () => new URLSearchParams(), usePathname: () => "/", useRouter: () => ({ push: () => {} }) }));
 mock.module("next/image", () => ({ default: ({ alt }: { alt?: string }) => <span data-alt={alt} /> }));
 const { MotionGlobalConfig } = await import("framer-motion");
 MotionGlobalConfig.skipAnimations = true;

@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.203.0] — 2026-10-20
+
+### Added
+
+- `PortfolioShell` and `PORTFOLIO_TABS` — portfolio header, tabs with counts, and a sign-in state that uses the app's `connectLabel` / `onRequireWallet`.
+- `PortfolioOrders` — listings, offers sent, offers received and counter-offers; the app passes its own actions (`cancel`, `accept`, `counter`, `dialogs`).
+- `PortfolioAssets` — owned assets with USD values; the app passes its own list, transfer and cancel actions.
+- `getSeenOffers` / `markOffersAsSeen`.
+- `MedialaneApp.walletLoading` (optional) — shows a loading state instead of the sign-in prompt while a wallet reconnects.
+- The router module also exports `usePathname`.
+
+### Changed
+
+- Offers received, and their count, come from offers on the owner's tokens (`useReceivedOffers`).
+- `derivePortfolioCounts` takes named inputs, including `receivedOffers`.
+- Offer senders link to their profile (`profileHref`).
+
 ## [0.202.0] — 2026-10-20
 
 ### Added
