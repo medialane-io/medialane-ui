@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.205.1] — 2026-10-21
+
+### Changed
+
+- Collection header: no "Single NFT" chip on ERC-721 collections; "Multi-edition" stays for ERC-1155.
+
 ## [0.205.0] — 2026-10-21
 
 ### Changed
