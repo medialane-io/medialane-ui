@@ -138,3 +138,14 @@ test("other types keep the standard layout", async () => {
   expect(getByText("Plain")).toBeTruthy();
   expect(container.querySelector("header")).toBeNull();
 });
+
+test("a publication shows its website beside the byline and not again in the overview", async () => {
+  const { getByText, queryByText, container } = renderPage(
+    publication({ description: "Text", attributes: [{ trait_type: "Website", value: "https://www.ambrosia.com.br/post" }] }),
+    collection(),
+  );
+  await waitFor(() => expect(getByText("ambrosia.com.br")).toBeTruthy());
+  expect(container.querySelector('header a[href="https://www.ambrosia.com.br/post"]')).toBeTruthy();
+  expect(queryByText("Website")).toBeNull();
+  expect(queryByText("Links")).toBeNull();
+});

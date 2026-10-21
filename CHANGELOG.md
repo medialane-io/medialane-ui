@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.211.1] — 2026-10-21
+
+### Changed
+
+- Asset page: publications and posts read in one centred column with the platform's text size, the cover as a short banner, and the website beside the byline instead of in the overview.
+
 ## [0.211.0] — 2026-10-21
 
 ### Added
