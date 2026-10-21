@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.209.0] — 2026-10-21
+
+### Changed
+
+- Asset page: no stats row (Floor, Last sale) and no owner "Listed for" line. Cancel listing carries the listed price, its USD value and the expiry; the collection card shows the collection floor.
+- `AssetMarketplacePanel` no longer takes `floorPriceRaw` / `lastSaleRaw`; `AssetCollectionBar` takes `floorPriceRaw`.
+
 ## [0.208.0] — 2026-10-21
 
 ### Added
