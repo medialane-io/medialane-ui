@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.206.0] — 2026-10-21
+
+### Added
+
+- `LaunchpadPage` (the app passes its quick-mint form; optional `hideGroups` / `excludeKeys`), `RemixBrowsePage`, `ServiceCollectionsPage` (tickets, club), `EditionsPage`, `DropsPage`, `PopMyEventsPage`.
+- `SignInPrompt` — a sign-in card with the app's `connectLabel` / `onRequireWallet`.
+- `BackButton` — goes back, or to `/launchpad`.
+
 ## [0.205.1] — 2026-10-21
 
 ### Changed
