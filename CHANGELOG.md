@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.214.0] — 2026-10-21
+
+### Added
+
+- Asset page: audio with a Spotify or SoundCloud link opens with the cover art beside the title, the player right under it, a creator row with the share and report icons and a description card on the left, and the marketplace panel, owner and more from the collection on the right. The overview no longer repeats the player.
+- `AssetAudio`, `audioEmbed`; `AssetRelatedList` takes `shape` (`video` or `square`).
+
 ## [0.213.1] — 2026-10-21
 
 ### Added

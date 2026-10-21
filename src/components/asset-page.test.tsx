@@ -215,3 +215,32 @@ test("other types ignore a video link", async () => {
   await waitFor(() => expect(getByText("Alice Video")).toBeTruthy());
   expect(container.querySelectorAll("iframe").length).toBe(0);
 });
+
+const audio = (metadata: Record<string, unknown>) =>
+  token({ metadata: { name: "Chinese Alarm Clock", description: "A song by Kalamaha", image: null, ipType: "Audio", attributes: [], ...metadata } as unknown as ApiToken["metadata"] });
+
+const spotify = [{ trait_type: "Spotify URL", value: "https://open.spotify.com/track/4uLU6hMCjMI75M1A2tKUQC" }];
+
+test("an audio asset with a playable link opens with the player right under the title", async () => {
+  const { getByText, container } = renderPage(audio({ attributes: spotify }), collection({ name: "Kalamaha Nó Samsara" }));
+  await waitFor(() => expect(getByText("Chinese Alarm Clock")).toBeTruthy());
+  const frames = container.querySelectorAll("iframe");
+  expect(frames.length).toBe(1);
+  expect(frames[0].getAttribute("src")).toContain("open.spotify.com/embed/track/4uLU6hMCjMI75M1A2tKUQC");
+  expect(getByText("A song by Kalamaha")).toBeTruthy();
+  expect(getByText("Audio")).toBeTruthy();
+  expect(getByText("Markets")).toBeTruthy();
+});
+
+test("an audio asset does not repeat its player in the overview", async () => {
+  const { getByText, queryByText, container } = renderPage(audio({ attributes: spotify }), collection());
+  await waitFor(() => expect(getByText("Chinese Alarm Clock")).toBeTruthy());
+  expect(container.querySelectorAll("iframe").length).toBe(1);
+  expect(queryByText("Spotify")).toBeNull();
+});
+
+test("an audio asset without a playable link keeps the standard layout", async () => {
+  const { getByText, container } = renderPage(audio({ attributes: [] }), collection());
+  await waitFor(() => expect(getByText("Chinese Alarm Clock")).toBeTruthy());
+  expect(container.querySelectorAll("iframe").length).toBe(0);
+});

@@ -11,6 +11,7 @@ import { AssetHeaderBlock, AssetMediaColumn, AssetOwnerRow } from "./asset-top-s
 import { AssetPublication } from "./asset-publication.js";
 import { IpTypeBadge } from "./ip-type-badge.js";
 import { AssetRelatedList, AssetVideo, VIDEO_EMBED_TRAITS, videoEmbed } from "./asset-video.js";
+import { AssetAudio, AUDIO_EMBED_TRAITS, audioEmbed } from "./asset-audio.js";
 import { AssetUtilityIcons } from "./asset-utility-icons.js";
 import { AssetMarketplacePanel } from "./asset-marketplace-panel.js";
 import { AssetOwnersPanel } from "./asset-owners-panel.js";
@@ -212,13 +213,14 @@ function AssetPageView({
 
   const articleText = token.metadata?.description?.trim() || null;
   const video = (token.metadata?.ipType ?? "").toLowerCase() === "video" ? videoEmbed(attributes) : null;
+  const audio = (token.metadata?.ipType ?? "").toLowerCase() === "audio" ? audioEmbed(attributes) : null;
   const isPublication = !!articleText && PUBLICATION_TYPES.has((token.metadata?.ipType ?? "").toLowerCase());
   const publisherName = collection?.name ?? contract.slice(0, 8) + "…";
   const websiteUrl = attributes.find((a) => a.trait_type === "Website")?.value ?? null;
   const overview = isPublication
     ? assetAttributes(attributes.filter((a) => a.trait_type !== "Website"))
-    : video
-      ? assetAttributes(attributes.filter((a) => !VIDEO_EMBED_TRAITS.has(a.trait_type ?? "")))
+    : video || audio
+      ? assetAttributes(attributes.filter((a) => !VIDEO_EMBED_TRAITS.has(a.trait_type ?? "") && !AUDIO_EMBED_TRAITS.has(a.trait_type ?? "")))
       : { attributes, hasTemplateData, isDisplayAttr };
 
   const marketBlock = (
@@ -228,7 +230,7 @@ function AssetPageView({
       {config.market ? (
         <AssetMarketplacePanel
           asset={token}
-          compact={isPublication || !!video}
+          compact={isPublication || !!video || !!audio}
           cheapest={market.cheapest}
           usdValue={market.cheapestUsd}
           isOwner={market.isOwner}
@@ -315,6 +317,44 @@ function AssetPageView({
             <AssetRelatedList
               title={publisherName}
               titleHref={collectionHref("STARKNET", contract)}
+              items={collectionTokens
+                .filter((t) => String(t.tokenId) !== String(tokenId))
+                .map((t) => ({
+                  tokenId: t.tokenId,
+                  name: t.metadata?.name || `${config.namePrefix} #${t.tokenId}`,
+                  image: resolveImage(t.metadata?.image),
+                  href: assetHref("STARKNET", contract, t.tokenId),
+                }))}
+            />
+          </aside>
+        </div>
+        ) : audio ? (
+        <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] lg:gap-12 gap-8 items-start">
+          <AssetAudio
+            name={name}
+            image={image}
+            embedSrc={audio.src}
+            embedLabel={audio.label}
+            description={token.metadata?.description}
+            collectionName={publisherName}
+            collectionImage={resolveImage(collection?.image)}
+            collectionHref={collectionHref("STARKNET", contract)}
+            utilities={
+              <AssetUtilityIcons
+                contractExplorerHref={`${EXPLORER_URL}/contract/${token.contractAddress}`}
+                shareTitle={name}
+                onReportClick={() => setReportOpen(true)}
+              />
+            }
+          />
+          <aside className="space-y-6 min-w-0">
+            <IpTypeBadge ipType={token.metadata?.ipType ?? "Audio"} size="md" showLabel />
+            {marketBlock}
+            {ownerAddress ? <AssetOwnerRow ownerAddress={ownerAddress} ownerHref={profileHref({ address: ownerAddress })} /> : null}
+            <AssetRelatedList
+              title={publisherName}
+              titleHref={collectionHref("STARKNET", contract)}
+              shape="square"
               items={collectionTokens
                 .filter((t) => String(t.tokenId) !== String(tokenId))
                 .map((t) => ({
