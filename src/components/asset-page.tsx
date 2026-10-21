@@ -211,6 +211,8 @@ function AssetPageView({
   const articleText = token.metadata?.description?.trim() || null;
   const isPublication = !!articleText && PUBLICATION_TYPES.has((token.metadata?.ipType ?? "").toLowerCase());
   const publisherName = collection?.name ?? contract.slice(0, 8) + "…";
+  const websiteUrl = attributes.find((a) => a.trait_type === "Website")?.value ?? null;
+  const overview = isPublication && websiteUrl ? assetAttributes(attributes.filter((a) => a.trait_type !== "Website")) : { attributes, hasTemplateData, isDisplayAttr };
 
   const marketBlock = (
     <>
@@ -279,7 +281,7 @@ function AssetPageView({
       {token.isHidden ? <HiddenContentBanner /> : null}
       <PageBackdrop image={image} />
 
-      <PageContainer className="pt-20 space-y-8 pb-8">
+      <PageContainer className={isPublication ? "pt-20 space-y-6 pb-8 mx-auto max-w-2xl" : "pt-20 space-y-8 pb-8"}>
         {isPublication ? (
           <>
             <AssetPublicationHeader
@@ -294,16 +296,11 @@ function AssetPageView({
               publisherHref={collectionHref("STARKNET", contract)}
               author={attributes.find((a) => a.trait_type === "Author")?.value ?? token.metadata?.author}
               publishedAt={fullTokenData?.registeredAt}
+              websiteUrl={websiteUrl}
             />
-            <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_22rem] lg:gap-14 gap-8 items-start">
-              <div className="order-2 lg:order-1 min-w-0 max-w-3xl">
-                <AssetPublicationText text={articleText!} />
-              </div>
-              <aside className="order-1 lg:order-2 space-y-6 lg:sticky lg:top-20">
-                {marketBlock}
-                {detailsBlock}
-              </aside>
-            </div>
+            <div className="space-y-6">{marketBlock}</div>
+            <AssetPublicationText text={articleText!} />
+            {detailsBlock}
           </>
         ) : (
         <div className="grid grid-cols-1 lg:grid-cols-2 lg:gap-10 gap-8 items-start">
@@ -354,7 +351,7 @@ function AssetPageView({
           </TabsList>
 
           <TabsContent value="overview">
-            <AssetOverviewContent attributes={attributes} hasTemplateData={hasTemplateData} isDisplayAttr={isDisplayAttr} />
+            <AssetOverviewContent attributes={overview.attributes} hasTemplateData={overview.hasTemplateData} isDisplayAttr={overview.isDisplayAttr} />
           </TabsContent>
 
           {config.market ? (
