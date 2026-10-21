@@ -25,6 +25,7 @@ export interface ApiOrderLike {
 
 export interface AssetMarketplacePanelProps<T extends ApiOrderLike = ApiOrderLike> {
   asset: AssetRef;
+  compact?: boolean;
   cheapest?: T;
   isOwner: boolean;
   isProcessing: boolean;
@@ -75,6 +76,7 @@ function PriceLine({ label, order, usdValue }: { label: string; order: ApiOrderL
 
 export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
   asset,
+  compact = false,
   cheapest,
   isOwner,
   isProcessing,
@@ -222,7 +224,7 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
             </ActionRow>
           </div>
         ) : (
-          <AssetAccessCards asset={asset} />
+          <AssetAccessCards asset={asset} stacked={compact} />
         )}
 
         {myBid ? (

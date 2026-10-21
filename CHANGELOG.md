@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.212.1] — 2026-10-21
+
+### Changed
+
+- Asset page: publications and posts give the article the wider column and a narrow sidebar with more space between them. The sidebar holds the type icon, the marketplace panel (cards stacked) and the collection card. The website is a "Read more" button after the text, the publisher row above the title is gone, and the overview shows the rights at full width like other assets.
+- `AssetMarketplacePanel` takes an optional `compact` prop that stacks the access cards.
+- `AssetRightsCard` is removed and `AssetPublication` no longer takes publisher or date props.
+
 ## [0.212.0] — 2026-10-21
 
 ### Changed

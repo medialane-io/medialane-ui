@@ -9,7 +9,7 @@ import { PageContainer } from "./page-container.js";
 import { PageBackdrop } from "./media-header.js";
 import { AssetHeaderBlock, AssetMediaColumn, AssetOwnerRow } from "./asset-top-sections.js";
 import { AssetPublication } from "./asset-publication.js";
-import { AssetRightsCard } from "./asset-rights-card.js";
+import { IpTypeBadge } from "./ip-type-badge.js";
 import { AssetUtilityIcons } from "./asset-utility-icons.js";
 import { AssetMarketplacePanel } from "./asset-marketplace-panel.js";
 import { AssetOwnersPanel } from "./asset-owners-panel.js";
@@ -88,7 +88,6 @@ const KINDS: Record<AssetKind, KindConfig> = {
 };
 
 const PUBLICATION_TYPES = new Set(["publications", "posts"]);
-const PUBLICATION_SIDE_TRAITS = new Set(["Website", "License", "Commercial Use", "Derivatives", "Attribution", "Territory", "AI Policy"]);
 
 const VARIANT_KINDS: Partial<Record<string, AssetKind>> = { edition: "edition", ticket: "ticket", club: "membership", pop: "pop" };
 
@@ -214,7 +213,7 @@ function AssetPageView({
   const isPublication = !!articleText && PUBLICATION_TYPES.has((token.metadata?.ipType ?? "").toLowerCase());
   const publisherName = collection?.name ?? contract.slice(0, 8) + "…";
   const websiteUrl = attributes.find((a) => a.trait_type === "Website")?.value ?? null;
-  const overview = isPublication ? assetAttributes(attributes.filter((a) => !PUBLICATION_SIDE_TRAITS.has(a.trait_type ?? ""))) : { attributes, hasTemplateData, isDisplayAttr };
+  const overview = isPublication ? assetAttributes(attributes.filter((a) => a.trait_type !== "Website")) : { attributes, hasTemplateData, isDisplayAttr };
 
   const marketBlock = (
     <>
@@ -223,6 +222,7 @@ function AssetPageView({
       {config.market ? (
         <AssetMarketplacePanel
           asset={token}
+          compact={isPublication}
           cheapest={market.cheapest}
           usdValue={market.cheapestUsd}
           isOwner={market.isOwner}
@@ -285,29 +285,22 @@ function AssetPageView({
 
       <PageContainer className="pt-20 space-y-8 pb-8">
         {isPublication ? (
-        <div className="grid grid-cols-1 lg:grid-cols-2 lg:gap-10 gap-8 items-start">
-          <div className="min-w-0">
-            <AssetPublication
-              name={name}
-              ipType={token.metadata?.ipType ?? "Publications"}
-              text={articleText!}
-              image={image}
-              imgError={imgError}
-              onImageError={() => setImgError(true)}
-              onZoom={() => setLightboxOpen(true)}
-              publisherName={publisherName}
-              publisherImage={resolveImage(collection?.image)}
-              publisherHref={collectionHref("STARKNET", contract)}
-              author={attributes.find((a) => a.trait_type === "Author")?.value ?? token.metadata?.author}
-              publishedAt={fullTokenData?.registeredAt}
-              websiteUrl={websiteUrl}
-            />
-          </div>
-          <div className="space-y-6 min-w-0 lg:sticky lg:top-16">
+        <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_22rem] lg:gap-16 gap-8 items-start">
+          <AssetPublication
+            name={name}
+            text={articleText!}
+            image={image}
+            imgError={imgError}
+            onImageError={() => setImgError(true)}
+            onZoom={() => setLightboxOpen(true)}
+            author={attributes.find((a) => a.trait_type === "Author")?.value ?? token.metadata?.author}
+            websiteUrl={websiteUrl}
+          />
+          <aside className="space-y-6 min-w-0 lg:sticky lg:top-16">
+            <IpTypeBadge ipType={token.metadata?.ipType ?? "Publications"} size="md" />
             {marketBlock}
-            <AssetRightsCard attributes={attributes} />
             {detailsBlock}
-          </div>
+          </aside>
         </div>
         ) : (
         <div className="grid grid-cols-1 lg:grid-cols-2 lg:gap-10 gap-8 items-start">
