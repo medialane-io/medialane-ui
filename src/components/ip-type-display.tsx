@@ -85,7 +85,7 @@ function parseVimeoEmbed(url: string): string | null {
   }
 }
 
-function getEmbedSrc(platform: EmbedPlatform, value: string): string | null {
+export function getEmbedSrc(platform: EmbedPlatform, value: string): string | null {
   switch (platform) {
     case "youtube":    return parseYouTubeEmbed(value);
     case "spotify":    return parseSpotifyEmbed(value);

@@ -179,3 +179,39 @@ test("the type icon carries its label on publications and on other assets", asyn
   await waitFor(() => expect(second.getByText("Plain")).toBeTruthy());
   expect(second.getByText("Art")).toBeTruthy();
 });
+
+const video = (metadata: Record<string, unknown>) =>
+  token({ metadata: { name: "Alice Video", description: "Alice, an original song", image: null, ipType: "Video", attributes: [], ...metadata } as unknown as ApiToken["metadata"] });
+
+const youtube = [{ trait_type: "YouTube URL", value: "https://www.youtube.com/watch?v=abc123" }];
+
+test("a video with a playable link opens as a watch page with the player first", async () => {
+  const { getByText, container } = renderPage(video({ attributes: youtube }), collection({ name: "Kalamaha" }));
+  await waitFor(() => expect(getByText("Alice Video")).toBeTruthy());
+  const frames = container.querySelectorAll("iframe");
+  expect(frames.length).toBe(1);
+  expect(frames[0].getAttribute("src")).toBe("https://www.youtube.com/embed/abc123");
+  expect(getByText("Alice, an original song")).toBeTruthy();
+  expect(getByText("Video")).toBeTruthy();
+  expect(getByText("Markets")).toBeTruthy();
+  expect(getByText("app dialogs")).toBeTruthy();
+});
+
+test("a video does not repeat its player in the overview", async () => {
+  const { getByText, queryByText, container } = renderPage(video({ attributes: youtube }), collection());
+  await waitFor(() => expect(getByText("Alice Video")).toBeTruthy());
+  expect(container.querySelectorAll("iframe").length).toBe(1);
+  expect(queryByText("YouTube")).toBeNull();
+});
+
+test("a video without a playable link keeps the standard layout", async () => {
+  const { getByText, container } = renderPage(video({ attributes: [] }), collection());
+  await waitFor(() => expect(getByText("Alice Video")).toBeTruthy());
+  expect(container.querySelectorAll("iframe").length).toBe(0);
+});
+
+test("other types ignore a video link", async () => {
+  const { getByText, container } = renderPage(video({ ipType: "Art", attributes: youtube }), collection());
+  await waitFor(() => expect(getByText("Alice Video")).toBeTruthy());
+  expect(container.querySelectorAll("iframe").length).toBe(0);
+});

@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.213.0] — 2026-10-21
+
+### Added
+
+- Asset page: videos with a YouTube, Vimeo or TikTok link open as a watch page, with the player first, the title, a creator row with the share and report icons, and a description card on the left, and the marketplace panel, owner and more from the collection on the right. The overview no longer repeats the player.
+- `AssetVideo`, `AssetRelatedList`, `videoEmbed`; `getEmbedSrc` is exported from `ip-type-display`.
+
 ## [0.212.3] — 2026-10-21
 
 ### Changed
