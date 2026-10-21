@@ -239,7 +239,7 @@ export function CollectionPage({ contract, slots }: CollectionPageProps) {
       <div className="px-4 sm:px-6 pb-12">
         <Tabs value={activeTab} onValueChange={setActiveTab}>
           <div className="sticky top-0 z-10 flex items-center gap-2 pt-3 pb-1">
-            <TabsList className="min-w-0 flex-1 overflow-x-auto sm:flex-none">
+            <TabsList className="min-w-0 flex-1 justify-start overflow-x-auto sm:flex-none">
               <TabsTrigger value="assets" className="flex-1 sm:flex-none">
                 Assets{collection?.totalSupply ? ` (${collection.totalSupply.toLocaleString()})` : ""}
               </TabsTrigger>
