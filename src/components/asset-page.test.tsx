@@ -129,14 +129,14 @@ test("a publication reads as an article, with the text in paragraphs and no cut-
 test("a publication with no text keeps the standard layout", async () => {
   const { getByText, container } = renderPage(publication({ description: null }), collection());
   await waitFor(() => expect(getByText("Essay")).toBeTruthy());
-  expect(container.querySelector("header")).toBeNull();
+  expect(container.querySelector("article")).toBeNull();
 });
 
 test("other types keep the standard layout", async () => {
   const { getByText, container } = renderPage(publication({ ipType: "Art", description: "Plain" }), collection());
   await waitFor(() => expect(getByText("Essay")).toBeTruthy());
   expect(getByText("Plain")).toBeTruthy();
-  expect(container.querySelector("header")).toBeNull();
+  expect(container.querySelector("article")).toBeNull();
 });
 
 test("a publication shows its website beside the byline and not again in the overview", async () => {
@@ -145,7 +145,22 @@ test("a publication shows its website beside the byline and not again in the ove
     collection(),
   );
   await waitFor(() => expect(getByText("ambrosia.com.br")).toBeTruthy());
-  expect(container.querySelector('header a[href="https://www.ambrosia.com.br/post"]')).toBeTruthy();
+  expect(container.querySelector('article a[href="https://www.ambrosia.com.br/post"]')).toBeTruthy();
   expect(queryByText("Website")).toBeNull();
   expect(queryByText("Links")).toBeNull();
+});
+
+test("a publication shows its licence terms beside the article, once", async () => {
+  const attributes = [
+    { trait_type: "License", value: "CC BY-SA" },
+    { trait_type: "Commercial Use", value: "Yes" },
+    { trait_type: "Derivatives", value: "Share-Alike" },
+    { trait_type: "Territory", value: "Worldwide" },
+  ];
+  const { getByText, getAllByText, queryByText } = renderPage(publication({ description: "Lead.\n\nBody.", attributes }), collection());
+  await waitFor(() => expect(getByText("Lead.")).toBeTruthy());
+  expect(getAllByText("CC BY-SA").length).toBe(1);
+  expect(getByText("Open to remix and commercial use, worldwide.")).toBeTruthy();
+  expect(getByText("Share-Alike")).toBeTruthy();
+  expect(queryByText("Rights")).toBeNull();
 });

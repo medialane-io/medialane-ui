@@ -8,7 +8,8 @@ import { useRouter } from "./router.js";
 import { PageContainer } from "./page-container.js";
 import { PageBackdrop } from "./media-header.js";
 import { AssetHeaderBlock, AssetMediaColumn, AssetOwnerRow } from "./asset-top-sections.js";
-import { AssetPublicationHeader, AssetPublicationText } from "./asset-publication-header.js";
+import { AssetPublication } from "./asset-publication.js";
+import { AssetRightsCard } from "./asset-rights-card.js";
 import { AssetUtilityIcons } from "./asset-utility-icons.js";
 import { AssetMarketplacePanel } from "./asset-marketplace-panel.js";
 import { AssetOwnersPanel } from "./asset-owners-panel.js";
@@ -87,6 +88,7 @@ const KINDS: Record<AssetKind, KindConfig> = {
 };
 
 const PUBLICATION_TYPES = new Set(["publications", "posts"]);
+const PUBLICATION_SIDE_TRAITS = new Set(["Website", "License", "Commercial Use", "Derivatives", "Attribution", "Territory", "AI Policy"]);
 
 const VARIANT_KINDS: Partial<Record<string, AssetKind>> = { edition: "edition", ticket: "ticket", club: "membership", pop: "pop" };
 
@@ -212,7 +214,7 @@ function AssetPageView({
   const isPublication = !!articleText && PUBLICATION_TYPES.has((token.metadata?.ipType ?? "").toLowerCase());
   const publisherName = collection?.name ?? contract.slice(0, 8) + "…";
   const websiteUrl = attributes.find((a) => a.trait_type === "Website")?.value ?? null;
-  const overview = isPublication && websiteUrl ? assetAttributes(attributes.filter((a) => a.trait_type !== "Website")) : { attributes, hasTemplateData, isDisplayAttr };
+  const overview = isPublication ? assetAttributes(attributes.filter((a) => !PUBLICATION_SIDE_TRAITS.has(a.trait_type ?? ""))) : { attributes, hasTemplateData, isDisplayAttr };
 
   const marketBlock = (
     <>
@@ -284,10 +286,11 @@ function AssetPageView({
       <PageContainer className="pt-20 space-y-8 pb-8">
         {isPublication ? (
         <div className="grid grid-cols-1 lg:grid-cols-2 lg:gap-10 gap-8 items-start">
-          <div className="space-y-6 min-w-0">
-            <AssetPublicationHeader
+          <div className="min-w-0">
+            <AssetPublication
               name={name}
               ipType={token.metadata?.ipType ?? "Publications"}
+              text={articleText!}
               image={image}
               imgError={imgError}
               onImageError={() => setImgError(true)}
@@ -299,10 +302,10 @@ function AssetPageView({
               publishedAt={fullTokenData?.registeredAt}
               websiteUrl={websiteUrl}
             />
-            <AssetPublicationText text={articleText!} />
           </div>
           <div className="space-y-6 min-w-0 lg:sticky lg:top-16">
             {marketBlock}
+            <AssetRightsCard attributes={attributes} />
             {detailsBlock}
           </div>
         </div>
