@@ -76,7 +76,7 @@ export interface AssetRelatedItem {
   href: string;
 }
 
-export function AssetRelatedList({ title, titleHref, items }: { title: string; titleHref: string; items: AssetRelatedItem[] }) {
+export function AssetRelatedList({ title, titleHref, items, shape = "video" }: { title: string; titleHref: string; items: AssetRelatedItem[]; shape?: "video" | "square" }) {
   if (items.length === 0) return null;
   return (
     <section className="space-y-3">
@@ -88,10 +88,10 @@ export function AssetRelatedList({ title, titleHref, items }: { title: string; t
         {items.map((item) => (
           <li key={item.tokenId}>
             <Link href={item.href} className="group flex gap-3">
-              <div className="aspect-video w-40 shrink-0 overflow-hidden rounded-xl bg-muted/40">
+              <div className={shape === "square" ? "aspect-square w-16 shrink-0 overflow-hidden rounded-xl bg-muted/40" : "aspect-video w-40 shrink-0 overflow-hidden rounded-xl bg-muted/40"}>
                 {item.image ? <img src={item.image} alt="" loading="lazy" className="h-full w-full object-cover" /> : null}
               </div>
-              <p className="min-w-0 text-sm font-medium leading-snug line-clamp-3 group-hover:text-primary transition-colors">{item.name}</p>
+              <p className={shape === "square" ? "min-w-0 self-center text-sm font-medium leading-snug line-clamp-2 group-hover:text-primary transition-colors" : "min-w-0 text-sm font-medium leading-snug line-clamp-3 group-hover:text-primary transition-colors"}>{item.name}</p>
             </Link>
           </li>
         ))}
