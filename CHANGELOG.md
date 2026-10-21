@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.208.0] — 2026-10-21
+
+### Added
+
+- `LicenseRequestPage` — the license request form; it calls `MedialaneApp.ensureSignedIn` (optional; the app's own account sign-in), then sends through the SDK. Signed-out visitors see `SignInPrompt`.
+- `MedialaneApp.ensureSignedIn` (optional).
+
 ## [0.207.0] — 2026-10-21
 
 ### Added

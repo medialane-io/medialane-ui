@@ -278,6 +278,7 @@ export { DropsPage } from "./components/drops-page.js";
 export { PopMyEventsPage } from "./components/pop-my-events-page.js";
 export { CreatorPage, type CreatorPageProps } from "./components/creator-page.js";
 export { MoreMenu } from "./components/more-menu.js";
+export { LicenseRequestPage } from "./components/license-request-page.js";
 export { orderUsd } from "./utils/order-usd.js";
 export { getSeenOffers, markOffersAsSeen } from "./utils/seen-offers.js";
 export { NAV_ITEMS, navGroups, type NavItemId, type NavGroupSpec } from "./data/nav-commands.js";
