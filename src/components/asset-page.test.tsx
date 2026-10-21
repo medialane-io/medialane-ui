@@ -108,3 +108,33 @@ test("the explorer, share and report icons sit below the collection card", async
   expect(icons).toBeGreaterThan(-1);
   expect(icons).toBeGreaterThan(card);
 });
+
+const publication = (metadata: Record<string, unknown>) =>
+  token({ metadata: { name: "Essay", image: null, attributes: [], ipType: "Publications", ...metadata } as unknown as ApiToken["metadata"] });
+
+test("a publication reads as an article, with the text in paragraphs and no cut-off", async () => {
+  const { getByText, getAllByText, queryByText } = renderPage(
+    publication({ description: "First paragraph.\n\nSecond paragraph." }),
+    collection({ name: "Ambrosia" }),
+  );
+  await waitFor(() => expect(getByText("Essay")).toBeTruthy());
+  expect(getByText("First paragraph.")).toBeTruthy();
+  expect(getByText("Second paragraph.")).toBeTruthy();
+  expect(getAllByText("Ambrosia").length).toBe(2);
+  expect(queryByText("Show more")).toBeNull();
+  expect(getByText("Markets")).toBeTruthy();
+  expect(getByText("app dialogs")).toBeTruthy();
+});
+
+test("a publication with no text keeps the standard layout", async () => {
+  const { getByText, container } = renderPage(publication({ description: null }), collection());
+  await waitFor(() => expect(getByText("Essay")).toBeTruthy());
+  expect(container.querySelector("header")).toBeNull();
+});
+
+test("other types keep the standard layout", async () => {
+  const { getByText, container } = renderPage(publication({ ipType: "Art", description: "Plain" }), collection());
+  await waitFor(() => expect(getByText("Essay")).toBeTruthy());
+  expect(getByText("Plain")).toBeTruthy();
+  expect(container.querySelector("header")).toBeNull();
+});

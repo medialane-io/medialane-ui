@@ -8,6 +8,7 @@ import { useRouter } from "./router.js";
 import { PageContainer } from "./page-container.js";
 import { PageBackdrop } from "./media-header.js";
 import { AssetHeaderBlock, AssetMediaColumn, AssetOwnerRow } from "./asset-top-sections.js";
+import { AssetPublicationHeader, AssetPublicationText } from "./asset-publication-header.js";
 import { AssetUtilityIcons } from "./asset-utility-icons.js";
 import { AssetMarketplacePanel } from "./asset-marketplace-panel.js";
 import { AssetOwnersPanel } from "./asset-owners-panel.js";
@@ -84,6 +85,8 @@ const KINDS: Record<AssetKind, KindConfig> = {
   membership: { namePrefix: "Membership", accents: ASSET_ACCENTS.membership, market: true, remix: false, Panel: MembershipPanel },
   pop: { namePrefix: "POP", accents: ASSET_ACCENTS.standard, market: false, remix: false },
 };
+
+const PUBLICATION_TYPES = new Set(["publications", "posts"]);
 
 const VARIANT_KINDS: Partial<Record<string, AssetKind>> = { edition: "edition", ticket: "ticket", club: "membership", pop: "pop" };
 
@@ -205,12 +208,104 @@ function AssetPageView({
   const { Panel } = config;
   const { Comments, PopBurn } = slots;
 
+  const articleText = token.metadata?.description?.trim() || null;
+  const isPublication = !!articleText && PUBLICATION_TYPES.has((token.metadata?.ipType ?? "").toLowerCase());
+  const publisherName = collection?.name ?? contract.slice(0, 8) + "…";
+
+  const marketBlock = (
+    <>
+      {Panel ? <Panel contract={contract} tokenId={tokenId} quantityOwned={market.quantityOwned} /> : null}
+
+      {config.market ? (
+        <AssetMarketplacePanel
+          asset={token}
+          cheapest={market.cheapest}
+          usdValue={market.cheapestUsd}
+          isOwner={market.isOwner}
+          isProcessing={actions.isProcessing}
+          isERC1155={market.isERC1155}
+          canListMoreEditions={market.canListMoreEditions}
+          isMarketLoading={listingsLoading}
+          myListing={market.myListing}
+          activeBids={market.activeBids}
+          remixEnabled={config.remix && remixPolicy.canRemixDirect}
+          showDealOption={config.remix && remixPolicy.showDealOption}
+          onCancelClick={actions.cancel}
+          onAcceptBid={actions.acceptBid}
+          onOpenListing={actions.list}
+          onOpenTransfer={actions.transfer}
+          onOpenPurchase={actions.buy}
+          onOpenOffer={actions.offer}
+          onOpenRemix={() => router.push(`/create/remix/${contract}/${tokenId}`)}
+        />
+      ) : null}
+
+      {kind === "pop" && market.isOwner ? <PopBurn collectionAddress={contract} tokenId={tokenId} /> : null}
+
+      {market.isERC1155 && holders.length > 0 ? (
+        <AssetOwnersPanel balances={holders} total={token.holderCount} editions={Number(token.supply ?? 0)} />
+      ) : null}
+    </>
+  );
+
+  const detailsBlock = (
+    <div className="pt-5 space-y-5">
+      {ownerAddress ? <AssetOwnerRow ownerAddress={ownerAddress} ownerHref={profileHref({ address: ownerAddress })} /> : null}
+      {collection?.service === "drop-collection" ? <DropTokenLink contract={contract} name={collection.name ?? null} /> : null}
+      <AssetCollectionBar
+        collectionName={publisherName}
+        collectionImage={resolveImage(collection?.image)}
+        collectionHref={collectionHref("STARKNET", contract)}
+        currentTokenId={tokenId}
+        siblingTokens={collectionTokens.map((t) => ({
+          tokenId: t.tokenId,
+          image: resolveImage(t.metadata?.image),
+        }))}
+        onNavigate={(id) => router.push(assetHref("STARKNET", contract, id))}
+        floorPriceRaw={collection?.floorPrice}
+      />
+      <div className="-ml-3">
+        <AssetUtilityIcons
+          contractExplorerHref={`${EXPLORER_URL}/contract/${token.contractAddress}`}
+          shareTitle={name}
+          onReportClick={() => setReportOpen(true)}
+        />
+      </div>
+    </div>
+  );
+
   return (
     <div className="relative z-0 min-h-screen">
       {token.isHidden ? <HiddenContentBanner /> : null}
       <PageBackdrop image={image} />
 
       <PageContainer className="pt-20 space-y-8 pb-8">
+        {isPublication ? (
+          <>
+            <AssetPublicationHeader
+              name={name}
+              ipType={token.metadata?.ipType ?? "Publications"}
+              image={image}
+              imgError={imgError}
+              onImageError={() => setImgError(true)}
+              onZoom={() => setLightboxOpen(true)}
+              publisherName={publisherName}
+              publisherImage={resolveImage(collection?.image)}
+              publisherHref={collectionHref("STARKNET", contract)}
+              author={attributes.find((a) => a.trait_type === "Author")?.value ?? token.metadata?.author}
+              publishedAt={fullTokenData?.registeredAt}
+            />
+            <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_22rem] lg:gap-14 gap-8 items-start">
+              <div className="order-2 lg:order-1 min-w-0 max-w-3xl">
+                <AssetPublicationText text={articleText!} />
+              </div>
+              <aside className="order-1 lg:order-2 space-y-6 lg:sticky lg:top-20">
+                {marketBlock}
+                {detailsBlock}
+              </aside>
+            </div>
+          </>
+        ) : (
         <div className="grid grid-cols-1 lg:grid-cols-2 lg:gap-10 gap-8 items-start">
           <AssetMediaColumn
             shouldReduce={Boolean(shouldReduce)}
@@ -244,63 +339,12 @@ function AssetPageView({
               ) : null}
             />
 
-            {Panel ? <Panel contract={contract} tokenId={tokenId} quantityOwned={market.quantityOwned} /> : null}
+            {marketBlock}
 
-            {config.market ? (
-              <AssetMarketplacePanel
-                asset={token}
-                cheapest={market.cheapest}
-                usdValue={market.cheapestUsd}
-                isOwner={market.isOwner}
-                isProcessing={actions.isProcessing}
-                isERC1155={market.isERC1155}
-                canListMoreEditions={market.canListMoreEditions}
-                isMarketLoading={listingsLoading}
-                myListing={market.myListing}
-                activeBids={market.activeBids}
-                remixEnabled={config.remix && remixPolicy.canRemixDirect}
-                showDealOption={config.remix && remixPolicy.showDealOption}
-                onCancelClick={actions.cancel}
-                onAcceptBid={actions.acceptBid}
-                onOpenListing={actions.list}
-                onOpenTransfer={actions.transfer}
-                onOpenPurchase={actions.buy}
-                onOpenOffer={actions.offer}
-                onOpenRemix={() => router.push(`/create/remix/${contract}/${tokenId}`)}
-              />
-            ) : null}
-
-            {kind === "pop" && market.isOwner ? <PopBurn collectionAddress={contract} tokenId={tokenId} /> : null}
-
-            {market.isERC1155 && holders.length > 0 ? (
-              <AssetOwnersPanel balances={holders} total={token.holderCount} editions={Number(token.supply ?? 0)} />
-            ) : null}
-
-            <div className="pt-5 space-y-5">
-              {ownerAddress ? <AssetOwnerRow ownerAddress={ownerAddress} ownerHref={profileHref({ address: ownerAddress })} /> : null}
-              {collection?.service === "drop-collection" ? <DropTokenLink contract={contract} name={collection.name ?? null} /> : null}
-              <AssetCollectionBar
-                collectionName={collection?.name ?? contract.slice(0, 8) + "…"}
-                collectionImage={resolveImage(collection?.image)}
-                collectionHref={collectionHref("STARKNET", contract)}
-                currentTokenId={tokenId}
-                siblingTokens={collectionTokens.map((t) => ({
-                  tokenId: t.tokenId,
-                  image: resolveImage(t.metadata?.image),
-                }))}
-                onNavigate={(id) => router.push(assetHref("STARKNET", contract, id))}
-                floorPriceRaw={collection?.floorPrice}
-              />
-              <div className="-ml-3">
-                <AssetUtilityIcons
-                  contractExplorerHref={`${EXPLORER_URL}/contract/${token.contractAddress}`}
-                  shareTitle={name}
-                  onReportClick={() => setReportOpen(true)}
-                />
-              </div>
-            </div>
+            {detailsBlock}
           </motion.div>
         </div>
+        )}
 
         <Tabs defaultValue="overview">
           <TabsList>
