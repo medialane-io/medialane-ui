@@ -262,6 +262,7 @@ export { PortfolioAssets, type PortfolioAssetActions, type UsePortfolioAssetActi
 export { PortfolioShell, PORTFOLIO_TABS, type PortfolioTab } from "./components/portfolio-shell.js";
 export { RewardsDashboard, REWARD_ACTION_LABELS } from "./components/rewards/rewards-dashboard.js";
 export { LeaderboardPanel, type LeaderboardPanelProps } from "./components/rewards/leaderboard-panel.js";
+export { CollectionNameClaim } from "./components/collection-name-claim.js";
 export { getSeenOffers, markOffersAsSeen } from "./utils/seen-offers.js";
 export { NAV_ITEMS, navGroups, type NavItemId, type NavGroupSpec } from "./data/nav-commands.js";
 export { ResultThumbnail } from "./components/result-thumbnail.js";
