@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
-import { buildAssetMetadata, type ApiCollection } from "@medialane/sdk";
+import { buildAssetMetadata, uploadSizeError, type ApiCollection } from "@medialane/sdk";
 import { executeIntent, deployedCollectionFromReceipt, mintedTokenIdFromReceipt } from "@medialane/sdk/starknet";
 import { mintableCollections, collectionKey } from "./mintable-collections.js";
 import {
@@ -47,8 +47,6 @@ const DOCUMENT_SIGNED_URL_MIME_TYPES = new Set([
   "text/plain",
   "text/markdown",
 ]);
-const MEDIA_MAX_BYTES = 100 * 1024 * 1024;
-const DOCUMENT_MAX_BYTES = 20 * 1024 * 1024;
 
 function detectMediaKind(mime: string): MediaKind | null {
   if (mime.startsWith("image/")) return MEDIA_ROUTE_MIME_TYPES.has(mime) ? "image" : null;
@@ -293,9 +291,9 @@ export function FastMint(props: FastMintProps) {
       return;
     }
     const viaMediaRoute = MEDIA_ROUTE_MIME_TYPES.has(file.type);
-    const maxBytes = viaMediaRoute ? MEDIA_MAX_BYTES : DOCUMENT_MAX_BYTES;
-    if (file.size > maxBytes) {
-      setErrorMsg(`Maximum size is ${maxBytes / (1024 * 1024)} MB.`);
+    const sizeError = uploadSizeError(file, viaMediaRoute ? "media" : "document");
+    if (sizeError) {
+      setErrorMsg(sizeError);
       return;
     }
     setMediaFile(file);

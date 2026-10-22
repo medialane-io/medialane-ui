@@ -74,7 +74,7 @@ export function Dropzone({
         )}
       </Button>
       <p className="text-2xs text-muted-foreground/70">
-        {mediaKindLock === "image" ? "JPG, PNG, GIF, WebP, or SVG up to 100 MB" : "Images, audio, video, and PDFs up to 100 MB; other documents up to 20 MB"}
+        {mediaKindLock === "image" ? "JPG, PNG, GIF, WebP, or SVG" : "Images, audio, video, PDFs and documents"}
       </p>
       <input
         ref={mediaInputRef}

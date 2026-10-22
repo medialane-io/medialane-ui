@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import { uploadSizeError } from "@medialane/sdk";
 import type { IPType } from "../data/ip.js";
 import {
   IP_TEMPLATES,
@@ -120,8 +121,9 @@ export function IPTypeFields({ ipType, onChange, uploadDocument, existingDocumen
 
   const handleDocPick = async (file: File) => {
     if (!uploadDocument || !docUpload) return;
-    if (file.size > docUpload.maxMb * 1024 * 1024) {
-      setDocError(`File must be under ${docUpload.maxMb} MB`);
+    const sizeError = uploadSizeError(file, "document");
+    if (sizeError) {
+      setDocError(sizeError);
       return;
     }
     setDocError(null);

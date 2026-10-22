@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.215.0] — 2026-10-22
+
+### Changed
+
+- Fast mint and the document field check file size with the SDK's `uploadSizeError`, one size for every kind (`@medialane/sdk` 0.191.0). The dropzone hint no longer lists sizes.
+- `DocUploadConfig` no longer has `maxMb`.
+
 ## [0.214.0] — 2026-10-21
 
 ### Added
