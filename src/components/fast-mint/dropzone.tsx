@@ -5,6 +5,7 @@ import { ImagePlus, Upload, LogIn } from "lucide-react";
 import { cn } from "../../utils/cn.js";
 import { Button } from "../button.js";
 import type { MediaKind } from "./types.js";
+import { acceptFor } from "@medialane/sdk";
 
 export interface DropzoneProps {
   mediaKindLock?: MediaKind;
@@ -79,7 +80,7 @@ export function Dropzone({
       <input
         ref={mediaInputRef}
         type="file"
-        accept={mediaKindLock === "image" ? "image/*" : undefined}
+        accept={mediaKindLock === "image" ? acceptFor("image") : undefined}
         className="hidden"
         onChange={(e) => { const f = e.target.files?.[0]; if (f) onFileSelected(f); }}
       />

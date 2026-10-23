@@ -5,6 +5,7 @@ import { useRef } from "react";
 import { ImagePlus, X } from "lucide-react";
 import { Button } from "./button.js";
 import { Input } from "./input.js";
+import { acceptFor } from "@medialane/sdk";
 
 export interface DraftItem {
   id: string;
@@ -34,7 +35,7 @@ export function DropItemList({ items, collectionName, onAddFiles, onRemove, onEd
         <input
           ref={inputRef}
           type="file"
-          accept="image/*"
+          accept={acceptFor("image")}
           multiple
           className="hidden"
           onChange={(e) => {
