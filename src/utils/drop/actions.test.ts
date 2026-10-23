@@ -9,12 +9,16 @@ const intent = { id: "i1", requiresSignature: false, calls: [{ contractAddress: 
 function deps(receiptEvents: unknown[]) {
   const sent: { method: string; body: unknown }[] = [];
   const executed: { calls: unknown; opts: unknown }[] = [];
-  const api = new Proxy({}, {
-    get: (_t, method: string) => async (body: unknown) => {
-      sent.push({ method, body });
-      return { data: intent };
+  const api = {
+    intents: {
+      create: async (method: string, body: unknown) => {
+        sent.push({ method, body });
+        return intent;
+      },
+      confirm: async () => ({}),
+      syncTransaction: async () => ({ applied: 0, pending: false }),
     },
-  });
+  };
   return {
     sent,
     executed,
@@ -37,7 +41,7 @@ describe("drop actions", () => {
       owner: "0x2", name: "N", symbol: "N", baseUri: "ipfs://cid/", maxSupply: 10,
       terms: { startTime: 0, endTime: 0, price: "0", paymentToken: "0x0", maxPerWallet: "0" }, allowlistRoot: "0xabc",
     });
-    expect(d.sent[0]).toEqual({ method: "createCollectionIntent", body: {
+    expect(d.sent[0]).toEqual({ method: "create-collection", body: {
       owner: "0x2", name: "N", symbol: "N", baseUri: "ipfs://cid/", service: "drop-collection", maxSupply: "10",
       terms: { startTime: 0, endTime: 0, price: "0", paymentToken: "0x0", maxPerWallet: "0" }, allowlistRoot: "0xabc",
     } });
@@ -49,13 +53,13 @@ describe("drop actions", () => {
     const claimed = { from_address: DROP, keys: [hash.getSelectorFromName("Claimed"), "0x2"], data: ["0x2", "0x0", "0x5", "0x0", "0x0", "0x0"] };
     const d = deps([claimed]);
     const res = await mintDrop(d.deps, { claimer: "0x2", collection: DROP, quantity: 2n, proof: ["0xa"] });
-    expect(d.sent[0]).toEqual({ method: "createDropClaimIntent", body: { claimer: "0x2", collection: DROP, quantity: "2", proof: ["0xa"] } });
+    expect(d.sent[0]).toEqual({ method: "drop-claim", body: { claimer: "0x2", collection: DROP, quantity: "2", proof: ["0xa"] } });
     expect(res).toEqual({ txHash: "0xtx", tokenIds: ["5", "6"] });
   });
 
   test("manage sends the action through a manage intent", async () => {
     const d = deps([]);
     await manageDrop(d.deps, { owner: "0x2", collection: DROP, action: "set_allowlist_root", root: "0x0" });
-    expect(d.sent[0]!.method).toBe("createDropManageIntent");
+    expect(d.sent[0]!.method).toBe("drop-manage");
   });
 });

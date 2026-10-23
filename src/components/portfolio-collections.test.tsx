@@ -8,7 +8,7 @@ import { PortfolioCollections } from "./portfolio-collections.js";
 afterEach(cleanup);
 
 function renderPage() {
-  const client = { api: { listCollections: async () => ({ data: [] }) } } as unknown as MedialaneClient;
+  const client = { api: { collections: { list: async () => ({ data: [] }) } } } as unknown as MedialaneClient;
   const value = { getClient: () => client, getSigner: () => { throw new Error("unused"); }, walletAddress: "0xabc", onRequireWallet: () => {} } as MedialaneApp;
   return render(
     <SWRConfig value={{ provider: () => new Map() }}>

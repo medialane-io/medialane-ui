@@ -45,7 +45,7 @@ function connectionType(): string | null {
 }
 
 async function signedUploadUrl(api: ApiClient, kind: SignedUploadKind): Promise<string> {
-  const signedUrl = (await api.getMetadataSignedUrl(kind)).data?.url;
+  const signedUrl = (await api.metadata.signedUrl(kind)).data?.url;
   if (!signedUrl) throw new Error("Failed to prepare the upload");
   return signedUrl;
 }
@@ -138,7 +138,7 @@ export async function uploadFileToIpfs(
 }
 
 export async function uploadJsonToIpfs(api: ApiClient, payload: unknown): Promise<string> {
-  const uri = (await api.uploadMetadata(payload as Record<string, unknown>)).data?.url;
+  const uri = (await api.metadata.upload(payload as Record<string, unknown>)).data?.url;
   if (!uri) throw new Error("Metadata upload failed");
   return uri;
 }
@@ -147,7 +147,7 @@ export function uploadDirectoryToIpfs(
   api: ApiClient,
   files: { name: string; content: unknown }[],
 ): Promise<{ cid: string; baseUri: string }> {
-  return api.uploadMetadataDirectory(files);
+  return api.metadata.uploadDirectory(files);
 }
 
 export function isUserRejection(err: unknown): boolean {

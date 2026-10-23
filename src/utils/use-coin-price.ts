@@ -13,7 +13,7 @@ function useAllCoinPrices() {
   const client = useMedialaneClient();
   const { data, isLoading } = useSWR<ApiCoinPrices>(
     "coin-prices",
-    async () => (await client.api.getCoinPrices()).data,
+    async () => await client.api.coins.prices(),
     { revalidateOnFocus: false, refreshInterval: REFRESH_MS, shouldRetryOnError: false }
   );
   return { prices: data ?? null, isLoading };

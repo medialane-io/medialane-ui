@@ -16,10 +16,7 @@ const B = "0x00000000000000000000000000000000000000000000000000000000000000bb";
 const entry = (rank: number, address: string) => ({ rank, address, accountId: null, publicId: null, totalXp: 100 * rank, currentLevel: 1, currentLevelName: "Seed", badgeColor: "#000" });
 
 function renderPanel(rows: unknown[]) {
-  const client = { api: {
-    getRewardsLeaderboard: async () => ({ data: rows, meta: { page: 1, limit: 12, total: rows.length } }),
-    getCreatorProfile: async (address: string) => (address === A ? { walletAddress: A, username: "drummer", name: "Drum Kit", avatarImage: null } : null),
-  } } as unknown as MedialaneClient;
+  const client = { api: { rewards: { leaderboard: async () => ({ data: rows, meta: { page: 1, limit: 12, total: rows.length } }) }, creators: { findProfile: async (address: string) => (address === A ? { walletAddress: A, username: "drummer", name: "Drum Kit", avatarImage: null } : null) } } } as unknown as MedialaneClient;
   const app = { getClient: () => client, getSigner: () => { throw new Error("unused"); }, walletAddress: null, onRequireWallet: () => {} } as MedialaneApp;
   return render(<SWRConfig value={{ provider: () => new Map() }}><MedialaneAppProvider value={app}><LeaderboardPanel limit={12} /></MedialaneAppProvider></SWRConfig>);
 }

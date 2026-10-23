@@ -8,7 +8,7 @@ export function usePlatformStats() {
   const client = useMedialaneClient();
   const { data, isLoading } = useSWR<ApiPlatformStats>(
     "platform-stats",
-    () => client.api.getPlatformStats(),
+    () => client.api.platform.stats(),
     { revalidateOnFocus: false, dedupingInterval: 60_000 }
   );
   return { stats: data ?? null, isLoading };

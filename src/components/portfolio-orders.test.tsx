@@ -53,7 +53,7 @@ test("listings show edition and unique listings and cancel through the app", asy
     order({ orderHash: "o1", offer: { itemType: "ERC20" } as ApiOrder["offer"] }),
     order({ orderHash: "l3", status: "FULFILLED" as ApiOrder["status"] }),
   ] });
-  const { view, calls } = renderView("listings", { getOrdersByUser });
+  const { view, calls } = renderView("listings", { orders: { byUser: getOrdersByUser } });
   await waitFor(() => expect(view.getByText("Token l2")).toBeTruthy());
   expect(view.getByText("Token l1")).toBeTruthy();
   expect(view.queryByText("Token o1")).toBeNull();
@@ -70,7 +70,7 @@ test("offers show only token offers", async () => {
     order({ orderHash: "l1" }),
     order({ orderHash: "o1", offer: { itemType: "ERC20" } as ApiOrder["offer"] }),
   ] });
-  const { view } = renderView("offers", { getOrdersByUser });
+  const { view } = renderView("offers", { orders: { byUser: getOrdersByUser } });
   await waitFor(() => expect(view.getByText("Token o1")).toBeTruthy());
   expect(view.queryByText("Token l1")).toBeNull();
 });
@@ -81,7 +81,7 @@ test("received offers come from offers on owned tokens, link the sender's profil
     order({ orderHash: "r1", offerer: OTHER, offer: { itemType: "ERC20" } as ApiOrder["offer"] }),
     order({ orderHash: "r2", offerer: OTHER, offer: { itemType: "ERC20" } as ApiOrder["offer"] }),
   ] });
-  const { view, calls } = renderView("received", { getReceivedOffers });
+  const { view, calls } = renderView("received", { orders: { receivedBy: getReceivedOffers } });
   await waitFor(() => expect(view.getByText("Token r2")).toBeTruthy());
   const senderLinks = Array.from(view.container.querySelectorAll("a")).map((a) => a.getAttribute("href")).filter((h) => h?.startsWith("/account/"));
   expect(senderLinks).toEqual([`/account/${OTHER}`, `/account/${OTHER}`]);
@@ -100,7 +100,7 @@ test("counter-offers show the seller's price against the bid and accept the coun
       ? [order({ orderHash: "c1", offerer: OTHER, price: { formatted: "8", currency: "STRK" } as ApiOrder["price"] })]
       : [order({ orderHash: "c2", offerer: OTHER, endTime: past })],
   });
-  const { view, calls } = renderView("counter-offers", { getOrdersByUser, getCounterOffers });
+  const { view, calls } = renderView("counter-offers", { orders: { byUser: getOrdersByUser, counterOffers: getCounterOffers } });
   await waitFor(() => expect(view.getByText("Token c1")).toBeTruthy());
   await waitFor(() => expect(view.getByText("Token c2")).toBeTruthy());
   expect(view.getByText("8.00 STRK")).toBeTruthy();
@@ -113,6 +113,6 @@ test("counter-offers show the seller's price against the bid and accept the coun
 });
 
 test("an empty view shows its empty state", async () => {
-  const { view } = renderView("received", { getReceivedOffers: async () => ({ data: [] }) });
+  const { view } = renderView("received", { orders: { receivedBy: async () => ({ data: [] }) } });
   await waitFor(() => expect(view.getByText("No offers received yet")).toBeTruthy());
 });

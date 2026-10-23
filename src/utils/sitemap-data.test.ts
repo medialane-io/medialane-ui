@@ -6,21 +6,17 @@ function fakeApi(totals: { collections: number; tokens: number; creators: number
   const calls = { collections: 0, tokens: 0, creators: 0 };
   const page = (total: number, n: number, size: number) =>
     Array.from({ length: Math.max(0, Math.min(size, total - (n - 1) * size)) }, (_, i) => (n - 1) * size + i);
-  const api = {
-    listCollections: async ({ page: n, limit }: { page: number; limit: number }) => {
+  const api = { collections: { list: async ({ page: n, limit }: { page: number; limit: number }) => {
       calls.collections++;
       return { data: page(totals.collections, n, limit).map((i) => ({ contractAddress: `0x${i}` })) };
-    },
-    getTokens: async ({ page: n, limit }: { page: number; limit: number }) => {
+    } }, tokens: { list: async ({ page: n, limit }: { page: number; limit: number }) => {
       calls.tokens++;
       if (failTokensAtPage === n) throw new Error("down");
       return { data: page(totals.tokens, n, limit).map((i) => ({ contractAddress: "0x1", tokenId: String(i) })) };
-    },
-    getCreators: async ({ page: n, limit }: { page: number; limit: number }) => {
+    } }, creators: { list: async ({ page: n, limit }: { page: number; limit: number }) => {
       calls.creators++;
       return { creators: page(totals.creators, n, limit).map((i) => ({ username: i % 2 ? `u${i}` : null })) };
-    },
-  } as unknown as ApiClient;
+    } } } as unknown as ApiClient;
   return { api, calls };
 }
 

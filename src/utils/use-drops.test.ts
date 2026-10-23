@@ -11,7 +11,7 @@ function deps(drop: typeof DROP | null) {
       return ["0x3", "0x0"];
     },
   };
-  const client = { api: { getDropState: async () => drop }, provider } as never;
+  const client = { api: { chainReads: { dropState: async () => drop } }, provider } as never;
   return { client, chainCalls };
 }
 

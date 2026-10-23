@@ -9,39 +9,39 @@ const quiet = { revalidateOnFocus: false, shouldRetryOnError: false } as const;
 
 export function useDrops( status: ApiDropListStatus) {
   const client = useMedialaneClient();
-  const { data, error, isLoading } = useSWR(["drops", status], () => client.api.getDrops({ status, limit: 48 }), quiet);
+  const { data, error, isLoading } = useSWR(["drops", status], () => client.api.drops.list({ status, limit: 48 }), quiet);
   return { drops: data?.data ?? ([] as ApiDrop[]), isLoading, error };
 }
 
 export function useMyDrops( organizer: string | null) {
   const client = useMedialaneClient();
-  const { data, error, isLoading } = useSWR(organizer ? ["my-drops", organizer] : null, () => client.api.getDrops({ organizer: organizer!, limit: 100 }), quiet);
+  const { data, error, isLoading } = useSWR(organizer ? ["my-drops", organizer] : null, () => client.api.drops.list({ organizer: organizer!, limit: 100 }), quiet);
   return { drops: data?.data ?? ([] as ApiDrop[]), isLoading, error };
 }
 
 export function useDrop( contract: string | null) {
   const client = useMedialaneClient();
-  const { data, error, isLoading, mutate } = useSWR(contract ? ["drop", contract] : null, () => client.api.getDrop(contract!), { ...quiet, refreshInterval: 30_000 });
+  const { data, error, isLoading, mutate } = useSWR(contract ? ["drop", contract] : null, () => client.api.drops.find(contract!), { ...quiet, refreshInterval: 30_000 });
   return { drop: data ?? null, isLoading, error, mutate };
 }
 
 export function useDropMints( contract: string | null) {
   const client = useMedialaneClient();
-  const { data, isLoading, mutate } = useSWR(contract ? ["drop-mints", contract] : null, () => client.api.getDropMints(contract!, { limit: 20 }), { ...quiet, refreshInterval: 30_000 });
+  const { data, isLoading, mutate } = useSWR(contract ? ["drop-mints", contract] : null, () => client.api.drops.mints(contract!, { limit: 20 }), { ...quiet, refreshInterval: 30_000 });
   return { mints: data?.data ?? ([] as ApiDropMint[]), isLoading, mutate };
 }
 
 /** The platform fee, in basis points, the backend adds to a mint for this app; null until known. */
 export function useDropFee(): number | null {
   const client = useMedialaneClient();
-  const { data } = useSWR("drop-fee", () => client.api.getDropFee(), { revalidateOnFocus: false });
+  const { data } = useSWR("drop-fee", () => client.api.drops.fee(), { revalidateOnFocus: false });
   return data?.launchpadBps ?? null;
 }
 
 /** A file from the drop's metadata folder ("1" or "collection.json"). */
 export function useDropFile<T = Record<string, unknown>>(baseUri: string | null, name: string) {
   const client = useMedialaneClient();
-  const { data } = useSWR(baseUri ? ["drop-file", baseUri, name] : null, async () => (await client.api.resolveMetadata(`${baseUri}${name}`)).data as T, quiet);
+  const { data } = useSWR(baseUri ? ["drop-file", baseUri, name] : null, async () => (await client.api.metadata.resolve(`${baseUri}${name}`)).data as T, quiet);
   return data ?? null;
 }
 
@@ -56,7 +56,7 @@ export async function readDropState(
   contract: string,
   wallet: string | null,
 ): Promise<DropChainState> {
-  const drop = await client.api.getDropState(contract);
+  const drop = await client.api.chainReads.dropState(contract);
   if (!drop) throw new Error("Drop not found");
   const [claimed, balance] = await Promise.all([
     wallet ? dropClaimedBy(client.provider, contract, wallet) : Promise.resolve(null),

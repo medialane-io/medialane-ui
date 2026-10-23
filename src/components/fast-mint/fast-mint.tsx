@@ -410,14 +410,14 @@ export function FastMint(props: FastMintProps) {
         let contractAddress = erc721Collections.find((c) => c.collectionId === existingCollectionId)?.contractAddress ?? null;
 
         if (collectionMode === "new") {
-          const intentRes = await client.api.createCollectionIntent({
+          const intentRes = await client.api.intents.create("create-collection", {
             owner: walletAddress,
             name: newCollectionName,
             symbol: newCollectionSymbol,
             description: newCollectionDescription || undefined,
             image,
           });
-          await executeIntent(signer, client, intentRes.data);
+          await executeIntent(signer, client, intentRes);
 
           const found = await pollForNewCollection(newCollectionName, newCollectionSymbol);
           if (!found) throw new Error("Collection created, but it's still indexing — try minting again in a moment from My Collections.");
@@ -425,14 +425,14 @@ export function FastMint(props: FastMintProps) {
           contractAddress = found.contractAddress ?? null;
         }
 
-        const intentRes = await client.api.createMintIntent({
+        const intentRes = await client.api.intents.create("mint", {
           owner: walletAddress,
           collectionId,
           recipient: walletAddress,
           tokenUri,
           royaltyBps: Math.round(values.royalty * 100),
         });
-        result = await executeIntent(signer, client, intentRes.data);
+        result = await executeIntent(signer, client, intentRes);
         finalContractAddress = contractAddress;
 
         if (finalContractAddress) {
@@ -442,7 +442,7 @@ export function FastMint(props: FastMintProps) {
         let collectionContract = existingCollectionContract;
 
         if (collectionMode === "new") {
-          const intentRes = await client.api.createCollectionIntent({
+          const intentRes = await client.api.intents.create("create-collection", {
             owner: walletAddress,
             name: newCollectionName,
             symbol: newCollectionSymbol,
@@ -451,14 +451,14 @@ export function FastMint(props: FastMintProps) {
             baseUri: "",
             service: "mip-erc1155",
           });
-          const deployResult = await executeIntent(signer, client, intentRes.data);
+          const deployResult = await executeIntent(signer, client, intentRes);
 
           const deployed = deployedCollectionFromReceipt(deployResult.receipt, "mip-erc1155");
           if (!deployed) throw new Error("Collection deployed, but its address couldn't be read — check My Collections to mint into it.");
           collectionContract = deployed;
         }
 
-        const intentRes = await client.api.createMintIntent({
+        const intentRes = await client.api.intents.create("mint", {
           owner: walletAddress,
           recipient: walletAddress,
           collectionContract,
@@ -466,7 +466,7 @@ export function FastMint(props: FastMintProps) {
           value: editionCount,
           royaltyBps: Math.round(values.royalty * 100),
         });
-        result = await executeIntent(signer, client, intentRes.data);
+        result = await executeIntent(signer, client, intentRes);
         finalContractAddress = collectionContract;
         finalTokenId = mintedTokenIdFromReceipt(result.receipt, collectionContract);
       }

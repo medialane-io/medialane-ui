@@ -9,7 +9,7 @@ export function usePopCollections() {
   const client = useMedialaneClient();
   const { data, error, isLoading, mutate } = useSWR<{ data: ApiCollection[]; meta?: ApiMeta }>(
     "pop-collections",
-    () => client.api.listCollections({ service: "pop-protocol", hideEmpty: false, limit: 50 }),
+    () => client.api.collections.list({ service: "pop-protocol", hideEmpty: false, limit: 50 }),
     { revalidateOnFocus: false }
   );
   return { collections: data?.data ?? [], meta: data?.meta, isLoading, error, mutate };
@@ -19,7 +19,7 @@ export function useMyPopEvents( owner: string | null) {
   const client = useMedialaneClient();
   const { data, error, isLoading, mutate } = useSWR<ApiCollection[]>(
     owner ? `my-pop-events-${owner}` : null,
-    async () => (await client.api.listCollections({ service: "pop-protocol", owner: owner!, limit: 50 })).data ?? [],
+    async () => (await client.api.collections.list({ service: "pop-protocol", owner: owner!, limit: 50 })).data ?? [],
     { revalidateOnFocus: false }
   );
   return { events: data ?? [], isLoading, error, mutate };

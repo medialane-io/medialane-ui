@@ -76,7 +76,7 @@ export function CreatorPage({ address: addressProp, username, useAssetActions, u
   const { collections, isLoading: collectionsLoading } = useCollectionsByOwner(address);
   const { orders, isLoading: ordersLoading } = useUserOrders(activeTab === "listings" ? address : null);
   const { activities, isLoading: activitiesLoading } = useActivitiesByAddress(activeTab === "activity" || activeTab === "analytics" ? address : null);
-  const { data: hidden } = useSWR(address ? `creator-hidden-${address}` : null, () => client.api.isCreatorHidden(address!).catch(() => false));
+  const { data: hidden } = useSWR(address ? `creator-hidden-${address}` : null, () => client.api.creators.isHidden(address!).catch(() => false));
   const actions = useAssetActions({ refresh: () => void refreshTokens() });
   const market = useMarketActions();
 

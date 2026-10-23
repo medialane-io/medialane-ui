@@ -12,10 +12,10 @@ const { MedialaneAppProvider } = await import("./medialane-app.js");
 afterEach(() => cleanup());
 
 test("each owned collection links to its name settings", async () => {
-  const client = { api: { listCollections: async () => ({ data: [
+  const client = { api: { collections: { list: async () => ({ data: [
     { id: "1", contractAddress: "0xc1", name: "Loops", image: null, profile: { slug: "loops" } },
     { id: "2", contractAddress: "0xc2", name: "Drafts", image: null, profile: null },
-  ] }) } } as unknown as MedialaneClient;
+  ] }) } } } as unknown as MedialaneClient;
   const app = { getClient: () => client, getSigner: () => { throw new Error("unused"); }, walletAddress: "0xa", onRequireWallet: () => {} } as MedialaneApp;
   const view = render(<SWRConfig value={{ provider: () => new Map() }}><MedialaneAppProvider value={app}><CollectionNameClaim /></MedialaneAppProvider></SWRConfig>);
   await waitFor(() => expect(view.getByText("Loops")).toBeTruthy());

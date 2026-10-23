@@ -25,7 +25,7 @@ export function useCollections(
   const { data, error, isLoading, mutate } = useSWR<ApiResponse<ApiCollection[]>>(
     key,
     async () => {
-      const res = await client.api.listCollections({ page, limit, isFeatured, sort, service, standard });
+      const res = await client.api.collections.list({ page, limit, isFeatured, sort, service, standard });
       return hideEmpty
         ? { ...res, data: res.data.filter((collection) => (collection.totalSupply ?? 0) > 0) }
         : res;
@@ -50,11 +50,11 @@ export function useCollection( contract: string | null) {
 
   const { data, error, isLoading } = useSWR(
     contract ? queryKeys.collection(contract) : null,
-    () => client.api.getCollection(contract!),
+    () => client.api.collections.get(contract!),
     { revalidateOnFocus: false }
   );
 
-  return { collection: data?.data ?? null, isLoading, error };
+  return { collection: data ?? null, isLoading, error };
 }
 
 export function useCollectionsByOwner( owner: string | null) {
@@ -62,7 +62,7 @@ export function useCollectionsByOwner( owner: string | null) {
 
   const { data, error, isLoading, mutate } = useSWR(
     owner ? queryKeys.collectionsOwner(owner) : null,
-    () => client.api.listCollections({ owner: owner!, limit: 50 }),
+    () => client.api.collections.list({ owner: owner!, limit: 50 }),
     { revalidateOnFocus: false, refreshInterval: 60_000 }
   );
 
@@ -79,7 +79,7 @@ export function useCollectionTokens(
 
   const { data, error, isLoading, mutate } = useSWR(
     contract ? queryKeys.collectionTokens(contract, page, limit, sort) : null,
-    () => client.api.getCollectionTokens(contract!, page, limit, sort),
+    () => client.api.collections.tokens(contract!, { page: page, limit: limit, sort: sort }),
     { revalidateOnFocus: false }
   );
 

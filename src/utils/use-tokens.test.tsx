@@ -12,12 +12,10 @@ const withClient = (client: MedialaneClient) =>
 
 const clientWith = (calls: unknown[][]) =>
   ({
-    api: {
-      getTokenBalance: async (...args: unknown[]) => {
+    api: { tokens: { balance: async (...args: unknown[]) => {
         calls.push(args);
-        return { data: { owner: args[2], amount: "4" } };
-      },
-    },
+        return { owner: args[2], amount: "4" };
+      } } },
   }) as unknown as MedialaneClient;
 
 test("useTokenBalance reads the owner's balance", async () => {
@@ -44,7 +42,7 @@ test("queryKeys.tokenBalance is revalidated with token keys", () => {
 test("useTokensByOwner refetches when the page changes", async () => {
   const pages: unknown[] = [];
   const client = {
-    api: { getTokensByOwner: async (_a: string, page: number) => { pages.push(page); return { data: [] }; } },
+    api: { tokens: { ownedBy: async (_a: string, opts: { page?: number }) => { pages.push(opts.page); return { data: [] }; } } },
   } as unknown as MedialaneClient;
   const { rerender } = renderHook(({ page }) => useTokensByOwner("0xowner-pages", page, 20), { wrapper: withClient(client), initialProps: { page: 1 } });
   await waitFor(() => expect(pages).toEqual([1]));

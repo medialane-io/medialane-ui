@@ -56,7 +56,7 @@ import "@medialane/ui/styles";
 | `react-hook-form` | >=7.50.0 |
 | `recharts` | >=2.0.0 |
 | `swr` | >=2.0.0 |
-| `@medialane/sdk` | >=0.73.0 |
+| `@medialane/sdk` | >=0.199.0 <0.201.0 |
 | `@radix-ui/react-checkbox` | >=1.1.0 |
 | `@radix-ui/react-collapsible` | >=1.1.0 |
 | `@radix-ui/react-dialog` | >=1.1.0 |

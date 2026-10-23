@@ -20,13 +20,7 @@ const token = (id: string) => ({ chain: "STARKNET", contractAddress: "0xc1", tok
 const order = (h: string, itemType: string) => ({ orderHash: h, offerer: A, status: "ACTIVE", nftContract: "0xc1", nftTokenId: h, offer: { itemType }, consideration: { itemType: "ERC20" }, price: { formatted: "1", currency: "STRK" }, token: { name: `Listed ${h}`, image: null }, endTime: String(Math.floor(Date.now() / 1000) + 9999) });
 
 function renderPage(props: { username?: string; address?: string }, app: Partial<MedialaneApp> = {}, profile: unknown = { walletAddress: A, username: "drummer", name: "Drum Kit", avatarImage: null }) {
-  const api: Record<string, unknown> = {
-    getCreatorByUsername: async (u: string) => (u === "drummer" ? profile : null),
-    getCreatorProfile: async () => profile,
-    getTokensByOwner: async () => ({ data: [token("1")], meta: { total: 1 } }),
-    getOrdersByUser: async () => ({ data: [order("l1", "ERC721"), order("l2", "ERC1155")] }),
-    isCreatorHidden: async () => false,
-  };
+  const api: Record<string, unknown> = { creators: { findByUsername: async (u: string) => (u === "drummer" ? profile : null), findProfile: async () => profile, isHidden: async () => false }, tokens: { ownedBy: async () => ({ data: [token("1")], meta: { total: 1 } }) }, orders: { byUser: async () => ({ data: [order("l1", "ERC721"), order("l2", "ERC1155")] }) } };
   const client = { api: new Proxy(api, { get: (t, k: string) => t[k] ?? (async () => ({ data: [], meta: { total: 0 } })) }) } as unknown as MedialaneClient;
   const value = { getClient: () => client, getSigner: () => { throw new Error("unused"); }, walletAddress: null, onRequireWallet: () => {}, ...app } as MedialaneApp;
   const calls: string[] = [];

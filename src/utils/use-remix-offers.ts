@@ -8,7 +8,7 @@ export function useTokenRemixes( contract: string | null, tokenId: string | null
   const client = useMedialaneClient();
   const { data, error, isLoading, mutate } = useSWR<ApiResponse<ApiPublicRemix[]>>(
     contract && tokenId ? `token-remixes-${contract}-${tokenId}` : null,
-    () => client.api.getTokenRemixes(contract!, tokenId!),
+    () => client.api.tokens.remixes(contract!, tokenId!),
     { refreshInterval: 60000, revalidateOnFocus: false }
   );
 

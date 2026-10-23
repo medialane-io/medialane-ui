@@ -26,7 +26,7 @@ const app = (over: Partial<MediaWalletAppProps>): MediaWalletAppProps =>
 
 const medialaneApp = {
   getClient: () => ({
-    api: { getTokensByOwner: async () => ({ data: [] }) },
+    api: { tokens: { ownedBy: async () => ({ data: [] }) } },
     provider: { callContract: async () => ["0x0", "0x0"] },
   }),
   getSigner: () => { throw new Error("unused"); },

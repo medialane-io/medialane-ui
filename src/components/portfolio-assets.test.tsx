@@ -21,7 +21,7 @@ const token = (id: string, listed: boolean) => ({
 }) as unknown as ApiToken;
 
 function renderGrid(tokens: ApiToken[]) {
-  const client = { api: { getTokensByOwner: async () => ({ data: tokens, meta: { total: tokens.length } }) } } as unknown as MedialaneClient;
+  const client = { api: { tokens: { ownedBy: async () => ({ data: tokens, meta: { total: tokens.length } }) } } } as unknown as MedialaneClient;
   const app = { getClient: () => client, getSigner: () => { throw new Error("unused"); }, walletAddress: ME, onRequireWallet: () => {} } as MedialaneApp;
   const calls: string[] = [];
   const useActions = (ctx: { refresh: () => void }) => {

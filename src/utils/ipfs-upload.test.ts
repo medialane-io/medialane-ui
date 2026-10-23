@@ -1,5 +1,5 @@
 import { test, expect, mock } from "bun:test";
-import { UserFacingError, type ApiClient } from "@medialane/sdk";
+import { UserFacingError, type ApiClient, type MetadataApi } from "@medialane/sdk";
 import {
   uploadFileToIpfs,
   uploadJsonToIpfs,
@@ -11,12 +11,14 @@ import {
   type UploadDiagnostics,
 } from "./ipfs-upload.js";
 
-function fakeApi(overrides: Partial<Record<keyof ApiClient, unknown>> = {}): ApiClient {
+function fakeApi(overrides: { metadata?: Partial<MetadataApi> } = {}): ApiClient {
   return {
-    getMetadataSignedUrl: async () => ({ data: { url: "https://upload.example/signed" } }),
-    uploadMetadata: async () => ({ data: { cid: "metaCid", url: "ipfs://metaCid" } }),
-    uploadMetadataDirectory: async () => ({ cid: "bafydir", baseUri: "ipfs://bafydir/" }),
-    ...overrides,
+    metadata: {
+      signedUrl: async () => ({ data: { url: "https://upload.example/signed" } }),
+      upload: async () => ({ data: { cid: "metaCid", url: "ipfs://metaCid" } }),
+      uploadDirectory: async () => ({ cid: "bafydir", baseUri: "ipfs://bafydir/" }),
+      ...overrides.metadata,
+    },
   } as unknown as ApiClient;
 }
 
@@ -27,19 +29,17 @@ function pinataReturns(json: unknown) {
 test("uploadFileToIpfs gets a signed URL through the SDK, uploads, and returns the cid/uri", async () => {
   pinataReturns({ data: { cid: "bafyabc" } });
   const kinds: unknown[] = [];
-  const api = fakeApi({
-    getMetadataSignedUrl: async (kind: unknown) => {
+  const api = fakeApi({ metadata: { signedUrl: async (kind: unknown) => {
       kinds.push(kind);
       return { data: { url: "https://upload.example/signed" } };
-    },
-  });
+    } } });
   const result = await uploadFileToIpfs(api, new File(["x"], "a.png"), "image");
   expect(result).toEqual({ cid: "bafyabc", uri: "ipfs://bafyabc" });
   expect(kinds).toEqual(["image"]);
 });
 
 test("uploadFileToIpfs throws the backend's error when the signed-url request fails", async () => {
-  const api = fakeApi({ getMetadataSignedUrl: async () => { throw new Error("gateway down"); } });
+  const api = fakeApi({ metadata: { signedUrl: async () => { throw new Error("gateway down"); } } });
   await expect(uploadFileToIpfs(api, new File(["x"], "a.png"))).rejects.toThrow("gateway down");
 });
 
@@ -68,7 +68,7 @@ test("uploadJsonToIpfs returns the uri the SDK reports", async () => {
 });
 
 test("uploadJsonToIpfs throws with the backend's error message on failure", async () => {
-  const api = fakeApi({ uploadMetadata: async () => { throw new Error("bad payload"); } });
+  const api = fakeApi({ metadata: { upload: async () => { throw new Error("bad payload"); } } });
   await expect(uploadJsonToIpfs(api, {})).rejects.toThrow("bad payload");
 });
 
@@ -116,12 +116,10 @@ test("a failed upload is retried once with a fresh signed URL and a copy of the 
     if (posts === 1) throw new TypeError("Failed to fetch");
     return { ok: true, json: async () => ({ data: { cid: "bafyretry" } }) } as Response;
   }) as unknown as typeof fetch;
-  const api = fakeApi({
-    getMetadataSignedUrl: async () => {
+  const api = fakeApi({ metadata: { signedUrl: async () => {
       urls.push("signed");
       return { data: { url: `https://upload.example/signed/${urls.length}` } };
-    },
-  });
+    } } });
 
   const result = await uploadFileToIpfs(api, new File(["xyz"], "a.jpg", { type: "image/jpeg" }));
 
@@ -167,12 +165,10 @@ test("a file the browser can no longer read is reported and not retried", async 
     if (init?.method === "POST") throw new TypeError("Failed to fetch");
     return { ok: true } as Response;
   }) as unknown as typeof fetch;
-  const api = fakeApi({
-    getMetadataSignedUrl: async () => {
+  const api = fakeApi({ metadata: { signedUrl: async () => {
       signedUrls += 1;
       return { data: { url: "https://upload.example/signed" } };
-    },
-  });
+    } } });
 
   const err = await uploadFileToIpfs(api, unreadableFile()).catch((e) => e);
 

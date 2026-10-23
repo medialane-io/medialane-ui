@@ -13,7 +13,7 @@ const { MedialaneAppProvider } = await import("./medialane-app.js");
 afterEach(() => cleanup());
 
 function renderPage(walletAddress: string | null) {
-  const client = { api: { listCollections: async () => ({ data: [] }) } } as unknown as MedialaneClient;
+  const client = { api: { collections: { list: async () => ({ data: [] }) } } } as unknown as MedialaneClient;
   const app = { getClient: () => client, getSigner: () => { throw new Error("unused"); }, walletAddress, onRequireWallet: () => {}, connectLabel: "Connect wallet" } as MedialaneApp;
   return render(<SWRConfig value={{ provider: () => new Map() }}><MedialaneAppProvider value={app}><EditionsPage /></MedialaneAppProvider></SWRConfig>);
 }
