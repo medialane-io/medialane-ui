@@ -398,6 +398,8 @@ export { Popover, PopoverTrigger, PopoverContent, PopoverAnchor } from "./compon
 export { HelpIcon } from "./components/help-icon.js";
 export { EmptyOrError } from "./components/empty-or-error.js";
 export { NewCollectionMenu, CollectionTypeChoices, COLLECTION_TYPES } from "./components/new-collection-menu.js";
+export { ExternalLinkField } from "./components/external-link-field.js";
+export { PortfolioCollections } from "./components/portfolio-collections.js";
 export { TabEmptyState } from "./components/tab-empty-state.js";
 export type { TabEmptyStateProps } from "./components/tab-empty-state.js";
 export {

@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.220.0] — 2026-10-23
+
+### Added
+
+- `ExternalLinkField`: the External link field of the collection forms, prefilled with the account page (`accountPageUrl`) when empty.
+- `PortfolioCollections`: the portfolio collections page, with the claim panel passed in.
+
+### Changed
+
+- Requires `@medialane/sdk` 0.198.0 or newer.
+
 ## [0.219.0] — 2026-10-23
 
 ### Changed
