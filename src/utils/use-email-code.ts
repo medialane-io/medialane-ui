@@ -1,13 +1,11 @@
 "use client";
 
 import { useCallback, useEffect, useReducer } from "react";
+import type { AccountApi } from "@medialane/sdk";
 import { describeError } from "./describe-error.js";
 import { emailCodeReducer, initialEmailCodeState, type EmailCodeState } from "./email-code.js";
 
-export interface EmailCodeApi {
-  requestEmailCode(email: string): Promise<unknown>;
-  verifyEmailCode(email: string, code: string): Promise<unknown>;
-}
+export type EmailCodeApi = Pick<AccountApi, "requestEmailCode" | "verifyEmailCode">;
 
 export interface EmailCode {
   state: EmailCodeState;

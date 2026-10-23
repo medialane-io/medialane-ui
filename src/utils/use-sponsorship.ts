@@ -16,7 +16,7 @@ export function useSponsorshipOffers( params?: { nftContract?: string; author?: 
   const client = useMedialaneClient();
   const { data, error, isLoading, mutate } = useSWR<ApiResponse<ApiSponsorshipOffer[]>>(
     key,
-    () => client.api.getSponsorshipOffers({ ...params, limit: 50 }),
+    () => client.api.sponsorship.offers({ ...params, limit: 50 }),
     { revalidateOnFocus: false }
   );
 
@@ -27,7 +27,7 @@ export function useSponsorshipOffer( offerId: string | null) {
   const client = useMedialaneClient();
   const { data, error, isLoading, mutate } = useSWR<ApiSponsorshipOffer | null>(
     offerId ? `sponsorship-offer-${offerId}` : null,
-    () => client.api.getSponsorshipOffer(offerId!),
+    () => client.api.sponsorship.findOffer(offerId!),
     { revalidateOnFocus: false }
   );
 
@@ -38,7 +38,7 @@ export function useSponsorshipBids( offerId: string | null) {
   const client = useMedialaneClient();
   const { data, error, isLoading, mutate } = useSWR<ApiSponsorshipBid[]>(
     offerId ? `sponsorship-bids-${offerId}` : null,
-    () => client.api.getSponsorshipBids(offerId!),
+    () => client.api.sponsorship.bids(offerId!),
     { revalidateOnFocus: false }
   );
 
@@ -50,7 +50,7 @@ export function useSponsorshipProposals( params?: { nftContract?: string; propos
   const client = useMedialaneClient();
   const { data, error, isLoading, mutate } = useSWR<ApiResponse<ApiSponsorshipProposal[]>>(
     key,
-    () => client.api.getSponsorshipProposals({ ...params, limit: 50 }),
+    () => client.api.sponsorship.proposals({ ...params, limit: 50 }),
     { revalidateOnFocus: false }
   );
 
@@ -61,7 +61,7 @@ export function useSponsorshipProposal( proposalId: string | null) {
   const client = useMedialaneClient();
   const { data, error, isLoading, mutate } = useSWR<ApiSponsorshipProposal | null>(
     proposalId ? `sponsorship-proposal-${proposalId}` : null,
-    () => client.api.getSponsorshipProposal(proposalId!),
+    () => client.api.sponsorship.findProposal(proposalId!),
     { revalidateOnFocus: false }
   );
 
@@ -80,7 +80,7 @@ export function useSponsorshipLicenses( params?: { holder?: string; author?: str
   const client = useMedialaneClient();
   const { data, error, isLoading, mutate } = useSWR<ApiResponse<ApiSponsorshipLicense[]>>(
     key,
-    () => client.api.getSponsorshipLicenses({ ...params, limit: 50 }),
+    () => client.api.sponsorship.licenses({ ...params, limit: 50 }),
     { revalidateOnFocus: false }
   );
 

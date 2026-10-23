@@ -33,9 +33,9 @@ async function pages<T>(max: number, pageSize: number, read: (page: number) => P
 /** Everything a sitemap lists, paged through the backend's list caps. */
 export async function collectSitemapData(api: ApiClient, limits: SitemapLimits = DEFAULT_LIMITS): Promise<SitemapData> {
   const [collections, tokens, creators] = await Promise.all([
-    pages(limits.collections, 100, async (page) => (await api.listCollections({ page, limit: 100 })).data ?? []),
-    pages(limits.tokens, 48, async (page) => (await api.getTokens({ page, limit: 48 })).data ?? []),
-    pages(limits.creators, 50, async (page) => (await api.getCreators({ page, limit: 50 })).creators ?? []),
+    pages(limits.collections, 100, async (page) => (await api.collections.list({ page, limit: 100 })).data ?? []),
+    pages(limits.tokens, 48, async (page) => (await api.tokens.list({ page, limit: 48 })).data ?? []),
+    pages(limits.creators, 50, async (page) => (await api.creators.list({ page, limit: 50 })).creators ?? []),
   ]);
   return {
     collections,

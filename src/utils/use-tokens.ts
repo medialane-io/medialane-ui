@@ -23,16 +23,16 @@ export function useToken( contract: string | null, tokenId: string | null) {
 
   const { data, error, isLoading, mutate } = useSWR(
     contract && tokenId ? queryKeys.token(contract, tokenId) : null,
-    () => client.api.getToken(contract!, tokenId!),
+    () => client.api.tokens.get(contract!, tokenId!),
     {
       revalidateOnFocus: false,
       shouldRetryOnError: false,
       refreshInterval: (latest) =>
-        latest?.data || Date.now() - startedAt > INDEXING_WINDOW_MS ? 0 : INDEXING_POLL_MS,
+        latest || Date.now() - startedAt > INDEXING_WINDOW_MS ? 0 : INDEXING_POLL_MS,
     }
   );
 
-  const token = data?.data ?? null;
+  const token = data ?? null;
   const withinWindow = Date.now() - startedAt <= INDEXING_WINDOW_MS;
 
   return {
@@ -53,11 +53,11 @@ export function useTokenBalance(
 
   const { data, mutate } = useSWR(
     contract && tokenId && owner ? queryKeys.tokenBalance(contract, tokenId, owner) : null,
-    () => client.api.getTokenBalance(contract!, tokenId!, owner!),
+    () => client.api.tokens.balance(contract!, tokenId!, owner!),
     { revalidateOnFocus: false }
   );
 
-  return { amount: data?.data.amount ?? null, mutate };
+  return { amount: data?.amount ?? null, mutate };
 }
 
 export function useTokensByOwner(
@@ -70,7 +70,7 @@ export function useTokensByOwner(
 
   const { data, error, isLoading, mutate } = useSWR(
     address ? queryKeys.tokensOwned(address, page, limit) : null,
-    () => client.api.getTokensByOwner(address!, page, limit),
+    () => client.api.tokens.ownedBy(address!, { page: page, limit: limit }),
     { revalidateOnFocus: false, refreshInterval: refreshMs, revalidateOnMount: true }
   );
 
@@ -88,7 +88,7 @@ export function useTokenHistory( contract: string | null, tokenId: string | null
 
   const { data, error, isLoading } = useSWR(
     contract && tokenId ? queryKeys.tokenHistory(contract, tokenId) : null,
-    () => client.api.getTokenHistory(contract!, tokenId!),
+    () => client.api.tokens.history(contract!, tokenId!),
     { revalidateOnFocus: false }
   );
 

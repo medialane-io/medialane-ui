@@ -11,7 +11,7 @@ export function useCreators(
   const { getClient } = useMedialaneApp();
   const { data, error, isLoading } = useSWR(
     `creators-${search ?? ""}-${page}-${limit}`,
-    () => getClient().api.getCreators({ search, page, limit }),
+    () => getClient().api.creators.list({ search, page, limit }),
     { revalidateOnFocus: false }
   );
   return {

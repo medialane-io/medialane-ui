@@ -15,7 +15,7 @@ export function useOrders( query: ApiOrdersQuery = {}) {
 
   const { data, error, isLoading, mutate } = useSWR<ApiResponse<ApiOrder[]>>(
     key,
-    () => client.api.getOrders(query),
+    () => client.api.orders.list(query),
     { revalidateOnFocus: false, refreshInterval: 30000, dedupingInterval: 5000 }
   );
 
@@ -33,11 +33,11 @@ export function useOrder( orderHash: string | null) {
 
   const { data, error, isLoading } = useSWR(
     orderHash ? queryKeys.order(orderHash) : null,
-    () => client.api.getOrder(orderHash!),
+    () => client.api.orders.get(orderHash!),
     { revalidateOnFocus: false }
   );
 
-  return { order: data?.data ?? null, isLoading, error };
+  return { order: data ?? null, isLoading, error };
 }
 
 export function useTokenListings( contract: string | null, tokenId: string | null) {
@@ -45,7 +45,7 @@ export function useTokenListings( contract: string | null, tokenId: string | nul
 
   const { data, error, isLoading, mutate } = useSWR(
     contract && tokenId ? queryKeys.listings(contract, tokenId) : null,
-    () => client.api.getActiveOrdersForToken(contract!, tokenId!),
+    () => client.api.orders.forToken(contract!, tokenId!),
     { revalidateOnFocus: false, refreshInterval: ACTIVE_ORDER_REFRESH_INTERVAL, dedupingInterval: ACTIVE_ORDER_DEDUPING_INTERVAL }
   );
 
@@ -58,7 +58,7 @@ export function useUserOrders( address: string | null) {
 
   const { data, error, isLoading, mutate } = useSWR(
     normalized ? queryKeys.userOrders(normalized) : null,
-    () => client.api.getOrdersByUser(normalized!),
+    () => client.api.orders.byUser(normalized!),
     { revalidateOnFocus: false, refreshInterval: ACTIVE_ORDER_REFRESH_INTERVAL, dedupingInterval: ACTIVE_ORDER_DEDUPING_INTERVAL }
   );
 
@@ -85,7 +85,7 @@ export function useCounterOffers(
 
   const { data, error, isLoading, mutate } = useSWR<ApiResponse<ApiOrder[]>>(
     key,
-    () => client.api.getCounterOffers({
+    () => client.api.orders.counterOffers({
       ...(originalOrderHash ? { originalOrderHash } : {}),
       ...(normalized ? { sellerAddress: normalized } : {}),
     }),
@@ -107,7 +107,7 @@ export function useReceivedOffers( address: string | null) {
 
   const { data, error, isLoading, mutate } = useSWR<ApiResponse<ApiOrder[]>>(
     normalized ? ["received-offers", normalized] : null,
-    () => client.api.getReceivedOffers(normalized!, { limit: 50 }),
+    () => client.api.orders.receivedBy(normalized!, { limit: 50 }),
     { revalidateOnFocus: false, refreshInterval: ACTIVE_ORDER_REFRESH_INTERVAL, dedupingInterval: ACTIVE_ORDER_DEDUPING_INTERVAL }
   );
 
@@ -121,7 +121,7 @@ export function useCollectionFloorListings( contract: string | null, limit = 20)
   const { data, error, isLoading } = useSWR<ApiResponse<ApiOrder[]>>(
     key,
     () =>
-      client.api.getOrders({
+      client.api.orders.list({
         collection: contract!,
         status: "ACTIVE",
         sort: "price_asc",

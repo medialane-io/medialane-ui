@@ -19,7 +19,7 @@ export function useRewards( address: string | null | undefined) {
   const { getClient } = useMedialaneApp();
   return useSWR<ApiUserRewards>(
     address ? `rewards:${address}` : null,
-    () => getClient().api.getRewards(address!),
+    () => getClient().api.rewards.get(address!),
     { revalidateOnFocus: false, dedupingInterval: 60_000 }
   );
 }
@@ -29,7 +29,7 @@ export function useLeaderboard( page = 1, limit = 50) {
   return useSWR<{ data: ApiRewardsLeaderboardEntry[]; meta: { page: number; limit: number; total: number } }>(
     `rewards-leaderboard:${page}:${limit}`,
     async () => {
-      const res = await getClient().api.getRewardsLeaderboard(page, limit);
+      const res = await getClient().api.rewards.leaderboard({ page: page, limit: limit });
       return {
         data: res.data,
         meta: { page: res.meta?.page ?? page, limit: res.meta?.limit ?? limit, total: res.meta?.total ?? res.data.length },
@@ -48,7 +48,7 @@ export function useRewardsEvents(
   return useSWR<{ data: ApiPointEvent[]; meta: { page: number; limit: number; total: number } }>(
     address ? `rewards-events:${address}:${page}:${limit}` : null,
     async () => {
-      const res = await getClient().api.getRewardsEvents(address!, page, limit);
+      const res = await getClient().api.rewards.events(address!, { page: page, limit: limit });
       return {
         data: res.data,
         meta: { page: res.meta?.page ?? page, limit: res.meta?.limit ?? limit, total: res.meta?.total ?? res.data.length },
@@ -62,7 +62,7 @@ export function useRewardsConfig() {
   const { getClient } = useMedialaneApp();
   return useSWR<ApiRewardsConfig>(
     "rewards-config",
-    () => getClient().api.getRewardsConfig(),
+    () => getClient().api.rewards.config(),
     { revalidateOnFocus: false, dedupingInterval: 300_000 }
   );
 }
@@ -74,7 +74,7 @@ export function useRewardsBatch( addresses: string[]) {
   return useSWR<Map<string, ApiRewardsBatchEntry>>(
     key,
     async () => {
-      const entries = await getClient().api.getRewardsBatch(unique);
+      const entries = await getClient().api.rewards.batch(unique);
       return new Map(entries.map((e) => [e.address, e]));
     },
     { revalidateOnFocus: false, dedupingInterval: 120_000 }

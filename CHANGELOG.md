@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.221.0] — 2026-10-23
+
+### Changed
+
+- The components, hooks and tests call the SDK through its domains (`client.api.orders.list()`, `client.api.tokens.get()`, `client.api.intents.create("mint", params)` and so on).
+- `runIntentCalls` takes a function that returns the created intent itself (it took `{ data: intent }`).
+- `EmailCodeApi` is the SDK's `account` domain (`client.api.account`); it was the whole API client.
+- Requires `@medialane/sdk` 0.199.0 or newer, and the peer range stops below 0.201.0.
+
 ## [0.220.0] — 2026-10-23
 
 ### Added

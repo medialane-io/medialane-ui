@@ -23,10 +23,7 @@ const listing = (h: string, offerer: string) => ({
 }) as unknown as ApiOrder;
 
 test("home lists new listings with Buy through the app and the collections strip", async () => {
-  const client = { api: {
-    getOrders: async () => ({ data: [listing("1", OTHER), listing("2", ME)], meta: { page: 1, limit: 10, total: 2 } }),
-    listCollections: async () => ({ data: [], meta: { page: 1, limit: 10, total: 0 } }),
-  } } as unknown as MedialaneClient;
+  const client = { api: { orders: { list: async () => ({ data: [listing("1", OTHER), listing("2", ME)], meta: { page: 1, limit: 10, total: 2 } }) }, collections: { list: async () => ({ data: [], meta: { page: 1, limit: 10, total: 0 } }) } } } as unknown as MedialaneClient;
   const app = { getClient: () => client, getSigner: () => { throw new Error("unused"); }, walletAddress: ME, onRequireWallet: () => {} } as MedialaneApp;
   const bought: string[] = [];
   const useMarketActions = () => ({ buy: (o: ApiOrder) => bought.push(o.orderHash), offer: () => {}, dialogs: <div>app dialogs</div> });

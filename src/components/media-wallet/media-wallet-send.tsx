@@ -113,7 +113,7 @@ export function MediaWalletSend({
     const amt = amountRaw;
     await run(async (signer) => {
       const result = await runIntentCalls(signer, () =>
-        getClient().api.createTransferTokenIntent({ owner: signer.address, token: currency.address, recipient: dest, amount: amt.toString() }),
+        getClient().api.intents.create("transfer-token", { owner: signer.address, token: currency.address, recipient: dest, amount: amt.toString() }),
       );
       setTxHash(result.txHash);
       return result;

@@ -81,8 +81,7 @@ export function LicenseRequestPage({ contract, tokenId }: { contract: string; to
       const tokenInfo = getTokenBySymbol(currency);
       const decimals = tokenInfo?.decimals ?? 18;
       const rawPrice = BigInt(Math.round(parseFloat(price) * 10 ** decimals)).toString();
-      await client.api.submitRemixOffer(
-        {
+      await client.api.remix.submit({
           originalContract: contract,
           originalTokenId: tokenId,
           proposedPrice: rawPrice,
@@ -92,8 +91,7 @@ export function LicenseRequestPage({ contract, tokenId }: { contract: string; to
           derivatives,
           royaltyPct: royalty ? parseInt(royalty) : undefined,
           message: message.trim() || undefined,
-        },
-      );
+        });
       setStep("success");
     } catch (err: unknown) {
       setStep("error");

@@ -8,7 +8,7 @@ export function useTokensByIpType( ipTypeSlug: string | null, page = 1, limit = 
   const client = useMedialaneClient();
   const { data, error, isLoading, mutate } = useSWR<ApiResponse<ApiToken[]>>(
     `tokens-by-type-${ipTypeSlug ?? "all"}-${page}-${limit}`,
-    () => client.api.getTokens({ page, limit, sort: "recent", ipType: ipTypeSlug ?? undefined }),
+    () => client.api.tokens.list({ page, limit, sort: "recent", ipType: ipTypeSlug ?? undefined }),
     { revalidateOnFocus: false, refreshInterval: 30000 }
   );
   return { tokens: data?.data ?? [], meta: data?.meta, isLoading, error, mutate };

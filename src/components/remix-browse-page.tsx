@@ -26,7 +26,7 @@ function useRemixableTokens() {
   useEffect(() => {
     let cancelled = false;
     setIsLoading(true);
-    client.api.getTokens({ derivatives: "allowed", limit: PAGE_SIZE, page })
+    client.api.tokens.list({ derivatives: "allowed", limit: PAGE_SIZE, page })
       .then((json) => {
         if (cancelled) return;
         setTokens((prev) => (page === 1 ? json.data : [...prev, ...json.data]));

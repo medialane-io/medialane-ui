@@ -114,7 +114,7 @@ function TokenActivity({ tokenAddress, walletAddress }: { tokenAddress: string; 
     if (!walletAddress) return;
     const normalizedToken = normalizeAddress("STARKNET", tokenAddress);
     getClient()
-      .api.getWalletActivity(walletAddress)
+      .api.activity.wallet(walletAddress)
       .then((res) => {
         const filtered = res.data
           .filter((a) => (a.type === "SEND" || a.type === "RECEIVE") && a.tokenAddress && normalizeAddress("STARKNET", a.tokenAddress) === normalizedToken)

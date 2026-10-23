@@ -24,11 +24,7 @@ const listing = (h: string, offerer: string) => ({
 
 test("discover shows the app's hero, the sections, and buys through the app", async () => {
   const empty = async () => ({ data: [], meta: { page: 1, limit: 10, total: 0 } });
-  const client = { api: {
-    getPlatformStats: async () => ({ collections: 1, tokens: 2, sales: 3 }),
-    getOrders: async () => ({ data: [listing("1", OTHER), listing("2", ME)], meta: { page: 1, limit: 10, total: 2 } }),
-    listCollections: empty, getActivities: empty, getCreators: empty, getRewardsLeaderboard: empty, getRewardsBatch: async () => ({ data: [] }),
-  } } as unknown as MedialaneClient;
+  const client = { api: { platform: { stats: async () => ({ collections: 1, tokens: 2, sales: 3 }) }, orders: { list: async () => ({ data: [listing("1", OTHER), listing("2", ME)], meta: { page: 1, limit: 10, total: 2 } }) }, collections: { list: empty }, activity: { list: empty }, creators: { list: empty }, rewards: { leaderboard: empty, batch: async () => ({ data: [] }) } } } as unknown as MedialaneClient;
   const app = { getClient: () => client, getSigner: () => { throw new Error("unused"); }, walletAddress: ME, onRequireWallet: () => {} } as MedialaneApp;
   const bought: string[] = [];
   const useMarketActions = () => ({ buy: (o: ApiOrder) => bought.push(o.orderHash), offer: () => {}, dialogs: <div>app dialogs</div> });

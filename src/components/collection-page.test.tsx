@@ -36,11 +36,7 @@ const slots: CollectionPageSlots = {
 const renderPage = (c: ApiCollection, tokens: ApiToken[], walletAddress: string | null) => {
   const client = {
     api: new Proxy(
-      {
-        getCollection: async () => ({ data: c }),
-        getCollectionTokens: async () => ({ data: tokens, meta: { total: tokens.length } }),
-        getCollectionProfile: async () => null,
-      } as Record<string, unknown>,
+      { collections: { get: async () => c, tokens: async () => ({ data: tokens, meta: { total: tokens.length } }), findProfile: async () => null } } as Record<string, unknown>,
       { get: (target, key: string) => target[key] ?? (async () => ({ data: [], meta: { total: 0 } })) },
     ),
   };

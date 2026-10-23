@@ -13,7 +13,7 @@ afterEach(() => cleanup());
 
 test("lists works open to remixing, each linking to its remix form", async () => {
   const calls: unknown[] = [];
-  const client = { api: { getTokens: async (q: unknown) => { calls.push(q); return { data: [{ contractAddress: "0xc1", tokenId: "7", metadata: { name: "Loop", image: null, derivatives: "Allowed" } }], meta: { total: 1 } }; } } } as unknown as MedialaneClient;
+  const client = { api: { tokens: { list: async (q: unknown) => { calls.push(q); return { data: [{ contractAddress: "0xc1", tokenId: "7", metadata: { name: "Loop", image: null, derivatives: "Allowed" } }], meta: { total: 1 } }; } } } } as unknown as MedialaneClient;
   const app = { getClient: () => client, getSigner: () => { throw new Error("unused"); }, walletAddress: null, onRequireWallet: () => {} } as MedialaneApp;
   const view = render(<MedialaneAppProvider value={app}><RemixBrowsePage /></MedialaneAppProvider>);
   await waitFor(() => expect(view.getByText("Loop")).toBeTruthy());

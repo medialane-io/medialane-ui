@@ -44,8 +44,8 @@ export function MediaWalletActivity({ onNavigate }: { onNavigate: (view: MediaWa
       try {
         const client = getClient().api;
         const [walletRes, protocolRes] = await Promise.all([
-          client.getWalletActivity(address),
-          client.getActivitiesByAddress(address, 1, 50),
+          client.activity.wallet(address),
+          client.activity.byAddress(address, { page: 1, limit: 50 }),
         ]);
         if (live) setItems(mergeActivityFeeds(walletRes.data, protocolRes.data));
       } catch (e) {

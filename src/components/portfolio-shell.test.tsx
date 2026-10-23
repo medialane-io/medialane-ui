@@ -16,14 +16,7 @@ const OTHER = "0x00000000000000000000000000000000000000000000000000000000000000b
 const offer = (h: string) => ({ orderHash: h, offerer: OTHER, status: "ACTIVE", offer: { itemType: "ERC20" }, consideration: { itemType: "ERC721" } });
 
 function renderShell(app: Partial<MedialaneApp>, props: Partial<Parameters<typeof PortfolioShell>[0]> = {}) {
-  const client = { api: {
-    getOrdersByUser: async () => ({ data: [] }),
-    getReceivedOffers: async () => ({ data: [offer("r1"), offer("r2")] }),
-    getRewards: async () => null,
-    getSponsorshipOffers: async () => ({ data: [] }),
-    getSponsorshipProposals: async () => ({ data: [] }),
-    getSponsorshipLicenses: async () => ({ data: [] }),
-  } } as unknown as MedialaneClient;
+  const client = { api: { orders: { byUser: async () => ({ data: [] }), receivedBy: async () => ({ data: [offer("r1"), offer("r2")] }) }, rewards: { get: async () => null }, sponsorship: { offers: async () => ({ data: [] }), proposals: async () => ({ data: [] }), licenses: async () => ({ data: [] }) } } } as unknown as MedialaneClient;
   const value = { getClient: () => client, getSigner: () => { throw new Error("unused"); }, walletAddress: ME, onRequireWallet: () => {}, ...app } as MedialaneApp;
   return render(<SWRConfig value={{ provider: () => new Map() }}><MedialaneAppProvider value={value}><PortfolioShell {...props}><p>tab body</p></PortfolioShell></MedialaneAppProvider></SWRConfig>);
 }

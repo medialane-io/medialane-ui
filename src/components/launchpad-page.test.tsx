@@ -12,7 +12,7 @@ const { MedialaneAppProvider } = await import("./medialane-app.js");
 afterEach(() => cleanup());
 
 function renderPage(props: Partial<Parameters<typeof LaunchpadPage>[0]> = {}) {
-  const client = { api: { listCollections: async () => ({ data: [] }) } } as unknown as MedialaneClient;
+  const client = { api: { collections: { list: async () => ({ data: [] }) } } } as unknown as MedialaneClient;
   const app = { getClient: () => client, getSigner: () => { throw new Error("unused"); }, walletAddress: null, onRequireWallet: () => {} } as MedialaneApp;
   return render(<SWRConfig value={{ provider: () => new Map() }}><MedialaneAppProvider value={app}><LaunchpadPage fastMint={<div>app fast mint</div>} {...props} /></MedialaneAppProvider></SWRConfig>);
 }

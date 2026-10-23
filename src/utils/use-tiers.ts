@@ -37,7 +37,7 @@ function useMyCollectionsOf( service: string, owner: string | null) {
   const client = useMedialaneClient();
   const { data, error, isLoading, mutate } = useSWR<ApiCollection[]>(
     owner ? `my-${service}-collections-${owner}` : null,
-    async () => (await client.api.listCollections({ owner: owner!, service, limit: 50 })).data ?? [],
+    async () => (await client.api.collections.list({ owner: owner!, service, limit: 50 })).data ?? [],
     { revalidateOnFocus: false }
   );
   return { collections: data ?? [], isLoading, error, mutate };
@@ -45,12 +45,12 @@ function useMyCollectionsOf( service: string, owner: string | null) {
 
 /** The id the next membership tier will get. Reads a fresh count, so call it right before creating the tier. */
 export async function predictNextMembershipId(api: ApiClient, contract: string): Promise<number> {
-  return (await api.getClubMembershipCount(contract)) + 1;
+  return (await api.chainReads.clubMembershipCount(contract)) + 1;
 }
 
 /** The id the next ticket type will get. Reads a fresh count, so call it right before creating the ticket. */
 export async function predictNextTicketId(api: ApiClient, contract: string): Promise<number> {
-  return (await api.getTicketCount(contract)) + 1;
+  return (await api.chainReads.ticketCount(contract)) + 1;
 }
 
 export function useMyClubCollections( owner: string | null) {
@@ -66,7 +66,7 @@ export function useMembershipList( contract: string | null) {
   const { data, error, isLoading, mutate } = useSWR<TierListItem[]>(
     contract ? `membership-list-${contract}` : null,
     async () =>
-      readAll(await client.api.getClubMembershipCount(contract!), (id) => client.api.getClubMembership(contract!, id)),
+      readAll(await client.api.chainReads.clubMembershipCount(contract!), (id) => client.api.chainReads.clubMembership(contract!, id)),
     { revalidateOnFocus: false, dedupingInterval: 15_000 }
   );
   return { memberships: data ?? [], isLoading, error, mutate };
@@ -76,7 +76,7 @@ export function useTicketList( contract: string | null) {
   const client = useMedialaneClient();
   const { data, error, isLoading, mutate } = useSWR<TierListItem[]>(
     contract ? `ticket-list-${contract}` : null,
-    async () => readAll(await client.api.getTicketCount(contract!), (id) => client.api.getTicket(contract!, id)),
+    async () => readAll(await client.api.chainReads.ticketCount(contract!), (id) => client.api.chainReads.ticket(contract!, id)),
     { revalidateOnFocus: false, dedupingInterval: 15_000 }
   );
   return { tickets: data ?? [], isLoading, error, mutate };
@@ -86,7 +86,7 @@ export function useMembershipOnchain( contract: string | null, tokenId: string |
   const client = useMedialaneClient();
   const { data, error, isLoading } = useSWR<TierOnchain>(
     contract && tokenId ? `membership-onchain-${contract}-${tokenId}` : null,
-    async () => toTier(await client.api.getClubMembership(contract!, tokenId!)),
+    async () => toTier(await client.api.chainReads.clubMembership(contract!, tokenId!)),
     { revalidateOnFocus: false, shouldRetryOnError: false, dedupingInterval: 30_000 }
   );
   return { membership: data ?? null, isLoading, error };
@@ -96,7 +96,7 @@ export function useTicketOnchain( contract: string | null, tokenId: string | nul
   const client = useMedialaneClient();
   const { data, error, isLoading } = useSWR<TierOnchain>(
     contract && tokenId ? `ticket-onchain-${contract}-${tokenId}` : null,
-    async () => toTier(await client.api.getTicket(contract!, tokenId!)),
+    async () => toTier(await client.api.chainReads.ticket(contract!, tokenId!)),
     { revalidateOnFocus: false, shouldRetryOnError: false, dedupingInterval: 30_000 }
   );
   return { ticket: data ?? null, isLoading, error };
@@ -110,7 +110,7 @@ export function useIsMemberOf(
   const client = useMedialaneClient();
   const { data, error, isLoading } = useSWR<boolean>(
     contract && tokenId && wallet ? `is-member-of-${contract}-${tokenId}-${wallet}` : null,
-    () => client.api.isClubMember(contract!, tokenId!, wallet!),
+    () => client.api.chainReads.isClubMember(contract!, tokenId!, wallet!),
     { revalidateOnFocus: false, shouldRetryOnError: false }
   );
   return { isMember: data ?? false, isLoading, error };

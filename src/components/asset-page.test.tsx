@@ -32,13 +32,7 @@ const collection = (over: Partial<ApiCollection> = {}) =>
 
 const clientFor = (t: ApiToken, c: ApiCollection) => ({
   api: new Proxy(
-    {
-      getToken: async () => ({ data: t }),
-      getCollection: async () => ({ data: c }),
-      getTicket: async () => ({ maxSupply: "500", minted: "407", startTime: null, endTime: null, royaltyBps: 0 }),
-      getIpNftTokenData: async () => null,
-      getTokenBalance: async () => ({ data: { owner: "0xme", amount: "0" } }),
-    } as Record<string, unknown>,
+    { tokens: { get: async () => t, balance: async () => ({ owner: "0xme", amount: "0" }) }, collections: { get: async () => c }, chainReads: { ticket: async () => ({ maxSupply: "500", minted: "407", startTime: null, endTime: null, royaltyBps: 0 }), ipNftTokenData: async () => null } } as Record<string, unknown>,
     { get: (target, key: string) => target[key] ?? (async () => ({ data: [], meta: { total: 0 } })) },
   ),
 });

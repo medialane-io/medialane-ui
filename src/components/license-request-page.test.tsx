@@ -18,12 +18,7 @@ const OWNER = "0x00000000000000000000000000000000000000000000000000000000000000b
 
 function renderPage(app: Partial<MedialaneApp>) {
   const submitted: unknown[] = [];
-  const api: Record<string, unknown> = {
-    getToken: async () => ({ data: { contractAddress: "0xc1", tokenId: "7", owner: OWNER, metadata: { name: "Loop", image: null, attributes: [] }, balances: [] } }),
-    getCollection: async () => ({ data: { contractAddress: "0xc1", name: "Loops", service: "mip-erc721" } }),
-    getTokenBalance: async () => ({ data: { amount: "0" } }),
-    submitRemixOffer: async (body: unknown) => { submitted.push(body); return { data: { id: "r1" } }; },
-  };
+  const api: Record<string, unknown> = { tokens: { get: async () => ({ contractAddress: "0xc1", tokenId: "7", owner: OWNER, metadata: { name: "Loop", image: null, attributes: [] }, balances: [] }), balance: async () => ({ amount: "0" }) }, collections: { get: async () => ({ contractAddress: "0xc1", name: "Loops", service: "mip-erc721" }) }, remix: { submit: async (body: unknown) => { submitted.push(body); return { data: { id: "r1" } }; } } };
   const client = { api: new Proxy(api, { get: (t, k: string) => t[k] ?? (async () => ({ data: null })) }) } as unknown as MedialaneClient;
   const value = { getClient: () => client, getSigner: () => { throw new Error("unused"); }, walletAddress: null, onRequireWallet: () => {}, ...app } as MedialaneApp;
   const view = render(<SWRConfig value={{ provider: () => new Map() }}><MedialaneAppProvider value={value}><LicenseRequestPage contract="0xc1" tokenId="7" /></MedialaneAppProvider></SWRConfig>);
