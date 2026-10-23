@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.222.0] — 2026-10-23
+
+### Changed
+
+- The remix browse card says "Derivatives: Allowed" (the list is already filtered to works that allow derivatives); the API never sent the term.
+- Requires `@medialane/sdk` 0.200.0 or newer, and the peer range stops below 0.202.0.
+
 ## [0.221.0] — 2026-10-23
 
 ### Changed
