@@ -70,7 +70,7 @@ function RemixableCard({ token }: { token: ApiToken }) {
       <div className="p-4 space-y-1">
         <p className="font-semibold text-sm leading-tight truncate">{name}</p>
         <p className="text-xs text-muted-foreground">
-          Derivatives: {token.metadata?.derivatives ?? "Allowed"}
+          Derivatives: Allowed
         </p>
         <p className="text-xs font-semibold pt-1 inline-flex items-center gap-1.5">
           <GitBranch className="h-3 w-3" />
