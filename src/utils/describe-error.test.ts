@@ -83,7 +83,7 @@ describe("a passkey that can't be used for a wallet", () => {
 
   test("no-prf gets the same message as the wallet step, not the fallback", () => {
     const notice = describeError(unsupported("no-prf"), "Could not set up this device.");
-    expect(notice.message).toBe("Let's save your passkey in another place. Try again and choose your phone or password manager.");
+    expect(notice.message).toBe("Update your browser, or open Medialane on another device, then try again.");
     expect(notice.isUserRejection).toBe(false);
   });
 

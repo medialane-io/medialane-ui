@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.217.0] — 2026-10-23
+
+### Changed
+
+- `describeWalletFailure` for a passkey without PRF (`no-prf`) suggests updating the browser or opening Medialane on another device, as passkeys are saved on this device from `@medialane/sdk` 0.195.0.
+
 ## [0.216.0] — 2026-10-22
 
 ### Changed

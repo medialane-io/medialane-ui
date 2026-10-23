@@ -51,7 +51,7 @@ export function describeWalletFailure(err: unknown, support: PasskeySupport = "u
   if (unsupported === "no-prf") {
     return {
       kind: "unsupported-passkey",
-      message: "Let's save your passkey in another place. Try again and choose your phone or password manager.",
+      message: "Update your browser, or open Medialane on another device, then try again.",
       canRetry: true,
     };
   }
