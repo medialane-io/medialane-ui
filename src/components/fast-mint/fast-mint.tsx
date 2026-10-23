@@ -279,9 +279,9 @@ export function FastMint(props: FastMintProps) {
       return;
     }
     const viaMediaRoute = MEDIA_ROUTE_MIME_TYPES.has(file.type);
-    const sizeError = uploadError(file, viaMediaRoute ? "media" : "document");
-    if (sizeError) {
-      setErrorMsg(sizeError);
+    const fileError = uploadError(file, viaMediaRoute ? "media" : "document");
+    if (fileError) {
+      setErrorMsg(fileError);
       return;
     }
     setMediaFile(file);

@@ -121,9 +121,9 @@ export function IPTypeFields({ ipType, onChange, uploadDocument, existingDocumen
 
   const handleDocPick = async (file: File) => {
     if (!uploadDocument || !docUpload) return;
-    const sizeError = uploadError(file, "document");
-    if (sizeError) {
-      setDocError(sizeError);
+    const fileError = uploadError(file, "document");
+    if (fileError) {
+      setDocError(fileError);
       return;
     }
     setDocError(null);
