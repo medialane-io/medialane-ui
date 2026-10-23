@@ -49,6 +49,29 @@ test("signed in shows the tabs with the received count and the tab body", async 
   expect(view.getByText("Assets")).toBeTruthy();
 });
 
+test("tabs with nothing in them are hidden until they have something", async () => {
+  const view = renderShell({});
+  await waitFor(() => expect(view.getByText("Offers received (2)")).toBeTruthy());
+  expect(view.queryByText("Listings")).toBeNull();
+  expect(view.queryByText("Offers sent")).toBeNull();
+  expect(view.queryByText("Counter-offers")).toBeNull();
+  expect(view.queryByText("Sponsorships")).toBeNull();
+  expect(view.getByText("Assets")).toBeTruthy();
+  expect(view.getByText("Collections")).toBeTruthy();
+  expect(view.getByText("Activity")).toBeTruthy();
+});
+
+test("licensing shows when the app reports licensing offers", async () => {
+  const view = renderShell({}, { licensing: { present: true, isLoading: false } });
+  await waitFor(() => expect(view.getByText("Licensing")).toBeTruthy());
+});
+
+test("licensing is hidden when the app reports none", async () => {
+  const view = renderShell({}, { licensing: { present: false, isLoading: false } });
+  await waitFor(() => expect(view.getByText("Offers received (2)")).toBeTruthy());
+  expect(view.queryByText("Licensing")).toBeNull();
+});
+
 test("an app can pass its own tabs", () => {
   const tabs = PORTFOLIO_TABS.flatMap((t) => (t.key === "collections" ? [t, { key: "coins", label: "Coins", href: "/portfolio/coins" }] : [t]));
   const view = renderShell({}, { tabs });

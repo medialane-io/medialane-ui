@@ -9,6 +9,7 @@ import { PortfolioHeader } from "./portfolio-header.js";
 import { PortfolioChipFilter } from "./portfolio-chip-filter.js";
 import { useMedialaneApp } from "./medialane-app.js";
 import { derivePortfolioCounts } from "../utils/portfolio-counts.js";
+import { visiblePortfolioTabs } from "../utils/portfolio-tabs.js";
 import { markOffersAsSeen } from "../utils/seen-offers.js";
 import { useReceivedOffers, useUserOrders } from "../utils/use-orders.js";
 import { useRewards } from "../utils/use-rewards.js";
@@ -18,17 +19,18 @@ export interface PortfolioTab {
   key: string;
   label: string;
   href: string;
+  hideWhenEmpty?: boolean;
 }
 
 export const PORTFOLIO_TABS: PortfolioTab[] = [
   { key: "assets", label: "Assets", href: "/portfolio/assets" },
   { key: "collections", label: "Collections", href: "/portfolio/collections" },
-  { key: "listings", label: "Listings", href: "/portfolio/listings" },
-  { key: "received", label: "Offers received", href: "/portfolio/received" },
-  { key: "offers", label: "Offers sent", href: "/portfolio/offers" },
-  { key: "counter", label: "Counter-offers", href: "/portfolio/counter-offers" },
-  { key: "licensing", label: "Licensing", href: "/portfolio/licensing" },
-  { key: "sponsorship", label: "Sponsorships", href: "/portfolio/sponsorships" },
+  { key: "listings", label: "Listings", href: "/portfolio/listings", hideWhenEmpty: true },
+  { key: "received", label: "Offers received", href: "/portfolio/received", hideWhenEmpty: true },
+  { key: "offers", label: "Offers sent", href: "/portfolio/offers", hideWhenEmpty: true },
+  { key: "counter", label: "Counter-offers", href: "/portfolio/counter-offers", hideWhenEmpty: true },
+  { key: "licensing", label: "Licensing", href: "/portfolio/licensing", hideWhenEmpty: true },
+  { key: "sponsorship", label: "Sponsorships", href: "/portfolio/sponsorships", hideWhenEmpty: true },
   { key: "activity", label: "Activity", href: "/portfolio/activity" },
 ];
 
@@ -56,17 +58,18 @@ function Loading() {
   );
 }
 
-export function PortfolioShell({ tabs = PORTFOLIO_TABS, remixOffers, children }: {
+export function PortfolioShell({ tabs = PORTFOLIO_TABS, remixOffers, licensing, children }: {
   tabs?: PortfolioTab[];
   remixOffers?: ReadonlyArray<{ status: string }>;
+  licensing?: { present: boolean; isLoading: boolean };
   children: ReactNode;
 }) {
   const { walletAddress: address, walletLoading } = useMedialaneApp();
   const pathname = usePathname();
-  const { orders } = useUserOrders(address);
-  const { orders: receivedOffers } = useReceivedOffers(address);
+  const { orders, isLoading: ordersLoading } = useUserOrders(address);
+  const { orders: receivedOffers, isLoading: receivedLoading } = useReceivedOffers(address);
   const { data: rewards } = useRewards(address);
-  const { pendingCount } = useMySponsorshipDealCounts(address);
+  const sponsorship = useMySponsorshipDealCounts(address);
 
   useEffect(() => {
     if (receivedOffers.length > 0) markOffersAsSeen(receivedOffers.map((o) => o.orderHash));
@@ -74,8 +77,17 @@ export function PortfolioShell({ tabs = PORTFOLIO_TABS, remixOffers, children }:
 
   if (!address) return walletLoading ? <Loading /> : <SignedOut />;
 
-  const counts = derivePortfolioCounts({ orders, receivedOffers, remixOffers, address, sponsorshipPendingCount: pendingCount });
+  const counts = derivePortfolioCounts({ orders, receivedOffers, remixOffers, address, sponsorshipPendingCount: sponsorship.pendingCount });
   const countFor: Record<string, number> = { received: counts.received, counter: counts.counter, licensing: counts.remix, sponsorship: counts.sponsorships };
+  const present: Record<string, boolean | undefined> = {
+    listings: ordersLoading ? undefined : counts.listings > 0,
+    offers: ordersLoading ? undefined : counts.offers > 0,
+    counter: ordersLoading ? undefined : counts.counter > 0,
+    received: receivedLoading ? undefined : counts.received > 0,
+    licensing: licensing ? (licensing.isLoading ? undefined : licensing.present) : true,
+    sponsorship: sponsorship.isLoading ? undefined : sponsorship.hasAny,
+  };
+  const shownTabs = visiblePortfolioTabs(tabs, present, pathname ?? "");
 
   return (
     <div className="space-y-6 px-4 pt-20 pb-8 sm:px-6 lg:px-8">
@@ -84,7 +96,7 @@ export function PortfolioShell({ tabs = PORTFOLIO_TABS, remixOffers, children }:
         score={rewards ? { levelName: rewards.currentLevelName, totalXp: rewards.totalXp, href: "/rewards" } : null}
       />
       <PortfolioChipFilter
-        options={tabs.map((t) => ({ key: t.key, href: t.href, label: countFor[t.key] ? `${t.label} (${countFor[t.key]})` : t.label }))}
+        options={shownTabs.map((t) => ({ key: t.key, href: t.href, label: countFor[t.key] ? `${t.label} (${countFor[t.key]})` : t.label }))}
         value={pathname ?? ""}
         onChange={() => {}}
         showAll={false}

@@ -13,6 +13,8 @@ export interface PortfolioCounts {
 
   listings: number;
 
+  offers: number;
+
   remix: number;
 
   counter: number;
@@ -57,6 +59,8 @@ export function derivePortfolioCounts({
       o.status === "ACTIVE",
   ).length;
 
+  const offers = list.filter((o) => o.offer.itemType === "ERC20" && o.status === "ACTIVE").length;
+
   const remix = Array.isArray(remixOffers)
     ? remixOffers.filter(
         (o) => o.status === "PENDING" || o.status === "AUTO_PENDING",
@@ -71,5 +75,5 @@ export function derivePortfolioCounts({
       o.hasActiveCounterOffer === true,
   ).length;
 
-  return { received, listings, remix, counter, sponsorships: Math.max(0, sponsorshipPendingCount) };
+  return { received, listings, offers, remix, counter, sponsorships: Math.max(0, sponsorshipPendingCount) };
 }
