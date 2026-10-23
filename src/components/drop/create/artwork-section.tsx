@@ -9,6 +9,7 @@ import { DropItemList } from "../../drop-item-list.js";
 import { MAX_DROP_SUPPLY } from "../../../utils/drop/metadata.js";
 import type { DropDraft, DropDraftErrors } from "../../../utils/drop/draft.js";
 import { previewUrl } from "../../../utils/drop/preview.js";
+import { acceptFor } from "@medialane/sdk";
 
 export interface SectionProps {
   draft: DropDraft;
@@ -26,7 +27,7 @@ export function ImagePick({ file, onPick, label }: { file: File | null; onPick: 
   return (
     <button type="button" onClick={() => ref.current?.click()}
       className="relative flex aspect-square w-full max-w-xs items-center justify-center overflow-hidden rounded-xl border border-dashed border-border bg-muted/30 hover:border-primary/50">
-      <input ref={ref} type="file" accept="image/*" className="hidden" onChange={(e) => { const f = e.target.files?.[0]; if (f) onPick(f); }} />
+      <input ref={ref} type="file" accept={acceptFor("image")} className="hidden" onChange={(e) => { const f = e.target.files?.[0]; if (f) onPick(f); }} />
       {preview
         ? <Image src={preview} alt={label} fill unoptimized className="object-cover" />
         : <span className="flex flex-col items-center gap-2 text-sm text-muted-foreground"><ImagePlus className="h-6 w-6" />{label}</span>}

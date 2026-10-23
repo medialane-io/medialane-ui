@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.216.0] — 2026-10-22
+
+### Changed
+
+- Fast mint, the document field and the drop image pickers take their file types from the SDK (`UPLOAD_LIMITS`, `acceptFor`, `uploadError`, `@medialane/sdk` 0.192.0). Image pickers offer only the accepted types; AVIF is accepted.
+- `DocUploadConfig` no longer has `accept`; use `acceptFor("document")`.
+
 ## [0.215.0] — 2026-10-22
 
 ### Changed

@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
-import { buildAssetMetadata, uploadSizeError, type ApiCollection } from "@medialane/sdk";
+import { UPLOAD_LIMITS, acceptFor, buildAssetMetadata, uploadError, type ApiCollection } from "@medialane/sdk";
 import { executeIntent, deployedCollectionFromReceipt, mintedTokenIdFromReceipt } from "@medialane/sdk/starknet";
 import { mintableCollections, collectionKey } from "./mintable-collections.js";
 import {
@@ -33,26 +33,14 @@ import type { FastMintProps, FastMintSigner, MediaKind, MintedAsset } from "./ty
 import { profileHref } from "@medialane/sdk";
 import { useImageUrl } from "../../utils/use-image-url.js";
 
-const MEDIA_ROUTE_MIME_TYPES = new Set([
-  "image/jpeg", "image/png", "image/gif", "image/webp", "image/svg+xml", "image/avif",
-  "video/mp4", "video/webm", "video/ogg",
-  "audio/mpeg", "audio/ogg", "audio/wav", "audio/webm", "audio/flac",
-  "application/pdf",
-]);
-const DOCUMENT_SIGNED_URL_MIME_TYPES = new Set([
-  "application/msword",
-  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-  "application/vnd.oasis.opendocument.text",
-  "application/rtf",
-  "text/plain",
-  "text/markdown",
-]);
+const MEDIA_ROUTE_MIME_TYPES = new Set(UPLOAD_LIMITS.media.mimeTypes);
+const DOCUMENT_MIME_TYPES = new Set(UPLOAD_LIMITS.document.mimeTypes.filter((type) => type !== "application/octet-stream"));
 
 function detectMediaKind(mime: string): MediaKind | null {
   if (mime.startsWith("image/")) return MEDIA_ROUTE_MIME_TYPES.has(mime) ? "image" : null;
   if (mime.startsWith("video/")) return MEDIA_ROUTE_MIME_TYPES.has(mime) ? "video" : null;
   if (mime.startsWith("audio/")) return MEDIA_ROUTE_MIME_TYPES.has(mime) ? "audio" : null;
-  if (mime === "application/pdf" || DOCUMENT_SIGNED_URL_MIME_TYPES.has(mime)) return "document";
+  if (DOCUMENT_MIME_TYPES.has(mime)) return "document";
   return null;
 }
 
@@ -291,7 +279,7 @@ export function FastMint(props: FastMintProps) {
       return;
     }
     const viaMediaRoute = MEDIA_ROUTE_MIME_TYPES.has(file.type);
-    const sizeError = uploadSizeError(file, viaMediaRoute ? "media" : "document");
+    const sizeError = uploadError(file, viaMediaRoute ? "media" : "document");
     if (sizeError) {
       setErrorMsg(sizeError);
       return;
@@ -676,7 +664,7 @@ export function FastMint(props: FastMintProps) {
                         <Loader2 className="h-4 w-4 animate-spin" />
                       </div>
                     )}
-                    <input ref={featureInputRef} type="file" accept="image/*" className="hidden" onChange={(e) => { const f = e.target.files?.[0]; if (f) handleFeatureSelect(f); }} />
+                    <input ref={featureInputRef} type="file" accept={acceptFor("image")} className="hidden" onChange={(e) => { const f = e.target.files?.[0]; if (f) handleFeatureSelect(f); }} />
                   </div>
                   <p className="text-xs text-muted-foreground">Cover art shown wherever the work is previewed. JPG, PNG, GIF, SVG or WebP.</p>
                 </div>

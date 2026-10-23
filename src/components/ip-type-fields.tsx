@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { uploadSizeError } from "@medialane/sdk";
+import { acceptFor, uploadError } from "@medialane/sdk";
 import type { IPType } from "../data/ip.js";
 import {
   IP_TEMPLATES,
@@ -121,7 +121,7 @@ export function IPTypeFields({ ipType, onChange, uploadDocument, existingDocumen
 
   const handleDocPick = async (file: File) => {
     if (!uploadDocument || !docUpload) return;
-    const sizeError = uploadSizeError(file, "document");
+    const sizeError = uploadError(file, "document");
     if (sizeError) {
       setDocError(sizeError);
       return;
@@ -189,7 +189,7 @@ export function IPTypeFields({ ipType, onChange, uploadDocument, existingDocumen
               <input
                 ref={docInputRef}
                 type="file"
-                accept={docUpload.accept}
+                accept={acceptFor("document")}
                 className="hidden"
                 onChange={(e) => {
                   const f = e.target.files?.[0];
