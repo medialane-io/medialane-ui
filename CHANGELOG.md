@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.219.0] — 2026-10-23
+
+### Changed
+
+- `PortfolioShell` hides the tabs Listings, Offers received, Offers sent, Counter-offers, Licensing and Sponsorships until they have something to show. The tab you are on stays visible. `PortfolioTab.hideWhenEmpty` marks a tab as hideable.
+- `PortfolioShell` takes `licensing` (`{ present, isLoading }`); without it the Licensing tab is always shown.
+- `useMySponsorshipDealCounts` also returns `hasAny`, covering proposals, offers and licenses.
+- `derivePortfolioCounts` also returns `offers`.
+
 ## [0.218.0] — 2026-10-23
 
 ### Added

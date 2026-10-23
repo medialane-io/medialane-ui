@@ -88,13 +88,16 @@ export function useSponsorshipLicenses( params?: { holder?: string; author?: str
 }
 
 export function useMySponsorshipDealCounts( walletAddress: string | null) {
-  const { proposals, isLoading: proposalsLoading } = useSponsorshipProposals(
-    walletAddress ? { owner: walletAddress, open: true } : undefined
-  );
-  const { offers, isLoading: offersLoading } = useSponsorshipOffers(
-    walletAddress ? { author: walletAddress, open: true } : undefined
-  );
+  const owner = useSponsorshipProposals(walletAddress ? { owner: walletAddress, open: true } : undefined);
+  const sent = useSponsorshipProposals(walletAddress ? { proposer: walletAddress, open: true } : undefined);
+  const offers = useSponsorshipOffers(walletAddress ? { author: walletAddress, open: true } : undefined);
+  const held = useSponsorshipLicenses(walletAddress ? { holder: walletAddress } : undefined);
+  const issued = useSponsorshipLicenses(walletAddress ? { author: walletAddress } : undefined);
 
-  void offers;
-  return { pendingCount: proposals.length, isLoading: proposalsLoading || offersLoading };
+  return {
+    pendingCount: owner.proposals.length,
+    hasAny:
+      owner.proposals.length + sent.proposals.length + offers.offers.length + held.licenses.length + issued.licenses.length > 0,
+    isLoading: owner.isLoading || sent.isLoading || offers.isLoading || held.isLoading || issued.isLoading,
+  };
 }
