@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.218.0] — 2026-10-23
+
+### Added
+
+- `NewCollectionMenu` and `CollectionTypeChoices`: the two collection types, single edition and multi edition, each linking to its creation page. `COLLECTION_TYPES` lists them.
+- `EmptyOrError` takes `emptyActions`, shown under the empty-state buttons.
+
 ## [0.217.0] — 2026-10-23
 
 ### Changed

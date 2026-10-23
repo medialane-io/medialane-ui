@@ -14,6 +14,7 @@ interface EmptyOrErrorProps {
   emptyTitle: string;
   emptyDescription?: string;
   emptyCta?: { label: string; href: string };
+  emptyActions?: ReactNode;
   emptyIcon?: ReactNode;
   skeletonCount?: number;
 
@@ -29,6 +30,7 @@ export function EmptyOrError({
   emptyTitle,
   emptyDescription,
   emptyCta,
+  emptyActions,
   emptyIcon,
   skeletonCount = 4,
   skeletonNode,
@@ -90,6 +92,7 @@ export function EmptyOrError({
             </Button>
           )}
         </div>
+        {emptyActions}
       </div>
     );
   }
