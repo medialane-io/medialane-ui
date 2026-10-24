@@ -5,20 +5,25 @@ mock.module("next/image", () => ({
   default: ({ alt }: { alt?: string }) => <span data-alt={alt} />,
 }));
 
-const { CollectionCreated } = await import("./collection-created.js");
+const { CreationSuccess } = await import("./creation-success.js");
 
-const render = (props: Partial<Parameters<typeof CollectionCreated>[0]> = {}) =>
-  renderToStaticMarkup(<CollectionCreated name="Artes Visuais" onCreateAnother={() => {}} {...props} />);
+const render = (props: Partial<Parameters<typeof CreationSuccess>[0]> = {}) =>
+  renderToStaticMarkup(
+    <CreationSuccess name="Artes Visuais" caption="Your collection is live" againLabel="Create another" onAgain={() => {}} {...props} />,
+  );
 
-test("leads with the collection name and image", () => {
+test("leads with the name and image", () => {
   const html = render({ image: "blob:cover" });
   expect(html).toContain("Artes Visuais");
   expect(html).toContain('data-alt="Artes Visuais"');
   expect(html).toContain("Your collection is live");
 });
 
-test("shows both actions when the collection can be opened and minted into", () => {
-  const html = render({ viewHref: "/collections/starknet/0x1", mintHref: "/launchpad/single-editions" });
+test("shows both actions and the quiet link", () => {
+  const html = render({
+    primary: { href: "/launchpad/single-editions", label: "Mint an asset" },
+    secondary: { href: "/collections/starknet/0x1", label: "View collection" },
+  });
   expect(html).toContain('href="/collections/starknet/0x1"');
   expect(html).toContain("View collection");
   expect(html).toContain("Mint an asset");
@@ -26,6 +31,6 @@ test("shows both actions when the collection can be opened and minted into", () 
 });
 
 test("leaves out an action it has no destination for", () => {
-  const html = render({ mintHref: "/launchpad/single-editions" });
+  const html = render({ primary: { href: "/launchpad/single-editions", label: "Mint an asset" } });
   expect(html).not.toContain("View collection");
 });

@@ -6,29 +6,23 @@ import Link from "./link.js";
 import Image from "./image.js";
 import { Button } from "./button.js";
 
-export interface CollectionCreatedProps {
+export interface CreationSuccessAction {
+  href: string;
+  label: string;
+}
+
+export interface CreationSuccessProps {
   name: string;
   image?: string | null;
-  caption?: string;
-  viewHref?: string;
-  mintHref?: string;
-  mintLabel?: string;
-  onCreateAnother: () => void;
-  createAnotherLabel?: string;
+  caption: string;
+  primary?: CreationSuccessAction;
+  secondary?: CreationSuccessAction;
+  onAgain: () => void;
+  againLabel: string;
   children?: ReactNode;
 }
 
-export function CollectionCreated({
-  name,
-  image,
-  caption = "Your collection is live",
-  viewHref,
-  mintHref,
-  mintLabel = "Mint an asset",
-  onCreateAnother,
-  createAnotherLabel = "Create another",
-  children,
-}: CollectionCreatedProps) {
+export function CreationSuccess({ name, image, caption, primary, secondary, onAgain, againLabel, children }: CreationSuccessProps) {
   return (
     <div className="flex w-full flex-col items-center gap-6 py-2 text-center">
       <div className="relative">
@@ -46,28 +40,28 @@ export function CollectionCreated({
         </span>
       </div>
 
-      <div className="max-w-full space-y-1">
-        <p className="truncate text-xl font-bold">{name || "Your collection"}</p>
+      <div className="w-full min-w-0 space-y-1">
+        <p className="line-clamp-2 break-words text-xl font-bold">{name}</p>
         <p className="text-sm text-muted-foreground">{caption}</p>
       </div>
 
       <div className="flex w-full flex-col gap-2">
-        {(mintHref || viewHref) && (
+        {(primary || secondary) && (
           <div className="flex flex-col gap-2 sm:flex-row">
-            {mintHref && (
+            {primary && (
               <Button asChild className="flex-1">
-                <Link href={mintHref}>{mintLabel}</Link>
+                <Link href={primary.href}>{primary.label}</Link>
               </Button>
             )}
-            {viewHref && (
+            {secondary && (
               <Button asChild variant="outline" className="flex-1">
-                <Link href={viewHref}>View collection</Link>
+                <Link href={secondary.href}>{secondary.label}</Link>
               </Button>
             )}
           </div>
         )}
-        <Button variant="ghost" size="sm" className="text-muted-foreground" onClick={onCreateAnother}>
-          {createAnotherLabel}
+        <Button variant="ghost" size="sm" className="text-muted-foreground" onClick={onAgain}>
+          {againLabel}
         </Button>
       </div>
 

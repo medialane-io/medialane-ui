@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.225.0] — 2026-10-24
+
+### Changed
+
+- `CollectionCreated` is now `CreationSuccess`, and serves minted assets as well as collections. The image leads, with the name, a caption, up to two buttons and a quiet "again" link.
+
 ## [0.224.0] — 2026-10-24
 
 ### Added
