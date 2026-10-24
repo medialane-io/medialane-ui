@@ -81,6 +81,11 @@ export function TokenCard({
 
   return (
     <div className="card-base relative overflow-hidden flex flex-col w-full">
+      {ipType && (
+        <div className="absolute top-2 right-2 z-10">
+          <IpTypeBadge ipType={ipType as any} size="sm" />
+        </div>
+      )}
 
       <Link href={assetHref} className="flex flex-col flex-1">
 
@@ -97,12 +102,6 @@ export function TokenCard({
               <div className="absolute inset-0 bg-gradient-to-br from-brand-purple/15 to-brand-blue/15" />
             }
           />
-
-          {ipType && (
-            <div className="absolute top-2 right-2 z-10">
-              <IpTypeBadge ipType={ipType as any} size="sm" />
-            </div>
-          )}
 
           {listingOrder && (
             <div className="absolute bottom-2 right-2 z-10">
