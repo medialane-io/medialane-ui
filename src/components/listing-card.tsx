@@ -97,7 +97,7 @@ export function ListingCard({ order: rawOrder, inCart = false, onBuy, onCart, ov
             />
           </div>
           <div className="p-2.5 space-y-0.5">
-            <p className="text-xs font-semibold truncate">{name}</p>
+            <p className="text-xs font-semibold line-clamp-2 break-words">{name}</p>
             <PriceLine amountFormatted={order.price?.formatted} currency={order.price?.currency} usdValue={usdValue} />
             <p className="text-2xs text-muted-foreground">{timeAgo(order.createdAt)}</p>
           </div>
@@ -128,7 +128,7 @@ export function ListingCard({ order: rawOrder, inCart = false, onBuy, onCart, ov
 
         <div className="p-3.5 space-y-3">
           <div className="min-w-0">
-            <p className="font-semibold text-base truncate leading-snug">{name}</p>
+            <p className="text-sm font-semibold tracking-tight line-clamp-2 break-words leading-snug">{name}</p>
           </div>
 
           {order.price?.formatted && (

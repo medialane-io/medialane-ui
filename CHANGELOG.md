@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.226.0] — 2026-10-24
+
+### Changed
+
+- Asset and listing cards show a long title on up to two lines instead of cutting it to one, in a lighter, smaller title style.
+
 ## [0.225.0] — 2026-10-24
 
 ### Changed
