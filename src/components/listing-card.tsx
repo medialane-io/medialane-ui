@@ -128,7 +128,7 @@ export function ListingCard({ order: rawOrder, inCart = false, onBuy, onCart, ov
 
         <div className="p-3.5 space-y-3">
           <div className="min-w-0">
-            <p className="text-sm font-semibold tracking-tight line-clamp-2 break-words leading-snug">{name}</p>
+            <p className="text-base font-semibold tracking-tight line-clamp-2 break-words leading-snug">{name}</p>
           </div>
 
           {order.price?.formatted && (

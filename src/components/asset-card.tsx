@@ -101,7 +101,7 @@ export function AssetCard({
 
       <div className="px-3 py-3 space-y-1">
         <Link href={href} className="block min-w-0">
-          <p className="text-sm font-semibold tracking-tight line-clamp-2 break-words leading-snug">
+          <p className="text-base font-semibold tracking-tight line-clamp-2 break-words leading-snug">
             {name}
           </p>
           {subtitle && (
