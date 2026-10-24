@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.233.0] — 2026-10-24
+
+### Added
+
+- `WalletRequired`: the signed-out state for a flow, using the app's connect action; shows its children once there is a wallet.
+- `ClaimRouteShell`: the launchpad form shell with a back button.
+- `useLaunchpadImageUpload`: the cover image upload for launchpad forms, on the app's client and sign-in.
+- `invalidatePortfolioCache`: refreshes an owner's assets and collections after a change.
+
+### Changed
+
+- `RewardEarned` is a component that reads the app's client; `createRewardEarned` is removed.
+
 ## [0.232.0] — 2026-10-24
 
 ### Added
