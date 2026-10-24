@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.239.0] — 2026-10-24
+
+### Added
+
+- `RemixMint`: the flow for minting a remix of an asset the account may remix directly. It reads the new token id from the receipt and registers the remix against its parent. It sends anyone who may not remix directly back to the asset.
+
 ## [0.238.0] — 2026-10-24
 
 ### Changed
