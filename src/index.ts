@@ -343,7 +343,7 @@ export { XpEarned } from "./components/rewards/xp-earned.js";
 export type { XpEarnedProps } from "./components/rewards/xp-earned.js";
 export { useTransaction } from "./utils/use-transaction.js";
 export type { TransactionPhase } from "./utils/use-transaction.js";
-export { createRewardEarned } from "./components/rewards/reward-earned.js";
+export { RewardEarned } from "./components/rewards/reward-earned.js";
 export type { RewardEarnedProps, RewardSnapshot } from "./components/rewards/reward-earned.js";
 
 export { LoadMoreSentinel } from "./components/load-more-sentinel.js";
@@ -360,6 +360,11 @@ export type { GradientButtonProps } from "./components/gradient-button.js";
 
 export { CoinLaunchPreview } from "./components/coin-launch-preview.js";
 export type { CoinPreviewData } from "./components/coin-launch-preview.js";
+export { WalletRequired } from "./components/wallet-required.js";
+export type { WalletRequiredProps } from "./components/wallet-required.js";
+export { ClaimRouteShell } from "./components/claim-route-shell.js";
+export { useLaunchpadImageUpload } from "./utils/use-launchpad-image-upload.js";
+export { invalidatePortfolioCache } from "./utils/portfolio-cache.js";
 export { TransactionDialog } from "./components/transaction-dialog.js";
 export type { TransactionDialogProps } from "./components/transaction-dialog.js";
 export { CreationSuccess } from "./components/creation-success.js";
