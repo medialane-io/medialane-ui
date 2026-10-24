@@ -28,6 +28,7 @@ export interface MedialaneApp {
   walletAddress: string | null;
   walletLoading?: boolean;
   onRequireWallet: () => void;
+  releaseSigner?: () => void;
   ensureSignedIn?: () => Promise<void>;
   connectLabel?: string;
   connectDescription?: string;
