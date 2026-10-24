@@ -67,6 +67,12 @@ export function AssetCard({
       )}
     >
 
+      {ipType && (
+        <div className="absolute top-2 right-2 z-10">
+          <IpTypeBadge ipType={ipType} size="sm" baseUrl={ipTypeBaseUrl} />
+        </div>
+      )}
+
       <Link href={href} className="block relative aspect-square bg-muted overflow-hidden">
         <AnimatedTokenMedia
           image={resolved}
@@ -84,12 +90,6 @@ export function AssetCard({
             </div>
           }
         />
-
-        {ipType && (
-          <div className="absolute top-2 right-2">
-            <IpTypeBadge ipType={ipType} size="sm" baseUrl={ipTypeBaseUrl} />
-          </div>
-        )}
 
         {indexing && (
           <div className="absolute bottom-0 inset-x-0 flex items-center justify-center gap-1.5 bg-black/50 backdrop-blur-sm py-1.5">

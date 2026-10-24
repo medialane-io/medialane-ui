@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.241.0] — 2026-10-24
+
+### Added
+
+- `IpTypePage`: the asset-type browse page. Every card has Buy or Offer, the type icon and the ⋯ menu, as on the account page.
+
+### Fixed
+
+- The asset-type icon on `AssetCard` and `TokenCard` sits beside the card link instead of inside it, so a link is no longer nested in a link.
+
 ## [0.240.0] — 2026-10-24
 
 ### Changed
