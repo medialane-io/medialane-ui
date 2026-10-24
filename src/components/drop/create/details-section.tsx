@@ -1,6 +1,7 @@
 "use client";
 
 import { FileText } from "lucide-react";
+import { FIELD_LIMITS } from "@medialane/sdk";
 import { Input } from "../../input.js";
 import { Textarea } from "../../textarea.js";
 import { Section, ToggleGroup } from "../../create-form-primitives.js";
@@ -20,7 +21,7 @@ export function DetailsSection({ draft, setDraft, errors }: SectionProps) {
       </div>
       <div className="space-y-1.5">
         <label className="text-sm font-medium" htmlFor="drop-name">Name</label>
-        <Input id="drop-name" value={draft.name} maxLength={100}
+        <Input id="drop-name" value={draft.name} maxLength={FIELD_LIMITS.name}
           onChange={(e) => {
             const name = e.target.value;
             const auto = !draft.symbol || draft.symbol === suggestLaunchpadSymbol(draft.name);
@@ -30,13 +31,13 @@ export function DetailsSection({ draft, setDraft, errors }: SectionProps) {
       </div>
       <div className="space-y-1.5">
         <label className="text-sm font-medium" htmlFor="drop-symbol">Symbol</label>
-        <Input id="drop-symbol" value={draft.symbol} maxLength={10} className="max-w-[10rem] uppercase"
+        <Input id="drop-symbol" value={draft.symbol} maxLength={FIELD_LIMITS.symbol} className="max-w-[10rem] uppercase"
           onChange={(e) => setDraft({ symbol: e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, "") })} />
         <FieldError message={errors.symbol} />
       </div>
       <div className="space-y-1.5">
         <label className="text-sm font-medium" htmlFor="drop-description">Description</label>
-        <Textarea id="drop-description" value={draft.description} maxLength={500} rows={3} onChange={(e) => setDraft({ description: e.target.value })} />
+        <Textarea id="drop-description" value={draft.description} maxLength={FIELD_LIMITS.description} rows={3} onChange={(e) => setDraft({ description: e.target.value })} />
       </div>
       <div className="space-y-3 border-t border-border/60 pt-4">
         <p className="text-sm font-medium">License <span className="font-normal text-muted-foreground">— saved with every token</span></p>
