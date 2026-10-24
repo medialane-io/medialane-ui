@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.229.0] — 2026-10-24
+
+### Changed
+
+- Activity rows no longer show the level badge next to the address, and `ActivityRow` loses its `actorLevel` prop.
+
 ## [0.228.0] — 2026-10-24
 
 ### Changed

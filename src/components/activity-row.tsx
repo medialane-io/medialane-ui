@@ -5,13 +5,12 @@ import Link from "./link.js";
 import { ExternalLink } from "lucide-react";
 import { AddressDisplay } from "./address-display.js";
 import { CurrencyIcon } from "./currency-icon.js";
-import { LevelBadge } from "./rewards/level-badge.js";
 import { ACTIVITY_TYPE_CONFIG } from "../data/activity.js";
 import { timeAgo } from "../utils/time.js";
 import { formatDisplayPrice } from "../utils/format.js";
 import { cn } from "../utils/cn.js";
 import { EXPLORER_URL } from "../utils/explorer-url.js";
-import type { ApiActivity, ApiRewardsBatchEntry } from "@medialane/sdk";
+import type { ApiActivity } from "@medialane/sdk";
 import { assetHref, profileHref } from "@medialane/sdk";
 import { useImageUrl } from "../utils/use-image-url.js";
 
@@ -29,7 +28,6 @@ export interface ActivityRowProps {
   showActor?: boolean;
   showExplorer?: boolean;
   compact?: boolean;
-  actorLevel?: ApiRewardsBatchEntry;
   explorerUrl?: string;
 }
 
@@ -38,7 +36,6 @@ export function ActivityRow({
   showActor = true,
   showExplorer = true,
   compact = false,
-  actorLevel,
   explorerUrl = EXPLORER_URL,
 }: ActivityRowProps) {
   const resolveImage = useImageUrl();
@@ -140,23 +137,12 @@ export function ActivityRow({
         <p className="text-xs text-muted-foreground leading-tight truncate mt-0.5 flex items-center gap-1">
           <span className="truncate">{message}</span>
           {showActor && actor && (
-            <>
-              <Link
-                href={profileHref({ address: actor })}
-                className="hover:text-primary transition-colors tabular-nums shrink-0"
-              >
-                <AddressDisplay address={actor} chars={4} showCopy={false} />
-              </Link>
-              {actorLevel && actorLevel.totalXp > 0 && (
-                <LevelBadge
-                  level={actorLevel.currentLevel}
-                  name={actorLevel.currentLevelName}
-                  badgeColor={actorLevel.badgeColor}
-                  size="sm"
-                  className="shrink-0"
-                />
-              )}
-            </>
+            <Link
+              href={profileHref({ address: actor })}
+              className="hover:text-primary transition-colors tabular-nums shrink-0"
+            >
+              <AddressDisplay address={actor} chars={4} showCopy={false} />
+            </Link>
           )}
         </p>
       </div>
