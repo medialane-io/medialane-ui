@@ -37,7 +37,7 @@ function setup() {
   } as unknown as MedialaneClient;
   const app = {
     getClient: () => client,
-    getSigner: () => ({ address: ME, execute: async (calls: { kind: string }[]) => { executed.push(calls[0]!.kind); return { txHash: `0x${executed.length}` }; }, signTypedData: async () => [] }),
+    getSigner: () => ({ address: ME, execute: async (calls: unknown[]) => { executed.push((calls[0] as { kind: string }).kind); return { txHash: `0x${executed.length}` }; }, signTypedData: async () => [] }),
     walletAddress: ME,
     onRequireWallet: () => {},
   } as MedialaneApp;
