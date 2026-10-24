@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.231.0] — 2026-10-24
+
+### Changed
+
+- A publication shows its author beside the Read more button after the text, instead of under the title.
+
 ## [0.230.0] — 2026-10-24
 
 ### Changed

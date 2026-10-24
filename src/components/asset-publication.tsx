@@ -33,7 +33,6 @@ export function AssetPublication({ name, text, image, imgError, onImageError, on
     <article className="min-w-0 space-y-6">
       <header className="space-y-3">
         <h1 className="text-2xl lg:text-4xl font-bold leading-tight break-words">{name}</h1>
-        {author ? <p className="text-sm text-muted-foreground">{author}</p> : null}
       </header>
 
       {lead ? <p className="max-w-3xl text-base leading-relaxed text-foreground whitespace-pre-line">{lead}</p> : null}
@@ -50,13 +49,18 @@ export function AssetPublication({ name, text, image, imgError, onImageError, on
         ))}
       </div>
 
-      {website ? (
-        <Button asChild variant="outline">
-          <a href={website} target="_blank" rel="noopener noreferrer">
-            Read more
-            <ExternalLink />
-          </a>
-        </Button>
+      {author || website ? (
+        <div className="flex flex-wrap items-center gap-4">
+          {author ? <p className="min-w-0 break-words text-sm text-muted-foreground">{author}</p> : null}
+          {website ? (
+            <Button asChild variant="outline">
+              <a href={website} target="_blank" rel="noopener noreferrer">
+                Read more
+                <ExternalLink />
+              </a>
+            </Button>
+          ) : null}
+        </div>
       ) : null}
     </article>
   );
