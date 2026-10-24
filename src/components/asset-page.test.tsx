@@ -11,7 +11,6 @@ const { SWRConfig } = await import("swr");
 const { AssetPage, detectAssetKind } = await import("./asset-page.js");
 const { MedialaneAppProvider } = await import("./medialane-app.js");
 import type { ApiCollection, ApiToken } from "@medialane/sdk";
-import type { AssetPageSlots } from "./asset-page.js";
 import type { MedialaneApp } from "./medialane-app.js";
 
 afterEach(() => cleanup());
@@ -38,8 +37,7 @@ const clientFor = (t: ApiToken, c: ApiCollection) => ({
 });
 
 const opened: string[] = [];
-const slots: AssetPageSlots = {
-  useMarketActions: () => ({
+const useMarketActions = () => ({
     isProcessing: false,
     buy: () => opened.push("buy"),
     list: () => opened.push("list"),
@@ -48,17 +46,14 @@ const slots: AssetPageSlots = {
     cancel: () => {},
     acceptBid: () => {},
     dialogs: <div>app dialogs</div>,
-  }),
-  Comments: () => <div>app comments</div>,
-  PopBurn: () => <div>app burn</div>,
-};
+});
 
 const renderPage = (t: ApiToken, c: ApiCollection) => {
   const app = { getClient: () => clientFor(t, c), getSigner: () => { throw new Error("unused"); }, walletAddress: null, onRequireWallet: () => {} } as unknown as MedialaneApp;
   return render(
     <SWRConfig value={{ provider: () => new Map(), dedupingInterval: 0 }}>
       <MedialaneAppProvider value={app}>
-        <AssetPage contract="0xc0" tokenId="1" slots={slots} />
+        <AssetPage contract="0xc0" tokenId="1" useMarketActions={useMarketActions} />
       </MedialaneAppProvider>
     </SWRConfig>,
   );
@@ -71,7 +66,7 @@ test("asset kind comes from the collection's service, then the token standard", 
   expect(detectAssetKind(null, "ERC721")).toBe("standard");
 });
 
-test("a standard asset shows the header, marketplace and the app's slots", async () => {
+test("a standard asset shows the header, marketplace and the app's market dialogs", async () => {
   const { getByText, queryByText } = renderPage(token(), collection());
   await waitFor(() => expect(getByText("Stones")).toBeTruthy());
   expect(getByText("We could be heroes")).toBeTruthy();

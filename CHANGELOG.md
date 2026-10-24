@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.247.0] — 2026-10-24
+
+### Added
+
+- `TransferCollectionOwnership`, `PopManagePage` and `CommentsSection`, on `useTransaction`. Comments can be reported through the app's report dialog.
+
+### Changed
+
+- `useTransaction().run` resolves to `true` when the transaction succeeded and `false` when it failed.
+- `AssetPage` takes `useMarketActions` directly; the comments and POP burn slots are gone. `AssetPageSlots` is removed.
+- `CollectionPage` no longer takes a `TransferOwnership` slot; it shows `TransferCollectionOwnership`.
+- `ReportTarget` includes `{ type: "COMMENT"; commentId }`.
+- `AssetCommentsDialog` no longer takes a `Comments` prop.
+
 ## [0.246.0] — 2026-10-24
 
 ### Added

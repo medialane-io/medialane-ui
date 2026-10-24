@@ -24,7 +24,8 @@ import { AssetUnavailable } from "./asset-unavailable.js";
 import { HiddenContentBanner } from "./hidden-content-banner.js";
 import { DropTokenLink } from "./drop/drop-token-link.js";
 import { FloatingCommentsButton } from "./floating-comments-button.js";
-import { AssetCommentsDialog, type AssetCommentsProps } from "./asset-comments-dialog.js";
+import { AssetCommentsDialog } from "./asset-comments-dialog.js";
+import { PopBurnButton } from "./pop-burn-button.js";
 import { MembershipPanel, TicketPanel, type AssetTypePanelProps } from "./asset-type-panels.js";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./tabs.js";
 import { Skeleton } from "./skeleton.js";
@@ -65,12 +66,6 @@ export interface AssetMarketActions {
   cancel: (order: ApiOrder) => void;
   acceptBid: (order: ApiOrder) => void;
   dialogs: ReactNode;
-}
-
-export interface AssetPageSlots {
-  useMarketActions: (context: AssetMarketContext) => AssetMarketActions;
-  Comments: ComponentType<AssetCommentsProps>;
-  PopBurn: ComponentType<{ collectionAddress: string; tokenId: string }>;
 }
 
 interface KindConfig {
@@ -125,16 +120,16 @@ export function AssetPageSkeleton() {
 export interface AssetPageProps {
   contract: string;
   tokenId: string;
-  slots: AssetPageSlots;
+  useMarketActions: (context: AssetMarketContext) => AssetMarketActions;
 }
 
-export function AssetPage({ contract, tokenId, slots }: AssetPageProps) {
+export function AssetPage({ contract, tokenId, useMarketActions }: AssetPageProps) {
   const { token, isLoading, isIndexing } = useToken(contract, tokenId);
   const { collection, isLoading: collectionLoading } = useCollection(contract);
   if (isLoading || collectionLoading) return <AssetPageSkeleton />;
   if (!token) return <AssetUnavailable isIndexing={isIndexing} />;
   const kind = detectAssetKind(collection?.service, collection?.standard ?? token.standard);
-  return <AssetPageView contract={contract} tokenId={tokenId} token={token} collection={collection ?? null} kind={kind} slots={slots} />;
+  return <AssetPageView contract={contract} tokenId={tokenId} token={token} collection={collection ?? null} kind={kind} useMarketActions={useMarketActions} />;
 }
 
 function AssetPageView({
@@ -143,14 +138,14 @@ function AssetPageView({
   token,
   collection,
   kind,
-  slots,
+  useMarketActions,
 }: {
   contract: string;
   tokenId: string;
   token: ApiToken & { isHidden?: boolean };
   collection: ApiCollection | null;
   kind: AssetKind;
-  slots: AssetPageSlots;
+  useMarketActions: AssetPageProps["useMarketActions"];
 }) {
   const resolveImage = useImageUrl();
   const config = KINDS[kind];
@@ -178,7 +173,7 @@ function AssetPageView({
     ? ((token.standard ?? collection?.standard ?? "UNKNOWN") as AssetMarketContext["tokenStandard"])
     : "ERC1155";
 
-  const actions = slots.useMarketActions({
+  const actions = useMarketActions({
     contract,
     tokenId,
     tokenName: name,
@@ -209,7 +204,6 @@ function AssetPageView({
   const ownerAddress = !market.isERC1155 ? (holders[0]?.owner ?? token.owner ?? null) : null;
   const marketCount = market.activeListings.length + market.activeBids.length;
   const { Panel } = config;
-  const { Comments, PopBurn } = slots;
 
   const articleText = token.metadata?.description?.trim() || null;
   const video = (token.metadata?.ipType ?? "").toLowerCase() === "video" ? videoEmbed(attributes) : null;
@@ -252,7 +246,7 @@ function AssetPageView({
         />
       ) : null}
 
-      {kind === "pop" && market.isOwner ? <PopBurn collectionAddress={contract} tokenId={tokenId} /> : null}
+      {kind === "pop" && market.isOwner ? <PopBurnButton collectionAddress={contract} tokenId={tokenId} /> : null}
 
       {market.isERC1155 && holders.length > 0 ? (
         <AssetOwnersPanel balances={holders} total={token.holderCount} editions={Number(token.supply ?? 0)} />
@@ -474,7 +468,6 @@ function AssetPageView({
         name={name}
         imageUrl={image}
         commentTotal={commentTotal}
-        Comments={Comments}
         {...config.accents}
       />
       {ReportDialog ? <ReportDialog open={reportOpen} onOpenChange={setReportOpen} target={{ type: "TOKEN", contract: token.contractAddress, tokenId: token.tokenId, name }} /> : null}

@@ -28,7 +28,7 @@ function useRowAction(copy: { title: string; working: string; done: string; desc
       .run(async (signer) => {
         await runIntentCalls(signer, () => create(app.getClient().api));
       })
-      .then(() => then())
+      .then((ok) => (ok ? then() : undefined))
       .finally(() => setActiveId(null));
   };
 
