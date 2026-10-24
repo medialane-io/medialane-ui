@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.236.0] — 2026-10-24
+
+### Added
+
+- `SingleEditionMint`: the single-copy NFT mint flow, on `useTransaction`. It links to the new asset by the token id read from the receipt. New assets default the AI and data-mining policy to "Not Allowed".
+- `CollectionPicker`: the searchable collection chooser.
+
 ## [0.235.0] — 2026-10-24
 
 ### Added
