@@ -364,6 +364,10 @@ export { CollectionCreateForm } from "./components/launchpad/collection-create-f
 export type { CollectionCreateFormProps } from "./components/launchpad/collection-create-form.js";
 export { CLUB_PRESET, TICKETS_PRESET, EDITIONS_PRESET, SINGLE_PRESET } from "./components/launchpad/collection-create-presets.js";
 export type { CollectionCreatePreset } from "./components/launchpad/collection-create-presets.js";
+export { TierMintForm } from "./components/launchpad/tier-mint-form.js";
+export type { TierMintFormProps } from "./components/launchpad/tier-mint-form.js";
+export { CLUB_TIER_PRESET, TICKETS_TIER_PRESET } from "./components/launchpad/tier-mint-presets.js";
+export type { TierMintPreset } from "./components/launchpad/tier-mint-presets.js";
 export { WalletRequired } from "./components/wallet-required.js";
 export type { WalletRequiredProps } from "./components/wallet-required.js";
 export { ClaimRouteShell } from "./components/claim-route-shell.js";
