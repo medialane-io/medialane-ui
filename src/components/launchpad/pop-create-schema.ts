@@ -1,5 +1,5 @@
 import * as z from "zod";
-import { FIELD_LIMITS } from "@medialane/sdk";
+import { FIELD_LIMITS } from "../../utils/field-limits.js";
 
 function parseDateTime(date: string, time: string): number | null {
   const timestamp = new Date(`${date}T${time}:00`).getTime();

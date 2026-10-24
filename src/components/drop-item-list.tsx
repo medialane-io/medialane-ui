@@ -5,7 +5,7 @@ import { useRef } from "react";
 import { ImagePlus, X } from "lucide-react";
 import { Button } from "./button.js";
 import { Input } from "./input.js";
-import { acceptFor } from "@medialane/sdk";
+import { acceptFor } from "../utils/upload-limits.js";
 
 export interface DraftItem {
   id: string;

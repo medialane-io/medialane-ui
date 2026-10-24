@@ -2,7 +2,8 @@
 
 import { useMemo, useState, type ReactNode } from "react";
 import { ArrowRight, Coins, ImagePlus, Loader2, X } from "lucide-react";
-import { SUPPORTED_TOKENS, acceptFor, formatAmount, getTokenBySymbol, normalizeAddress } from "@medialane/sdk";
+import { SUPPORTED_TOKENS, formatAmount, getTokenBySymbol, normalizeAddress } from "@medialane/sdk";
+import { acceptFor } from "../../utils/upload-limits.js";
 import {
   SUGGESTED_DEFAULT_PRICE,
   buybackQuoteRaw,

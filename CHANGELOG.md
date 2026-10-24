@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.249.0] — 2026-10-24
+
+### Added
+
+- `utils/upload-limits` (`UPLOAD_LIMITS`, `acceptFor`, `uploadError`) and `utils/field-limits` (`FIELD_LIMITS`): the file types and field lengths the forms use now live here, so apps can import them from the UI library.
+
 ## [0.248.0] — 2026-10-24
 
 ### Changed

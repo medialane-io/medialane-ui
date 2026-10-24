@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { acceptFor, uploadError } from "@medialane/sdk";
+import { acceptFor, uploadError } from "../utils/upload-limits.js";
 import type { IPType } from "../data/ip.js";
 import {
   IP_TEMPLATES,

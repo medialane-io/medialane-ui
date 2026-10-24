@@ -5,14 +5,9 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { ImagePlus, Loader2, X } from "lucide-react";
-import {
-  FIELD_LIMITS,
-  acceptFor,
-  buildCollectionMetadata,
-  collectionHref,
-  getCoordinates,
-  profileHref,
-} from "@medialane/sdk";
+import { buildCollectionMetadata, collectionHref, getCoordinates, profileHref } from "@medialane/sdk";
+import { acceptFor } from "../../utils/upload-limits.js";
+import { FIELD_LIMITS } from "../../utils/field-limits.js";
 import { createdCollectionFromReceipt, deployedCollectionFromReceipt } from "@medialane/sdk/starknet";
 import Image from "../image.js";
 import { Button } from "../button.js";

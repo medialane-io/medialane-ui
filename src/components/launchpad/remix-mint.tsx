@@ -2,15 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Boxes, ChevronDown, ChevronLeft, GitBranch, ImagePlus, Info, Percent, Plus, Shield, Upload } from "lucide-react";
-import {
-  acceptFor,
-  assetHref,
-  getDerivativesTerm,
-  getService,
-  normalizeAddress,
-  resolveRemixPolicy,
-  uploadError,
-} from "@medialane/sdk";
+import { assetHref, getDerivativesTerm, getService, normalizeAddress, resolveRemixPolicy } from "@medialane/sdk";
+import { acceptFor, uploadError } from "../../utils/upload-limits.js";
 import { assertTransactionSucceeded, mintedTokenIdFromReceipt } from "@medialane/sdk/starknet";
 import Image from "../image.js";
 import Link from "../link.js";
