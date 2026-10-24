@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.246.0] — 2026-10-24
+
+### Added
+
+- `PopClaimButton` and `PopBurnButton`: claim and remove a POP credential, on `useTransaction`.
+- `SponsorshipOffersPage`, `SponsorshipOfferPage` and `PortfolioSponsorships`: browse offers, bid on an offer or accept bids on your own, and respond to proposals. Every action is checked on chain before it shows as done.
+- `TransactionDone`: the standard success view inside a `TransactionDialog`.
+
 ## [0.245.0] — 2026-10-24
 
 ### Added
