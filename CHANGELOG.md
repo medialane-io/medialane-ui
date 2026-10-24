@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.237.0] — 2026-10-24
+
+### Added
+
+- `EditionMint`: the multi-edition mint flow for a collection the account owns, on `useTransaction`. New editions default the AI and data-mining policy to "Not Allowed".
+
 ## [0.236.0] — 2026-10-24
 
 ### Added

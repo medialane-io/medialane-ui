@@ -371,6 +371,7 @@ export type { TierMintPreset } from "./components/launchpad/tier-mint-presets.js
 export { SingleEditionMint } from "./components/launchpad/single-edition-mint.js";
 export { CollectionPicker } from "./components/launchpad/collection-picker.js";
 export type { CollectionPickerProps } from "./components/launchpad/collection-picker.js";
+export { EditionMint } from "./components/launchpad/edition-mint.js";
 export { WalletRequired } from "./components/wallet-required.js";
 export type { WalletRequiredProps } from "./components/wallet-required.js";
 export { ClaimRouteShell } from "./components/claim-route-shell.js";
