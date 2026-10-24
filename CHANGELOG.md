@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.243.0] — 2026-10-24
+
+### Added
+
+- `SponsorshipCreate`: the flow for offering an asset for sponsorship or proposing to sponsor one, with the owner's pending proposals. It runs on `useTransaction` and ends on the standard success screen.
+
 ## [0.242.0] — 2026-10-24
 
 ### Added
