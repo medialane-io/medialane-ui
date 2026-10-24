@@ -33,3 +33,12 @@ test("an empty leaderboard invites the first points", async () => {
   const view = renderPanel([]);
   await waitFor(() => expect(view.getByText(/be the first/)).toBeTruthy());
 });
+
+test("the compact panel lists each rank in one slim row", async () => {
+  const client = { api: { rewards: { leaderboard: async () => ({ data: [entry(1, A), entry(2, B)], meta: { page: 1, limit: 5, total: 2 } }) }, creators: { findProfile: async () => null } } } as unknown as MedialaneClient;
+  const app = { getClient: () => client, getSigner: () => { throw new Error("unused"); }, walletAddress: null, onRequireWallet: () => {} } as MedialaneApp;
+  const view = render(<SWRConfig value={{ provider: () => new Map() }}><MedialaneAppProvider value={app}><LeaderboardPanel limit={5} showHeading={false} compact /></MedialaneAppProvider></SWRConfig>);
+  await waitFor(() => expect(view.getByText("200")).toBeTruthy());
+  expect(view.getByText("100")).toBeTruthy();
+  expect(view.container.querySelectorAll("a").length).toBe(2);
+});

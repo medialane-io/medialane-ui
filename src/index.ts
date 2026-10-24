@@ -236,8 +236,6 @@ export { FeaturedCarousel, FeaturedCarouselSkeleton } from "./components/feature
 export type { FeaturedCarouselProps } from "./components/featured-carousel.js";
 export { DiscoverCollectionsStrip } from "./components/discover-collections-strip.js";
 export type { DiscoverCollectionsStripProps } from "./components/discover-collections-strip.js";
-export { DiscoverCreatorsStrip } from "./components/discover-creators-strip.js";
-export type { DiscoverCreatorsStripProps } from "./components/discover-creators-strip.js";
 export { DiscoverFeedSection, DiscoverActivityStrip } from "./components/discover-feed-section.js";
 export type { DiscoverFeedSectionProps, DiscoverActivityStripProps } from "./components/discover-feed-section.js";
 export { ActivityCard, ActivityCardSkeleton, ACTIVITY_MESSAGES } from "./components/activity-card.js";
