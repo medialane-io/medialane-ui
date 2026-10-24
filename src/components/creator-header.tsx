@@ -5,7 +5,6 @@ import { Globe, MessageCircle, Send, Twitter, UserRound } from "lucide-react";
 import type { ApiCreatorProfile } from "@medialane/sdk";
 import { AssetHeaderBlock } from "./asset-top-sections.js";
 import { MediaHeader, HeaderStats, HeaderStat } from "./media-header.js";
-import { CreatorScoreInline } from "./creator-score-inline.js";
 import { profileIdentity } from "../utils/profile-identity.js";
 
 export interface CreatorHeaderStat {
@@ -40,11 +39,7 @@ export function CreatorHeader({ creator, image, stats, loading = false, children
     <MediaHeader image={image} imageAlt={name ?? identity} fallbackIcon={UserRound} loading={loading || !creator}>
       {creator ? (
         <>
-          <AssetHeaderBlock
-            name={name ?? identity}
-            description={creator.bio}
-            badges={<CreatorScoreInline address={creator.walletAddress} size="sm" />}
-          />
+          <AssetHeaderBlock name={name ?? identity} description={creator.bio} />
 
           {name ? <p className="text-sm tabular-nums text-muted-foreground">{identity}</p> : null}
 

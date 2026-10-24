@@ -59,8 +59,6 @@ export function TokenCard({
     (o) => o.offer.itemType === "ERC721" || o.offer.itemType === "ERC1155"
   );
 
-  const creatorAttr = token.metadata?.attributes?.find((a) => a.trait_type === "Creator");
-  const creator = typeof creatorAttr?.value === "string" ? creatorAttr.value : null;
   const profileLink = tokenProfileLink(token);
 
   const chain = token.chain.toUpperCase() as Chain;
@@ -100,6 +98,12 @@ export function TokenCard({
             }
           />
 
+          {ipType && (
+            <div className="absolute top-2 right-2 z-10">
+              <IpTypeBadge ipType={ipType as any} size="sm" />
+            </div>
+          )}
+
           {listingOrder && (
             <div className="absolute bottom-2 right-2 z-10">
               <span className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-sm font-bold bg-background/90 backdrop-blur-sm border border-border/40 shadow-sm tabular-nums">
@@ -123,18 +127,6 @@ export function TokenCard({
 
         <div className="px-3 pt-2.5 pb-4 flex-1">
           <p className="text-base font-bold line-clamp-2 leading-snug">{name}</p>
-          <div className="flex items-center gap-1.5 mt-1.5 flex-wrap">
-            {ipType && <IpTypeBadge ipType={ipType as any} size="sm" />}
-            {creator ? (
-              <p className="text-2xs tabular-nums text-muted-foreground/60 truncate">
-                {creator.slice(0, 8)}…{creator.slice(-6)}
-              </p>
-            ) : token.metadata?.description ? (
-              <p className="text-2xs text-muted-foreground truncate leading-snug">
-                {token.metadata.description}
-              </p>
-            ) : null}
-          </div>
         </div>
       </Link>
 
@@ -316,7 +308,6 @@ export function TokenCardSkeleton() {
       <div className="aspect-square w-full animate-pulse bg-muted" />
       <div className="px-3 pt-2.5 pb-3 space-y-1.5">
         <div className="h-4 w-3/4 rounded-md animate-pulse bg-muted" />
-        <div className="h-2.5 w-2/5 rounded-md animate-pulse bg-muted" />
       </div>
       <div className="px-3 pb-3 flex gap-1.5">
         <div className="h-8 w-8 rounded-[9px] animate-pulse bg-muted shrink-0" />

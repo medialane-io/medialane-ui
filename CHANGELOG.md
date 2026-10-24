@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.230.0] — 2026-10-24
+
+### Changed
+
+- The level badge no longer appears beside a creator on their account page or beside an owner on an asset page; it stays on the rewards pages.
+- The token card shows its IP type over the image, and no longer shows the creator address or description under the title.
+
 ## [0.229.0] — 2026-10-24
 
 ### Changed
