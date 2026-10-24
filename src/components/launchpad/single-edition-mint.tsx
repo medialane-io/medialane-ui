@@ -24,7 +24,7 @@ import { WalletRequired } from "../wallet-required.js";
 import { useMedialaneApp } from "../medialane-app.js";
 import { RewardEarned } from "../rewards/reward-earned.js";
 import { CollectionPicker } from "./collection-picker.js";
-import { AI_POLICIES, DERIVATIVES_OPTIONS, GEOGRAPHIC_SCOPES, IP_TYPES, LICENSE_TYPES, type IPType } from "../../data/ip.js";
+import { AI_POLICIES, DERIVATIVES_OPTIONS, IP_TYPES, LICENSE_TYPES, type IPType } from "../../data/ip.js";
 import { cn } from "../../utils/cn.js";
 import { runIntentCalls } from "../../utils/run-intent-calls.js";
 import { pinAssetMetadata, uploadFileToIpfs } from "../../utils/ipfs-upload.js";
@@ -333,10 +333,7 @@ export function SingleEditionMint({ aside }: { aside?: ReactNode }) {
                   <FormField control={form.control} name="geographicScope" render={({ field }) => (
                     <FormItem>
                       <FormLabel>Territory</FormLabel>
-                      <Select onValueChange={field.onChange} value={field.value}>
-                        <FormControl><SelectTrigger><SelectValue /></SelectTrigger></FormControl>
-                        <SelectContent>{GEOGRAPHIC_SCOPES.map((s) => <SelectItem key={s} value={s}>{s}</SelectItem>)}</SelectContent>
-                      </Select>
+                      <FormControl><Input placeholder="Worldwide" {...field} /></FormControl>
                     </FormItem>
                   )} />
                   <FormField control={form.control} name="aiPolicy" render={({ field }) => (
