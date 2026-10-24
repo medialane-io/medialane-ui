@@ -6,6 +6,7 @@
       "name": "@medialane/ui",
       "devDependencies": {
         "@happy-dom/global-registrator": "^20.14.5",
+        "@hookform/resolvers": "^3.10.0",
         "@medialane/sdk": "0.202.0",
         "@radix-ui/react-checkbox": "^1.3.8",
         "@radix-ui/react-collapsible": "^1.1.17",
@@ -49,6 +50,7 @@
         "zod": "^3.25.76",
       },
       "peerDependencies": {
+        "@hookform/resolvers": ">=3.10.0",
         "@medialane/sdk": ">=0.202.0 <0.203.0",
         "@radix-ui/react-checkbox": ">=1.1.0",
         "@radix-ui/react-collapsible": ">=1.1.0",
@@ -155,6 +157,8 @@
     "@floating-ui/utils": ["@floating-ui/utils@0.2.12", "", {}, "sha512-HpCo8tmWzLVad5s2d19EhAz5zqrrQ6s69qd6moPMQvkOuSwDT1YgRfWSVuc4ennqrgv3OHppiOGMQ7oC13yIww=="],
 
     "@happy-dom/global-registrator": ["@happy-dom/global-registrator@20.14.6", "", { "dependencies": { "@types/node": ">=20.0.0", "happy-dom": "^20.14.6" } }, "sha512-Xd2FwCdm0cAZ+EG0upp69tpxBT9jtvVxaZv1lnbgWsNaZyEuPs0PojYgvCmtQ1RRdRCYCyWTeLjn3Z0aSxDchA=="],
+
+    "@hookform/resolvers": ["@hookform/resolvers@3.10.0", "", { "peerDependencies": { "react-hook-form": "^7.0.0" } }, "sha512-79Dv+3mDF7i+2ajj7SkypSKHhl1cbln1OGavqrsF7p6mbUv11xpqpacPsGDCTRvCSjEEIez2ef1NveSVL3b0Ag=="],
 
     "@img/colour": ["@img/colour@1.1.0", "", {}, "sha512-Td76q7j57o/tLVdgS746cYARfSyxk8iEfRxewL9h4OMzYhbW4TAcppl0mT4eyqXddh6L/jwoM75mo7ixa/pCeQ=="],
 

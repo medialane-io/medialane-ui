@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.234.0] — 2026-10-24
+
+### Added
+
+- `CollectionCreateForm` with the `CLUB_PRESET`, `TICKETS_PRESET`, `EDITIONS_PRESET` and `SINGLE_PRESET` presets: one create-collection flow for clubs, tickets, edition collections and single-edition collections. It runs on `useTransaction`, shows `TransactionDialog` and `CreationSuccess`, and links to the new collection by the id read from the receipt.
+- Requires `@hookform/resolvers` 3.10 or newer.
+
 ## [0.233.0] — 2026-10-24
 
 ### Added
