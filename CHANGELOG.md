@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.242.0] — 2026-10-24
+
+### Added
+
+- `CollectionsPage`: the collections browse page, with the Exclusive and Drops filters. A filter's help icon sits beside its button, not inside it.
+
 ## [0.241.0] — 2026-10-24
 
 ### Added

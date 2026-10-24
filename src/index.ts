@@ -375,6 +375,7 @@ export { EditionMint } from "./components/launchpad/edition-mint.js";
 export { RemixMint } from "./components/launchpad/remix-mint.js";
 export { IpTypePage } from "./components/ip-type-page.js";
 export type { IpTypePageProps } from "./components/ip-type-page.js";
+export { CollectionsPage } from "./components/collections-page.js";
 export { WalletRequired } from "./components/wallet-required.js";
 export type { WalletRequiredProps } from "./components/wallet-required.js";
 export { ClaimRouteShell } from "./components/claim-route-shell.js";
