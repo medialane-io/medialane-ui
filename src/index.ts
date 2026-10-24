@@ -378,6 +378,8 @@ export type { IpTypePageProps } from "./components/ip-type-page.js";
 export { CollectionsPage } from "./components/collections-page.js";
 export { SponsorshipCreate } from "./components/launchpad/sponsorship-create.js";
 export { PopCreate } from "./components/launchpad/pop-create.js";
+export { CoinCreate } from "./components/launchpad/coin-create.js";
+export type { CoinCreateProps } from "./components/launchpad/coin-create.js";
 export { WalletRequired } from "./components/wallet-required.js";
 export type { WalletRequiredProps } from "./components/wallet-required.js";
 export { ClaimRouteShell } from "./components/claim-route-shell.js";

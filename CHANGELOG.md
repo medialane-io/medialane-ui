@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.245.0] — 2026-10-24
+
+### Added
+
+- `CoinCreate`: the Creator Coin flow. It deploys the coin, opens its market with the locked liquidity, and saves the coin's image and description, then ends on the standard success screen. The app gives it the link to trade the coin.
+
 ## [0.244.0] — 2026-10-24
 
 ### Added
