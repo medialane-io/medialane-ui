@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.248.0] — 2026-10-24
+
+### Changed
+
+- Sitemaps are split into chunks with no cap on assets, collections or creators. `sitemapChunks` lists the chunks, `sitemapEntries` builds one, and `sitemapIndexXml` builds the index. Assets are read oldest first, so existing chunks stay the same as new assets arrive. A page that cannot be read fails its chunk instead of publishing a partial list.
+- `collectSitemapData`, `SitemapData` and `SitemapLimits` are removed.
+
 ## [0.247.0] — 2026-10-24
 
 ### Added
