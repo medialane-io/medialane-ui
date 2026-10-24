@@ -3,7 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
-import { UPLOAD_LIMITS, acceptFor, buildAssetMetadata, uploadError, type ApiCollection } from "@medialane/sdk";
+import { buildAssetMetadata, type ApiCollection } from "@medialane/sdk";
+import { UPLOAD_LIMITS, acceptFor, uploadError } from "../../utils/upload-limits.js";
 import { executeIntent, deployedCollectionFromReceipt, mintedTokenIdFromReceipt } from "@medialane/sdk/starknet";
 import { mintableCollections, collectionKey } from "./mintable-collections.js";
 import {

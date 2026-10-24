@@ -1,5 +1,5 @@
 import * as z from "zod";
-import { FIELD_LIMITS } from "@medialane/sdk";
+import { FIELD_LIMITS } from "../../utils/field-limits.js";
 import { AI_POLICIES, DERIVATIVES_OPTIONS, IP_TYPES } from "../../data/ip.js";
 
 export const editionMintSchema = z.object({

@@ -5,7 +5,7 @@ import { ImagePlus, Upload, LogIn } from "lucide-react";
 import { cn } from "../../utils/cn.js";
 import { Button } from "../button.js";
 import type { MediaKind } from "./types.js";
-import { acceptFor } from "@medialane/sdk";
+import { acceptFor } from "../../utils/upload-limits.js";
 
 export interface DropzoneProps {
   mediaKindLock?: MediaKind;

@@ -9,7 +9,7 @@ import { DropItemList } from "../../drop-item-list.js";
 import { MAX_DROP_SUPPLY } from "../../../utils/drop/metadata.js";
 import type { DropDraft, DropDraftErrors } from "../../../utils/drop/draft.js";
 import { previewUrl } from "../../../utils/drop/preview.js";
-import { acceptFor } from "@medialane/sdk";
+import { acceptFor } from "../../../utils/upload-limits.js";
 
 export interface SectionProps {
   draft: DropDraft;

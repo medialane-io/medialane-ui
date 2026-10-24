@@ -16,7 +16,7 @@ import {
   X,
   Zap,
 } from "lucide-react";
-import { acceptFor } from "@medialane/sdk";
+import { acceptFor } from "../../utils/upload-limits.js";
 import { Button } from "../button.js";
 import { Input } from "../input.js";
 import { Textarea } from "../textarea.js";

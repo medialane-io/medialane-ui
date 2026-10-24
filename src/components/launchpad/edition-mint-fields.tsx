@@ -3,7 +3,7 @@
 import { useState, type RefObject } from "react";
 import type { UseFormReturn } from "react-hook-form";
 import { ChevronDown, ImagePlus, Layers, Loader2, ShieldCheck, Sparkles, X } from "lucide-react";
-import { acceptFor } from "@medialane/sdk";
+import { acceptFor } from "../../utils/upload-limits.js";
 import Image from "../image.js";
 import { Button } from "../button.js";
 import { Input } from "../input.js";

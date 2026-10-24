@@ -1,7 +1,7 @@
 "use client";
 
 import { FileText } from "lucide-react";
-import { FIELD_LIMITS } from "@medialane/sdk";
+import { FIELD_LIMITS } from "../../../utils/field-limits.js";
 import { Input } from "../../input.js";
 import { Textarea } from "../../textarea.js";
 import { Section, ToggleGroup } from "../../create-form-primitives.js";

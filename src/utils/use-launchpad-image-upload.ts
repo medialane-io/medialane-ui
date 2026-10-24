@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { uploadError as checkUpload } from "@medialane/sdk";
+import { uploadError as checkUpload } from "./upload-limits.js";
 import { useMedialaneApp } from "../components/medialane-app.js";
 import { uploadFileToIpfs } from "./ipfs-upload.js";
 
