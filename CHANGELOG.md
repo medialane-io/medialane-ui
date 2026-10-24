@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.232.0] — 2026-10-24
+
+### Added
+
+- `useTransaction`: runs a flow on the app's signer (prepare, submit, verify, sync) and reports its phase, hash, receipt and error.
+- `TransactionDialog`: the working, success and error dialog for a `useTransaction`, with chain-neutral step labels.
+- `MedialaneApp.releaseSigner`: called once after each flow.
+
+### Changed
+
+- Requires `@medialane/sdk` 0.202.0 or newer, and the peer range stops below 0.203.0.
+
 ## [0.231.0] — 2026-10-24
 
 ### Changed

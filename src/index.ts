@@ -341,6 +341,8 @@ export { BadgeCatalog } from "./components/rewards/badge-catalog.js";
 export type { BadgeCatalogProps, BadgeCatalogBadge } from "./components/rewards/badge-catalog.js";
 export { XpEarned } from "./components/rewards/xp-earned.js";
 export type { XpEarnedProps } from "./components/rewards/xp-earned.js";
+export { useTransaction } from "./utils/use-transaction.js";
+export type { TransactionPhase } from "./utils/use-transaction.js";
 export { createRewardEarned } from "./components/rewards/reward-earned.js";
 export type { RewardEarnedProps, RewardSnapshot } from "./components/rewards/reward-earned.js";
 
@@ -358,6 +360,8 @@ export type { GradientButtonProps } from "./components/gradient-button.js";
 
 export { CoinLaunchPreview } from "./components/coin-launch-preview.js";
 export type { CoinPreviewData } from "./components/coin-launch-preview.js";
+export { TransactionDialog } from "./components/transaction-dialog.js";
+export type { TransactionDialogProps } from "./components/transaction-dialog.js";
 export { CreationSuccess } from "./components/creation-success.js";
 export type { CreationSuccessProps, CreationSuccessAction } from "./components/creation-success.js";
 export { MedialaneCollectionCard } from "./components/medialane-collection-card.js";
