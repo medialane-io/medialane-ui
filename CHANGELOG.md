@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.244.0] — 2026-10-24
+
+### Added
+
+- `PopCreate`: the flow for creating a POP event collection, on `useTransaction`, ending on the standard success screen.
+
 ## [0.243.0] — 2026-10-24
 
 ### Added
