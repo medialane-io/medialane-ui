@@ -16,7 +16,7 @@ export function useTransaction() {
   const [error, setError] = useState<string | null>(null);
 
   const run = useCallback(
-    async (work: (signer: FastMintSigner) => Promise<void>) => {
+    async (work: (signer: FastMintSigner) => Promise<void>): Promise<boolean> => {
       setPhase("preparing");
       setTxHash(null);
       setReceipt(null);
@@ -43,9 +43,11 @@ export function useTransaction() {
           await syncTransactionBestEffort(client, hash);
         }
         setPhase("success");
+        return true;
       } catch (err) {
         setError(describeError(err, "We couldn't complete that. Please try again.").message);
         setPhase("error");
+        return false;
       } finally {
         app.releaseSigner?.();
       }

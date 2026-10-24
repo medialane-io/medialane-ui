@@ -13,6 +13,7 @@ import { CollectionActivityTab } from "./collection-activity-tab.js";
 import { CollectionTraitsTab } from "./collection-traits-tab.js";
 import { ClubOwnerActions } from "./club-owner-actions.js";
 import { OwnerSetupPanel } from "./owner-setup-panel.js";
+import { TransferCollectionOwnership } from "./transfer-collection-ownership.js";
 import { HiddenContentBanner } from "./hidden-content-banner.js";
 import { ListingCard, ListingCardSkeleton } from "./listing-card.js";
 import { ListingCardMenu } from "./listing-card-menu.js";
@@ -40,7 +41,6 @@ export interface CollectionPageSlots {
   useMarketActions: () => CollectionMarketActions;
   useGatedContent: (contract: string | undefined) => GatedContentState;
   ServiceAction: ComponentType<{ service: string | null | undefined; contractAddress: string }>;
-  TransferOwnership: ComponentType<{ collectionId: string; currentOwner: string; collectionName: string | null }>;
 }
 
 const PAGE_SIZE = 24;
@@ -207,7 +207,7 @@ export function CollectionPage({ contract, slots }: CollectionPageProps) {
   const activeBids = orders.filter((o) => o.status === "ACTIVE" && o.offer.itemType === "ERC20");
   const isOwner = !!collection?.owner && !!walletAddress && isSameAddress(collection.owner, walletAddress);
   const mintHref = isOwner && collection ? MINT_HREFS[getService(collection.service)?.id ?? ""]?.(contract) ?? null : null;
-  const { ServiceAction, TransferOwnership } = slots;
+  const { ServiceAction } = slots;
 
   const listingGrid = (items: ApiOrder[], sort: OrderSort, buyable: boolean) => (
     <div className={GRID}>
@@ -342,7 +342,7 @@ export function CollectionPage({ contract, slots }: CollectionPageProps) {
           <OwnerSetupPanel contract={contract} profile={profile ?? null} />
           {canTransferCollectionOwnership(collection) ? (
             <div className="flex justify-end">
-              <TransferOwnership collectionId={collection.collectionId!} currentOwner={collection.owner!} collectionName={collection.name} />
+              <TransferCollectionOwnership collectionId={collection.collectionId!} currentOwner={collection.owner!} collectionName={collection.name} />
             </div>
           ) : null}
         </div>

@@ -60,8 +60,8 @@ export { AssetMediaColumn, AssetHeaderBlock, AssetOwnerRow } from "./components/
 export { ExpandableText } from "./components/expandable-text.js";
 export { CollectionHeader, type CollectionHeaderProps } from "./components/collection-header.js";
 export { CreatorHeader, type CreatorHeaderProps, type CreatorHeaderStat } from "./components/creator-header.js";
-export { AssetPage, AssetPageSkeleton, detectAssetKind, type AssetPageProps, type AssetPageSlots, type AssetKind, type AssetMarketContext, type AssetMarketActions } from "./components/asset-page.js";
-export { AssetCommentsDialog, type AssetCommentsDialogProps, type AssetCommentsProps } from "./components/asset-comments-dialog.js";
+export { AssetPage, AssetPageSkeleton, detectAssetKind, type AssetPageProps, type AssetKind, type AssetMarketContext, type AssetMarketActions } from "./components/asset-page.js";
+export { AssetCommentsDialog, type AssetCommentsDialogProps } from "./components/asset-comments-dialog.js";
 export { CollectionPage, canTransferCollectionOwnership, type CollectionPageProps, type CollectionPageSlots, type CollectionMarketActions } from "./components/collection-page.js";
 export { CollectionFiltersDialog, type CollectionFiltersDialogProps } from "./components/collection-filters-dialog.js";
 export { GatedContentHero, GatedContentPanel, type GatedContent, type GatedContentState } from "./components/gated-content.js";
@@ -380,10 +380,15 @@ export { SponsorshipCreate } from "./components/launchpad/sponsorship-create.js"
 export { PopCreate } from "./components/launchpad/pop-create.js";
 export { PopClaimButton } from "./components/pop-claim-button.js";
 export { PopBurnButton } from "./components/pop-burn-button.js";
+export { PopManagePage } from "./components/pop-manage-page.js";
+export { CommentsSection } from "./components/comments-section.js";
+export type { CommentsSectionProps } from "./components/comments-section.js";
 export type { PopBurnButtonProps } from "./components/pop-burn-button.js";
 export { SponsorshipOffersPage } from "./components/sponsorship-offers-page.js";
 export { SponsorshipOfferPage } from "./components/sponsorship-offer-page.js";
 export { PortfolioSponsorships } from "./components/portfolio-sponsorships.js";
+export { TransferCollectionOwnership } from "./components/transfer-collection-ownership.js";
+export type { TransferCollectionOwnershipProps } from "./components/transfer-collection-ownership.js";
 export { TransactionDone } from "./components/transaction-done.js";
 export type { TransactionDoneProps } from "./components/transaction-done.js";
 export { CoinCreate } from "./components/launchpad/coin-create.js";

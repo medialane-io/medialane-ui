@@ -37,7 +37,7 @@ test("moves through preparing, submitting, confirming and success", async () => 
   const watch = () => seen.push(view.result.current.phase);
   let release: () => void = () => {};
   const gate = new Promise<void>((resolve) => { release = resolve; });
-  let running!: Promise<void>;
+  let running!: Promise<boolean>;
   act(() => {
     running = view.result.current.run(async (signer) => {
       watch();
@@ -59,7 +59,7 @@ test("enters submitting only when the signer executes", async () => {
   const { view } = setup();
   let release: () => void = () => {};
   const gate = new Promise<void>((resolve) => { release = resolve; });
-  let running!: Promise<void>;
+  let running!: Promise<boolean>;
   act(() => {
     running = view.result.current.run(async () => { await gate; });
   });
@@ -103,4 +103,15 @@ test("reset returns to idle and clears hash, receipt and error", async () => {
   expect(view.result.current.txHash).toBeNull();
   expect(view.result.current.receipt).toBeNull();
   expect(view.result.current.error).toBeNull();
+});
+
+test("run resolves true on success and false on failure", async () => {
+  const ok = setup();
+  let okResult = false;
+  await act(async () => { okResult = await ok.view.result.current.run(async (signer) => { await signer.execute([]); }); });
+  expect(okResult).toBe(true);
+  const bad = setup("REVERTED");
+  let badResult = true;
+  await act(async () => { badResult = await bad.view.result.current.run(async (signer) => { await signer.execute([]); }); });
+  expect(badResult).toBe(false);
 });

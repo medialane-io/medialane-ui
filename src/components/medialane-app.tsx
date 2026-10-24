@@ -18,7 +18,8 @@ export interface CompanionApp {
 export type ReportTarget =
   | { type: "TOKEN"; contract: string; tokenId: string; name?: string }
   | { type: "COLLECTION"; contract: string; name?: string }
-  | { type: "CREATOR"; address: string; name?: string };
+  | { type: "CREATOR"; address: string; name?: string }
+  | { type: "COMMENT"; commentId: string };
 
 export type ReportDialogSlot = ComponentType<{ open: boolean; onOpenChange: (open: boolean) => void; target: ReportTarget }>;
 

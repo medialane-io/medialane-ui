@@ -1,14 +1,9 @@
 "use client";
 
-import type { ComponentType, CSSProperties } from "react";
+import type { CSSProperties } from "react";
 import Image from "./image.js";
+import { CommentsSection } from "./comments-section.js";
 import { Dialog, DialogContent, DialogTitle } from "./dialog.js";
-
-export interface AssetCommentsProps {
-  contract: string;
-  tokenId: string;
-  className?: string;
-}
 
 export interface AssetCommentsDialogProps {
   open: boolean;
@@ -18,7 +13,6 @@ export interface AssetCommentsDialogProps {
   name: string;
   imageUrl?: string | null;
   commentTotal: number;
-  Comments: ComponentType<AssetCommentsProps>;
   accentBorderClassName: string;
   accentHeaderStyle: string;
   accentAvatarStyle: string;
@@ -34,7 +28,6 @@ export function AssetCommentsDialog({
   name,
   imageUrl,
   commentTotal,
-  Comments,
   accentBorderClassName,
   accentHeaderStyle,
   accentAvatarStyle,
@@ -64,7 +57,7 @@ export function AssetCommentsDialog({
           ) : null}
         </div>
         <div className="flex-1 overflow-hidden">
-          <Comments contract={contract} tokenId={tokenId} className="h-full rounded-none border-0" />
+          <CommentsSection contract={contract} tokenId={tokenId} className="h-full rounded-none border-0" />
         </div>
       </DialogContent>
     </Dialog>

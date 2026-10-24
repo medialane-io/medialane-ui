@@ -30,7 +30,6 @@ const slots: CollectionPageSlots = {
   useMarketActions: () => ({ buy: () => {}, offer: () => {}, dialogs: <div>app dialogs</div> }),
   useGatedContent: () => ({ status: "signed_out" }),
   ServiceAction: () => <div>app service action</div>,
-  TransferOwnership: () => <div>app transfer</div>,
 };
 
 const renderPage = (c: ApiCollection, tokens: ApiToken[], walletAddress: string | null) => {
@@ -61,13 +60,13 @@ test("a visitor sees the header, the items and the app's service action", async 
   await waitFor(() => expect(getByText("Hero 1")).toBeTruthy());
   expect(getByText("app service action")).toBeTruthy();
   expect(queryByText("Settings")).toBeNull();
-  expect(queryByText("app transfer")).toBeNull();
+  expect(queryByText("Transfer ownership")).toBeNull();
 });
 
 test("the owner of an empty collection gets the mint link and the transfer tool", async () => {
   const { getByText } = renderPage(collection(), [], "0xowner");
   await waitFor(() => expect(getByText("Mint your first work")).toBeTruthy());
-  expect(getByText("app transfer")).toBeTruthy();
+  expect(getByText("Transfer ownership")).toBeTruthy();
 });
 
 test("the header has no owner buttons and no contract address line", async () => {
