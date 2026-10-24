@@ -79,7 +79,7 @@ export function NotificationRow({
           {title}
         </p>
         <p className="text-xs text-muted-foreground truncate">{description}</p>
-        <p className="text-[10px] text-muted-foreground/50 pt-0.5">{timeAgo(timestamp)}</p>
+        <p className="text-2xs text-muted-foreground/50 pt-0.5">{timeAgo(timestamp)}</p>
       </div>
 
       {isUnread && (

@@ -127,7 +127,7 @@ export function GuardianRecoverySection({
             </Button>
           )}
           {status?.kind === "active" && (
-            <Badge variant="outline" className="border-emerald-500/40 text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 text-[10px]">
+            <Badge variant="outline" className="border-emerald-500/40 text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 text-2xs">
               Configured
             </Badge>
           )}

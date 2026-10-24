@@ -50,7 +50,7 @@ export function CollectionFiltersDialog({
               <SlidersHorizontal className="h-4 w-4" />
               Filters
               {totalActiveCount > 0 && (
-                <Badge variant="secondary" className="text-[11px] font-medium">
+                <Badge variant="secondary" className="text-2xs font-medium">
                   {totalActiveCount} active
                 </Badge>
               )}
@@ -58,7 +58,7 @@ export function CollectionFiltersDialog({
             {totalActiveCount > 0 && (
               <button
                 onClick={clearAll}
-                className="text-[11px] text-muted-foreground hover:text-foreground underline-offset-2 hover:underline transition-colors"
+                className="text-2xs text-muted-foreground hover:text-foreground underline-offset-2 hover:underline transition-colors"
               >
                 Clear all
               </button>

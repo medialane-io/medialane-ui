@@ -155,7 +155,7 @@ export function IPTypeFields({ ipType, onChange, uploadDocument, existingDocumen
 
       {docUpload && (uploadDocument || existingDocument) && (
         <section className="space-y-2">
-          <p className="text-[11px] font-semibold text-muted-foreground">
+          <p className="text-2xs font-semibold text-muted-foreground">
             Document
           </p>
           {existingDocument ? (
@@ -224,7 +224,7 @@ export function IPTypeFields({ ipType, onChange, uploadDocument, existingDocumen
 
       {template.embeds && template.embeds.length > 0 && (
         <section className="space-y-3">
-          <p className="text-[11px] font-semibold text-muted-foreground">Embeds</p>
+          <p className="text-2xs font-semibold text-muted-foreground">Embeds</p>
           {template.embeds.map((platform) => {
             const meta = EMBED_PLATFORM_META[platform];
             const PIcon = meta.icon;
@@ -235,7 +235,7 @@ export function IPTypeFields({ ipType, onChange, uploadDocument, existingDocumen
                   <PIcon className="h-3.5 w-3.5" />
                   {meta.label}
                   {looksLikeUrl(value) && (
-                    <span className="ml-1 inline-flex items-center gap-0.5 text-[10px] font-medium text-emerald-400">
+                    <span className="ml-1 inline-flex items-center gap-0.5 text-2xs font-medium text-emerald-400">
                       <Check className="h-3 w-3" /> connected
                     </span>
                   )}
@@ -258,7 +258,7 @@ export function IPTypeFields({ ipType, onChange, uploadDocument, existingDocumen
 
       {template.socials && template.socials.length > 0 && (
         <section className="space-y-3">
-          <p className="text-[11px] font-semibold text-muted-foreground">Social links</p>
+          <p className="text-2xs font-semibold text-muted-foreground">Social links</p>
           {template.socials.map((platform) => {
             const meta = SOCIAL_PLATFORM_META[platform];
             const PIcon = meta.icon;

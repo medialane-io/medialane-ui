@@ -65,7 +65,7 @@ export function MakeOfferPicker({ contract, onPick }: { contract: string; onPick
                           unoptimized
                         />
                       )}
-                      <span className="absolute bottom-1 left-1 right-1 truncate text-[10px] font-semibold text-white drop-shadow">
+                      <span className="absolute bottom-1 left-1 right-1 truncate text-2xs font-semibold text-white drop-shadow">
                         {t.metadata?.name ?? `#${t.tokenId}`}
                       </span>
                     </button>

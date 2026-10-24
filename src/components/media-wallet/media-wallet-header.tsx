@@ -49,7 +49,7 @@ export function MediaWalletHeader({ address, onNavigate }: { address: string; on
       >
         {headline}
         {copied ? (
-          <span className="text-[10px] font-normal text-muted-foreground">copied ✓</span>
+          <span className="text-2xs font-normal text-muted-foreground">copied ✓</span>
         ) : (
           <CopyIcon className="shrink-0 opacity-50" />
         )}

@@ -36,7 +36,7 @@ function AnnouncementsBanner({ announcements }: { announcements: Announcement[] 
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-1.5 mb-0.5">
               <Pin className="h-2.5 w-2.5 text-brand-purple/60" />
-              <span className="text-[10px] font-bold uppercase tracking-widest text-brand-purple/60">Announcement</span>
+              <span className="text-2xs font-bold uppercase tracking-widest text-brand-purple/60">Announcement</span>
             </div>
             <p className="text-sm font-semibold leading-snug">{ann.title}</p>
             <p className="text-xs text-muted-foreground mt-0.5 truncate">{ann.body}</p>

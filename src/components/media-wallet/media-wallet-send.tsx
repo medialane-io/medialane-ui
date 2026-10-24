@@ -169,7 +169,7 @@ export function MediaWalletSend({
             <div className="absolute right-2.5 top-1/2 flex -translate-y-1/2 items-center gap-1.5">
               <button
                 onClick={setMax}
-                className="rounded-full bg-foreground/[0.06] px-2 py-1 text-[11px] font-bold text-muted-foreground transition-colors hover:text-foreground"
+                className="rounded-full bg-foreground/[0.06] px-2 py-1 text-2xs font-bold text-muted-foreground transition-colors hover:text-foreground"
               >
                 MAX
               </button>

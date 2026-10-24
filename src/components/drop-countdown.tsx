@@ -24,7 +24,7 @@ export function DropCountdown({ targetTs, label }: { targetTs: number; label: st
   const cell = (value: number, unit: string) => (
     <div className="flex flex-col items-center">
       <span className="text-2xl font-black tabular-nums leading-none">{String(value).padStart(2, "0")}</span>
-      <span className="text-[10px] uppercase tracking-widest text-muted-foreground mt-1">{unit}</span>
+      <span className="text-2xs uppercase tracking-widest text-muted-foreground mt-1">{unit}</span>
     </div>
   );
 

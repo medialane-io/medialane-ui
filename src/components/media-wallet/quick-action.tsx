@@ -28,7 +28,7 @@ export function QuickAction({
       >
         {icon}
       </span>
-      <span className="text-[11px] font-medium text-muted-foreground">{label}</span>
+      <span className="text-2xs font-medium text-muted-foreground">{label}</span>
     </button>
   );
 }

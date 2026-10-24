@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.238.0] — 2026-10-24
+
+### Changed
+
+- The small hand-set text sizes (9, 10 and 11 pixels) use the one `text-2xs` size.
+
 ## [0.237.0] — 2026-10-24
 
 ### Added

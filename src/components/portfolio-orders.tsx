@@ -139,7 +139,7 @@ function CounterOfferRow({ bid, actions }: { bid: ApiOrder; actions: PortfolioOr
     <OrderRow
       order={counter}
       subtitle={
-        <Badge variant="secondary" className="mt-0.5 h-4 px-1.5 text-[10px]">
+        <Badge variant="secondary" className="mt-0.5 h-4 px-1.5 text-2xs">
           <ArrowLeftRight className="mr-1 h-2.5 w-2.5" />
           Counter-offer
         </Badge>
