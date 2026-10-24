@@ -4,7 +4,6 @@ import { useState, useEffect, useRef } from "react";
 import useSWR from "swr";
 import Link from "next/link";
 import { useActivities } from "../utils/use-activities.js";
-import { useRewardsBatch } from "../utils/use-rewards.js";
 import type { ApiActivitiesQuery, ApiActivity } from "@medialane/sdk";
 import { Skeleton } from "./skeleton.js";
 import { LoadMoreSentinel } from "./load-more-sentinel.js";
@@ -92,11 +91,6 @@ export function ActivitiesFeed() {
       });
     }
   }, [activities, isLoading, page]);
-
-  const pageActors = allActivities
-    .map((a) => a.offerer ?? a.fulfiller ?? (a.type === "mint" ? a.to : a.from))
-    .filter((a): a is string => Boolean(a));
-  const { data: actorLevels } = useRewardsBatch(pageActors);
 
   const isInitialLoading = isLoading && allActivities.length === 0;
   const isLoadingMore = isLoading && allActivities.length > 0;
@@ -187,18 +181,14 @@ export function ActivitiesFeed() {
       ) : (
         <div className="space-y-4">
           <div className="divide-y divide-border/50 rounded-xl border border-border overflow-hidden">
-            {allActivities.map((activity, i) => {
-              const actor = activity.offerer ?? activity.fulfiller ?? (activity.type === "mint" ? activity.to : activity.from);
-              return (
-                <ActivityRow
-                  key={`${activity.txHash}-${activity.type}-${activity.nftTokenId ?? i}`}
-                  activity={activity}
-                  showActor
-                  showExplorer
-                  actorLevel={actor ? actorLevels?.get(actor) : undefined}
-                />
-              );
-            })}
+            {allActivities.map((activity, i) => (
+              <ActivityRow
+                key={`${activity.txHash}-${activity.type}-${activity.nftTokenId ?? i}`}
+                activity={activity}
+                showActor
+                showExplorer
+              />
+            ))}
           </div>
 
           <LoadMoreSentinel

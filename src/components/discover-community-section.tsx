@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { Activity, ArrowRight, RefreshCw, Sparkles } from "lucide-react";
 import Link from "./link.js";
 import { Skeleton } from "./skeleton.js";
@@ -8,7 +8,6 @@ import { ActivityRow } from "./activity-row.js";
 import { useMedialaneApp } from "./medialane-app.js";
 import { LeaderboardPanel } from "./rewards/leaderboard-panel.js";
 import { useActivities } from "../utils/use-activities.js";
-import { useRewardsBatch } from "../utils/use-rewards.js";
 import { timeAgo } from "../utils/time.js";
 import { cn } from "../utils/cn.js";
 
@@ -59,15 +58,6 @@ export function DiscoverCommunitySection() {
     if (!isLoading) setLastUpdated(new Date().toISOString());
   }, [activities, isLoading]);
 
-  const actors = useMemo(
-    () =>
-      activities
-        .map((a) => a.offerer ?? a.fulfiller ?? (a.type === "mint" ? a.to : a.from))
-        .filter((a): a is string => Boolean(a)),
-    [activities],
-  );
-  const { data: actorLevels } = useRewardsBatch(actors);
-
   return (
     <section className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
 
@@ -107,18 +97,14 @@ export function DiscoverCommunitySection() {
             </div>
           ) : (
             <div className="divide-y divide-border/50 rounded-xl border border-border overflow-hidden">
-              {activities.map((activity, i) => {
-                const actor = activity.offerer ?? activity.fulfiller ?? (activity.type === "mint" ? activity.to : activity.from);
-                return (
-                  <ActivityRow
-                    key={activity.txHash ? `${activity.txHash}-${activity.type}-${activity.nftTokenId ?? ""}` : `activity-${i}`}
-                    activity={activity}
-                    showActor
-                    showExplorer
-                    actorLevel={actor ? actorLevels?.get(actor) : undefined}
-                  />
-                );
-              })}
+              {activities.map((activity, i) => (
+                <ActivityRow
+                  key={activity.txHash ? `${activity.txHash}-${activity.type}-${activity.nftTokenId ?? ""}` : `activity-${i}`}
+                  activity={activity}
+                  showActor
+                  showExplorer
+                />
+              ))}
             </div>
           )}
         </div>
