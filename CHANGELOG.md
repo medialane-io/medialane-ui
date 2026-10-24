@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.223.0] — 2026-10-24
+
+### Changed
+
+- The drop create form takes its name, symbol and description limits from the SDK's `FIELD_LIMITS` (names 255, descriptions 2000).
+- Requires `@medialane/sdk` 0.201.0 or newer, and the peer range stops below 0.202.0.
+
 ## [0.222.0] — 2026-10-23
 
 ### Changed
