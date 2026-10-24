@@ -145,7 +145,7 @@ export function CreatorPage({ address: addressProp, username, useAssetActions, u
                 <Icon className="h-3.5 w-3.5" />
                 {label}
                 {count ? (
-                  <span className={cn("min-w-[18px] rounded-full px-1.5 py-px text-center text-[10px] font-bold tabular-nums", active ? "bg-primary/15 text-primary" : "bg-muted text-muted-foreground")}>{count}</span>
+                  <span className={cn("min-w-[18px] rounded-full px-1.5 py-px text-center text-2xs font-bold tabular-nums", active ? "bg-primary/15 text-primary" : "bg-muted text-muted-foreground")}>{count}</span>
                 ) : null}
                 {active ? <span className="absolute inset-x-0 bottom-0 h-0.5 rounded-full bg-primary" /> : null}
               </button>

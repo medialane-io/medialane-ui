@@ -53,7 +53,7 @@ export function AssetCommentsDialog({
           </div>
           <div className="min-w-0 flex-1">
             <DialogTitle asChild>
-              <p className={`text-[10px] font-medium ${accentLabelClassName ?? ""}`}>Comments</p>
+              <p className={`text-2xs font-medium ${accentLabelClassName ?? ""}`}>Comments</p>
             </DialogTitle>
             <p className="text-sm font-semibold truncate text-foreground">{name}</p>
           </div>

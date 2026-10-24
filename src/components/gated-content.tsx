@@ -43,7 +43,7 @@ export function GatedContentHero({
           <Icon className="h-5 w-5" />
         </div>
         <div className="flex-1 min-w-0">
-          <p className="text-[10px] font-bold text-emerald-500 leading-none">✓ You&apos;re a holder — unlocked</p>
+          <p className="text-2xs font-bold text-emerald-500 leading-none">✓ You&apos;re a holder — unlocked</p>
           <p className="text-sm font-bold text-foreground leading-snug mt-1 truncate">{state.content.title ?? title}</p>
         </div>
         <Unlock className="h-4 w-4 text-emerald-500 shrink-0" />
@@ -62,7 +62,7 @@ export function GatedContentHero({
         </div>
         <div className="flex-1 min-w-0">
           <p
-            className="text-[10px] font-bold leading-none mb-1"
+            className="text-2xs font-bold leading-none mb-1"
             style={{ background: "linear-gradient(90deg, #3b7bff, #8a5cf6, #f6608f)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}
           >
             Holder exclusive
@@ -137,7 +137,7 @@ export function GatedContentPanel({ state, onBrowseListings }: { state: GatedCon
         </div>
       </div>
       <div className="space-y-1.5">
-        <p className="text-[10px] font-bold text-emerald-500">✓ Verified holder</p>
+        <p className="text-2xs font-bold text-emerald-500">✓ Verified holder</p>
         <h3 className="text-xl font-bold">{state.content.title ?? "Exclusive content"}</h3>
         <p className="text-sm text-muted-foreground">Your access is verified. Enjoy your exclusive content.</p>
       </div>

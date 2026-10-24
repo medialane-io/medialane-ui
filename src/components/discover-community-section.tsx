@@ -36,7 +36,7 @@ function ColumnHeader({
         </div>
         <div>
           <h2 className="text-lg sm:text-xl font-semibold leading-none">{title}</h2>
-          {caption && <p className="text-[10px] text-muted-foreground mt-1 flex items-center gap-1">{caption}</p>}
+          {caption && <p className="text-2xs text-muted-foreground mt-1 flex items-center gap-1">{caption}</p>}
         </div>
       </div>
       <Link

@@ -129,7 +129,7 @@ export function ActivityRow({
             <span className="text-sm font-semibold text-muted-foreground">—</span>
           )}
           {amount && (
-            <span className="text-[10px] font-medium text-brand-purple shrink-0">
+            <span className="text-2xs font-medium text-brand-purple shrink-0">
               ×{amount}
             </span>
           )}
@@ -153,7 +153,7 @@ export function ActivityRow({
             <p className="text-sm font-bold tabular-nums leading-tight">
               {formatDisplayPrice(activity.price.formatted)}
             </p>
-            <p className="text-[10px] text-muted-foreground leading-tight flex items-center justify-end gap-0.5">
+            <p className="text-2xs text-muted-foreground leading-tight flex items-center justify-end gap-0.5">
               <CurrencyIcon symbol={activity.price.currency} size={10} aria-hidden />
               <span className="sr-only">{activity.price.currency}</span>
             </p>
@@ -161,7 +161,7 @@ export function ActivityRow({
         )}
 
         <span
-          className="text-[10px] text-muted-foreground tabular-nums hidden sm:block w-12 text-right"
+          className="text-2xs text-muted-foreground tabular-nums hidden sm:block w-12 text-right"
           title={new Date(activity.timestamp).toLocaleString()}
         >
           {timeAgo(activity.timestamp)}

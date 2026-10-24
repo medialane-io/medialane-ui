@@ -78,7 +78,7 @@ export function AssetProvenanceTab({
           href={`${EXPLORER_URL}/contract/${contract}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="shrink-0 flex items-center gap-1 text-[11px] text-muted-foreground hover:text-foreground transition-colors ml-auto"
+          className="shrink-0 flex items-center gap-1 text-2xs text-muted-foreground hover:text-foreground transition-colors ml-auto"
         >
           Contract <ExternalLink className="h-3 w-3" />
         </a>
@@ -93,12 +93,12 @@ export function AssetProvenanceTab({
           <div className="rounded-xl bg-muted/20 p-3 text-center">
             <Activity className="h-4 w-4 text-muted-foreground mx-auto mb-1" />
             <p className="text-lg font-bold">{history.length}</p>
-            <p className="text-[10px] text-muted-foreground">Events</p>
+            <p className="text-2xs text-muted-foreground">Events</p>
           </div>
           <div className="rounded-xl bg-muted/20 p-3 text-center">
             <ShoppingCart className="h-4 w-4 text-muted-foreground mx-auto mb-1" />
             <p className="text-lg font-bold">{sales.length}</p>
-            <p className="text-[10px] text-muted-foreground">Sales</p>
+            <p className="text-2xs text-muted-foreground">Sales</p>
           </div>
           <div className="rounded-xl bg-muted/20 p-3 text-center">
             <TrendingUp className="h-4 w-4 text-muted-foreground mx-auto mb-1" />
@@ -113,12 +113,12 @@ export function AssetProvenanceTab({
             ) : (
               <p className="text-lg font-bold">—</p>
             )}
-            <p className="text-[10px] text-muted-foreground">Volume</p>
+            <p className="text-2xs text-muted-foreground">Volume</p>
           </div>
           <div className="rounded-xl bg-muted/20 p-3 text-center">
             <UserCheck className="h-4 w-4 text-muted-foreground mx-auto mb-1" />
             <p className="text-lg font-bold">{allActors.size}</p>
-            <p className="text-[10px] text-muted-foreground">Participants</p>
+            <p className="text-2xs text-muted-foreground">Participants</p>
           </div>
         </div>
       )}
@@ -224,7 +224,7 @@ export function AssetProvenanceTab({
 
                         <div className="flex items-center gap-2 shrink-0">
                           {amount && BigInt(amount) > 1n && (
-                            <span className="text-[11px] text-muted-foreground tabular-nums bg-muted/60 px-1.5 py-0.5 rounded">
+                            <span className="text-2xs text-muted-foreground tabular-nums bg-muted/60 px-1.5 py-0.5 rounded">
                               ×{amount}
                             </span>
                           )}
@@ -235,7 +235,7 @@ export function AssetProvenanceTab({
                             </span>
                           )}
                           <span
-                            className="text-[11px] text-muted-foreground/60 whitespace-nowrap"
+                            className="text-2xs text-muted-foreground/60 whitespace-nowrap"
                             title={new Date(event.timestamp).toLocaleString()}
                           >
                             {timeAgo(event.timestamp)}

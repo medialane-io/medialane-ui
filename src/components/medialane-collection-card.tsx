@@ -66,7 +66,7 @@ export function MedialaneCollectionCard({
             )}
             <div className="my-3 h-px bg-black/10 dark:bg-white/10" />
             <div className="flex items-center gap-2">
-              <span className="text-[9px] font-bold tracking-[0.18em] text-[#0a0e1f]/50 dark:text-white/50">
+              <span className="text-2xs font-bold tracking-[0.18em] text-[#0a0e1f]/50 dark:text-white/50">
                 STARKNET
               </span>
               {creator && (

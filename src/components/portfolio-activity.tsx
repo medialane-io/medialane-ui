@@ -61,7 +61,7 @@ export function PortfolioActivity({ address }: PortfolioActivityProps) {
               {!isLoading && count != null && count > 0 && (
                 <span
                   className={cn(
-                    "text-[10px] font-bold tabular-nums",
+                    "text-2xs font-bold tabular-nums",
                     isActive
                       ? "text-primary-foreground/70"
                       : "text-muted-foreground/60"

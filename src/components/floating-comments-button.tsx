@@ -48,7 +48,7 @@ export function FloatingCommentsButton({ onClick, commentTotal }: FloatingCommen
         </motion.button>
         {commentTotal > 0 && (
           <span
-            className="absolute -top-1.5 -right-1.5 flex h-5 min-w-[20px] items-center justify-center rounded-full px-1.5 text-[10px] font-bold text-white pointer-events-none"
+            className="absolute -top-1.5 -right-1.5 flex h-5 min-w-[20px] items-center justify-center rounded-full px-1.5 text-2xs font-bold text-white pointer-events-none"
             style={{ background: "hsl(var(--brand-blue))" }}
           >
             {commentTotal}

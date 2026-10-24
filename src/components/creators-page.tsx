@@ -95,7 +95,7 @@ function CreatorCard({ creator }: { creator: ApiCreatorProfile }) {
         </div>
 
         {creator.bio && (
-          <p className="text-[11px] text-white/65 line-clamp-2 leading-relaxed">
+          <p className="text-2xs text-white/65 line-clamp-2 leading-relaxed">
             {creator.bio}
           </p>
         )}

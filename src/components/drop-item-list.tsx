@@ -59,7 +59,7 @@ export function DropItemList({ items, collectionName, onAddFiles, onRemove, onEd
             <div key={it.id} className="flex gap-3 items-start bento-cell p-3">
               <div className="relative h-16 w-16 rounded-lg overflow-hidden bg-muted shrink-0">
                 <Image src={it.previewUrl} alt={it.name || `Item ${i + 1}`} fill className="object-cover" unoptimized />
-                <span className="absolute bottom-0 left-0 text-[9px] font-bold bg-black/60 text-white px-1">#{i + 1}</span>
+                <span className="absolute bottom-0 left-0 text-2xs font-bold bg-black/60 text-white px-1">#{i + 1}</span>
               </div>
               <div className="flex-1 space-y-1.5">
                 <Input
