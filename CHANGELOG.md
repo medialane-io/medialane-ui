@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.235.0] — 2026-10-24
+
+### Added
+
+- `TierMintForm` with `CLUB_TIER_PRESET` and `TICKETS_TIER_PRESET`: one create-and-mint flow for membership tiers and ticket types. It creates the tier and mints its supply in one transaction.
+- `runIntentsCalls`: sends the calls of several prebuilt intents as one transaction.
+
 ## [0.234.0] — 2026-10-24
 
 ### Added
