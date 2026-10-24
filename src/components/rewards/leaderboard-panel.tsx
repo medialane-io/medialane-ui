@@ -18,10 +18,11 @@ export interface LeaderboardPanelProps {
   limit?: number;
   showHeading?: boolean;
   viewAllHref?: string;
+  compact?: boolean;
   className?: string;
 }
 
-function CreatorIdentity({ address }: { address: string }) {
+function CreatorIdentity({ address, compact }: { address: string; compact?: boolean }) {
   const { profile } = useCreatorProfile(address);
   const avatarUrl = useImageUrl()(profile?.avatarImage, { width: 96 });
   const { identity: name } = profileIdentity({
@@ -32,7 +33,7 @@ function CreatorIdentity({ address }: { address: string }) {
 
   return (
     <span className="inline-flex min-w-0 items-center gap-2.5">
-      <span className="relative h-9 w-9 shrink-0 overflow-hidden rounded-full bg-foreground/[0.08]">
+      <span className={cn("relative shrink-0 overflow-hidden rounded-full bg-foreground/[0.08]", compact ? "h-7 w-7" : "h-9 w-9")}>
         <Image
           src={avatarUrl ?? "/icon.png"}
           alt=""
@@ -42,9 +43,9 @@ function CreatorIdentity({ address }: { address: string }) {
         />
       </span>
       {name ? (
-        <span className="truncate text-base font-bold">{name}</span>
+        <span className={cn("truncate font-bold", compact ? "text-sm font-semibold" : "text-base")}>{name}</span>
       ) : (
-        <AddressDisplay address={address} chars={4} showCopy={false} className="text-base font-bold" />
+        <AddressDisplay address={address} chars={4} showCopy={false} className={compact ? "text-sm font-semibold" : "text-base font-bold"} />
       )}
     </span>
   );
@@ -55,6 +56,7 @@ export function LeaderboardPanel({
   limit = 20,
   showHeading = true,
   viewAllHref,
+  compact,
   className,
 }: LeaderboardPanelProps) {
   const { data, isLoading } = useLeaderboard(1, limit);
@@ -63,7 +65,7 @@ export function LeaderboardPanel({
   const highlightAddress = myAddress ? normalizeAddress("STARKNET", myAddress) : null;
 
   return (
-    <div className={cn("space-y-3", className)}>
+    <div className={cn(compact ? "" : "space-y-3", className)}>
       {showHeading && (
         <div className="flex items-center gap-2">
           <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-brand-rose to-brand-orange text-white shrink-0">
@@ -74,22 +76,23 @@ export function LeaderboardPanel({
       )}
 
       {isLoading ? (
-        <div className="space-y-1.5">
+        <div className={compact ? "divide-y divide-border/40" : "space-y-1.5"}>
           {Array.from({ length: Math.min(limit, 6) }).map((_, i) => (
-            <Skeleton key={i} className="h-10 w-full rounded-lg" />
+            <Skeleton key={i} className={compact ? "h-11 w-full rounded-none" : "h-10 w-full rounded-lg"} />
           ))}
         </div>
       ) : rows.length === 0 ? (
-        <p className="text-sm text-muted-foreground py-4">
+        <p className={cn("text-sm text-muted-foreground py-4", compact && "px-4")}>
           Nobody&apos;s earned points yet — be the first.
         </p>
       ) : (
         <LeaderboardTable
           entries={rows}
           highlightAddress={highlightAddress}
+          compact={compact}
           renderAddress={(address) => (
             <Link href={profileHref({ address })} className="hover:text-foreground transition-colors">
-              <CreatorIdentity address={address} />
+              <CreatorIdentity address={address} compact={compact} />
             </Link>
           )}
         />

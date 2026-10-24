@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { Activity, ArrowRight, RefreshCw, Sparkles, Zap, Palette, ShoppingBag, MessageSquare } from "lucide-react";
+import { Activity, ArrowRight, RefreshCw, Sparkles } from "lucide-react";
 import Link from "./link.js";
 import { Skeleton } from "./skeleton.js";
 import { ActivityRow } from "./activity-row.js";
@@ -133,31 +133,18 @@ export function DiscoverCommunitySection() {
           linkLabel="Scoreboard"
         />
 
-        <div className="relative rounded-xl border border-border/40 bg-card overflow-hidden px-4 py-4 space-y-3">
-          <div className="absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r from-brand-rose to-brand-orange" />
-          <p className="text-sm font-semibold leading-snug">
-            Earn XP. Share the Creator&apos;s Fund.
-          </p>
-          <div className="flex flex-wrap gap-1.5">
-            {([
-              [Zap, "Mint"], [Palette, "Create"],
-              [ShoppingBag, "Trade"], [MessageSquare, "Engage"],
-            ] as const).map(([Icon, label]) => (
-              <div key={label} className="flex items-center gap-1 rounded-full border border-border/50 bg-muted/40 px-2.5 py-0.5 text-[11px] font-medium text-muted-foreground">
-                <Icon className="h-2.5 w-2.5" />
-                {label}
-              </div>
-            ))}
+        <div className="overflow-hidden rounded-2xl border border-border/50 bg-card">
+          <div className="flex items-center justify-between gap-3 bg-gradient-to-r from-brand-rose/10 to-brand-orange/10 px-4 py-3">
+            <p className="text-sm font-semibold leading-snug">Earn XP. Share the Creator&apos;s Fund.</p>
+            <Link
+              href="/rewards"
+              className="inline-flex shrink-0 items-center gap-1 text-xs font-semibold text-brand-rose hover:opacity-80 transition-opacity"
+            >
+              Start earning <ArrowRight className="h-3 w-3" />
+            </Link>
           </div>
-          <Link
-            href="/rewards"
-            className="inline-flex items-center gap-1.5 text-xs font-semibold text-white bg-gradient-to-r from-brand-rose to-brand-orange rounded-lg px-3 py-1.5 hover:opacity-90 transition-opacity"
-          >
-            Start earning XP <ArrowRight className="h-3 w-3" />
-          </Link>
+          <LeaderboardPanel myAddress={address} limit={5} showHeading={false} compact />
         </div>
-
-        <LeaderboardPanel myAddress={address} limit={8} showHeading={false} />
       </div>
     </section>
   );

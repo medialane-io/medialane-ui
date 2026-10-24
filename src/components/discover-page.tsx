@@ -1,18 +1,16 @@
 "use client";
 
-import { assetHref, collectionHref, profileHref, type ApiCreatorProfile } from "@medialane/sdk";
+import { assetHref, collectionHref } from "@medialane/sdk";
 import { PageContainer } from "./page-container.js";
 import { DiscoverHero } from "./discover-hero.js";
 import { DiscoverCollectionsStrip } from "./discover-collections-strip.js";
 import { DiscoverActivityStrip } from "./discover-feed-section.js";
-import { DiscoverCreatorsStrip } from "./discover-creators-strip.js";
 import { DiscoverCommunitySection } from "./discover-community-section.js";
 import { IpTypeNav } from "./ip-type-nav.js";
 import { useMedialaneApp } from "./medialane-app.js";
 import type { CollectionMarketActions } from "./collection-page.js";
 import { useOrders } from "../utils/use-orders.js";
 import { useCollections } from "../utils/use-collections.js";
-import { useCreators } from "../utils/use-creators.js";
 import { usePlatformStats } from "../utils/use-platform-stats.js";
 import { isSameAddress } from "../utils/same-address.js";
 
@@ -29,7 +27,6 @@ export function DiscoverPage({ useMarketActions, heroBadge, heroHeadline }: Disc
   const { orders: tickerOrders } = useOrders({ status: "ACTIVE", sort: "recent", limit: 14 });
   const { orders: feedOrders, isLoading: feedLoading } = useOrders({ status: "ACTIVE", sort: "recent", limit: 10 });
   const { collections, isLoading: collectionsLoading } = useCollections(1, 8);
-  const { creators, isLoading: creatorsLoading } = useCreators(undefined, 1, 10);
 
   return (
     <PageContainer className="box-border max-w-full space-y-14 px-4 pt-20 sm:space-y-20 sm:px-5 lg:px-6">
@@ -55,12 +52,6 @@ export function DiscoverPage({ useMarketActions, heroBadge, heroHeadline }: Disc
       />
       <IpTypeNav />
       <DiscoverCommunitySection />
-      <DiscoverCreatorsStrip
-        creators={creators}
-        isLoading={creatorsLoading}
-        getHref={(c: ApiCreatorProfile) => profileHref({ username: c.username, address: c.walletAddress })}
-        allCreatorsHref="/creators"
-      />
       {market.dialogs}
     </PageContainer>
   );

@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.228.0] — 2026-10-24
+
+### Changed
+
+- The Discover page no longer has the Explore Creators strip, and `DiscoverCreatorsStrip` is removed.
+- The Discover rewards column is one compact card: a slim "Earn XP" header over the top five, in slim rows. `LeaderboardPanel` and `LeaderboardTable` take `compact`.
+
 ## [0.227.0] — 2026-10-24
 
 ### Changed

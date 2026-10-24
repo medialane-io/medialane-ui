@@ -20,10 +20,34 @@ export interface LeaderboardTableProps {
   highlightAddress?: string | null;
 
   renderAddress?: (address: string) => ReactNode;
+  compact?: boolean;
   className?: string;
 }
 
-export function LeaderboardTable({ entries, highlightAddress, renderAddress, className }: LeaderboardTableProps) {
+export function LeaderboardTable({ entries, highlightAddress, renderAddress, compact, className }: LeaderboardTableProps) {
+  if (compact) {
+    return (
+      <div className={cn("divide-y divide-border/40", className)}>
+        {entries.map((e) => {
+          const isViewer = highlightAddress != null && e.address === highlightAddress;
+          return (
+            <div key={e.address} className={cn("flex items-center gap-3 px-4 py-2.5", isViewer && "bg-brand-rose/10")}>
+              <span className="w-4 shrink-0 text-xs font-medium tabular-nums text-muted-foreground">{e.rank}</span>
+              <span className="min-w-0 flex-1 truncate text-sm font-semibold">
+                {renderAddress ? renderAddress(e.address) : shortenAddress(e.address)}
+                {isViewer && <span className="ml-1.5 text-xs font-medium text-foreground/50">(you)</span>}
+              </span>
+              <LevelBadge level={e.currentLevel} name={e.currentLevelName} badgeColor={e.badgeColor} size="sm" className="hidden sm:inline-flex" />
+              <span className="shrink-0 text-sm font-bold tabular-nums">
+                {e.totalXp.toLocaleString()}
+                <span className="ml-1 text-xs font-medium text-foreground/40">XP</span>
+              </span>
+            </div>
+          );
+        })}
+      </div>
+    );
+  }
   return (
     <div className={cn("space-y-1.5", className)}>
       {entries.map((e) => {
