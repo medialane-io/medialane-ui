@@ -9,7 +9,6 @@ import { Button } from "./button.js";
 import { Skeleton } from "./skeleton.js";
 import { AddressDisplay } from "./address-display.js";
 import { CreatorHeader } from "./creator-header.js";
-import { CreatorScoreInline } from "./creator-score-inline.js";
 import { HiddenContentBanner } from "./hidden-content-banner.js";
 import { TabEmptyState } from "./tab-empty-state.js";
 import { TokenCard, TokenCardSkeleton } from "./token-card.js";
@@ -125,7 +124,6 @@ export function CreatorPage({ address: addressProp, username, useAssetActions, u
         ) : (
           <div className="flex flex-wrap items-center gap-2">
             <AddressDisplay address={address ?? ""} chars={10} className="text-base font-semibold tabular-nums" />
-            {address ? <CreatorScoreInline address={address} size="sm" /> : null}
           </div>
         )}
       </div>
