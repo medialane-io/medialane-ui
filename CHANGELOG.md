@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.227.0] — 2026-10-24
+
+### Changed
+
+- Asset and listing card titles are regular size (not small), semibold.
+
 ## [0.226.0] — 2026-10-24
 
 ### Changed
