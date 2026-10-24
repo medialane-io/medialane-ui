@@ -360,6 +360,8 @@ export type { GradientButtonProps } from "./components/gradient-button.js";
 
 export { CoinLaunchPreview } from "./components/coin-launch-preview.js";
 export type { CoinPreviewData } from "./components/coin-launch-preview.js";
+export { CollectionCreated } from "./components/collection-created.js";
+export type { CollectionCreatedProps } from "./components/collection-created.js";
 export { MedialaneCollectionCard } from "./components/medialane-collection-card.js";
 export type { MedialaneCollectionCardProps } from "./components/medialane-collection-card.js";
 export { TokenGlyph, TokenAmount } from "./components/token-glyph.js";

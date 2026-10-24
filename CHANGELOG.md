@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.224.0] — 2026-10-24
+
+### Added
+
+- `CollectionCreated`: the screen shown after a collection is created. The cover image leads, with the collection name, a "View collection" button next to the main action, and a quiet "Create another" link.
+
 ## [0.223.0] — 2026-10-24
 
 ### Changed
