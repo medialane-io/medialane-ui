@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.240.0] — 2026-10-24
+
+### Changed
+
+- The territory field in the single-edition and tier mint forms is free text again, not a fixed list.
+
 ## [0.239.0] — 2026-10-24
 
 ### Added
