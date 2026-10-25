@@ -2,6 +2,7 @@
 
 import { ExternalLink } from "lucide-react";
 import { Button } from "./button.js";
+import { externalLink } from "../utils/external-link.js";
 
 export interface AssetPublicationProps {
   name: string;
@@ -11,21 +12,11 @@ export interface AssetPublicationProps {
   onImageError: () => void;
   onZoom: () => void;
   author?: string | null;
-  websiteUrl?: string | null;
+  externalUrl?: string | null;
 }
 
-function webAddress(url?: string | null) {
-  if (!url) return null;
-  try {
-    const parsed = new URL(url);
-    return parsed.protocol === "https:" || parsed.protocol === "http:" ? parsed.href : null;
-  } catch {
-    return null;
-  }
-}
-
-export function AssetPublication({ name, text, image, imgError, onImageError, onZoom, author, websiteUrl }: AssetPublicationProps) {
-  const website = webAddress(websiteUrl);
+export function AssetPublication({ name, text, image, imgError, onImageError, onZoom, author, externalUrl }: AssetPublicationProps) {
+  const link = externalLink(externalUrl);
   const paragraphs = text.split(/\n{2,}/).map((p) => p.trim()).filter(Boolean);
   const [lead, ...body] = paragraphs.length > 1 ? paragraphs : [null, ...paragraphs];
 
@@ -49,12 +40,12 @@ export function AssetPublication({ name, text, image, imgError, onImageError, on
         ))}
       </div>
 
-      {author || website ? (
+      {author || link ? (
         <div className="flex flex-wrap items-center gap-4">
           {author ? <p className="min-w-0 break-words text-sm text-muted-foreground">{author}</p> : null}
-          {website ? (
+          {link ? (
             <Button asChild variant="outline">
-              <a href={website} target="_blank" rel="noopener noreferrer">
+              <a href={link} target="_blank" rel="noopener noreferrer">
                 Read more
                 <ExternalLink />
               </a>

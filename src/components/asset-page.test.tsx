@@ -128,17 +128,45 @@ test("other types keep the standard layout", async () => {
   expect(container.querySelector("article")).toBeNull();
 });
 
-test("a publication offers its website as a Read more button after the text, not in the overview", async () => {
-  const { getByText, queryByText, container } = renderPage(
-    publication({ description: "Text", attributes: [{ trait_type: "Website", value: "https://www.ambrosia.com.br/post" }] }),
+test("a publication offers its external URL as a Read more button after the text", async () => {
+  const { getByText, container } = renderPage(
+    publication({ description: "Text", externalUrl: "https://www.ambrosia.com.br/post" }),
     collection(),
   );
   await waitFor(() => expect(getByText("Read more")).toBeTruthy());
   const link = container.querySelector('article a[href="https://www.ambrosia.com.br/post"]')!;
   expect(link.textContent).toBe("Read more");
   expect(link.getAttribute("rel")).toContain("noopener");
-  expect(queryByText("Website")).toBeNull();
-  expect(queryByText("Links")).toBeNull();
+});
+
+test("a publication shows no Read more for the platform default or an unsafe link", async () => {
+  const first = renderPage(publication({ description: "Text", externalUrl: "https://medialane.io" }), collection());
+  await waitFor(() => expect(first.container.querySelector("article")).toBeTruthy());
+  expect(first.queryByText("Read more")).toBeNull();
+  cleanup();
+  const second = renderPage(publication({ description: "Text", externalUrl: "javascript:alert(1)" }), collection());
+  await waitFor(() => expect(second.container.querySelector("article")).toBeTruthy());
+  expect(second.queryByText("Read more")).toBeNull();
+});
+
+test("other assets show their external URL after the description", async () => {
+  const { getByText, container } = renderPage(publication({ ipType: "Art", description: "Plain", externalUrl: "https://artist.test/work" }), collection());
+  await waitFor(() => expect(getByText("Open link")).toBeTruthy());
+  expect(container.querySelector('a[href="https://artist.test/work"]')!.textContent).toBe("Open link");
+});
+
+test("a publication shows its author after the text: the Author trait, else the Creator", async () => {
+  const named = renderPage(publication({ description: "Text", attributes: [{ trait_type: "Creator", value: "J.R. Dib" }] }), collection());
+  await waitFor(() => expect(named.container.querySelector("article")).toBeTruthy());
+  expect(named.container.querySelector("article")!.textContent).toContain("J.R. Dib");
+  cleanup();
+  const authored = renderPage(
+    publication({ description: "Text", attributes: [{ trait_type: "Author", value: "Ana" }, { trait_type: "Creator", value: "J.R. Dib" }] }),
+    collection(),
+  );
+  await waitFor(() => expect(authored.container.querySelector("article")).toBeTruthy());
+  expect(authored.container.querySelector("article")!.textContent).toContain("Ana");
+  expect(authored.container.querySelector("article")!.textContent).not.toContain("J.R. Dib");
 });
 
 test("a publication keeps its rights in the overview like other assets", async () => {
