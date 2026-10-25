@@ -86,6 +86,14 @@ const KINDS: Record<AssetKind, KindConfig> = {
 
 const PUBLICATION_TYPES = new Set(["publications", "posts"]);
 
+function publicationAuthor(attributes: { trait_type?: string | null; value?: string | number | boolean | null }[], metadataAuthor?: string | null): string | null {
+  const text = (trait: string) => {
+    const value = attributes.find((a) => a.trait_type === trait)?.value;
+    return typeof value === "string" && value.trim() !== "" ? value.trim() : null;
+  };
+  return text("Author") ?? metadataAuthor ?? text("Creator");
+}
+
 const VARIANT_KINDS: Partial<Record<string, AssetKind>> = { edition: "edition", ticket: "ticket", club: "membership", pop: "pop" };
 
 export function detectAssetKind(service: string | null | undefined, standard: string | null | undefined): AssetKind {
@@ -210,9 +218,8 @@ function AssetPageView({
   const audio = (token.metadata?.ipType ?? "").toLowerCase() === "audio" ? audioEmbed(attributes) : null;
   const isPublication = !!articleText && PUBLICATION_TYPES.has((token.metadata?.ipType ?? "").toLowerCase());
   const publisherName = collection?.name ?? contract.slice(0, 8) + "…";
-  const websiteUrl = attributes.find((a) => a.trait_type === "Website")?.value ?? null;
   const overview = isPublication
-    ? assetAttributes(attributes.filter((a) => a.trait_type !== "Website"))
+    ? { attributes, hasTemplateData, isDisplayAttr }
     : video || audio
       ? assetAttributes(attributes.filter((a) => !VIDEO_EMBED_TRAITS.has(a.trait_type ?? "") && !AUDIO_EMBED_TRAITS.has(a.trait_type ?? "")))
       : { attributes, hasTemplateData, isDisplayAttr };
@@ -369,8 +376,8 @@ function AssetPageView({
             imgError={imgError}
             onImageError={() => setImgError(true)}
             onZoom={() => setLightboxOpen(true)}
-            author={attributes.find((a) => a.trait_type === "Author")?.value ?? token.metadata?.author}
-            websiteUrl={websiteUrl}
+            author={publicationAuthor(attributes, token.metadata?.author)}
+            externalUrl={token.metadata?.externalUrl}
           />
           <aside className="space-y-6 min-w-0 lg:sticky lg:top-16">
             <IpTypeBadge ipType={token.metadata?.ipType ?? "Publications"} size="md" showLabel />
@@ -401,6 +408,7 @@ function AssetPageView({
             <AssetHeaderBlock
               name={name}
               description={token.metadata?.description}
+              externalUrl={token.metadata?.externalUrl}
               ipType={token.metadata?.ipType}
               parentContract={parentContract}
               parentTokenId={parentTokenId}

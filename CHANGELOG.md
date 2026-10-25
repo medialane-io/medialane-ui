@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.252.0] — 2026-10-25
+
+### Changed
+
+- Works with `@medialane/sdk` 0.205.0.
+- A publication shows its author after the text, the `Author` trait or else the `Creator`, and its external URL as the "Read more" button instead of the `Website` trait. Other assets show their external URL as an "Open link" link after the description. The default `https://medialane.io` is not shown.
+
 ## [0.251.0] — 2026-10-25
 
 ### Changed
