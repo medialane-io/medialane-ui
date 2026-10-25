@@ -1,7 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { Bot, Calendar, DollarSign, GitBranch, Globe, Percent, UserCheck } from "lucide-react";
+import { Bot, DollarSign, GitBranch, Globe, Percent, UserCheck } from "lucide-react";
 import { IPTypeDisplay } from "./ip-type-display.js";
 import { AddressDisplay } from "./address-display.js";
 import { licenseSummary } from "../utils/license-summary.js";
@@ -61,7 +61,6 @@ export function AssetOverviewContent({
   const territory = attr("Territory");
   const aiPolicy = attr("AI Policy");
   const royalty = attr("Royalty");
-  const registration = attr("Registration");
   const summary = licenseSummary(attributes);
   const hasLicenseData = !!(licenseType || commercialUse || derivatives || attribution);
   const displayAttributes = attributes.filter((attribute) => isDisplayAttr(attribute));
@@ -73,7 +72,6 @@ export function AssetOverviewContent({
     { icon: <Globe className="h-4 w-4" />, label: "Territory", value: territory },
     { icon: <Bot className="h-4 w-4" />, label: "AI & data mining", value: aiPolicy },
     { icon: <Percent className="h-4 w-4" />, label: "Royalty", value: royalty },
-    { icon: <Calendar className="h-4 w-4" />, label: "Registered", value: registration },
   ].filter((row) => !!row.value);
 
   return (

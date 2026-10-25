@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.251.0] — 2026-10-25
+
+### Changed
+
+- Works with `@medialane/sdk` 0.204.0. Asset pages no longer show a "Registered" date taken from the metadata, and drops no longer write one.
+
 ## [0.250.0] — 2026-10-24
 
 ### Changed

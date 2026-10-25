@@ -4,7 +4,6 @@ import { MAX_DROP_METADATA_BYTES, MAX_DROP_SUPPLY, buildDropMetadataFiles, metad
 const base: DropMetadataInput = {
   kind: "edition", name: "Neon Tides", description: "Waves", creator: "0x1", coverUri: null,
   license: { ipType: "Art", licenseType: "CC BY-SA", commercialUse: "Yes", derivatives: "Share-Alike", attribution: "Required", geographicScope: "Worldwide", aiPolicy: "Allowed", royalty: "0" },
-  registrationDate: "2026-10-11",
   items: [{ name: "", description: "", imageUri: "ipfs://art" }],
   supply: 3,
 };

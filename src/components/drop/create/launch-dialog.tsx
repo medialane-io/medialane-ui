@@ -61,7 +61,6 @@ export function LaunchDialog({ open, onClose, draft }: { open: boolean; onClose:
           creator: app.walletAddress!,
           coverUri: done.find((t) => t.id === "cover")?.uri ?? null,
           license: draft.license,
-          registrationDate: new Date().toISOString().slice(0, 10),
           items: draft.kind === "edition"
             ? [{ name: "", description: "", imageUri: art[0]!.uri! }]
             : draft.items.map((it, i) => ({ name: it.name, description: it.description, imageUri: art[i]!.uri! })),

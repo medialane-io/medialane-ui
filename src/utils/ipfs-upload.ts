@@ -168,7 +168,7 @@ export function uploadFailureToast(err: unknown): { title: string; description?:
   };
 }
 
-export interface PinAssetMetadataInput extends Omit<BuildAssetMetadataInput, "registrationDate"> {
+export interface PinAssetMetadataInput extends BuildAssetMetadataInput {
   imageFile?: File | null;
 }
 
