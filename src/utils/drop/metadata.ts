@@ -18,7 +18,6 @@ export interface DropMetadataInput {
   creator: string;
   coverUri: string | null;
   license: DropLicense;
-  registrationDate: string;
   /** Edition: the one artwork. Collection: one per token. */
   items: { name: string; description: string; imageUri: string }[];
   /** Edition copies; ignored for a collection. */
@@ -46,7 +45,6 @@ export function buildDropMetadataFiles(input: DropMetadataInput): DropMetadataFi
         imageUri: item.imageUri,
         creator: input.creator,
         edition: edition ? `${id}/${count}` : null,
-        registrationDate: input.registrationDate,
       }),
     });
   }
