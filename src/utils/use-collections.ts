@@ -25,10 +25,7 @@ export function useCollections(
   const { data, error, isLoading, mutate } = useSWR<ApiResponse<ApiCollection[]>>(
     key,
     async () => {
-      const res = await client.api.collections.list({ page, limit, isFeatured, sort, service, standard });
-      return hideEmpty
-        ? { ...res, data: res.data.filter((collection) => (collection.totalSupply ?? 0) > 0) }
-        : res;
+      return client.api.collections.list({ page, limit, isFeatured, sort, service, standard, hideEmpty });
     },
     {
       revalidateOnFocus: false,

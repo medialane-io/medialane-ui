@@ -18,7 +18,7 @@ function setup() {
   const queries: Record<string, unknown>[] = [];
   const client = {
     api: {
-      platform: { stats: async () => ({ collections: 1, tokens: 4, sales: 0 }) },
+      search: async () => ({ data: { tokens: [], creators: [], collections: [{ ...collection, name: "Rio Search Hit" }] } }),
       collections: { list: async (q: Record<string, unknown>) => { queries.push(q); return { data: [collection], meta: { page: 1, limit: 18, total: 1 } }; } },
     },
   } as unknown as MedialaneClient;
@@ -37,6 +37,32 @@ test("lists the collections with their count", async () => {
   const { view } = setup();
   await waitFor(() => expect(view.getAllByText("Rio Drummers").length).toBeGreaterThan(0));
   expect(view.getByText("Onchain Collections")).toBeTruthy();
+});
+
+test("shows how many collections are single NFTs and multi editions", async () => {
+  const { view, queries } = setup();
+  await waitFor(() => expect(view.getByText("Single NFTs")).toBeTruthy());
+  expect(view.getByText("Multi editions")).toBeTruthy();
+  expect(queries).toContainEqual(expect.objectContaining({ standard: "ERC721", hideEmpty: true, limit: 1 }));
+  expect(queries).toContainEqual(expect.objectContaining({ standard: "ERC1155", hideEmpty: true, limit: 1 }));
+});
+
+test("sort is a visible control, not inside the filters dialog", async () => {
+  const { view } = setup();
+  await waitFor(() => expect(view.getAllByText("Rio Drummers").length).toBeGreaterThan(0));
+  expect(view.getByLabelText("Sort collections")).toBeTruthy();
+});
+
+test("searching shows matching collections", async () => {
+  const { view } = setup();
+  fireEvent.change(view.getByLabelText("Search collections"), { target: { value: "rio" } });
+  await waitFor(() => expect(view.getByText("Rio Search Hit")).toBeTruthy());
+});
+
+test("a featured section comes before the main grid", async () => {
+  const { view, queries } = setup();
+  await waitFor(() => expect(view.getByText("Featured")).toBeTruthy());
+  expect(queries).toContainEqual(expect.objectContaining({ isFeatured: true, hideEmpty: true, limit: 8 }));
 });
 
 test("the Drops filter asks for drop collections", async () => {

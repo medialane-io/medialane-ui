@@ -58,7 +58,7 @@ function HeroSlide({ collection, active, getHref }: { collection: ApiCollection;
           <h2 className="text-4xl lg:text-5xl font-semibold text-white leading-tight">{name}</h2>
         </Link>
         <div className="flex items-center gap-4 text-sm text-white/70">
-          {supply != null && <span>{supply.toLocaleString()} items</span>}
+          {supply != null && <span>{supply.toLocaleString()} {supply === 1 ? "item" : "items"}</span>}
         </div>
       </div>
     </div>

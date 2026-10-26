@@ -114,7 +114,7 @@ export function LaunchDialog({ open, onClose, draft }: { open: boolean; onClose:
               <p className="font-semibold">{draft.name}</p>
               <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Fixed after launch</p>
               <Row label="Price" value={priceLabel(terms.price, terms.paymentToken)} />
-              <Row label="Supply" value={`${draftSupply(draft).toLocaleString("en-US")} ${draft.kind === "edition" ? "copies" : "items"}`} />
+              <Row label="Supply" value={`${draftSupply(draft).toLocaleString("en-US")} ${draft.kind === "edition" ? (draftSupply(draft) === 1 ? "copy" : "copies") : draftSupply(draft) === 1 ? "item" : "items"}`} />
               <Row label="Starts" value={terms.startTime === 0 ? "At launch" : new Date(terms.startTime * 1000).toLocaleString()} />
               <Row label="Ends" value={terms.endTime === 0 ? "No end date" : new Date(terms.endTime * 1000).toLocaleString()} />
               <Row label="Per wallet" value={terms.maxPerWallet === "0" ? "No limit" : terms.maxPerWallet} />
