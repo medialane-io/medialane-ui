@@ -12,7 +12,7 @@ export interface ScrollSectionProps {
 
   subtitle?: React.ReactNode;
 
-  href?: string;
+  href: string;
 
   linkLabel?: string;
 
@@ -40,14 +40,12 @@ export function ScrollSection({
             {subtitle && <p className="text-2xs text-muted-foreground mt-1">{subtitle}</p>}
           </div>
         </div>
-        {href && (
-          <Link
-            href={href}
-            className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground px-3 py-1.5 rounded-md hover:bg-accent transition-colors"
-          >
-            {linkLabel} <ArrowRight className="h-3.5 w-3.5" />
-          </Link>
-        )}
+        <Link
+          href={href}
+          className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground px-3 py-1.5 rounded-md hover:bg-accent transition-colors"
+        >
+          {linkLabel} <ArrowRight className="h-3.5 w-3.5" />
+        </Link>
       </div>
 
       <div className="w-full overflow-x-auto scrollbar-hide">
