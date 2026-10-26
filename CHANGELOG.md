@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.254.0] — 2026-10-26
+
+### Changed
+
+- The featured collections on the collections page are two rows of four in the same grid and card as the rest, without a heading.
+
 ## [0.253.0] — 2026-10-26
 
 ### Changed

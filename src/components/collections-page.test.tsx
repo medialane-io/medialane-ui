@@ -59,9 +59,10 @@ test("searching shows matching collections", async () => {
   await waitFor(() => expect(view.getByText("Rio Search Hit")).toBeTruthy());
 });
 
-test("a featured section comes before the main grid", async () => {
+test("featured collections come first in the same grid without a heading", async () => {
   const { view, queries } = setup();
-  await waitFor(() => expect(view.getByText("Featured")).toBeTruthy());
+  await waitFor(() => expect(view.getAllByText("Rio Drummers").length).toBe(2));
+  expect(view.queryByText("Featured")).toBeNull();
   expect(queries).toContainEqual(expect.objectContaining({ isFeatured: true, hideEmpty: true, limit: 8 }));
 });
 

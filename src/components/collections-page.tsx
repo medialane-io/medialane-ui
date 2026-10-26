@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import useSWR from "swr";
-import { Layers, BadgeCheck, Eye, SlidersHorizontal, Award, Package, ArrowDownUp, Search, X } from "lucide-react";
+import { Layers, Eye, SlidersHorizontal, Award, Package, ArrowDownUp, Search, X } from "lucide-react";
 import { Button } from "./button.js";
 import { Dialog, DialogContent, DialogTitle } from "./dialog.js";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./select.js";
@@ -12,7 +12,6 @@ import { ResultThumbnail } from "./result-thumbnail.js";
 import Link from "./link.js";
 import { useRouter } from "./router.js";
 import { PageContainer } from "./page-container.js";
-import { ScrollSection } from "./scroll-section.js";
 import { CollectionCard, CollectionCardSkeleton } from "./collection-card.js";
 import { LoadMoreSentinel } from "./load-more-sentinel.js";
 import { cn } from "../utils/cn.js";
@@ -204,21 +203,13 @@ export function CollectionsPage() {
       </div>
 
       {(featuredLoading || featuredCollections.length > 0) && (
-        <ScrollSection
-          icon={<BadgeCheck className="h-3.5 w-3.5 text-white" />}
-          iconBg="bg-gradient-to-br from-brand-blue to-indigo-600 shadow-md shadow-brand-blue/20"
-          title="Featured"
-        >
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
           {featuredLoading
-            ? Array.from({ length: 4 }).map((_, i) => (
-                <div key={i} className="w-56 shrink-0 snap-start sm:w-64"><CollectionCardSkeleton /></div>
-              ))
+            ? Array.from({ length: 8 }).map((_, i) => <CollectionCardSkeleton key={i} />)
             : featuredCollections.map((col) => (
-                <div key={col.contractAddress} className="w-56 shrink-0 snap-start sm:w-64">
-                  <CollectionCard collection={col} />
-                </div>
+                <CollectionCard key={col.contractAddress} collection={col} />
               ))}
-        </ScrollSection>
+        </div>
       )}
 
       <div className="space-y-3">
