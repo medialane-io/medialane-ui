@@ -79,7 +79,7 @@ export function DraftSummary({ draft, feeBps }: { draft: DropDraft; feeBps: numb
           {draft.sale.paid ? (feeBps === null ? "…" : collectorPriceLine(draft.sale, feeBps) ?? "Set a price") : "Free"}
         </p>
         <p className="text-xs text-muted-foreground">
-          {Number.isFinite(supply) && supply > 0 ? `${supply.toLocaleString("en-US")} ${draft.kind === "edition" ? "copies" : "items"}` : "Supply not set"}
+          {Number.isFinite(supply) && supply > 0 ? `${supply.toLocaleString("en-US")} ${draft.kind === "edition" ? (supply === 1 ? "copy" : "copies") : supply === 1 ? "item" : "items"}` : "Supply not set"}
           {" · "}{draft.listOnly ? "List only" : "Open to everyone"}
         </p>
       </div>

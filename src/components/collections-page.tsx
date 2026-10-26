@@ -1,19 +1,27 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { Layers, BadgeCheck, Eye, SlidersHorizontal, Award, Sparkles, Package } from "lucide-react";
+import useSWR from "swr";
+import { Layers, BadgeCheck, Eye, SlidersHorizontal, Award, Package, ArrowDownUp, Search, X } from "lucide-react";
 import { Button } from "./button.js";
 import { Dialog, DialogContent, DialogTitle } from "./dialog.js";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./select.js";
 import { HelpIcon } from "./help-icon.js";
+import { Input } from "./input.js";
+import { ResultThumbnail } from "./result-thumbnail.js";
+import Link from "./link.js";
+import { useRouter } from "./router.js";
 import { PageContainer } from "./page-container.js";
+import { ScrollSection } from "./scroll-section.js";
 import { CollectionCard, CollectionCardSkeleton } from "./collection-card.js";
 import { LoadMoreSentinel } from "./load-more-sentinel.js";
 import { cn } from "../utils/cn.js";
 import { useCollections, type CollectionSort } from "../utils/use-collections.js";
-import { usePlatformStats } from "../utils/use-platform-stats.js";
-import type { ApiCollection } from "@medialane/sdk";
+import { useMedialaneClient } from "../utils/use-medialane-client.js";
+import { SEARCH_MIN_LENGTH, useSearch } from "../utils/use-search.js";
+import { collectionHref, type ApiCollection } from "@medialane/sdk";
 
-const PAGE_SIZE = 18;
+const PAGE_SIZE = 24;
 
 const SORT_OPTIONS: { label: string; value: CollectionSort }[] = [
   { label: "Recent",      value: "recent"  },
@@ -29,12 +37,93 @@ const SERVICE_TABS = [
   { label: "Drops",      value: "drop-collection" },
 ] as const;
 
+function useStandardCounts() {
+  const client = useMedialaneClient();
+  const { data } = useSWR(
+    "collection-standard-counts",
+    async () => {
+      const [single, multi] = await Promise.all(
+        ["ERC721", "ERC1155"].map((standard) =>
+          client.api.collections.list({ standard, hideEmpty: true, limit: 1 })
+        )
+      );
+      return { single: single.meta?.total, multi: multi.meta?.total };
+    },
+    { revalidateOnFocus: false, dedupingInterval: 60_000 }
+  );
+  return data ?? null;
+}
+
+function CollectionSearch() {
+  const router = useRouter();
+  const [value, setValue] = useState("");
+  const [query, setQuery] = useState("");
+  const [open, setOpen] = useState(false);
+  const { results } = useSearch(query, { limit: 6 });
+  const matches = results?.collections ?? [];
+
+  useEffect(() => {
+    const timer = setTimeout(() => setQuery(value), 300);
+    return () => clearTimeout(timer);
+  }, [value]);
+
+  const clear = () => {
+    setValue("");
+    setQuery("");
+    setOpen(false);
+  };
+
+  return (
+    <div className="relative w-full sm:max-w-sm sm:flex-1">
+      <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+      <Input
+        className="h-9 pl-9 pr-9 text-sm"
+        placeholder="Search collections"
+        aria-label="Search collections"
+        value={value}
+        onChange={(e) => { setValue(e.target.value); setOpen(true); }}
+        onFocus={() => setOpen(true)}
+        onBlur={() => setTimeout(() => setOpen(false), 200)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" && value.trim().length >= SEARCH_MIN_LENGTH) {
+            router.push(`/search?q=${encodeURIComponent(value.trim())}`);
+          }
+        }}
+      />
+      {value && (
+        <button
+          aria-label="Clear search"
+          className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+          onClick={clear}
+        >
+          <X className="h-3.5 w-3.5" />
+        </button>
+      )}
+      {open && matches.length > 0 && (
+        <div className="absolute left-0 right-0 top-full z-50 mt-1 overflow-hidden rounded-xl border border-border bg-popover shadow-lg">
+          {matches.map((col) => {
+            const label = col.name ?? "Untitled";
+            return (
+              <Link
+                key={col.contractAddress}
+                href={collectionHref("STARKNET", col.contractAddress)}
+                className="flex items-center gap-3 px-3 py-2.5 transition-colors hover:bg-muted/50"
+              >
+                <ResultThumbnail src={col.image} label={label} />
+                <span className="truncate text-sm font-medium">{label}</span>
+              </Link>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
+
 export function CollectionsPage() {
-  const { stats } = usePlatformStats();
+  const counts = useStandardCounts();
   const [sort, setSort]           = useState<CollectionSort>("recent");
-  const [featured, setFeatured]   = useState(false);
   const [hideEmpty, setHideEmpty] = useState(true);
-  const [exclusive, setExclusive] = useState(false);
   const [service, setService]     = useState<string | undefined>(undefined);
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [page, setPage]           = useState(1);
@@ -43,22 +132,32 @@ export function CollectionsPage() {
   const { collections, meta, isLoading } = useCollections(
     page,
     PAGE_SIZE,
-    featured ? true : undefined,
+    undefined,
     sort,
     service === "pop-protocol" || service === "drop-collection" ? false : hideEmpty,
     service,
     "ERC721,ERC1155"
   );
 
-  const prevFilters = useRef({ sort, featured, hideEmpty, service });
+  const { collections: featuredCollections, isLoading: featuredLoading } = useCollections(
+    1,
+    8,
+    true,
+    "recent",
+    true,
+    undefined,
+    "ERC721,ERC1155"
+  );
+
+  const prevFilters = useRef({ sort, hideEmpty, service });
   useEffect(() => {
     const f = prevFilters.current;
-    if (f.sort !== sort || f.featured !== featured || f.hideEmpty !== hideEmpty || f.service !== service) {
-      prevFilters.current = { sort, featured, hideEmpty, service };
+    if (f.sort !== sort || f.hideEmpty !== hideEmpty || f.service !== service) {
+      prevFilters.current = { sort, hideEmpty, service };
       setPage(1);
       setAllCollections([]);
     }
-  }, [sort, featured, hideEmpty, service]);
+  }, [sort, hideEmpty, service]);
 
   useEffect(() => {
     if (isLoading || collections.length === 0) return;
@@ -72,17 +171,10 @@ export function CollectionsPage() {
   const hasMore = meta?.total != null ? allCollections.length < meta.total : false;
   const isInitialLoading = isLoading && allCollections.length === 0;
 
-  const activeFilters = [sort !== "recent", featured, !hideEmpty, exclusive].filter(Boolean).length;
-
-  const displayCollections = exclusive
-    ? allCollections.filter((c) => !!c.profile?.hasGatedContent)
-    : allCollections;
+  const activeFilters = [!hideEmpty].filter(Boolean).length;
 
   const resetAll = () => {
-    setSort("recent");
-    setFeatured(false);
     setHideEmpty(true);
-    setExclusive(false);
   };
 
   const handleServiceChange = (val: string | undefined) => {
@@ -96,78 +188,89 @@ export function CollectionsPage() {
 
         <h1 className="text-3xl font-bold">Onchain Collections</h1>
         <div className="flex flex-wrap items-center gap-2 mt-1">
-          {meta?.total != null && (
+          {counts?.single != null && (
             <div className="flex items-center gap-1.5 rounded-full border border-border bg-card px-3.5 py-1.5 text-sm">
-              <span className="font-bold tabular-nums">{(meta.total ?? 0).toLocaleString()}</span>
-              <span className="text-muted-foreground">Collections</span>
+              <span className="font-bold tabular-nums">{counts.single.toLocaleString()}</span>
+              <span className="text-muted-foreground">Single NFTs</span>
             </div>
           )}
-          {stats?.tokens != null && (
+          {counts?.multi != null && (
             <div className="flex items-center gap-1.5 rounded-full border border-border bg-card px-3.5 py-1.5 text-sm">
-              <span className="font-bold tabular-nums">{stats.tokens.toLocaleString()}</span>
-              <span className="text-muted-foreground">Assets</span>
-            </div>
-          )}
-          {stats?.sales != null && (
-            <div className="flex items-center gap-1.5 rounded-full border border-border bg-card px-3.5 py-1.5 text-sm">
-              <span className="font-bold tabular-nums">{stats.sales.toLocaleString()}</span>
-              <span className="text-muted-foreground">Sales</span>
+              <span className="font-bold tabular-nums">{counts.multi.toLocaleString()}</span>
+              <span className="text-muted-foreground">Multi editions</span>
             </div>
           )}
         </div>
       </div>
 
-      <div className="flex items-center gap-2 pb-3 border-b border-border/60 flex-wrap">
-        <button
-          onClick={() => setFiltersOpen(true)}
-          className={cn(
-            "relative flex items-center gap-1.5 h-9 px-3 rounded-lg border text-xs font-medium transition-colors",
-            activeFilters > 0 || service !== undefined
-              ? "border-primary bg-primary/10 text-primary"
-              : "border-border text-muted-foreground hover:border-primary/50 hover:text-foreground"
-          )}
+      {(featuredLoading || featuredCollections.length > 0) && (
+        <ScrollSection
+          icon={<BadgeCheck className="h-3.5 w-3.5 text-white" />}
+          iconBg="bg-gradient-to-br from-brand-blue to-indigo-600 shadow-md shadow-brand-blue/20"
+          title="Featured"
         >
-          <SlidersHorizontal className="h-3.5 w-3.5" />
-          Filters
-          {(activeFilters > 0 || service !== undefined) && (
-            <span className="flex h-4 w-4 items-center justify-center rounded-full bg-primary text-2xs font-bold text-primary-foreground">
-              {activeFilters + (service !== undefined ? 1 : 0)}
-            </span>
-          )}
-        </button>
+          {featuredLoading
+            ? Array.from({ length: 4 }).map((_, i) => (
+                <div key={i} className="w-56 shrink-0 snap-start sm:w-64"><CollectionCardSkeleton /></div>
+              ))
+            : featuredCollections.map((col) => (
+                <div key={col.contractAddress} className="w-56 shrink-0 snap-start sm:w-64">
+                  <CollectionCard collection={col} />
+                </div>
+              ))}
+        </ScrollSection>
+      )}
 
-        {service !== undefined && (
-          <span className="flex items-center gap-1 text-xs px-2.5 py-1 rounded-full border border-primary/40 bg-primary/10 text-primary">
-            {service === "drop-collection" ? <Package className="h-3 w-3" /> : <Award className="h-3 w-3" />}
-            {SERVICE_TABS.find((t) => t.value === service)?.label}
-            <button onClick={() => setService(undefined)} className="ml-0.5 hover:text-primary/60">×</button>
-          </span>
-        )}
-        {sort !== "recent" && (
-          <span className="flex items-center gap-1 text-xs px-2.5 py-1 rounded-full border border-primary/40 bg-primary/10 text-primary">
-            {SORT_OPTIONS.find((o) => o.value === sort)?.label}
-            <button onClick={() => setSort("recent")} className="ml-0.5 hover:text-primary/60">×</button>
-          </span>
-        )}
-        {featured && (
-          <span className="flex items-center gap-1 text-xs px-2.5 py-1 rounded-full border border-primary/40 bg-primary/10 text-primary">
-            <BadgeCheck className="h-3 w-3" />
-            Featured
-            <button onClick={() => setFeatured(false)} className="ml-0.5 hover:text-primary/60">×</button>
-          </span>
-        )}
-        {!hideEmpty && (
-          <span className="flex items-center gap-1 text-xs px-2.5 py-1 rounded-full border border-primary/40 bg-primary/10 text-primary">
-            Show empty
-            <button onClick={() => setHideEmpty(true)} className="ml-0.5 hover:text-primary/60">×</button>
-          </span>
-        )}
-        {exclusive && (
-          <span className="flex items-center gap-1 text-xs px-2.5 py-1 rounded-full border border-primary/40 bg-primary/10 text-primary">
-            <Sparkles className="h-3 w-3" />
-            Exclusive
-            <button onClick={() => setExclusive(false)} className="ml-0.5 hover:text-primary/60">×</button>
-          </span>
+      <div className="space-y-3">
+        <div className="flex flex-wrap items-center gap-2">
+          <CollectionSearch />
+          <div className="flex items-center gap-2 sm:ml-auto">
+            <Select value={sort} onValueChange={(v) => setSort(v as CollectionSort)}>
+              <SelectTrigger className="h-9 w-auto gap-1.5 text-xs" aria-label="Sort collections">
+                <ArrowDownUp className="h-3.5 w-3.5 text-muted-foreground" />
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {SORT_OPTIONS.map((opt) => (
+                  <SelectItem key={opt.value} value={opt.value} className="text-xs">{opt.label}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <button
+              onClick={() => setFiltersOpen(true)}
+              className={cn(
+                "relative flex items-center gap-1.5 h-9 px-3 rounded-lg border text-xs font-medium transition-colors",
+                activeFilters > 0 || service !== undefined
+                  ? "border-primary bg-primary/10 text-primary"
+                  : "border-border text-muted-foreground hover:border-primary/50 hover:text-foreground"
+              )}
+            >
+              <SlidersHorizontal className="h-3.5 w-3.5" />
+              Filters
+              {(activeFilters > 0 || service !== undefined) && (
+                <span className="flex h-4 w-4 items-center justify-center rounded-full bg-primary text-2xs font-bold text-primary-foreground">
+                  {activeFilters + (service !== undefined ? 1 : 0)}
+                </span>
+              )}
+            </button>
+          </div>
+        </div>
+        {(service !== undefined || !hideEmpty) && (
+          <div className="flex flex-wrap items-center gap-2">
+            {service !== undefined && (
+              <span className="flex items-center gap-1 text-xs px-2.5 py-1 rounded-full border border-primary/40 bg-primary/10 text-primary">
+                {service === "drop-collection" ? <Package className="h-3 w-3" /> : <Award className="h-3 w-3" />}
+                {SERVICE_TABS.find((t) => t.value === service)?.label}
+                <button onClick={() => setService(undefined)} className="ml-0.5 hover:text-primary/60" aria-label="Remove source filter">×</button>
+              </span>
+            )}
+            {!hideEmpty && (
+              <span className="flex items-center gap-1 text-xs px-2.5 py-1 rounded-full border border-primary/40 bg-primary/10 text-primary">
+                Show empty
+                <button onClick={() => setHideEmpty(true)} className="ml-0.5 hover:text-primary/60" aria-label="Remove show empty filter">×</button>
+              </span>
+            )}
+          </div>
         )}
       </div>
 
@@ -211,43 +314,8 @@ export function CollectionsPage() {
             </div>
 
             <div className="space-y-2">
-              <p className="text-2xs font-semibold text-muted-foreground">Sort</p>
-              <div className="flex flex-wrap gap-1.5">
-                {SORT_OPTIONS.map((opt) => (
-                  <button
-                    key={opt.value}
-                    onClick={() => setSort(opt.value)}
-                    className={cn(
-                      "text-xs px-3 py-1.5 rounded-full border transition-colors whitespace-nowrap",
-                      sort === opt.value
-                        ? "border-primary bg-primary/10 text-primary font-medium"
-                        : "border-border text-muted-foreground hover:border-primary/50"
-                    )}
-                  >
-                    {opt.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div className="space-y-2">
               <p className="text-2xs font-semibold text-muted-foreground">Show</p>
               <div className="flex flex-col gap-2">
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={() => setFeatured((v) => !v)}
-                    className={cn(
-                      "flex flex-1 items-center gap-2 text-sm px-3 py-2 rounded-lg border transition-colors text-left",
-                      featured
-                        ? "border-primary bg-primary/10 text-primary"
-                        : "border-border text-muted-foreground hover:border-primary/50"
-                    )}
-                  >
-                    <BadgeCheck className="h-4 w-4 shrink-0" />
-                    Featured only
-                  </button>
-                  <HelpIcon content="Show only collections featured by Medialane" side="left" />
-                </div>
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => setHideEmpty((v) => !v)}
@@ -263,21 +331,6 @@ export function CollectionsPage() {
                   </button>
                   <HelpIcon content="Include collections with no minted assets yet — hidden by default to keep the feed clean" side="left" />
                 </div>
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={() => setExclusive((v) => !v)}
-                    className={cn(
-                      "flex flex-1 items-center gap-2 text-sm px-3 py-2 rounded-lg border transition-colors text-left",
-                      exclusive
-                        ? "border-primary bg-primary/10 text-primary"
-                        : "border-border text-muted-foreground hover:border-primary/50"
-                    )}
-                  >
-                    <Sparkles className="h-4 w-4 shrink-0" />
-                    Exclusive content only
-                  </button>
-                  <HelpIcon content="Show only collections with holder-exclusive content" side="left" />
-                </div>
               </div>
             </div>
 
@@ -285,7 +338,7 @@ export function CollectionsPage() {
 
           <div className="px-5 py-3 border-t border-border/60">
             <Button className="w-full" onClick={() => setFiltersOpen(false)}>
-              Apply filters
+              Show results
             </Button>
           </div>
 
@@ -293,17 +346,15 @@ export function CollectionsPage() {
       </Dialog>
 
       {isInitialLoading ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          {Array.from({ length: 9 }).map((_, i) => <CollectionCardSkeleton key={i} />)}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+          {Array.from({ length: 8 }).map((_, i) => <CollectionCardSkeleton key={i} />)}
         </div>
       ) : allCollections.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-24 gap-4 text-center">
           <Layers className="h-12 w-12 text-muted-foreground/30" />
           <p className="text-2xl font-bold">No collections found</p>
           <p className="text-muted-foreground max-w-sm">
-            {featured
-              ? "No featured collections match the current filters."
-              : hideEmpty
+            {hideEmpty
               ? "No collections with assets yet."
               : "Deploy the first collection on Medialane."}
           </p>
@@ -315,15 +366,8 @@ export function CollectionsPage() {
         </div>
       ) : (
         <div className="space-y-6">
-          {exclusive && displayCollections.length === 0 && (
-            <div className="flex flex-col items-center justify-center py-16 gap-3 text-center">
-              <Sparkles className="h-10 w-10 text-muted-foreground/30" />
-              <p className="text-base font-semibold text-muted-foreground">No exclusive collections in this batch</p>
-              <p className="text-sm text-muted-foreground/70 max-w-xs">Load more collections below, then the filter will catch them.</p>
-            </div>
-          )}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {displayCollections.map((col) => (
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+            {allCollections.map((col) => (
               <CollectionCard key={col.contractAddress} collection={col} />
             ))}
           </div>

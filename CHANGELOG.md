@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.253.0] — 2026-10-26
+
+### Changed
+
+- The collections page opens with a Featured row and has a search box. The stat pills show how many collections are single NFTs and how many are multi editions, counting only collections with assets. Sort is a control beside Filters, active filters show as chips on their own line, and the line under the toolbar is gone.
+- Collection cards show the name, item count and floor over one gradient. The grid is two columns on phones and loads 24 collections at a time.
+- Empty collections are hidden by the server, so the count matches the grid.
+- A single item reads "1 item", and a single edition reads "1 copy".
+
+### Removed
+
+- The Exclusive badge, card border and filter on collections, and the Featured only filter.
+
 ## [0.252.0] — 2026-10-25
 
 ### Changed
