@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.256.0] — 2026-10-27
+
+### Changed
+
+- The recovery key text says to paste it when signing in on a new phone or browser.
+
 ## [0.255.0] — 2026-10-27
 
 ### Changed

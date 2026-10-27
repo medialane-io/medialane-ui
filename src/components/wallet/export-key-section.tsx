@@ -53,9 +53,8 @@ export function ExportKeySection({ loadSealed, unlock, describeError }: ExportKe
       <div>
         <p className="text-sm font-semibold">Recovery key</p>
         <p className="mt-1 text-xs text-muted-foreground leading-relaxed">
-          Save this somewhere private, such as a password manager. It restores your account if you
-          lose access to every device you use. To start using a new phone or browser, approve it
-          from a device you already have.
+          Save this somewhere private, such as a password manager. Paste it when you sign in on a
+          new phone or browser, or if you lose access to every device you use.
         </p>
       </div>
 
