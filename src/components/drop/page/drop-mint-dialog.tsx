@@ -26,7 +26,7 @@ export function DropMintDialog({
     try {
       setStep({ kind: "done", tokenIds: (await onMint()).tokenIds });
     } catch (err) {
-      setStep({ kind: "error", message: describeError(err, "The mint didn't go through. Please try again.").message });
+      setStep({ kind: "error", message: describeError(err).message });
     }
   };
   const close = () => {

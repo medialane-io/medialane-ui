@@ -51,7 +51,7 @@ export function DevicesSection({ walletAddress, wallet, loadSealed }: DevicesSec
       await wallet.removeDevice(sealed, device.guid);
       refresh();
     } catch (e) {
-      setError(describeError(e, "We couldn't remove that device. Please try again.").message);
+      setError(describeError(e).message);
     } finally {
       setBusyGuid(null);
     }

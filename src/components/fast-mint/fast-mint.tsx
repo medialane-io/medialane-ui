@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { buildAssetMetadata, type ApiCollection } from "@medialane/sdk";
+import { describeError } from "../../utils/describe-error.js";
 import { UPLOAD_LIMITS, acceptFor, uploadError } from "../../utils/upload-limits.js";
 import { executeIntent, deployedCollectionFromReceipt, mintedTokenIdFromReceipt } from "@medialane/sdk/starknet";
 import { mintableCollections, collectionKey } from "./mintable-collections.js";
@@ -479,7 +480,7 @@ export function FastMint(props: FastMintProps) {
       }
       setStatus("success");
     } catch (err) {
-      setErrorMsg(err instanceof Error ? err.message : "Something went wrong. Please try again.");
+      setErrorMsg(describeError(err).message);
       setStatus("error");
     }
   };

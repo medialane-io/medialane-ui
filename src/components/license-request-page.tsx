@@ -95,7 +95,7 @@ export function LicenseRequestPage({ contract, tokenId }: { contract: string; to
       setStep("success");
     } catch (err: unknown) {
       setStep("error");
-      setError(describeError(err, "Failed to send license request").message);
+      setError(describeError(err).message);
     } finally {
       setLoading(false);
     }

@@ -19,7 +19,7 @@ export function ActivateCard({ onActivated }: { onActivated: (txHash?: string) =
       await wallet.completeDeployment(() => {});
       onActivated();
     } catch (e) {
-      setError(describeError(e, "We couldn't activate your account. Please try again.").message);
+      setError(describeError(e).message);
     } finally {
       setBusy(false);
     }

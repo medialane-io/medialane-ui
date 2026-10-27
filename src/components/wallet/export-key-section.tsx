@@ -3,16 +3,16 @@
 import { useState } from "react";
 import { KeyRound, Copy, Check, EyeOff, Loader2, ShieldAlert } from "lucide-react";
 import { encodeRecoveryKey, type SealedOwner } from "@medialane/sdk/starknet";
+import { describeError } from "../../utils/describe-error.js";
 import { Button } from "../button.js";
 import { Alert, AlertDescription } from "../alert.js";
 
 export interface ExportKeySectionProps {
   loadSealed: () => SealedOwner | null;
   unlock: (sealed: SealedOwner) => Promise<string>;
-  describeError?: (err: unknown, fallback: string) => string;
 }
 
-export function ExportKeySection({ loadSealed, unlock, describeError }: ExportKeySectionProps) {
+export function ExportKeySection({ loadSealed, unlock }: ExportKeySectionProps) {
   const [recoveryKey, setRecoveryKey] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -29,8 +29,7 @@ export function ExportKeySection({ loadSealed, unlock, describeError }: ExportKe
       }
       setRecoveryKey(encodeRecoveryKey({ walletAddress: sealed.address, privateKey: await unlock(sealed) }));
     } catch (err) {
-      const fallback = "Could not unlock your key. Please try again.";
-      setError(describeError ? describeError(err, fallback) : fallback);
+      setError(describeError(err).message);
     } finally {
       setBusy(false);
     }

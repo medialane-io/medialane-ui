@@ -36,7 +36,7 @@ export function AddGuardianDialog({ open, onOpenChange, sealed, onAdded, wallet 
       setPubkey("");
       onAdded();
     } catch (e) {
-      setError(describeError(e, "We couldn't add that guardian. Please try again.").message);
+      setError(describeError(e).message);
     } finally {
       setBusy(false);
     }

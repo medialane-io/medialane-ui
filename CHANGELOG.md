@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.258.0] — 2026-10-27
+
+### Changed
+
+- `describeError(error)` takes no fallback text. An error shows its own reason; one without a reason shows a reference to quote, and the full report goes to the console.
+- A refused sponsored transaction is not retryable: the transaction dialog offers Close, and its heading is the flow's title.
+- `ExportKeySection` has no `describeError` prop.
+- Requires `@medialane/sdk` 0.206.0.
+
+### Removed
+
+- `GENERIC`, and every fixed "Something went wrong" text.
+
 ## [0.257.0] — 2026-10-27
 
 ### Changed

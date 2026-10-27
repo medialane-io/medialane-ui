@@ -47,7 +47,7 @@ export function DropManage({ contract, indexed, onchain, mints, run, saveExclusi
       await pending.act();
       setMessage(`${pending.title} — done.`);
     } catch (err) {
-      setMessage(describeError(err, "That didn't go through. Please try again.").message);
+      setMessage(describeError(err).message);
     } finally {
       setBusy(false);
       setPending(null);

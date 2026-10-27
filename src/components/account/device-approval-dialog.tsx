@@ -35,7 +35,7 @@ export function DeviceApprovalDialog({ open, onOpenChange, onApproved, wallet, l
     try {
       setPending(parsePairingPayload(raw.trim()));
     } catch (e) {
-      setError(describeError(e, "That device code isn't valid. Check it and try again.").message);
+      setError(describeError(e).message);
     }
   };
 
@@ -50,7 +50,7 @@ export function DeviceApprovalDialog({ open, onOpenChange, onApproved, wallet, l
       onOpenChange(false);
       onApproved();
     } catch (e) {
-      setError(describeError(e, "We couldn't approve that device. Please try again.").message);
+      setError(describeError(e).message);
     } finally {
       setBusy(false);
     }

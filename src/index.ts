@@ -33,7 +33,6 @@ export {
   describeError,
   UserFacingError,
   NOT_SUBMITTED,
-  GENERIC,
   NETWORK_BUSY,
   CONNECTION_FAILED,
 } from "./utils/describe-error.js";

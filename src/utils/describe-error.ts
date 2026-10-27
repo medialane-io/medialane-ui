@@ -3,23 +3,31 @@ import { WrongNetworkError, isBareExecuteFailure, isUserRejectedRequest, collect
 import { describeWalletFailure, passkeyUnsupportedReason } from "./wallet-failure.js";
 
 export const NOT_SUBMITTED = "Request not completed. Nothing was submitted.";
-export const GENERIC = "Something went wrong. Please try again.";
 export const NETWORK_BUSY = "Our service is very busy right now. Please try again in a minute.";
 export const CONNECTION_FAILED = "We couldn't connect. Check your internet connection and try again.";
 
 export interface ErrorNotice {
-  title: string;
+  title?: string;
   message: string;
   description?: string;
   isUserRejection: boolean;
+  retryable: boolean;
 }
 
-const notice = (title: string, message: string, description?: string): ErrorNotice => ({
+const notice = (title: string | undefined, message: string, description?: string, retryable = true): ErrorNotice => ({
   title,
   message,
   description,
   isUserRejection: false,
+  retryable,
 });
+
+function unexplained(error: unknown): ErrorNotice {
+  const id = (error as { requestId?: unknown } | null)?.requestId;
+  const reference = (typeof id === "string" && id !== "" ? id : crypto.randomUUID()).slice(0, 8);
+  console.error("[medialane] unexplained failure", { reference, error });
+  return notice(undefined, `Share reference ${reference} with support.`);
+}
 
 function isBusy(error: unknown): boolean {
   return /-32001|unable to complete request|rate.?limit|too many requests/i.test(collectErrorText(error));
@@ -38,7 +46,7 @@ function apiReason(error: MedialaneApiError): string | undefined {
   return undefined;
 }
 
-export function describeError(error: unknown, fallback?: string): ErrorNotice {
+export function describeError(error: unknown): ErrorNotice {
   if (error instanceof PasskeyCancelledError || isUserRejectedRequest(error)) {
     const unclear = isBareExecuteFailure(error) || error instanceof PasskeyCancelledError;
     return {
@@ -48,6 +56,7 @@ export function describeError(error: unknown, fallback?: string): ErrorNotice {
         ? "Your wallet didn't complete this request. You may have closed or declined it, it may need extra verification such as 2FA before it can sign, or it may have hit a temporary network hiccup. Try again in a moment."
         : "Your wallet didn't complete this request. You may have closed or declined it, or it may need extra verification before it can sign.",
       isUserRejection: true,
+      retryable: true,
     };
   }
 
@@ -64,13 +73,13 @@ export function describeError(error: unknown, fallback?: string): ErrorNotice {
   }
 
   if (error instanceof UserFacingError) {
-    return notice("Something went wrong", error.message);
+    return notice(undefined, error.message, undefined, error.retryable);
   }
 
   if (error instanceof MedialaneApiError) {
     if (error.status === 429) return notice("Service busy", NETWORK_BUSY);
-    if (error.status >= 500) return notice("Something went wrong", fallback ?? GENERIC);
-    return notice("Something went wrong", apiReason(error) ?? fallback ?? GENERIC);
+    const reason = error.status >= 500 ? undefined : apiReason(error);
+    return reason ? notice(undefined, reason) : unexplained(error);
   }
 
   if (isBusy(error)) {
@@ -90,7 +99,7 @@ export function describeError(error: unknown, fallback?: string): ErrorNotice {
     );
   }
 
-  return notice("Something went wrong", fallback ?? GENERIC);
+  return unexplained(error);
 }
 
 export { UserFacingError };

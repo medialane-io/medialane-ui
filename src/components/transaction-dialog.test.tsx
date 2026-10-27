@@ -8,8 +8,8 @@ const { TransactionDialog } = await import("./transaction-dialog.js");
 
 afterEach(() => cleanup());
 
-function renderDialog(phase: TransactionPhase, extra: { error?: string | null; reset?: () => void } = {}) {
-  const tx = { phase, error: extra.error ?? null, reset: extra.reset ?? (() => {}) };
+function renderDialog(phase: TransactionPhase, extra: { error?: string | null; reset?: () => void; retryable?: boolean } = {}) {
+  const tx = { phase, error: extra.error ?? null, reset: extra.reset ?? (() => {}), retryable: extra.retryable };
   return render(
     <TransactionDialog tx={tx} title="Create collection" workingLabel="Creating your collection…" firstStepLabel="Upload metadata">
       <p>All done</p>
@@ -40,9 +40,10 @@ test("shows the error and Try again resets", () => {
   expect(resets).toBe(1);
 });
 
-test("falls back to a plain message for an empty error", () => {
+test("the failure shows the flow's title", () => {
   renderDialog("error", { error: null });
-  expect(document.body.textContent).toContain("We couldn't complete that. Please try again.");
+  expect(document.body.textContent).toContain("Create collection");
+  expect(document.body.textContent).not.toContain("Something went wrong");
 });
 
 test("renders its children on success and no step list", () => {
@@ -54,4 +55,12 @@ test("renders its children on success and no step list", () => {
 test("renders nothing while idle", () => {
   renderDialog("idle");
   expect(document.body.textContent).not.toContain("Creating your collection…");
+});
+
+test("a refusal that cannot be retried offers Close, not Try again", () => {
+  let resets = 0;
+  const view = renderDialog("error", { error: "The network refused this request.", retryable: false, reset: () => { resets += 1; } });
+  expect(view.queryByText("Try again")).toBeNull();
+  fireEvent.click(view.getByText("Close", { selector: "button.w-full" }));
+  expect(resets).toBe(1);
 });

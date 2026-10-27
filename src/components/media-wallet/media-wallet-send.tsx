@@ -103,7 +103,7 @@ export function MediaWalletSend({
     setConfirmOpen(true);
     estimateSendFee(getClient().provider, address, currency.address, to.trim(), amountRaw)
       .then((f) => setFee({ raw: f.feeRaw, unit: f.unit }))
-      .catch((e) => setFeeError(describeError(e, "We couldn't estimate the network fee. Please try again.").message));
+      .catch((e) => setFeeError(describeError(e).message));
   };
 
   const send = async () => {
@@ -129,7 +129,7 @@ export function MediaWalletSend({
 
       {error && (
         <div className="rounded-2xl border border-destructive/40 bg-destructive/10 p-3 text-xs leading-relaxed">
-          <b>Something went wrong.</b> {error}
+          {error}
         </div>
       )}
 

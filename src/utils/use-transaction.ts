@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useState } from "react";
-import { assertTransactionSucceeded, syncTransactionBestEffort, type ReceiptLike } from "@medialane/sdk/starknet";
+import { SponsoredCallRejectedError, assertTransactionSucceeded, syncTransactionBestEffort, type ReceiptLike } from "@medialane/sdk/starknet";
 import { useMedialaneApp } from "../components/medialane-app.js";
 import type { FastMintSigner } from "../components/fast-mint/types.js";
 import { describeError } from "./describe-error.js";
@@ -14,6 +14,7 @@ export function useTransaction() {
   const [txHash, setTxHash] = useState<string | null>(null);
   const [receipt, setReceipt] = useState<ReceiptLike | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [retryable, setRetryable] = useState(true);
 
   const run = useCallback(
     async (work: (signer: FastMintSigner) => Promise<void>): Promise<boolean> => {
@@ -21,6 +22,7 @@ export function useTransaction() {
       setTxHash(null);
       setReceipt(null);
       setError(null);
+      setRetryable(true);
       try {
         const signer = await app.getSigner();
         let hash: string | null = null;
@@ -45,7 +47,18 @@ export function useTransaction() {
         setPhase("success");
         return true;
       } catch (err) {
-        setError(describeError(err, "We couldn't complete that. Please try again.").message);
+        if (err instanceof SponsoredCallRejectedError) {
+          console.error("[medialane] transaction refused", {
+            reference: err.requestId?.slice(0, 8),
+            stage: err.stage,
+            status: err.status,
+            code: err.code,
+            detail: err.detail,
+          });
+        }
+        const notice = describeError(err);
+        setError(notice.message);
+        setRetryable(notice.retryable);
         setPhase("error");
         return false;
       } finally {
@@ -60,7 +73,8 @@ export function useTransaction() {
     setTxHash(null);
     setReceipt(null);
     setError(null);
+    setRetryable(true);
   }, []);
 
-  return { phase, txHash, receipt, error, run, reset };
+  return { phase, txHash, receipt, error, retryable, run, reset };
 }

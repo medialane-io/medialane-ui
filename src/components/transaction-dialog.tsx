@@ -8,7 +8,7 @@ import { fireConfetti } from "../utils/media-wallet/confetti.js";
 import type { useTransaction } from "../utils/use-transaction.js";
 
 export interface TransactionDialogProps {
-  tx: Pick<ReturnType<typeof useTransaction>, "phase" | "error" | "reset">;
+  tx: Pick<ReturnType<typeof useTransaction>, "phase" | "error" | "reset"> & { retryable?: boolean };
   title: string;
   workingLabel: string;
   firstStepLabel?: string;
@@ -18,7 +18,7 @@ export interface TransactionDialogProps {
 const ACTIVE_STEP = { preparing: 0, submitting: 1, confirming: 2 } as const;
 
 export function TransactionDialog({ tx, title, workingLabel, firstStepLabel = "Prepare", children }: TransactionDialogProps) {
-  const { phase, error, reset } = tx;
+  const { phase, error, reset, retryable = true } = tx;
   const working = phase === "preparing" || phase === "submitting" || phase === "confirming";
   const success = phase === "success";
   const failed = phase === "error";
@@ -86,11 +86,11 @@ export function TransactionDialog({ tx, title, workingLabel, firstStepLabel = "P
               <XCircle className="h-9 w-9 text-destructive" />
             </div>
             <div className="space-y-1 text-center">
-              <p className="text-xl font-bold">Something went wrong</p>
-              <p className="mx-auto max-w-xs text-sm text-muted-foreground">{error ?? "We couldn't complete that. Please try again."}</p>
+              <p className="text-xl font-bold">{title}</p>
+              <p className="mx-auto max-w-xs text-sm text-muted-foreground">{error}</p>
             </div>
             <Button variant="outline" className="w-full" onClick={reset}>
-              Try again
+              {retryable ? "Try again" : "Close"}
             </Button>
           </div>
         )}
