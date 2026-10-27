@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.257.0] — 2026-10-27
+
+### Changed
+
+- A publication shows its title, image, text, author and link in that order, with the text in one size.
+- A publication with a Content trait shows it as its text, and its Content card is left out of the details.
+
 ## [0.256.0] — 2026-10-27
 
 ### Changed

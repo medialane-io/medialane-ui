@@ -155,6 +155,25 @@ test("other assets show their external URL after the description", async () => {
   expect(container.querySelector('a[href="https://artist.test/work"]')!.textContent).toBe("Open link");
 });
 
+test("a publication with a Content trait shows it as the full text, not repeated in the details", async () => {
+  const { container } = renderPage(
+    publication({ description: "Short summary.", attributes: [{ trait_type: "Content", value: "Full post.\n\nSecond paragraph." }] }),
+    collection(),
+  );
+  await waitFor(() => expect(container.querySelector("article")).toBeTruthy());
+  const article = container.querySelector("article")!.textContent!;
+  expect(article).toContain("Full post.");
+  expect(article).toContain("Second paragraph.");
+  expect(article).not.toContain("Short summary.");
+  expect(container.textContent!.split("Full post.").length).toBe(2);
+});
+
+test("a publication with a Content trait and no description still reads as an article", async () => {
+  const { container } = renderPage(publication({ description: null, attributes: [{ trait_type: "Content", value: "Only content." }] }), collection());
+  await waitFor(() => expect(container.querySelector("article")).toBeTruthy());
+  expect(container.querySelector("article")!.textContent).toContain("Only content.");
+});
+
 test("a publication shows its author after the text: the Author trait, else the Creator", async () => {
   const named = renderPage(publication({ description: "Text", attributes: [{ trait_type: "Creator", value: "J.R. Dib" }] }), collection());
   await waitFor(() => expect(named.container.querySelector("article")).toBeTruthy());
