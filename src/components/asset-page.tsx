@@ -86,12 +86,15 @@ const KINDS: Record<AssetKind, KindConfig> = {
 
 const PUBLICATION_TYPES = new Set(["publications", "posts"]);
 
-function publicationAuthor(attributes: { trait_type?: string | null; value?: string | number | boolean | null }[], metadataAuthor?: string | null): string | null {
-  const text = (trait: string) => {
-    const value = attributes.find((a) => a.trait_type === trait)?.value;
-    return typeof value === "string" && value.trim() !== "" ? value.trim() : null;
-  };
-  return text("Author") ?? metadataAuthor ?? text("Creator");
+type TraitList = { trait_type?: string | null; value?: string | number | boolean | null }[];
+
+function traitText(attributes: TraitList, trait: string): string | null {
+  const value = attributes.find((a) => a.trait_type === trait)?.value;
+  return typeof value === "string" && value.trim() !== "" ? value.trim() : null;
+}
+
+function publicationAuthor(attributes: TraitList, metadataAuthor?: string | null): string | null {
+  return traitText(attributes, "Author") ?? metadataAuthor ?? traitText(attributes, "Creator");
 }
 
 const VARIANT_KINDS: Partial<Record<string, AssetKind>> = { edition: "edition", ticket: "ticket", club: "membership", pop: "pop" };
@@ -213,13 +216,14 @@ function AssetPageView({
   const marketCount = market.activeListings.length + market.activeBids.length;
   const { Panel } = config;
 
-  const articleText = token.metadata?.description?.trim() || null;
+  const postContent = traitText(attributes, "Content");
+  const articleText = postContent ?? (token.metadata?.description?.trim() || null);
   const video = (token.metadata?.ipType ?? "").toLowerCase() === "video" ? videoEmbed(attributes) : null;
   const audio = (token.metadata?.ipType ?? "").toLowerCase() === "audio" ? audioEmbed(attributes) : null;
   const isPublication = !!articleText && PUBLICATION_TYPES.has((token.metadata?.ipType ?? "").toLowerCase());
   const publisherName = collection?.name ?? contract.slice(0, 8) + "…";
   const overview = isPublication
-    ? { attributes, hasTemplateData, isDisplayAttr }
+    ? { attributes, hasTemplateData, isDisplayAttr: (a: Parameters<typeof isDisplayAttr>[0]) => isDisplayAttr(a) && !(postContent && a.trait_type === "Content") }
     : video || audio
       ? assetAttributes(attributes.filter((a) => !VIDEO_EMBED_TRAITS.has(a.trait_type ?? "") && !AUDIO_EMBED_TRAITS.has(a.trait_type ?? "")))
       : { attributes, hasTemplateData, isDisplayAttr };
