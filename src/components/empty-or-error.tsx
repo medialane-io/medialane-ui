@@ -5,6 +5,7 @@ import { Button } from "./button.js";
 import Link from "./link.js";
 import { RefreshCw, AlertCircle } from "lucide-react";
 import { ReactNode } from "react";
+import { describeError } from "../utils/describe-error.js";
 
 interface EmptyOrErrorProps {
   isLoading: boolean;
@@ -53,9 +54,8 @@ export function EmptyOrError({
         <div className="h-14 w-14 rounded-xl bg-destructive/10 flex items-center justify-center mx-auto">
           <AlertCircle className="h-7 w-7 text-destructive" />
         </div>
-        <p className="font-semibold text-lg">Something went wrong</p>
         <p className="text-sm text-muted-foreground max-w-xs mx-auto">
-          {error instanceof Error ? error.message : "Failed to load data. Please try again."}
+          {describeError(error).message}
         </p>
         {onRetry && (
           <Button variant="outline" size="sm" onClick={onRetry}>

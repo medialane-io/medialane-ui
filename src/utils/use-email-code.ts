@@ -34,7 +34,7 @@ export function useEmailCode(email: string | null, api: () => EmailCodeApi): Ema
         dispatch({ type: "send-succeeded" });
         return true;
       } catch (err) {
-        dispatch({ type: "send-failed", message: describeError(err, "Couldn't send the code. Please try again.").message });
+        dispatch({ type: "send-failed", message: describeError(err).message });
         return false;
       }
     },
@@ -51,7 +51,7 @@ export function useEmailCode(email: string | null, api: () => EmailCodeApi): Ema
         await after?.();
         return true;
       } catch (err) {
-        dispatch({ type: "verify-failed", message: describeError(err, "Incorrect code. Please try again.").message });
+        dispatch({ type: "verify-failed", message: describeError(err).message });
         return false;
       }
     },

@@ -49,7 +49,7 @@ export function MediaWalletActivity({ onNavigate }: { onNavigate: (view: MediaWa
         ]);
         if (live) setItems(mergeActivityFeeds(walletRes.data, protocolRes.data));
       } catch (e) {
-        if (live) setError(describeError(e, "We couldn't load your activity. Please try again.").message);
+        if (live) setError(describeError(e).message);
       } finally {
         if (live) setLoading(false);
       }

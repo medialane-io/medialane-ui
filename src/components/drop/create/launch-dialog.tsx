@@ -95,7 +95,7 @@ export function LaunchDialog({ open, onClose, draft }: { open: boolean; onClose:
       }
       setStep({ kind: "done", collection, links: list ? dropClaimLinks(window.location.origin, collection, list) : [], warning });
     } catch (err) {
-      setStep({ kind: "error", message: describeError(err, "We couldn't launch your drop. Please try again.").message });
+      setStep({ kind: "error", message: describeError(err).message });
     }
   };
 
