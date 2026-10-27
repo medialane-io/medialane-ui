@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.255.0] — 2026-10-27
+
+### Changed
+
+- The home page slider zooms in less on each image and no longer drifts.
+
 ## [0.254.0] — 2026-10-26
 
 ### Changed
