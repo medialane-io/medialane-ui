@@ -64,7 +64,7 @@ test("the owner mints a remix and it is registered against its parent", async ()
   await waitFor(() => expect((view.getByPlaceholderText("Remix of Original") as HTMLInputElement).value).toBe("Remix of Original"));
   await waitFor(() => expect(view.getAllByText("My art").length).toBeGreaterThan(0));
   fireEvent.click(view.getByText("Mint Remix"));
-  await waitFor(() => expect(view.getByText("Your remix is live")).toBeTruthy());
+  await waitFor(() => expect(view.getByText("View remix")).toBeTruthy());
   expect(intents[0]).toMatchObject({ owner: ME, collectionId: "3", recipient: ME, tokenUri: "ipfs://remix", royaltyBps: 0 });
   expect(confirmed[0]).toMatchObject({ originalContract: PARENT, originalTokenId: "1", remixContract: MINE, remixTokenId: "9", txHash: "0xabc" });
   expect(view.getByText("View remix").closest("a")?.getAttribute("href")).toBe(`/asset/starknet/${MINE}/9`);

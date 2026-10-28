@@ -46,7 +46,7 @@ test("an event is created as a pop collection with its claim deadline", async ()
   fireEvent.change(view.getByPlaceholderText("Starknet Hackathon 2026"), { target: { value: "Rio Summit" } });
   await waitFor(() => expect((view.getByPlaceholderText("SKHACK") as HTMLInputElement).value).not.toBe(""));
   fireEvent.submit(view.container.querySelector("form")!);
-  await waitFor(() => expect(view.getByText("Your event is live")).toBeTruthy());
+  await waitFor(() => expect(view.getByText("Back to POP launchpad")).toBeTruthy());
   expect(intents[0]).toMatchObject({ owner: ME, name: "Rio Summit", baseUri: "ipfs://pop", service: "pop-protocol" });
   expect(typeof intents[0]!.claimEndTimestamp).toBe("number");
   expect(uploads[0]!.attributes).toEqual([{ trait_type: "Visibility", value: "Private" }, { trait_type: "Event Type", value: "Conference" }]);

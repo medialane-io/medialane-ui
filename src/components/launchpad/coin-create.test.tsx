@@ -54,7 +54,7 @@ test("a coin is deployed, then its market is opened with the locked liquidity", 
   fireEvent.change(view.getByPlaceholderText("My Coin"), { target: { value: "Rio Coin" } });
   fireEvent.click(view.getByText("1M"));
   fireEvent.click(view.getByText("Launch your coin"));
-  await waitFor(() => expect(view.getByText("Your coin is live")).toBeTruthy());
+  await waitFor(() => expect(view.getByText("Launch another coin")).toBeTruthy());
   expect(intents.map((i) => i.kind)).toEqual(["create-coin", "launch-coin"]);
   expect(executed).toEqual(["create-coin", "launch-coin"]);
   expect(intents[0]!.params).toMatchObject({ name: "Rio Coin", initialSupply: expect.any(String) });

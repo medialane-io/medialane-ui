@@ -27,7 +27,7 @@ import { CoinLaunchPreview, type CoinPreviewData } from "../coin-launch-preview.
 import { CurrencyAmount, CurrencyIcon } from "../currency-icon.js";
 import { GradientButton } from "../gradient-button.js";
 import { ClaimRouteShell } from "../claim-route-shell.js";
-import { CreationSuccess } from "../creation-success.js";
+import { TransactionSuccess } from "../transaction-success.js";
 import { TransactionDialog } from "../transaction-dialog.js";
 import { WalletRequired } from "../wallet-required.js";
 import { useMedialaneApp } from "../medialane-app.js";
@@ -185,14 +185,16 @@ export function CoinCreate({ aside, tradeHref }: CoinCreateProps) {
       description="Secure your account to design and launch your own coin with permanently-locked liquidity, in a few clicks."
     >
       <TransactionDialog tx={tx} title="Launch your coin" workingLabel="Launching your coin…" firstStepLabel="Deploy your coin">
-        <CreationSuccess
+        <TransactionSuccess
           name={name || "Your coin"}
           image={imagePreview}
-          caption="Your coin is live"
-          primary={coinAddress ? { href: tradeHref(coinAddress), label: "View & trade your coin" } : { href: "/launchpad", label: "Back to Launchpad" }}
-          secondary={coinAddress ? { href: "/launchpad", label: "Back to Launchpad" } : undefined}
-          onAgain={handleReset}
-          againLabel="Launch another coin"
+          title="Coin launched"
+          description="The supply is fixed and the liquidity is locked."
+          actions={[
+            ...(coinAddress ? [{ href: tradeHref(coinAddress), label: "View & trade your coin" }] : []),
+            { href: "/launchpad", label: "Back to Launchpad" },
+            { label: "Launch another coin", onClick: handleReset },
+          ]}
         >
           {profileStatus === "saving" && (
             <p className="text-xs text-muted-foreground flex items-center justify-center gap-1.5">
@@ -205,7 +207,7 @@ export function CoinCreate({ aside, tradeHref }: CoinCreateProps) {
             </p>
           )}
           <RewardEarned actionType="launch_coin" />
-        </CreationSuccess>
+        </TransactionSuccess>
       </TransactionDialog>
 
       <ClaimRouteShell

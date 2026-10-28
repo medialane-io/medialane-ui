@@ -5,7 +5,7 @@ import { Award, Loader2 } from "lucide-react";
 import { popClaimState, type PopClaimInfo } from "@medialane/sdk/starknet";
 import { Button } from "./button.js";
 import { TransactionDialog } from "./transaction-dialog.js";
-import { TransactionDone } from "./transaction-done.js";
+import { TransactionSuccess } from "./transaction-success.js";
 import { RewardEarned } from "./rewards/reward-earned.js";
 import { useMedialaneApp } from "./medialane-app.js";
 import { claimProofFor } from "../utils/drop/claim-proof.js";
@@ -62,13 +62,15 @@ export function PopClaimButton({ collectionAddress }: { collectionAddress: strin
         </Button>
       )}
       <TransactionDialog tx={tx} title="Claim credential" workingLabel="Claiming your credential…" firstStepLabel="Prepare claim">
-        <TransactionDone
-          tx={tx}
+        <TransactionSuccess
           name="Credential"
           title="Credential claimed!"
           description="Your proof of participation is now on-chain."
-          footer={<RewardEarned actionType="claim_pop" />}
-        />
+          txHash={tx.txHash}
+          actions={[{ label: "Done", onClick: tx.reset }]}
+        >
+          <RewardEarned actionType="claim_pop" />
+        </TransactionSuccess>
       </TransactionDialog>
     </>
   );

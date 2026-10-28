@@ -14,7 +14,7 @@ export interface CollectionCreatePreset {
   signedOut: { title: string; description: string };
   shell: { title: string; subtitle: string };
   dialog: { title: string; workingLabel: string; firstStepLabel: string };
-  success: { caption: string; fallbackName: string; reward: string; againLabel: string };
+  success: { title: string; description: string; fallbackName: string; reward: string; againLabel: string };
   cardFallbackSymbol: string;
   copy: {
     imageHeading: string;
@@ -47,7 +47,7 @@ export const CLUB_PRESET: CollectionCreatePreset = {
   signedOut: { title: "Secure your account to create a club", description: "Create a club, then mint membership cards for your community." },
   shell: { title: "Create Club", subtitle: "One club — create membership tiers and mint cards to your community." },
   dialog: { title: "Create club", workingLabel: "Creating your club…", firstStepLabel: "Prepare metadata" },
-  success: { caption: "Your club is live", fallbackName: "Your club", reward: "create_club", againLabel: "Create another" },
+  success: { title: "Club created", description: "Each membership you create is recorded onchain under your wallet.", fallbackName: "Your club", reward: "create_club", againLabel: "Create another" },
   cardFallbackSymbol: "Club",
   copy: {
     imageHeading: "Club image",
@@ -73,7 +73,7 @@ export const TICKETS_PRESET: CollectionCreatePreset = {
   signedOut: { title: "Secure your account to create tickets", description: "Create a tickets collection, then mint tickets to your audience." },
   shell: { title: "Create Ticket Collection", subtitle: "One collection — create tickets and mint them to your audience." },
   dialog: { title: "Create tickets collection", workingLabel: "Creating your collection…", firstStepLabel: "Prepare metadata" },
-  success: { caption: "Your collection is live", fallbackName: "Your collection", reward: "create_ticket_collection", againLabel: "Create another" },
+  success: { title: "Ticket collection created", description: "Each ticket you mint into it is recorded onchain under your wallet.", fallbackName: "Your collection", reward: "create_ticket_collection", againLabel: "Create another" },
   cardFallbackSymbol: "Tickets",
   copy: {
     imageHeading: "Collection image",
@@ -99,7 +99,7 @@ export const EDITIONS_PRESET: CollectionCreatePreset = {
   signedOut: { title: "Secure your account to create a collection", description: "Create a collection where each piece can have multiple editions." },
   shell: { title: "Create an Edition Collection", subtitle: "Create a collection where each piece can have multiple editions — free to publish, and it's yours." },
   dialog: { title: "Create collection", workingLabel: "Creating your collection…", firstStepLabel: "Prepare metadata" },
-  success: { caption: "Your collection is live", fallbackName: "Your collection", reward: "create_collection", againLabel: "Create another" },
+  success: { title: "Collection created", description: "Each asset you mint into it carries its own license terms.", fallbackName: "Your collection", reward: "create_collection", againLabel: "Create another" },
   cardFallbackSymbol: "Editions",
   copy: {
     imageHeading: "Collection image",
@@ -133,7 +133,7 @@ export const SINGLE_PRESET: CollectionCreatePreset = {
   signedOut: { title: "Secure your account to create a collection", description: "Set up a collection to mint your work into." },
   shell: { title: "Create a Collection", subtitle: "Set up a collection to mint your work into — free to publish, and it's yours." },
   dialog: { title: "Create collection", workingLabel: "Creating your collection…", firstStepLabel: "Prepare metadata" },
-  success: { caption: "Your collection is live", fallbackName: "Your collection", reward: "create_collection", againLabel: "Create another" },
+  success: { title: "Collection created", description: "Each asset you mint into it carries its own license terms.", fallbackName: "Your collection", reward: "create_collection", againLabel: "Create another" },
   cardFallbackSymbol: "Collection",
   copy: {
     imageHeading: "Collection image",
@@ -148,8 +148,8 @@ export const SINGLE_PRESET: CollectionCreatePreset = {
   },
   suggestSymbol: false,
   registerAfterDeploy: false,
-  actions: ({ collectionHref }) => ({
-    primary: { href: "/launchpad/single-editions", label: "Mint an asset" },
-    secondary: collectionHref ? { href: collectionHref, label: "View collection" } : undefined,
-  }),
+  actions: ({ collectionHref }) => {
+    const mint = { href: "/launchpad/single-editions", label: "Mint an asset" };
+    return collectionHref ? { primary: { href: collectionHref, label: "View collection" }, secondary: mint } : { primary: mint };
+  },
 };

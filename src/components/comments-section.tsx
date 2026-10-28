@@ -11,7 +11,7 @@ import { RewardEarned } from "./rewards/reward-earned.js";
 import { Skeleton } from "./skeleton.js";
 import { Textarea } from "./textarea.js";
 import { TransactionDialog } from "./transaction-dialog.js";
-import { TransactionDone } from "./transaction-done.js";
+import { TransactionSuccess } from "./transaction-success.js";
 import { cn } from "../utils/cn.js";
 import { EXPLORER_URL } from "../utils/explorer-url.js";
 import { runIntentCalls } from "../utils/run-intent-calls.js";
@@ -298,13 +298,15 @@ export function CommentsSection({ contract, tokenId, className }: CommentsSectio
       )}
 
       <TransactionDialog tx={tx} title="Comment" workingLabel="Posting your comment…" firstStepLabel="Prepare comment">
-        <TransactionDone
-          tx={tx}
+        <TransactionSuccess
           name="Comment"
           title="Comment posted!"
           description="Your comment is onchain and will appear here once indexed (~30s)."
-          footer={<RewardEarned actionType="comment" />}
-        />
+          txHash={tx.txHash}
+          actions={[{ label: "Done", onClick: tx.reset }]}
+        >
+          <RewardEarned actionType="comment" />
+        </TransactionSuccess>
       </TransactionDialog>
     </div>
   );

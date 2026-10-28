@@ -7,7 +7,7 @@ import { Award } from "lucide-react";
 import { buildCollectionMetadata, profileHref } from "@medialane/sdk";
 import { Form } from "../form.js";
 import { ClaimRouteShell } from "../claim-route-shell.js";
-import { CreationSuccess } from "../creation-success.js";
+import { TransactionSuccess } from "../transaction-success.js";
 import { MedialaneCollectionCard } from "../medialane-collection-card.js";
 import { TransactionDialog } from "../transaction-dialog.js";
 import { WalletRequired } from "../wallet-required.js";
@@ -105,16 +105,15 @@ export function PopCreate({ aside }: { aside?: ReactNode }) {
       description="Secure your account to deploy a credential collection onchain."
     >
       <TransactionDialog tx={tx} title="Create POP event" workingLabel="Creating your POP event…" firstStepLabel="Upload badge metadata">
-        <CreationSuccess
+        <TransactionSuccess
           name={eventName || "Your event"}
           image={imagePreview}
-          caption="Your event is live"
-          primary={{ href: "/launchpad/pop", label: "Back to POP launchpad" }}
-          onAgain={handleAgain}
-          againLabel="Create another"
+          title="Event created"
+          description="Attendees can claim a proof of presence recorded onchain."
+          actions={[{ href: "/launchpad/pop", label: "Back to POP launchpad" }, { label: "Create another", onClick: handleAgain }]}
         >
           <RewardEarned actionType="launch_launchpad" />
-        </CreationSuccess>
+        </TransactionSuccess>
       </TransactionDialog>
 
       <ClaimRouteShell

@@ -2,7 +2,7 @@
 
 import type { ReactNode } from "react";
 import Image from "./image.js";
-import { AlertCircle, CheckCircle2, ExternalLink, Loader2, Sparkles, Wallet } from "lucide-react";
+import { AlertCircle, ExternalLink, Loader2, Wallet } from "lucide-react";
 import { Alert, AlertDescription } from "./alert.js";
 import { Button } from "./button.js";
 import { CurrencyIcon } from "./currency-icon.js";
@@ -94,58 +94,6 @@ export function MarketplaceSignInGate({ title, description, href, ctaLabel = "Se
           <a href={href}>{ctaLabel}</a>
         </Button>
       </div>
-    </div>
-  );
-}
-
-interface MarketplaceSuccessStateProps {
-  tokenImage?: string | null;
-  name: string;
-  title: string;
-  description: ReactNode;
-  txHash?: string | null;
-  explorerUrl: string;
-  onDone: () => void;
-  footer?: ReactNode;
-}
-
-export function MarketplaceSuccessState({
-  tokenImage,
-  name,
-  title,
-  description,
-  txHash,
-  explorerUrl,
-  onDone,
-  footer,
-}: MarketplaceSuccessStateProps) {
-  return (
-    <div className="flex flex-col items-center gap-5 p-6 py-8">
-      {tokenImage ? (
-        <div className="relative">
-          <div className="relative h-32 w-32 rounded-2xl overflow-hidden border border-border">
-            <Image src={tokenImage} alt={name} fill sizes="128px" className="object-cover" unoptimized />
-          </div>
-          <div className="absolute -bottom-2 -right-2 h-9 w-9 rounded-full bg-emerald-500 flex items-center justify-center border-2 border-background">
-            <CheckCircle2 className="h-5 w-5 text-white" />
-          </div>
-          <Sparkles className="absolute -top-2 -right-2 h-5 w-5 text-brand-orange" />
-        </div>
-      ) : (
-        <div className="relative">
-          <div className="h-16 w-16 rounded-full bg-emerald-500/15 flex items-center justify-center">
-            <CheckCircle2 className="h-9 w-9 text-emerald-500" />
-          </div>
-          <Sparkles className="absolute -top-1 -right-1 h-5 w-5 text-brand-orange" />
-        </div>
-      )}
-      <div className="text-center space-y-1 max-w-full">
-        <p className="font-bold text-xl break-words">{title}</p>
-        <p className="text-sm text-muted-foreground break-words">{description}</p>
-      </div>
-      {txHash && <MarketplaceTxLink txHash={txHash} explorerUrl={explorerUrl} />}
-      <Button className="w-full h-11" onClick={onDone}>Done</Button>
-      {footer}
     </div>
   );
 }

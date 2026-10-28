@@ -11,7 +11,7 @@ import { FadeIn } from "./motion-primitives.js";
 import { Skeleton } from "./skeleton.js";
 import { Textarea } from "./textarea.js";
 import { TransactionDialog } from "./transaction-dialog.js";
-import { TransactionDone } from "./transaction-done.js";
+import { TransactionSuccess } from "./transaction-success.js";
 import { WalletRequired } from "./wallet-required.js";
 import { runIntentCalls } from "../utils/run-intent-calls.js";
 import { useCollection } from "../utils/use-collections.js";
@@ -207,7 +207,7 @@ export function PopManagePage({ contract }: { contract: string }) {
       ) : (
         <div className="max-w-xl mx-auto px-4 pt-10 pb-16 space-y-6">
           <TransactionDialog tx={tx} title="Manage event" workingLabel="Updating your event…" firstStepLabel="Prepare">
-            <TransactionDone tx={tx} name={collection.name ?? "Event"} title={done.title} description={done.description} />
+            <TransactionSuccess name={collection.name ?? "Event"} title={done.title} description={done.description} txHash={tx.txHash} actions={[{ label: "Done", onClick: tx.reset }]} />
           </TransactionDialog>
 
           <FadeIn>

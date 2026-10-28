@@ -10,7 +10,7 @@ import Link from "../link.js";
 import { Button } from "../button.js";
 import { Form } from "../form.js";
 import { ClaimRouteShell } from "../claim-route-shell.js";
-import { CreationSuccess } from "../creation-success.js";
+import { TransactionSuccess } from "../transaction-success.js";
 import { MedialaneCollectionCard } from "../medialane-collection-card.js";
 import { TransactionDialog } from "../transaction-dialog.js";
 import { WalletRequired } from "../wallet-required.js";
@@ -201,17 +201,19 @@ export function EditionMint({ contract: rawContract, aside }: { contract: string
           </ClaimRouteShell>
 
           <TransactionDialog tx={tx} title="Mint an edition" workingLabel="Minting your edition…" firstStepLabel="Upload metadata">
-            <CreationSuccess
+            <TransactionSuccess
               name={form.getValues("name") || "Your token"}
               image={imagePreview}
-              caption="Your edition is live"
-              primary={mintedTokenId ? { href: assetHref("STARKNET", collectionAddress, mintedTokenId), label: "View asset" } : { href: "/portfolio/assets", label: "View portfolio" }}
-              secondary={mintedTokenId ? { href: "/portfolio/assets", label: "View portfolio" } : undefined}
-              onAgain={handleAgain}
-              againLabel="Mint another"
+              title="Editions minted"
+              description="Each copy is recorded onchain with the license terms in its metadata."
+              actions={[
+                ...(mintedTokenId ? [{ href: assetHref("STARKNET", collectionAddress, mintedTokenId), label: "View asset" }] : []),
+                { href: "/portfolio/assets", label: "View portfolio" },
+                { label: "Mint another", onClick: handleAgain },
+              ]}
             >
               <RewardEarned actionType="mint_asset" />
-            </CreationSuccess>
+            </TransactionSuccess>
           </TransactionDialog>
         </>
       )}
