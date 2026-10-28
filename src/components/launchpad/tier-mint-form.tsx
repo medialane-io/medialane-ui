@@ -19,7 +19,7 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "../collapsi
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "../form.js";
 import { ToggleGroup } from "../create-form-primitives.js";
 import { ClaimRouteShell } from "../claim-route-shell.js";
-import { CreationSuccess } from "../creation-success.js";
+import { TransactionSuccess } from "../transaction-success.js";
 import { MedialaneCollectionCard } from "../medialane-collection-card.js";
 import { TransactionDialog } from "../transaction-dialog.js";
 import { WalletRequired } from "../wallet-required.js";
@@ -207,16 +207,15 @@ export function TierMintForm({ contract: rawContract, preset, aside }: TierMintF
   return (
     <WalletRequired {...gateProps}>
       <TransactionDialog tx={tx} title={preset.dialog.title} workingLabel={preset.dialog.workingLabel} firstStepLabel={preset.dialog.firstStepLabel}>
-        <CreationSuccess
+        <TransactionSuccess
           name={form.getValues("name")}
           image={imagePreview}
-          caption={preset.success.caption}
-          primary={{ href: collectionHref("STARKNET", contract), label: "View collection" }}
-          onAgain={handleAgain}
-          againLabel={preset.success.againLabel}
+          title={preset.success.title}
+          description={preset.success.description}
+          actions={[{ href: collectionHref("STARKNET", contract), label: "View collection" }, { label: preset.success.againLabel, onClick: handleAgain }]}
         >
           <RewardEarned actionType="launch_launchpad" />
-        </CreationSuccess>
+        </TransactionSuccess>
       </TransactionDialog>
 
       <ClaimRouteShell

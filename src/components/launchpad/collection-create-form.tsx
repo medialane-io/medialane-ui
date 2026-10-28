@@ -8,14 +8,14 @@ import { ImagePlus, Loader2, X } from "lucide-react";
 import { buildCollectionMetadata, collectionHref, getCoordinates, profileHref } from "@medialane/sdk";
 import { acceptFor } from "../../utils/upload-limits.js";
 import { FIELD_LIMITS } from "../../utils/field-limits.js";
-import { createdCollectionFromReceipt, deployedCollectionFromReceipt } from "@medialane/sdk/starknet";
+import { createdCollectionAddress, createdCollectionFromReceipt, deployedCollectionFromReceipt } from "@medialane/sdk/starknet";
 import Image from "../image.js";
 import { Button } from "../button.js";
 import { Input } from "../input.js";
 import { Textarea } from "../textarea.js";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "../form.js";
 import { ClaimRouteShell } from "../claim-route-shell.js";
-import { CreationSuccess } from "../creation-success.js";
+import { TransactionSuccess } from "../transaction-success.js";
 import { ExternalLinkField } from "../external-link-field.js";
 import { MedialaneCollectionCard } from "../medialane-collection-card.js";
 import { TransactionDialog } from "../transaction-dialog.js";
@@ -88,23 +88,21 @@ export function CollectionCreateForm({ preset, aside }: CollectionCreateFormProp
   useEffect(() => {
     if (tx.phase !== "success") return;
     let alive = true;
-    const api = app.getClient().api;
+    const client = app.getClient();
     if (deployedAddress) {
       setViewHref(collectionHref("STARKNET", deployedAddress));
-      if (preset.registerAfterDeploy) void api.collections.register(deployedAddress).catch(() => {});
-    } else if (createdId && walletAddress) {
-      api.collections
-        .list({ owner: walletAddress, limit: 50 })
-        .then((res) => {
-          const created = (res.data ?? []).find((c) => c.collectionId === createdId);
-          if (alive && created) setViewHref(collectionHref("STARKNET", created.contractAddress));
+      if (preset.registerAfterDeploy) void client.api.collections.register(deployedAddress).catch(() => {});
+    } else if (createdId) {
+      createdCollectionAddress(client.provider, getCoordinates("STARKNET").collection721, createdId)
+        .then((address) => {
+          if (alive && address) setViewHref(collectionHref("STARKNET", address));
         })
         .catch(() => {});
     }
     return () => {
       alive = false;
     };
-  }, [tx.phase, deployedAddress, createdId, walletAddress, app, preset.registerAfterDeploy]);
+  }, [tx.phase, deployedAddress, createdId, app, preset.registerAfterDeploy]);
 
   const handleAgain = () => {
     tx.reset();
@@ -150,17 +148,15 @@ export function CollectionCreateForm({ preset, aside }: CollectionCreateFormProp
   return (
     <WalletRequired icon={Icon} iconClassName={preset.iconClass} title={preset.signedOut.title} description={preset.signedOut.description}>
       <TransactionDialog tx={tx} title={preset.dialog.title} workingLabel={preset.dialog.workingLabel} firstStepLabel={preset.dialog.firstStepLabel}>
-        <CreationSuccess
+        <TransactionSuccess
           name={name || preset.success.fallbackName}
           image={imagePreview}
-          caption={preset.success.caption}
-          primary={actions.primary}
-          secondary={actions.secondary}
-          onAgain={handleAgain}
-          againLabel={preset.success.againLabel}
+          title={preset.success.title}
+          description={preset.success.description}
+          actions={[actions.primary, actions.secondary, { label: preset.success.againLabel, onClick: handleAgain }]}
         >
           <RewardEarned actionType={preset.success.reward} />
-        </CreationSuccess>
+        </TransactionSuccess>
       </TransactionDialog>
 
       <ClaimRouteShell

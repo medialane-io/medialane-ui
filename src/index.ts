@@ -186,7 +186,6 @@ export {
   MarketplaceTxLink,
   MarketplaceProcessingState,
   MarketplaceSignInGate,
-  MarketplaceSuccessState,
   MarketplaceErrorState,
   MarketplaceDialogHero,
   CurrencyPicker,
@@ -388,8 +387,6 @@ export { SponsorshipOfferPage } from "./components/sponsorship-offer-page.js";
 export { PortfolioSponsorships } from "./components/portfolio-sponsorships.js";
 export { TransferCollectionOwnership } from "./components/transfer-collection-ownership.js";
 export type { TransferCollectionOwnershipProps } from "./components/transfer-collection-ownership.js";
-export { TransactionDone } from "./components/transaction-done.js";
-export type { TransactionDoneProps } from "./components/transaction-done.js";
 export { CoinCreate } from "./components/launchpad/coin-create.js";
 export type { CoinCreateProps } from "./components/launchpad/coin-create.js";
 export { WalletRequired } from "./components/wallet-required.js";
@@ -399,8 +396,10 @@ export { useLaunchpadImageUpload } from "./utils/use-launchpad-image-upload.js";
 export { invalidatePortfolioCache } from "./utils/portfolio-cache.js";
 export { TransactionDialog } from "./components/transaction-dialog.js";
 export type { TransactionDialogProps } from "./components/transaction-dialog.js";
-export { CreationSuccess } from "./components/creation-success.js";
-export type { CreationSuccessProps, CreationSuccessAction } from "./components/creation-success.js";
+export { TransactionSuccess } from "./components/transaction-success.js";
+export type { TransactionSuccessProps, TransactionSuccessAction } from "./components/transaction-success.js";
+export { successMessages } from "./utils/success-messages.js";
+export type { SuccessMessage } from "./utils/success-messages.js";
 export { MedialaneCollectionCard } from "./components/medialane-collection-card.js";
 export type { MedialaneCollectionCardProps } from "./components/medialane-collection-card.js";
 export { TokenGlyph, TokenAmount } from "./components/token-glyph.js";

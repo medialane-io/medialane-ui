@@ -12,7 +12,7 @@ import { FadeIn } from "./motion-primitives.js";
 import { RewardEarned } from "./rewards/reward-earned.js";
 import { ServiceHeader } from "./service-header.js";
 import { TransactionDialog } from "./transaction-dialog.js";
-import { TransactionDone } from "./transaction-done.js";
+import { TransactionSuccess } from "./transaction-success.js";
 import { shortenAddress } from "../utils/address.js";
 import { runIntentCalls } from "../utils/run-intent-calls.js";
 import { useImageUrl } from "../utils/use-image-url.js";
@@ -89,13 +89,15 @@ export function SponsorshipOfferPage({ offerId }: { offerId: string }) {
   return (
     <div className="pb-16">
       <TransactionDialog tx={tx} title={copy.title} workingLabel={copy.working} firstStepLabel="Prepare">
-        <TransactionDone
-          tx={tx}
+        <TransactionSuccess
           name={name}
           title={copy.done}
           description={copy.description}
-          footer={action === "bid" ? <RewardEarned actionType="place_sponsorship_bid" /> : undefined}
-        />
+          txHash={tx.txHash}
+          actions={[{ label: "Done", onClick: tx.reset }]}
+        >
+          {action === "bid" && <RewardEarned actionType="place_sponsorship_bid" />}
+        </TransactionSuccess>
       </TransactionDialog>
 
       <section className="px-4 pt-10 max-w-3xl mx-auto space-y-6">

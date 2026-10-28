@@ -9,7 +9,7 @@ import Link from "./link.js";
 import { useMedialaneApp } from "./medialane-app.js";
 import { Skeleton } from "./skeleton.js";
 import { TransactionDialog } from "./transaction-dialog.js";
-import { TransactionDone } from "./transaction-done.js";
+import { TransactionSuccess } from "./transaction-success.js";
 import { runIntentCalls } from "../utils/run-intent-calls.js";
 import { useSponsorshipBids, useSponsorshipLicenses, useSponsorshipOffers, useSponsorshipProposals } from "../utils/use-sponsorship.js";
 import { useTransaction } from "../utils/use-transaction.js";
@@ -34,7 +34,7 @@ function useRowAction(copy: { title: string; working: string; done: string; desc
 
   const dialog = (
     <TransactionDialog tx={tx} title={copy.title} workingLabel={copy.working} firstStepLabel="Prepare">
-      <TransactionDone tx={tx} name={copy.title} title={copy.done} description={copy.description} />
+      <TransactionSuccess name={copy.title} title={copy.done} description={copy.description} txHash={tx.txHash} actions={[{ label: "Done", onClick: tx.reset }]} />
     </TransactionDialog>
   );
 

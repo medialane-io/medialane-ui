@@ -17,7 +17,7 @@ import { Textarea } from "../textarea.js";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../select.js";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "../collapsible.js";
 import { Section, ToggleGroup } from "../create-form-primitives.js";
-import { CreationSuccess } from "../creation-success.js";
+import { TransactionSuccess } from "../transaction-success.js";
 import { TransactionDialog } from "../transaction-dialog.js";
 import { WalletRequired } from "../wallet-required.js";
 import { useMedialaneApp } from "../medialane-app.js";
@@ -240,17 +240,19 @@ export function RemixMint({ contract, tokenId }: { contract: string; tokenId: st
   return (
     <WalletRequired {...gate}>
       <TransactionDialog tx={tx} title="Mint a remix" workingLabel="Minting your remix…" firstStepLabel="Upload to IPFS">
-        <CreationSuccess
+        <TransactionSuccess
           name={name}
           image={imagePreview ?? originalImage ?? null}
-          caption="Your remix is live"
-          primary={remixHref ? { href: remixHref, label: "View remix" } : { href: "/portfolio/assets", label: "View portfolio" }}
-          secondary={remixHref ? { href: "/portfolio/assets", label: "View portfolio" } : undefined}
-          onAgain={handleAgain}
-          againLabel="Close"
+          title="Remix minted"
+          description="It is registered as a remix of the original asset and carries its own license terms."
+          actions={[
+            ...(remixHref ? [{ href: remixHref, label: "View remix" }] : []),
+            { href: "/portfolio/assets", label: "View portfolio" },
+            { label: "Close", onClick: handleAgain },
+          ]}
         >
           <RewardEarned actionType="mint_asset" />
-        </CreationSuccess>
+        </TransactionSuccess>
       </TransactionDialog>
 
       <div className="max-w-5xl mx-auto px-4 pt-14 pb-12 space-y-6">

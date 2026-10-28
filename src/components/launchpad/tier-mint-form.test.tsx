@@ -81,7 +81,7 @@ test("a membership is created and minted in one transaction for the next tier id
   await waitFor(() => expect(view.getByText("✓ Uploaded")).toBeTruthy());
   fireEvent.change(view.getByPlaceholderText("Kalamaha Fan Club — 2026 Season Pass"), { target: { value: "Season Pass" } });
   fireEvent.submit(view.container.querySelector("form")!);
-  await waitFor(() => expect(view.getByText("Your membership is ready")).toBeTruthy());
+  await waitFor(() => expect(view.getByText("Create another membership")).toBeTruthy());
   expect(intents.map((i) => i.kind)).toEqual(["create-tier", "mint"]);
   expect(intents[0]!.params).toMatchObject({ service: "ip-club", maxSupply: "100", metadataUri: "ipfs://meta" });
   expect(intents[1]!.params).toMatchObject({ tokenId: "5", amount: "100" });

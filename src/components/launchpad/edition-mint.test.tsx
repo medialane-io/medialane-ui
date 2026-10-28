@@ -70,7 +70,7 @@ test("an edition is minted with its quantity and links to the new asset", async 
   fireEvent.change(view.getByPlaceholderText("Genesis Track #1"), { target: { value: "Track" } });
   fireEvent.change(view.getByPlaceholderText("1"), { target: { value: "25" } });
   fireEvent.submit(view.container.querySelector("form")!);
-  await waitFor(() => expect(view.getByText("Your edition is live")).toBeTruthy());
+  await waitFor(() => expect(view.getByText("Mint another")).toBeTruthy());
   expect(intents[0]).toMatchObject({ owner: OWNER, recipient: OWNER, collectionContract: CONTRACT, tokenUri: "ipfs://meta", value: "25", royaltyBps: 0 });
   expect(view.getByText("View asset").closest("a")?.getAttribute("href")).toBe(`/asset/starknet/${CONTRACT}/4`);
 });

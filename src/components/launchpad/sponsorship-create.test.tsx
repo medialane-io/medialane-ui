@@ -62,7 +62,7 @@ test("an offer is created with the chosen asset, amount and duration", async () 
   fireEvent.change(view.getByPlaceholderText("0.00"), { target: { value: "5" } });
   fireEvent.change(view.getByPlaceholderText("e.g. 30"), { target: { value: "30" } });
   fireEvent.click(view.getByText("Create Offer"));
-  await waitFor(() => expect(view.getByText("Your offer is live")).toBeTruthy());
+  await waitFor(() => expect(view.getByText("Back to Sponsorship launchpad")).toBeTruthy());
   expect(intents[0]!.kind).toBe("sponsorship-offer");
   expect(intents[0]!.params).toMatchObject({ author: ME, nftContract: C, tokenId: "1", minAmount: "5000000", licenseTermsUri: "ipfs://terms" });
 });

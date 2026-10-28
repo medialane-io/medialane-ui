@@ -8,7 +8,7 @@ import { AssetPicker, type OwnedAsset } from "../asset-picker.js";
 import { AssetSearchPicker } from "../asset-search-picker.js";
 import { LicenseTermsBuilder, EMPTY_SPONSORSHIP_TERMS, toDurationDays, toLicenseMetadata, type SponsorshipTerms } from "../license-terms-builder.js";
 import { ClaimRouteShell } from "../claim-route-shell.js";
-import { CreationSuccess } from "../creation-success.js";
+import { TransactionSuccess } from "../transaction-success.js";
 import { TransactionDialog } from "../transaction-dialog.js";
 import { WalletRequired } from "../wallet-required.js";
 import { useMedialaneApp } from "../medialane-app.js";
@@ -233,16 +233,19 @@ export function SponsorshipCreate({ aside }: { aside?: ReactNode }) {
         workingLabel={mode === "offer" ? "Creating your sponsorship offer…" : "Sending your proposal…"}
         firstStepLabel="Upload license terms"
       >
-        <CreationSuccess
+        <TransactionSuccess
           name={chosen?.name ?? "Your sponsorship"}
           image={chosen?.image ?? null}
-          caption={mode === "offer" ? "Your offer is live" : "Your proposal is sent"}
-          primary={{ href: "/launchpad/sponsorship", label: "Back to Sponsorship launchpad" }}
-          onAgain={handleAgain}
-          againLabel="Create another"
+          title={mode === "offer" ? "Offer created" : "Proposal sent"}
+          description={
+            mode === "offer"
+              ? "The offer is recorded onchain with the asset and terms you chose."
+              : "The proposal is recorded onchain with the amount and duration you chose."
+          }
+          actions={[{ href: "/launchpad/sponsorship", label: "Back to Sponsorship launchpad" }, { label: "Create another", onClick: handleAgain }]}
         >
           {mode === "offer" && <RewardEarned actionType="create_sponsorship_offer" />}
-        </CreationSuccess>
+        </TransactionSuccess>
       </TransactionDialog>
     </WalletRequired>
   );

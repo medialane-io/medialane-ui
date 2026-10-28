@@ -10,7 +10,7 @@ import { Label } from "./label.js";
 import { MarketplaceConfirmStep } from "./marketplace-dialog-primitives.js";
 import { useMedialaneApp } from "./medialane-app.js";
 import { TransactionDialog } from "./transaction-dialog.js";
-import { TransactionDone } from "./transaction-done.js";
+import { TransactionSuccess } from "./transaction-success.js";
 import { shortenAddress } from "../utils/address.js";
 import { runIntentCalls } from "../utils/run-intent-calls.js";
 import { useTransaction } from "../utils/use-transaction.js";
@@ -109,11 +109,12 @@ export function TransferCollectionOwnership({ collectionId, currentOwner, collec
       </Dialog>
 
       <TransactionDialog tx={tx} title="Transfer ownership" workingLabel="Transferring ownership…" firstStepLabel="Prepare transfer">
-        <TransactionDone
-          tx={tx}
+        <TransactionSuccess
           name={collectionName ?? "Collection"}
           title="Ownership transferred"
           description={<span className="tabular-nums">New owner: {shortenAddress(trimmed)}</span>}
+          txHash={tx.txHash}
+          actions={[{ label: "Done", onClick: tx.reset }]}
         />
       </TransactionDialog>
     </>

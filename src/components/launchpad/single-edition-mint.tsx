@@ -19,7 +19,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { ToggleGroup } from "../create-form-primitives.js";
 import { IPTypeFields } from "../ip-type-fields.js";
 import { ClaimRouteShell } from "../claim-route-shell.js";
-import { CreationSuccess } from "../creation-success.js";
+import { TransactionSuccess } from "../transaction-success.js";
 import { MedialaneCollectionCard } from "../medialane-collection-card.js";
 import { TransactionDialog } from "../transaction-dialog.js";
 import { WalletRequired } from "../wallet-required.js";
@@ -179,17 +179,19 @@ export function SingleEditionMint({ aside }: { aside?: ReactNode }) {
       description="Publish your creative work as a single-copy NFT in a collection you own."
     >
       <TransactionDialog tx={tx} title="Mint NFT" workingLabel="Minting your work…" firstStepLabel="Upload to IPFS">
-        <CreationSuccess
+        <TransactionSuccess
           name={form.getValues("name") || "Your asset"}
           image={imagePreview}
-          caption="Your work is live"
-          primary={mintedHref ? { href: mintedHref, label: "View asset" } : { href: "/portfolio/assets", label: "View portfolio" }}
-          secondary={mintedHref ? { href: "/portfolio/assets", label: "View portfolio" } : undefined}
-          onAgain={handleAgain}
-          againLabel="Mint another"
+          title="Asset minted"
+          description="Your wallet is the owner. The license terms and royalty are recorded in its metadata."
+          actions={[
+            ...(mintedHref ? [{ href: mintedHref, label: "View asset" }] : []),
+            { href: "/portfolio/assets", label: "View portfolio" },
+            { label: "Mint another", onClick: handleAgain },
+          ]}
         >
           <RewardEarned actionType="mint_asset" />
-        </CreationSuccess>
+        </TransactionSuccess>
       </TransactionDialog>
 
       <ClaimRouteShell

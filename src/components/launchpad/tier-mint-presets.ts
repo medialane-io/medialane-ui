@@ -17,7 +17,7 @@ export interface TierMintPreset {
   back: { href: string; label: string };
   notOwner: { message: string; back: { href: string; label: string } };
   dialog: { title: string; workingLabel: string; firstStepLabel: string };
-  success: { caption: string; againLabel: string };
+  success: { title: string; description: string; againLabel: string };
   shell: { title: string; subtitle: (collectionName: string | null) => string };
   cardFallbackSymbol: string;
   copy: {
@@ -47,7 +47,7 @@ export const CLUB_TIER_PRESET: TierMintPreset = {
   back: { href: "/launchpad/club", label: "← Back" },
   notOwner: { message: "You don't own this club.", back: { href: "/launchpad/club", label: "← Back to clubs" } },
   dialog: { title: "Create membership", workingLabel: "Creating your membership…", firstStepLabel: "Upload membership metadata" },
-  success: { caption: "Your membership is ready", againLabel: "Create another membership" },
+  success: { title: "Membership created", description: "The supply is minted to your wallet and ready to list.", againLabel: "Create another membership" },
   shell: {
     title: "Create Membership",
     subtitle: (name) => `Add a new membership tier to ${name ?? "your club"} and mint its supply to your wallet, ready to list.`,
@@ -80,7 +80,7 @@ export const TICKETS_TIER_PRESET: TierMintPreset = {
   back: { href: "/launchpad/tickets", label: "← Back" },
   notOwner: { message: "You don't own this tickets collection.", back: { href: "/launchpad/tickets", label: "← Back to tickets" } },
   dialog: { title: "Mint tickets", workingLabel: "Minting your tickets…", firstStepLabel: "Upload ticket metadata" },
-  success: { caption: "Your tickets are ready", againLabel: "Mint another ticket" },
+  success: { title: "Tickets minted", description: "Each ticket is recorded onchain under your wallet.", againLabel: "Mint another ticket" },
   shell: {
     title: "Mint Tickets",
     subtitle: (name) => `Add a new ticket type to ${name ?? "your collection"} and mint its supply to your wallet, ready to list.`,

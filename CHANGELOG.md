@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.259.0] — 2026-10-28
+
+### Changed
+
+- After a collection is created, the success dialog leads with "View collection" and offers "Mint an asset" second.
+- `TransactionSuccess` is the one success view for every transaction. It replaces `CreationSuccess`, `MarketplaceSuccessState` and `TransactionDone`: the image, the name, a `title`, a `description`, an optional `txHash` and a list of `actions`, the first filled and the rest outline. An action is a link or a button.
+- Every launchpad success dialog states what was recorded.
+- `successMessages` holds the title and description of the marketplace flows (list, offer, accept, counter, transfer, cancel), so every app words them the same way.
+- The new collection's link comes from the registry on the chain, so it shows as soon as the collection is created.
+- Requires `@medialane/sdk` 0.207.0.
+
 ## [0.258.0] — 2026-10-27
 
 ### Changed
