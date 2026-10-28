@@ -4,6 +4,7 @@ import { assetHref, type Chain } from "@medialane/sdk";
 import { Wallet } from "lucide-react";
 import { useMedialaneApp, type AssetRef } from "./medialane-app.js";
 import { ActionButton } from "./action-button.js";
+import { Button } from "./button.js";
 import { cn } from "../utils/cn.js";
 
 export function CompanionAppButton({ asset }: { asset: AssetRef }) {
@@ -11,15 +12,17 @@ export function CompanionAppButton({ asset }: { asset: AssetRef }) {
   if (!companion) return null;
   const Icon = companion.icon;
   return (
-    <ActionButton
-      action="offer"
-      icon={<Icon className="h-4 w-4" />}
-      href={`${companion.origin}${assetHref(asset.chain.toUpperCase() as Chain, asset.contractAddress, asset.tokenId)}`}
-      title={companion.description}
-      className="w-full"
-    >
-      {companion.title}
-    </ActionButton>
+    <Button asChild variant="outline" className="h-[46px] w-full rounded-[13px] font-semibold">
+      <a
+        href={`${companion.origin}${assetHref(asset.chain.toUpperCase() as Chain, asset.contractAddress, asset.tokenId)}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        title={companion.description}
+      >
+        <Icon className="h-4 w-4" />
+        {companion.title}
+      </a>
+    </Button>
   );
 }
 

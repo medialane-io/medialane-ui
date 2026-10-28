@@ -40,8 +40,6 @@ export type ToneKey = keyof typeof TONE_GRADIENTS;
 
 export interface ActionButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 
-  href?: string;
-
   action?: ActionKey;
 
   tone?: ToneKey;
@@ -60,7 +58,6 @@ export function ActionButton({
   icon,
   big,
   ghost,
-  href,
   helpContent,
   disabled,
   children,
@@ -68,18 +65,14 @@ export function ActionButton({
   style,
   ...rest
 }: ActionButtonProps) {
-  const Tag = (href ? "a" : "button") as React.ElementType;
-  const linkProps = href ? { href, target: "_blank", rel: "noopener noreferrer" } : {};
-
   const sizeClass = big
     ? "h-[54px] px-5 rounded-[13px] text-base"
     : "h-[46px] px-5 rounded-[13px] text-sm";
 
   if (ghost) {
     return (
-      <Tag
+      <button
         {...rest}
-        {...linkProps}
         disabled={disabled}
         className={cn(
           "inline-flex items-center justify-center gap-2 font-semibold cursor-pointer whitespace-nowrap",
@@ -91,7 +84,7 @@ export function ActionButton({
       >
         {icon}{children}
         {helpContent ? <HelpIcon content={helpContent} /> : null}
-      </Tag>
+      </button>
     );
   }
 
@@ -108,9 +101,8 @@ export function ActionButton({
   const grad = `linear-gradient(115deg, ${gradColors.join(',')})`;
 
   return (
-    <Tag
+    <button
       {...rest}
-      {...linkProps}
       disabled={disabled}
       className={cn(
         "ml-gbtn inline-flex items-center justify-center gap-2 font-semibold cursor-pointer whitespace-nowrap",
@@ -123,6 +115,6 @@ export function ActionButton({
       {icon && <span className="inline-flex" style={{ color: fg }}>{icon}</span>}
       {children}
       {helpContent ? <HelpIcon content={helpContent} /> : null}
-    </Tag>
+    </button>
   );
 }

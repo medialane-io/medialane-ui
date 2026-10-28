@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.261.1] — 2026-10-28
+
+### Changed
+
+- The companion-app link is a plain outline button. `ActionButton` no longer takes `href`.
+
 ## [0.261.0] — 2026-10-28
 
 ### Added
