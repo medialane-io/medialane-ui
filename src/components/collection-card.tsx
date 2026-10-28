@@ -35,7 +35,6 @@ export function CollectionCard({ collection, href, settingsHref, className }: Co
   const [imgError, setImgError] = useState(false);
   const imageUrl = resolveImage(collection.image, { width: 480 });
   const showImage = imageUrl && !imgError;
-  const initial = (collection.name ?? collection.contractAddress).charAt(0).toUpperCase();
   const floor = parseFloorPrice(collection.floorPrice);
 
   return (
@@ -65,11 +64,7 @@ export function CollectionCard({ collection, href, settingsHref, className }: Co
               unoptimized
             />
           ) : (
-            <div className="absolute inset-0 bg-gradient-to-br from-brand-purple/30 via-brand-blue/20 to-brand-navy/40 flex items-center justify-center">
-              <span className="text-8xl font-black text-white/10 select-none tracking-tighter">
-                {initial}
-              </span>
-            </div>
+            <div className="absolute inset-0 bg-gradient-to-br from-brand-purple/30 via-brand-blue/20 to-brand-navy/40" />
           )}
 
           <div className="absolute inset-x-0 bottom-0 flex flex-col items-start gap-1 bg-gradient-to-t from-black/85 via-black/45 to-transparent px-3 pb-3 pt-14">

@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.261.3] — 2026-10-28
+
+### Changed
+
+- A collection card without an image shows its gradient background. The initial letter is gone.
+
 ## [0.261.2] — 2026-10-28
 
 ### Changed
