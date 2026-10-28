@@ -5,6 +5,7 @@
 ### Changed
 
 - A collection card without an image shows its gradient background. The initial letter is gone.
+- `Image` requests a failed image again after five seconds, up to six times, and hides it meanwhile. The caller's `onError` runs once the retries are used up.
 
 ## [0.261.2] — 2026-10-28
 
