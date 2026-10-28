@@ -45,15 +45,17 @@ const render = (app0: MedialaneApp, isSignedIn: boolean, extra: { cheapest?: typ
     </MedialaneAppProvider>,
   );
 
-test("signed out shows the app's sign-in card and the companion app link", () => {
+test("signed out shows the app's sign-in button and the companion app button", () => {
   const html = render({ ...base, connectLabel: "Set up account", connectDescription: "No seed phrase needed.", companion }, false);
   expect(html).toContain("Set up account");
   expect(html).toContain("No seed phrase needed.");
   expect(html).toContain("https://other.example/asset/starknet/0xabc/7");
+  expect(html).toContain("Open in the other app");
+  expect(html).toContain("<button");
   expect(html).not.toContain("Make offer");
 });
 
-test("signed out without a companion shows only the sign-in card", () => {
+test("signed out without a companion shows only the sign-in button", () => {
   const html = render(base, false);
   expect(html).toContain("Sign in");
   expect(html).not.toContain("https://other.example");
@@ -66,11 +68,12 @@ test("signed in shows the actions and keeps the companion app link", () => {
   expect(html).toContain("https://other.example/asset/starknet/0xabc/7");
 });
 
-test("a listed asset's price sits in the Buy button", () => {
+test("a listed asset's price is shown above the Buy now button", () => {
   const html = render(base, true, { cheapest: listing });
-  expect(html).toContain("Buy");
+  expect(html).toContain("Buy for");
   expect(html).toContain("119");
   expect(html).toContain("$6.66");
+  expect(html.indexOf("119")).toBeLessThan(html.indexOf("Buy now"));
   expect(html).toContain("Make offer");
 });
 
@@ -80,21 +83,24 @@ test("the owner's listed price sits in the Cancel listing button", () => {
   const button = html.match(/<button[^>]*>(?:(?!<\/button>).)*Cancel listing(?:(?!<\/button>).)*<\/button>/s)?.[0] ?? "";
   expect(button).toContain("119");
   expect(button).toContain("$6.66");
-  expect(html).not.toContain(">Buy<");
+  expect(html).not.toContain("Buy now");
+  expect(html).not.toContain("Buy for");
   expect(html).not.toContain("Last sale");
   expect(html).not.toContain("Floor");
 });
 
-test("signed out shows the price above the sign-in cards", () => {
+test("signed out shows the price above the sign-in buttons", () => {
   const html = render(base, false, { cheapest: listing });
-  expect(html).toContain("Price");
+  expect(html).toContain("Buy for");
   expect(html).toContain("119");
-  expect(html).not.toContain(">Buy<");
+  expect(html).toContain("$6.66");
+  expect(html.indexOf("119")).toBeLessThan(html.indexOf("Sign in"));
+  expect(html).not.toContain("Buy now");
 });
 
-test("with Buy, Make offer and Remix, Buy takes the full row", () => {
+test("with Buy now, Make offer and Remix, Buy now takes the full row", () => {
   const html = render(base, true, { cheapest: listing, remix: true });
-  expect(html.indexOf(">Buy<")).toBeLessThan(html.indexOf("Remix"));
+  expect(html.indexOf("Buy now")).toBeLessThan(html.indexOf("Remix"));
   expect(html).toContain("grid grid-cols-2 gap-2 [&amp;&gt;*:first-child]:col-span-2");
 });
 

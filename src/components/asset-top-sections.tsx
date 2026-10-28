@@ -9,8 +9,6 @@ import { AddressDisplay } from "./address-display.js";
 import { ParentAttributionBanner } from "./parent-attribution-banner.js";
 import { IpTypeBadge } from "./ip-type-badge.js";
 import { ExpandableText } from "./expandable-text.js";
-import { ExternalLink } from "lucide-react";
-import { externalLink } from "../utils/external-link.js";
 
 interface AssetMediaColumnProps {
   shouldReduce: boolean;
@@ -121,7 +119,6 @@ interface AssetHeaderBlockProps {
   badges?: React.ReactNode;
   utilities?: React.ReactNode;
   description?: string | null;
-  externalUrl?: string | null;
   ipType?: string | null;
   parentContract?: string | null;
   parentTokenId?: string | null;
@@ -132,12 +129,10 @@ export function AssetHeaderBlock({
   badges,
   utilities,
   description,
-  externalUrl,
   ipType,
   parentContract,
   parentTokenId,
 }: AssetHeaderBlockProps) {
-  const link = externalLink(externalUrl);
   return (
     <div className="min-w-0 flex-1">
       {ipType || badges || utilities ? (
@@ -160,12 +155,6 @@ export function AssetHeaderBlock({
       ) : null}
       <h1 className="text-2xl lg:text-4xl font-bold break-words">{name}</h1>
       {description ? <ExpandableText text={description} className="mt-1" /> : null}
-      {link ? (
-        <a href={link} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
-          <ExternalLink className="h-3.5 w-3.5" />
-          Open link
-        </a>
-      ) : null}
     </div>
   );
 }

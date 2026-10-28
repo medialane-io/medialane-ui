@@ -149,29 +149,44 @@ test("a publication shows no Read more for the platform default or an unsafe lin
   expect(second.queryByText("Read more")).toBeNull();
 });
 
-test("other assets show their external URL after the description", async () => {
+test("other assets show their external URL in the overview, not under the description", async () => {
   const { getByText, container } = renderPage(publication({ ipType: "Art", description: "Plain", externalUrl: "https://artist.test/work" }), collection());
   await waitFor(() => expect(getByText("Open link")).toBeTruthy());
-  expect(container.querySelector('a[href="https://artist.test/work"]')!.textContent).toBe("Open link");
+  const link = container.querySelector('a[href="https://artist.test/work"]')!;
+  expect(link.textContent).toBe("Open link");
+  expect(container.querySelector('[role="tabpanel"]')!.contains(link)).toBe(true);
 });
 
-test("a publication with a Content trait shows it as the full text, not repeated in the details", async () => {
+test("a publication shows its description under the image and its Content in the overview", async () => {
   const { container } = renderPage(
-    publication({ description: "Short summary.", attributes: [{ trait_type: "Content", value: "Full post.\n\nSecond paragraph." }] }),
+    publication({ description: "Short summary.", attributes: [{ trait_type: "Content", value: "Full **post**.\n\nSecond paragraph." }] }),
     collection(),
   );
   await waitFor(() => expect(container.querySelector("article")).toBeTruthy());
   const article = container.querySelector("article")!.textContent!;
-  expect(article).toContain("Full post.");
-  expect(article).toContain("Second paragraph.");
-  expect(article).not.toContain("Short summary.");
-  expect(container.textContent!.split("Full post.").length).toBe(2);
+  expect(article).toContain("Short summary.");
+  expect(article).not.toContain("Full");
+  const overview = container.querySelector('[role="tabpanel"]')!;
+  expect(overview.textContent).toContain("Second paragraph.");
+  expect(overview.querySelector("strong")!.textContent).toBe("post");
+  expect(overview.textContent).not.toContain("**");
+  expect(container.textContent!.split("Second paragraph.").length).toBe(2);
 });
 
-test("a publication with a Content trait and no description still reads as an article", async () => {
-  const { container } = renderPage(publication({ description: null, attributes: [{ trait_type: "Content", value: "Only content." }] }), collection());
+test("the overview shows Content links as links and leaves out inline images", async () => {
+  const content = "Read [the source](https://source.test/post).\n\n![cover](http://source.test/a.jpg)";
+  const { container } = renderPage(publication({ description: "Summary.", attributes: [{ trait_type: "Content", value: content }] }), collection());
   await waitFor(() => expect(container.querySelector("article")).toBeTruthy());
-  expect(container.querySelector("article")!.textContent).toContain("Only content.");
+  const overview = container.querySelector('[role="tabpanel"]')!;
+  const link = overview.querySelector('a[href="https://source.test/post"]')!;
+  expect(link.getAttribute("rel")).toContain("noopener");
+  expect(overview.querySelector('img[src="http://source.test/a.jpg"]')).toBeNull();
+});
+
+test("a publication with a Content trait and no description keeps the standard layout and shows Content in the overview", async () => {
+  const { container } = renderPage(publication({ description: null, attributes: [{ trait_type: "Content", value: "Only content." }] }), collection());
+  await waitFor(() => expect(container.textContent).toContain("Only content."));
+  expect(container.querySelector("article")).toBeNull();
 });
 
 test("a publication shows its author after the text: the Author trait, else the Creator", async () => {
