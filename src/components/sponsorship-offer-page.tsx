@@ -19,12 +19,13 @@ import { useImageUrl } from "../utils/use-image-url.js";
 import { useSponsorshipBids, useSponsorshipOffer } from "../utils/use-sponsorship.js";
 import { useToken } from "../utils/use-tokens.js";
 import { useTransaction } from "../utils/use-transaction.js";
+import { successMessages } from "../utils/success-messages.js";
 
 type Action = "bid" | "accept";
 
 const COPY = {
-  bid: { title: "Place bid", working: "Placing your bid…", done: "Bid placed!", description: "Your bid is now on-chain." },
-  accept: { title: "Accept bid", working: "Accepting the bid…", done: "Bid accepted!", description: "The license is minted to the sponsor." },
+  bid: { title: "Place bid", working: "Placing your bid…", message: successMessages.bidPlaced() },
+  accept: { title: "Accept bid", working: "Accepting the bid…", message: successMessages.bidAccepted() },
 } as const;
 
 export function SponsorshipOfferPage({ offerId }: { offerId: string }) {
@@ -91,8 +92,7 @@ export function SponsorshipOfferPage({ offerId }: { offerId: string }) {
       <TransactionDialog tx={tx} title={copy.title} workingLabel={copy.working} firstStepLabel="Prepare">
         <TransactionSuccess
           name={name}
-          title={copy.done}
-          description={copy.description}
+          {...copy.message}
           txHash={tx.txHash}
           actions={[{ label: "Done", onClick: tx.reset }]}
         >

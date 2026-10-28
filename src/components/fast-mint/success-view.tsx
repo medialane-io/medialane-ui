@@ -35,10 +35,10 @@ export function SuccessView({
           <div className="space-y-1.5">
             <div className="flex items-center gap-2 text-green-500">
               <CheckCircle2 className="h-5 w-5" />
-              <p className="text-sm font-semibold">Published — live onchain</p>
+              <p className="text-sm font-semibold">Asset published</p>
             </div>
             <p className="text-sm text-muted-foreground">
-              {mintedAsset ? "Ready to share, sell, or remix." : "It'll appear in your portfolio shortly."}
+              It is recorded onchain with your wallet as owner.
             </p>
           </div>
 

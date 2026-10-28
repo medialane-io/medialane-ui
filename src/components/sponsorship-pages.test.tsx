@@ -73,7 +73,7 @@ test("a sponsor bids the amount typed, in the offer's currency", async () => {
   expect(button.disabled).toBe(true);
   fireEvent.change(view.getByPlaceholderText("Your bid"), { target: { value: "2" } });
   fireEvent.click(button);
-  await waitFor(() => expect(view.getByText("Bid placed!")).toBeTruthy());
+  await waitFor(() => expect(view.getByText("Bid placed")).toBeTruthy());
   expect(intents[0]).toEqual({
     kind: "sponsorship-bid",
     params: { sponsor: ME, offerId: "7", amount: String(2 * 10 ** TOKEN.decimals), paymentToken: TOKEN.address },
@@ -84,7 +84,7 @@ test("the author accepts a bid from the offer page", async () => {
   const { view, intents } = setup(<SponsorshipOfferPage offerId="7" />, { offer: offer(ME), bids: [{ id: "b1", sponsor: OTHER, amount: "6000000" }] });
   await waitFor(() => expect(view.getByText("Accept")).toBeTruthy());
   fireEvent.click(view.getByText("Accept"));
-  await waitFor(() => expect(view.getByText("Bid accepted!")).toBeTruthy());
+  await waitFor(() => expect(view.getByText("Bid accepted")).toBeTruthy());
   expect(intents[0]).toEqual({ kind: "sponsorship-bid-accept", params: { author: ME, offerId: "7", sponsor: OTHER } });
 });
 
@@ -99,6 +99,6 @@ test("an owner accepts a proposal from the portfolio", async () => {
   const { view, intents } = setup(<PortfolioSponsorships />, { proposals: [proposal] });
   await waitFor(() => expect(view.getAllByLabelText("Accept proposal").length).toBe(1));
   fireEvent.click(view.getByLabelText("Accept proposal"));
-  await waitFor(() => expect(view.getByText("Response sent!")).toBeTruthy());
+  await waitFor(() => expect(view.getByText("Response sent")).toBeTruthy());
   expect(intents[0]).toEqual({ kind: "sponsorship-proposal-accept", params: { owner: ME, proposalId: "3" } });
 });

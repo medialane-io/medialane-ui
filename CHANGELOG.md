@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.260.0] — 2026-10-28
+
+### Changed
+
+- `successMessages` also words the purchase, comment, credential claim, sponsorship bid, accept, response and withdrawal, ownership transfer, and event credential and participant dialogs.
+- The fast mint success view says "Asset published" and what was recorded.
+- The default processing text reads "Keep this window open until it finishes."
+
 ## [0.259.0] — 2026-10-28
 
 ### Changed

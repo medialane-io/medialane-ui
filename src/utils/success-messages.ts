@@ -24,6 +24,49 @@ export const successMessages = {
     title: "Transfer completed",
     description: `${name} is owned by ${to}.`,
   }),
+  purchased: ({ name, quantity }: { name: string; quantity: number }): SuccessMessage => ({
+    title: "Purchase completed",
+    description:
+      quantity > 1
+        ? `${quantity} editions of ${name} are owned by your wallet. The sale is recorded onchain.`
+        : `${name} is owned by your wallet. The sale is recorded onchain.`,
+  }),
+  commented: (): SuccessMessage => ({
+    title: "Comment published",
+    description: "Your comment is recorded onchain and appears here within about 30 seconds.",
+  }),
+  claimed: (): SuccessMessage => ({
+    title: "Credential claimed",
+    description: "The proof of participation is recorded onchain in your wallet.",
+  }),
+  bidPlaced: (): SuccessMessage => ({
+    title: "Bid placed",
+    description: "Your bid is recorded onchain.",
+  }),
+  bidAccepted: (): SuccessMessage => ({
+    title: "Bid accepted",
+    description: "The license is minted to the sponsor's wallet.",
+  }),
+  responseSent: (): SuccessMessage => ({
+    title: "Response sent",
+    description: "Your response is recorded onchain.",
+  }),
+  proposalWithdrawn: (): SuccessMessage => ({
+    title: "Proposal withdrawn",
+    description: "The proposal is closed onchain.",
+  }),
+  ownershipTransferred: ({ name, to }: { name: string; to: string }): SuccessMessage => ({
+    title: "Ownership transferred",
+    description: `${to} is the owner of ${name}.`,
+  }),
+  credentialIssued: (): SuccessMessage => ({
+    title: "Credential issued",
+    description: "The credential is recorded onchain in the participant's wallet.",
+  }),
+  participantsPublished: ({ count }: { count: number }): SuccessMessage => ({
+    title: "Participants published",
+    description: `The list of ${count} participant${count !== 1 ? "s" : ""} is recorded onchain. Each one claims with their own link.`,
+  }),
   cancelled: ({ kind }: { kind: string }): SuccessMessage => ({
     title: `${kind.charAt(0).toUpperCase()}${kind.slice(1)} cancelled`,
     description: "The order is cancelled onchain.",

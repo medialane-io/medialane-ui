@@ -63,7 +63,7 @@ test("a comment is posted onchain with its text trimmed", async () => {
   await waitFor(() => expect(view.getByText("Great work")).toBeTruthy());
   fireEvent.change(view.getByPlaceholderText("Say something onchain… it's permanent."), { target: { value: "  Thank you  " } });
   fireEvent.click(view.getByText("Post onchain"));
-  await waitFor(() => expect(view.getByText("Comment posted!")).toBeTruthy());
+  await waitFor(() => expect(view.getByText("Comment published")).toBeTruthy());
   expect(intents[0]).toEqual({ kind: "comment", params: { author: ME, nftContract: C, tokenId: "1", text: "Thank you" } });
 });
 
