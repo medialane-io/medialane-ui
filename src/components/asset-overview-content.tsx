@@ -1,9 +1,10 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { Bot, DollarSign, GitBranch, Globe, Percent, UserCheck } from "lucide-react";
+import { Bot, DollarSign, ExternalLink, GitBranch, Globe, Percent, UserCheck } from "lucide-react";
 import { IPTypeDisplay } from "./ip-type-display.js";
 import { AddressDisplay } from "./address-display.js";
+import { MarkdownText } from "./markdown-text.js";
 import { licenseSummary } from "../utils/license-summary.js";
 
 interface AssetAttribute {
@@ -15,6 +16,8 @@ interface AssetOverviewContentProps {
   attributes: AssetAttribute[];
   hasTemplateData: boolean;
   isDisplayAttr: (attribute: AssetAttribute) => boolean;
+  content?: string | null;
+  link?: string | null;
 }
 
 const isAddressLike = (v?: unknown): boolean =>
@@ -52,6 +55,8 @@ export function AssetOverviewContent({
   attributes,
   hasTemplateData,
   isDisplayAttr,
+  content,
+  link,
 }: AssetOverviewContentProps) {
   const attr = (trait: string) => attributes.find((attribute) => attribute.trait_type === trait)?.value;
   const licenseType = attr("License");
@@ -76,6 +81,20 @@ export function AssetOverviewContent({
 
   return (
     <div className="mt-4 space-y-7">
+      {content ? (
+        <section className="space-y-3">
+          <h3 className="text-sm font-semibold text-muted-foreground">Content</h3>
+          <MarkdownText text={content} />
+        </section>
+      ) : null}
+
+      {link ? (
+        <a href={link} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
+          <ExternalLink className="h-3.5 w-3.5" />
+          Open link
+        </a>
+      ) : null}
+
       {hasTemplateData ? <IPTypeDisplay attributes={attributes} /> : null}
 
       {hasLicenseData ? (

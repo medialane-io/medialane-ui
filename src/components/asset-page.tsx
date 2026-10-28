@@ -38,6 +38,7 @@ import { useComments } from "../utils/use-comments.js";
 import { useFullTokenData } from "../utils/use-full-token-data.js";
 import { useAssetMarketState } from "../utils/asset-market-state.js";
 import { assetAttributes } from "../utils/asset-attributes.js";
+import { externalLink } from "../utils/external-link.js";
 import { ASSET_ACCENTS } from "../utils/asset-accents.js";
 import { isLivingRenderCollection } from "../data/living-render-collections.js";
 import { EXPLORER_URL } from "../utils/explorer-url.js";
@@ -217,16 +218,16 @@ function AssetPageView({
   const { Panel } = config;
 
   const postContent = traitText(attributes, "Content");
-  const articleText = postContent ?? (token.metadata?.description?.trim() || null);
+  const description = token.metadata?.description?.trim() || null;
   const video = (token.metadata?.ipType ?? "").toLowerCase() === "video" ? videoEmbed(attributes) : null;
   const audio = (token.metadata?.ipType ?? "").toLowerCase() === "audio" ? audioEmbed(attributes) : null;
-  const isPublication = !!articleText && PUBLICATION_TYPES.has((token.metadata?.ipType ?? "").toLowerCase());
+  const isPublication = !!description && PUBLICATION_TYPES.has((token.metadata?.ipType ?? "").toLowerCase());
   const publisherName = collection?.name ?? contract.slice(0, 8) + "…";
-  const overview = isPublication
-    ? { attributes, hasTemplateData, isDisplayAttr: (a: Parameters<typeof isDisplayAttr>[0]) => isDisplayAttr(a) && !(postContent && a.trait_type === "Content") }
-    : video || audio
-      ? assetAttributes(attributes.filter((a) => !VIDEO_EMBED_TRAITS.has(a.trait_type ?? "") && !AUDIO_EMBED_TRAITS.has(a.trait_type ?? "")))
-      : { attributes, hasTemplateData, isDisplayAttr };
+  const overviewAttributes = postContent ? attributes.filter((a) => a.trait_type !== "Content") : attributes;
+  const overview = video || audio
+    ? assetAttributes(overviewAttributes.filter((a) => !VIDEO_EMBED_TRAITS.has(a.trait_type ?? "") && !AUDIO_EMBED_TRAITS.has(a.trait_type ?? "")))
+    : { attributes: overviewAttributes, hasTemplateData, isDisplayAttr };
+  const overviewLink = isPublication || video || audio ? null : externalLink(token.metadata?.externalUrl);
 
   const marketBlock = (
     <>
@@ -375,7 +376,7 @@ function AssetPageView({
         <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] lg:gap-20 gap-8 items-start">
           <AssetPublication
             name={name}
-            text={articleText!}
+            text={description!}
             image={image}
             imgError={imgError}
             onImageError={() => setImgError(true)}
@@ -412,7 +413,6 @@ function AssetPageView({
             <AssetHeaderBlock
               name={name}
               description={token.metadata?.description}
-              externalUrl={token.metadata?.externalUrl}
               ipType={token.metadata?.ipType}
               parentContract={parentContract}
               parentTokenId={parentTokenId}
@@ -439,7 +439,7 @@ function AssetPageView({
           </TabsList>
 
           <TabsContent value="overview">
-            <AssetOverviewContent attributes={overview.attributes} hasTemplateData={overview.hasTemplateData} isDisplayAttr={overview.isDisplayAttr} />
+            <AssetOverviewContent attributes={overview.attributes} hasTemplateData={overview.hasTemplateData} isDisplayAttr={overview.isDisplayAttr} content={postContent} link={overviewLink} />
           </TabsContent>
 
           {config.market ? (

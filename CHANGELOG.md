@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.261.0] — 2026-10-28
+
+### Added
+
+- `react-markdown` is a peer dependency. The overview renders a token's `Content` as formatted text: emphasis, links and lists, with inline images left out.
+
+### Changed
+
+- The asset page shows the price above the actions for every viewer who does not own the asset, with the USD value and the expiry. Signed-in viewers have a "Buy now" button.
+- Signed-out viewers see the sign-in and companion-app actions as `ActionButton`s in the Buy and Make offer colours.
+- `ActionButton` takes an `href` and renders a link.
+- A publication shows its description under the image again. Its `Content` moves to the overview.
+- The external link of a general asset moves from the header to the overview as "Open link". `AssetHeaderBlock` no longer takes `externalUrl`.
+
 ## [0.260.0] — 2026-10-28
 
 ### Changed

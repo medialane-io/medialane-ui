@@ -12,9 +12,8 @@ import { formatDisplayPrice } from "../utils/format.js";
 import { isExpired, timeUntil } from "../utils/time.js";
 import { isSameAddress } from "../utils/same-address.js";
 import { cn } from "../utils/cn.js";
-import { AssetAccessCards, CompanionAppCard } from "./asset-access-cards.js";
+import { AssetAccessButtons, CompanionAppButton } from "./asset-access-cards.js";
 import { useMedialaneApp, type AssetRef } from "./medialane-app.js";
-import { HelpIcon } from "./help-icon.js";
 
 export interface ApiOrderLike {
   orderHash: string;
@@ -62,14 +61,16 @@ function ActionRow({ children }: { children: ReactNode }) {
   return <div className={cn("grid grid-cols-2 gap-2", odd && "[&>*:first-child]:col-span-2")}>{children}</div>;
 }
 
-function PriceLine({ label, order, usdValue }: { label: string; order: ApiOrderLike; usdValue?: string | null }) {
+function PriceBlock({ order, usdValue }: { order: ApiOrderLike; usdValue?: string | null }) {
   return (
-    <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-muted-foreground">
-      <span>{label}</span>
-      <CurrencyAmount amount={formatDisplayPrice(order.price.formatted)} symbol={order.price.currency ?? ""} iconSize={14} amountClassName="text-base font-bold text-foreground tabular-nums" />
-      <span className="font-semibold text-foreground">{order.price.currency}</span>
-      {usdValue ? <span className="tabular-nums">· {usdValue}</span> : null}
-      <HelpIcon content={`Expires ${timeUntil(order.endTime)}`} />
+    <div className="space-y-1">
+      <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Buy for</p>
+      <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+        <CurrencyAmount amount={formatDisplayPrice(order.price.formatted)} symbol={order.price.currency ?? ""} iconSize={26} amountClassName="text-3xl font-bold text-foreground tabular-nums" />
+        <span className="text-lg font-semibold text-foreground">{order.price.currency}</span>
+        {usdValue ? <span className="text-sm tabular-nums text-muted-foreground">{usdValue}</span> : null}
+      </div>
+      <p className="text-xs text-muted-foreground">Expires {timeUntil(order.endTime)}</p>
     </div>
   );
 }
@@ -142,23 +143,25 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
   );
 
   const buyButton = liveCheapest && (!isOwner || canBuyMore) ? (
-    <ActionButton action="buy" onClick={() => onOpenPurchase(liveCheapest)}>
-      <span>Buy</span>
-      <CurrencyAmount amount={formatDisplayPrice(liveCheapest.price.formatted)} symbol={liveCheapest.price.currency ?? ""} iconSize={14} amountClassName="tabular-nums" />
-      {usdValue ? <span className="font-normal text-muted-foreground tabular-nums">· {usdValue}</span> : null}
-    </ActionButton>
+    isOwner ? (
+      <ActionButton action="buy" onClick={() => onOpenPurchase(liveCheapest)}>
+        <span>Buy</span>
+        <CurrencyAmount amount={formatDisplayPrice(liveCheapest.price.formatted)} symbol={liveCheapest.price.currency ?? ""} iconSize={14} amountClassName="tabular-nums" />
+        {usdValue ? <span className="font-normal text-muted-foreground tabular-nums">· {usdValue}</span> : null}
+      </ActionButton>
+    ) : (
+      <ActionButton action="buy" onClick={() => onOpenPurchase(liveCheapest)}>
+        Buy now
+      </ActionButton>
+    )
   ) : null;
 
-  const listedPrice = !isOwner && !isSignedIn && liveCheapest ? (
-    <PriceLine label="Price" order={liveCheapest} usdValue={usdValue} />
-  ) : null;
+  const listedPrice = !isOwner && liveCheapest ? <PriceBlock order={liveCheapest} usdValue={usdValue} /> : null;
 
   return (
     <div className="relative">
 
       <div className="relative space-y-4">
-        {listedPrice}
-
         {isOwner ? (
           <div className="space-y-3">
             <ActionRow>
@@ -195,36 +198,39 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
             </ActionRow>
             {buyButton ? <ActionRow>{buyButton}</ActionRow> : null}
           </div>
-        ) : isSignedIn ? (
-          <div className="space-y-3">
-            <ActionRow>
-              {buyButton}
-              {offerButton}
-              {remixButton}
-              {showDealOption && onProposeDeal ? (
-                <ActionButton
-                  action="license"
-                  icon={<HandCoins className="h-4 w-4" />}
-                  onClick={onProposeDeal}
-                  helpContent="Propose a license deal to the creator to use this work."
-                >
-                  License
-                </ActionButton>
-              ) : null}
-              {showSponsorOption && onOpenSponsorProposal ? (
-                <ActionButton
-                  tone="blue"
-                  icon={<Handshake className="h-4 w-4" />}
-                  onClick={onOpenSponsorProposal}
-                  helpContent="Propose to sponsor this creator's work — pay them directly for a license, no escrow."
-                >
-                  Sponsor
-                </ActionButton>
-              ) : null}
-            </ActionRow>
-          </div>
         ) : (
-          <AssetAccessCards asset={asset} stacked={compact} />
+          <div className="space-y-4">
+            {listedPrice}
+            {isSignedIn ? (
+              <ActionRow>
+                {buyButton}
+                {offerButton}
+                {remixButton}
+                {showDealOption && onProposeDeal ? (
+                  <ActionButton
+                    action="license"
+                    icon={<HandCoins className="h-4 w-4" />}
+                    onClick={onProposeDeal}
+                    helpContent="Propose a license deal to the creator to use this work."
+                  >
+                    License
+                  </ActionButton>
+                ) : null}
+                {showSponsorOption && onOpenSponsorProposal ? (
+                  <ActionButton
+                    tone="blue"
+                    icon={<Handshake className="h-4 w-4" />}
+                    onClick={onOpenSponsorProposal}
+                    helpContent="Propose to sponsor this creator's work — pay them directly for a license, no escrow."
+                  >
+                    Sponsor
+                  </ActionButton>
+                ) : null}
+              </ActionRow>
+            ) : (
+              <AssetAccessButtons asset={asset} stacked={compact} />
+            )}
+          </div>
         )}
 
         {myBid ? (
@@ -292,7 +298,7 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
           </div>
         ) : null}
 
-        {isSignedIn ? <CompanionAppCard asset={asset} /> : null}
+        {isSignedIn ? <CompanionAppButton asset={asset} /> : null}
       </div>
     </div>
   );
