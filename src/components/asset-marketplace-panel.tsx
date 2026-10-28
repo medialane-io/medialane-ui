@@ -12,6 +12,7 @@ import { formatDisplayPrice } from "../utils/format.js";
 import { isExpired, timeUntil } from "../utils/time.js";
 import { isSameAddress } from "../utils/same-address.js";
 import { cn } from "../utils/cn.js";
+import { HelpIcon } from "./help-icon.js";
 import { AssetAccessButtons, CompanionAppButton } from "./asset-access-cards.js";
 import { useMedialaneApp, type AssetRef } from "./medialane-app.js";
 
@@ -63,14 +64,11 @@ function ActionRow({ children }: { children: ReactNode }) {
 
 function PriceBlock({ order, usdValue }: { order: ApiOrderLike; usdValue?: string | null }) {
   return (
-    <div className="space-y-1">
-      <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Buy for</p>
-      <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
-        <CurrencyAmount amount={formatDisplayPrice(order.price.formatted)} symbol={order.price.currency ?? ""} iconSize={26} amountClassName="text-3xl font-bold text-foreground tabular-nums" />
-        <span className="text-lg font-semibold text-foreground">{order.price.currency}</span>
-        {usdValue ? <span className="text-sm tabular-nums text-muted-foreground">{usdValue}</span> : null}
-      </div>
-      <p className="text-xs text-muted-foreground">Expires {timeUntil(order.endTime)}</p>
+    <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+      <CurrencyAmount amount={formatDisplayPrice(order.price.formatted)} symbol={order.price.currency ?? ""} iconSize={26} amountClassName="text-3xl font-bold text-foreground tabular-nums" />
+      <span className="text-lg font-semibold text-foreground">{order.price.currency}</span>
+      {usdValue ? <span className="text-sm tabular-nums text-muted-foreground">{usdValue}</span> : null}
+      <HelpIcon content={`Expires ${timeUntil(order.endTime)}`} />
     </div>
   );
 }

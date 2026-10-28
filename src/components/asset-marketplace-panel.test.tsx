@@ -68,9 +68,10 @@ test("signed in shows the actions and keeps the companion app link", () => {
   expect(html).toContain("https://other.example/asset/starknet/0xabc/7");
 });
 
-test("a listed asset's price is shown above the Buy now button", () => {
+test("a listed asset's price is shown above the Buy now button, with its expiry in the info icon", () => {
   const html = render(base, true, { cheapest: listing });
-  expect(html).toContain("Buy for");
+  expect(html).not.toContain("Buy for");
+  expect(html).not.toContain("Expires in");
   expect(html).toContain("119");
   expect(html).toContain("$6.66");
   expect(html.indexOf("119")).toBeLessThan(html.indexOf("Buy now"));
@@ -84,14 +85,14 @@ test("the owner's listed price sits in the Cancel listing button", () => {
   expect(button).toContain("119");
   expect(button).toContain("$6.66");
   expect(html).not.toContain("Buy now");
-  expect(html).not.toContain("Buy for");
   expect(html).not.toContain("Last sale");
   expect(html).not.toContain("Floor");
 });
 
 test("signed out shows the price above the sign-in buttons", () => {
   const html = render(base, false, { cheapest: listing });
-  expect(html).toContain("Buy for");
+  expect(html).not.toContain("Buy for");
+  expect(html).not.toContain("Expires in");
   expect(html).toContain("119");
   expect(html).toContain("$6.66");
   expect(html.indexOf("119")).toBeLessThan(html.indexOf("Sign in"));
