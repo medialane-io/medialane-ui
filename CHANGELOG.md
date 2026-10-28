@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.261.2] — 2026-10-28
+
+### Changed
+
+- The price above the asset actions has no label. Its expiry is in the info icon beside it.
+
 ## [0.261.1] — 2026-10-28
 
 ### Changed
