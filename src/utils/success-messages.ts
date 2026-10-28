@@ -67,6 +67,18 @@ export const successMessages = {
     title: "Participants published",
     description: `The list of ${count} participant${count !== 1 ? "s" : ""} is recorded onchain. Each one claims with their own link.`,
   }),
+  walletActivated: (): SuccessMessage => ({
+    title: "Wallet activated",
+    description: "Your wallet is recorded onchain and can receive and send assets.",
+  }),
+  sent: ({ amount, symbol, to }: { amount: string; symbol: string; to: string }): SuccessMessage => ({
+    title: "Transfer completed",
+    description: `${amount} ${symbol} sent to ${to}. The transfer is recorded onchain.`,
+  }),
+  licenseGranted: ({ price }: { price: string }): SuccessMessage => ({
+    title: "License granted",
+    description: `The remix is minted and listed for ${price}. The buyer completes the purchase from their portfolio.`,
+  }),
   cancelled: ({ kind }: { kind: string }): SuccessMessage => ({
     title: `${kind.charAt(0).toUpperCase()}${kind.slice(1)} cancelled`,
     description: "The order is cancelled onchain.",

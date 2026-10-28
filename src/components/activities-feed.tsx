@@ -12,6 +12,7 @@ import { ACTIVITY_TYPE_CONFIG, TYPE_FILTERS } from "../data/activity.js";
 import { ActivityRow } from "./activity-row.js";
 import { cn } from "../utils/cn.js";
 import type { Announcement } from "../data/notification.js";
+import { emptyMessages } from "../utils/empty-messages.js";
 
 async function fetchAnnouncements(): Promise<Announcement[]> {
   const res = await fetch("/api/announcements");
@@ -174,9 +175,14 @@ export function ActivitiesFeed() {
           <div className="h-12 w-12 rounded-full bg-muted flex items-center justify-center">
             <Zap className="h-5 w-5 text-muted-foreground" />
           </div>
-          <p className="text-muted-foreground">
-            {typeFilter ? `No ${typeFilter} events yet.` : "No activity yet."}
-          </p>
+          {typeFilter ? (
+            <p className="text-muted-foreground">{`No ${typeFilter} events yet.`}</p>
+          ) : (
+            <div>
+              <p className="font-medium">{emptyMessages.activity.title}</p>
+              <p className="text-sm text-muted-foreground">{emptyMessages.activity.description}</p>
+            </div>
+          )}
         </div>
       ) : (
         <div className="space-y-4">

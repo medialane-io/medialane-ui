@@ -31,16 +31,10 @@ export function SuccessDialog({
       <div className="absolute inset-0 z-[70] grid place-items-center p-6" onClick={onClose}>
         <ActionBackdrop />
         <div className="card-base relative z-10 w-full max-w-[320px] p-6 text-center" onClick={(e) => e.stopPropagation()}>
-          <div
-            className="mx-auto grid h-16 w-16 place-items-center rounded-full text-white"
-            style={{ background: BRAND_GRADIENT }}
-          >
-            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M20 6L9 17l-5-5" />
-            </svg>
+          <div role="status">
+            <h2 className="font-[family-name:var(--font-display)] text-xl font-extrabold tracking-tight">{title}</h2>
+            <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">{message}</p>
           </div>
-          <h2 className="mt-4 font-[family-name:var(--font-display)] text-xl font-extrabold tracking-tight">{title}</h2>
-          <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">{message}</p>
           {txHash && (
             <a
               href={explorerTxUrl(explorerUrl, txHash)}
@@ -48,7 +42,7 @@ export function SuccessDialog({
               rel="noopener noreferrer"
               className="mt-3 inline-block text-xs text-brand-blue hover:underline"
             >
-              View on Voyager ↗
+              View transaction ↗
             </a>
           )}
           <ActionButton big onClick={onClose} className="mt-5 w-full" style={{ "--ml-grad": BRAND_GRADIENT } as React.CSSProperties}>

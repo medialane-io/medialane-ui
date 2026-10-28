@@ -21,3 +21,9 @@ test("publishing participants says the list is recorded and each one claims with
   expect(successMessages.participantsPublished({ count: 1 }).description).toBe("The list of 1 participant is recorded onchain. Each one claims with their own link.");
   expect(successMessages.participantsPublished({ count: 3 }).description).toContain("3 participants");
 });
+
+test("wallet, transfer and license messages state what was recorded", () => {
+  expect(successMessages.walletActivated().title).toBe("Wallet activated");
+  expect(successMessages.sent({ amount: "5", symbol: "STRK", to: "0x12…ab" }).description).toBe("5 STRK sent to 0x12…ab. The transfer is recorded onchain.");
+  expect(successMessages.licenseGranted({ price: "10 STRK" }).description).toContain("listed for 10 STRK");
+});

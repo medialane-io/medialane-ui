@@ -30,6 +30,6 @@ test("signed out, the page shows and the collections ask to sign in with the app
 test("signed in with no clubs, the club page offers to create one", async () => {
   const view = renderPage("club", { walletAddress: "0xa" });
   expect(view.getByText("IP Club")).toBeTruthy();
-  await waitFor(() => expect(view.getByText("No clubs yet")).toBeTruthy());
+  await waitFor(() => expect(view.getByText("Your clubs appear here")).toBeTruthy());
   expect(Array.from(view.container.querySelectorAll("a")).map((a) => a.getAttribute("href"))).toContain("/launchpad/club/create");
 });

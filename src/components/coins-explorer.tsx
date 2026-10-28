@@ -7,6 +7,7 @@ import { CoinRow, CoinRowSkeleton, COIN_GRID, type UseCoinPrice } from "./coin-r
 import { StatPillRow } from "./stat-tile.js";
 import { orderCoins, type CoinPriceSort } from "../data/coin-order.js";
 import { coinKind, coinKindLabelPlural, coinServiceIds, COIN_KINDS, type CoinCollectionLike, type CoinKind } from "../data/coins.js";
+import { emptyMessages } from "../utils/empty-messages.js";
 
 export type CoinFilter = "all" | CoinKind;
 export type CoinSort = "recent" | "name";
@@ -130,9 +131,16 @@ export function CoinsExplorer({ useCoins, usePrice, usePriceMap, coinHref, headi
         {isLoading && items.length === 0 ? (
           Array.from({ length: 6 }).map((_, i) => <CoinRowSkeleton key={i} />)
         ) : items.length === 0 ? (
-          <p className="py-16 text-center text-sm text-muted-foreground">
-            {query.trim() ? `No coins match "${query.trim()}".` : "No coins yet."}
-          </p>
+          <div className="py-16 text-center">
+            {query.trim() ? (
+              <p className="text-sm text-muted-foreground">{`No coins match "${query.trim()}".`}</p>
+            ) : (
+              <>
+                <p className="text-sm font-medium">{emptyMessages.coins.title}</p>
+                <p className="text-sm text-muted-foreground">{emptyMessages.coins.description}</p>
+              </>
+            )}
+          </div>
         ) : (
           items.map((c) => (
             <CoinRow

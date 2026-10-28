@@ -12,6 +12,7 @@ import { TransactionDialog } from "./transaction-dialog.js";
 import { TransactionSuccess } from "./transaction-success.js";
 import { runIntentCalls } from "../utils/run-intent-calls.js";
 import { useSponsorshipBids, useSponsorshipLicenses, useSponsorshipOffers, useSponsorshipProposals } from "../utils/use-sponsorship.js";
+import { emptyMessages, type EmptyMessage } from "../utils/empty-messages.js";
 import { successMessages, type SuccessMessage } from "../utils/success-messages.js";
 import { useTransaction } from "../utils/use-transaction.js";
 
@@ -162,9 +163,16 @@ function SentProposals({ walletAddress }: { walletAddress: string }) {
   );
 }
 
-function LicenseList({ loading, empty, children }: { loading: boolean; empty: string; children: React.ReactNode[] }) {
+function LicenseList({ loading, empty, children }: { loading: boolean; empty: EmptyMessage; children: React.ReactNode[] }) {
   if (loading) return <Skeleton className="h-16 w-full rounded-xl" />;
-  if (children.length === 0) return <p className="text-sm text-muted-foreground">{empty}</p>;
+  if (children.length === 0) {
+    return (
+      <div>
+        <p className="text-sm font-medium">{empty.title}</p>
+        <p className="text-sm text-muted-foreground">{empty.description}</p>
+      </div>
+    );
+  }
   return <div className="space-y-2">{children}</div>;
 }
 
@@ -199,7 +207,7 @@ export function PortfolioSponsorships() {
 
       <section className="space-y-3">
         <h2 className="text-sm font-bold">Licenses you hold</h2>
-        <LicenseList loading={heldLoading} empty="No sponsorship licenses yet.">
+        <LicenseList loading={heldLoading} empty={emptyMessages.heldLicenses}>
           {held.map((l) => (
             <div key={l.id} className="bento-cell p-4">
               <p className="text-sm font-semibold">
@@ -213,7 +221,7 @@ export function PortfolioSponsorships() {
 
       <section className="space-y-3">
         <h2 className="text-sm font-bold">Licenses issued on your work</h2>
-        <LicenseList loading={issuedLoading} empty="No licenses issued yet.">
+        <LicenseList loading={issuedLoading} empty={emptyMessages.issuedLicenses}>
           {issued.map((l) => (
             <div key={l.id} className="bento-cell p-4">
               <p className="text-sm font-semibold">

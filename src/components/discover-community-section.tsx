@@ -10,6 +10,7 @@ import { LeaderboardPanel } from "./rewards/leaderboard-panel.js";
 import { useActivities } from "../utils/use-activities.js";
 import { timeAgo } from "../utils/time.js";
 import { cn } from "../utils/cn.js";
+import { emptyMessages } from "../utils/empty-messages.js";
 
 const FEED_LIMIT = 8;
 
@@ -93,7 +94,8 @@ export function DiscoverCommunitySection() {
             </div>
           ) : activities.length === 0 ? (
             <div className={cn("rounded-xl border border-border py-12 text-center")}>
-              <p className="text-sm text-muted-foreground">No activity yet. Be the first to trade on Medialane!</p>
+              <p className="text-sm font-medium">{emptyMessages.activity.title}</p>
+              <p className="text-sm text-muted-foreground">{emptyMessages.activity.description}</p>
             </div>
           ) : (
             <div className="divide-y divide-border/50 rounded-xl border border-border overflow-hidden">
