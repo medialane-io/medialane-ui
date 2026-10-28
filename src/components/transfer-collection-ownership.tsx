@@ -13,6 +13,7 @@ import { TransactionDialog } from "./transaction-dialog.js";
 import { TransactionSuccess } from "./transaction-success.js";
 import { shortenAddress } from "../utils/address.js";
 import { runIntentCalls } from "../utils/run-intent-calls.js";
+import { successMessages } from "../utils/success-messages.js";
 import { useTransaction } from "../utils/use-transaction.js";
 
 export interface TransferCollectionOwnershipProps {
@@ -111,8 +112,7 @@ export function TransferCollectionOwnership({ collectionId, currentOwner, collec
       <TransactionDialog tx={tx} title="Transfer ownership" workingLabel="Transferring ownership…" firstStepLabel="Prepare transfer">
         <TransactionSuccess
           name={collectionName ?? "Collection"}
-          title="Ownership transferred"
-          description={<span className="tabular-nums">New owner: {shortenAddress(trimmed)}</span>}
+          {...successMessages.ownershipTransferred({ name: collectionName ?? "the collection", to: shortenAddress(trimmed) })}
           txHash={tx.txHash}
           actions={[{ label: "Done", onClick: tx.reset }]}
         />

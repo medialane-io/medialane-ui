@@ -12,11 +12,13 @@ import { TransactionDialog } from "./transaction-dialog.js";
 import { TransactionSuccess } from "./transaction-success.js";
 import { runIntentCalls } from "../utils/run-intent-calls.js";
 import { useSponsorshipBids, useSponsorshipLicenses, useSponsorshipOffers, useSponsorshipProposals } from "../utils/use-sponsorship.js";
+import { emptyMessages, type EmptyMessage } from "../utils/empty-messages.js";
+import { successMessages, type SuccessMessage } from "../utils/success-messages.js";
 import { useTransaction } from "../utils/use-transaction.js";
 
 type Api = ReturnType<ReturnType<typeof useMedialaneApp>["getClient"]>["api"];
 
-function useRowAction(copy: { title: string; working: string; done: string; description: string }) {
+function useRowAction(copy: { title: string; working: string; message: SuccessMessage }) {
   const app = useMedialaneApp();
   const tx = useTransaction();
   const [activeId, setActiveId] = useState<string | null>(null);
@@ -34,7 +36,7 @@ function useRowAction(copy: { title: string; working: string; done: string; desc
 
   const dialog = (
     <TransactionDialog tx={tx} title={copy.title} workingLabel={copy.working} firstStepLabel="Prepare">
-      <TransactionSuccess name={copy.title} title={copy.done} description={copy.description} txHash={tx.txHash} actions={[{ label: "Done", onClick: tx.reset }]} />
+      <TransactionSuccess name={copy.title} {...copy.message} txHash={tx.txHash} actions={[{ label: "Done", onClick: tx.reset }]} />
     </TransactionDialog>
   );
 
@@ -48,7 +50,7 @@ function Spinner({ active, idle, className }: { active: boolean; idle: React.Rea
 function OfferBidsRow({ offer }: { offer: ApiSponsorshipOffer }) {
   const { walletAddress } = useMedialaneApp();
   const { bids, isLoading, mutate } = useSponsorshipBids(offer.offerId);
-  const action = useRowAction({ title: "Accept bid", working: "Accepting the bid…", done: "Bid accepted!", description: "The license is minted to the sponsor." });
+  const action = useRowAction({ title: "Accept bid", working: "Accepting the bid…", message: successMessages.bidAccepted() });
 
   if (isLoading || bids.length === 0) return null;
 
@@ -84,7 +86,7 @@ function OfferBidsRow({ offer }: { offer: ApiSponsorshipOffer }) {
 
 function ReceivedProposals({ walletAddress }: { walletAddress: string }) {
   const { proposals, isLoading, mutate } = useSponsorshipProposals({ owner: walletAddress, open: true });
-  const action = useRowAction({ title: "Respond to proposal", working: "Sending your response…", done: "Response sent!", description: "Your response is now on-chain." });
+  const action = useRowAction({ title: "Respond to proposal", working: "Sending your response…", message: successMessages.responseSent() });
 
   if (isLoading) return <Skeleton className="h-20 w-full rounded-xl" />;
   if (proposals.length === 0) return <p className="text-sm text-muted-foreground">No proposals awaiting your decision.</p>;
@@ -128,7 +130,7 @@ function ReceivedProposals({ walletAddress }: { walletAddress: string }) {
 
 function SentProposals({ walletAddress }: { walletAddress: string }) {
   const { proposals, isLoading, mutate } = useSponsorshipProposals({ proposer: walletAddress, open: true });
-  const action = useRowAction({ title: "Withdraw proposal", working: "Withdrawing your proposal…", done: "Proposal withdrawn!", description: "Your proposal is no longer open." });
+  const action = useRowAction({ title: "Withdraw proposal", working: "Withdrawing your proposal…", message: successMessages.proposalWithdrawn() });
 
   if (isLoading) return <Skeleton className="h-20 w-full rounded-xl" />;
   if (proposals.length === 0) return <p className="text-sm text-muted-foreground">No pending proposals sent.</p>;
@@ -161,9 +163,16 @@ function SentProposals({ walletAddress }: { walletAddress: string }) {
   );
 }
 
-function LicenseList({ loading, empty, children }: { loading: boolean; empty: string; children: React.ReactNode[] }) {
+function LicenseList({ loading, empty, children }: { loading: boolean; empty: EmptyMessage; children: React.ReactNode[] }) {
   if (loading) return <Skeleton className="h-16 w-full rounded-xl" />;
-  if (children.length === 0) return <p className="text-sm text-muted-foreground">{empty}</p>;
+  if (children.length === 0) {
+    return (
+      <div>
+        <p className="text-sm font-medium">{empty.title}</p>
+        <p className="text-sm text-muted-foreground">{empty.description}</p>
+      </div>
+    );
+  }
   return <div className="space-y-2">{children}</div>;
 }
 
@@ -198,7 +207,7 @@ export function PortfolioSponsorships() {
 
       <section className="space-y-3">
         <h2 className="text-sm font-bold">Licenses you hold</h2>
-        <LicenseList loading={heldLoading} empty="No sponsorship licenses yet.">
+        <LicenseList loading={heldLoading} empty={emptyMessages.heldLicenses}>
           {held.map((l) => (
             <div key={l.id} className="bento-cell p-4">
               <p className="text-sm font-semibold">
@@ -212,7 +221,7 @@ export function PortfolioSponsorships() {
 
       <section className="space-y-3">
         <h2 className="text-sm font-bold">Licenses issued on your work</h2>
-        <LicenseList loading={issuedLoading} empty="No licenses issued yet.">
+        <LicenseList loading={issuedLoading} empty={emptyMessages.issuedLicenses}>
           {issued.map((l) => (
             <div key={l.id} className="bento-cell p-4">
               <p className="text-sm font-semibold">

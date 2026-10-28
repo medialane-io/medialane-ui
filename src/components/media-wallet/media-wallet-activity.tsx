@@ -13,6 +13,7 @@ import { WalletActivityIcon } from "./wallet-activity-icon.js";
 import { ActionModal } from "./action-modal.js";
 import { useMediaWalletApp, type MediaWalletView } from "./types.js";
 import { useMedialaneApp } from "../medialane-app.js";
+import { emptyMessages } from "../../utils/empty-messages.js";
 
 const GRADS = [
   "linear-gradient(135deg,#3b7bff,#8a5cf6)",
@@ -69,7 +70,12 @@ export function MediaWalletActivity({ onNavigate }: { onNavigate: (view: MediaWa
       {!address && <div className="text-sm text-muted-foreground">No wallet found on this device.</div>}
       {error && <ActivityLoadError onRetry={load} />}
       {loading && !items && !error && <ActivityLoading />}
-      {items && items.length === 0 && <div className="text-sm text-muted-foreground">No activity yet.</div>}
+      {items && items.length === 0 && (
+        <div>
+          <p className="text-sm font-medium">{emptyMessages.walletActivity.title}</p>
+          <p className="text-sm text-muted-foreground">{emptyMessages.walletActivity.description}</p>
+        </div>
+      )}
 
       {items && items.length > 0 && (
         <div className="flex flex-col gap-2">

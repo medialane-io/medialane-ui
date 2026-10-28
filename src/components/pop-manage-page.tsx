@@ -14,6 +14,7 @@ import { TransactionDialog } from "./transaction-dialog.js";
 import { TransactionSuccess } from "./transaction-success.js";
 import { WalletRequired } from "./wallet-required.js";
 import { runIntentCalls } from "../utils/run-intent-calls.js";
+import { successMessages } from "../utils/success-messages.js";
 import { useCollection } from "../utils/use-collections.js";
 import { useTransaction } from "../utils/use-transaction.js";
 
@@ -161,7 +162,7 @@ export function PopManagePage({ contract }: { contract: string }) {
     normalizeAddress("STARKNET", walletAddress) === normalizeAddress("STARKNET", collection.owner);
 
   const issue = (recipient: string) => {
-    setDone({ title: "Credential issued", description: "The credential is now in their wallet." });
+    setDone(successMessages.credentialIssued());
     void tx.run(async (signer) => {
       await runIntentCalls(signer, () => app.getClient().api.intents.create("pop-manage", { owner: signer.address, collection: contract, action: "issue", recipient }));
     });
@@ -170,7 +171,7 @@ export function PopManagePage({ contract }: { contract: string }) {
   const publish = (addresses: string[]) => {
     const list = buildPopAllowlist(addresses);
     const count = Object.keys(list.proofs).length;
-    setDone({ title: "Participants published", description: `Published ${count} participant${count !== 1 ? "s" : ""}.` });
+    setDone(successMessages.participantsPublished({ count }));
     void tx
       .run(async (signer) => {
         await runIntentCalls(signer, () => app.getClient().api.intents.create("pop-manage", { owner: signer.address, collection: contract, action: "set_allowlist_root", root: list.root }));

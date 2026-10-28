@@ -17,6 +17,7 @@ import type { CollectionMarketActions } from "./collection-page.js";
 import { cn } from "../utils/cn.js";
 import { isSameAddress } from "../utils/same-address.js";
 import { useTokensByIpType } from "../utils/use-tokens-by-ip-type.js";
+import { emptyMessages } from "../utils/empty-messages.js";
 
 const PAGE_SIZE = 24;
 
@@ -317,12 +318,12 @@ export function IpTypePage({ slug, useMarketActions }: IpTypePageProps) {
           )}
           <div>
             <p className="font-semibold text-lg">
-              {listedOnly ? "No listed assets yet" : "No assets indexed yet"}
+              {listedOnly ? "Listed assets appear here" : emptyMessages.assetsOfType.title}
             </p>
             <p className="text-muted-foreground text-sm mt-1">
               {listedOnly
                 ? "Try removing the 'Listed only' filter to see all assets."
-                : `Be the first to mint a ${config?.label ?? slug} asset on Medialane.`}
+                : emptyMessages.assetsOfType.description}
             </p>
           </div>
           <Button asChild variant="outline">

@@ -7,6 +7,7 @@ import { ActivityCard, ActivityCardSkeleton } from "./activity-card.js";
 import { timeAgo } from "../utils/time.js";
 import { cn } from "../utils/cn.js";
 import type { ApiOrder, ApiActivity } from "@medialane/sdk";
+import { emptyMessages } from "../utils/empty-messages.js";
 
 export interface DiscoverFeedSectionProps {
   orders: ApiOrder[];
@@ -162,9 +163,10 @@ export function DiscoverFeedSection({
               ))
             : activities.length === 0
             ? (
-                <p className="text-sm text-muted-foreground py-4">
-                  No activity yet. Be the first to trade on Medialane!
-                </p>
+                <div className="py-4">
+                  <p className="text-sm font-medium">{emptyMessages.activity.title}</p>
+                  <p className="text-sm text-muted-foreground">{emptyMessages.activity.description}</p>
+                </div>
               )
             : activities.map((act, i) => {
                 const key = act.txHash

@@ -16,6 +16,7 @@ import { cn } from "../utils/cn.js";
 import { EXPLORER_URL } from "../utils/explorer-url.js";
 import { runIntentCalls } from "../utils/run-intent-calls.js";
 import { timeAgo } from "../utils/time.js";
+import { successMessages } from "../utils/success-messages.js";
 import { useComments } from "../utils/use-comments.js";
 import { useTransaction } from "../utils/use-transaction.js";
 
@@ -300,8 +301,7 @@ export function CommentsSection({ contract, tokenId, className }: CommentsSectio
       <TransactionDialog tx={tx} title="Comment" workingLabel="Posting your comment…" firstStepLabel="Prepare comment">
         <TransactionSuccess
           name="Comment"
-          title="Comment posted!"
-          description="Your comment is onchain and will appear here once indexed (~30s)."
+          {...successMessages.commented()}
           txHash={tx.txHash}
           actions={[{ label: "Done", onClick: tx.reset }]}
         >

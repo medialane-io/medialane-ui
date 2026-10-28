@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.260.0] — 2026-10-28
+
+### Changed
+
+- `successMessages` also words the purchase, comment, credential claim, sponsorship bid, accept, response and withdrawal, ownership transfer, and event credential and participant dialogs.
+- The fast mint success view says "Asset published" and what was recorded.
+- The default processing text reads "Keep this window open until it finishes."
+- `successMessages` words the wallet activation and token transfer, and the license granted on a remix offer.
+- `emptyMessages` words the empty activity, coin, asset, listing, offer and license lists: what appears there and what fills it.
+- `TransactionSuccess` and the wallet success dialog have no check badge, and their message is announced as a status.
+- The wallet success dialog links the transaction as "View transaction".
+
 ## [0.259.0] — 2026-10-28
 
 ### Changed

@@ -42,7 +42,7 @@ interface MarketplaceProcessingStateProps {
 
 export function MarketplaceProcessingState({
   title,
-  description = "Please wait, do not close this window.",
+  description = "Keep this window open until it finishes.",
   imageUrl,
   imageAlt = "Token preview",
   txHash,

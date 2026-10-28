@@ -3,6 +3,7 @@
 import Link from "./link.js";
 import { ArrowRight, Activity, RefreshCw } from "lucide-react";
 import { timeAgo } from "../utils/time.js";
+import { emptyMessages } from "../utils/empty-messages.js";
 
 export interface ActivityFeedShellProps {
   title: string;
@@ -62,7 +63,8 @@ export function ActivityFeedShell({ title, href, hrefLabel = "Activities", lastU
         ) : !children || (Array.isArray(children) && children.length === 0) ? (
           <div className="flex flex-col items-center gap-2 py-10 text-center">
             <Activity className="h-8 w-8 text-muted-foreground/30" />
-            <p className="text-sm text-muted-foreground">No activity yet.</p>
+            <p className="text-sm font-medium">{emptyMessages.activity.title}</p>
+            <p className="text-sm text-muted-foreground">{emptyMessages.activity.description}</p>
           </div>
         ) : (
           children

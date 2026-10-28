@@ -18,6 +18,7 @@ import { pickNftItems } from "../../utils/media-wallet/nft-items.js";
 import { NftStrip } from "./nft-strip.js";
 import { useUsdPrices, usdPriceFor } from "../../utils/use-usd-prices.js";
 import { fmt, fmtUsd, rawToNumber } from "../../utils/media-wallet/wallet-format.js";
+import { successMessages } from "../../utils/success-messages.js";
 import { useMediaWalletApp, type MediaWalletView } from "./types.js";
 
 export function MediaWalletHome({
@@ -222,8 +223,8 @@ export function MediaWalletHome({
 
       {activated && (
         <SuccessDialog
-          title="Account activated"
-          message="Your account is live and ready to use"
+          title={successMessages.walletActivated().title}
+          message={successMessages.walletActivated().description}
           onClose={() => setActivated(false)}
         />
       )}

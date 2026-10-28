@@ -11,6 +11,7 @@ import { useMedialaneApp } from "./medialane-app.js";
 import { claimProofFor } from "../utils/drop/claim-proof.js";
 import { runIntentCalls } from "../utils/run-intent-calls.js";
 import { usePopClaimStatus } from "../utils/use-pop.js";
+import { successMessages } from "../utils/success-messages.js";
 import { useTransaction } from "../utils/use-transaction.js";
 
 export function PopClaimButton({ collectionAddress }: { collectionAddress: string }) {
@@ -64,8 +65,7 @@ export function PopClaimButton({ collectionAddress }: { collectionAddress: strin
       <TransactionDialog tx={tx} title="Claim credential" workingLabel="Claiming your credential…" firstStepLabel="Prepare claim">
         <TransactionSuccess
           name="Credential"
-          title="Credential claimed!"
-          description="Your proof of participation is now on-chain."
+          {...successMessages.claimed()}
           txHash={tx.txHash}
           actions={[{ label: "Done", onClick: tx.reset }]}
         >

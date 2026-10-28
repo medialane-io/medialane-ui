@@ -15,7 +15,9 @@ import { CurrencySheet } from "./currency-sheet.js";
 import { WALLET_TOKENS, type WalletToken } from "../../utils/media-wallet/wallet-tokens.js";
 import { SuccessDialog } from "./success-dialog.js";
 import { useMediaWalletApp, type MediaWalletView } from "./types.js";
+import { shortenAddress } from "../../utils/address.js";
 import { runIntentCalls } from "../../utils/run-intent-calls.js";
+import { successMessages } from "../../utils/success-messages.js";
 import { useMedialaneApp } from "../medialane-app.js";
 
 function isValidStarknetAddress(address: string): boolean {
@@ -73,6 +75,7 @@ export function MediaWalletSend({
   const [feeError, setFeeError] = useState<string | null>(null);
 
   const recipientValid = isValidStarknetAddress(to);
+  const sentMessage = successMessages.sent({ amount: amount.trim(), symbol: currency.symbol, to: shortenAddress(to.trim()) });
   let amountRaw: bigint | null;
   try {
     amountRaw = amount.trim() ? BigInt(parseAmount(amount.trim(), currency.decimals)) : null;
@@ -282,8 +285,8 @@ export function MediaWalletSend({
       {status === "processing" && <BusyOverlay label="Signing & sending…" />}
       {status === "success" && txHash && (
         <SuccessDialog
-          title="Sent"
-          message={`${amount.trim()} ${currency.symbol} is on its way.`}
+          title={sentMessage.title}
+          message={sentMessage.description}
           txHash={txHash}
           onClose={() => {
             reset();
