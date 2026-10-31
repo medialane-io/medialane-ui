@@ -12,7 +12,7 @@ export function CompanionAppButton({ asset }: { asset: AssetRef }) {
   if (!companion) return null;
   const Icon = companion.icon;
   return (
-    <Button asChild variant="outline" className="h-[46px] w-full rounded-[13px] font-semibold">
+    <Button asChild variant="outline" className="h-[46px] w-full rounded-[13px] bg-transparent font-semibold">
       <a
         href={`${companion.origin}${assetHref(asset.chain.toUpperCase() as Chain, asset.contractAddress, asset.tokenId)}`}
         target="_blank"
@@ -27,16 +27,13 @@ export function CompanionAppButton({ asset }: { asset: AssetRef }) {
 }
 
 export function AssetAccessButtons({ asset, stacked = false }: { asset: AssetRef; stacked?: boolean }) {
-  const { onRequireWallet, connectLabel = "Sign in", connectDescription, companion } = useMedialaneApp();
+  const { onRequireWallet, connectLabel = "Sign in", companion } = useMedialaneApp();
   return (
-    <div className="space-y-2">
-      <div className={cn("grid grid-cols-1 gap-2", companion && !stacked && "sm:grid-cols-2")}>
-        <ActionButton action="buy" icon={<Wallet className="h-4 w-4" />} onClick={onRequireWallet} className="w-full">
-          {connectLabel}
-        </ActionButton>
-        <CompanionAppButton asset={asset} />
-      </div>
-      {connectDescription ? <p className="text-xs text-muted-foreground">{connectDescription}</p> : null}
+    <div className={cn("grid grid-cols-1 gap-2", companion && !stacked && "sm:grid-cols-2")}>
+      <ActionButton action="buy" icon={<Wallet className="h-4 w-4" />} onClick={onRequireWallet} className="w-full">
+        {connectLabel}
+      </ActionButton>
+      <CompanionAppButton asset={asset} />
     </div>
   );
 }

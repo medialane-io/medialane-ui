@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.264.0] — 2026-10-31
+
+### Changed
+
+- A collection card shows its name, item count and floor price in rounded labels with a background blur, with no dark layer over the image.
+- The collections page leads with the total number of collections.
+- The fast mint, single edition, multi edition and tier mint forms default the AI policy to Allowed.
+- The companion app button on an asset page has no background.
+- The license note on an asset page describes international copyright protection.
+
+### Removed
+
+- `MedialaneApp.connectDescription` and the line under the sign-in button.
+
 ## [0.263.0] — 2026-10-29
 
 ### Changed

@@ -94,7 +94,7 @@ export function TierMintForm({ contract: rawContract, preset, aside }: TierMintF
     defaultValues: {
       name: "", imageUri: "", description: "", external_url: "",
       maxSupply: "100", royalty: 2.5, licenseType: "CC BY-SA", commercialUse: "Yes",
-      derivatives: "Share-Alike", attribution: "Required", geographicScope: "Worldwide", aiPolicy: "Not Allowed",
+      derivatives: "Share-Alike", attribution: "Required", geographicScope: "Worldwide", aiPolicy: "Allowed",
     },
   });
 

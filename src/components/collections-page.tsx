@@ -187,10 +187,10 @@ export function CollectionsPage() {
 
         <h1 className="text-3xl font-bold">Onchain Collections</h1>
         <div className="flex flex-wrap items-center gap-2 mt-1">
-          {counts?.single != null && (
+          {counts?.single != null && counts.multi != null && (
             <div className="flex items-center gap-1.5 rounded-full border border-border bg-card px-3.5 py-1.5 text-sm">
-              <span className="font-bold tabular-nums">{counts.single.toLocaleString()}</span>
-              <span className="text-muted-foreground">Single NFTs</span>
+              <span className="font-bold tabular-nums">{(counts.single + counts.multi).toLocaleString()}</span>
+              <span className="text-muted-foreground">Collections</span>
             </div>
           )}
           {counts?.multi != null && (

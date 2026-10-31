@@ -39,9 +39,10 @@ test("lists the collections with their count", async () => {
   expect(view.getByText("Onchain Collections")).toBeTruthy();
 });
 
-test("shows how many collections are single NFTs and multi editions", async () => {
+test("shows the total collections and how many are multi editions", async () => {
   const { view, queries } = setup();
-  await waitFor(() => expect(view.getByText("Single NFTs")).toBeTruthy());
+  await waitFor(() => expect(view.getByText("Collections")).toBeTruthy());
+  expect(view.getByText("2")).toBeTruthy();
   expect(view.getByText("Multi editions")).toBeTruthy();
   expect(queries).toContainEqual(expect.objectContaining({ standard: "ERC721", hideEmpty: true, limit: 1 }));
   expect(queries).toContainEqual(expect.objectContaining({ standard: "ERC1155", hideEmpty: true, limit: 1 }));

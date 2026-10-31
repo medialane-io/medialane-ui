@@ -119,7 +119,7 @@ export function AssetOverviewContent({
             </div>
           </div>
           <p className="text-xs text-muted-foreground/70">
-            Kept in permanent, tamper-proof storage · recognized under international copyright law
+            Your creative work is protected with international copyright law the moment you create it. The Berne Convention for the Protection of Literary and Artistic Works is the foundational international copyright treaty, ratified by 181 signatory countries.
           </p>
         </section>
       ) : null}

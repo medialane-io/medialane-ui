@@ -235,7 +235,7 @@ export function FastMint(props: FastMintProps) {
     defaultValues: {
       name: "", description: "", external_url: "",
       licenseType: "CC BY-SA", commercialUse: "Yes", derivatives: "Share-Alike",
-      attribution: "Required", geographicScope: "Worldwide", aiPolicy: "Not Allowed", royalty: 0,
+      attribution: "Required", geographicScope: "Worldwide", aiPolicy: "Allowed", royalty: 0,
     },
   });
   const name = form.watch("name");
