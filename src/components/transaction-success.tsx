@@ -57,3 +57,12 @@ export function TransactionSuccess({ name, image, title, description, txHash, ac
     </div>
   );
 }
+
+/** The success state for a dialog whose content has no padding of its own. */
+export function DialogTransactionSuccess(props: TransactionSuccessProps) {
+  return (
+    <div className="px-6 pb-6 pt-4">
+      <TransactionSuccess {...props} />
+    </div>
+  );
+}
