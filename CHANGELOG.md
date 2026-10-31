@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.265.0] — 2026-10-31
+
+### Changed
+
+- Dialogs keep their content inside the dialog width, so long titles and prices no longer push content past the edge.
+- On an asset page, the action buttons fit their labels and sit side by side on wide screens, and the companion app link is a text link under them.
+
 ## [0.264.0] — 2026-10-31
 
 ### Changed

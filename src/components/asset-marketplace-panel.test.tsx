@@ -101,7 +101,7 @@ test("signed out shows the price above the sign-in buttons", () => {
 test("with Buy now, Make offer and Remix, Buy now takes the full row", () => {
   const html = render(base, true, { cheapest: listing, remix: true });
   expect(html.indexOf("Buy now")).toBeLessThan(html.indexOf("Remix"));
-  expect(html).toContain("grid grid-cols-2 gap-2 [&amp;&gt;*:first-child]:col-span-2");
+  expect(html).toContain("grid grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:[&amp;&gt;*]:min-w-36 [&amp;&gt;*:first-child]:col-span-2");
 });
 
 test("incoming offers sit on the page without background panels", () => {
