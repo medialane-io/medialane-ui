@@ -67,7 +67,7 @@ const DEFAULTS: FormValues = {
   derivatives: "Share-Alike",
   attribution: "Required",
   geographicScope: "Worldwide",
-  aiPolicy: "Not Allowed",
+  aiPolicy: "Allowed",
   royalty: 0,
 };
 

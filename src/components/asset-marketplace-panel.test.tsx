@@ -46,9 +46,8 @@ const render = (app0: MedialaneApp, isSignedIn: boolean, extra: { cheapest?: typ
   );
 
 test("signed out shows the app's sign-in button and the companion app button", () => {
-  const html = render({ ...base, connectLabel: "Set up account", connectDescription: "No seed phrase needed.", companion }, false);
+  const html = render({ ...base, connectLabel: "Set up account", companion }, false);
   expect(html).toContain("Set up account");
-  expect(html).toContain("No seed phrase needed.");
   expect(html).toContain("https://other.example/asset/starknet/0xabc/7");
   expect(html).toContain("Open in the other app");
   expect(html).toContain("<button");

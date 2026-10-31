@@ -67,32 +67,34 @@ export function CollectionCard({ collection, href, settingsHref, className }: Co
             <div className="absolute inset-0 bg-gradient-to-br from-brand-purple/30 via-brand-blue/20 to-brand-navy/40" />
           )}
 
-          <div className="absolute inset-x-0 bottom-0 flex flex-col items-start gap-1 bg-gradient-to-t from-black/85 via-black/45 to-transparent px-3 pb-3 pt-14">
+          <div className="absolute inset-x-2 bottom-2 flex flex-col items-start gap-1">
             {!collection.name && collection.metadataStatus === "PENDING" ? (
-              <span className="flex items-center gap-1 text-2xs text-white/70">
+              <span className="flex items-center gap-1 rounded-full px-2.5 py-1 text-2xs text-white backdrop-blur-md">
                 <Loader2 className="h-2.5 w-2.5 animate-spin" />
                 Indexing…
               </span>
             ) : (
-              <p className="max-w-full truncate text-sm font-bold leading-tight text-white">
+              <p className="max-w-full truncate rounded-full px-3 py-1 text-sm font-bold leading-tight text-white backdrop-blur-md">
                 {collection.name ?? "Unnamed Collection"}
               </p>
             )}
 
-            <div className="flex flex-wrap items-center gap-x-2.5 gap-y-0.5 text-2xs font-medium text-white/80">
-              {collection.totalSupply != null && (
-                <span>
-                  {collection.totalSupply.toLocaleString()} {collection.totalSupply === 1 ? "item" : "items"}
-                </span>
-              )}
-              {floor && (
-                <span className="inline-flex items-center gap-1 font-bold text-white/90">
-                  Floor
-                  <CurrencyIcon symbol={floor.symbol} size={10} />
-                  {floor.amount}
-                </span>
-              )}
-            </div>
+            {(collection.totalSupply != null || floor) && (
+              <div className="flex flex-wrap items-center gap-x-2.5 gap-y-0.5 rounded-full px-2.5 py-1 text-2xs font-medium text-white backdrop-blur-md">
+                {collection.totalSupply != null && (
+                  <span>
+                    {collection.totalSupply.toLocaleString()} {collection.totalSupply === 1 ? "item" : "items"}
+                  </span>
+                )}
+                {floor && (
+                  <span className="inline-flex items-center gap-1 font-bold text-white">
+                    Floor
+                    <CurrencyIcon symbol={floor.symbol} size={10} />
+                    {floor.amount}
+                  </span>
+                )}
+              </div>
+            )}
           </div>
         </div>
       </Link>
