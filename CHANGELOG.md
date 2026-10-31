@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.266.0] — 2026-10-31
+
+### Added
+
+- `DialogTransactionSuccess`: the success state for a dialog whose content has no padding of its own, so its actions no longer run edge to edge.
+
 ## [0.265.0] — 2026-10-31
 
 ### Changed

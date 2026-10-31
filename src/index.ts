@@ -396,7 +396,7 @@ export { useLaunchpadImageUpload } from "./utils/use-launchpad-image-upload.js";
 export { invalidatePortfolioCache } from "./utils/portfolio-cache.js";
 export { TransactionDialog } from "./components/transaction-dialog.js";
 export type { TransactionDialogProps } from "./components/transaction-dialog.js";
-export { TransactionSuccess } from "./components/transaction-success.js";
+export { TransactionSuccess, DialogTransactionSuccess } from "./components/transaction-success.js";
 export type { TransactionSuccessProps, TransactionSuccessAction } from "./components/transaction-success.js";
 export { successMessages } from "./utils/success-messages.js";
 export { emptyMessages } from "./utils/empty-messages.js";

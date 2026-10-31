@@ -5,7 +5,7 @@ mock.module("next/image", () => ({
   default: ({ alt }: { alt?: string }) => <span data-alt={alt} />,
 }));
 
-const { TransactionSuccess } = await import("./transaction-success.js");
+const { TransactionSuccess, DialogTransactionSuccess } = await import("./transaction-success.js");
 
 const render = (props: Partial<Parameters<typeof TransactionSuccess>[0]> = {}) =>
   renderToStaticMarkup(
@@ -43,4 +43,13 @@ test("leaves out an action it was not given", () => {
 test("links the transaction when it has a hash", () => {
   expect(render({ txHash: "0x1234567890abcdef1234567890abcdef" })).toContain("/tx/0x1234567890abcdef1234567890abcdef");
   expect(render()).not.toContain("/tx/");
+});
+
+test("in a dialog without padding, the success state brings its own", () => {
+  const html = renderToStaticMarkup(
+    <DialogTransactionSuccess name="Artes Visuais" title="Listing created" actions={[{ label: "Done", onClick: () => {} }]} />,
+  );
+  expect(html).toContain('class="px-6 pb-6 pt-4"');
+  expect(html).toContain("Listing created");
+  expect(html).toContain("Done");
 });
