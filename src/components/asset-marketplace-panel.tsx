@@ -59,7 +59,7 @@ export interface AssetMarketplacePanelProps<T extends ApiOrderLike = ApiOrderLik
 
 function ActionRow({ children }: { children: ReactNode }) {
   const odd = Children.toArray(children).length % 2 === 1;
-  return <div className={cn("grid grid-cols-2 gap-2", odd && "[&>*:first-child]:col-span-2")}>{children}</div>;
+  return <div className={cn("grid grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:[&>*]:min-w-36", odd && "[&>*:first-child]:col-span-2")}>{children}</div>;
 }
 
 function PriceBlock({ order, usdValue }: { order: ApiOrderLike; usdValue?: string | null }) {
@@ -296,7 +296,7 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
           </div>
         ) : null}
 
-        {isSignedIn ? <CompanionAppButton asset={asset} /> : null}
+        {isSignedIn ? <CompanionAppButton asset={asset} variant="link" /> : null}
       </div>
     </div>
   );
