@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.271.0] — 2026-11-01
+
+### Changed
+
+- A collection card shows the item count and the floor price as two separate chips.
+
 ## [0.270.0] — 2026-11-01
 
 ### Changed

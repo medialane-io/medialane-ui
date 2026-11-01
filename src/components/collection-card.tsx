@@ -80,12 +80,14 @@ export function CollectionCard({ collection, href, settingsHref, className }: Co
             )}
 
             {(collection.totalSupply != null || floor) && (
-              <div className="flex flex-wrap items-center gap-x-2.5 gap-y-0.5 rounded-full px-2.5 py-1 text-2xs font-medium text-white bg-black/30 backdrop-blur-md">
+              <div className="flex flex-wrap items-center gap-1">
                 {collection.totalSupply != null && (
-                  <span>{collection.totalSupply.toLocaleString()}</span>
+                  <span className="rounded-full px-2.5 py-1 text-2xs font-medium text-white bg-black/30 backdrop-blur-md">
+                    {collection.totalSupply.toLocaleString()}
+                  </span>
                 )}
                 {floor && (
-                  <span className="inline-flex items-center gap-1 font-bold text-white">
+                  <span className="inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-2xs font-bold text-white bg-black/30 backdrop-blur-md">
                     Floor
                     <CurrencyIcon symbol={floor.symbol} size={10} />
                     {floor.amount}
