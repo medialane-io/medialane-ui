@@ -16,20 +16,21 @@ export interface DiscoverHeroProps {
 export function DiscoverHero({
   stats,
   orders,
-  badgeText = "Creative Works",
+  badgeText,
   headlineText = "Create, share & explore",
   getTickerHref,
 }: DiscoverHeroProps) {
   return (
-    <div className="space-y-6 pt-2 pb-6 border-b border-border/50">
-
-      <motion.div
-        initial={{ opacity: 0, y: 12 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4, ease: EASE_OUT }}
-      >
-        <span className="pill-badge">{badgeText}</span>
-      </motion.div>
+    <div className="space-y-6 pt-2">
+      {badgeText ? (
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, ease: EASE_OUT }}
+        >
+          <span className="pill-badge">{badgeText}</span>
+        </motion.div>
+      ) : null}
 
       <motion.div
         className="text-3xl sm:text-4xl lg:text-5xl font-black leading-[1.1]"
@@ -53,7 +54,6 @@ export function DiscoverHero({
           {[
             { label: "Collections", value: stats.collections },
             { label: "Assets", value: stats.tokens },
-            { label: "Sales", value: stats.sales },
           ].map(({ label, value }) => (
             <div
               key={label}

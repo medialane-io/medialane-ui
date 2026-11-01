@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.270.0] — 2026-11-01
+
+### Changed
+
+- Discover page hero: the badge shows only when `heroBadge` is passed (no default text), the stats show collections and assets only, and the divider under the ticker is gone.
+- Less space between the discover hero and the collections strip.
+
 ## [0.269.0] — 2026-11-01
 
 ### Changed

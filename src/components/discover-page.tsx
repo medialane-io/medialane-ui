@@ -30,19 +30,21 @@ export function DiscoverPage({ useMarketActions, heroBadge, heroHeadline }: Disc
 
   return (
     <PageContainer className="box-border max-w-full space-y-14 px-4 pt-20 sm:space-y-20 sm:px-5 lg:px-6">
-      <DiscoverHero
-        stats={stats ?? null}
-        orders={tickerOrders}
-        badgeText={heroBadge}
-        headlineText={heroHeadline}
-        getTickerHref={(o) => assetHref("STARKNET", o.nftContract, o.nftTokenId)}
-      />
-      <DiscoverCollectionsStrip
-        collections={collections}
-        isLoading={collectionsLoading}
-        getHref={(c) => collectionHref("STARKNET", c.contractAddress)}
-        allCollectionsHref="/collections"
-      />
+      <div className="space-y-8 sm:space-y-10">
+        <DiscoverHero
+          stats={stats ?? null}
+          orders={tickerOrders}
+          badgeText={heroBadge}
+          headlineText={heroHeadline}
+          getTickerHref={(o) => assetHref("STARKNET", o.nftContract, o.nftTokenId)}
+        />
+        <DiscoverCollectionsStrip
+          collections={collections}
+          isLoading={collectionsLoading}
+          getHref={(c) => collectionHref("STARKNET", c.contractAddress)}
+          allCollectionsHref="/collections"
+        />
+      </div>
       <DiscoverActivityStrip
         orders={feedOrders}
         isLoading={feedLoading}
