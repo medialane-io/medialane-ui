@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.267.0] — 2026-11-01
+
+### Fixed
+
+- A collection card's name, item count and floor price stay readable over a white or light image: the labels have a dark translucent background behind the blur.
+
 ## [0.266.0] — 2026-10-31
 
 ### Added
