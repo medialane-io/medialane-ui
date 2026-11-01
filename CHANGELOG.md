@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.269.0] — 2026-11-01
+
+### Changed
+
+- The blurred image behind collection and asset pages is stronger in light and dark themes: higher opacity, more saturation and a softer blur.
+
 ## [0.268.0] — 2026-11-01
 
 ### Changed
