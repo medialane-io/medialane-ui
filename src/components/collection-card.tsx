@@ -69,22 +69,20 @@ export function CollectionCard({ collection, href, settingsHref, className }: Co
 
           <div className="absolute inset-x-2 bottom-2 flex flex-col items-start gap-1">
             {!collection.name && collection.metadataStatus === "PENDING" ? (
-              <span className="flex items-center gap-1 rounded-full px-2.5 py-1 text-2xs text-white bg-black/55 backdrop-blur-md">
+              <span className="flex items-center gap-1 rounded-full px-2.5 py-1 text-2xs text-white bg-black/30 backdrop-blur-md">
                 <Loader2 className="h-2.5 w-2.5 animate-spin" />
                 Indexing…
               </span>
             ) : (
-              <p className="max-w-full truncate rounded-full px-3 py-1 text-sm font-bold leading-tight text-white bg-black/55 backdrop-blur-md">
+              <p className="max-w-full truncate rounded-full px-3 py-1 text-sm font-bold leading-tight text-white bg-black/30 backdrop-blur-md">
                 {collection.name ?? "Unnamed Collection"}
               </p>
             )}
 
             {(collection.totalSupply != null || floor) && (
-              <div className="flex flex-wrap items-center gap-x-2.5 gap-y-0.5 rounded-full px-2.5 py-1 text-2xs font-medium text-white bg-black/55 backdrop-blur-md">
+              <div className="flex flex-wrap items-center gap-x-2.5 gap-y-0.5 rounded-full px-2.5 py-1 text-2xs font-medium text-white bg-black/30 backdrop-blur-md">
                 {collection.totalSupply != null && (
-                  <span>
-                    {collection.totalSupply.toLocaleString()} {collection.totalSupply === 1 ? "item" : "items"}
-                  </span>
+                  <span>{collection.totalSupply.toLocaleString()}</span>
                 )}
                 {floor && (
                   <span className="inline-flex items-center gap-1 font-bold text-white">

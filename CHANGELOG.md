@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.268.0] — 2026-11-01
+
+### Changed
+
+- A collection card's name and item count sit on a lighter dark layer, and the count shows just the number.
+
 ## [0.267.0] — 2026-11-01
 
 ### Fixed
