@@ -19,7 +19,6 @@ import { AssetCollectionBar } from "./asset-collection-bar.js";
 import { AssetOverviewContent } from "./asset-overview-content.js";
 import { AssetMarketsTab } from "./asset-markets-tab.js";
 import { AssetProvenanceTab } from "./asset-provenance-tab.js";
-import { AssetLightbox } from "./asset-lightbox.js";
 import { AssetUnavailable } from "./asset-unavailable.js";
 import { HiddenContentBanner } from "./hidden-content-banner.js";
 import { DropTokenLink } from "./drop/drop-token-link.js";
@@ -176,7 +175,6 @@ function AssetPageView({
 
   const [reportOpen, setReportOpen] = useState(false);
   const [commentOpen, setCommentOpen] = useState(false);
-  const [lightboxOpen, setLightboxOpen] = useState(false);
   const [imgError, setImgError] = useState(false);
 
   const name = token.metadata?.name || `${config.namePrefix} #${token.tokenId}`;
@@ -380,7 +378,6 @@ function AssetPageView({
             image={image}
             imgError={imgError}
             onImageError={() => setImgError(true)}
-            onZoom={() => setLightboxOpen(true)}
             author={publicationAuthor(attributes, token.metadata?.author)}
             externalUrl={token.metadata?.externalUrl}
           />
@@ -398,7 +395,6 @@ function AssetPageView({
             imageAlt={name}
             imgError={imgError}
             onImageError={() => setImgError(true)}
-            onZoom={() => setLightboxOpen(true)}
             animationUrl={token.metadata?.animationUrl}
             live={isLivingRenderCollection(token.chain as Chain, token.contractAddress)}
             fallback={<div className="aspect-square bg-muted" />}
@@ -470,7 +466,6 @@ function AssetPageView({
         </Tabs>
       </PageContainer>
 
-      <AssetLightbox open={lightboxOpen} onOpenChange={setLightboxOpen} image={image} alt={name} />
       <FloatingCommentsButton onClick={() => setCommentOpen(true)} commentTotal={commentTotal} />
       <AssetCommentsDialog
         open={commentOpen}
