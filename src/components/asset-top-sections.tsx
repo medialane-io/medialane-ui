@@ -18,7 +18,6 @@ interface AssetMediaColumnProps {
   onImageError: () => void;
   fallback: React.ReactNode;
 
-  onZoom?: () => void;
 
   animationUrl?: string | null;
 
@@ -32,7 +31,6 @@ export function AssetMediaColumn({
   imgError,
   onImageError,
   fallback,
-  onZoom,
   animationUrl,
   live = false,
 }: AssetMediaColumnProps) {
@@ -66,29 +64,6 @@ export function AssetMediaColumn({
         </div>
       ) : !image || imgError ? (
         <div className="w-full overflow-hidden rounded-3xl">{fallback}</div>
-      ) : onZoom ? (
-        <motion.button
-          type="button"
-          onClick={onZoom}
-          aria-label="View full image"
-          initial={shouldReduce ? false : { opacity: 0, scale: 0.98 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5 }}
-          className="group relative block w-full overflow-hidden rounded-3xl cursor-zoom-in focus:outline-none"
-        >
-          {shimmer}
-          <img
-            src={image}
-            alt={imageAlt}
-            onLoad={() => setLoaded(true)}
-            onError={onImageError}
-            className={cn(
-              "w-full h-auto max-h-[80vh] object-contain",
-              "transition-opacity duration-300 group-hover:opacity-95 group-active:scale-[0.99]",
-              loaded ? "opacity-100" : "opacity-0"
-            )}
-          />
-        </motion.button>
       ) : (
         <motion.div
           initial={shouldReduce ? false : { opacity: 0, scale: 0.98 }}

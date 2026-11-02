@@ -295,3 +295,17 @@ test("an audio asset without a playable link keeps the standard layout", async (
   await waitFor(() => expect(getByText("Chinese Alarm Clock")).toBeTruthy());
   expect(container.querySelectorAll("iframe").length).toBe(0);
 });
+
+for (const [layout, ipType] of [["standard", undefined], ["publication", "Publications"]] as const) {
+  test(`the ${layout} asset image is not a zoom button`, async () => {
+    const { container, getByText } = renderPage(
+      token({ metadata: { name: "Stones", description: "We could be heroes", image: "https://example.test/stones.jpg", attributes: [], ipType } as never }),
+      collection(),
+    );
+    await waitFor(() => expect(getByText("Stones")).toBeTruthy());
+    const img = container.querySelector('img[alt="Stones"]');
+    expect(img !== null).toBe(true);
+    expect(img!.closest("button") === null).toBe(true);
+    expect(container.querySelector('[aria-label="View full image"]') === null).toBe(true);
+  });
+}

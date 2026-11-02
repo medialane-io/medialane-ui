@@ -10,12 +10,11 @@ export interface AssetPublicationProps {
   image: string | null;
   imgError: boolean;
   onImageError: () => void;
-  onZoom: () => void;
   author?: string | null;
   externalUrl?: string | null;
 }
 
-export function AssetPublication({ name, text, image, imgError, onImageError, onZoom, author, externalUrl }: AssetPublicationProps) {
+export function AssetPublication({ name, text, image, imgError, onImageError, author, externalUrl }: AssetPublicationProps) {
   const link = externalLink(externalUrl);
   const paragraphs = text.split(/\n{2,}/).map((p) => p.trim()).filter(Boolean);
 
@@ -26,9 +25,9 @@ export function AssetPublication({ name, text, image, imgError, onImageError, on
       </header>
 
       {image && !imgError ? (
-        <button type="button" onClick={onZoom} aria-label="View full image" className="block w-full overflow-hidden rounded-3xl cursor-zoom-in focus:outline-none">
+        <div className="w-full overflow-hidden rounded-3xl">
           <img src={image} alt={name} onError={onImageError} className="w-full h-auto max-h-[80vh] object-contain" />
-        </button>
+        </div>
       ) : null}
 
       <div className="max-w-3xl space-y-4 text-base leading-relaxed text-foreground break-words">

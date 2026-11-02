@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.273.0] — 2026-11-02
+
+### Removed
+
+- Clicking the image on the asset page no longer opens a full-screen view. `AssetLightbox` and its `AssetLightboxProps` type are no longer exported.
+
 ## [0.272.0] — 2026-11-02
 
 ### Added

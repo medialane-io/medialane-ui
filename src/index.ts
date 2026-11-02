@@ -463,8 +463,6 @@ export {
 export { ToggleGroup, Section } from "./components/create-form-primitives.js";
 export { OrderSortControl, sortOrders } from "./components/order-sort-control.js";
 export type { OrderSort } from "./components/order-sort-control.js";
-export { AssetLightbox } from "./components/asset-lightbox.js";
-export type { AssetLightboxProps } from "./components/asset-lightbox.js";
 export { PriceHistoryChart } from "./components/price-history-chart.js";
 export type { PriceHistoryChartProps } from "./components/price-history-chart.js";
 export { NavThemeToggle } from "./components/nav-theme-toggle.js";
