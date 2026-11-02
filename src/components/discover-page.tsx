@@ -26,6 +26,7 @@ export function DiscoverPage({ useMarketActions, heroBadge, heroHeadline }: Disc
   const { stats } = usePlatformStats();
   const { orders: tickerOrders } = useOrders({ status: "ACTIVE", sort: "recent", limit: 14 });
   const { orders: feedOrders, isLoading: feedLoading } = useOrders({ status: "ACTIVE", sort: "recent", limit: 10 });
+  const { collections: featured, isLoading: featuredLoading } = useCollections(1, 8, true);
   const { collections, isLoading: collectionsLoading } = useCollections(1, 8);
 
   return (
@@ -38,6 +39,15 @@ export function DiscoverPage({ useMarketActions, heroBadge, heroHeadline }: Disc
           headlineText={heroHeadline}
           getTickerHref={(o) => assetHref("STARKNET", o.nftContract, o.nftTokenId)}
         />
+        {(featuredLoading || featured.length > 0) && (
+          <DiscoverCollectionsStrip
+            collections={featured}
+            isLoading={featuredLoading}
+            getHref={(c) => collectionHref("STARKNET", c.contractAddress)}
+            allCollectionsHref="/collections"
+            title="Featured"
+          />
+        )}
         <DiscoverCollectionsStrip
           collections={collections}
           isLoading={collectionsLoading}
