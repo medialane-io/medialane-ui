@@ -37,3 +37,23 @@ test("discover shows the app's hero, the sections, and buys through the app", as
   fireEvent.click(buys[0]!);
   expect(bought).toEqual(["1"]);
 });
+
+test("discover shows a Featured strip of featured collections before Collections", async () => {
+  const col = (address: string, name: string) => ({ contractAddress: address, name, chain: "STARKNET", symbol: "X", owner: ME, totalSupply: 1, collectionId: null, image: null, floorPrice: null, startBlock: "0", isFeatured: true }) as never;
+  const calls: Array<boolean | undefined> = [];
+  const collectionsList = async (q: { isFeatured?: boolean }) => {
+    calls.push(q.isFeatured);
+    return { data: q.isFeatured ? [col("0xf1", "Featured One")] : [col("0xc2", "Plain Two")], meta: { page: 1, limit: 8, total: 1 } };
+  };
+  const empty = async () => ({ data: [], meta: { page: 1, limit: 10, total: 0 } });
+  const client = { api: { platform: { stats: async () => ({ collections: 1, tokens: 2, sales: 3 }) }, orders: { list: empty }, collections: { list: collectionsList }, activity: { list: empty }, creators: { list: empty }, rewards: { leaderboard: empty, batch: async () => ({ data: [] }) } } } as unknown as MedialaneClient;
+  const app = { getClient: () => client, getSigner: () => { throw new Error("unused"); }, walletAddress: ME, onRequireWallet: () => {} } as MedialaneApp;
+  const useMarketActions = () => ({ buy: () => {}, offer: () => {}, dialogs: null });
+  const view = render(<SWRConfig value={{ provider: () => new Map() }}><MedialaneAppProvider value={app}><DiscoverPage useMarketActions={useMarketActions} /></MedialaneAppProvider></SWRConfig>);
+  await waitFor(() => expect(view.getAllByText("Featured One").length).toBeGreaterThan(0));
+  await waitFor(() => expect(view.getAllByText("Plain Two").length).toBeGreaterThan(0));
+  expect(calls).toContain(true);
+  const featuredHeading = view.getByRole("heading", { name: "Featured" });
+  const collectionsHeading = view.getByRole("heading", { name: "Collections" });
+  expect(featuredHeading.compareDocumentPosition(collectionsHeading) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+});

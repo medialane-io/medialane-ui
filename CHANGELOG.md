@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.274.0] — 2026-11-02
+
+### Added
+
+- The discover page shows a Featured carousel of featured collections above Collections. It is hidden when there are none.
+
 ## [0.273.0] — 2026-11-02
 
 ### Removed
