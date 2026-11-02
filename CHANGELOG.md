@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.272.0] — 2026-11-02
+
+### Added
+
+- `IpfsGatewayFallback`: mount once per app with a `primary` and a `fallback` IPFS gateway. An image from the primary gateway that fails to load is loaded from the fallback instead, whichever component renders it. Also exported as `installIpfsGatewayFallback` and `gatewayFallbackSrc`.
+
 ## [0.271.0] — 2026-11-01
 
 ### Changed
