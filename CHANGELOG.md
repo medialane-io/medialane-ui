@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.275.0] — 2026-11-02
+
+### Changed
+
+- The Featured and Collections carousels on the discover page are spaced like the other sections.
+
 ## [0.274.0] — 2026-11-02
 
 ### Added

@@ -39,21 +39,23 @@ export function DiscoverPage({ useMarketActions, heroBadge, heroHeadline }: Disc
           headlineText={heroHeadline}
           getTickerHref={(o) => assetHref("STARKNET", o.nftContract, o.nftTokenId)}
         />
-        {(featuredLoading || featured.length > 0) && (
+        <div className="space-y-14 sm:space-y-20">
+          {(featuredLoading || featured.length > 0) && (
+            <DiscoverCollectionsStrip
+              collections={featured}
+              isLoading={featuredLoading}
+              getHref={(c) => collectionHref("STARKNET", c.contractAddress)}
+              allCollectionsHref="/collections"
+              title="Featured"
+            />
+          )}
           <DiscoverCollectionsStrip
-            collections={featured}
-            isLoading={featuredLoading}
+            collections={collections}
+            isLoading={collectionsLoading}
             getHref={(c) => collectionHref("STARKNET", c.contractAddress)}
             allCollectionsHref="/collections"
-            title="Featured"
           />
-        )}
-        <DiscoverCollectionsStrip
-          collections={collections}
-          isLoading={collectionsLoading}
-          getHref={(c) => collectionHref("STARKNET", c.contractAddress)}
-          allCollectionsHref="/collections"
-        />
+        </div>
       </div>
       <DiscoverActivityStrip
         orders={feedOrders}
