@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.276.0] — 2026-11-03
+
+### Removed
+
+- The Analytics tab on the creator page.
+
 ## [0.275.0] — 2026-11-02
 
 ### Changed

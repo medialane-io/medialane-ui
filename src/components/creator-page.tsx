@@ -1,8 +1,8 @@
 "use client";
 
-import { lazy, Suspense, useState } from "react";
+import { useState } from "react";
 import useSWR from "swr";
-import { Activity, BarChart2, Image as ImageIcon, LayoutGrid, ShoppingBag } from "lucide-react";
+import { Activity, Image as ImageIcon, LayoutGrid, ShoppingBag } from "lucide-react";
 import type { ApiToken } from "@medialane/sdk";
 import Link from "./link.js";
 import { Button } from "./button.js";
@@ -34,13 +34,10 @@ import { useUserOrders } from "../utils/use-orders.js";
 import { useActivitiesByAddress } from "../utils/use-activities.js";
 import { useCreatorByUsername, useCreatorProfile } from "../utils/use-profiles.js";
 
-const CreatorAnalytics = lazy(() => import("./creator-analytics.js").then((m) => ({ default: m.CreatorAnalytics })));
-
 const TABS = [
   { id: "assets", label: "Assets", Icon: ImageIcon },
   { id: "collections", label: "Collections", Icon: LayoutGrid },
   { id: "listings", label: "Listings", Icon: ShoppingBag },
-  { id: "analytics", label: "Analytics", Icon: BarChart2 },
   { id: "activity", label: "Activity", Icon: Activity },
 ] as const;
 
@@ -74,7 +71,7 @@ export function CreatorPage({ address: addressProp, username, useAssetActions, u
   const { tokens, meta, isLoading: tokensLoading, mutate: refreshTokens } = useTokensByOwner(address, 1, 20);
   const { collections, isLoading: collectionsLoading } = useCollectionsByOwner(address);
   const { orders, isLoading: ordersLoading } = useUserOrders(activeTab === "listings" ? address : null);
-  const { activities, isLoading: activitiesLoading } = useActivitiesByAddress(activeTab === "activity" || activeTab === "analytics" ? address : null);
+  const { activities, isLoading: activitiesLoading } = useActivitiesByAddress(activeTab === "activity" ? address : null);
   const { data: hidden } = useSWR(address ? `creator-hidden-${address}` : null, () => client.api.creators.isHidden(address!).catch(() => false));
   const actions = useAssetActions({ refresh: () => void refreshTokens() });
   const market = useMarketActions();
@@ -206,14 +203,6 @@ export function CreatorPage({ address: addressProp, username, useAssetActions, u
               {listings.map((o) => <ListingCard key={o.orderHash} order={o} onBuy={isOwner ? undefined : market.buy} usdValue={orderUsd(o.price, prices)} overflowMenu={<ListingCardMenu order={o} />} />)}
             </div>
           )
-        )}
-
-        {activeTab === "analytics" && (
-          <div className="max-w-2xl">
-            <Suspense fallback={<div className="h-64 w-full animate-pulse rounded-xl bg-muted/40" />}>
-              <CreatorAnalytics activities={activities} isLoading={activitiesLoading} />
-            </Suspense>
-          </div>
         )}
 
         {activeTab === "activity" && (
