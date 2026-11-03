@@ -538,7 +538,6 @@ export type { RemixesTabProps } from "./components/remixes-tab.js";
 
 export { OwnerSetupPanel } from "./components/owner-setup-panel.js";
 export { DropCountdown } from "./components/drop-countdown.js";
-export { CreatorAnalytics } from "./components/creator-analytics.js";
 export {
   Dialog, DialogPortal, DialogOverlay, DialogClose, DialogTrigger,
   DialogContent, DialogHeader, DialogFooter, DialogTitle, DialogDescription,
