@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.277.0] — 2026-11-04
+
+### Changed
+
+- A request the API refused with a reason is no longer offered again; the reason is shown and the dialog offers Close.
+
 ## [0.276.0] — 2026-11-03
 
 ### Removed

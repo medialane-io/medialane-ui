@@ -79,7 +79,7 @@ export function describeError(error: unknown): ErrorNotice {
   if (error instanceof MedialaneApiError) {
     if (error.status === 429) return notice("Service busy", NETWORK_BUSY);
     const reason = error.status >= 500 ? undefined : apiReason(error);
-    return reason ? notice(undefined, reason) : unexplained(error);
+    return reason ? notice(undefined, reason, undefined, false) : unexplained(error);
   }
 
   if (isBusy(error)) {

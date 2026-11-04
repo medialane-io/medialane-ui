@@ -110,6 +110,11 @@ test("a temporary failure can be retried", () => {
   expect(describeError(new MedialaneApiError(429, "slow", undefined, {})).retryable).toBe(true);
 });
 
+test("a request the API refused with a reason is not offered again", () => {
+  const err = new MedialaneApiError(400, "refused", undefined, { error: "This listing is no longer available because the seller no longer owns this item." });
+  expect(describeError(err).retryable).toBe(false);
+});
+
 test("an unexplained API failure shows the backend request id as its reference", () => {
   const err = new MedialaneApiError(500, "boom", undefined, {}, "/v1/x", undefined, "a1b2c3d4-0000-0000-0000-000000000000");
   expect(describeError(err).message).toBe("Share reference a1b2c3d4 with support.");
