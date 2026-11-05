@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.279.0] — 2026-11-05
+
+### Changed
+
+- Accepts any `@medialane/sdk` from 0.215.0 below 1.0.0. CI checks ui against both the lowest supported SDK and the latest published one.
+
 ## [0.278.0] — 2026-11-05
 
 ### Changed
