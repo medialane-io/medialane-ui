@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.278.0] — 2026-11-05
+
+### Changed
+
+- Requires `@medialane/sdk` 0.215.
+
 ## [0.277.0] — 2026-11-04
 
 ### Changed
