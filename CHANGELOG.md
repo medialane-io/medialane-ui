@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.282.0] — 2026-11-06
+
+### Added
+
+- `TransactionDialogStates`: shows the progress, success or failure screen for a dialog's transaction and the dialog's own content otherwise.
+- `isBusyPhase`: whether a transaction phase is still in progress.
+
 ## [0.281.0] — 2026-11-06
 
 ### Added
