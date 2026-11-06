@@ -8,6 +8,10 @@ import { describeError } from "./describe-error.js";
 
 export type TransactionPhase = "idle" | "preparing" | "submitting" | "confirming" | "success" | "error";
 
+export function isBusyPhase(phase: TransactionPhase): boolean {
+  return phase === "preparing" || phase === "submitting" || phase === "confirming";
+}
+
 export function useTransaction() {
   const app = useMedialaneApp();
   const [phase, setPhase] = useState<TransactionPhase>("idle");
