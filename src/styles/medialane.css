@@ -1,3 +1,82 @@
+:root {
+  --background: 0 0% 99%;
+  --foreground: 224 47% 11%;
+  --card: 0 0% 100%;
+  --card-foreground: 224 47% 11%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 224 47% 11%;
+  --primary: 248 81% 56%;
+  --primary-foreground: 0 0% 98%;
+  --secondary: 220 14% 96%;
+  --secondary-foreground: 224 47% 11%;
+  --muted: 220 14% 96%;
+  --muted-foreground: 220 9% 46%;
+  --accent: 221 83% 53%;
+  --accent-foreground: 0 0% 98%;
+  --destructive: 350 89% 60%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 220 13% 91%;
+  --input: 220 13% 91%;
+  --ring: 271 81% 56%;
+  --radius: 1rem;
+  --price: 21 90% 44%;
+
+  --sidebar-background: 0 0% 98%;
+  --sidebar-foreground: 224 47% 11%;
+  --sidebar-primary: 271 81% 56%;
+  --sidebar-primary-foreground: 0 0% 98%;
+  --sidebar-accent: 220 14% 96%;
+  --sidebar-accent-foreground: 224 47% 11%;
+  --sidebar-border: 220 13% 91%;
+  --sidebar-ring: 221 83% 53%;
+
+  --brand-blue: 240 100% 62%;
+  --brand-navy: 229 51% 8%;
+  --brand-rose: 341 89% 67%;
+  --brand-purple: 258 90% 66%;
+  --brand-orange: 23 96% 63%;
+  --brand-maeve: 327 64% 67%;
+}
+
+.dark {
+  --background: 224 50% 4%;
+  --foreground: 210 20% 95%;
+  --card: 224 40% 8%;
+  --card-foreground: 210 20% 95%;
+  --popover: 224 40% 8%;
+  --popover-foreground: 210 20% 95%;
+  --primary: 248 81% 65%;
+  --primary-foreground: 0 0% 98%;
+  --secondary: 224 30% 13%;
+  --secondary-foreground: 210 15% 85%;
+  --muted: 224 30% 13%;
+  --muted-foreground: 220 10% 55%;
+  --accent: 221 83% 65%;
+  --accent-foreground: 0 0% 98%;
+  --destructive: 350 80% 55%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 262 30% 18%;
+  --input: 224 20% 16%;
+  --ring: 271 81% 65%;
+  --price: 21 90% 58%;
+
+  --sidebar-background: 224 50% 4%;
+  --sidebar-foreground: 210 15% 80%;
+  --sidebar-primary: 271 81% 65%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: 224 30% 11%;
+  --sidebar-accent-foreground: 210 15% 85%;
+  --sidebar-border: 224 20% 12%;
+  --sidebar-ring: 271 60% 65%;
+
+  --brand-blue: 240 100% 62%;
+  --brand-navy: 229 51% 8%;
+  --brand-rose: 341 89% 67%;
+  --brand-purple: 258 90% 66%;
+  --brand-orange: 23 96% 63%;
+  --brand-maeve: 327 64% 67%;
+}
+
 ::-webkit-scrollbar { width: 4px; height: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: hsl(var(--border)); border-radius: 4px; }
