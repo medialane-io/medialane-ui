@@ -401,6 +401,8 @@ export { TransactionDialog } from "./components/transaction-dialog.js";
 export type { TransactionDialogProps } from "./components/transaction-dialog.js";
 export { TransactionSuccess, DialogTransactionSuccess } from "./components/transaction-success.js";
 export { TransactionDialogStates } from "./components/transaction-dialog-states.js";
+export { TransferDialog } from "./components/transfer-dialog.js";
+export type { TransferDialogProps } from "./components/transfer-dialog.js";
 export type { TransactionDialogStatesProps } from "./components/transaction-dialog-states.js";
 export type { TransactionSuccessProps, TransactionSuccessAction } from "./components/transaction-success.js";
 export { successMessages } from "./utils/success-messages.js";

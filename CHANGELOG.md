@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.284.0] — 2026-11-06
+
+### Added
+
+- `TransferDialog`: asks for a recipient, confirms it, then shows the transaction progress, success or failure. The app supplies its own transaction state and the transfer action.
+
 ## [0.283.0] — 2026-11-06
 
 ### Changed
