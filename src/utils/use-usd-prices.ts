@@ -1,11 +1,25 @@
 "use client";
 
 import useSWR from "swr";
+import { formatUsd } from "./format.js";
 
 export type UsdPrices = Partial<Record<"STRK" | "ETH" | "USDC" | "USDT" | "WBTC", number>>;
 
 export function usdPriceFor(prices: UsdPrices | null, symbol: string): number | undefined {
   return (prices as Record<string, number | undefined> | null)?.[symbol];
+}
+
+export function usdValueFor(
+  amountFormatted: string | null | undefined,
+  currency: string | null | undefined,
+  prices: UsdPrices | null,
+): string | null {
+  if (!amountFormatted || !currency || !prices) return null;
+  const rate = usdPriceFor(prices, currency.toUpperCase());
+  if (rate == null) return null;
+  const amount = parseFloat(amountFormatted);
+  if (isNaN(amount)) return null;
+  return formatUsd(amount * rate);
 }
 
 const REFRESH_MS = 60_000;

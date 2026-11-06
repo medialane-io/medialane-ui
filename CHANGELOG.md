@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.285.0] — 2026-11-06
+
+### Added
+
+- `usdValueFor`: the dollar value of an amount in a currency, as text.
+
 ## [0.284.0] — 2026-11-06
 
 ### Added
