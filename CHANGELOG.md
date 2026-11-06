@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.286.0] — 2026-11-06
+
+### Added
+
+- `MarketplaceSearch`, `SearchInput`, `useMarketplaceFilters`, `FiltersButton`, `ActiveFilters` and `FiltersDialog`: the marketplace search box and filters.
+- `useDebouncedValue`.
+
 ## [0.285.0] — 2026-11-06
 
 ### Added

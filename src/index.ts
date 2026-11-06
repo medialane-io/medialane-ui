@@ -402,6 +402,10 @@ export type { TransactionDialogProps } from "./components/transaction-dialog.js"
 export { TransactionSuccess, DialogTransactionSuccess } from "./components/transaction-success.js";
 export { TransactionDialogStates } from "./components/transaction-dialog-states.js";
 export { TransferDialog } from "./components/transfer-dialog.js";
+export { MarketplaceSearch, SearchInput } from "./components/marketplace-search.js";
+export { ActiveFilters, FiltersButton, FiltersDialog, useMarketplaceFilters } from "./components/marketplace-filters.js";
+export type { MarketplaceFilters } from "./components/marketplace-filters.js";
+export { useDebouncedValue } from "./utils/use-debounced-value.js";
 export type { TransferDialogProps } from "./components/transfer-dialog.js";
 export type { TransactionDialogStatesProps } from "./components/transaction-dialog-states.js";
 export type { TransactionSuccessProps, TransactionSuccessAction } from "./components/transaction-success.js";
