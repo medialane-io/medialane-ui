@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.281.0] — 2026-11-06
+
+### Added
+
+- `OrderSummaryHero`: the image, name, subtitle and price shown at the top of the buy and cancel dialogs.
+
 ## [0.280.0] — 2026-11-05
 
 ### Changed
