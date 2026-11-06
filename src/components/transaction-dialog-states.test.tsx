@@ -13,8 +13,8 @@ const render = (props: Partial<Parameters<typeof TransactionDialogStates>[0]> = 
       phase="idle"
       txHash={null}
       error={null}
+      asset={{ name: "Sunrise", image: "blob:a" }}
       success={{ title: "Listing cancelled", description: "It is off the marketplace." }}
-      successName="Sunrise"
       errorTitle="Cancellation failed"
       errorDescription="It could not be cancelled."
       onDone={() => {}}
@@ -56,4 +56,21 @@ test("an error before anything was sent stays on the form", () => {
   const html = render({ phase: "error", error: "wallet closed" });
   expect(html).toContain("the form");
   expect(html).not.toContain("Cancellation failed");
+});
+
+test("success can replace the Done action and add content", () => {
+  const html = render({
+    phase: "success",
+    successActions: [{ label: "View portfolio", onClick: () => {} }],
+    successChildren: <p>reward earned</p>,
+  });
+  expect(html).toContain("View portfolio");
+  expect(html).toContain("reward earned");
+  expect(html).not.toContain(">Done<");
+});
+
+test("the processing screen shows the asset and the description", () => {
+  const html = render({ phase: "preparing", statusDescription: "Approve the wallet prompt." });
+  expect(html).toContain('data-alt="Sunrise"');
+  expect(html).toContain("Approve the wallet prompt.");
 });
