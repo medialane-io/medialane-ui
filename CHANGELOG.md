@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.283.0] — 2026-11-06
+
+### Changed
+
+- `TransactionDialogStates` takes one `asset` for every screen, shows it while the transaction runs, and accepts `statusDescription`, `successActions` and `successChildren`.
+
 ## [0.282.0] — 2026-11-06
 
 ### Added

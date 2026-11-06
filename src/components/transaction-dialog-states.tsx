@@ -1,7 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { DialogTransactionSuccess } from "./transaction-success.js";
+import { DialogTransactionSuccess, type TransactionSuccessAction } from "./transaction-success.js";
 import { MarketplaceErrorState, MarketplaceProcessingState } from "./marketplace-dialog-primitives.js";
 import { EXPLORER_URL } from "../utils/explorer-url.js";
 import { isBusyPhase, type TransactionPhase } from "../utils/use-transaction.js";
@@ -9,16 +9,16 @@ import type { SuccessMessage } from "../utils/success-messages.js";
 
 export interface TransactionDialogStatesProps {
   phase: TransactionPhase;
+  asset: { name: string; image?: string | null };
   statusMessage?: string;
+  statusDescription?: string;
   txHash: string | null;
   error: string | null;
   success: SuccessMessage;
-  successImage?: string | null;
-  successName: string;
+  successActions?: TransactionSuccessAction[];
+  successChildren?: ReactNode;
   errorTitle: string;
   errorDescription: string;
-  errorAssetName?: string;
-  errorAssetImage?: string | null;
   onRetry?: () => void;
   onDone: () => void;
   children: ReactNode;
@@ -26,16 +26,16 @@ export interface TransactionDialogStatesProps {
 
 export function TransactionDialogStates({
   phase,
+  asset,
   statusMessage = "Confirming onchain…",
+  statusDescription,
   txHash,
   error,
   success,
-  successImage = null,
-  successName,
+  successActions,
+  successChildren,
   errorTitle,
   errorDescription,
-  errorAssetName,
-  errorAssetImage = null,
   onRetry,
   onDone,
   children,
@@ -45,20 +45,22 @@ export function TransactionDialogStates({
   if (phase === "success" && !error) {
     return (
       <DialogTransactionSuccess
-        name={successName}
-        image={successImage}
+        name={asset.name}
+        image={asset.image}
         {...success}
         txHash={txHash}
-        actions={[{ label: "Done", onClick: onDone }]}
-      />
+        actions={successActions ?? [{ label: "Done", onClick: onDone }]}
+      >
+        {successChildren}
+      </DialogTransactionSuccess>
     );
   }
 
   if (!busy && error && txHash) {
     return (
       <MarketplaceErrorState
-        tokenImage={errorAssetImage}
-        name={errorAssetName ?? "Asset"}
+        tokenImage={asset.image}
+        name={asset.name}
         title={errorTitle}
         description={errorDescription}
         error={error}
@@ -71,7 +73,16 @@ export function TransactionDialogStates({
   }
 
   if (busy) {
-    return <MarketplaceProcessingState title={statusMessage} txHash={txHash} explorerUrl={EXPLORER_URL} />;
+    return (
+      <MarketplaceProcessingState
+        title={statusMessage}
+        description={statusDescription}
+        imageUrl={asset.image}
+        imageAlt={asset.name}
+        txHash={txHash}
+        explorerUrl={EXPLORER_URL}
+      />
+    );
   }
 
   return <>{children}</>;
