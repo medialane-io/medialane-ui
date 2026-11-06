@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.280.0] — 2026-11-05
+
+### Changed
+
+- The stylesheet defines the theme colors and the preset defines the Tailwind color and radius scale and the base element styles, so apps no longer repeat them.
+- Requires `tailwindcss` 3.4 or newer below 4.
+- `brand-blue` is `hsl(240 100% 62%)`.
+
 ## [0.279.0] — 2026-11-05
 
 ### Changed
