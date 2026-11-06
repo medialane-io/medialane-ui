@@ -190,6 +190,7 @@ export {
   MarketplaceSignInGate,
   MarketplaceErrorState,
   MarketplaceDialogHero,
+  OrderSummaryHero,
   CurrencyPicker,
   DurationPicker,
   MarketplaceConfirmStep,

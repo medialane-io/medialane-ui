@@ -7,6 +7,7 @@ import { Alert, AlertDescription } from "./alert.js";
 import { Button } from "./button.js";
 import { CurrencyIcon } from "./currency-icon.js";
 import { cn } from "../utils/cn.js";
+import { formatDisplayPrice, isStableCurrency } from "../utils/format.js";
 
 interface MarketplaceTxLinkProps {
   txHash: string;
@@ -191,6 +192,92 @@ export function MarketplaceDialogHero({
         )}
       </div>
       {badge}
+    </div>
+  );
+}
+
+interface OrderSummaryHeroProps {
+  name: string;
+  image?: string | null;
+  subtitle: ReactNode;
+  tone?: "default" | "destructive";
+  price?: { formatted: string | null; currency: string | null; decimals: number } | null;
+  quantity?: number;
+  usdTotal?: string | null;
+}
+
+export function OrderSummaryHero({
+  name,
+  image,
+  subtitle,
+  tone = "default",
+  price: rawPrice,
+  quantity = 1,
+  usdTotal,
+}: OrderSummaryHeroProps) {
+  const price = rawPrice?.formatted && rawPrice.currency
+    ? { formatted: rawPrice.formatted, currency: rawPrice.currency, decimals: rawPrice.decimals }
+    : null;
+  const unit = price ? parseFloat(price.formatted) : null;
+  const showTotal = unit !== null && quantity > 1;
+  const crypto = price
+    ? formatDisplayPrice(showTotal ? (unit! * quantity).toFixed(price.decimals <= 6 ? 2 : 4) : price.formatted)
+    : "";
+  const stable = price ? isStableCurrency(price.currency) : false;
+  const face = "font-[family-name:var(--font-display)] font-extrabold tracking-tight tabular-nums";
+
+  return (
+    <div>
+      <div className="flex justify-center pt-6 shrink-0">
+        <div className="relative h-32 w-32 rounded-2xl overflow-hidden border border-border bg-muted">
+          {image ? (
+            <Image src={image} alt={name} fill sizes="128px" className="object-cover" unoptimized />
+          ) : (
+            <div
+              className={cn(
+                "h-full w-full bg-gradient-to-br to-transparent",
+                tone === "destructive"
+                  ? "from-destructive/20 via-brand-rose/10"
+                  : "from-primary/20 via-brand-purple/10",
+              )}
+            />
+          )}
+        </div>
+      </div>
+
+      <div className="flex items-center justify-between gap-4 px-5 pt-4 pb-1">
+        <div className="min-w-0">
+          <p className="font-bold text-lg leading-tight truncate">{name}</p>
+          <div className="mt-1 text-2xs font-medium text-muted-foreground">{subtitle}</div>
+        </div>
+        {price ? (
+          <div className="shrink-0 text-right">
+            {usdTotal ? (
+              <p className={cn(face, "text-2xl")}>{usdTotal}</p>
+            ) : (
+              <p className={cn("flex items-center gap-2 justify-end text-2xl", face)}>
+                <span className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-foreground/[0.06]">
+                  <CurrencyIcon symbol={price.currency} size={13} />
+                </span>
+                {crypto}
+              </p>
+            )}
+            <p className="mt-0.5 inline-flex items-center justify-end gap-1.5 text-sm font-semibold text-muted-foreground">
+              {usdTotal ? (
+                <span className="grid h-4 w-4 shrink-0 place-items-center rounded-full bg-foreground/[0.06]">
+                  <CurrencyIcon symbol={price.currency} size={10} />
+                </span>
+              ) : null}
+              {usdTotal ? (stable ? price.currency : `${crypto} ${price.currency}`) : price.currency}
+            </p>
+            {showTotal ? (
+              <p className="mt-0.5 text-2xs text-muted-foreground/60">
+                {formatDisplayPrice(price.formatted)} × {quantity} {price.currency}
+              </p>
+            ) : null}
+          </div>
+        ) : null}
+      </div>
     </div>
   );
 }
