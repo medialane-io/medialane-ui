@@ -9,8 +9,7 @@ import { CollectionHeader } from "./collection-header.js";
 import { CollectionFiltersDialog, CollectionActiveFilters } from "./collection-filters-dialog.js";
 import { MoreMenu } from "./more-menu.js";
 import { EXPLORER_URL } from "../utils/explorer-url.js";
-import { CollectionActivityTab } from "./collection-activity-tab.js";
-import { CollectionTraitsTab } from "./collection-traits-tab.js";
+import { CollectionProvenanceTab } from "./collection-provenance-tab.js";
 import { ClubOwnerActions } from "./club-owner-actions.js";
 import { OwnerSetupPanel } from "./owner-setup-panel.js";
 import { TransferCollectionOwnership } from "./transfer-collection-ownership.js";
@@ -198,7 +197,6 @@ export function CollectionPage({ contract, slots }: CollectionPageProps) {
   const [reportOpen, setReportOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("assets");
   const [marketTab, setMarketTab] = useState<"listings" | "offers">("listings");
-  const [provenanceTab, setProvenanceTab] = useState<"activity" | "traits">("activity");
   const [listingsSort, setListingsSort] = useState<OrderSort>("recent");
   const [offersSort, setOffersSort] = useState<OrderSort>("recent");
   const usdPrices = useUsdPrices();
@@ -312,22 +310,7 @@ export function CollectionPage({ contract, slots }: CollectionPageProps) {
           </TabsContent>
 
           <TabsContent value="provenance" className="mt-4">
-            {collection?.standard && (collection.totalSupply ?? 0) > 1 ? (
-              <Tabs value={provenanceTab} onValueChange={(v) => setProvenanceTab(v as "activity" | "traits")}>
-                <TabsList className="h-9">
-                  <TabsTrigger value="activity" className="text-xs px-3 py-1">Activity</TabsTrigger>
-                  <TabsTrigger value="traits" className="text-xs px-3 py-1">Traits</TabsTrigger>
-                </TabsList>
-                <TabsContent value="activity" className="mt-4">
-                  <CollectionActivityTab contract={contract} />
-                </TabsContent>
-                <TabsContent value="traits" className="mt-4">
-                  <CollectionTraitsTab contract={contract} />
-                </TabsContent>
-              </Tabs>
-            ) : (
-              <CollectionActivityTab contract={contract} />
-            )}
+            <CollectionProvenanceTab contract={contract} />
           </TabsContent>
 
           {profile?.hasGatedContent ? (

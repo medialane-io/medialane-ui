@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.301.0] — 2026-11-07
+
+### Changed
+
+- The collection Provenance tab is a timeline of events grouped by day, with an asset thumbnail only when the history covers more than one asset.
+
+### Removed
+
+- The collection Traits tab and `CollectionTraitsTab`.
+- `CollectionActivityTab`, replaced by `CollectionProvenanceTab`.
+
 ## [0.300.0] — 2026-11-07
 
 ### Changed
