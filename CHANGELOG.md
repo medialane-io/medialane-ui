@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.294.0] — 2026-11-07
+
+### Added
+
+- `useOnOpen`, `useCoinSupply` and `useCoinGuarantees`: shared hooks, read through the app client.
+
 ## [0.293.0] — 2026-11-07
 
 ### Added
