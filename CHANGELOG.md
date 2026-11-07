@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.297.0] — 2026-11-07
+
+### Added
+
+- `SoulboundCard`: shown on POP assets (events and certificates). It names the asset as soulbound, explains it in one line, and shows the artwork linked to its owner's wallet with the issue date.
+
 ## [0.296.0] — 2026-11-07
 
 ### Changed

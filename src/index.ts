@@ -266,6 +266,8 @@ export { SearchPage } from "./components/search-page.js";
 export { PortfolioOrders, type PortfolioOrdersView, type PortfolioOrderActions, type UsePortfolioOrderActions } from "./components/portfolio-orders.js";
 export { PortfolioAssets, type PortfolioAssetActions, type UsePortfolioAssetActions } from "./components/portfolio-assets.js";
 export { PortfolioShell, PORTFOLIO_TABS, type PortfolioTab } from "./components/portfolio-shell.js";
+export { SoulboundCard, issuedAt } from "./components/soulbound-card.js";
+export type { SoulboundCardProps } from "./components/soulbound-card.js";
 export { RewardsPage } from "./components/rewards-page.js";
 export { JourneyContent } from "./components/journey-content.js";
 export { PortfolioSnapshot, RewardsSnapshot } from "./components/settings-snapshots.js";
