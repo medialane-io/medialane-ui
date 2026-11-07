@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useRef, type ReactNode } from "react";
+import type { ReactNode } from "react";
 import { CheckCircle2, Loader2, XCircle } from "lucide-react";
 import { Dialog, DialogContent, DialogTitle } from "./dialog.js";
 import { Button } from "./button.js";
-import { fireConfetti } from "../utils/media-wallet/confetti.js";
+import { useConfetti } from "../utils/use-confetti.js";
 import type { useTransaction } from "../utils/use-transaction.js";
 
 export interface TransactionDialogProps {
@@ -24,14 +24,7 @@ export function TransactionDialog({ tx, title, workingLabel, firstStepLabel = "P
   const failed = phase === "error";
   const steps = [firstStepLabel, "Submit transaction", "Confirm transaction"];
 
-  const confettiFired = useRef(false);
-  useEffect(() => {
-    if (success && !confettiFired.current) {
-      confettiFired.current = true;
-      fireConfetti();
-    }
-    if (!success) confettiFired.current = false;
-  }, [success]);
+  useConfetti(success);
 
   return (
     <Dialog open={phase !== "idle"} modal onOpenChange={(open) => { if (!open && !working) reset(); }}>

@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.293.0] — 2026-11-07
+
+### Added
+
+- `useConfetti(when)` and `fireConfetti()`: one celebration for every success screen. `TransactionDialog` uses it.
+
 ## [0.292.0] — 2026-11-07
 
 ### Added
