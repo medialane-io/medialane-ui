@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.288.0] — 2026-11-07
+
+### Added
+
+- `MintLanding` and `MintLandingCopy`: the airdrop landing page, driven by copy and a mint slot.
+
 ## [0.287.0] — 2026-11-07
 
 ### Added
