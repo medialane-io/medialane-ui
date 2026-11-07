@@ -51,7 +51,7 @@ export function CollectionPicker({ collections, loading, value, onChange, newCol
   if (collections.length === 0) {
     return (
       <div className="rounded-xl border border-dashed border-border p-5 text-center space-y-3">
-        <p className="text-sm text-muted-foreground">You don&apos;t have a collection yet — every work needs one to live in.</p>
+        <p className="text-sm text-muted-foreground">No collection found. It may take a minute to display recently created collections.</p>
         <Link
           href={newCollectionHref}
           className="inline-flex items-center gap-1.5 h-9 px-4 rounded-xl text-sm font-semibold text-white bg-brand-blue hover:brightness-110 transition-all"

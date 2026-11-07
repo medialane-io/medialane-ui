@@ -56,6 +56,7 @@ const COLLECTION = { collectionId: "3", contractAddress: CONTRACT, name: "Art", 
 test("someone with no collection is invited to create one first", async () => {
   const { view } = setup([]);
   await waitFor(() => expect(view.getByText("Create your first collection")).toBeTruthy());
+  expect(view.getByText("No collection found. It may take a minute to display recently created collections.")).toBeTruthy();
 });
 
 test("a work is minted into the chosen collection and links to the new asset", async () => {

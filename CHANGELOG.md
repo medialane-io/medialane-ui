@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.300.0] — 2026-11-07
+
+### Changed
+
+- The collection picker's empty state says it may take a minute to display recently created collections.
+
 ## [0.299.0] — 2026-11-07
 
 ### Added
