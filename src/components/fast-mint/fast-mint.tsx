@@ -1,185 +1,32 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Image from "next/image";
 import { useForm } from "react-hook-form";
-import { buildAssetMetadata, type ApiCollection } from "@medialane/sdk";
+import { Loader2 } from "lucide-react";
+import { profileHref } from "@medialane/sdk";
 import { describeError } from "../../utils/describe-error.js";
-import { UPLOAD_LIMITS, acceptFor, uploadError } from "../../utils/upload-limits.js";
-import { executeIntent, deployedCollectionFromReceipt, mintedTokenIdFromReceipt } from "@medialane/sdk/starknet";
-import { mintableCollections, collectionKey } from "./mintable-collections.js";
-import {
-  ImagePlus, Music, Video, FileText, Loader2,
-  Layers, ImagePlus as SingleIcon, ChevronDown, Boxes, Plus, Check,
-  ShieldCheck,
-} from "lucide-react";
+import { uploadError } from "../../utils/upload-limits.js";
+import { uploadFileToIpfs, type SignedUploadKind } from "../../utils/ipfs-upload.js";
+import { cn } from "../../utils/cn.js";
+import type { IPType } from "../../data/ip.js";
 import { Input } from "../input.js";
 import { Textarea } from "../textarea.js";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../select.js";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "../collapsible.js";
-import { Popover, PopoverContent, PopoverTrigger } from "../popover.js";
 import { MedialaneCollectionCard } from "../medialane-collection-card.js";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "../dialog.js";
-import { IPTypeFields, type MetadataField } from "../ip-type-fields.js";
-import {
-  IP_TYPES, LICENSE_TYPES, GEOGRAPHIC_SCOPES, AI_POLICIES, DERIVATIVES_OPTIONS,
-  type IPType,
-} from "../../data/ip.js";
-import { IP_TEMPLATES } from "../../data/ip-templates.js";
-import { suggestLaunchpadSymbol } from "../../utils/launchpad-defaults.js";
-import { uploadFileToIpfs, uploadJsonToIpfs, uploadFailureToast } from "../../utils/ipfs-upload.js";
-import { cn } from "../../utils/cn.js";
+import type { MetadataField } from "../ip-type-fields.js";
 import { Dropzone } from "./dropzone.js";
 import { SuccessView } from "./success-view.js";
-import type { FastMintProps, FastMintSigner, MediaKind, MintedAsset } from "./types.js";
-import { profileHref } from "@medialane/sdk";
-import { useImageUrl } from "../../utils/use-image-url.js";
-
-const MEDIA_ROUTE_MIME_TYPES = new Set(UPLOAD_LIMITS.media.mimeTypes);
-const DOCUMENT_MIME_TYPES = new Set(UPLOAD_LIMITS.document.mimeTypes.filter((type) => type !== "application/octet-stream"));
-
-function detectMediaKind(mime: string): MediaKind | null {
-  if (mime.startsWith("image/")) return MEDIA_ROUTE_MIME_TYPES.has(mime) ? "image" : null;
-  if (mime.startsWith("video/")) return MEDIA_ROUTE_MIME_TYPES.has(mime) ? "video" : null;
-  if (mime.startsWith("audio/")) return MEDIA_ROUTE_MIME_TYPES.has(mime) ? "audio" : null;
-  if (DOCUMENT_MIME_TYPES.has(mime)) return "document";
-  return null;
-}
-
-const IP_TYPE_BY_KIND: Record<MediaKind, IPType> = {
-  image: "NFT",
-  audio: "Audio",
-  video: "Video",
-  document: "Documents",
-};
-
-const MEDIA_KIND_ICON: Record<MediaKind, typeof ImagePlus> = {
-  image: ImagePlus,
-  audio: Music,
-  video: Video,
-  document: FileText,
-};
-
-function ToggleGroup({
-  value, options, onChange,
-}: { value: string; options: readonly string[]; onChange: (v: string) => void }) {
-  return (
-    <div className="flex rounded-lg border border-border overflow-hidden w-full">
-      {options.map((opt, i) => (
-        <button
-          key={opt}
-          type="button"
-          onClick={() => onChange(opt)}
-          className={cn(
-            "flex-1 px-3 py-2 text-sm transition-colors",
-            i > 0 && "border-l border-border",
-            value === opt ? "bg-primary text-primary-foreground font-medium" : "bg-background hover:bg-muted text-muted-foreground"
-          )}
-        >
-          {opt}
-        </button>
-      ))}
-    </div>
-  );
-}
-
-function collectionDisplayLabel(col: ApiCollection) {
-  return col.name || col.symbol || `Collection #${col.collectionId}`;
-}
-
-function CollectionThumb({ image }: { image: string | null | undefined }) {
-  const resolveImage = useImageUrl();
-  const imageUrl = resolveImage(image);
-  return (
-    <div className="relative h-10 w-10 rounded-lg overflow-hidden bg-muted shrink-0">
-      {imageUrl ? (
-        <Image src={imageUrl} alt="" fill className="object-cover" unoptimized />
-      ) : (
-        <div className="absolute inset-0 flex items-center justify-center">
-          <Boxes className="h-4 w-4 text-muted-foreground/40" />
-        </div>
-      )}
-    </div>
-  );
-}
-
-function CollectionPicker({
-  collections, value, onChange, valueOf,
-}: {
-  collections: ApiCollection[];
-  value: string;
-  onChange: (id: string) => void;
-  valueOf: (c: ApiCollection) => string | null | undefined;
-}) {
-  const [open, setOpen] = useState(false);
-  const selected = value
-    ? collections.find((c) => valueOf(c) === value) ?? null
-    : null;
-
-  return (
-    <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
-        <button
-          type="button"
-          aria-expanded={open}
-          className="flex w-full items-center gap-3 rounded-xl border border-border p-3 text-left transition-colors hover:bg-muted/40"
-        >
-          <CollectionThumb image={selected?.image} />
-          <div className="min-w-0 flex-1">
-            <p className="text-sm font-semibold truncate">
-              {selected ? collectionDisplayLabel(selected) : collections.length ? "Choose a collection" : "No collections yet"}
-            </p>
-            <p className="text-xs text-muted-foreground">
-              {selected ? `${selected.totalSupply ?? 0} work${selected.totalSupply === 1 ? "" : "s"}` : "Where this work will live"}
-            </p>
-          </div>
-          <ChevronDown className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
-        </button>
-      </PopoverTrigger>
-      <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0" align="start">
-        <div className="max-h-64 overflow-y-auto p-1">
-          {collections.length === 0 ? (
-            <p className="px-3 py-4 text-center text-sm text-muted-foreground">No collections yet — create one instead.</p>
-          ) : (
-            collections.map((col) => {
-              const id = valueOf(col);
-              const isSelected = !!id && value === id;
-              return (
-                <button
-                  key={id ?? col.contractAddress ?? col.name}
-                  type="button"
-                  disabled={!id}
-                  onClick={() => { if (!id) return; onChange(id); setOpen(false); }}
-                  className="flex w-full items-center gap-2.5 rounded-lg px-2 py-2 text-left transition-colors hover:bg-muted/60"
-                >
-                  <CollectionThumb image={col.image} />
-                  <div className="min-w-0 flex-1">
-                    <p className="text-sm font-medium truncate">{collectionDisplayLabel(col)}</p>
-                    <p className="text-xs text-muted-foreground">{col.totalSupply ?? 0} work{col.totalSupply === 1 ? "" : "s"}</p>
-                  </div>
-                  {isSelected && <Check className="h-4 w-4 text-brand-blue shrink-0" />}
-                </button>
-              );
-            })
-          )}
-        </div>
-      </PopoverContent>
-    </Popover>
-  );
-}
-
-interface FormValues {
-  name: string;
-  description: string;
-  external_url: string;
-  licenseType: string;
-  commercialUse: "Yes" | "No";
-  derivatives: "Allowed" | "Not Allowed" | "Share-Alike";
-  attribution: "Required" | "Not Required";
-  geographicScope: string;
-  aiPolicy: "Allowed" | "Not Allowed" | "Training Only";
-  royalty: number;
-}
+import { AssetTypePicker, CoverUpload, MediaRow } from "./asset-form-parts.js";
+import { CollectionSection, type CollectionMode } from "./collection-section.js";
+import { LicensingSection } from "./licensing-section.js";
+import { IpTypeSection } from "./ip-type-section.js";
+import { DEFAULT_VALUES, type FormValues } from "./form.js";
+import { IP_TYPE_BY_KIND, MEDIA_ROUTE_MIME_TYPES, detectMediaKind } from "./media-kind.js";
+import { mintAsset } from "./mint-asset.js";
+import { mintableCollections, type MintAssetType } from "./mintable-collections.js";
+import { useIpfsUpload } from "./use-ipfs-upload.js";
+import { useNewCollectionDraft } from "./use-new-collection-draft.js";
+import type { FastMintProps, MediaKind, MintedAsset } from "./types.js";
 
 export function FastMint(props: FastMintProps) {
   const {
@@ -192,53 +39,29 @@ export function FastMint(props: FastMintProps) {
   const [status, setStatus] = useState<"idle" | "minting" | "success" | "error">("idle");
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
+  const media = useIpfsUpload();
+  const feature = useIpfsUpload();
   const [mediaFile, setMediaFile] = useState<File | null>(null);
-  const [mediaPreview, setMediaPreview] = useState<string | null>(null);
-  const [mediaUri, setMediaUri] = useState<string | null>(null);
   const [mediaKind, setMediaKind] = useState<MediaKind>("image");
-  const [mediaUploading, setMediaUploading] = useState(false);
-  const previewUrlRef = useRef<string | null>(null);
   const mediaInputRef = useRef<HTMLInputElement>(null);
-
-  const [featurePreview, setFeaturePreview] = useState<string | null>(null);
-  const [featureUri, setFeatureUri] = useState<string | null>(null);
-  const [featureUploading, setFeatureUploading] = useState(false);
-  const featurePreviewRef = useRef<string | null>(null);
   const featureInputRef = useRef<HTMLInputElement>(null);
 
-  const [assetType, setAssetType] = useState<"single" | "editions">("single");
+  const [assetType, setAssetType] = useState<MintAssetType>("single");
   const [editionCount, setEditionCount] = useState("10");
 
-  const [collectionMode, setCollectionMode] = useState<"existing" | "new">("existing");
+  const [collectionMode, setCollectionMode] = useState<CollectionMode>("existing");
   const [existingCollectionId, setExistingCollectionId] = useState("");
   const [existingCollectionContract, setExistingCollectionContract] = useState("");
-  const [newCollectionName, setNewCollectionName] = useState("");
-  const [newCollectionSymbol, setNewCollectionSymbol] = useState("");
-  const [newCollectionDescription, setNewCollectionDescription] = useState("");
-  const [autoSymbol, setAutoSymbol] = useState("");
-  const [autoCollectionName, setAutoCollectionName] = useState("");
-  const [autoCollectionDescription, setAutoCollectionDescription] = useState("");
 
   const [ipType, setIpType] = useState<IPType>("NFT");
-  const [advancedOpen, setAdvancedOpen] = useState(false);
-  const [ipTypeOpen, setIpTypeOpen] = useState(false);
   const templateFieldsRef = useRef<MetadataField[]>([]);
 
   const [mintedAsset, setMintedAsset] = useState<MintedAsset | null>(null);
 
-  useEffect(() => () => {
-    if (previewUrlRef.current) URL.revokeObjectURL(previewUrlRef.current);
-    if (featurePreviewRef.current) URL.revokeObjectURL(featurePreviewRef.current);
-  }, []);
-
-  const form = useForm<FormValues>({
-    defaultValues: {
-      name: "", description: "", external_url: "",
-      licenseType: "CC BY-SA", commercialUse: "Yes", derivatives: "Share-Alike",
-      attribution: "Required", geographicScope: "Worldwide", aiPolicy: "Allowed", royalty: 0,
-    },
-  });
+  const form = useForm<FormValues>({ defaultValues: DEFAULT_VALUES });
   const name = form.watch("name");
+  const description = form.watch("description");
+  const draft = useNewCollectionDraft(name, description);
 
   useEffect(() => {
     if (walletAddress && !form.getValues("external_url")) {
@@ -246,29 +69,14 @@ export function FastMint(props: FastMintProps) {
     }
   }, [walletAddress, form]);
 
-  useEffect(() => {
-    const s = suggestLaunchpadSymbol(name);
-    if (!s) return;
-    if (!newCollectionSymbol || newCollectionSymbol === autoSymbol) {
-      setNewCollectionSymbol(s);
-      setAutoSymbol(s);
-    }
-    if (!newCollectionName || newCollectionName === autoCollectionName) {
-      setNewCollectionName(name);
-      setAutoCollectionName(name);
-    }
-  }, [name, autoSymbol, autoCollectionName, newCollectionSymbol, newCollectionName]);
-
-  const description = form.watch("description");
-  useEffect(() => {
-    if (!newCollectionDescription || newCollectionDescription === autoCollectionDescription) {
-      setNewCollectionDescription(description);
-      setAutoCollectionDescription(description);
-    }
-  }, [description, autoCollectionDescription, newCollectionDescription]);
-
   const erc721Collections = mintableCollections("single", collections);
   const erc1155Collections = mintableCollections("editions", collections);
+
+  const uploadFile = async (file: File, kind: SignedUploadKind) => {
+    const token = await getUploadToken();
+    if (!token) throw new Error("Sign in first");
+    return (await uploadFileToIpfs(client.api, file, kind)).uri;
+  };
 
   const handleMediaSelect = async (file: File) => {
     const kind = detectMediaKind(file.type);
@@ -280,8 +88,8 @@ export function FastMint(props: FastMintProps) {
       setErrorMsg(`Please upload a${mediaKindLock === "image" ? "n" : ""} ${mediaKindLock}.`);
       return;
     }
-    const viaMediaRoute = MEDIA_ROUTE_MIME_TYPES.has(file.type);
-    const fileError = uploadError(file, viaMediaRoute ? "media" : "document");
+    const route = MEDIA_ROUTE_MIME_TYPES.has(file.type) ? "media" : "document";
+    const fileError = uploadError(file, route);
     if (fileError) {
       setErrorMsg(fileError);
       return;
@@ -289,81 +97,24 @@ export function FastMint(props: FastMintProps) {
     setMediaFile(file);
     setMediaKind(kind);
     setIpType(IP_TYPE_BY_KIND[kind]);
-    if (previewUrlRef.current) URL.revokeObjectURL(previewUrlRef.current);
-    const objectUrl = URL.createObjectURL(file);
-    previewUrlRef.current = objectUrl;
-    setMediaPreview(objectUrl);
-    setMediaUri(null);
-    setMediaUploading(true);
-    try {
-      const token = await getUploadToken();
-      if (!token) throw new Error("Sign in first");
-      const { uri } = await uploadFileToIpfs(client.api, file, viaMediaRoute ? "media" : "document");
-      setMediaUri(uri);
-    } catch (err) {
-      const t = uploadFailureToast(err);
-      setErrorMsg(t.description ?? t.title);
-    } finally {
-      setMediaUploading(false);
-    }
+    await media.start(file, (f) => uploadFile(f, route), setErrorMsg);
   };
 
   const clearMedia = () => {
     setMediaFile(null);
-    setMediaPreview(null);
-    setMediaUri(null);
+    media.clear();
     if (mediaInputRef.current) mediaInputRef.current.value = "";
   };
 
-  const handleFeatureSelect = async (file: File) => {
-    if (featurePreviewRef.current) URL.revokeObjectURL(featurePreviewRef.current);
-    const objectUrl = URL.createObjectURL(file);
-    featurePreviewRef.current = objectUrl;
-    setFeaturePreview(objectUrl);
-    setFeatureUri(null);
-    setFeatureUploading(true);
-    try {
-      const token = await getUploadToken();
-      if (!token) throw new Error("Sign in first");
-      const { uri } = await uploadFileToIpfs(client.api, file, "image");
-      setFeatureUri(uri);
-    } catch (err) {
-      const t = uploadFailureToast(err);
-      setErrorMsg(t.description ?? t.title);
-    } finally {
-      setFeatureUploading(false);
-    }
-  };
-
-  const handleLicenseChange = (value: string) => {
-    form.setValue("licenseType", value);
-    const def = LICENSE_TYPES.find((l) => l.value === value);
-    if (def) {
-      form.setValue("commercialUse", def.commercialUse);
-      form.setValue("derivatives", def.derivatives);
-      form.setValue("attribution", def.attribution);
-    }
-  };
-
-  const ready = !!mediaUri && !mediaUploading && name.trim().length > 0 &&
-    (mediaKind === "image" || !!featureUri) &&
+  const ready = !!media.uri && !media.uploading && name.trim().length > 0 &&
+    (mediaKind === "image" || !!feature.uri) &&
     (collectionMode === "existing"
       ? assetType === "single" ? !!existingCollectionId : !!existingCollectionContract
-      : newCollectionName.trim().length > 0 && newCollectionSymbol.trim().length > 0);
-
-  async function pollForNewCollection(name: string, symbol: string): Promise<ApiCollection | null> {
-    for (let attempt = 0; attempt < 8; attempt++) {
-      const list = await refetchCollections();
-      const match = list.find((c) => c.name === name && c.symbol === symbol);
-      if (match?.collectionId) return match;
-      await new Promise((r) => setTimeout(r, 1500));
-    }
-    return null;
-  }
+      : draft.name.trim().length > 0 && draft.symbol.trim().length > 0);
 
   const onSubmit = async (values: FormValues) => {
     if (!hasWallet) { onRequireWallet(); return; }
-    if (!walletAddress || !mediaUri) return;
+    if (!walletAddress || !media.uri) return;
     if (values.external_url && !values.external_url.startsWith("http://") && !values.external_url.startsWith("https://")) {
       setErrorMsg("External link must start with http:// or https://");
       return;
@@ -373,108 +124,26 @@ export function FastMint(props: FastMintProps) {
     setErrorMsg(null);
 
     try {
-      const signer: FastMintSigner = await getSigner();
-
-      const image = mediaKind === "image" ? mediaUri : featureUri!;
-      const animationUrl = mediaKind === "image" ? undefined : mediaUri;
-
-      const built = buildAssetMetadata({
-        name: values.name,
-        description: values.description || "",
-        externalUrl: values.external_url || "",
-        imageUri: image,
-        creator: walletAddress,
+      const asset = await mintAsset({
+        client,
+        signer: await getSigner(),
+        walletAddress,
+        values,
         ipType,
-        licenseType: values.licenseType,
-        commercialUse: values.commercialUse,
-        derivatives: values.derivatives,
-        attribution: values.attribution,
-        geographicScope: values.geographicScope,
-        aiPolicy: values.aiPolicy,
-        royalty: String(values.royalty),
-        templateTraits: templateFieldsRef.current
-          .filter(({ traitType, value }) => traitType.trim() && value.trim())
-          .map(({ traitType, value }) => ({ traitType, value })),
+        templateFields: templateFieldsRef.current,
+        mediaKind,
+        mediaUri: media.uri,
+        featureUri: feature.uri,
+        assetType,
+        editionCount,
+        destination: collectionMode === "new"
+          ? { mode: "new", name: draft.name, symbol: draft.symbol, description: draft.description }
+          : { mode: "existing", collectionId: existingCollectionId, collectionContract: existingCollectionContract },
+        singleCollections: erc721Collections,
+        refetchCollections,
+        getUploadToken,
       });
-      const metadata: Record<string, unknown> = { ...built };
-      if (animationUrl) metadata.animation_url = animationUrl;
-
-      const uploadToken = await getUploadToken();
-      if (!uploadToken) throw new Error("Sign in first");
-      const tokenUri = await uploadJsonToIpfs(client.api, metadata);
-
-      let result: Awaited<ReturnType<typeof executeIntent>>;
-      let finalContractAddress: string | null;
-      let finalTokenId: string | null = null;
-
-      if (assetType === "single") {
-        let collectionId = existingCollectionId;
-        let contractAddress = erc721Collections.find((c) => c.collectionId === existingCollectionId)?.contractAddress ?? null;
-
-        if (collectionMode === "new") {
-          const intentRes = await client.api.intents.create("create-collection", {
-            owner: walletAddress,
-            name: newCollectionName,
-            symbol: newCollectionSymbol,
-            description: newCollectionDescription || undefined,
-            image,
-          });
-          await executeIntent(signer, client, intentRes);
-
-          const found = await pollForNewCollection(newCollectionName, newCollectionSymbol);
-          if (!found) throw new Error("Collection created, but it's still indexing — try minting again in a moment from My Collections.");
-          collectionId = found.collectionId!;
-          contractAddress = found.contractAddress ?? null;
-        }
-
-        const intentRes = await client.api.intents.create("mint", {
-          owner: walletAddress,
-          collectionId,
-          recipient: walletAddress,
-          tokenUri,
-          royaltyBps: Math.round(values.royalty * 100),
-        });
-        result = await executeIntent(signer, client, intentRes);
-        finalContractAddress = contractAddress;
-
-        if (finalContractAddress) {
-          finalTokenId = mintedTokenIdFromReceipt(result.receipt, finalContractAddress);
-        }
-      } else {
-        let collectionContract = existingCollectionContract;
-
-        if (collectionMode === "new") {
-          const intentRes = await client.api.intents.create("create-collection", {
-            owner: walletAddress,
-            name: newCollectionName,
-            symbol: newCollectionSymbol,
-            description: newCollectionDescription || undefined,
-            image,
-            baseUri: "",
-            service: "mip-erc1155",
-          });
-          const deployResult = await executeIntent(signer, client, intentRes);
-
-          const deployed = deployedCollectionFromReceipt(deployResult.receipt, "mip-erc1155");
-          if (!deployed) throw new Error("Collection deployed, but its address couldn't be read — check My Collections to mint into it.");
-          collectionContract = deployed;
-        }
-
-        const intentRes = await client.api.intents.create("mint", {
-          owner: walletAddress,
-          recipient: walletAddress,
-          collectionContract,
-          tokenUri,
-          value: editionCount,
-          royaltyBps: Math.round(values.royalty * 100),
-        });
-        result = await executeIntent(signer, client, intentRes);
-        finalContractAddress = collectionContract;
-        finalTokenId = mintedTokenIdFromReceipt(result.receipt, collectionContract);
-      }
-
-      if (finalContractAddress && finalTokenId) {
-        const asset: MintedAsset = { contract: finalContractAddress, tokenId: finalTokenId, image };
+      if (asset) {
         setMintedAsset(asset);
         onMinted?.(asset);
       }
@@ -491,30 +160,24 @@ export function FastMint(props: FastMintProps) {
     setMintedAsset(null);
     form.reset();
     clearMedia();
-    setFeaturePreview(null);
-    setFeatureUri(null);
+    feature.clear();
     setAssetType("single");
     setEditionCount("10");
     setCollectionMode("existing");
     setExistingCollectionId("");
     setExistingCollectionContract("");
-    setNewCollectionName("");
-    setNewCollectionSymbol("");
-    setNewCollectionDescription("");
-    setAutoSymbol("");
-    setAutoCollectionName("");
-    setAutoCollectionDescription("");
+    draft.reset();
     templateFieldsRef.current = [];
   };
 
   const busy = status === "minting";
-  const KindIcon = MEDIA_KIND_ICON[mediaKind];
+  const previewImage = mediaKind === "image" ? media.preview : feature.preview;
   const selectedExistingCollection = assetType === "single"
     ? erc721Collections.find((c) => c.collectionId === existingCollectionId)
     : erc1155Collections.find((c) => c.contractAddress === existingCollectionContract);
-  const collectionLabel = mediaUri
+  const collectionLabel = media.uri
     ? (collectionMode === "new"
-      ? (newCollectionName || "New collection")
+      ? (draft.name || "New collection")
       : (selectedExistingCollection?.name || "IP Asset"))
     : undefined;
 
@@ -536,7 +199,7 @@ export function FastMint(props: FastMintProps) {
       <SuccessView
         footer={successFooter}
         presentation={presentation}
-        previewImage={mediaKind === "image" ? mediaPreview : featurePreview}
+        previewImage={previewImage}
         name={name}
         collectionLabel={collectionLabel}
         mintedAsset={mintedAsset}
@@ -558,57 +221,22 @@ export function FastMint(props: FastMintProps) {
     );
   }
 
+  const submitBlocked = !ready || busy || !hasWallet;
+
   return wrap(
     <section className="space-y-6">
-      <div className="flex items-center gap-4 rounded-xl border border-border p-3">
-        <div className="relative h-14 w-14 rounded-lg bg-muted overflow-hidden shrink-0">
-          {mediaKind === "image" && mediaPreview ? (
-            <Image src={mediaPreview} alt="" fill className="object-cover" unoptimized />
-          ) : (
-            <div className="absolute inset-0 flex items-center justify-center">
-              <KindIcon className="h-6 w-6 text-muted-foreground" />
-            </div>
-          )}
-          {mediaUploading && (
-            <div className="absolute inset-0 flex items-center justify-center bg-background/70">
-              <Loader2 className="h-4 w-4 animate-spin" />
-            </div>
-          )}
-        </div>
-        <div className="min-w-0 flex-1 space-y-1">
-          <p className="text-sm font-semibold truncate">{mediaFile.name}</p>
-          <div className="flex items-center gap-2 flex-wrap">
-            <p className="text-xs text-muted-foreground">
-              {mediaUploading ? "Uploading…" : mediaUri ? "Uploaded" : "Upload failed"}
-            </p>
-            {mediaUri && (() => {
-              const template = IP_TEMPLATES[ipType];
-              const TemplateIcon = template.icon;
-              return (
-                <span
-                  className={cn(
-                    "inline-flex shrink-0 items-center gap-1 rounded-full border px-2 py-0.5 text-2xs font-medium",
-                    template.color.bg, template.color.text, template.color.border
-                  )}
-                >
-                  <TemplateIcon className="h-3 w-3" />
-                  {template.label}
-                </span>
-              );
-            })()}
-          </div>
-        </div>
-        <button
-          type="button"
-          onClick={() => mediaInputRef.current?.click()}
-          className="text-xs font-semibold text-brand-blue hover:underline shrink-0"
-        >
-          Change
-        </button>
-        <input ref={mediaInputRef} type="file" className="hidden" onChange={(e) => { const f = e.target.files?.[0]; if (f) handleMediaSelect(f); }} />
-      </div>
+      <MediaRow
+        file={mediaFile}
+        kind={mediaKind}
+        preview={media.preview}
+        uri={media.uri}
+        uploading={media.uploading}
+        ipType={ipType}
+        inputRef={mediaInputRef}
+        onSelect={handleMediaSelect}
+      />
 
-      {mediaUri && (
+      {media.uri && (
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-8 items-start">
           <div className="space-y-5">
             <div className="space-y-2">
@@ -623,7 +251,7 @@ export function FastMint(props: FastMintProps) {
             <div className="space-y-2">
               <label className="text-sm font-medium">Description</label>
               <Textarea
-                value={form.watch("description")}
+                value={description}
                 onChange={(e) => form.setValue("description", e.target.value)}
                 placeholder="Describe your work, its story, and any context for buyers…"
                 rows={3}
@@ -640,260 +268,53 @@ export function FastMint(props: FastMintProps) {
             </div>
 
             {mediaKind !== "image" && (
-              <div className="space-y-2">
-                <label className="text-sm font-medium">Upload a cover image for your asset *</label>
-                <div className="flex items-center gap-4">
-                  <div
-                    role="button"
-                    tabIndex={0}
-                    onClick={() => !featureUploading && featureInputRef.current?.click()}
-                    onKeyDown={(e) => { if ((e.key === "Enter" || e.key === " ") && !featureUploading) { e.preventDefault(); featureInputRef.current?.click(); } }}
-                    className="relative h-20 w-20 rounded-xl border-2 border-dashed border-border bg-muted flex items-center justify-center overflow-hidden shrink-0 cursor-pointer hover:border-primary/50 transition-colors"
-                  >
-                    {featurePreview ? (
-                      <Image src={featurePreview} alt="" fill className="object-cover" unoptimized />
-                    ) : (
-                      <ImagePlus className="h-6 w-6 text-muted-foreground" />
-                    )}
-                    {featureUploading && (
-                      <div className="absolute inset-0 flex items-center justify-center bg-background/70">
-                        <Loader2 className="h-4 w-4 animate-spin" />
-                      </div>
-                    )}
-                    <input ref={featureInputRef} type="file" accept={acceptFor("image")} className="hidden" onChange={(e) => { const f = e.target.files?.[0]; if (f) handleFeatureSelect(f); }} />
-                  </div>
-                  <p className="text-xs text-muted-foreground">Cover art shown wherever the work is previewed. JPG, PNG, GIF, SVG or WebP.</p>
-                </div>
-              </div>
+              <CoverUpload
+                preview={feature.preview}
+                uploading={feature.uploading}
+                inputRef={featureInputRef}
+                onSelect={(file) => void feature.start(file, (f) => uploadFile(f, "image"), setErrorMsg)}
+              />
             )}
 
-            <div className="space-y-2">
-              <label className="text-sm font-medium">Asset Type</label>
-              <div className="grid grid-cols-2 gap-3">
-                <button
-                  type="button"
-                  onClick={() => setAssetType("single")}
-                  className={cn("flex items-start gap-3 rounded-xl border p-4 text-left transition-colors",
-                    assetType === "single" ? "border-brand-blue bg-brand-blue/5" : "border-border hover:bg-muted/40")}
-                >
-                  <SingleIcon className={cn("h-5 w-5 shrink-0 mt-0.5", assetType === "single" ? "text-brand-blue" : "text-muted-foreground")} />
-                  <span>
-                    <span className="block text-sm font-semibold">Single Edition NFT</span>
-                    <span className="block text-xs mt-0.5 text-muted-foreground">Minted once</span>
-                  </span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setAssetType("editions")}
-                  className={cn("flex items-start gap-3 rounded-xl border p-4 text-left transition-colors",
-                    assetType === "editions" ? "border-brand-blue bg-brand-blue/5" : "border-border hover:bg-muted/40")}
-                >
-                  <Layers className={cn("h-5 w-5 shrink-0 mt-0.5", assetType === "editions" ? "text-brand-blue" : "text-muted-foreground")} />
-                  <span>
-                    <span className="block text-sm font-semibold">Limited Editions NFT</span>
-                    <span className="block text-xs mt-0.5 text-muted-foreground">Several numbered copies</span>
-                  </span>
-                </button>
-              </div>
-            </div>
+            <AssetTypePicker
+              value={assetType}
+              onChange={setAssetType}
+              editionCount={editionCount}
+              onEditionCount={setEditionCount}
+            />
 
-            {assetType === "editions" && (
-              <div className="space-y-2">
-                <label className="text-sm font-medium">Number of copies</label>
-                <Input
-                  type="number"
-                  min={1}
-                  value={editionCount}
-                  onChange={(e) => setEditionCount(e.target.value)}
-                  className="max-w-[140px]"
-                />
-              </div>
-            )}
+            <CollectionSection
+              assetType={assetType}
+              mode={collectionMode}
+              onModeChange={setCollectionMode}
+              collections={assetType === "single" ? erc721Collections : erc1155Collections}
+              existingId={existingCollectionId}
+              existingContract={existingCollectionContract}
+              onExistingId={setExistingCollectionId}
+              onExistingContract={setExistingCollectionContract}
+              draft={draft}
+              previewImage={previewImage}
+            />
 
-            <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <label className="text-sm font-medium flex items-center gap-1.5">
-                  <Boxes className="h-4 w-4" />
-                  Collection *
-                </label>
-                <div className="flex rounded-lg border border-border overflow-hidden">
-                  <button
-                    type="button"
-                    onClick={() => setCollectionMode("existing")}
-                    className={cn("px-3 h-7 text-xs font-medium transition-colors",
-                      collectionMode === "existing" ? "bg-primary text-primary-foreground" : "bg-background hover:bg-muted text-muted-foreground")}
-                  >
-                    Existing
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setCollectionMode("new")}
-                    className={cn("px-3 h-7 text-xs font-medium border-l border-border transition-colors flex items-center gap-1",
-                      collectionMode === "new" ? "bg-primary text-primary-foreground" : "bg-background hover:bg-muted text-muted-foreground")}
-                  >
-                    <Plus className="h-3 w-3" />New
-                  </button>
-                </div>
-              </div>
+            <LicensingSection form={form} />
 
-              {collectionMode === "existing" ? (
-                <CollectionPicker
-                  collections={assetType === "single" ? erc721Collections : erc1155Collections}
-                  value={assetType === "single" ? existingCollectionId : existingCollectionContract}
-                  onChange={assetType === "single" ? setExistingCollectionId : setExistingCollectionContract}
-                  valueOf={collectionKey(assetType === "single" ? "single" : "editions")}
-                />
-              ) : (
-                <div className="flex gap-3 rounded-xl border border-border p-3">
-                  <div className="relative h-16 w-16 rounded-lg overflow-hidden bg-muted shrink-0">
-                    {(mediaKind === "image" ? mediaPreview : featurePreview) ? (
-                      <Image
-                        src={(mediaKind === "image" ? mediaPreview : featurePreview)!}
-                        alt=""
-                        fill
-                        className="object-cover"
-                        unoptimized
-                      />
-                    ) : (
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <Boxes className="h-5 w-5 text-muted-foreground/40" />
-                      </div>
-                    )}
-                  </div>
-                  <div className="min-w-0 flex-1 space-y-2">
-                    <div className="grid grid-cols-[1fr_100px] gap-2">
-                      <Input
-                        value={newCollectionName}
-                        onChange={(e) => setNewCollectionName(e.target.value)}
-                        placeholder="Collection name"
-                        className="h-9 text-sm"
-                      />
-                      <Input
-                        value={newCollectionSymbol}
-                        onChange={(e) => setNewCollectionSymbol(e.target.value.toUpperCase())}
-                        placeholder="SYMBOL"
-                        className="h-9 text-sm"
-                      />
-                    </div>
-                    <Textarea
-                      value={newCollectionDescription}
-                      onChange={(e) => setNewCollectionDescription(e.target.value)}
-                      placeholder="Describe this collection…"
-                      rows={2}
-                      className="text-sm resize-none"
-                    />
-                    <p className="text-2xs text-muted-foreground">Prefilled from your asset — edit anything above.</p>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            <Collapsible open={advancedOpen} onOpenChange={setAdvancedOpen}>
-              <div className="rounded-xl border border-border overflow-hidden">
-                <CollapsibleTrigger asChild>
-                  <button type="button" className="w-full flex items-center justify-between px-4 py-3.5 hover:bg-muted/30 transition-colors">
-                    <span className="flex items-center gap-2">
-                      <ShieldCheck className="h-4 w-4 text-primary" />
-                      <span className="text-sm font-semibold">Licensing Terms</span>
-                      <span className="text-xs text-muted-foreground font-normal">Optional · Berne Convention</span>
-                    </span>
-                    <ChevronDown className={cn("h-4 w-4 text-muted-foreground transition-transform", advancedOpen && "rotate-180")} />
-                  </button>
-                </CollapsibleTrigger>
-                <CollapsibleContent>
-                  <div className="px-4 pb-4 space-y-4 border-t border-border/60 pt-4">
-                    <div className="space-y-1.5">
-                      <label className="text-xs font-medium text-muted-foreground">License</label>
-                      <Select value={form.watch("licenseType")} onValueChange={handleLicenseChange}>
-                        <SelectTrigger><SelectValue /></SelectTrigger>
-                        <SelectContent>
-                          {LICENSE_TYPES.map((l) => <SelectItem key={l.value} value={l.value}>{l.label}</SelectItem>)}
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <div className="space-y-1.5">
-                      <label className="text-xs font-medium text-muted-foreground">Commercial use</label>
-                      <ToggleGroup value={form.watch("commercialUse")} options={["Yes", "No"]} onChange={(v) => form.setValue("commercialUse", v as "Yes" | "No")} />
-                    </div>
-                    <div className="space-y-1.5">
-                      <label className="text-xs font-medium text-muted-foreground">Derivatives</label>
-                      <ToggleGroup value={form.watch("derivatives")} options={DERIVATIVES_OPTIONS} onChange={(v) => form.setValue("derivatives", v as FormValues["derivatives"])} />
-                    </div>
-                    <div className="space-y-1.5">
-                      <label className="text-xs font-medium text-muted-foreground">Territory</label>
-                      <Select value={form.watch("geographicScope")} onValueChange={(v) => form.setValue("geographicScope", v)}>
-                        <SelectTrigger><SelectValue /></SelectTrigger>
-                        <SelectContent>
-                          {GEOGRAPHIC_SCOPES.map((s) => <SelectItem key={s} value={s}>{s}</SelectItem>)}
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <div className="space-y-1.5">
-                      <label className="text-xs font-medium text-muted-foreground">AI &amp; data mining</label>
-                      <ToggleGroup value={form.watch("aiPolicy")} options={AI_POLICIES} onChange={(v) => form.setValue("aiPolicy", v as FormValues["aiPolicy"])} />
-                    </div>
-                    <div className="space-y-1.5">
-                      <label className="text-xs font-medium text-muted-foreground">Royalty % (0–50)</label>
-                      <Input
-                        type="number" min={0} max={50} step={0.5}
-                        value={form.watch("royalty")}
-                        onChange={(e) => form.setValue("royalty", parseFloat(e.target.value) || 0)}
-                        className="max-w-[120px]"
-                      />
-                    </div>
-                  </div>
-                </CollapsibleContent>
-              </div>
-            </Collapsible>
-
-            <Collapsible open={ipTypeOpen} onOpenChange={setIpTypeOpen}>
-              <div className="rounded-xl border border-border overflow-hidden">
-                <CollapsibleTrigger asChild>
-                  <button type="button" className="w-full flex items-center justify-between px-4 py-3.5 hover:bg-muted/30 transition-colors">
-                    <span className="flex items-center gap-2">
-                      <Layers className="h-4 w-4 text-primary" />
-                      <span className="text-sm font-semibold">IP Type &amp; Metadata</span>
-                      <span className="text-xs text-muted-foreground font-normal">Optional</span>
-                    </span>
-                    <ChevronDown className={cn("h-4 w-4 text-muted-foreground transition-transform", ipTypeOpen && "rotate-180")} />
-                  </button>
-                </CollapsibleTrigger>
-                <CollapsibleContent>
-                  <div className="px-4 pb-4 space-y-4 border-t border-border/60 pt-4">
-                    <div className="space-y-1.5">
-                      <label className="text-xs font-medium text-muted-foreground">IP Type</label>
-                      <Select value={ipType} onValueChange={(v) => setIpType(v as IPType)}>
-                        <SelectTrigger><SelectValue /></SelectTrigger>
-                        <SelectContent>
-                          {IP_TYPES.map((t) => <SelectItem key={t} value={t}>{t}</SelectItem>)}
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <IPTypeFields
-                      ipType={ipType}
-                      onChange={(fields) => { templateFieldsRef.current = fields; }}
-                      uploadDocument={async (file) => {
-                        const token = await getUploadToken();
-                        if (!token) throw new Error("Sign in first");
-                        const { uri } = await uploadFileToIpfs(client.api, file, "document");
-                        return uri;
-                      }}
-                      existingDocument={mediaKind === "document" && mediaUri && mediaFile ? { uri: mediaUri, name: mediaFile.name } : null}
-                    />
-                  </div>
-                </CollapsibleContent>
-              </div>
-            </Collapsible>
+            <IpTypeSection
+              ipType={ipType}
+              onIpTypeChange={setIpType}
+              fieldsRef={templateFieldsRef}
+              uploadDocument={(file) => uploadFile(file, "document")}
+              existingDocument={mediaKind === "document" ? { uri: media.uri, name: mediaFile.name } : null}
+            />
 
             {status === "error" && errorMsg && <p className="text-xs text-destructive">{errorMsg}</p>}
 
             <button
               type="button"
-              disabled={!ready || busy || !hasWallet}
+              disabled={submitBlocked}
               onClick={form.handleSubmit(onSubmit)}
               className={cn(
                 "w-full h-12 text-base font-semibold text-white rounded-xl flex items-center justify-center gap-2 transition-all hover:brightness-110 active:scale-[0.98] bg-brand-blue",
-                (!ready || busy || !hasWallet) && "opacity-40 pointer-events-none"
+                submitBlocked && "opacity-40 pointer-events-none"
               )}
             >
               {busy ? <><Loader2 className="h-4 w-4 animate-spin" />Minting…</> : assetType === "single" ? "Mint NFT" : "Mint Editions"}
@@ -905,7 +326,7 @@ export function FastMint(props: FastMintProps) {
 
           <div className="order-first lg:order-last lg:sticky lg:top-20 max-w-[260px] mx-auto w-full lg:max-w-none lg:mx-0">
             <MedialaneCollectionCard
-              image={mediaKind === "image" ? mediaPreview : featurePreview}
+              image={previewImage}
               name={name}
               collection={collectionLabel}
               creator={walletAddress ? `${walletAddress.slice(0, 6)}…${walletAddress.slice(-4)}` : undefined}
