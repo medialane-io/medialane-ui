@@ -6,7 +6,7 @@ import { ImageIcon } from "lucide-react";
 import { EmptyOrError } from "./empty-or-error.js";
 import { LoadMoreSentinel } from "./load-more-sentinel.js";
 import { TokenCard } from "./token-card.js";
-import { useMedialaneApp } from "./medialane-app.js";
+import { ReportDialog } from "./report-dialog.js";
 import { orderUsd } from "../utils/order-usd.js";
 import { useUsdPrices } from "../utils/use-usd-prices.js";
 import { useTokensByOwner } from "../utils/use-tokens.js";
@@ -29,7 +29,6 @@ function usdFor(token: ApiToken, prices: ReturnType<typeof useUsdPrices>): strin
 }
 
 export function PortfolioAssets({ address, useActions }: { address: string; useActions: UsePortfolioAssetActions }) {
-  const { ReportDialog } = useMedialaneApp();
   const [page, setPage] = useState(1);
   const [all, setAll] = useState<ApiToken[]>([]);
   const [reportToken, setReportToken] = useState<ApiToken | null>(null);
@@ -78,14 +77,14 @@ export function PortfolioAssets({ address, useActions }: { address: string; useA
               onList={actions.list}
               onTransfer={actions.transfer}
               onCancel={actions.cancel}
-              onReport={ReportDialog ? setReportToken : undefined}
+              onReport={setReportToken}
             />
           ))}
         </div>
         <LoadMoreSentinel hasMore={hasMore} isLoading={isLoading} onLoadMore={() => setPage((p) => p + 1)} />
       </EmptyOrError>
       {actions.dialogs}
-      {ReportDialog && reportToken && (
+      {reportToken && (
         <ReportDialog
           open={!!reportToken}
           onOpenChange={(open) => { if (!open) setReportToken(null); }}

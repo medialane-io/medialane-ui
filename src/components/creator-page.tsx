@@ -18,6 +18,7 @@ import { ListingCardMenu } from "./listing-card-menu.js";
 import { ActivityTimelineRow } from "./activity-timeline-row.js";
 import { MoreMenu } from "./more-menu.js";
 import { useMedialaneApp } from "./medialane-app.js";
+import { ReportDialog } from "./report-dialog.js";
 import type { UsePortfolioAssetActions } from "./portfolio-assets.js";
 import type { CollectionMarketActions } from "./collection-page.js";
 import { cn } from "../utils/cn.js";
@@ -54,7 +55,7 @@ export interface CreatorPageProps {
 }
 
 export function CreatorPage({ address: addressProp, username, useAssetActions, useMarketActions }: CreatorPageProps) {
-  const { walletAddress, ReportDialog } = useMedialaneApp();
+  const { walletAddress } = useMedialaneApp();
   const client = useMedialaneClient();
   const resolveImage = useImageUrl();
   const prices = useUsdPrices();
@@ -175,7 +176,7 @@ export function CreatorPage({ address: addressProp, username, useAssetActions, u
                     onCancel={isOwner ? actions.cancel : undefined}
                     onBuy={!isOwner && listing ? () => market.buy(listing) : undefined}
                     onOffer={isOwner ? undefined : market.offer}
-                    onReport={ReportDialog ? setReportToken : undefined}
+                    onReport={setReportToken}
                   />
                 );
               })}
@@ -220,14 +221,14 @@ export function CreatorPage({ address: addressProp, username, useAssetActions, u
 
       {actions.dialogs}
       {market.dialogs}
-      {ReportDialog && reportToken ? (
+      {reportToken ? (
         <ReportDialog
           open={!!reportToken}
           onOpenChange={(open) => { if (!open) setReportToken(null); }}
           target={{ type: "TOKEN", contract: reportToken.contractAddress, tokenId: reportToken.tokenId, name: reportToken.metadata?.name ?? undefined }}
         />
       ) : null}
-      {ReportDialog && address ? (
+      {address ? (
         <ReportDialog open={reportOpen} onOpenChange={setReportOpen} target={{ type: "CREATOR", address, name: identity.name ?? identity.identity }} />
       ) : null}
     </div>

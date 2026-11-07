@@ -3,7 +3,7 @@ import { cleanup, fireEvent, render, waitFor } from "@testing-library/react";
 import { SWRConfig } from "swr";
 import type { ApiToken } from "@medialane/sdk";
 import type { MedialaneClient } from "@medialane/sdk/starknet";
-import type { MedialaneApp, ReportTarget } from "./medialane-app.js";
+import type { MedialaneApp } from "./medialane-app.js";
 
 mock.module("next/image", () => ({ default: ({ alt }: { alt?: string }) => <span data-alt={alt} /> }));
 mock.module("next/navigation", () => ({ useRouter: () => ({ push: () => {}, replace: () => {}, back: () => {} }), usePathname: () => "/creator/drummer", useSearchParams: () => new URLSearchParams() }));
@@ -49,16 +49,6 @@ test("the owner can list their own works through the app", async () => {
   await waitFor(() => expect(view.getByText("Piece 1")).toBeTruthy());
   fireEvent.click(view.getByText("List"));
   expect(calls).toEqual(["list 1"]);
-});
-
-test("the more menu reports the creator through the app", async () => {
-  const reports: ReportTarget[] = [];
-  const ReportDialog = ({ open, target }: { open: boolean; target: ReportTarget }) => { if (open) reports.push(target); return null; };
-  const { view } = renderPage({ address: A }, { ReportDialog });
-  await waitFor(() => expect(view.getByText("Piece 1")).toBeTruthy());
-  fireEvent.pointerDown(view.getByRole("button", { name: "More options" }), { button: 0, pointerType: "mouse" });
-  fireEvent.click(await view.findByText("Report"));
-  await waitFor(() => expect(reports[reports.length - 1]).toEqual(expect.objectContaining({ type: "CREATOR", address: A })));
 });
 
 test("a visitor's Offer opens the app's offer", async () => {

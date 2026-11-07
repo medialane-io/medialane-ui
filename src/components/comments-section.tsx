@@ -7,6 +7,7 @@ import { AddressDisplay } from "./address-display.js";
 import { Button } from "./button.js";
 import Link from "./link.js";
 import { useMedialaneApp, type ReportTarget } from "./medialane-app.js";
+import { ReportDialog } from "./report-dialog.js";
 import { RewardEarned } from "./rewards/reward-earned.js";
 import { Skeleton } from "./skeleton.js";
 import { Textarea } from "./textarea.js";
@@ -32,7 +33,6 @@ export function CommentsSection({ contract, tokenId, className }: CommentsSectio
   const app = useMedialaneApp();
   const walletAddress = app.walletAddress;
   const hasWallet = !!walletAddress;
-  const { ReportDialog } = app;
   const { comments, isLoading, mutate } = useComments(contract, tokenId);
   const tx = useTransaction();
 
@@ -290,7 +290,7 @@ export function CommentsSection({ contract, tokenId, className }: CommentsSectio
         )}
       </div>
 
-      {reportTarget && ReportDialog && (
+      {reportTarget && (
         <ReportDialog
           target={reportTarget}
           open={!!reportTarget}

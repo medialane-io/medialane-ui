@@ -29,6 +29,7 @@ import { MembershipPanel, TicketPanel, type AssetTypePanelProps } from "./asset-
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./tabs.js";
 import { Skeleton } from "./skeleton.js";
 import { useMedialaneApp } from "./medialane-app.js";
+import { ReportDialog } from "./report-dialog.js";
 import { useToken, useTokenBalance, useTokenHistory } from "../utils/use-tokens.js";
 import { useCollection, useNearbyCollectionTokens } from "../utils/use-collections.js";
 import { useTokenListings } from "../utils/use-orders.js";
@@ -162,7 +163,7 @@ function AssetPageView({
   const config = KINDS[kind];
   const router = useRouter();
   const shouldReduce = useReducedMotion();
-  const { walletAddress, ReportDialog } = useMedialaneApp();
+  const { walletAddress } = useMedialaneApp();
 
   const { listings, mutate: mutateListings, isLoading: listingsLoading } = useTokenListings(contract, tokenId);
   const { history } = useTokenHistory(contract, tokenId);
@@ -477,7 +478,7 @@ function AssetPageView({
         commentTotal={commentTotal}
         {...config.accents}
       />
-      {ReportDialog ? <ReportDialog open={reportOpen} onOpenChange={setReportOpen} target={{ type: "TOKEN", contract: token.contractAddress, tokenId: token.tokenId, name }} /> : null}
+      <ReportDialog open={reportOpen} onOpenChange={setReportOpen} target={{ type: "TOKEN", contract: token.contractAddress, tokenId: token.tokenId, name }} />
       {actions.dialogs}
     </div>
   );

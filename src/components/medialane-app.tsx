@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, type ComponentType, type ElementType, type ReactNode } from "react";
+import { createContext, useContext, type ElementType, type ReactNode } from "react";
 import type { MedialaneClient } from "@medialane/sdk/starknet";
 import type { FastMintSigner } from "./fast-mint/types.js";
 import type { ApiToken } from "@medialane/sdk";
@@ -21,8 +21,6 @@ export type ReportTarget =
   | { type: "CREATOR"; address: string; name?: string }
   | { type: "COMMENT"; commentId: string };
 
-export type ReportDialogSlot = ComponentType<{ open: boolean; onOpenChange: (open: boolean) => void; target: ReportTarget }>;
-
 export interface MedialaneApp {
   getClient: () => MedialaneClient;
   getSigner: () => Promise<FastMintSigner> | FastMintSigner;
@@ -34,7 +32,6 @@ export interface MedialaneApp {
   connectLabel?: string;
   verifyEmailHref?: string;
   companion?: CompanionApp;
-  ReportDialog?: ReportDialogSlot;
   resolveImage?: ImageResolver;
 }
 
