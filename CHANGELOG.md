@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.296.0] — 2026-11-07
+
+### Changed
+
+- `FastMint` is split into focused parts (media, collection, licensing, IP type, minting). Behavior and props are unchanged.
+
 ## [0.295.0] — 2026-11-07
 
 ### Added
