@@ -25,6 +25,7 @@ import { DropTokenLink } from "./drop/drop-token-link.js";
 import { FloatingCommentsButton } from "./floating-comments-button.js";
 import { AssetCommentsDialog } from "./asset-comments-dialog.js";
 import { PopBurnButton } from "./pop-burn-button.js";
+import { SoulboundCard } from "./soulbound-card.js";
 import { MembershipPanel, TicketPanel, type AssetTypePanelProps } from "./asset-type-panels.js";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./tabs.js";
 import { Skeleton } from "./skeleton.js";
@@ -281,6 +282,14 @@ function AssetPageView({
         onNavigate={(id) => router.push(assetHref("STARKNET", contract, id))}
         floorPriceRaw={collection?.floorPrice}
       />
+      {kind === "pop" ? (
+        <SoulboundCard
+          image={image}
+          ownerAddress={ownerAddress}
+          ownerHref={ownerAddress ? profileHref({ address: ownerAddress }) : undefined}
+          history={history as ApiActivity[]}
+        />
+      ) : null}
       <div className="-ml-3">
         <AssetUtilityIcons
           contractExplorerHref={`${EXPLORER_URL}/contract/${token.contractAddress}`}
