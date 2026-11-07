@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.291.0] — 2026-11-07
+
+### Added
+
+- `ListingsGrid`: the marketplace listings grid, with paging, the empty state and a `onBuy` hook. Your own listings have no Buy button.
+
 ## [0.290.0] — 2026-11-07
 
 ### Added
