@@ -10,12 +10,12 @@ export interface ActivityTypeConfig {
 }
 
 export const ACTIVITY_TYPE_CONFIG: Record<string, ActivityTypeConfig> = {
-  mint:      { label: "Mint",      variant: "default",   icon: Sparkles,       colorClass: "text-emerald-400", bgClass: "bg-emerald-500/10" },
-  transfer:  { label: "Transfer",  variant: "secondary", icon: ArrowRightLeft, colorClass: "text-slate-400",   bgClass: "bg-slate-500/10" },
-  listing:   { label: "Listed",    variant: "default",   icon: Tag,            colorClass: "text-sky-400",     bgClass: "bg-sky-500/10" },
-  sale:      { label: "Sale",      variant: "default",   icon: ShoppingCart,   colorClass: "text-violet-400",  bgClass: "bg-violet-500/10" },
-  offer:     { label: "Offer",     variant: "outline",   icon: HandCoins,      colorClass: "text-amber-400",   bgClass: "bg-amber-500/10" },
-  cancelled: { label: "Cancelled", variant: "outline",   icon: X,              colorClass: "text-rose-400",    bgClass: "bg-rose-500/10" },
+  mint:      { label: "Mint",      variant: "default",   icon: Sparkles,       colorClass: "text-brand-purple", bgClass: "bg-brand-purple/10" },
+  transfer:  { label: "Transfer",  variant: "secondary", icon: ArrowRightLeft, colorClass: "text-brand-blue",   bgClass: "bg-brand-blue/10" },
+  listing:   { label: "Listed",    variant: "default",   icon: Tag,            colorClass: "text-brand-orange", bgClass: "bg-brand-orange/10" },
+  sale:      { label: "Sale",      variant: "default",   icon: ShoppingCart,   colorClass: "text-brand-rose",   bgClass: "bg-brand-rose/10" },
+  offer:     { label: "Offer",     variant: "outline",   icon: HandCoins,      colorClass: "text-brand-maeve",  bgClass: "bg-brand-maeve/10" },
+  cancelled: { label: "Cancelled", variant: "outline",   icon: X,              colorClass: "text-muted-foreground", bgClass: "bg-muted" },
 };
 
 export const TYPE_FILTERS = [
