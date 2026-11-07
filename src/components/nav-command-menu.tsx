@@ -15,6 +15,7 @@ export interface NavCommand {
   id: string;
   label: string;
   icon: React.ComponentType<{ className?: string }>;
+  iconSrc?: string;
   href?: string;
   action?: () => void;
 
@@ -234,20 +235,28 @@ function CommandRow({ item, primary, onSelect }: { item: NavCommand; primary: bo
         primary ? "px-2.5 py-2.5" : "px-2.5 py-2"
       )}
     >
-      <span
-        className={cn(
-          "flex shrink-0 items-center justify-center rounded-lg transition-colors",
-          "bg-muted/50 group-aria-selected/item:bg-primary/15",
-          primary ? "h-9 w-9" : "h-8 w-8"
-        )}
-      >
-        <item.icon
-          className={cn(
-            "text-foreground/80 transition-colors group-aria-selected/item:text-primary",
-            primary ? "h-[18px] w-[18px]" : "h-4 w-4"
-          )}
+      {item.iconSrc ? (
+        <img
+          src={item.iconSrc}
+          alt=""
+          className={cn("shrink-0 rounded-lg", primary ? "h-9 w-9" : "h-8 w-8")}
         />
-      </span>
+      ) : (
+        <span
+          className={cn(
+            "flex shrink-0 items-center justify-center rounded-lg transition-colors",
+            "bg-muted/50 group-aria-selected/item:bg-primary/15",
+            primary ? "h-9 w-9" : "h-8 w-8"
+          )}
+        >
+          <item.icon
+            className={cn(
+              "text-foreground/80 transition-colors group-aria-selected/item:text-primary",
+              primary ? "h-[18px] w-[18px]" : "h-4 w-4"
+            )}
+          />
+        </span>
+      )}
       <span className="min-w-0 flex-1">
         <span
           className={cn(

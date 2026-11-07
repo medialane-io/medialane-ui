@@ -3,6 +3,7 @@ import { act, fireEvent, render, waitFor } from "@testing-library/react";
 import type { MedialaneClient } from "@medialane/sdk/starknet";
 import { Home, Search } from "lucide-react";
 import type { MedialaneApp } from "./medialane-app.js";
+import type { NavCommandGroup } from "./nav-command-menu.js";
 
 const pushed: string[] = [];
 mock.module("next/navigation", () => ({ useSearchParams: () => new URLSearchParams(), usePathname: () => "/", useRouter: () => ({ push: (href: string) => pushed.push(href) }) }));
@@ -55,11 +56,11 @@ function Opener() {
   return <button onClick={open}>open</button>;
 }
 
-async function openMenu(search: boolean) {
+async function openMenu(search: boolean, list: NavCommandGroup[] = commands) {
   const view = render(
     <MedialaneAppProvider value={app}>
       <Opener />
-      <NavCommandMenu commands={commands} search={search} />
+      <NavCommandMenu commands={list} search={search} />
     </MedialaneAppProvider>
   );
   act(() => { fireEvent.click(view.getByText("open")); });
@@ -104,5 +105,18 @@ test("without search the menu only filters commands", async () => {
   await new Promise((r) => setTimeout(r, 300));
   expect(view.queryByText(/All results/)).toBeNull();
   expect(searches).toEqual([]);
+  view.unmount();
+});
+
+test("an entry with an image shows it in place of its icon; the rest keep their icons", async () => {
+  const branded = [
+    { items: [{ id: "home", label: "Medialane", icon: Home, iconSrc: "/icon.png", href: "/" }] },
+    { heading: "Navigate", items: [{ id: "search", label: "Search", icon: Search, href: "/search" }] },
+  ];
+  const { view } = await openMenu(false, branded);
+  const row = (label: string) => view.getByText(label).closest('[cmdk-item]') as HTMLElement;
+  expect(row("Medialane").firstElementChild?.getAttribute("src")).toBe("/icon.png");
+  expect(row("Search").querySelector("img")).toBeNull();
+  expect(row("Search").firstElementChild?.querySelector("svg")).toBeTruthy();
   view.unmount();
 });

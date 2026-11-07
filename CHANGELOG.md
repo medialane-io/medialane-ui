@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.299.0] — 2026-11-07
+
+### Added
+
+- Navigation menu entries can show an image in place of an icon (`iconSrc`). The first entry shows the Medialane logo.
+
 ## [0.298.0] — 2026-11-07
 
 ### Changed
