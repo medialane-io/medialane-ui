@@ -32,6 +32,7 @@ export interface MedialaneApp {
   releaseSigner?: () => void;
   ensureSignedIn?: () => Promise<void>;
   connectLabel?: string;
+  verifyEmailHref?: string;
   companion?: CompanionApp;
   ReportDialog?: ReportDialogSlot;
   resolveImage?: ImageResolver;
