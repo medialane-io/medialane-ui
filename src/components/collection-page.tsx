@@ -23,6 +23,7 @@ import { OrderSortControl, sortOrders, type OrderSort } from "./order-sort-contr
 import { GatedContentHero, GatedContentPanel, type GatedContentState } from "./gated-content.js";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./tabs.js";
 import { useMedialaneApp } from "./medialane-app.js";
+import { ReportDialog } from "./report-dialog.js";
 import { useCollection, useCollectionTokens } from "../utils/use-collections.js";
 import { useOrders } from "../utils/use-orders.js";
 import { useCollectionProfile } from "../utils/use-profiles.js";
@@ -187,7 +188,7 @@ export interface CollectionPageProps {
 }
 
 export function CollectionPage({ contract, slots }: CollectionPageProps) {
-  const { walletAddress, ReportDialog } = useMedialaneApp();
+  const { walletAddress } = useMedialaneApp();
   const { collection, isLoading: collectionLoading } = useCollection(contract);
   const { profile } = useCollectionProfile(contract);
   const gatedState = slots.useGatedContent(profile?.hasGatedContent ? contract : undefined);
@@ -348,7 +349,7 @@ export function CollectionPage({ contract, slots }: CollectionPageProps) {
         </div>
       ) : null}
 
-      {collection && ReportDialog ? (
+      {collection ? (
         <ReportDialog open={reportOpen} onOpenChange={setReportOpen} target={{ type: "COLLECTION", contract: collection.contractAddress, name: collection.name ?? undefined }} />
       ) : null}
       {market.dialogs}

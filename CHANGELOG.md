@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.289.0] — 2026-11-07
+
+### Added
+
+- `ReportDialog`: the report form and its sign-in handling.
+
+### Removed
+
+- The `ReportDialog` slot on `MedialaneApp` and the `ReportDialogSlot` type. Reporting now uses `ReportDialog` directly, so report buttons always show.
+
 ## [0.288.0] — 2026-11-07
 
 ### Added

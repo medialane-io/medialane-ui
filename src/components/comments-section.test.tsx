@@ -2,7 +2,7 @@ import { afterEach, expect, mock, test } from "bun:test";
 import { cleanup, fireEvent, render, waitFor } from "@testing-library/react";
 import { SWRConfig } from "swr";
 import type { MedialaneClient } from "@medialane/sdk/starknet";
-import { MedialaneAppProvider, type MedialaneApp, type ReportTarget } from "./medialane-app.js";
+import { MedialaneAppProvider, type MedialaneApp } from "./medialane-app.js";
 
 mock.module("next/image", () => ({ default: ({ alt }: { alt?: string }) => <span data-alt={alt} /> }));
 mock.module("../utils/media-wallet/confetti.js", () => ({ fireConfetti: () => {} }));
@@ -18,7 +18,6 @@ const C = "0x00000000000000000000000000000000000000000000000000000000000000c1";
 
 function setup(walletAddress: string | null) {
   const intents: { kind: string; params: Record<string, unknown> }[] = [];
-  const reports: ReportTarget[] = [];
   let connects = 0;
   const comment = { id: "k1", author: OTHER, content: "Great work", postedAt: new Date().toISOString(), txHash: null };
   const client = {
@@ -38,7 +37,6 @@ function setup(walletAddress: string | null) {
     walletAddress,
     onRequireWallet: () => { connects++; },
     connectLabel: "Connect with email",
-    ReportDialog: ({ open, target }: { open: boolean; target: ReportTarget }) => { if (open) reports.push(target); return null; },
   } as unknown as MedialaneApp;
   const view = render(
     <SWRConfig value={{ provider: () => new Map() }}>
@@ -47,7 +45,7 @@ function setup(walletAddress: string | null) {
       </MedialaneAppProvider>
     </SWRConfig>,
   );
-  return { view, intents, reports, connects: () => connects };
+  return { view, intents, connects: () => connects };
 }
 
 test("a visitor without a wallet is asked to connect, not to write", async () => {
@@ -68,8 +66,8 @@ test("a comment is posted onchain with its text trimmed", async () => {
 });
 
 test("someone else's comment can be reported", async () => {
-  const { view, reports } = setup(ME);
+  const { view } = setup(ME);
   await waitFor(() => expect(view.getByLabelText("Report comment")).toBeTruthy());
   fireEvent.click(view.getByLabelText("Report comment"));
-  expect(reports[0]).toEqual({ type: "COMMENT", commentId: "k1" });
+  await waitFor(() => expect(view.getByText("Submit Report")).toBeTruthy());
 });
