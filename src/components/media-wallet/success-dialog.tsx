@@ -5,9 +5,8 @@ import { ActionButton } from "../action-button.js";
 import { ActionBackdrop, CanvasPortal } from "./action-modal.js";
 import { fireConfetti } from "../../utils/media-wallet/confetti.js";
 import { explorerTxUrl } from "../../utils/media-wallet/wallet-format.js";
+import { BRAND_GRADIENT } from "../../data/brand.js";
 import { useMediaWalletApp } from "./types.js";
-
-const BRAND_GRADIENT = "linear-gradient(115deg, #3b7bff, #8a5cf6, #f6608f, #fb8b46, #3b7bff)";
 
 export function SuccessDialog({
   title,

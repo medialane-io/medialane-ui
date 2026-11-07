@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { formatAmount } from "@medialane/sdk";
 import type { SelfFundConsent, SelfFundFeeEstimate } from "@medialane/sdk/starknet";
-import { ActionDialog } from "../action-dialog.js";
+import { Dialog, DialogContent, DialogDescription, DialogTitle } from "../dialog.js";
 
 interface PendingRequest {
   resolve: (consented: boolean) => void;
@@ -48,13 +48,13 @@ export function SelfFundConsentDialog({ consent }: { consent: SelfFundConsent })
   const notEnough = estimate?.balanceRaw != null && estimate.balanceRaw < estimate.feeRaw;
 
   return (
-    <ActionDialog open={pending !== null} onClose={() => respond(false)} width={420} shadow={false}>
-      <div className="p-6 space-y-4">
-        <h2 className="text-lg font-semibold">Network fee needed</h2>
-        <p className="text-sm text-muted-foreground">
+    <Dialog open={pending !== null} onOpenChange={(next) => { if (!next) respond(false); }}>
+      <DialogContent className="sm:max-w-md">
+        <DialogTitle>Network fee needed</DialogTitle>
+        <DialogDescription>
           Medialane usually covers network fees for you, but can&apos;t right now. You can pay this one from your
           wallet, or try again later.
-        </p>
+        </DialogDescription>
         <div className="rounded-lg bg-muted px-4 py-3 flex items-center justify-between">
           <span className="text-sm text-muted-foreground">Network fee</span>
           <span className="text-sm font-semibold">{label ? `≈ ${label}` : "Estimating…"}</span>
@@ -87,7 +87,7 @@ export function SelfFundConsentDialog({ consent }: { consent: SelfFundConsent })
             {label ? `Pay ${label}` : "Pay from my wallet"}
           </button>
         </div>
-      </div>
-    </ActionDialog>
+      </DialogContent>
+    </Dialog>
   );
 }

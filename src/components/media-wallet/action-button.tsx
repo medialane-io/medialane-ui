@@ -1,20 +1,5 @@
 "use client";
 
-export const ACTION_GRADIENTS: Record<string, [string, string, string]> = {
-  buy: ["#3b7bff", "#8a5cf6", "#3b7bff"],
-  submit: ["#d6359a", "#5b4ce6", "#d6359a"],
-  offer: ["#f6608f", "#fb8b46", "#f6608f"],
-  remix: ["#8a5cf6", "#f6608f", "#8a5cf6"],
-  license: ["#3b7bff", "#5b4ce6", "#3b7bff"],
-};
-export const ACTION_FOREGROUNDS: Record<string, string> = {
-  buy: "#3b7bff",
-  submit: "#5b4ce6",
-  offer: "#fb7a32",
-  remix: "#8a3ff0",
-  license: "#3b7bff",
-};
-
 export function TrustNote({ children, center }: { children: React.ReactNode; center?: boolean }) {
   return (
     <div className={`flex items-center gap-1.5 text-2xs leading-relaxed text-muted-foreground ${center ? "justify-center" : ""}`}>

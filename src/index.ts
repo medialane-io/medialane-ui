@@ -81,7 +81,7 @@ export { AssetUtilityIcons } from "./components/asset-utility-icons.js";
 export type { AssetUtilityIconsProps } from "./components/asset-utility-icons.js";
 export { AssetMarketplacePanel } from "./components/asset-marketplace-panel.js";
 export type { AssetMarketplacePanelProps, ApiOrderLike } from "./components/asset-marketplace-panel.js";
-export { BRAND } from "./data/brand.js";
+export { BRAND, BRAND_COLOR, BRAND_GRADIENT, ACTION_GRADIENTS, ACTION_FOREGROUNDS } from "./data/brand.js";
 export { LIVING_RENDER_COLLECTIONS, isLivingRenderCollection } from "./data/living-render-collections.js";
 
 export { CurrencyIcon, CurrencyAmount } from "./components/currency-icon.js";
@@ -426,8 +426,6 @@ export type { TokenGlyphProps, TokenAmountProps, TokenSymbol } from "./component
 export { StatTile, StatPill, StatPillRow } from "./components/stat-tile.js";
 export type { StatTileProps, StatPillProps, StatPillRowItem } from "./components/stat-tile.js";
 
-export { ActionDialog } from "./components/action-dialog.js";
-export type { ActionDialogProps } from "./components/action-dialog.js";
 
 export { HiddenContentBanner } from "./components/hidden-content-banner.js";
 

@@ -11,7 +11,7 @@ import { mintableCollections, collectionKey } from "./mintable-collections.js";
 import {
   ImagePlus, Music, Video, FileText, Loader2,
   Layers, ImagePlus as SingleIcon, ChevronDown, Boxes, Plus, Check,
-  ShieldCheck, X,
+  ShieldCheck,
 } from "lucide-react";
 import { Input } from "../input.js";
 import { Textarea } from "../textarea.js";
@@ -19,7 +19,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from ".
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "../collapsible.js";
 import { Popover, PopoverContent, PopoverTrigger } from "../popover.js";
 import { MedialaneCollectionCard } from "../medialane-collection-card.js";
-import { ActionDialog } from "../action-dialog.js";
+import { Dialog, DialogContent, DialogDescription, DialogTitle } from "../dialog.js";
 import { IPTypeFields, type MetadataField } from "../ip-type-fields.js";
 import {
   IP_TYPES, LICENSE_TYPES, GEOGRAPHIC_SCOPES, AI_POLICIES, DERIVATIVES_OPTIONS,
@@ -521,19 +521,13 @@ export function FastMint(props: FastMintProps) {
   const wrap = (node: React.ReactNode) => {
     if (presentation !== "dialog") return node;
     return (
-      <ActionDialog open={open} onClose={onClose ?? (() => {})} width={640}>
-        <div className="relative p-6 sm:p-8">
-          <button
-            type="button"
-            onClick={onClose}
-            aria-label="Close"
-            className="absolute top-4 right-4 h-8 w-8 rounded-full hover:bg-muted flex items-center justify-center text-muted-foreground"
-          >
-            <X className="h-4 w-4" />
-          </button>
+      <Dialog open={open} onOpenChange={(next) => { if (!next) onClose?.(); }}>
+        <DialogContent className="gap-0 p-6 sm:max-w-2xl sm:p-8">
+          <DialogTitle className="sr-only">Create</DialogTitle>
+          <DialogDescription className="sr-only">Add media, describe it and publish it as an asset.</DialogDescription>
           {node}
-        </div>
-      </ActionDialog>
+        </DialogContent>
+      </Dialog>
     );
   };
 

@@ -34,7 +34,7 @@ export function MedialaneCollectionCard({
     <div className={cn(className)}>
       <div className="rounded-[24px] border border-border">
         <div
-          className="ml-card-material relative rounded-[23px] overflow-hidden text-[#0a0e1f] dark:text-white"
+          className="ml-card-material relative rounded-[23px] overflow-hidden text-brand-navy dark:text-white"
         >
 
           <div className="p-2.5 pb-0">
@@ -56,17 +56,17 @@ export function MedialaneCollectionCard({
                 {displayName}
               </p>
               {serial && (
-                <span className="mt-0.5 shrink-0 rounded-full bg-black/5 dark:bg-white/10 px-2 py-0.5 text-2xs font-semibold text-[#0a0e1f]/80 dark:text-white/80 tabular-nums">
+                <span className="mt-0.5 shrink-0 rounded-full bg-black/5 dark:bg-white/10 px-2 py-0.5 text-2xs font-semibold text-brand-navy/80 dark:text-white/80 tabular-nums">
                   {serial}
                 </span>
               )}
             </div>
             {collection && (
-              <p className="mt-0.5 text-[12.5px] text-[#0a0e1f]/55 dark:text-white/55 truncate">{collection}</p>
+              <p className="mt-0.5 text-[12.5px] text-brand-navy/55 dark:text-white/55 truncate">{collection}</p>
             )}
             <div className="my-3 h-px bg-black/10 dark:bg-white/10" />
             <div className="flex items-center gap-2">
-              <span className="text-2xs font-bold tracking-[0.18em] text-[#0a0e1f]/50 dark:text-white/50">
+              <span className="text-2xs font-bold tracking-[0.18em] text-brand-navy/50 dark:text-white/50">
                 STARKNET
               </span>
               {creator && (
@@ -75,12 +75,12 @@ export function MedialaneCollectionCard({
                     href={creatorHref}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="ml-auto min-w-0 truncate text-2xs text-[#0a0e1f]/55 dark:text-white/55 tabular-nums hover:text-[#0a0e1f]/80 dark:hover:text-white/80 transition-colors"
+                    className="ml-auto min-w-0 truncate text-2xs text-brand-navy/55 dark:text-white/55 tabular-nums hover:text-brand-navy/80 dark:hover:text-white/80 transition-colors"
                   >
                     {creator}
                   </a>
                 ) : (
-                  <span className="ml-auto min-w-0 truncate text-2xs text-[#0a0e1f]/55 dark:text-white/55 tabular-nums">
+                  <span className="ml-auto min-w-0 truncate text-2xs text-brand-navy/55 dark:text-white/55 tabular-nums">
                     {creator}
                   </span>
                 )

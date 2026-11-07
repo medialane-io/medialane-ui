@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { buildPopAllowlist, dropClaimLinks, popClaimLinksCsv, type DropOnchain } from "@medialane/sdk/starknet";
 import { dropHref, type ApiDrop, type ApiDropMint } from "@medialane/sdk";
-import { ActionDialog } from "../../action-dialog.js";
+import { Dialog, DialogContent, DialogDescription, DialogTitle } from "../../dialog.js";
 import { Button } from "../../button.js";
 import { Input } from "../../input.js";
 import { Textarea } from "../../textarea.js";
@@ -135,15 +135,16 @@ export function DropManage({ contract, indexed, onchain, mints, run, saveExclusi
         </div>
       </section>
 
-      <ActionDialog open={pending !== null} onClose={() => !busy && setPending(null)} width={460}>
-        <div className="space-y-4 p-6">
-          <p className="text-sm">{pending?.body}</p>
+      <Dialog open={pending !== null} onOpenChange={(next) => { if (!next && !busy) setPending(null); }}>
+        <DialogContent className="sm:max-w-md" hideClose={busy}>
+          <DialogTitle className="sr-only">Confirm</DialogTitle>
+          <DialogDescription className="text-sm text-foreground">{pending?.body}</DialogDescription>
           <div className="flex justify-end gap-2">
             <Button variant="outline" disabled={busy} onClick={() => setPending(null)}>Cancel</Button>
             <Button disabled={busy} onClick={() => void confirm()}>{busy ? "Working…" : "Confirm"}</Button>
           </div>
-        </div>
-      </ActionDialog>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

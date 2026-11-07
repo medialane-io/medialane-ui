@@ -6,6 +6,7 @@ import { useRouter } from "../router.js";
 import { CurrencyIcon } from "../currency-icon.js";
 import { useTokenBalance } from "../../utils/media-wallet/use-erc20-balance.js";
 import { useTokensByOwner } from "../../utils/use-tokens.js";
+import { BRAND_COLOR } from "../../data/brand.js";
 import { ActivateCard } from "./activate-card.js";
 import { QuickAction } from "./quick-action.js";
 import { ReceiveCard } from "./receive-card.js";
@@ -136,7 +137,7 @@ export function MediaWalletHome({
               <button
                 onClick={() => setPanel(panel === "receive" ? null : "receive")}
                 className="h-[48px] rounded-[13px] px-8 text-[15px] font-semibold text-white transition-transform active:scale-[0.99]"
-                style={{ background: "linear-gradient(115deg,#3b7bff,#5b4ce6)" }}
+                style={{ background: `linear-gradient(115deg, ${BRAND_COLOR.blue}, ${BRAND_COLOR.purple})` }}
               >
                 Fund your account
               </button>

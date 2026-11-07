@@ -2,38 +2,7 @@
 
 import { cn } from "../utils/cn.js";
 import { HelpIcon } from "./help-icon.js";
-
-const ACTION_GRADIENTS: Record<string, [string, string, string]> = {
-  buy:     ['#3b7bff', '#8a5cf6', '#3b7bff'],
-  submit:  ['#d6359a', '#5b4ce6', '#d6359a'],
-  offer:   ['#f6608f', '#fb8b46', '#f6608f'],
-  remix:   ['#8a5cf6', '#f6608f', '#8a5cf6'],
-  license: ['#3b7bff', '#5b4ce6', '#3b7bff'],
-};
-
-const ACTION_FOREGROUNDS: Record<string, string> = {
-  buy:     '#3b7bff',
-  submit:  '#5b4ce6',
-  offer:   '#fb7a32',
-  remix:   '#8a3ff0',
-  license: '#3b7bff',
-};
-
-const TONE_GRADIENTS: Record<string, [string, string, string]> = {
-  blue:   ['#3b7bff', '#5b4ce6', '#3b7bff'],
-  purple: ['#8a5cf6', '#f6608f', '#8a5cf6'],
-  orange: ['#fb8b46', '#f6608f', '#fb8b46'],
-  red:    ['#ef5a5a', '#f6608f', '#ef5a5a'],
-  rose:   ['#f6608f', '#fb8b46', '#f6608f'],
-};
-
-const TONE_FOREGROUNDS: Record<string, string> = {
-  blue:   '#2f6bff',
-  purple: '#8a3ff0',
-  orange: '#fb7a32',
-  red:    '#ef5a5a',
-  rose:   '#f6608f',
-};
+import { ACTION_FOREGROUNDS, ACTION_GRADIENTS, TONE_FOREGROUNDS, TONE_GRADIENTS } from "../data/brand.js";
 
 export type ActionKey = keyof typeof ACTION_GRADIENTS;
 export type ToneKey = keyof typeof TONE_GRADIENTS;
