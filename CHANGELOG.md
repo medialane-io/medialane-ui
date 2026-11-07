@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.295.0] — 2026-11-07
+
+### Added
+
+- Shared pages: `RewardsPage`, `JourneyContent`, `PortfolioSnapshot`, `RewardsSnapshot`, `RouteError`, `CreateSponsorshipAside`, and the loading skeletons `AccountLoading`, `ActivitiesLoading`, `CollectionsLoading`, `CreatorLoading`, `MarketplaceLoading`, `PortfolioLoading`.
+- `JourneyContent` opens sign-in through the app.
+
 ## [0.294.0] — 2026-11-07
 
 ### Added
