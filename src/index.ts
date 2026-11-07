@@ -81,6 +81,8 @@ export { AssetUtilityIcons } from "./components/asset-utility-icons.js";
 export type { AssetUtilityIconsProps } from "./components/asset-utility-icons.js";
 export { AssetMarketplacePanel } from "./components/asset-marketplace-panel.js";
 export type { AssetMarketplacePanelProps, ApiOrderLike } from "./components/asset-marketplace-panel.js";
+export { fireConfetti } from "./utils/media-wallet/confetti.js";
+export { useConfetti } from "./utils/use-confetti.js";
 export { BRAND, BRAND_COLOR, BRAND_GRADIENT, ACTION_GRADIENTS, ACTION_FOREGROUNDS } from "./data/brand.js";
 export { LIVING_RENDER_COLLECTIONS, isLivingRenderCollection } from "./data/living-render-collections.js";
 
