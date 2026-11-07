@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.303.0] — 2026-11-07
+
+### Changed
+
+- The collection Provenance tab shows two columns on wide screens and leads with the asset when the history covers more than one asset.
+- Activity event icon tints are stronger, most visibly in the dark theme.
+- Asset cards have no border.
+
 ## [0.302.0] — 2026-11-07
 
 ### Changed
