@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.287.0] — 2026-11-07
+
+### Added
+
+- `CollectionSettings`: the collection settings screen, with the owner-only view, profile form, exclusive content and URL claim.
+- `verifyEmailHref` on `MedialaneApp`: where the URL claim sends accounts that need to verify an email.
+
 ## [0.286.0] — 2026-11-06
 
 ### Added
