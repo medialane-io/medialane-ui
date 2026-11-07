@@ -3,9 +3,8 @@
 import { useState } from "react";
 import { ActionButton } from "../action-button.js";
 import { describeError } from "../../utils/describe-error.js";
+import { BRAND_GRADIENT } from "../../data/brand.js";
 import { useMediaWalletApp } from "./types.js";
-
-const BRAND_GRADIENT = "linear-gradient(115deg,#3b7bff,#8a5cf6,#f6608f,#fb8b46,#3b7bff)";
 
 export function ActivateCard({ onActivated }: { onActivated: (txHash?: string) => void }) {
   const { wallet } = useMediaWalletApp();

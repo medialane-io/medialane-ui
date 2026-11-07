@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.292.0] — 2026-11-07
+
+### Added
+
+- `BRAND_COLOR`, `BRAND_GRADIENT`, `ACTION_GRADIENTS` and `ACTION_FOREGROUNDS`: the brand palette as theme tokens, defined once.
+
+### Changed
+
+- Fast mint, the drop dialogs and the network-fee dialog use the standard `Dialog`: focus stays inside, Escape closes, and screen readers get a title.
+- Buttons, gradients, wallet icons and collection cards read their colors from the theme tokens instead of fixed values.
+
+### Removed
+
+- `ActionDialog`: use `Dialog`.
+
 ## [0.291.0] — 2026-11-07
 
 ### Added

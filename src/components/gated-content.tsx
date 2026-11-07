@@ -2,6 +2,7 @@
 
 import { Loader2, Lock, ShoppingBag, Sparkles, Unlock } from "lucide-react";
 import type { ApiCollectionProfile } from "@medialane/sdk";
+import { BRAND_COLOR } from "../data/brand.js";
 import { GATED_CONTENT_TYPES, GATED_CONTENT_TYPE_FALLBACK } from "../data/gated-content-types.js";
 import { useMedialaneApp } from "./medialane-app.js";
 
@@ -63,7 +64,7 @@ export function GatedContentHero({
         <div className="flex-1 min-w-0">
           <p
             className="text-2xs font-bold leading-none mb-1"
-            style={{ background: "linear-gradient(90deg, #3b7bff, #8a5cf6, #f6608f)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}
+            style={{ background: `linear-gradient(90deg, ${BRAND_COLOR.blue}, ${BRAND_COLOR.purple}, ${BRAND_COLOR.rose})`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}
           >
             Holder exclusive
           </p>

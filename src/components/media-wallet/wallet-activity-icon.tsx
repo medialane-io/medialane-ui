@@ -1,4 +1,5 @@
 import { getTokenByAddress, type ApiWalletActivity } from "@medialane/sdk";
+import { BRAND_COLOR } from "../../data/brand.js";
 import { CurrencyIcon } from "../currency-icon.js";
 
 export function WalletActivityIcon({ a }: { a: ApiWalletActivity }) {
@@ -11,11 +12,11 @@ export function WalletActivityIcon({ a }: { a: ApiWalletActivity }) {
         </div>
       );
     }
-    return <ActionIcon hue={a.type === "RECEIVE" ? "#3b7bff" : "#f6608f"}>{a.type === "RECEIVE" ? <ArrowDownIcon /> : <ArrowUpIcon />}</ActionIcon>;
+    return <ActionIcon hue={a.type === "RECEIVE" ? BRAND_COLOR.blue : BRAND_COLOR.rose}>{a.type === "RECEIVE" ? <ArrowDownIcon /> : <ArrowUpIcon />}</ActionIcon>;
   }
-  if (a.type === "SWAP") return <ActionIcon hue="#8a3ff0"><SwapIcon /></ActionIcon>;
-  if (a.type === "DEPLOY") return <ActionIcon hue="#fb7a32"><RocketIcon /></ActionIcon>;
-  return <ActionIcon hue="#5b4ce6"><ShieldIcon /></ActionIcon>;
+  if (a.type === "SWAP") return <ActionIcon hue={BRAND_COLOR.purple}><SwapIcon /></ActionIcon>;
+  if (a.type === "DEPLOY") return <ActionIcon hue={BRAND_COLOR.orange}><RocketIcon /></ActionIcon>;
+  return <ActionIcon hue={BRAND_COLOR.purple}><ShieldIcon /></ActionIcon>;
 }
 
 function ActionIcon({ hue, children }: { hue: string; children: React.ReactNode }) {

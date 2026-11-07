@@ -89,7 +89,7 @@
 .pt-safe { padding-top: max(env(safe-area-inset-top), 0px); }
 
 .glass {
-  background: rgba(10, 14, 30, 0.60);
+  background: hsl(var(--brand-navy) / 0.6);
   backdrop-filter: blur(16px);
   border: 1px solid rgba(255, 255, 255, 0.06);
 }
@@ -104,25 +104,25 @@ h1 {
 }
 
 .gradient-text {
-  background: linear-gradient(135deg, #8a5cf6 0%, #5b4ce6 40%, #3b7bff 100%);
+  background: linear-gradient(135deg, hsl(var(--brand-purple)) 0%, hsl(var(--brand-blue)) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 .gradient-text-warm {
-  background: linear-gradient(135deg, #f6608f 0%, #fb8b46 60%, #f97316 100%);
+  background: linear-gradient(135deg, hsl(var(--brand-rose)) 0%, hsl(var(--brand-orange)) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 .gradient-text-full {
-  background: linear-gradient(120deg, #3b7bff, #8a5cf6 40%, #f6608f 75%, #fb8b46);
+  background: linear-gradient(120deg, hsl(var(--brand-blue)), hsl(var(--brand-purple)) 40%, hsl(var(--brand-rose)) 75%, hsl(var(--brand-orange)));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 .gradient-text-gold {
-  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #fb8b46 100%);
+  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, hsl(var(--brand-orange)) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -240,7 +240,7 @@ input[type="number"] { -moz-appearance: textfield; }
 }
 
 .btn-border-animated {
-  background: linear-gradient(270deg, #3b7bff, #8a5cf6, #f6608f, #fb8b46, #3b7bff);
+  background: linear-gradient(270deg, hsl(var(--brand-blue)), hsl(var(--brand-purple)), hsl(var(--brand-rose)), hsl(var(--brand-orange)), hsl(var(--brand-blue)));
   background-size: 300% 300%;
   animation: border-flow 5s ease infinite;
 }
@@ -267,7 +267,7 @@ input[type="number"] { -moz-appearance: textfield; }
   inset: 0;
   border-radius: 50%;
   padding: 1.5px;
-  background: conic-gradient(from 0deg, #3b7bff, #8a5cf6, #f6608f, #3b7bff);
+  background: conic-gradient(from 0deg, hsl(var(--brand-blue)), hsl(var(--brand-purple)), hsl(var(--brand-rose)), hsl(var(--brand-blue)));
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
@@ -283,7 +283,7 @@ input[type="number"] { -moz-appearance: textfield; }
   inset: 0;
   border-radius: 50%;
   padding: 1.5px;
-  background: linear-gradient(135deg, #3b7bff, #8a5cf6);
+  background: linear-gradient(135deg, hsl(var(--brand-blue)), hsl(var(--brand-purple)));
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
@@ -297,7 +297,7 @@ input[type="number"] { -moz-appearance: textfield; }
   inset: -1px;
   border-radius: inherit;
   padding: 1.5px;
-  background: linear-gradient(120deg, #3b7bff, #8a5cf6, #f6608f, #fb8b46);
+  background: linear-gradient(120deg, hsl(var(--brand-blue)), hsl(var(--brand-purple)), hsl(var(--brand-rose)), hsl(var(--brand-orange)));
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
@@ -315,24 +315,15 @@ input[type="number"] { -moz-appearance: textfield; }
 
 .ml-card-material {
   background:
-    radial-gradient(120% 90% at 0% 0%, rgba(59,123,255,0.07), transparent 55%),
-    radial-gradient(120% 90% at 100% 100%, rgba(251,139,70,0.06), transparent 55%),
+    radial-gradient(120% 90% at 0% 0%, hsl(var(--brand-blue) / 0.07), transparent 55%),
+    radial-gradient(120% 90% at 100% 100%, hsl(var(--brand-orange) / 0.06), transparent 55%),
     #f8f9fc;
 }
 .dark .ml-card-material {
   background:
-    radial-gradient(120% 90% at 0% 0%, rgba(59,123,255,0.14), transparent 55%),
-    radial-gradient(120% 90% at 100% 100%, rgba(251,139,70,0.10), transparent 55%),
-    #0a0e1f;
-}
-
-@keyframes mlFade {
-  from { opacity: 0; }
-  to   { opacity: 1; }
-}
-@keyframes mlPop {
-  from { opacity: 0; transform: translateY(8px) scale(0.98); }
-  to   { opacity: 1; transform: none; }
+    radial-gradient(120% 90% at 0% 0%, hsl(var(--brand-blue) / 0.14), transparent 55%),
+    radial-gradient(120% 90% at 100% 100%, hsl(var(--brand-orange) / 0.10), transparent 55%),
+    hsl(var(--brand-navy));
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -13,14 +13,12 @@ import { WalletActivityIcon } from "./wallet-activity-icon.js";
 import { ActionModal } from "./action-modal.js";
 import { useMediaWalletApp, type MediaWalletView } from "./types.js";
 import { useMedialaneApp } from "../medialane-app.js";
+import { BRAND_COLOR } from "../../data/brand.js";
 import { emptyMessages } from "../../utils/empty-messages.js";
 
-const GRADS = [
-  "linear-gradient(135deg,#3b7bff,#8a5cf6)",
-  "linear-gradient(135deg,#8a5cf6,#f6608f)",
-  "linear-gradient(135deg,#f6608f,#fb8b46)",
-  "linear-gradient(135deg,#5b4ce6,#3b7bff)",
-];
+const GRADS = ([["blue", "purple"], ["purple", "rose"], ["rose", "orange"], ["purple", "blue"]] as const).map(
+  ([from, to]) => `linear-gradient(135deg, ${BRAND_COLOR[from]}, ${BRAND_COLOR[to]})`,
+);
 const gradFor = (seed: string) => {
   let h = 0;
   for (let i = 0; i < seed.length; i++) h = (h * 31 + seed.charCodeAt(i)) | 0;

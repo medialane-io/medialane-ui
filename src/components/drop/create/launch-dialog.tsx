@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { CheckCircle2, Loader2, RotateCcw, XCircle } from "lucide-react";
 import { dropHref } from "@medialane/sdk";
 import { buildPopAllowlist, dropClaimLinks, popClaimLinksCsv, type PopClaimLink } from "@medialane/sdk/starknet";
-import { ActionDialog } from "../../action-dialog.js";
+import { Dialog, DialogContent, DialogDescription, DialogTitle } from "../../dialog.js";
 import { GradientButton } from "../../gradient-button.js";
 import { Button } from "../../button.js";
 import { ShareButton } from "../../share-button.js";
@@ -105,11 +105,12 @@ export function LaunchDialog({ open, onClose, draft }: { open: boolean; onClose:
   };
 
   return (
-    <ActionDialog open={open} onClose={close}>
-      <div className="space-y-5 p-6">
+    <Dialog open={open} onOpenChange={(next) => { if (!next) close(); }}>
+      <DialogContent className="gap-5" hideClose={step.kind === "uploading" || step.kind === "launching"}>
+        <DialogDescription className="sr-only">Review the drop and launch it.</DialogDescription>
         {step.kind === "review" && (
           <>
-            <h2 className="text-lg font-semibold">Review and launch</h2>
+            <DialogTitle className="text-lg font-semibold">Review and launch</DialogTitle>
             <div className="space-y-2 rounded-xl border border-border p-4 text-sm">
               <p className="font-semibold">{draft.name}</p>
               <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Fixed after launch</p>
@@ -126,16 +127,16 @@ export function LaunchDialog({ open, onClose, draft }: { open: boolean; onClose:
         )}
         {step.kind === "uploading" && (
           <>
-            <h2 className="flex items-center gap-2 text-lg font-semibold"><Loader2 className="h-4 w-4 animate-spin" />Uploading</h2>
+            <DialogTitle className="flex items-center gap-2 text-lg font-semibold"><Loader2 className="h-4 w-4 animate-spin" />Uploading</DialogTitle>
             <p className="text-sm text-muted-foreground">{tasks.filter((t) => t.status === "done").length} of {tasks.length} files</p>
           </>
         )}
         {step.kind === "launching" && (
-          <h2 className="flex items-center gap-2 text-lg font-semibold"><Loader2 className="h-4 w-4 animate-spin" />Launching your drop…</h2>
+          <DialogTitle className="flex items-center gap-2 text-lg font-semibold"><Loader2 className="h-4 w-4 animate-spin" />Launching your drop…</DialogTitle>
         )}
         {step.kind === "error" && (
           <>
-            <h2 className="flex items-center gap-2 text-lg font-semibold"><XCircle className="h-4 w-4 text-destructive" />Not launched</h2>
+            <DialogTitle className="flex items-center gap-2 text-lg font-semibold"><XCircle className="h-4 w-4 text-destructive" />Not launched</DialogTitle>
             <p className="text-sm text-muted-foreground">{step.message}</p>
             {tasks.some((t) => t.status === "failed") && (
               <ul className="space-y-1 text-xs text-muted-foreground">
@@ -147,7 +148,7 @@ export function LaunchDialog({ open, onClose, draft }: { open: boolean; onClose:
         )}
         {step.kind === "done" && (
           <>
-            <h2 className="flex items-center gap-2 text-lg font-semibold"><CheckCircle2 className="h-5 w-5 text-green-500" />Your drop is live</h2>
+            <DialogTitle className="flex items-center gap-2 text-lg font-semibold"><CheckCircle2 className="h-5 w-5 text-green-500" />Your drop is live</DialogTitle>
             {step.warning && <p className="text-sm text-brand-orange">{step.warning}</p>}
             <div className="flex flex-wrap gap-2">
               <ShareButton title={draft.name} url={`${window.location.origin}${dropHref(step.collection)}`} variant="outline" />
@@ -159,8 +160,8 @@ export function LaunchDialog({ open, onClose, draft }: { open: boolean; onClose:
             {step.links.length > 0 && <p className="text-xs text-muted-foreground">Send each wallet its link — the link is what lets it mint.</p>}
           </>
         )}
-      </div>
-    </ActionDialog>
+      </DialogContent>
+    </Dialog>
   );
 }
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { ACTION_GRADIENTS, ACTION_FOREGROUNDS } from "./action-button.js";
+import { ACTION_GRADIENTS, ACTION_FOREGROUNDS } from "../../data/brand.js";
 
 export function QuickAction({
   label,
