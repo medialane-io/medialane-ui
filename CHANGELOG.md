@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.302.0] — 2026-11-07
+
+### Changed
+
+- The collection Provenance tab shows events as full-width cards with brand-colored icon tiles.
+- Activity event colors use the brand palette.
+
 ## [0.301.0] — 2026-11-07
 
 ### Changed

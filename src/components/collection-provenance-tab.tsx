@@ -62,74 +62,75 @@ function ProvenanceEvent({ event, showAsset }: { event: ApiActivity; showAsset: 
   const image = resolveImage(event.token?.image ?? null);
 
   return (
-    <li className="relative pl-12 pb-6 last:pb-0">
+    <li className="flex items-center gap-4 rounded-2xl border border-border/50 bg-card/60 p-4 backdrop-blur-sm transition-colors hover:bg-card/90">
       <span
         className={cn(
-          "absolute left-0 top-0 flex h-8 w-8 items-center justify-center rounded-full ring-4 ring-background",
+          "flex h-11 w-11 shrink-0 items-center justify-center rounded-xl",
           config?.bgClass ?? "bg-muted"
         )}
         aria-hidden
       >
-        <Icon className={cn("h-4 w-4", config?.colorClass ?? "text-muted-foreground")} />
+        <Icon className={cn("h-5 w-5", config?.colorClass ?? "text-muted-foreground")} />
       </span>
 
-      <div className="flex items-start gap-3">
-        <div className="min-w-0 flex-1">
-          <p className="text-sm font-semibold leading-8 sm:leading-8">
-            {EVENT_TITLE[event.type] ?? event.type}
-            {amount ? <span className="ml-1.5 text-xs font-medium text-muted-foreground">×{amount}</span> : null}
-            {actor ? (
-              <span className="font-normal text-muted-foreground">
-                {" by "}
-                <Link
-                  href={profileHref({ address: actor })}
-                  className="hover:text-primary transition-colors"
-                >
-                  <AddressDisplay address={actor} chars={4} showCopy={false} className="text-xs" />
-                </Link>
-              </span>
-            ) : null}
-          </p>
-
-          {showAsset && name ? (
-            <Link
-              href={contract && tokenId ? assetHref(event.chain ?? "STARKNET", contract, tokenId) : "#"}
-              className="mt-1 inline-flex max-w-full items-center gap-2 rounded-lg bg-muted/40 py-1 pl-1 pr-3 hover:bg-muted transition-colors"
-            >
-              <span className="relative h-8 w-8 shrink-0 overflow-hidden rounded-md bg-muted">
-                {image ? (
-                  <Image src={image} alt="" width={32} height={32} className="h-full w-full object-cover" unoptimized />
-                ) : null}
-              </span>
-              <span className="truncate text-xs font-medium">{name}</span>
-            </Link>
-          ) : null}
-        </div>
-
-        <div className="flex shrink-0 flex-col items-end gap-0.5 pt-1.5">
-          {event.price?.formatted ? (
-            <span className="flex items-center gap-1.5 text-sm font-bold tabular-nums">
-              {event.price.currency ? <CurrencyIcon symbol={event.price.currency} size={13} aria-hidden /> : null}
-              {formatDisplayPrice(event.price.formatted)}
+      <div className="min-w-0 flex-1">
+        <p className="flex flex-wrap items-baseline gap-x-1.5 text-base font-semibold leading-tight">
+          {EVENT_TITLE[event.type] ?? event.type}
+          {amount ? <span className="text-sm font-medium text-muted-foreground">×{amount}</span> : null}
+          {actor ? (
+            <span className="text-sm font-normal text-muted-foreground">
+              by{" "}
+              <Link
+                href={profileHref({ address: actor })}
+                className="font-medium text-foreground/80 hover:text-primary transition-colors"
+              >
+                <AddressDisplay address={actor} chars={6} showCopy={false} className="text-sm" />
+              </Link>
             </span>
           ) : null}
-          <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
-            <time dateTime={event.timestamp} title={new Date(event.timestamp).toLocaleString()}>
-              {timeAgo(event.timestamp)}
-            </time>
-            {event.txHash ? (
-              <a
-                href={`${EXPLORER_URL}/tx/${event.txHash}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="rounded p-0.5 hover:bg-muted hover:text-foreground transition-colors"
-                aria-label="View transaction"
-              >
-                <ExternalLink className="h-3 w-3" aria-hidden />
-              </a>
+        </p>
+
+        {showAsset && name ? (
+          <Link
+            href={contract && tokenId ? assetHref(event.chain ?? "STARKNET", contract, tokenId) : "#"}
+            className="mt-2 inline-flex max-w-full items-center gap-2 rounded-full bg-muted/70 py-1 pl-1 pr-3 hover:bg-muted transition-colors"
+          >
+            <span className="relative h-6 w-6 shrink-0 overflow-hidden rounded-full bg-muted">
+              {image ? (
+                <Image src={image} alt="" width={24} height={24} className="h-full w-full object-cover" unoptimized />
+              ) : null}
+            </span>
+            <span className="truncate text-xs font-medium">{name}</span>
+          </Link>
+        ) : null}
+      </div>
+
+      <div className="flex shrink-0 flex-col items-end gap-1">
+        {event.price?.formatted ? (
+          <span className="flex items-center gap-1.5 text-base font-bold tabular-nums">
+            {event.price.currency ? <CurrencyIcon symbol={event.price.currency} size={15} aria-hidden /> : null}
+            {formatDisplayPrice(event.price.formatted)}
+            {event.price.currency ? (
+              <span className="text-xs font-medium text-muted-foreground">{event.price.currency}</span>
             ) : null}
           </span>
-        </div>
+        ) : null}
+        <span className="flex items-center gap-1 text-xs text-muted-foreground">
+          <time dateTime={event.timestamp} title={new Date(event.timestamp).toLocaleString()}>
+            {timeAgo(event.timestamp)}
+          </time>
+          {event.txHash ? (
+            <a
+              href={`${EXPLORER_URL}/tx/${event.txHash}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-md p-1 hover:bg-muted hover:text-foreground transition-colors"
+              aria-label="View transaction"
+            >
+              <ExternalLink className="h-3.5 w-3.5" aria-hidden />
+            </a>
+          ) : null}
+        </span>
       </div>
     </li>
   );
@@ -137,14 +138,15 @@ function ProvenanceEvent({ event, showAsset }: { event: ApiActivity; showAsset: 
 
 function ProvenanceSkeleton() {
   return (
-    <div className="space-y-6" aria-hidden>
-      {Array.from({ length: 6 }).map((_, i) => (
-        <div key={i} className="flex items-start gap-4">
-          <div className="h-8 w-8 shrink-0 rounded-full bg-muted animate-pulse" />
-          <div className="flex-1 space-y-2 pt-1">
-            <div className="h-3.5 w-40 rounded bg-muted animate-pulse" />
+    <div className="space-y-2.5" aria-hidden>
+      {Array.from({ length: 5 }).map((_, i) => (
+        <div key={i} className="flex items-center gap-4 rounded-2xl border border-border/50 bg-card/60 p-4">
+          <div className="h-11 w-11 shrink-0 rounded-xl bg-muted animate-pulse" />
+          <div className="flex-1 space-y-2">
+            <div className="h-4 w-44 rounded bg-muted animate-pulse" />
             <div className="h-3 w-24 rounded bg-muted animate-pulse" />
           </div>
+          <div className="h-4 w-16 rounded bg-muted animate-pulse" />
         </div>
       ))}
     </div>
@@ -187,11 +189,11 @@ export function CollectionProvenanceTab({ contract }: CollectionProvenanceTabPro
   }
 
   return (
-    <div className="mx-auto max-w-2xl">
+    <div className="space-y-8">
       {groups.map((group) => (
-        <section key={group.label} className="mb-8 last:mb-0">
-          <h3 className="mb-4 pl-12 text-xs font-medium text-muted-foreground">{group.label}</h3>
-          <ol className="relative before:absolute before:left-4 before:top-4 before:bottom-4 before:w-px before:bg-border">
+        <section key={group.label}>
+          <h3 className="mb-3 font-display text-lg font-bold">{group.label}</h3>
+          <ol className="space-y-2.5">
             {group.events.map((event, i) => (
               <ProvenanceEvent
                 key={`${event.txHash ?? event.orderHash}-${event.type}-${i}`}
