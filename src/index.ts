@@ -524,10 +524,8 @@ export {
 export type { CollectionSort } from "./utils/use-collections.js";
 export { CreatorChip } from "./components/creator-chip.js";
 export type { CreatorChipProps } from "./components/creator-chip.js";
-export { CollectionActivityTab } from "./components/collection-activity-tab.js";
-export type { CollectionActivityTabProps } from "./components/collection-activity-tab.js";
-export { CollectionTraitsTab } from "./components/collection-traits-tab.js";
-export type { CollectionTraitsTabProps } from "./components/collection-traits-tab.js";
+export { CollectionProvenanceTab } from "./components/collection-provenance-tab.js";
+export type { CollectionProvenanceTabProps } from "./components/collection-provenance-tab.js";
 export { PortfolioActivity } from "./components/portfolio-activity.js";
 export type { PortfolioActivityProps } from "./components/portfolio-activity.js";
 export { CreatorScoreInline } from "./components/creator-score-inline.js";
