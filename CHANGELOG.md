@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.290.0] — 2026-11-07
+
+### Added
+
+- `ApproveMintDialog`: the form and screens for granting a license and minting the remix.
+
 ## [0.289.0] — 2026-11-07
 
 ### Added

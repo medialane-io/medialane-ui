@@ -265,6 +265,7 @@ export { LeaderboardPanel, type LeaderboardPanelProps } from "./components/rewar
 export { CollectionNameClaim } from "./components/collection-name-claim.js";
 export { CollectionSettings } from "./components/collection-settings.js";
 export { MintLanding, type MintLandingCopy } from "./components/mint-landing.js";
+export { ApproveMintDialog, type ApproveMintDialogProps } from "./components/approve-mint-dialog.js";
 export { DiscoverPage, type DiscoverPageProps } from "./components/discover-page.js";
 export { DiscoverCommunitySection } from "./components/discover-community-section.js";
 export { IpTypeNav } from "./components/ip-type-nav.js";
