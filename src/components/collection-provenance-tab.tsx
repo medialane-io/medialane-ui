@@ -88,7 +88,7 @@ function ProvenanceEvent({ event, showAsset }: { event: ApiActivity; showAsset: 
   );
 
   const thumb = (
-    <span className="relative h-14 w-14 shrink-0">
+    <span className="relative block h-14 w-14 shrink-0">
       <span className="block h-full w-full overflow-hidden rounded-xl bg-gradient-to-br from-brand-blue/25 via-brand-purple/25 to-brand-rose/25">
         {image ? (
           <Image src={image} alt="" width={56} height={56} className="h-full w-full object-cover" unoptimized />
@@ -109,7 +109,7 @@ function ProvenanceEvent({ event, showAsset }: { event: ApiActivity; showAsset: 
 
   return (
     <li className="flex items-center gap-4 rounded-2xl border border-border/50 bg-card/60 p-4 backdrop-blur-sm transition-colors hover:bg-card/90">
-      {leadWithAsset ? (assetLink ? <Link href={assetLink} className="shrink-0">{thumb}</Link> : thumb) : tile}
+      {leadWithAsset ? (assetLink ? <Link href={assetLink} className="block shrink-0">{thumb}</Link> : thumb) : tile}
 
       <div className="min-w-0 flex-1">
         {leadWithAsset ? (

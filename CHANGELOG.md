@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.304.0] — 2026-11-07
+
+### Changed
+
+- Secondary text in the light theme is darker for easier reading.
+
+### Fixed
+
+- The collection Provenance thumbnails keep their size when the asset name links to the asset.
+
 ## [0.303.0] — 2026-11-07
 
 ### Changed
