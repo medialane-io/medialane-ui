@@ -60,49 +60,80 @@ function ProvenanceEvent({ event, showAsset }: { event: ApiActivity; showAsset: 
   const amount = event.amount && Number(event.amount) > 1 ? event.amount : null;
   const name = event.token?.name ?? (tokenId ? `#${tokenId}` : null);
   const image = resolveImage(event.token?.image ?? null);
+  const leadWithAsset = showAsset && !!name;
+  const assetLink = contract && tokenId ? assetHref(event.chain ?? "STARKNET", contract, tokenId) : null;
 
-  return (
-    <li className="flex items-center gap-4 rounded-2xl border border-border/50 bg-card/60 p-4 backdrop-blur-sm transition-colors hover:bg-card/90">
+  const actorLink = actor ? (
+    <span className="text-sm font-normal text-muted-foreground">
+      by{" "}
+      <Link
+        href={profileHref({ address: actor })}
+        className="font-medium text-foreground/80 hover:text-primary transition-colors"
+      >
+        <AddressDisplay address={actor} chars={6} showCopy={false} className="text-sm" />
+      </Link>
+    </span>
+  ) : null;
+
+  const tile = (
+    <span
+      className={cn(
+        "flex h-11 w-11 shrink-0 items-center justify-center rounded-xl",
+        config?.bgClass ?? "bg-muted"
+      )}
+      aria-hidden
+    >
+      <Icon className={cn("h-5 w-5", config?.colorClass ?? "text-muted-foreground")} />
+    </span>
+  );
+
+  const thumb = (
+    <span className="relative h-14 w-14 shrink-0">
+      <span className="block h-full w-full overflow-hidden rounded-xl bg-gradient-to-br from-brand-blue/25 via-brand-purple/25 to-brand-rose/25">
+        {image ? (
+          <Image src={image} alt="" width={56} height={56} className="h-full w-full object-cover" unoptimized />
+        ) : null}
+      </span>
       <span
         className={cn(
-          "flex h-11 w-11 shrink-0 items-center justify-center rounded-xl",
-          config?.bgClass ?? "bg-muted"
+          "absolute -bottom-1 -right-1 flex h-6 w-6 items-center justify-center rounded-full bg-card ring-2 ring-card"
         )}
         aria-hidden
       >
-        <Icon className={cn("h-5 w-5", config?.colorClass ?? "text-muted-foreground")} />
+        <span className={cn("flex h-full w-full items-center justify-center rounded-full", config?.bgClass ?? "bg-muted")}>
+          <Icon className={cn("h-3 w-3", config?.colorClass ?? "text-muted-foreground")} />
+        </span>
       </span>
+    </span>
+  );
+
+  return (
+    <li className="flex items-center gap-4 rounded-2xl border border-border/50 bg-card/60 p-4 backdrop-blur-sm transition-colors hover:bg-card/90">
+      {leadWithAsset ? (assetLink ? <Link href={assetLink} className="shrink-0">{thumb}</Link> : thumb) : tile}
 
       <div className="min-w-0 flex-1">
-        <p className="flex flex-wrap items-baseline gap-x-1.5 text-base font-semibold leading-tight">
-          {EVENT_TITLE[event.type] ?? event.type}
-          {amount ? <span className="text-sm font-medium text-muted-foreground">×{amount}</span> : null}
-          {actor ? (
-            <span className="text-sm font-normal text-muted-foreground">
-              by{" "}
-              <Link
-                href={profileHref({ address: actor })}
-                className="font-medium text-foreground/80 hover:text-primary transition-colors"
-              >
-                <AddressDisplay address={actor} chars={6} showCopy={false} className="text-sm" />
+        {leadWithAsset ? (
+          <>
+            {assetLink ? (
+              <Link href={assetLink} className="block truncate text-base font-semibold leading-tight hover:text-primary transition-colors">
+                {name}
               </Link>
-            </span>
-          ) : null}
-        </p>
-
-        {showAsset && name ? (
-          <Link
-            href={contract && tokenId ? assetHref(event.chain ?? "STARKNET", contract, tokenId) : "#"}
-            className="mt-2 inline-flex max-w-full items-center gap-2 rounded-full bg-muted/70 py-1 pl-1 pr-3 hover:bg-muted transition-colors"
-          >
-            <span className="relative h-6 w-6 shrink-0 overflow-hidden rounded-full bg-muted">
-              {image ? (
-                <Image src={image} alt="" width={24} height={24} className="h-full w-full object-cover" unoptimized />
-              ) : null}
-            </span>
-            <span className="truncate text-xs font-medium">{name}</span>
-          </Link>
-        ) : null}
+            ) : (
+              <p className="truncate text-base font-semibold leading-tight">{name}</p>
+            )}
+            <p className="mt-1 flex flex-wrap items-baseline gap-x-1.5 text-sm">
+              <span className={cn("font-medium", config?.colorClass)}>{EVENT_TITLE[event.type] ?? event.type}</span>
+              {amount ? <span className="text-muted-foreground">×{amount}</span> : null}
+              {actorLink}
+            </p>
+          </>
+        ) : (
+          <p className="flex flex-wrap items-baseline gap-x-1.5 text-base font-semibold leading-tight">
+            {EVENT_TITLE[event.type] ?? event.type}
+            {amount ? <span className="text-sm font-medium text-muted-foreground">×{amount}</span> : null}
+            {actorLink}
+          </p>
+        )}
       </div>
 
       <div className="flex shrink-0 flex-col items-end gap-1">
@@ -138,7 +169,7 @@ function ProvenanceEvent({ event, showAsset }: { event: ApiActivity; showAsset: 
 
 function ProvenanceSkeleton() {
   return (
-    <div className="space-y-2.5" aria-hidden>
+    <div className="grid gap-2.5 lg:grid-cols-2" aria-hidden>
       {Array.from({ length: 5 }).map((_, i) => (
         <div key={i} className="flex items-center gap-4 rounded-2xl border border-border/50 bg-card/60 p-4">
           <div className="h-11 w-11 shrink-0 rounded-xl bg-muted animate-pulse" />
@@ -193,7 +224,7 @@ export function CollectionProvenanceTab({ contract }: CollectionProvenanceTabPro
       {groups.map((group) => (
         <section key={group.label}>
           <h3 className="mb-3 font-display text-lg font-bold">{group.label}</h3>
-          <ol className="space-y-2.5">
+          <ol className="grid gap-2.5 lg:grid-cols-2">
             {group.events.map((event, i) => (
               <ProvenanceEvent
                 key={`${event.txHash ?? event.orderHash}-${event.type}-${i}`}
