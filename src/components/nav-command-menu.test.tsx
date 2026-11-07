@@ -3,6 +3,7 @@ import { act, fireEvent, render, waitFor } from "@testing-library/react";
 import type { MedialaneClient } from "@medialane/sdk/starknet";
 import { Home, Search } from "lucide-react";
 import type { MedialaneApp } from "./medialane-app.js";
+import type { NavCommandGroup } from "./nav-command-menu.js";
 
 const pushed: string[] = [];
 mock.module("next/navigation", () => ({ useSearchParams: () => new URLSearchParams(), usePathname: () => "/", useRouter: () => ({ push: (href: string) => pushed.push(href) }) }));
@@ -55,7 +56,7 @@ function Opener() {
   return <button onClick={open}>open</button>;
 }
 
-async function openMenu(search: boolean, list = commands) {
+async function openMenu(search: boolean, list: NavCommandGroup[] = commands) {
   const view = render(
     <MedialaneAppProvider value={app}>
       <Opener />
