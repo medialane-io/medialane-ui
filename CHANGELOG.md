@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.298.0] — 2026-11-07
+
+### Changed
+
+- The network fee dialog says "Sponsored transactions are unavailable. You can pay with your wallet balance."
+
 ## [0.297.0] — 2026-11-07
 
 ### Added

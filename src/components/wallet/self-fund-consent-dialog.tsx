@@ -52,8 +52,7 @@ export function SelfFundConsentDialog({ consent }: { consent: SelfFundConsent })
       <DialogContent className="sm:max-w-md">
         <DialogTitle>Network fee needed</DialogTitle>
         <DialogDescription>
-          Medialane usually covers network fees for you, but can&apos;t right now. You can pay this one from your
-          wallet, or try again later.
+          Sponsored transactions are unavailable. You can pay with your wallet balance.
         </DialogDescription>
         <div className="rounded-lg bg-muted px-4 py-3 flex items-center justify-between">
           <span className="text-sm text-muted-foreground">Network fee</span>

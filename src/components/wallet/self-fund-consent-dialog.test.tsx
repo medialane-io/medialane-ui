@@ -23,6 +23,7 @@ test("shows the fee and resolves true when the person agrees to pay", async () =
   const { view, ask } = setup();
   const answer = ask(fee(10n ** 15n, 10n ** 18n));
   expect(await view.findByRole("dialog")).toBeTruthy();
+  expect(view.getByText("Sponsored transactions are unavailable. You can pay with your wallet balance.")).toBeTruthy();
   fireEvent.click(await view.findByRole("button", { name: /^Pay / }));
   expect(await answer).toBe(true);
 });
