@@ -16,8 +16,8 @@ export function issuedAt(history: readonly ApiActivity[]): string | null {
 
 export function SoulboundBadge() {
   return (
-    <span className="inline-flex items-center gap-1 rounded-full bg-background/70 px-2 py-1 text-2xs font-semibold text-brand-purple backdrop-blur-md">
-      <Fingerprint className="h-3 w-3" aria-hidden />
+    <span className="inline-flex items-center gap-1 text-xs font-semibold text-brand-purple">
+      <Fingerprint className="h-3.5 w-3.5" aria-hidden />
       Soulbound
     </span>
   );

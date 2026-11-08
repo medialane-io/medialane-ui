@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.309.0] — 2026-11-08
+
+### Changed
+
+- The Soulbound badge on asset cards sits below the title, so it does not cover the artwork.
+
 ## [0.308.0] — 2026-11-08
 
 ### Changed
