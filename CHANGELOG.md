@@ -4,7 +4,7 @@
 
 ### Changed
 
-- The network pill on the account page sits at the right edge of the header, without the dot.
+- The network pill on the account page sits at the right edge of the header, without the dot. The address shows 6 characters at each end.
 - The first button of an asset card reads View. The second View button is gone, so it is never shown twice.
 
 ## [0.309.0] — 2026-11-08

@@ -74,7 +74,7 @@ export function AccountPage({ address, useAssetActions, useMarketActions }: Acco
       {hidden === true ? <HiddenContentBanner /> : null}
 
       <div className="flex items-center justify-between gap-3 px-6 pt-20 pb-6">
-        <AddressDisplay address={address} chars={10} className="min-w-0 text-2xl font-black tracking-tight tabular-nums sm:text-3xl" />
+        <AddressDisplay address={address} chars={6} className="min-w-0 text-2xl font-black tracking-tight tabular-nums sm:text-3xl" />
         <span className="shrink-0 rounded-full bg-muted px-2.5 py-1 text-xs font-medium text-muted-foreground">Starknet</span>
       </div>
 
