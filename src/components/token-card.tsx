@@ -60,6 +60,7 @@ export function TokenCard({
   );
 
   const profileLink = tokenProfileLink(token);
+  const hasPrimaryAction = isOwner ? !listingOrder : listingOrder ? !!onBuy : !!onOffer;
 
   const chain = token.chain.toUpperCase() as Chain;
   const live = isLivingRenderCollection(chain, token.contractAddress);
@@ -131,21 +132,13 @@ export function TokenCard({
 
       <div className="px-3 pb-3 flex items-center gap-1.5">
 
-        <Link
-          href={assetHref}
-          className={cn(BTN_OUTLINE, "w-8 shrink-0 px-0")}
-          title="View asset"
-        >
+        <Link href={assetHref} className={cn(BTN_OUTLINE, "px-2.5", hasPrimaryAction ? "shrink-0" : "flex-1")}>
           <ArrowUpRight className="h-3.5 w-3.5" />
+          View
         </Link>
 
         {isOwner ? (
-          listingOrder ? (
-            <Link href={assetHref} className={cn(BTN_OUTLINE, "flex-1")}>
-              <ArrowUpRight className="h-3.5 w-3.5 mr-1.5" />
-              View
-            </Link>
-          ) : (
+          !listingOrder ? (
             <button
               className={cn(BTN_OUTLINE, "flex-1 text-brand-purple border-brand-purple/30 hover:bg-brand-purple/10 hover:text-brand-purple")}
               onClick={(e) => { e.preventDefault(); e.stopPropagation(); onList?.(token); }}
@@ -153,7 +146,7 @@ export function TokenCard({
               <Tag className="h-3.5 w-3.5 mr-1.5" />
               List
             </button>
-          )
+          ) : null
         ) : listingOrder && onBuy ? (
           <div className="btn-border-animated p-[1.5px] rounded-[10px] flex-1 h-8">
             <button
@@ -172,12 +165,7 @@ export function TokenCard({
             <HandCoins className="h-3.5 w-3.5 mr-1.5" />
             Offer
           </button>
-        ) : (
-          <Link href={assetHref} className={cn(BTN_OUTLINE, "flex-1")}>
-            <ArrowUpRight className="h-3.5 w-3.5 mr-1.5" />
-            View
-          </Link>
-        )}
+        ) : null}
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

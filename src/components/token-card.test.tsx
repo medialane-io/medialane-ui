@@ -24,3 +24,14 @@ test("a visitor's card shows Offer and Buy when the app handles them", () => {
   expect(renderToStaticMarkup(<TokenCard token={token(false)} onOffer={() => {}} />)).toContain("Offer");
   expect(renderToStaticMarkup(<TokenCard token={token(true)} onBuy={() => {}} />)).toContain("Buy");
 });
+
+const views = (html: string) => (html.match(/View<\/a>/g) ?? []).length;
+
+test("the first button always reads View and is never repeated", () => {
+  expect(views(renderToStaticMarkup(<TokenCard token={token(false)} />))).toBe(1);
+  expect(views(renderToStaticMarkup(<TokenCard token={token(true)} />))).toBe(1);
+  expect(views(renderToStaticMarkup(<TokenCard token={token(true)} isOwner />))).toBe(1);
+  expect(views(renderToStaticMarkup(<TokenCard token={token(false)} onOffer={() => {}} />))).toBe(1);
+  expect(views(renderToStaticMarkup(<TokenCard token={token(true)} onBuy={() => {}} />))).toBe(1);
+  expect(views(renderToStaticMarkup(<TokenCard token={token(false)} isOwner onList={() => {}} />))).toBe(1);
+});
