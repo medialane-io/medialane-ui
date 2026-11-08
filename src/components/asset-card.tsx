@@ -77,12 +77,6 @@ export function AssetCard({
         </div>
       )}
 
-      {soulbound && (
-        <div className="absolute top-2 left-2 z-10">
-          <SoulboundBadge />
-        </div>
-      )}
-
       <Link href={href} className="block relative aspect-square bg-muted overflow-hidden">
         <AnimatedTokenMedia
           image={resolved}
@@ -120,6 +114,8 @@ export function AssetCard({
             </p>
           )}
         </Link>
+
+        {soulbound && <SoulboundBadge />}
 
         {hasPrice && !indexing && (
           <div className="flex items-center gap-1.5 text-sm font-bold tabular-nums pt-0.5">
