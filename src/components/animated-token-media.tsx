@@ -88,7 +88,7 @@ export function AnimatedTokenMedia({
               unoptimized
               sizes={sizes}
               priority={priority}
-              className={cn(className, "transition-opacity duration-300", loaded ? "opacity-100" : "opacity-0")}
+              className={cn(className, "card-media", loaded ? "opacity-100" : "opacity-0")}
               onLoad={() => setLoaded(true)}
               onError={handleImageError}
             />
@@ -100,7 +100,7 @@ export function AnimatedTokenMedia({
               height={0}
               sizes={sizes}
               priority={priority}
-              className={cn(className ?? "w-full h-auto", "transition-opacity duration-300", loaded ? "opacity-100" : "opacity-0")}
+              className={cn(className ?? "w-full h-auto", "card-media", loaded ? "opacity-100" : "opacity-0")}
               onLoad={() => setLoaded(true)}
               onError={handleImageError}
             />

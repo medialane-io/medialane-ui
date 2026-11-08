@@ -85,7 +85,7 @@ export function AssetCard({
           alt={name}
           mode="fill"
           sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 22vw"
-          className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+          className="object-cover"
           fallback={
             <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-brand-blue/25 via-brand-purple/25 to-brand-rose/25">
               <span className="text-sm font-semibold text-muted-foreground tabular-nums">

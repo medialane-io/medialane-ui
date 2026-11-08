@@ -51,7 +51,7 @@ export function NftStrip({
                 alt={item.name}
                 fill
                 unoptimized
-                className="object-cover transition-transform duration-200 group-hover:scale-[1.03]"
+                className="object-cover card-media"
               />
             ) : (
               <div className="grid h-full w-full place-items-center">

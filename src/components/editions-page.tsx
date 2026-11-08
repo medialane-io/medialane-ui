@@ -33,7 +33,7 @@ function CollectionRow({ col }: { col: ApiCollection }) {
             src={imageUrl}
             alt={col.name ?? ""}
             fill
-            className="object-cover"
+            className="object-cover card-media"
             onError={() => setImgError(true)}
             unoptimized
           />

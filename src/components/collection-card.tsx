@@ -59,7 +59,7 @@ export function CollectionCard({ collection, href, settingsHref, className }: Co
               src={imageUrl}
               alt={collection.name ?? "Collection"}
               fill
-              className="object-cover transition-transform duration-500 group-hover:scale-105"
+              className="object-cover card-media"
               onError={() => setImgError(true)}
               unoptimized
             />
