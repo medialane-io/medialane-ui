@@ -14,6 +14,15 @@ export function issuedAt(history: readonly ApiActivity[]): string | null {
   return new Date(Math.min(...times)).toLocaleDateString("en-US", { day: "numeric", month: "short", year: "numeric" });
 }
 
+export function SoulboundBadge() {
+  return (
+    <span className="inline-flex items-center gap-1 rounded-full bg-background/70 px-2 py-1 text-2xs font-semibold text-brand-purple backdrop-blur-md">
+      <Fingerprint className="h-3 w-3" aria-hidden />
+      Soulbound
+    </span>
+  );
+}
+
 export interface SoulboundCardProps {
   history?: readonly ApiActivity[];
   ownerAddress?: string | null;

@@ -5,6 +5,7 @@ import { Loader2 } from "lucide-react";
 import { cn } from "../utils/cn.js";
 import { PriceChipContent } from "./dual-price.js";
 import { IpTypeBadge } from "./ip-type-badge.js";
+import { SoulboundBadge } from "./soulbound-card.js";
 import { AnimatedTokenMedia } from "./animated-token-media.js";
 import { useImageUrl } from "../utils/use-image-url.js";
 
@@ -37,6 +38,8 @@ export interface AssetCardProps {
 
   indexing?: boolean;
 
+  soulbound?: boolean;
+
   ipTypeBaseUrl?: string;
   className?: string;
 }
@@ -52,6 +55,7 @@ export function AssetCard({
   price,
   fallbackId,
   indexing = false,
+  soulbound = false,
   ipTypeBaseUrl = "",
   className,
 }: AssetCardProps) {
@@ -70,6 +74,12 @@ export function AssetCard({
       {ipType && (
         <div className="absolute top-2 right-2 z-10">
           <IpTypeBadge ipType={ipType} size="sm" baseUrl={ipTypeBaseUrl} />
+        </div>
+      )}
+
+      {soulbound && (
+        <div className="absolute top-2 left-2 z-10">
+          <SoulboundBadge />
         </div>
       )}
 

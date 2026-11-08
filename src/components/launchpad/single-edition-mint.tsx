@@ -71,6 +71,10 @@ const DEFAULTS: FormValues = {
   royalty: 0,
 };
 
+function suggestedExternalUrl(collection: { contractAddress?: string | null } | null): string {
+  return collection?.contractAddress ? `https://medialane.io${collectionHref("STARKNET", collection.contractAddress)}` : "";
+}
+
 export function SingleEditionMint({ aside }: { aside?: ReactNode }) {
   const app = useMedialaneApp();
   const walletAddress = app.walletAddress;
@@ -102,11 +106,17 @@ export function SingleEditionMint({ aside }: { aside?: ReactNode }) {
     if (collections.length > 0 && !form.getValues("collectionId")) form.setValue("collectionId", collections[0]!.collectionId!);
   }, [collections, form]);
 
+  const suggestedUrl = suggestedExternalUrl(selectedCollection);
+  const autoUrlRef = useRef("");
+
   useEffect(() => {
-    if (selectedCollection?.contractAddress && !form.getValues("external_url")) {
-      form.setValue("external_url", `https://medialane.io${collectionHref("STARKNET", selectedCollection.contractAddress)}`);
+    if (!suggestedUrl) return;
+    const current = form.getValues("external_url");
+    if (!current || current === autoUrlRef.current) {
+      form.setValue("external_url", suggestedUrl);
+      autoUrlRef.current = suggestedUrl;
     }
-  }, [selectedCollection?.contractAddress, form]);
+  }, [suggestedUrl, form]);
 
   const handleLicenseChange = (value: string) => {
     form.setValue("licenseType", value);
@@ -125,7 +135,9 @@ export function SingleEditionMint({ aside }: { aside?: ReactNode }) {
 
   const handleAgain = () => {
     tx.reset();
-    form.reset({ ...DEFAULTS, collectionId: collections[0]?.collectionId ?? "" });
+    const first = collections[0] ?? null;
+    autoUrlRef.current = suggestedExternalUrl(first);
+    form.reset({ ...DEFAULTS, collectionId: first?.collectionId ?? "", external_url: autoUrlRef.current });
     metadataFieldsRef.current = [];
     setMetadataResetKey((key) => key + 1);
     setImageFile(null);

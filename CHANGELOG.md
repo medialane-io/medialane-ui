@@ -7,6 +7,11 @@
 - The Soulbound card uses the same translucent gradient as the collection panel, a fingerprint icon, and names the wallet it is bound to.
 - The issue date is shown on two lines.
 - `SoulboundCard` takes an optional `ownerAddress`.
+- Items of a soulbound collection show a Soulbound badge on the collection page. `AssetCard` takes an optional `soulbound` prop.
+
+### Fixed
+
+- The external link default of the single edition mint form follows the selected collection. A link the person typed is kept.
 
 ## [0.307.0] — 2026-11-08
 

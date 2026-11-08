@@ -69,3 +69,28 @@ test("a work is minted into the chosen collection and links to the new asset", a
   expect(intents[0]).toMatchObject({ owner: OWNER, collectionId: "3", recipient: OWNER, tokenUri: "ipfs://meta", royaltyBps: 0 });
   expect(view.getByText("View asset").closest("a")?.getAttribute("href")).toBe(`/asset/starknet/${CONTRACT}/9`);
 });
+
+const OTHER_CONTRACT = "0x00000000000000000000000000000000000000000000000000000000000000d7";
+const OTHER = { collectionId: "4", contractAddress: OTHER_CONTRACT, name: "Drums", service: "mip-erc721", totalSupply: 6, image: null };
+const linkInput = (view: ReturnType<typeof setup>["view"]) => view.container.querySelector('input[name="external_url"]') as HTMLInputElement;
+const choose = (view: ReturnType<typeof setup>["view"], name: string) => {
+  fireEvent.click(view.getByText("Change").closest("button")!);
+  fireEvent.click(view.getByText(name, { selector: "p.font-medium" }).closest("button")!);
+};
+
+test("the external link follows the collection while it is untouched", async () => {
+  const { view } = setup([COLLECTION, OTHER]);
+  await waitFor(() => expect(linkInput(view).value).toContain(CONTRACT));
+  choose(view, "Drums");
+  await waitFor(() => expect(linkInput(view).value).toContain(OTHER_CONTRACT));
+  expect(linkInput(view).value).not.toContain(CONTRACT);
+});
+
+test("a link the person typed is kept when the collection changes", async () => {
+  const { view } = setup([COLLECTION, OTHER]);
+  await waitFor(() => expect(linkInput(view).value).toContain(CONTRACT));
+  fireEvent.change(linkInput(view), { target: { value: "https://example.com/work" } });
+  choose(view, "Drums");
+  await waitFor(() => expect(view.getAllByText("Drums").length).toBeGreaterThan(0));
+  expect(linkInput(view).value).toBe("https://example.com/work");
+});
