@@ -90,14 +90,14 @@ test("a POP has no marketplace", async () => {
 
 test("POP assets, events and certificates alike, feature the soulbound card; other assets do not", async () => {
   const pop = renderPage(token(), collection({ service: "pop-protocol" }));
-  await waitFor(() => expect(pop.getByText("Soulbound asset")).toBeTruthy());
+  await waitFor(() => expect(pop.getByLabelText("Soulbound asset")).toBeTruthy());
   cleanup();
   const certificate = renderPage(token(), collection({ service: "certificate-emission" }));
-  await waitFor(() => expect(certificate.getByText("Soulbound asset")).toBeTruthy());
+  await waitFor(() => expect(certificate.getByLabelText("Soulbound asset")).toBeTruthy());
   cleanup();
   const standard = renderPage(token(), collection());
   await waitFor(() => expect(standard.getByText("Stones")).toBeTruthy());
-  expect(standard.queryByText("Soulbound asset")).toBeNull();
+  expect(standard.queryByLabelText("Soulbound asset")).toBeNull();
 });
 
 test("the explorer, share and report icons sit below the collection card", async () => {
