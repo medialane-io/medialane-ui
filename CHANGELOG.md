@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.306.0] — 2026-11-08
+
+### Changed
+
+- `CancelOrderConfirm` is the shared body of the cancel listing and cancel offer dialogs: the artwork, the price, one line and two equal buttons.
+- The artwork in marketplace dialogs has no border.
+- The `subtitle` of `OrderSummaryHero` is optional.
+- The two buttons of `MarketplaceConfirmStep` have the same width.
+
 ## [0.305.0] — 2026-11-08
 
 ### Changed

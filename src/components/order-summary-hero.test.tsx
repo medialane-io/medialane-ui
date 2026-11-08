@@ -42,3 +42,8 @@ test("renders without a price", () => {
   expect(html).toContain("Sunrise");
   expect(html).not.toContain("STRK");
 });
+
+test("shows no subtitle line when none is given", () => {
+  const html = renderToStaticMarkup(<OrderSummaryHero name="Sunrise" price={price} />);
+  expect(html).not.toContain("text-2xs font-medium");
+});
