@@ -89,3 +89,15 @@ test("the tab row holds the filters and a menu with explorer, share and report",
   expect(getByText("Share")).toBeTruthy();
   expect(getByText("Report")).toBeTruthy();
 });
+
+test("items of a soulbound collection carry the Soulbound badge", async () => {
+  const { getByText, getAllByText } = renderPage(collection({ service: "pop-protocol" }), [token("1"), token("2")], null);
+  await waitFor(() => expect(getByText("Hero 1")).toBeTruthy());
+  expect(getAllByText("Soulbound")).toHaveLength(2);
+});
+
+test("items of other collections carry no Soulbound badge", async () => {
+  const { getByText, queryByText } = renderPage(collection(), [token("1")], null);
+  await waitFor(() => expect(getByText("Hero 1")).toBeTruthy());
+  expect(queryByText("Soulbound")).toBeNull();
+});

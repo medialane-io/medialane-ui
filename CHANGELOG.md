@@ -7,6 +7,7 @@
 - The Soulbound card uses the same translucent gradient as the collection panel, a fingerprint icon, and names the wallet it is bound to.
 - The issue date is shown on two lines.
 - `SoulboundCard` takes an optional `ownerAddress`.
+- Items of a soulbound collection show a Soulbound badge on the collection page. `AssetCard` takes an optional `soulbound` prop.
 
 ## [0.307.0] — 2026-11-08
 

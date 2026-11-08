@@ -5,6 +5,7 @@ import { Inbox, Lock, Sparkles, Ticket } from "lucide-react";
 import { assetHref, getService, type ApiCollection, type ApiOrder, type ApiToken, type Chain, type CollectionTokensSort } from "@medialane/sdk";
 import Link from "./link.js";
 import { AssetCard, AssetCardSkeleton } from "./asset-card.js";
+import { detectAssetKind } from "./asset-page.js";
 import { CollectionHeader } from "./collection-header.js";
 import { CollectionFiltersDialog, CollectionActiveFilters } from "./collection-filters-dialog.js";
 import { MoreMenu } from "./more-menu.js";
@@ -107,7 +108,7 @@ function useCollectionItems(contract: string) {
 
 type CollectionItemsState = ReturnType<typeof useCollectionItems>;
 
-function CollectionItems({ items, activeListings, mintHref }: { items: CollectionItemsState; activeListings: ApiOrder[]; mintHref: string | null }) {
+function CollectionItems({ items, activeListings, mintHref, soulbound }: { items: CollectionItemsState; activeListings: ApiOrder[]; mintHref: string | null; soulbound: boolean }) {
   const { meta, isLoading, setPage, sort, handleSortChange, allTokens, selectedFilters, setSelectedFilters } = items;
   const usdPrices = useUsdPrices();
 
@@ -156,6 +157,7 @@ function CollectionItems({ items, activeListings, mintHref }: { items: Collectio
                 price={listing ? { ...listing.price, usdValue: usdFor(listing, usdPrices) } : null}
                 fallbackId={t.tokenId}
                 indexing={t.metadataStatus === "PENDING" || t.metadataStatus === "FETCHING"}
+                soulbound={soulbound}
               />
             );
           })}
@@ -268,7 +270,7 @@ export function CollectionPage({ contract, slots }: CollectionPageProps) {
           </div>
 
           <TabsContent value="assets" className="mt-4">
-            {collection ? <CollectionItems items={items} activeListings={activeListings} mintHref={mintHref} /> : null}
+            {collection ? <CollectionItems items={items} activeListings={activeListings} mintHref={mintHref} soulbound={detectAssetKind(collection.service, collection.standard) === "pop"} /> : null}
           </TabsContent>
 
           <TabsContent value="market" className="mt-4">
