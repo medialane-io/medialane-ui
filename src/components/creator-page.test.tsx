@@ -34,7 +34,7 @@ test("by username shows the profile, assets, and edition and unique listings", a
   const { view } = renderPage({ username: "drummer" });
   await waitFor(() => expect(view.getByText("Piece 1")).toBeTruthy());
   expect(view.getAllByText(/Drum Kit|@drummer/).length).toBeGreaterThan(0);
-  fireEvent.click(view.getByRole("button", { name: /Listings/ }));
+  fireEvent.mouseDown(view.getByRole("tab", { name: /Listings/ }), { button: 0 });
   await waitFor(() => expect(view.getByText("Listed l2")).toBeTruthy());
   expect(view.getByText("Listed l1")).toBeTruthy();
 });

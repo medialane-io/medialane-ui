@@ -1,7 +1,7 @@
 import { expect, test } from "bun:test";
-import { renderHook, waitFor } from "@testing-library/react";
+import { act, renderHook, waitFor } from "@testing-library/react";
 import type { MedialaneClient } from "@medialane/sdk/starknet";
-import { useTokenBalance, useTokensByOwner } from "./use-tokens.js";
+import { useOwnedTokens, useTokenBalance, useTokensByOwner } from "./use-tokens.js";
 import { queryKeys } from "./query-keys.js";
 import { MedialaneAppProvider, type MedialaneApp } from "../components/medialane-app.js";
 
@@ -48,4 +48,31 @@ test("useTokensByOwner refetches when the page changes", async () => {
   await waitFor(() => expect(pages).toEqual([1]));
   rerender({ page: 2 });
   await waitFor(() => expect(pages).toEqual([1, 2]));
+});
+
+test("useOwnedTokens accumulates pages and reports whether more remain", async () => {
+  const pages: number[] = [];
+  const client = {
+    api: { tokens: { ownedBy: async (_a: string, opts: { page: number; limit: number }) => {
+      pages.push(opts.page);
+      return { data: [{ tokenId: `p${opts.page}a` }, { tokenId: `p${opts.page}b` }], meta: { total: 4 } };
+    } } },
+  } as unknown as MedialaneClient;
+  const { result } = renderHook(() => useOwnedTokens("0xowner-infinite", 2), { wrapper: withClient(client) });
+  await waitFor(() => expect(result.current.tokens.length).toBe(2));
+  expect(result.current.total).toBe(4);
+  expect(result.current.hasMore).toBe(true);
+  act(() => result.current.loadMore());
+  await waitFor(() => expect(result.current.tokens.map((t) => t.tokenId)).toEqual(["p1a", "p1b", "p2a", "p2b"]));
+  expect(result.current.hasMore).toBe(false);
+  expect(pages).toEqual([1, 2]);
+});
+
+test("useOwnedTokens reloads when asked to", async () => {
+  let calls = 0;
+  const client = { api: { tokens: { ownedBy: async () => { calls += 1; return { data: [], meta: { total: 0 } }; } } } } as unknown as MedialaneClient;
+  const { result } = renderHook(() => useOwnedTokens("0xowner-reload", 2), { wrapper: withClient(client) });
+  await waitFor(() => expect(calls).toBe(1));
+  await act(async () => { await result.current.mutate(); });
+  expect(calls).toBe(2);
 });

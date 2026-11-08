@@ -2,9 +2,10 @@
 
 import { useState } from "react";
 import useSWR from "swr";
+import useSWRInfinite from "swr/infinite";
 import type { ApiToken } from "@medialane/sdk";
 import { useMedialaneClient } from "./use-medialane-client.js";
-import { queryKeys } from "./query-keys.js";
+import { QUERY_PREFIX, queryKeys } from "./query-keys.js";
 
 const EMPTY_TOKENS: ApiToken[] = [];
 
@@ -78,6 +79,30 @@ export function useTokensByOwner(
     tokens: data?.data ?? EMPTY_TOKENS,
     meta: data?.meta,
     isLoading,
+    error,
+    mutate,
+  };
+}
+
+export function useOwnedTokens(address: string | null, limit = 20) {
+  const client = useMedialaneClient();
+
+  const { data, error, isLoading, isValidating, setSize, mutate } = useSWRInfinite(
+    (index) => (address ? ([QUERY_PREFIX.tokensOwnedPages, address, limit, index + 1] as const) : null),
+    ([, owner, pageSize, page]) => client.api.tokens.ownedBy(owner, { page, limit: pageSize }),
+    { revalidateOnFocus: false, revalidateFirstPage: false },
+  );
+
+  const tokens = data ? data.flatMap((page) => page.data) : EMPTY_TOKENS;
+  const total = data?.[0]?.meta?.total ?? null;
+
+  return {
+    tokens,
+    total,
+    isLoading,
+    isLoadingMore: isValidating,
+    hasMore: total !== null && tokens.length < total,
+    loadMore: () => void setSize((size) => size + 1),
     error,
     mutate,
   };

@@ -7,6 +7,8 @@ import type { ApiToken } from "@medialane/sdk";
 import Link from "./link.js";
 import { Button } from "./button.js";
 import { Skeleton } from "./skeleton.js";
+import { TabsContent } from "./tabs.js";
+import { UnderlineTabs, type UnderlineTab } from "./underline-tabs.js";
 import { CreatorHeader } from "./creator-header.js";
 import { HiddenContentBanner } from "./hidden-content-banner.js";
 import { TabEmptyState } from "./tab-empty-state.js";
@@ -34,14 +36,7 @@ import { useUserOrders } from "../utils/use-orders.js";
 import { useActivitiesByAddress } from "../utils/use-activities.js";
 import { useCreatorByUsername } from "../utils/use-profiles.js";
 
-const TABS = [
-  { id: "assets", label: "Assets", Icon: ImageIcon },
-  { id: "collections", label: "Collections", Icon: LayoutGrid },
-  { id: "listings", label: "Listings", Icon: ShoppingBag },
-  { id: "activity", label: "Activity", Icon: Activity },
-] as const;
-
-type TabId = (typeof TABS)[number]["id"];
+type TabId = "assets" | "collections" | "listings" | "activity";
 
 const GRID = "grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4";
 const isNft = (itemType: string) => itemType === "ERC721" || itemType === "ERC1155";
@@ -95,11 +90,12 @@ export function CreatorPage({ username, useAssetActions, useMarketActions }: Cre
     );
   }
 
-  const counts: Partial<Record<TabId, number>> = {
-    assets: meta?.total ?? undefined,
-    collections: collectionsLoading ? undefined : collections.length,
-    ...(activeTab === "listings" && !ordersLoading ? { listings: listings.length } : {}),
-  };
+  const tabs: UnderlineTab[] = [
+    { id: "assets", label: "Assets", icon: ImageIcon, count: meta?.total ?? undefined },
+    { id: "collections", label: "Collections", icon: LayoutGrid, count: collectionsLoading ? undefined : collections.length },
+    { id: "listings", label: "Listings", icon: ShoppingBag, count: activeTab === "listings" && !ordersLoading ? listings.length : undefined },
+    { id: "activity", label: "Activity", icon: Activity },
+  ];
 
   return (
     <div className="min-h-screen overflow-x-hidden pb-20">
@@ -116,38 +112,14 @@ export function CreatorPage({ username, useAssetActions, useMarketActions }: Cre
         />
       </div>
 
-      <div className="sticky top-0 z-20 mt-4 flex items-center gap-2 border-b border-border bg-background/95 px-6 backdrop-blur-sm">
-        <div className="-mb-px flex min-w-0 flex-1 items-center gap-0.5 overflow-x-auto scrollbar-none">
-          {TABS.map(({ id, label, Icon }) => {
-            const count = counts[id];
-            const active = activeTab === id;
-            return (
-              <button
-                key={id}
-                onClick={() => setActiveTab(id)}
-                className={cn(
-                  "relative flex shrink-0 items-center gap-2 whitespace-nowrap px-4 py-3 text-sm font-medium transition-colors duration-200",
-                  active ? "text-foreground" : "text-muted-foreground hover:text-foreground"
-                )}
-              >
-                <Icon className="h-3.5 w-3.5" />
-                {label}
-                {count ? (
-                  <span className={cn("min-w-[18px] rounded-full px-1.5 py-px text-center text-2xs font-bold tabular-nums", active ? "bg-primary/15 text-primary" : "bg-muted text-muted-foreground")}>{count}</span>
-                ) : null}
-                {active ? <span className="absolute inset-x-0 bottom-0 h-0.5 rounded-full bg-primary" /> : null}
-              </button>
-            );
-          })}
-        </div>
-        {address ? (
-          <MoreMenu explorerHref={`${EXPLORER_URL}/contract/${address}`} shareTitle={identity.name ?? identity.identity} onReport={() => setReportOpen(true)} />
-        ) : null}
-      </div>
-
-      <div className="mt-6 px-6">
-        {activeTab === "assets" && (
-          tokensLoading ? (
+      <UnderlineTabs
+        tabs={tabs}
+        value={activeTab}
+        onValueChange={(id) => setActiveTab(id as TabId)}
+        trailing={address ? <MoreMenu explorerHref={`${EXPLORER_URL}/contract/${address}`} shareTitle={identity.name ?? identity.identity} onReport={() => setReportOpen(true)} /> : null}
+      >
+        <TabsContent value="assets" className="mt-6 px-6">
+          {tokensLoading ? (
             <div className={GRID}>{Array.from({ length: 8 }).map((_, i) => <TokenCardSkeleton key={i} />)}</div>
           ) : tokens.length === 0 ? (
             <TabEmptyState icon={ImageIcon} heading="No assets yet" body="Works this creator makes on Medialane appear here." />
@@ -171,21 +143,21 @@ export function CreatorPage({ username, useAssetActions, useMarketActions }: Cre
                 );
               })}
             </div>
-          )
-        )}
+          )}
+        </TabsContent>
 
-        {activeTab === "collections" && (
-          collectionsLoading ? (
+        <TabsContent value="collections" className="mt-6 px-6">
+          {collectionsLoading ? (
             <div className="grid grid-cols-2 gap-4 lg:grid-cols-3">{Array.from({ length: 6 }).map((_, i) => <CollectionCardSkeleton key={i} />)}</div>
           ) : collections.length === 0 ? (
             <TabEmptyState icon={LayoutGrid} heading="No collections yet" body="Collections this creator makes appear here." />
           ) : (
             <div className="grid grid-cols-2 gap-4 lg:grid-cols-3">{collections.map((c) => <CollectionCard key={c.contractAddress} collection={c} />)}</div>
-          )
-        )}
+          )}
+        </TabsContent>
 
-        {activeTab === "listings" && (
-          ordersLoading ? (
+        <TabsContent value="listings" className="mt-6 px-6">
+          {ordersLoading ? (
             <div className={GRID}>{Array.from({ length: 4 }).map((_, i) => <ListingCardSkeleton key={i} />)}</div>
           ) : listings.length === 0 ? (
             <TabEmptyState icon={ShoppingBag} heading="No active listings" body="Works this creator lists for sale appear here." />
@@ -193,21 +165,19 @@ export function CreatorPage({ username, useAssetActions, useMarketActions }: Cre
             <div className={GRID}>
               {listings.map((o) => <ListingCard key={o.orderHash} order={o} onBuy={isOwner ? undefined : market.buy} usdValue={orderUsd(o.price, prices)} overflowMenu={<ListingCardMenu order={o} />} />)}
             </div>
-          )
-        )}
+          )}
+        </TabsContent>
 
-        {activeTab === "activity" && (
-          <div className="max-w-2xl">
-            {activitiesLoading ? (
-              <div className="space-y-5">{Array.from({ length: 6 }).map((_, i) => <Skeleton key={i} className="h-10 w-full rounded-xl" />)}</div>
-            ) : activities.length === 0 ? (
-              <TabEmptyState icon={Activity} heading="No activity yet" body="This creator's activity appears here as it happens." />
-            ) : (
-              <div>{activities.map((a, i) => <ActivityTimelineRow key={i} event={a} isLast={i === activities.length - 1} />)}</div>
-            )}
-          </div>
-        )}
-      </div>
+        <TabsContent value="activity" className="mt-6 max-w-2xl px-6">
+          {activitiesLoading ? (
+            <div className="space-y-5">{Array.from({ length: 6 }).map((_, i) => <Skeleton key={i} className="h-10 w-full rounded-xl" />)}</div>
+          ) : activities.length === 0 ? (
+            <TabEmptyState icon={Activity} heading="No activity yet" body="This creator's activity appears here as it happens." />
+          ) : (
+            <div>{activities.map((a, i) => <ActivityTimelineRow key={i} event={a} isLast={i === activities.length - 1} />)}</div>
+          )}
+        </TabsContent>
+      </UnderlineTabs>
 
       {actions.dialogs}
       {market.dialogs}

@@ -5,7 +5,10 @@
 ### Changed
 
 - The account page is its own `AccountPage` component. It shows the address with the network and the Assets, Collections, Listings and Activity tabs.
-- The Listings count shows from the start, and the line under the tabs is removed.
+- The account page loads more assets as you scroll.
+- The Listings count shows from the start on the account page.
+- `UnderlineTabs` is the shared tab bar of the account and creator pages. It has tab semantics, a soft focus ring for keyboard users and no line under the tabs.
+- `useOwnedTokens` pages through the assets an address owns.
 - `CreatorPage` takes a username only.
 
 ## [0.304.0] — 2026-11-07

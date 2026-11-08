@@ -41,12 +41,12 @@ test("shows the address and network without any profile details", async () => {
 
 test("the listings count shows before the tab is opened", async () => {
   const { view } = renderPage();
-  await waitFor(() => expect(view.getByRole("button", { name: /Listings\s*2/ })).toBeTruthy());
+  await waitFor(() => expect(view.getByRole("tab", { name: /Listings\s*2/ })).toBeTruthy());
 });
 
 test("listings show edition and unique works", async () => {
   const { view } = renderPage();
-  fireEvent.click(view.getByRole("button", { name: /Listings/ }));
+  fireEvent.mouseDown(view.getByRole("tab", { name: /Listings/ }), { button: 0 });
   await waitFor(() => expect(view.getByText("Listed l2")).toBeTruthy());
   expect(view.getByText("Listed l1")).toBeTruthy();
 });
