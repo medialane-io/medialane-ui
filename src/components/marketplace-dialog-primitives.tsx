@@ -128,7 +128,7 @@ export function MarketplaceErrorState({
     <div className="flex flex-col items-center gap-5 p-6 py-8">
       {tokenImage ? (
         <div className="relative">
-          <div className="relative h-32 w-32 rounded-2xl overflow-hidden border border-border">
+          <div className="relative h-32 w-32 rounded-2xl overflow-hidden">
             <Image src={tokenImage} alt={name} fill sizes="128px" className="object-cover" unoptimized />
           </div>
           <div className="absolute -bottom-2 -right-2 h-9 w-9 rounded-full bg-destructive flex items-center justify-center border-2 border-background">
@@ -182,7 +182,7 @@ export function MarketplaceDialogHero({
 
   return (
     <div className="relative flex justify-center pt-6 shrink-0">
-      <div className="relative h-32 w-32 rounded-2xl overflow-hidden border border-border bg-muted">
+      <div className="relative h-32 w-32 rounded-2xl overflow-hidden bg-muted">
         {tokenImage ? (
           <Image src={tokenImage} alt={name} fill sizes="128px" className="object-cover" unoptimized />
         ) : (
@@ -199,7 +199,7 @@ export function MarketplaceDialogHero({
 interface OrderSummaryHeroProps {
   name: string;
   image?: string | null;
-  subtitle: ReactNode;
+  subtitle?: ReactNode;
   tone?: "default" | "destructive";
   price?: { formatted: string | null; currency: string | null; decimals: number } | null;
   quantity?: number;
@@ -229,7 +229,7 @@ export function OrderSummaryHero({
   return (
     <div>
       <div className="flex justify-center pt-6 shrink-0">
-        <div className="relative h-32 w-32 rounded-2xl overflow-hidden border border-border bg-muted">
+        <div className="relative h-32 w-32 rounded-2xl overflow-hidden bg-muted">
           {image ? (
             <Image src={image} alt={name} fill sizes="128px" className="object-cover" unoptimized />
           ) : (
@@ -248,7 +248,7 @@ export function OrderSummaryHero({
       <div className="flex items-center justify-between gap-4 px-5 pt-4 pb-1">
         <div className="min-w-0">
           <p className="font-bold text-lg leading-tight truncate">{name}</p>
-          <div className="mt-1 text-2xs font-medium text-muted-foreground">{subtitle}</div>
+          {subtitle ? <div className="mt-1 text-2xs font-medium text-muted-foreground">{subtitle}</div> : null}
         </div>
         {price ? (
           <div className="shrink-0 text-right">
@@ -405,7 +405,7 @@ export function MarketplaceConfirmStep({
       <div className="flex gap-2 pt-1">
         <Button
           variant="outline"
-          className="gap-1.5"
+          className="h-11 flex-1 gap-1.5"
           onClick={onSecondary}
         >
           {secondaryLabel}

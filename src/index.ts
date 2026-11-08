@@ -295,6 +295,7 @@ export { DropsPage } from "./components/drops-page.js";
 export { PopMyEventsPage } from "./components/pop-my-events-page.js";
 export { CreatorPage, type CreatorPageProps } from "./components/creator-page.js";
 export { AccountPage, type AccountPageProps } from "./components/account-page.js";
+export { CancelOrderConfirm, type CancelOrderConfirmProps } from "./components/cancel-order-confirm.js";
 export { UnderlineTabs, type UnderlineTab } from "./components/underline-tabs.js";
 export { MoreMenu } from "./components/more-menu.js";
 export { LicenseRequestPage } from "./components/license-request-page.js";
