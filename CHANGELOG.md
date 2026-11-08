@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.308.0] — 2026-11-08
+
+### Changed
+
+- The Soulbound card uses the same translucent gradient as the collection panel, a fingerprint icon, and names the wallet it is bound to.
+- The issue date is shown on two lines.
+- `SoulboundCard` takes an optional `ownerAddress`.
+
 ## [0.307.0] — 2026-11-08
 
 ### Changed

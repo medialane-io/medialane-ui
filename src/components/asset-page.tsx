@@ -283,7 +283,7 @@ function AssetPageView({
         floorPriceRaw={collection?.floorPrice}
       />
       {kind === "pop" ? (
-        <SoulboundCard history={history as ApiActivity[]} />
+        <SoulboundCard history={history as ApiActivity[]} ownerAddress={ownerAddress} />
       ) : null}
       <div className="-ml-3">
         <AssetUtilityIcons
