@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.305.0] — 2026-11-08
+
+### Changed
+
+- The account page is its own `AccountPage` component. It shows the address with the network and the Assets, Collections, Listings and Activity tabs.
+- The Listings count shows from the start, and the line under the tabs is removed.
+- `CreatorPage` takes a username only.
+
 ## [0.304.0] — 2026-11-07
 
 ### Changed

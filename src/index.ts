@@ -294,6 +294,7 @@ export { EditionsPage } from "./components/editions-page.js";
 export { DropsPage } from "./components/drops-page.js";
 export { PopMyEventsPage } from "./components/pop-my-events-page.js";
 export { CreatorPage, type CreatorPageProps } from "./components/creator-page.js";
+export { AccountPage, type AccountPageProps } from "./components/account-page.js";
 export { MoreMenu } from "./components/more-menu.js";
 export { LicenseRequestPage } from "./components/license-request-page.js";
 export { orderUsd } from "./utils/order-usd.js";

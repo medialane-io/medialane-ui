@@ -7,7 +7,6 @@ import type { ApiToken } from "@medialane/sdk";
 import Link from "./link.js";
 import { Button } from "./button.js";
 import { Skeleton } from "./skeleton.js";
-import { AddressDisplay } from "./address-display.js";
 import { CreatorHeader } from "./creator-header.js";
 import { HiddenContentBanner } from "./hidden-content-banner.js";
 import { TabEmptyState } from "./tab-empty-state.js";
@@ -33,7 +32,7 @@ import { useTokensByOwner } from "../utils/use-tokens.js";
 import { useCollectionsByOwner } from "../utils/use-collections.js";
 import { useUserOrders } from "../utils/use-orders.js";
 import { useActivitiesByAddress } from "../utils/use-activities.js";
-import { useCreatorByUsername, useCreatorProfile } from "../utils/use-profiles.js";
+import { useCreatorByUsername } from "../utils/use-profiles.js";
 
 const TABS = [
   { id: "assets", label: "Assets", Icon: ImageIcon },
@@ -48,13 +47,12 @@ const GRID = "grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-
 const isNft = (itemType: string) => itemType === "ERC721" || itemType === "ERC1155";
 
 export interface CreatorPageProps {
-  address?: string;
-  username?: string;
+  username: string;
   useAssetActions: UsePortfolioAssetActions;
   useMarketActions: () => CollectionMarketActions;
 }
 
-export function CreatorPage({ address: addressProp, username, useAssetActions, useMarketActions }: CreatorPageProps) {
+export function CreatorPage({ username, useAssetActions, useMarketActions }: CreatorPageProps) {
   const { walletAddress } = useMedialaneApp();
   const client = useMedialaneClient();
   const resolveImage = useImageUrl();
@@ -63,10 +61,8 @@ export function CreatorPage({ address: addressProp, username, useAssetActions, u
   const [reportOpen, setReportOpen] = useState(false);
   const [reportToken, setReportToken] = useState<ApiToken | null>(null);
 
-  const byName = useCreatorByUsername(username);
-  const byAddress = useCreatorProfile(username ? undefined : addressProp);
-  const creator = username ? byName.creator : byAddress.profile;
-  const address = username ? creator?.walletAddress ?? null : addressProp ?? null;
+  const { creator, isLoading: creatorLoading } = useCreatorByUsername(username);
+  const address = creator?.walletAddress ?? null;
   const isOwner = !!address && !!walletAddress && isSameAddress(address, walletAddress);
 
   const { tokens, meta, isLoading: tokensLoading, mutate: refreshTokens } = useTokensByOwner(address, 1, 20);
@@ -80,7 +76,7 @@ export function CreatorPage({ address: addressProp, username, useAssetActions, u
   const listings = orders.filter((o) => o.status === "ACTIVE" && isNft(o.offer.itemType));
   const identity = profileIdentity({ username: creator?.username, name: creator?.name, walletAddress: address });
 
-  if (username && byName.isLoading) {
+  if (creatorLoading) {
     return (
       <div className="min-h-screen pb-20">
         <div className="px-6 pt-20 pb-6"><CreatorHeader creator={null} image={null} stats={[]} loading /></div>
@@ -89,7 +85,7 @@ export function CreatorPage({ address: addressProp, username, useAssetActions, u
     );
   }
 
-  if (username && !creator) {
+  if (!creator) {
     return (
       <div className="mx-auto max-w-lg space-y-4 px-4 py-24 text-center">
         <h1 className="text-2xl font-bold">Creator not found</h1>
@@ -110,20 +106,14 @@ export function CreatorPage({ address: addressProp, username, useAssetActions, u
       {hidden === true ? <HiddenContentBanner /> : null}
 
       <div className="px-6 pt-20 pb-6">
-        {creator ? (
-          <CreatorHeader
-            creator={creator}
-            image={resolveImage(creator.avatarImage || tokens[0]?.metadata?.image)}
-            stats={[
-              { label: "Assets", value: meta?.total ?? null },
-              { label: "Collections", value: collectionsLoading ? null : collections.length },
-            ]}
-          />
-        ) : (
-          <div className="flex flex-wrap items-center gap-2">
-            <AddressDisplay address={address ?? ""} chars={10} className="text-base font-semibold tabular-nums" />
-          </div>
-        )}
+        <CreatorHeader
+          creator={creator}
+          image={resolveImage(creator.avatarImage || tokens[0]?.metadata?.image)}
+          stats={[
+            { label: "Assets", value: meta?.total ?? null },
+            { label: "Collections", value: collectionsLoading ? null : collections.length },
+          ]}
+        />
       </div>
 
       <div className="sticky top-0 z-20 mt-4 flex items-center gap-2 border-b border-border bg-background/95 px-6 backdrop-blur-sm">
