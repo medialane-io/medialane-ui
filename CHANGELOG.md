@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.310.0] — 2026-11-08
+
+### Changed
+
+- The network pill on the account page sits at the right edge of the header, without the dot.
+- The first button of an asset card reads View. The second View button is gone, so it is never shown twice.
+
 ## [0.309.0] — 2026-11-08
 
 ### Changed

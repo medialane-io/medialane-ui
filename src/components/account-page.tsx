@@ -73,12 +73,9 @@ export function AccountPage({ address, useAssetActions, useMarketActions }: Acco
     <div className="min-h-screen overflow-x-hidden pb-20">
       {hidden === true ? <HiddenContentBanner /> : null}
 
-      <div className="space-y-2 px-6 pt-20 pb-6">
-        <AddressDisplay address={address} chars={10} className="text-2xl font-black tracking-tight tabular-nums sm:text-3xl" />
-        <span className="inline-flex items-center gap-1.5 rounded-full bg-muted px-2.5 py-1 text-xs font-medium text-muted-foreground">
-          <span className="h-1.5 w-1.5 rounded-full bg-brand-blue" />
-          Starknet
-        </span>
+      <div className="flex items-center justify-between gap-3 px-6 pt-20 pb-6">
+        <AddressDisplay address={address} chars={10} className="min-w-0 text-2xl font-black tracking-tight tabular-nums sm:text-3xl" />
+        <span className="shrink-0 rounded-full bg-muted px-2.5 py-1 text-xs font-medium text-muted-foreground">Starknet</span>
       </div>
 
       <UnderlineTabs
