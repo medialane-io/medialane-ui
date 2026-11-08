@@ -1,0 +1,66 @@
+import { expect, test, mock, afterEach } from "bun:test";
+import { cleanup, fireEvent, render, waitFor } from "@testing-library/react";
+import { SWRConfig } from "swr";
+import type { ApiToken } from "@medialane/sdk";
+import type { MedialaneClient } from "@medialane/sdk/starknet";
+import type { MedialaneApp } from "./medialane-app.js";
+
+mock.module("next/image", () => ({ default: ({ alt }: { alt?: string }) => <span data-alt={alt} /> }));
+mock.module("next/navigation", () => ({ useRouter: () => ({ push: () => {}, replace: () => {}, back: () => {} }), usePathname: () => "/account/0xaa", useSearchParams: () => new URLSearchParams() }));
+
+const { AccountPage } = await import("./account-page.js");
+const { MedialaneAppProvider } = await import("./medialane-app.js");
+
+globalThis.fetch = (async () => new Response(JSON.stringify({ data: { usd: {} } }))) as unknown as typeof fetch;
+
+afterEach(() => cleanup());
+
+const A = "0x00000000000000000000000000000000000000000000000000000000000000aa";
+const token = (id: string) => ({ chain: "STARKNET", contractAddress: "0xc1", tokenId: id, owner: A, standard: "ERC721", metadata: { name: `Piece ${id}`, image: null }, activeOrders: [] }) as unknown as ApiToken;
+const order = (h: string, itemType: string) => ({ orderHash: h, offerer: A, status: "ACTIVE", nftContract: "0xc1", nftTokenId: h, offer: { itemType }, consideration: { itemType: "ERC20" }, price: { formatted: "1", currency: "STRK" }, token: { name: `Listed ${h}`, image: null }, endTime: String(Math.floor(Date.now() / 1000) + 9999) });
+
+function renderPage(app: Partial<MedialaneApp> = {}, profile: unknown = { walletAddress: A, username: "drummer", name: "Drum Kit", avatarImage: null }) {
+  const lookups: string[] = [];
+  const api: Record<string, unknown> = { creators: { findProfile: async () => { lookups.push("profile"); return profile; }, isHidden: async () => false }, tokens: { ownedBy: async () => ({ data: [token("1")], meta: { total: 1 } }) }, orders: { byUser: async () => ({ data: [order("l1", "ERC721"), order("l2", "ERC1155")] }) } };
+  const client = { api: new Proxy(api, { get: (t, k: string) => t[k] ?? (async () => ({ data: [], meta: { total: 0 } })) }) } as unknown as MedialaneClient;
+  const value = { getClient: () => client, getSigner: () => { throw new Error("unused"); }, walletAddress: null, onRequireWallet: () => {}, ...app } as MedialaneApp;
+  const calls: string[] = [];
+  const useAssetActions = () => ({ list: (t: ApiToken) => calls.push(`list ${t.tokenId}`), transfer: () => {}, cancel: () => {}, dialogs: null });
+  const useMarketActions = () => ({ buy: (o: { orderHash: string }) => calls.push(`buy ${o.orderHash}`), offer: (t: ApiToken) => calls.push(`offer ${t.tokenId}`), dialogs: null });
+  const view = render(<SWRConfig value={{ provider: () => new Map() }}><MedialaneAppProvider value={value}><AccountPage address={A} useAssetActions={useAssetActions} useMarketActions={useMarketActions} /></MedialaneAppProvider></SWRConfig>);
+  return { view, calls, lookups };
+}
+
+test("shows the address and network without any profile details", async () => {
+  const { view, lookups } = renderPage();
+  await waitFor(() => expect(view.getByText("Piece 1")).toBeTruthy());
+  expect(view.getByText("Starknet")).toBeTruthy();
+  expect(view.queryByText(/Drum Kit|@drummer/)).toBeNull();
+  expect(lookups).toEqual([]);
+});
+
+test("the listings count shows before the tab is opened", async () => {
+  const { view } = renderPage();
+  await waitFor(() => expect(view.getByRole("tab", { name: /Listings\s*2/ })).toBeTruthy());
+});
+
+test("listings show edition and unique works", async () => {
+  const { view } = renderPage();
+  fireEvent.mouseDown(view.getByRole("tab", { name: /Listings/ }), { button: 0 });
+  await waitFor(() => expect(view.getByText("Listed l2")).toBeTruthy());
+  expect(view.getByText("Listed l1")).toBeTruthy();
+});
+
+test("the owner can list their own works through the app", async () => {
+  const { view, calls } = renderPage({ walletAddress: A });
+  await waitFor(() => expect(view.getByText("Piece 1")).toBeTruthy());
+  fireEvent.click(view.getByText("List"));
+  expect(calls).toEqual(["list 1"]);
+});
+
+test("a visitor's Offer opens the app's offer", async () => {
+  const { view, calls } = renderPage();
+  await waitFor(() => expect(view.getByText("Piece 1")).toBeTruthy());
+  fireEvent.click(view.getAllByText("Offer")[0]!);
+  expect(calls).toEqual(["offer 1"]);
+});

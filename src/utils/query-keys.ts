@@ -9,6 +9,7 @@ export const QUERY_PREFIX = {
   floorListings: "floor-listings",
   token: "token",
   tokensOwned: "tokens-owned",
+  tokensOwnedPages: "tokens-owned-pages",
   tokenHistory: "token-history",
   collection: "collection",
   collections: "collections",
