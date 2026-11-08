@@ -44,7 +44,7 @@ export function TransferCollectionOwnership({ collectionId, currentOwner, collec
     void tx
       .run(async (signer) => {
         await runIntentCalls(signer, () =>
-          app.getClient().api.intents.create("transfer-collection-ownership", { owner: signer.address, collectionId: String(collectionId), newOwner: trimmed }),
+          app.getClient().createIntent("transfer-collection-ownership", { owner: signer.address, collectionId: String(collectionId), newOwner: trimmed }),
         );
       })
       .then((ok) => {

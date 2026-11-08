@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.312.0] — 2026-11-08
+
+### Changed
+
+- Sending a token from the Media Wallet and transferring collection ownership create their intents with `client.createIntent`, so the SDK builds them and sends the build for the backend to check (SDK 0.221.0 and later; earlier versions create them as before).
+- Requires `@medialane/sdk` 0.218 or later.
+
+### Added
+
+- `sendToken(signer, client, { token, recipient, amount })`: the Media Wallet's token send.
+
 ## [0.311.0] — 2026-11-08
 
 ### Changed

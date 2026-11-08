@@ -7,7 +7,7 @@
       "devDependencies": {
         "@happy-dom/global-registrator": "^20.14.5",
         "@hookform/resolvers": "^3.10.0",
-        "@medialane/sdk": "0.215.0",
+        "@medialane/sdk": "0.220.0",
         "@radix-ui/react-checkbox": "^1.3.8",
         "@radix-ui/react-collapsible": "^1.1.17",
         "@radix-ui/react-dialog": "^1.1.20",
@@ -52,7 +52,7 @@
       },
       "peerDependencies": {
         "@hookform/resolvers": ">=3.10.0",
-        "@medialane/sdk": ">=0.215.0 <1.0.0",
+        "@medialane/sdk": ">=0.218.0 <1.0.0",
         "@radix-ui/react-checkbox": ">=1.1.0",
         "@radix-ui/react-collapsible": ">=1.1.0",
         "@radix-ui/react-dialog": ">=1.1.0",
@@ -221,7 +221,7 @@
 
     "@jridgewell/trace-mapping": ["@jridgewell/trace-mapping@0.3.31", "", { "dependencies": { "@jridgewell/resolve-uri": "^3.1.0", "@jridgewell/sourcemap-codec": "^1.4.14" } }, "sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw=="],
 
-    "@medialane/sdk": ["@medialane/sdk@0.215.0", "", { "dependencies": { "@noble/hashes": "^2.2.0", "@scure/base": "^2.2.0", "zod": "^3.23.8" }, "peerDependencies": { "@solana/web3.js": ">=1.90.0", "@stellar/stellar-sdk": ">=13.0.0", "starknet": ">=6.0.0", "viem": ">=2.0.0" }, "optionalPeers": ["@solana/web3.js", "@stellar/stellar-sdk", "starknet", "viem"] }, "sha512-AgeAcLlASUuHKUOSDMROTd7lF2KzdQO/Xq8kLz/xCqJZPsm8gbwrcZmqOCHf7ZGNN1jiB+VvQeD2qige955/Og=="],
+    "@medialane/sdk": ["@medialane/sdk@0.220.0", "", { "dependencies": { "@noble/hashes": "^2.2.0", "@scure/base": "^2.2.0", "zod": "^4.6.6" }, "peerDependencies": { "@solana/web3.js": ">=1.90.0", "@stellar/stellar-sdk": ">=13.0.0", "starknet": ">=6.0.0", "viem": ">=2.0.0" }, "optionalPeers": ["@solana/web3.js", "@stellar/stellar-sdk", "starknet", "viem"] }, "sha512-7bAKvoY3MwaUlX9EETr4Ha2lkyhKfWLscW2bmKOlptNy5ZSVHvTlGiL1oWHaJfFl/SP4WYjlQQ8Ke7r8iqxvoA=="],
 
     "@next/env": ["@next/env@15.5.23", "", {}, "sha512-Mv3Z9hVbFcPnoLevsZ6rnX1TBtyHb5E17yN7HTPDXSXxeNsGBjUFrdbjRXKKXIOhfth7/cg6Ay7PZ2UFawaWsQ=="],
 
@@ -1044,6 +1044,8 @@
     "zod": ["zod@3.25.76", "", {}, "sha512-gzUt/qt81nXsFGKIFcC3YnfEAx5NkunCfnDlvuBSSFS02bcXu4Lmea0AFIUwbLWxWPx3d9p8S5QoaujKcNQxcQ=="],
 
     "zwitch": ["zwitch@2.0.4", "", {}, "sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A=="],
+
+    "@medialane/sdk/zod": ["zod@4.6.7", "", {}, "sha512-g8W2D2kU6a8untc053fX1uVBKzM7yqAxW/3zwk83+6RyF2+SKOuV+c0wBDhUwzV1PaGapmZH+rmcUzPf+3CGwg=="],
 
     "@noble/curves/@noble/hashes": ["@noble/hashes@1.6.0", "", {}, "sha512-YUULf0Uk4/mAA89w+k3+yUYh6NrEvxZa5T6SY3wlMvE2chHkxFUUIDI8/XW1QSC357iA5pSnqt7XEhvFOqmDyQ=="],
 
