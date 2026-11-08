@@ -78,7 +78,7 @@ export function ListingCard({ order: rawOrder, inCart = false, onBuy, onCart, ov
 
   if (compact) {
     return (
-      <MotionCard className="card-base">
+      <MotionCard className="card-base group">
         <Link href={assetHref} className="block">
           <div className="relative aspect-square bg-muted overflow-hidden">
             <AnimatedTokenMedia
@@ -88,7 +88,7 @@ export function ListingCard({ order: rawOrder, inCart = false, onBuy, onCart, ov
               alt={name}
               mode="fill"
               sizes="(max-width: 640px) 33vw, 20vw"
-              className="object-cover group-hover:scale-105 transition-transform duration-500"
+              className="object-cover"
               imgError={imgError}
               onImageError={() => setImgError(true)}
               fallback={
@@ -107,7 +107,7 @@ export function ListingCard({ order: rawOrder, inCart = false, onBuy, onCart, ov
   }
 
   return (
-    <MotionCard className="card-base">
+    <MotionCard className="card-base group">
       <Link href={assetHref} className="block">
         <div className="relative aspect-square bg-muted overflow-hidden">
           <AnimatedTokenMedia
@@ -117,7 +117,7 @@ export function ListingCard({ order: rawOrder, inCart = false, onBuy, onCart, ov
             alt={name}
             mode="fill"
             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-            className="object-cover group-hover:scale-105 transition-transform duration-500"
+            className="object-cover"
             imgError={imgError}
             onImageError={() => setImgError(true)}
             fallback={

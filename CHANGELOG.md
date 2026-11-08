@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.311.0] — 2026-11-08
+
+### Changed
+
+- Every asset, token, listing, collection, drop, edition, remix, creator, activity and wallet card zooms its artwork the same way on hover: one smooth 500ms zoom, only on devices with hover and without reduced motion.
+- `AnimatedTokenMedia` no longer overrides the transition of the artwork, which made the zoom snap.
+- The listing, token and activity cards are now hover groups, so their artwork zooms.
+
 ## [0.310.0] — 2026-11-08
 
 ### Changed

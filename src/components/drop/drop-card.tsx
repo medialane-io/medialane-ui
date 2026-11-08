@@ -25,7 +25,7 @@ export function DropCard({ drop, now, manage }: DropCardProps) {
     >
       <div className="relative aspect-square bg-muted">
         {image && (
-          <Image src={image} alt={drop.name ?? "Drop"} fill unoptimized className="object-cover transition-transform group-hover:scale-[1.02]" />
+          <Image src={image} alt={drop.name ?? "Drop"} fill unoptimized className="object-cover card-media" />
         )}
         <div className="absolute left-3 top-3"><DropStatusBadge phase={phase} /></div>
       </div>

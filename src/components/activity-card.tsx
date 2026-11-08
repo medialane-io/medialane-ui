@@ -83,7 +83,7 @@ export function ActivityCard({
 
   const body = (
     <>
-      <div className="aspect-square relative bg-muted">
+      <div className="aspect-square relative overflow-hidden bg-muted">
         <AnimatedTokenMedia
           image={tokenImage}
           animationUrl={animationUrl}
@@ -125,7 +125,7 @@ export function ActivityCard({
     </>
   );
 
-  const className = "card-base block active:scale-[0.99] transition-all";
+  const className = "card-base group block active:scale-[0.99] transition-all";
 
   return contract && tokenId ? (
     <Link href={assetHref(activity.chain ?? "STARKNET", contract, tokenId)} className={className}>

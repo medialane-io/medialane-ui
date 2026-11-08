@@ -38,7 +38,7 @@ function CreatorCard({ creator }: { creator: ApiCreatorProfile }) {
   return (
     <Link
       href={profileHref({ username: creator.username, address: creator.walletAddress })}
-      className="block relative aspect-square overflow-hidden rounded-2xl active:scale-[0.98] transition-transform duration-150 select-none"
+      className="group block relative aspect-square overflow-hidden rounded-2xl active:scale-[0.98] transition-transform duration-150 select-none"
     >
 
       {resolvedImage ? (
@@ -48,7 +48,7 @@ function CreatorCard({ creator }: { creator: ApiCreatorProfile }) {
           aria-hidden
           fill
           sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
-          className="absolute inset-0 w-full h-full object-cover"
+          className="absolute inset-0 w-full h-full object-cover card-media"
           unoptimized
         />
       ) : (
