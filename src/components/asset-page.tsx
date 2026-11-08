@@ -283,12 +283,7 @@ function AssetPageView({
         floorPriceRaw={collection?.floorPrice}
       />
       {kind === "pop" ? (
-        <SoulboundCard
-          image={image}
-          ownerAddress={ownerAddress}
-          ownerHref={ownerAddress ? profileHref({ address: ownerAddress }) : undefined}
-          history={history as ApiActivity[]}
-        />
+        <SoulboundCard history={history as ApiActivity[]} />
       ) : null}
       <div className="-ml-3">
         <AssetUtilityIcons
@@ -423,7 +418,7 @@ function AssetPageView({
               parentContract={parentContract}
               parentTokenId={parentTokenId}
               badges={kind === "pop" ? (
-                <span className="inline-flex items-center gap-1 text-2xs font-semibold px-2.5 py-1 rounded-full border border-emerald-500/30 bg-emerald-500/10 text-emerald-500">
+                <span className="inline-flex items-center gap-1 text-2xs font-semibold px-2.5 py-1 rounded-full bg-brand-purple/15 text-brand-purple dark:bg-brand-purple/25">
                   <Award className="h-3 w-3" />
                   POP
                 </span>

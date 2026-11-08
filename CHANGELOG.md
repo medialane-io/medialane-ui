@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.307.0] — 2026-11-08
+
+### Changed
+
+- The Soulbound card on POP and certificate assets is a single translucent row with a brand-colored lock tile, the description and the issue date.
+- `SoulboundCard` takes the history only.
+- The POP badge uses a brand color.
+
 ## [0.306.0] — 2026-11-08
 
 ### Changed
