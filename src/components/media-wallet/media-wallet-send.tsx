@@ -16,7 +16,7 @@ import { WALLET_TOKENS, type WalletToken } from "../../utils/media-wallet/wallet
 import { SuccessDialog } from "./success-dialog.js";
 import { useMediaWalletApp, type MediaWalletView } from "./types.js";
 import { shortenAddress } from "../../utils/address.js";
-import { runIntentCalls } from "../../utils/run-intent-calls.js";
+import { sendToken } from "../../utils/send-token.js";
 import { successMessages } from "../../utils/success-messages.js";
 import { useMedialaneApp } from "../medialane-app.js";
 
@@ -115,9 +115,7 @@ export function MediaWalletSend({
     const dest = to.trim();
     const amt = amountRaw;
     await run(async (signer) => {
-      const result = await runIntentCalls(signer, () =>
-        getClient().api.intents.create("transfer-token", { owner: signer.address, token: currency.address, recipient: dest, amount: amt.toString() }),
-      );
+      const result = await sendToken(signer, getClient(), { token: currency.address, recipient: dest, amount: amt });
       setTxHash(result.txHash);
       return result;
     });

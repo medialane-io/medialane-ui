@@ -17,9 +17,10 @@ function setup(onTransferred?: () => void) {
   const intents: { kind: string; params: Record<string, unknown> }[] = [];
   const client = {
     provider: { getTransactionReceipt: async () => ({ execution_status: "SUCCEEDED", events: [] }) },
+    createIntent: async (kind: string, params: Record<string, unknown>) => { intents.push({ kind, params }); return { id: "i1", requiresSignature: false, calls: [{}] }; },
     api: {
       intents: {
-        create: async (kind: string, params: Record<string, unknown>) => { intents.push({ kind, params }); return { id: "i1", requiresSignature: false, calls: [{}] }; },
+        create: async () => { throw new Error("intents are created with client.createIntent"); },
         syncTransaction: async () => ({ pending: false }),
       },
     },
