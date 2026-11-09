@@ -43,7 +43,7 @@ function NewListings({ market }: { market: CollectionMarketActions }) {
     >
       {isLoading
         ? Array.from({ length: 8 }).map((_, i) => (
-            <div key={i} className="w-72 shrink-0 snap-start"><ListingCardSkeleton /></div>
+            <div key={i} className="w-56 shrink-0 snap-start sm:w-64"><ListingCardSkeleton /></div>
           ))
         : listings.length === 0
         ? (
@@ -54,7 +54,7 @@ function NewListings({ market }: { market: CollectionMarketActions }) {
         : listings.map((order) => {
             const own = !!walletAddress && isSameAddress(order.offerer, walletAddress);
             return (
-              <div key={order.orderHash} className="w-72 shrink-0 snap-start">
+              <div key={order.orderHash} className="w-56 shrink-0 snap-start sm:w-64">
                 <ListingCard
                   order={order}
                   onBuy={own ? undefined : () => market.buy(order)}
@@ -82,7 +82,7 @@ function CollectionsStrip() {
             <div key={i} className="w-56 shrink-0 snap-start sm:w-64"><CollectionCardSkeleton /></div>
           ))
         : collections.map((col) => (
-            <div key={col.contractAddress} className="w-64 shrink-0 snap-start"><CollectionCard collection={col} /></div>
+            <div key={col.contractAddress} className="w-56 shrink-0 snap-start sm:w-64"><CollectionCard collection={col} /></div>
           ))}
     </ScrollSection>
   );

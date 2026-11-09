@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.326.0] — 2026-11-09
+
+### Changed
+
+- The listing cards in the Activity strip on the discover page and in the home page strips are as wide as the collection cards, so every strip shows the same number of cards.
+
 ## [0.325.0] — 2026-11-09
 
 ### Changed
