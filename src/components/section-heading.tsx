@@ -11,7 +11,7 @@ export interface SectionHeadingProps {
   linkLabel?: string;
 }
 
-export function SectionHeading({ icon, title, subtitle, href, linkLabel = "See all" }: SectionHeadingProps) {
+export function SectionHeading({ icon, title, subtitle, href, linkLabel = "View all" }: SectionHeadingProps) {
   return (
     <div className="flex items-center justify-between gap-3">
       <div className="flex min-w-0 items-center gap-2">
