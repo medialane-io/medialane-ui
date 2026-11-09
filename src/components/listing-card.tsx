@@ -5,6 +5,7 @@ import Link from "./link.js";
 import { ShoppingCart, Check, Zap, ArrowUpRight } from "lucide-react";
 import { MotionCard } from "./motion-primitives.js";
 import { AnimatedTokenMedia } from "./animated-token-media.js";
+import { CurrencyIcon, hasCurrencyIcon } from "./currency-icon.js";
 import { cn } from "../utils/cn.js";
 import { formatDisplayPrice, isStableCurrency } from "../utils/format.js";
 import { timeAgo } from "../utils/time.js";
@@ -24,11 +25,17 @@ function CardPrice({
   if (!amountFormatted) return null;
   const amount = formatDisplayPrice(amountFormatted);
   const primary = usdValue ?? amount;
-  const secondary = !usdValue ? currency : isStableCurrency(currency) ? currency : `${amount} ${currency}`;
+  const showAmount = !!usdValue && !isStableCurrency(currency);
+  const marker = hasCurrencyIcon(currency) ? <CurrencyIcon symbol={currency} size={14} /> : currency;
   return (
-    <p className="flex items-baseline gap-1.5 tabular-nums">
+    <p className="flex items-center gap-1.5 tabular-nums">
       <span className="text-base font-bold tracking-tight">{primary}</span>
-      {secondary && <span className="text-xs text-muted-foreground">{secondary}</span>}
+      {marker || showAmount ? (
+        <span className="inline-flex items-center gap-1 text-xs text-muted-foreground">
+          {marker}
+          {showAmount ? amount : null}
+        </span>
+      ) : null}
     </p>
   );
 }
@@ -65,9 +72,9 @@ export function ListingCard({ order: rawOrder, inCart = false, onBuy, onCart, ov
 
   if (compact) {
     return (
-      <MotionCard className="group">
+      <MotionCard className="group overflow-hidden rounded-[calc(var(--radius)*1.25)] bg-card">
         <Link href={assetHref} className="block">
-          <div className="relative aspect-square bg-muted overflow-hidden rounded-xl">
+          <div className="relative aspect-square bg-muted overflow-hidden">
             <AnimatedTokenMedia
               image={image}
               animationUrl={animationUrl}
@@ -83,7 +90,7 @@ export function ListingCard({ order: rawOrder, inCart = false, onBuy, onCart, ov
               }
             />
           </div>
-          <div className="px-0.5 pt-2.5 space-y-0.5">
+          <div className="p-2.5 space-y-0.5">
             <p className="text-xs font-medium truncate">{name}</p>
             <CardPrice amountFormatted={order.price?.formatted} currency={order.price?.currency} usdValue={usdValue} />
             <p className="text-2xs text-muted-foreground">{timeAgo(order.createdAt)}</p>
@@ -94,9 +101,9 @@ export function ListingCard({ order: rawOrder, inCart = false, onBuy, onCart, ov
   }
 
   return (
-    <MotionCard className="group">
+    <MotionCard className="group overflow-hidden rounded-[calc(var(--radius)*1.25)] bg-card">
       <Link href={assetHref} className="block">
-        <div className="relative aspect-square bg-muted overflow-hidden rounded-xl">
+        <div className="relative aspect-square bg-muted overflow-hidden">
           <AnimatedTokenMedia
             image={image}
             animationUrl={animationUrl}
@@ -113,7 +120,7 @@ export function ListingCard({ order: rawOrder, inCart = false, onBuy, onCart, ov
           />
         </div>
 
-        <div className="px-0.5 pt-3 space-y-2.5">
+        <div className="p-3.5 space-y-2.5">
           <div className="min-w-0 space-y-1">
             <p className="text-sm font-medium truncate">{name}</p>
             <CardPrice amountFormatted={order.price?.formatted} currency={order.price?.currency} usdValue={usdValue} />
@@ -175,9 +182,9 @@ export function ListingCard({ order: rawOrder, inCart = false, onBuy, onCart, ov
 
 export function ListingCardSkeleton() {
   return (
-    <div>
-      <div className="aspect-square w-full rounded-xl bg-muted animate-pulse" />
-      <div className="px-0.5 pt-3 space-y-2.5">
+    <div className="overflow-hidden rounded-[calc(var(--radius)*1.25)] bg-card">
+      <div className="aspect-square w-full bg-muted animate-pulse" />
+      <div className="p-3.5 space-y-2.5">
         <div className="space-y-1">
           <div className="h-4 w-3/4 bg-muted animate-pulse rounded" />
           <div className="h-5 w-1/2 bg-muted animate-pulse rounded" />
