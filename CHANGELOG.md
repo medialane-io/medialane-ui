@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.319.0] — 2026-11-09
+
+### Changed
+
+- On the asset card in a portfolio the price sits under the title on the second line, right-aligned, instead of over the artwork.
+- Prices on asset cards are in regular weight.
+
 ## [0.318.0] — 2026-11-09
 
 ### Changed
