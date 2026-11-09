@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.320.0] — 2026-11-09
+
+### Changed
+
+- On the asset page the IP type pill sits on the owner line, before the owner, and the description text is larger.
+- The soulbound card comes right after the owner line, before the collection.
+
 ## [0.319.0] — 2026-11-09
 
 ### Changed

@@ -94,7 +94,6 @@ interface AssetHeaderBlockProps {
   badges?: React.ReactNode;
   utilities?: React.ReactNode;
   description?: string | null;
-  ipType?: string | null;
   parentContract?: string | null;
   parentTokenId?: string | null;
 }
@@ -104,16 +103,14 @@ export function AssetHeaderBlock({
   badges,
   utilities,
   description,
-  ipType,
   parentContract,
   parentTokenId,
 }: AssetHeaderBlockProps) {
   return (
     <div className="min-w-0 flex-1">
-      {ipType || badges || utilities ? (
+      {badges || utilities ? (
         <div className="flex items-center justify-between gap-2 mb-2">
           <div className="flex items-center gap-2 flex-wrap">
-            {ipType ? <IpTypeBadge ipType={ipType} size="md" showLabel /> : null}
             {badges}
           </div>
           {utilities}
@@ -135,17 +132,24 @@ export function AssetHeaderBlock({
 }
 
 export interface AssetOwnerRowProps {
-  ownerAddress: string;
-  ownerHref: string;
+  ownerAddress?: string | null;
+  ownerHref?: string;
+  ipType?: string | null;
 }
 
-export function AssetOwnerRow({ ownerAddress, ownerHref }: AssetOwnerRowProps) {
+export function AssetOwnerRow({ ownerAddress, ownerHref, ipType }: AssetOwnerRowProps) {
+  if (!ownerAddress && !ipType) return null;
   return (
-    <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-      <span>Owner</span>
-      <Link href={ownerHref} className="hover:text-primary transition-colors font-medium">
-        <AddressDisplay address={ownerAddress} />
-      </Link>
+    <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-xs text-muted-foreground">
+      {ipType ? <IpTypeBadge ipType={ipType} size="md" showLabel /> : null}
+      {ownerAddress && ownerHref ? (
+        <div className="flex items-center gap-1.5">
+          <span>Owner</span>
+          <Link href={ownerHref} className="hover:text-primary transition-colors font-medium">
+            <AddressDisplay address={ownerAddress} />
+          </Link>
+        </div>
+      ) : null}
     </div>
   );
 }

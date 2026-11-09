@@ -9,7 +9,6 @@ import { PageContainer } from "./page-container.js";
 import { PageBackdrop } from "./media-header.js";
 import { AssetHeaderBlock, AssetMediaColumn, AssetOwnerRow } from "./asset-top-sections.js";
 import { AssetPublication } from "./asset-publication.js";
-import { IpTypeBadge } from "./ip-type-badge.js";
 import { AssetRelatedList, AssetVideo, VIDEO_EMBED_TRAITS, videoEmbed } from "./asset-video.js";
 import { AssetAudio, AUDIO_EMBED_TRAITS, audioEmbed } from "./asset-audio.js";
 import { AssetUtilityIcons } from "./asset-utility-icons.js";
@@ -268,8 +267,11 @@ function AssetPageView({
 
   const detailsBlock = (
     <div className="pt-5 space-y-5">
-      {ownerAddress ? <AssetOwnerRow ownerAddress={ownerAddress} ownerHref={profileHref({ address: ownerAddress })} /> : null}
+      <AssetOwnerRow ownerAddress={ownerAddress} ownerHref={ownerAddress ? profileHref({ address: ownerAddress }) : undefined} ipType={token.metadata?.ipType} />
       {collection?.service === "drop-collection" ? <DropTokenLink contract={contract} name={collection.name ?? null} /> : null}
+      {kind === "pop" ? (
+        <SoulboundCard history={history as ApiActivity[]} ownerAddress={ownerAddress} />
+      ) : null}
       <AssetCollectionBar
         collectionName={publisherName}
         collectionImage={resolveImage(collection?.image)}
@@ -282,9 +284,6 @@ function AssetPageView({
         onNavigate={(id) => router.push(assetHref("STARKNET", contract, id))}
         floorPriceRaw={collection?.floorPrice}
       />
-      {kind === "pop" ? (
-        <SoulboundCard history={history as ApiActivity[]} ownerAddress={ownerAddress} />
-      ) : null}
       <div className="-ml-3">
         <AssetUtilityIcons
           contractExplorerHref={`${EXPLORER_URL}/contract/${token.contractAddress}`}
@@ -320,9 +319,8 @@ function AssetPageView({
             }
           />
           <aside className="space-y-6 min-w-0">
-            <IpTypeBadge ipType={token.metadata?.ipType ?? "Video"} size="md" showLabel />
             {marketBlock}
-            {ownerAddress ? <AssetOwnerRow ownerAddress={ownerAddress} ownerHref={profileHref({ address: ownerAddress })} /> : null}
+            <AssetOwnerRow ownerAddress={ownerAddress} ownerHref={ownerAddress ? profileHref({ address: ownerAddress }) : undefined} ipType={token.metadata?.ipType ?? "Video"} />
             <AssetRelatedList
               title={publisherName}
               titleHref={collectionHref("STARKNET", contract)}
@@ -357,9 +355,8 @@ function AssetPageView({
             }
           />
           <aside className="space-y-6 min-w-0">
-            <IpTypeBadge ipType={token.metadata?.ipType ?? "Audio"} size="md" showLabel />
             {marketBlock}
-            {ownerAddress ? <AssetOwnerRow ownerAddress={ownerAddress} ownerHref={profileHref({ address: ownerAddress })} /> : null}
+            <AssetOwnerRow ownerAddress={ownerAddress} ownerHref={ownerAddress ? profileHref({ address: ownerAddress }) : undefined} ipType={token.metadata?.ipType ?? "Audio"} />
             <AssetRelatedList
               title={publisherName}
               titleHref={collectionHref("STARKNET", contract)}
@@ -387,7 +384,6 @@ function AssetPageView({
             externalUrl={token.metadata?.externalUrl}
           />
           <aside className="space-y-6 min-w-0 lg:sticky lg:top-16">
-            <IpTypeBadge ipType={token.metadata?.ipType ?? "Publications"} size="md" showLabel />
             {marketBlock}
             {detailsBlock}
           </aside>
@@ -414,7 +410,6 @@ function AssetPageView({
             <AssetHeaderBlock
               name={name}
               description={token.metadata?.description}
-              ipType={token.metadata?.ipType}
               parentContract={parentContract}
               parentTokenId={parentTokenId}
               badges={kind === "pop" ? (
