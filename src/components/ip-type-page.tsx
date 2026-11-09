@@ -166,6 +166,7 @@ export function IpTypePage({ slug, useMarketActions }: IpTypePageProps) {
         <div className="flex items-center gap-2 flex-wrap">
           <button
             onClick={() => setFiltersOpen(true)}
+            aria-label="Filters"
             className={cn(
               "inline-flex items-center gap-1.5 text-xs px-3.5 py-2 rounded-full border font-medium transition-colors",
               hasActiveFilters
@@ -174,7 +175,6 @@ export function IpTypePage({ slug, useMarketActions }: IpTypePageProps) {
             )}
           >
             <SlidersHorizontal className="h-3.5 w-3.5" />
-            Filters
             {activeChipCount > 0 && (
               <span className="ml-0.5 bg-primary text-primary-foreground rounded-full px-1.5 text-2xs font-bold leading-4">
                 {activeChipCount}

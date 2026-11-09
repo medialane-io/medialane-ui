@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.325.0] — 2026-11-09
+
+### Changed
+
+- The filters button shows only its icon on the marketplace, the single collection page and the IP type pages.
+
 ## [0.324.0] — 2026-11-09
 
 ### Changed

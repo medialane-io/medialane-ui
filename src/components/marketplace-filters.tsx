@@ -148,6 +148,7 @@ export function FiltersButton({ filters }: { filters: MarketplaceFilters }) {
   return (
     <button
       onClick={() => filters.setOpen(true)}
+      aria-label="Filters"
       className={cn(
         "relative flex items-center gap-1.5 h-9 px-3 rounded-lg border text-xs font-medium transition-colors shrink-0",
         filters.count > 0
@@ -156,7 +157,6 @@ export function FiltersButton({ filters }: { filters: MarketplaceFilters }) {
       )}
     >
       <SlidersHorizontal className="h-3.5 w-3.5" />
-      Filters
       {filters.count > 0 && (
         <span className="flex h-4 w-4 items-center justify-center rounded-full bg-primary text-2xs font-bold text-primary-foreground">
           {filters.count}

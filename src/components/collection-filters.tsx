@@ -118,7 +118,6 @@ export function CollectionFiltersTrigger({
       {showButton && (
         <button onClick={onOpen} className={TRIGGER_BTN} aria-label="Filters">
           <SlidersHorizontal className="h-3.5 w-3.5" />
-          <span className="hidden sm:inline">Filters</span>
           {totalActiveCount > 0 && (
             <span className="h-4 min-w-4 rounded-full bg-primary text-2xs font-bold text-primary-foreground flex items-center justify-center px-1 -mr-1">
               {totalActiveCount}
