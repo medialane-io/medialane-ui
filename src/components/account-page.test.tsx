@@ -55,7 +55,7 @@ test("listings show edition and unique works", async () => {
 test("the owner can list their own works through the app", async () => {
   const { view, calls } = renderPage({ walletAddress: A });
   await waitFor(() => expect(view.getByText("Piece 1")).toBeTruthy());
-  fireEvent.click(view.getByText("List"));
+  fireEvent.click(view.getByText("Sell"));
   expect(calls).toEqual(["list 1"]);
 });
 

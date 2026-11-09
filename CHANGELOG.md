@@ -5,6 +5,7 @@
 ### Changed
 
 - The account page uses the portfolio's layout: the same page width and spacing, the same header, and the same pill tabs with counts.
+- The asset card's List button and menu item read "Sell".
 
 ### Added
 
