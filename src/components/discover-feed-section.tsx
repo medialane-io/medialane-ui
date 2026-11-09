@@ -66,7 +66,7 @@ export function DiscoverActivityStrip({
       >
         {isLoading
           ? Array.from({ length: 8 }).map((_, i) => (
-              <div key={i} className="w-72 snap-start shrink-0">
+              <div key={i} className="w-56 sm:w-64 snap-start shrink-0">
                 <ListingCardSkeleton />
               </div>
             ))
@@ -77,7 +77,7 @@ export function DiscoverActivityStrip({
           : orders.map((order) => {
               const own = isOwnOrder?.(order) ?? false;
               return (
-                <div key={order.orderHash} className="w-72 snap-start shrink-0">
+                <div key={order.orderHash} className="w-56 sm:w-64 snap-start shrink-0">
                   <ListingCard
                     order={order}
                     onBuy={onBuyOrder && !own ? () => onBuyOrder(order) : undefined}
