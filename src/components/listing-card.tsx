@@ -4,11 +4,9 @@ import { useState } from "react";
 import Link from "./link.js";
 import { ShoppingCart, Check, Zap, ArrowUpRight } from "lucide-react";
 import { MotionCard } from "./motion-primitives.js";
-import { CurrencyIcon } from "./currency-icon.js";
 import { AnimatedTokenMedia } from "./animated-token-media.js";
 import { cn } from "../utils/cn.js";
 import { formatDisplayPrice, isStableCurrency } from "../utils/format.js";
-import { DualPrice } from "./dual-price.js";
 import { timeAgo } from "../utils/time.js";
 import { isLivingRenderCollection } from "../data/living-render-collections.js";
 import { assetHref as buildAssetHref, type ApiOrder, type Chain } from "@medialane/sdk";
@@ -16,7 +14,7 @@ import { useImageUrl } from "../utils/use-image-url.js";
 
 type OrderWithAnimation = ApiOrder & { token: (ApiOrder["token"] & { animationUrl?: string | null }) | null };
 
-function PriceLine({
+function CardPrice({
   amountFormatted, currency, usdValue,
 }: {
   amountFormatted: string | null | undefined;
@@ -24,25 +22,14 @@ function PriceLine({
   usdValue?: string | null;
 }) {
   if (!amountFormatted) return null;
-  if (!usdValue) {
-    return (
-      <p className="text-2xs font-bold price-value inline-flex items-center gap-1">
-        {currency && <CurrencyIcon symbol={currency} size={11} />}
-        {formatDisplayPrice(amountFormatted)}
-      </p>
-    );
-  }
-  const stable = isStableCurrency(currency);
+  const amount = formatDisplayPrice(amountFormatted);
+  const primary = usdValue ?? amount;
+  const secondary = !usdValue ? currency : isStableCurrency(currency) ? currency : `${amount} ${currency}`;
   return (
-    <>
-      <p className="text-2xs font-bold price-value">
-        {usdValue}
-      </p>
-      <p className="text-2xs text-muted-foreground/70 inline-flex items-center gap-1">
-        {currency && <CurrencyIcon symbol={currency} size={10} />}
-        {stable ? currency : `${formatDisplayPrice(amountFormatted)} ${currency}`}
-      </p>
-    </>
+    <p className="flex items-baseline gap-1.5 tabular-nums">
+      <span className="text-base font-bold tracking-tight">{primary}</span>
+      {secondary && <span className="text-xs text-muted-foreground">{secondary}</span>}
+    </p>
   );
 }
 
@@ -78,9 +65,9 @@ export function ListingCard({ order: rawOrder, inCart = false, onBuy, onCart, ov
 
   if (compact) {
     return (
-      <MotionCard className="card-base group">
+      <MotionCard className="group">
         <Link href={assetHref} className="block">
-          <div className="relative aspect-square bg-muted overflow-hidden">
+          <div className="relative aspect-square bg-muted overflow-hidden rounded-xl">
             <AnimatedTokenMedia
               image={image}
               animationUrl={animationUrl}
@@ -96,9 +83,9 @@ export function ListingCard({ order: rawOrder, inCart = false, onBuy, onCart, ov
               }
             />
           </div>
-          <div className="p-2.5 space-y-0.5">
-            <p className="text-xs font-semibold line-clamp-2 break-words">{name}</p>
-            <PriceLine amountFormatted={order.price?.formatted} currency={order.price?.currency} usdValue={usdValue} />
+          <div className="px-0.5 pt-2.5 space-y-0.5">
+            <p className="text-xs font-medium truncate">{name}</p>
+            <CardPrice amountFormatted={order.price?.formatted} currency={order.price?.currency} usdValue={usdValue} />
             <p className="text-2xs text-muted-foreground">{timeAgo(order.createdAt)}</p>
           </div>
         </Link>
@@ -107,9 +94,9 @@ export function ListingCard({ order: rawOrder, inCart = false, onBuy, onCart, ov
   }
 
   return (
-    <MotionCard className="card-base group">
+    <MotionCard className="group">
       <Link href={assetHref} className="block">
-        <div className="relative aspect-square bg-muted overflow-hidden">
+        <div className="relative aspect-square bg-muted overflow-hidden rounded-xl">
           <AnimatedTokenMedia
             image={image}
             animationUrl={animationUrl}
@@ -126,14 +113,11 @@ export function ListingCard({ order: rawOrder, inCart = false, onBuy, onCart, ov
           />
         </div>
 
-        <div className="p-3.5 space-y-3">
-          <div className="min-w-0">
-            <p className="text-base font-semibold tracking-tight line-clamp-2 break-words leading-snug">{name}</p>
+        <div className="px-0.5 pt-3 space-y-2.5">
+          <div className="min-w-0 space-y-1">
+            <p className="text-sm font-medium truncate">{name}</p>
+            <CardPrice amountFormatted={order.price?.formatted} currency={order.price?.currency} usdValue={usdValue} />
           </div>
-
-          {order.price?.formatted && (
-            <DualPrice amountFormatted={order.price.formatted} currency={order.price.currency} usdValue={usdValue} scale="card" />
-          )}
 
           {showActionBar && (
             <div className="flex items-center gap-1.5">
@@ -191,15 +175,14 @@ export function ListingCard({ order: rawOrder, inCart = false, onBuy, onCart, ov
 
 export function ListingCardSkeleton() {
   return (
-    <div className="card-base">
-      <div className="aspect-square w-full bg-muted animate-pulse" />
-      <div className="p-3 space-y-2.5">
+    <div>
+      <div className="aspect-square w-full rounded-xl bg-muted animate-pulse" />
+      <div className="px-0.5 pt-3 space-y-2.5">
         <div className="space-y-1">
           <div className="h-4 w-3/4 bg-muted animate-pulse rounded" />
-          <div className="h-3 w-1/2 bg-muted animate-pulse rounded" />
+          <div className="h-5 w-1/2 bg-muted animate-pulse rounded" />
         </div>
-        <div className="h-6 w-1/2 bg-muted animate-pulse rounded" />
-        <div className="h-3 w-2/3 bg-muted animate-pulse rounded" />
+        <div className="h-9 w-full bg-muted animate-pulse rounded-[9px]" />
       </div>
     </div>
   );

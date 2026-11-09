@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.317.0] — 2026-11-09
+
+### Changed
+
+- The listing card has no border or panel. The title is one line, and the price shows the dollar amount in bold with the token amount in small muted text beside it.
+
 ## [0.316.0] — 2026-11-09
 
 ### Changed
