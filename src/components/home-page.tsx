@@ -31,14 +31,13 @@ const LAUNCHPAD_HREFS = {
 };
 
 function ListingsStrip({
-  market, icon, title, query, href, linkLabel, empty,
+  market, icon, title, query, href, empty,
 }: {
   market: CollectionMarketActions;
   icon: ReactNode;
   title: string;
   query: ApiOrdersQuery;
   href: string;
-  linkLabel: string;
   empty?: ReactNode;
 }) {
   const { walletAddress } = useMedialaneApp();
@@ -47,7 +46,7 @@ function ListingsStrip({
   const listings = orders.filter((o) => o.offer.itemType === "ERC721" || o.offer.itemType === "ERC1155").slice(0, 10);
   if (!isLoading && listings.length === 0 && !empty) return null;
   return (
-    <ScrollSection icon={icon} title={title} href={href} linkLabel={linkLabel}>
+    <ScrollSection icon={icon} title={title} href={href}>
       {isLoading
         ? Array.from({ length: 8 }).map((_, i) => (
             <div key={i} className="w-56 shrink-0 snap-start sm:w-64"><ListingCardSkeleton /></div>
@@ -76,10 +75,9 @@ function NewListings({ market }: { market: CollectionMarketActions }) {
     <ListingsStrip
       market={market}
       icon={<Tag />}
-      title="New listings"
+      title="Marketplace"
       query={{ status: "ACTIVE", limit: 10, page: 1 }}
       href="/marketplace"
-      linkLabel="Marketplace"
       empty={
         <p className="py-4 text-sm text-muted-foreground">
           <Link href="/launchpad/single-editions" className="text-primary hover:underline">Sell the first asset</Link>
@@ -94,10 +92,9 @@ function FeaturedListings({ market }: { market: CollectionMarketActions }) {
     <ListingsStrip
       market={market}
       icon={<Sparkles />}
-      title="Featured listings"
+      title="Featured"
       query={{ status: "ACTIVE", isFeatured: true, limit: 20, page: 1 }}
       href="/marketplace"
-      linkLabel="Marketplace"
     />
   );
 }
@@ -109,7 +106,6 @@ function CollectionsStrip() {
       icon={<TrendingUp className="h-4 w-4" />}
       title="Collections"
       href="/collections"
-      linkLabel="See all"
     >
       {isLoading
         ? Array.from({ length: 5 }).map((_, i) => (

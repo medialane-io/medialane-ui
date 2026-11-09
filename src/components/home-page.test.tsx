@@ -30,10 +30,10 @@ test("home lists new listings with Buy through the app and the collections strip
   globalThis.fetch = (async () => new Response(JSON.stringify({ data: { usd: { STRK: 0.5 } } }))) as unknown as typeof fetch;
   const view = render(<SWRConfig value={{ provider: () => new Map() }}><MedialaneAppProvider value={app}><HomePage useMarketActions={useMarketActions} /></MedialaneAppProvider></SWRConfig>);
   await waitFor(() => expect(view.getAllByText("Piece 1").length).toBeGreaterThan(0));
-  expect(view.getByText("New listings")).toBeTruthy();
+  expect(view.getByRole("heading", { level: 2, name: "Marketplace" })).toBeTruthy();
   expect(view.getByText("Collections")).toBeTruthy();
-  expect(view.queryByText("Featured listings")).toBeNull();
-  expect(view.getAllByText("See all").length).toBeGreaterThan(0);
+  expect(view.queryByText("Featured")).toBeNull();
+  expect(view.getAllByText("View all").length).toBeGreaterThan(0);
   expect(view.getByText("app dialogs")).toBeTruthy();
   const buys = view.getAllByRole("button").filter((b) => (b.textContent ?? "").trim() === "Buy");
   expect(buys.length).toBe(1);
@@ -49,6 +49,6 @@ test("home shows a featured listings strip asking for featured collections only"
   globalThis.fetch = (async () => new Response(JSON.stringify({ data: { usd: { STRK: 0.5 } } }))) as unknown as typeof fetch;
   const view = render(<SWRConfig value={{ provider: () => new Map() }}><MedialaneAppProvider value={app}><HomePage useMarketActions={useMarketActions} /></MedialaneAppProvider></SWRConfig>);
   await waitFor(() => expect(view.getAllByText("Piece 7").length).toBeGreaterThan(0));
-  expect(view.getByText("Featured listings")).toBeTruthy();
+  expect(view.getByText("Featured")).toBeTruthy();
   expect(queries).toContainEqual(expect.objectContaining({ status: "ACTIVE", isFeatured: true }));
 });

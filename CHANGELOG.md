@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.328.0] — 2026-11-09
+
+### Changed
+
+- Home page: the strips are titled "Marketplace" and "Featured".
+- Section links read "View all" everywhere, replacing "See all" and the "Marketplace" link on the listing strips.
+
 ## [0.327.0] — 2026-11-09
 
 ### Added
