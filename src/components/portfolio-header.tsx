@@ -1,5 +1,6 @@
 "use client";
 
+import type { ReactNode } from "react";
 import Link from "./link.js";
 import { cn } from "../utils/cn.js";
 import { AddressDisplay } from "./address-display.js";
@@ -15,12 +16,16 @@ export interface PortfolioHeaderScore {
 export interface PortfolioHeaderProps {
   address: string;
   score?: PortfolioHeaderScore | null;
+  label?: string;
+  trailing?: ReactNode;
   className?: string;
 }
 
 export function PortfolioHeader({
   address,
   score,
+  label = "Portfolio",
+  trailing,
   className,
 }: PortfolioHeaderProps) {
   const scoreChip = score && (
@@ -38,7 +43,7 @@ export function PortfolioHeader({
     <div className={cn("flex items-center justify-between gap-4", className)}>
       <div className="min-w-0">
         <p className="text-xs font-medium text-muted-foreground">
-          Portfolio
+          {label}
         </p>
         <AddressDisplay
           address={address}
@@ -46,6 +51,7 @@ export function PortfolioHeader({
           className="text-2xl sm:text-3xl font-black tracking-tight text-foreground"
         />
       </div>
+      {trailing}
       {score?.href ? (
         <Link href={score.href} className="shrink-0 active:opacity-80">
           {scoreChip}

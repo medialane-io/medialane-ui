@@ -144,7 +144,7 @@ export function TokenCard({
               onClick={(e) => { e.preventDefault(); e.stopPropagation(); onList?.(token); }}
             >
               <Tag className="h-3.5 w-3.5 mr-1.5" />
-              List
+              Sell
             </button>
           ) : null
         ) : listingOrder && onBuy ? (
@@ -195,7 +195,7 @@ export function TokenCard({
                     onClick={() => onList(token)}
                   >
                     <Tag className="h-3.5 w-3.5" />
-                    List
+                    Sell
                   </DropdownMenuItem>
                 )}
                 {onTransfer && (

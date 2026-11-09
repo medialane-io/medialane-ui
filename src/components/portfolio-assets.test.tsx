@@ -39,7 +39,7 @@ test("owned assets render with the app's dialogs and list through the app", asyn
   expect(view.getByText("Piece 2")).toBeTruthy();
   expect(view.getByText("app dialogs")).toBeTruthy();
   expect(calls[0]).toBe("function");
-  fireEvent.click(view.getByText("List"));
+  fireEvent.click(view.getByText("Sell"));
   expect(calls).toContain("list 1");
 });
 
