@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Activity, ArrowRight, RefreshCw, Sparkles } from "lucide-react";
 import Link from "./link.js";
+import { SectionHeading } from "./section-heading.js";
 import { Skeleton } from "./skeleton.js";
 import { ActivityRow } from "./activity-row.js";
 import { useMedialaneApp } from "./medialane-app.js";
@@ -13,42 +14,6 @@ import { cn } from "../utils/cn.js";
 import { emptyMessages } from "../utils/empty-messages.js";
 
 const FEED_LIMIT = 8;
-
-function ColumnHeader({
-  icon,
-  iconBg,
-  title,
-  caption,
-  href,
-  linkLabel,
-}: {
-  icon: React.ReactNode;
-  iconBg: string;
-  title: string;
-  caption?: React.ReactNode;
-  href: string;
-  linkLabel: string;
-}) {
-  return (
-    <div className="flex items-center justify-between gap-3">
-      <div className="flex items-center gap-2.5">
-        <div className={cn("h-7 w-7 rounded-lg flex items-center justify-center shadow-md shrink-0", iconBg)}>
-          {icon}
-        </div>
-        <div>
-          <h2 className="text-lg sm:text-xl font-semibold leading-none">{title}</h2>
-          {caption && <p className="text-2xs text-muted-foreground mt-1 flex items-center gap-1">{caption}</p>}
-        </div>
-      </div>
-      <Link
-        href={href}
-        className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground px-3 py-1.5 rounded-md hover:bg-accent transition-colors shrink-0"
-      >
-        {linkLabel} <ArrowRight className="h-3.5 w-3.5" />
-      </Link>
-    </div>
-  );
-}
 
 export function DiscoverCommunitySection() {
   const { activities, isLoading } = useActivities({ limit: FEED_LIMIT });
@@ -63,11 +28,10 @@ export function DiscoverCommunitySection() {
     <section className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
 
       <div className="lg:col-span-7 space-y-4 sm:space-y-5">
-        <ColumnHeader
-          icon={<Activity className="h-3.5 w-3.5 text-white" />}
-          iconBg="bg-gradient-to-br from-brand-purple to-brand-blue shadow-brand-purple/20"
+        <SectionHeading
+          icon={<Activity className="h-4 w-4" />}
           title="Activities"
-          caption={
+          subtitle={
             !isLoading && (
               <>
                 <RefreshCw className="h-2.5 w-2.5" />
@@ -113,9 +77,8 @@ export function DiscoverCommunitySection() {
       </div>
 
       <div className="lg:col-span-5 space-y-4 sm:space-y-5">
-        <ColumnHeader
-          icon={<Sparkles className="h-3.5 w-3.5 text-white" />}
-          iconBg="bg-gradient-to-br from-brand-rose to-brand-orange"
+        <SectionHeading
+          icon={<Sparkles className="h-4 w-4" />}
           title="Rewards"
           href="/rewards"
           linkLabel="Scoreboard"

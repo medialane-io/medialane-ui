@@ -1,52 +1,20 @@
 "use client";
 
-import Link from "./link.js";
-import { ArrowRight } from "lucide-react";
+import { SectionHeading } from "./section-heading.js";
 
 export interface ScrollSectionProps {
-
   icon: React.ReactNode;
-
-  iconBg: string;
   title: string;
-
   subtitle?: React.ReactNode;
-
   href: string;
-
   linkLabel?: string;
-
   children: React.ReactNode;
 }
 
-export function ScrollSection({
-  icon,
-  iconBg,
-  title,
-  subtitle,
-  href,
-  linkLabel = "See all",
-  children,
-}: ScrollSectionProps) {
+export function ScrollSection({ icon, title, subtitle, href, linkLabel, children }: ScrollSectionProps) {
   return (
     <section className="space-y-4">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2.5">
-          <div className={`h-7 w-7 rounded-lg flex items-center justify-center ${iconBg}`}>
-            {icon}
-          </div>
-          <div>
-            <h2 className="text-lg sm:text-xl font-semibold leading-none">{title}</h2>
-            {subtitle && <p className="text-2xs text-muted-foreground mt-1">{subtitle}</p>}
-          </div>
-        </div>
-        <Link
-          href={href}
-          className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground px-3 py-1.5 rounded-md hover:bg-accent transition-colors"
-        >
-          {linkLabel} <ArrowRight className="h-3.5 w-3.5" />
-        </Link>
-      </div>
+      <SectionHeading icon={icon} title={title} subtitle={subtitle} href={href} linkLabel={linkLabel} />
 
       <div className="w-full overflow-x-auto scrollbar-hide">
         <div className="flex gap-5 sm:gap-6 snap-x snap-mandatory pb-2" style={{ width: "max-content" }}>

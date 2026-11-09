@@ -1,11 +1,11 @@
 "use client";
 
-import { Tag, Activity, RefreshCw, ArrowRight } from "lucide-react";
+import { Tag, Activity, RefreshCw } from "lucide-react";
+import { SectionHeading, type SectionHeadingProps } from "./section-heading.js";
 import { FadeIn } from "./motion-primitives.js";
 import { ListingCard, ListingCardSkeleton } from "./listing-card.js";
 import { ActivityCard, ActivityCardSkeleton } from "./activity-card.js";
 import { timeAgo } from "../utils/time.js";
-import { cn } from "../utils/cn.js";
 import type { ApiOrder, ApiActivity } from "@medialane/sdk";
 import { emptyMessages } from "../utils/empty-messages.js";
 
@@ -25,41 +25,12 @@ export interface DiscoverFeedSectionProps {
 }
 
 function StripShell({
-  icon,
-  iconBg,
-  title,
-  subtitle,
-  href,
-  linkLabel,
   children,
-}: {
-  icon: React.ReactNode;
-  iconBg: string;
-  title: string;
-  subtitle?: React.ReactNode;
-  href: string;
-  linkLabel: string;
-  children: React.ReactNode;
-}) {
+  ...heading
+}: SectionHeadingProps & { children: React.ReactNode }) {
   return (
     <section className="space-y-4">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2.5">
-          <div className={cn("h-7 w-7 rounded-lg flex items-center justify-center", iconBg)}>
-            {icon}
-          </div>
-          <div>
-            <h2 className="text-lg sm:text-xl font-semibold leading-none">{title}</h2>
-            {subtitle && <p className="text-2xs text-muted-foreground mt-1">{subtitle}</p>}
-          </div>
-        </div>
-        <a
-          href={href}
-          className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground px-3 py-1.5 rounded-md hover:bg-accent transition-colors"
-        >
-          {linkLabel} <ArrowRight className="h-3.5 w-3.5" />
-        </a>
-      </div>
+      <SectionHeading {...heading} />
 
       <div className="w-full overflow-x-auto scrollbar-hide">
         <div className="flex gap-5 sm:gap-6 snap-x snap-mandatory pb-2" style={{ width: "max-content" }}>
@@ -88,8 +59,7 @@ export function DiscoverActivityStrip({
   return (
     <FadeIn>
       <StripShell
-        icon={<Tag className="h-3.5 w-3.5 text-white" />}
-        iconBg="bg-gradient-to-br from-rose-500 to-pink-600 shadow-md shadow-rose-500/20"
+        icon={<Tag className="h-4 w-4" />}
         title="Activity"
         href={marketplaceHref}
         linkLabel="View all"
@@ -143,8 +113,7 @@ export function DiscoverFeedSection({
 
       <FadeIn delay={0.08}>
         <StripShell
-          icon={<Activity className="h-3.5 w-3.5 text-white" />}
-          iconBg="bg-gradient-to-br from-indigo-500 to-blue-600 shadow-md shadow-indigo-500/20"
+          icon={<Activity className="h-4 w-4" />}
           title="Community"
           subtitle={
             <span className="flex items-center gap-1">

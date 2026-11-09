@@ -24,8 +24,7 @@ export function DiscoverCollectionsStrip({
 }: DiscoverCollectionsStripProps) {
   return (
     <ScrollSection
-      icon={<Layers className="h-3.5 w-3.5 text-white" />}
-      iconBg="bg-gradient-to-br from-brand-blue to-indigo-600 shadow-md shadow-brand-blue/20"
+      icon={<Layers className="h-4 w-4" />}
       title={title}
       href={allCollectionsHref}
       linkLabel="View all"

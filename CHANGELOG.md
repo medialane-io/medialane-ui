@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.316.0] — 2026-11-09
+
+### Changed
+
+- Section headers on the home and discover pages are smaller and quieter: a muted icon, a small title and a small link, in the theme's neutral colors for light and dark.
+- `ScrollSection` no longer takes `iconBg`; the three section header copies are one `SectionHeading`.
+
 ## [0.315.0] — 2026-11-09
 
 ### Removed
