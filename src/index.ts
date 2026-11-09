@@ -585,7 +585,6 @@ export {
   useMembershipList, useTicketList, useMembershipOnchain, useTicketOnchain, useIsMemberOf,
   type TierOnchain, type TierListItem,
 } from "./utils/use-tiers.js";
-export { sitemapChunks, sitemapEntries, sitemapIndexXml, type SitemapChunk, type SitemapEntry, type SitemapKind } from "./utils/sitemap-data.js";
 export { useToken, useTokenBalance, useTokenHistory, useTokensByOwner, useOwnedTokens } from "./utils/use-tokens.js";
 export { checkIsOwner } from "./utils/ownership.js";
 export { AssetOwnersPanel } from "./components/asset-owners-panel.js";

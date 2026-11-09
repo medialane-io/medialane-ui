@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.315.0] — 2026-11-09
+
+### Removed
+
+- `sitemapChunks`, `sitemapEntries`, `sitemapIndexXml` and the `SitemapChunk`, `SitemapEntry` and `SitemapKind` types. An app's sitemap lists its own pages in code and reads no backend data.
+
 ## [0.314.0] — 2026-11-09
 
 ### Changed
