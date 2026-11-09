@@ -144,11 +144,12 @@ export function CollectionFiltersTrigger({
         <button
           key={`${traitType}:${value}`}
           onClick={() => onRemoveFilter(traitType, value)}
-          className="inline-flex items-center gap-1 h-8 px-2.5 rounded-md border border-primary/40 bg-primary/10 text-xs font-medium text-foreground hover:bg-primary/20 transition-colors"
+          title={`${traitType}: ${value}`}
+          className="inline-flex max-w-full min-w-0 items-center gap-1 h-8 px-2.5 rounded-md border border-primary/40 bg-primary/10 text-xs font-medium text-foreground hover:bg-primary/20 transition-colors"
         >
-          <span className="text-muted-foreground text-2xs">{traitType}:</span>
-          <span>{value}</span>
-          <X className="h-3 w-3 text-muted-foreground ml-0.5" />
+          <span className="text-muted-foreground text-2xs shrink-0">{traitType}:</span>
+          <span className="truncate">{value}</span>
+          <X className="h-3 w-3 text-muted-foreground ml-0.5 shrink-0" />
         </button>
       ))}
 
@@ -174,7 +175,7 @@ export interface CollectionFiltersBodyProps {
   onToggleValue: (traitType: string, value: string) => void;
 }
 
-const PILL_BASE = "inline-flex items-center gap-1 h-7 px-2.5 rounded-full border text-xs font-medium transition-colors";
+const PILL_BASE = "inline-flex max-w-full min-w-0 items-center gap-1 h-7 px-2.5 rounded-full border text-xs font-medium transition-colors";
 const PILL_ON = "border-primary bg-primary text-primary-foreground";
 const PILL_OFF = "border-border bg-transparent text-muted-foreground hover:text-foreground hover:border-foreground/30";
 
@@ -186,7 +187,7 @@ export function CollectionFiltersBody({
   onToggleValue,
 }: CollectionFiltersBodyProps) {
   return (
-    <div className="flex-1 overflow-y-auto px-5 py-3 space-y-4">
+    <div className="flex-1 min-w-0 overflow-y-auto overflow-x-hidden px-5 py-3 space-y-4">
 
       <div>
         <div className="mb-2">
@@ -217,9 +218,9 @@ export function CollectionFiltersBody({
             return (
               <div key={section.traitType}>
                 {i > 0 && <div className="h-px w-full bg-border mb-4" />}
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm font-medium">{section.traitType}</span>
-                  <span className="text-2xs text-muted-foreground">
+                <div className="flex items-center justify-between gap-3 mb-2">
+                  <span className="min-w-0 truncate text-sm font-medium" title={section.traitType}>{section.traitType}</span>
+                  <span className="shrink-0 text-2xs text-muted-foreground">
                     {section.values.length} values
                   </span>
                 </div>
@@ -230,11 +231,12 @@ export function CollectionFiltersBody({
                       <button
                         key={value}
                         onClick={() => onToggleValue(section.traitType, value)}
+                        title={value}
                         className={cn(PILL_BASE, isSelected ? PILL_ON : PILL_OFF)}
                       >
-                        {isSelected && <Check className="h-3 w-3" />}
-                        <span>{value}</span>
-                        <span className={isSelected ? "opacity-80" : "opacity-60"}>
+                        {isSelected && <Check className="h-3 w-3 shrink-0" />}
+                        <span className="truncate">{value}</span>
+                        <span className={cn("shrink-0", isSelected ? "opacity-80" : "opacity-60")}>
                           {count}
                         </span>
                       </button>
