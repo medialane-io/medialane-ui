@@ -64,5 +64,5 @@ test("shows 15 at a time out of what the backend sent", async () => {
 
 test("an empty marketplace says so and offers to create", async () => {
   const view = show([], ME, () => {});
-  await waitFor(() => expect(view.getByText(/Create & List/)).toBeTruthy());
+  await waitFor(() => expect(view.getByText(/Create & Sell/)).toBeTruthy());
 });

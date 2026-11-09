@@ -29,12 +29,16 @@ test("the journey's start card asks for sign-in through the app and shows the ap
 test("the route error shows the error id and reloads on request", () => {
   const originalError = console.error;
   console.error = () => {};
-  let resets = 0;
-  const view = render(<RouteError error={Object.assign(new Error("boom"), { digest: "abc123" })} reset={() => { resets++; }} />);
+  const originalReload = window.location.reload;
+  let reloads = 0;
+  Object.defineProperty(window.location, "reload", { configurable: true, value: () => { reloads++; } });
+  const view = render(<RouteError error={Object.assign(new Error("boom"), { digest: "abc123" })} />);
   console.error = originalError;
   expect(view.getByText("Error ID: abc123")).toBeTruthy();
+  expect(view.queryByText(/ready to reload/)).toBeNull();
   fireEvent.click(view.getByRole("button", { name: /Reload/ }));
-  expect(resets).toBe(1);
+  Object.defineProperty(window.location, "reload", { configurable: true, value: originalReload });
+  expect(reloads).toBe(1);
 });
 
 test("the portfolio snapshot lists the counts and links to the portfolio", () => {

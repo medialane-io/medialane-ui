@@ -45,7 +45,7 @@ export const REWARD_ACTION_LABELS: Record<string, string> = {
   create_collection: "Create collections",
   launch_launchpad: "Launch drops / POPs",
   create_remix: "Create remixes",
-  list_asset: "List assets",
+  list_asset: "Sell assets",
   buy_asset: "Buy assets",
   make_offer: "Make offers",
   counter_offer: "Counter offers",
@@ -96,7 +96,7 @@ const EARN_GROUPS: {
     items: [
       { label: "Collect an asset", href: "/marketplace", Icon: ShoppingBag },
       { label: "Make an offer", href: "/marketplace", Icon: Handshake },
-      { label: "List an asset for sale", href: "/portfolio/assets", Icon: Tag },
+      { label: "Sell an asset", href: "/portfolio/assets", Icon: Tag },
       { label: "Get an event ticket", href: "/launchpad", Icon: Ticket },
     ],
   },

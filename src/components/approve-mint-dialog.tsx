@@ -70,7 +70,7 @@ export function ApproveMintDialog({ offer, open, onOpenChange, collections, foot
           <GitBranch className="h-4 w-4 text-primary shrink-0" />
           <DialogTitle className="text-base font-bold">Grant license &amp; mint</DialogTitle>
         </div>
-        <DialogDescription className="sr-only">Mint the derivative into one of your collections and list it for the requester.</DialogDescription>
+        <DialogDescription className="sr-only">Mint the derivative into one of your collections and sell it to the requester.</DialogDescription>
 
         <TransactionDialogStates
           phase={phase}
