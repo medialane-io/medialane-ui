@@ -5,6 +5,7 @@
 ### Changed
 
 - Everywhere the app asks someone to put an asset up for sale it says "Sell" instead of "List": the marketplace panel, the empty marketplace, the home page, the rewards tasks, the minted-asset actions and the ready-to-sell hints on memberships and tickets.
+- The error screen's Reload button reloads the page, and the line under the title is gone.
 
 ## [0.313.0] — 2026-11-09
 

@@ -10,13 +10,7 @@ function isStaleChunkError(error: Error): boolean {
   );
 }
 
-export function RouteError({
-  error,
-  reset,
-}: {
-  error: Error & { digest?: string };
-  reset: () => void;
-}) {
+export function RouteError({ error }: { error: Error & { digest?: string } }) {
   useEffect(() => {
     console.error(error);
 
@@ -33,16 +27,13 @@ export function RouteError({
       </div>
       <div className="space-y-2">
         <h1 className="text-2xl font-bold">Reload to continue</h1>
-        <p className="text-muted-foreground text-sm max-w-xs">
-          This page is ready to reload.
-        </p>
         {error.digest && (
           <p className="text-2xs text-muted-foreground/60 tabular-nums">
             Error ID: {error.digest}
           </p>
         )}
       </div>
-      <Button onClick={reset}>
+      <Button onClick={() => window.location.reload()}>
         <RefreshCw className="h-4 w-4 mr-2" />
         Reload
       </Button>
