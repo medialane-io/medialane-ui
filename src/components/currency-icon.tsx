@@ -11,6 +11,10 @@ const CURRENCY_ICON_PATHS: Record<string, string> = {
   WBTC: "/btc.svg",
 };
 
+export function hasCurrencyIcon(symbol: string | null | undefined): boolean {
+  return !!symbol && symbol in CURRENCY_ICON_PATHS;
+}
+
 export interface CurrencyIconProps {
   symbol: string | null | undefined;
   size?: number;

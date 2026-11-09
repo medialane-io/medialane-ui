@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.324.0] — 2026-11-09
+
+### Changed
+
+- The listing card price shows the currency icon instead of the symbol, and the card has its subtle panel colour again, still without a border.
+- `hasCurrencyIcon(symbol)` tells whether a currency has an icon.
+
 ## [0.323.0] — 2026-11-09
 
 ### Changed
