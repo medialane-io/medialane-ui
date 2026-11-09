@@ -1,7 +1,8 @@
 "use client";
 
-import { assetHref, collectionHref, type ApiCollection } from "@medialane/sdk";
-import { Tag, TrendingUp } from "lucide-react";
+import { assetHref, collectionHref, type ApiCollection, type ApiOrdersQuery } from "@medialane/sdk";
+import type { ReactNode } from "react";
+import { Sparkles, Tag, TrendingUp } from "lucide-react";
 import Link from "./link.js";
 import { PageContainer } from "./page-container.js";
 import { HeroSlider } from "./hero-slider.js";
@@ -29,28 +30,30 @@ const LAUNCHPAD_HREFS = {
   "creator-coins": "/launchpad/coin/create",
 };
 
-function NewListings({ market }: { market: CollectionMarketActions }) {
+function ListingsStrip({
+  market, icon, title, query, href, linkLabel, empty,
+}: {
+  market: CollectionMarketActions;
+  icon: ReactNode;
+  title: string;
+  query: ApiOrdersQuery;
+  href: string;
+  linkLabel: string;
+  empty?: ReactNode;
+}) {
   const { walletAddress } = useMedialaneApp();
-  const { orders, isLoading } = useOrders({ status: "ACTIVE", limit: 10, page: 1 });
+  const { orders, isLoading } = useOrders(query);
   const prices = useUsdPrices();
   const listings = orders.filter((o) => o.offer.itemType === "ERC721" || o.offer.itemType === "ERC1155").slice(0, 10);
+  if (!isLoading && listings.length === 0 && !empty) return null;
   return (
-    <ScrollSection
-      icon={<Tag className="h-4 w-4" />}
-      title="New listings"
-      href="/marketplace"
-      linkLabel="Marketplace"
-    >
+    <ScrollSection icon={icon} title={title} href={href} linkLabel={linkLabel}>
       {isLoading
         ? Array.from({ length: 8 }).map((_, i) => (
             <div key={i} className="w-56 shrink-0 snap-start sm:w-64"><ListingCardSkeleton /></div>
           ))
         : listings.length === 0
-        ? (
-            <p className="py-4 text-sm text-muted-foreground">
-              <Link href="/launchpad/single-editions" className="text-primary hover:underline">Sell the first asset</Link>
-            </p>
-          )
+        ? empty
         : listings.map((order) => {
             const own = !!walletAddress && isSameAddress(order.offerer, walletAddress);
             return (
@@ -65,6 +68,37 @@ function NewListings({ market }: { market: CollectionMarketActions }) {
             );
           })}
     </ScrollSection>
+  );
+}
+
+function NewListings({ market }: { market: CollectionMarketActions }) {
+  return (
+    <ListingsStrip
+      market={market}
+      icon={<Tag />}
+      title="New listings"
+      query={{ status: "ACTIVE", limit: 10, page: 1 }}
+      href="/marketplace"
+      linkLabel="Marketplace"
+      empty={
+        <p className="py-4 text-sm text-muted-foreground">
+          <Link href="/launchpad/single-editions" className="text-primary hover:underline">Sell the first asset</Link>
+        </p>
+      }
+    />
+  );
+}
+
+function FeaturedListings({ market }: { market: CollectionMarketActions }) {
+  return (
+    <ListingsStrip
+      market={market}
+      icon={<Sparkles />}
+      title="Featured listings"
+      query={{ status: "ACTIVE", isFeatured: true, limit: 20, page: 1 }}
+      href="/marketplace"
+      linkLabel="Marketplace"
+    />
   );
 }
 
@@ -105,6 +139,7 @@ export function HomePage({ useMarketActions, initialFeatured }: HomePageProps) {
       </PageContainer>
       <PageContainer className="mt-16 box-border max-w-full space-y-10 pt-0 pb-0 sm:space-y-16 lg:space-y-20">
         <NewListings market={market} />
+        <FeaturedListings market={market} />
         <CollectionsStrip />
         <RewardsSection rewardsHref="/rewards" />
         <LaunchpadStrip hrefs={LAUNCHPAD_HREFS} marketplaceHref="/marketplace" launchpadHref="/launchpad" />
