@@ -36,8 +36,7 @@ function NewListings({ market }: { market: CollectionMarketActions }) {
   const listings = orders.filter((o) => o.offer.itemType === "ERC721" || o.offer.itemType === "ERC1155").slice(0, 10);
   return (
     <ScrollSection
-      icon={<Tag className="h-3.5 w-3.5 text-white" />}
-      iconBg="bg-gradient-to-br from-brand-rose to-brand-rose shadow-md shadow-brand-rose/20"
+      icon={<Tag className="h-4 w-4" />}
       title="New listings"
       href="/marketplace"
       linkLabel="Marketplace"
@@ -73,8 +72,7 @@ function CollectionsStrip() {
   const { collections, isLoading } = useCollections(1, 10, undefined, "recent");
   return (
     <ScrollSection
-      icon={<TrendingUp className="h-3.5 w-3.5 text-white" />}
-      iconBg="bg-gradient-to-br from-brand-purple to-brand-maeve shadow-md shadow-brand-purple/20"
+      icon={<TrendingUp className="h-4 w-4" />}
       title="Collections"
       href="/collections"
       linkLabel="See all"

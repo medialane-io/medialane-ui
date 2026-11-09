@@ -124,8 +124,7 @@ export function LaunchpadStrip({
 
   return (
     <ScrollSection
-      icon={<Rocket className="h-3.5 w-3.5 text-white" />}
-      iconBg="bg-gradient-to-br from-primary to-blue-600 shadow-md shadow-primary/20"
+      icon={<Rocket className="h-4 w-4" />}
       title="Launchpad"
       href={launchpadHref}
       linkLabel="Explore"
