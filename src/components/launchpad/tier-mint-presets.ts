@@ -47,10 +47,10 @@ export const CLUB_TIER_PRESET: TierMintPreset = {
   back: { href: "/launchpad/club", label: "← Back" },
   notOwner: { message: "You don't own this club.", back: { href: "/launchpad/club", label: "← Back to clubs" } },
   dialog: { title: "Create membership", workingLabel: "Creating your membership…", firstStepLabel: "Upload membership metadata" },
-  success: { title: "Membership created", description: "The supply is minted to your wallet and ready to list.", againLabel: "Create another membership" },
+  success: { title: "Membership created", description: "The supply is minted to your wallet and ready to sell.", againLabel: "Create another membership" },
   shell: {
     title: "Create Membership",
-    subtitle: (name) => `Add a new membership tier to ${name ?? "your club"} and mint its supply to your wallet, ready to list.`,
+    subtitle: (name) => `Add a new membership tier to ${name ?? "your club"} and mint its supply to your wallet, ready to sell.`,
   },
   cardFallbackSymbol: "Club",
   copy: {
@@ -83,7 +83,7 @@ export const TICKETS_TIER_PRESET: TierMintPreset = {
   success: { title: "Tickets minted", description: "Each ticket is recorded onchain under your wallet.", againLabel: "Mint another ticket" },
   shell: {
     title: "Mint Tickets",
-    subtitle: (name) => `Add a new ticket type to ${name ?? "your collection"} and mint its supply to your wallet, ready to list.`,
+    subtitle: (name) => `Add a new ticket type to ${name ?? "your collection"} and mint its supply to your wallet, ready to sell.`,
   },
   cardFallbackSymbol: "Tickets",
   copy: {

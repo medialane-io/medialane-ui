@@ -49,7 +49,7 @@ function NewListings({ market }: { market: CollectionMarketActions }) {
         : listings.length === 0
         ? (
             <p className="py-4 text-sm text-muted-foreground">
-              <Link href="/launchpad/single-editions" className="text-primary hover:underline">List the first asset</Link>
+              <Link href="/launchpad/single-editions" className="text-primary hover:underline">Sell the first asset</Link>
             </p>
           )
         : listings.map((order) => {

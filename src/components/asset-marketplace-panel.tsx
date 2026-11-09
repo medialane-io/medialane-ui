@@ -178,7 +178,7 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
               ) : null}
               {!liveMyListing || (isERC1155 && canListMoreEditions !== false) ? (
                 <ActionButton tone="blue" icon={<Tag className="h-4 w-4" />} onClick={onOpenListing}>
-                  {liveMyListing ? "List more" : "List for sale"}
+                  {liveMyListing ? "Sell more" : "Sell"}
                 </ActionButton>
               ) : null}
               <ActionButton tone="orange" icon={<ArrowRightLeft className="h-4 w-4" />} onClick={onOpenTransfer}>Transfer</ActionButton>

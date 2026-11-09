@@ -32,7 +32,7 @@ export type UsePortfolioOrderActions = (context: { view: PortfolioOrdersView; re
 const VIEWS = {
   listings: {
     emptyTitle: "No active listings",
-    emptyDescription: "List an asset to start selling.",
+    emptyDescription: "Sell an asset to get started.",
     emptyCta: { label: "Browse assets", href: "/portfolio/assets" },
     emptyIcon: Tag,
     priceLabel: "Price",

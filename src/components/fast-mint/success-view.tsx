@@ -56,7 +56,7 @@ export function SuccessView({
                 className="flex items-center gap-2 rounded-xl border border-border px-4 py-3 text-sm font-semibold hover:bg-muted/40 transition-colors"
               >
                 <Tag className="h-4 w-4 text-muted-foreground" />
-                List on marketplace
+                Sell on marketplace
               </Link>
               <Link
                 href={`/asset/STARKNET/${mintedAsset.contract}/${mintedAsset.tokenId}?action=transfer`}
