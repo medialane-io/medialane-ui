@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.321.0] — 2026-11-09
+
+### Fixed
+
+- Collection filters: long values stay on one line and are cut off with an ellipsis, with the full text on hover. The filter list no longer scrolls sideways, and long active-filter chips and section titles are cut off the same way.
+
 ## [0.320.0] — 2026-11-09
 
 ### Changed
