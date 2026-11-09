@@ -23,7 +23,7 @@ const listing = (h: string, offerer: string) => ({
 }) as unknown as ApiOrder;
 
 test("home lists new listings with Buy through the app and the collections strip", async () => {
-  const client = { api: { orders: { list: async () => ({ data: [listing("1", OTHER), listing("2", ME)], meta: { page: 1, limit: 10, total: 2 } }) }, collections: { list: async () => ({ data: [], meta: { page: 1, limit: 10, total: 0 } }) } } } as unknown as MedialaneClient;
+  const client = { api: { orders: { list: async (q: { isFeatured?: boolean }) => ({ data: q.isFeatured ? [] : [listing("1", OTHER), listing("2", ME)], meta: { page: 1, limit: 10, total: 2 } }) }, collections: { list: async () => ({ data: [], meta: { page: 1, limit: 10, total: 0 } }) } } } as unknown as MedialaneClient;
   const app = { getClient: () => client, getSigner: () => { throw new Error("unused"); }, walletAddress: ME, onRequireWallet: () => {} } as MedialaneApp;
   const bought: string[] = [];
   const useMarketActions = () => ({ buy: (o: ApiOrder) => bought.push(o.orderHash), offer: () => {}, dialogs: <div>app dialogs</div> });
@@ -32,10 +32,23 @@ test("home lists new listings with Buy through the app and the collections strip
   await waitFor(() => expect(view.getAllByText("Piece 1").length).toBeGreaterThan(0));
   expect(view.getByText("New listings")).toBeTruthy();
   expect(view.getByText("Collections")).toBeTruthy();
+  expect(view.queryByText("Featured listings")).toBeNull();
   expect(view.getAllByText("See all").length).toBeGreaterThan(0);
   expect(view.getByText("app dialogs")).toBeTruthy();
   const buys = view.getAllByRole("button").filter((b) => (b.textContent ?? "").trim() === "Buy");
   expect(buys.length).toBe(1);
   fireEvent.click(buys[0]!);
   expect(bought).toEqual(["1"]);
+});
+
+test("home shows a featured listings strip asking for featured collections only", async () => {
+  const queries: Record<string, unknown>[] = [];
+  const client = { api: { orders: { list: async (q: { isFeatured?: boolean }) => { queries.push(q); return { data: q.isFeatured ? [listing("7", OTHER)] : [listing("1", OTHER)], meta: { page: 1, limit: 10, total: 1 } }; } }, collections: { list: async () => ({ data: [], meta: { page: 1, limit: 10, total: 0 } }) } } } as unknown as MedialaneClient;
+  const app = { getClient: () => client, getSigner: () => { throw new Error("unused"); }, walletAddress: ME, onRequireWallet: () => {} } as MedialaneApp;
+  const useMarketActions = () => ({ buy: () => {}, offer: () => {}, dialogs: <div /> });
+  globalThis.fetch = (async () => new Response(JSON.stringify({ data: { usd: { STRK: 0.5 } } }))) as unknown as typeof fetch;
+  const view = render(<SWRConfig value={{ provider: () => new Map() }}><MedialaneAppProvider value={app}><HomePage useMarketActions={useMarketActions} /></MedialaneAppProvider></SWRConfig>);
+  await waitFor(() => expect(view.getAllByText("Piece 7").length).toBeGreaterThan(0));
+  expect(view.getByText("Featured listings")).toBeTruthy();
+  expect(queries).toContainEqual(expect.objectContaining({ status: "ACTIVE", isFeatured: true }));
 });

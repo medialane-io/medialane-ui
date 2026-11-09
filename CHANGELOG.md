@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.327.0] — 2026-11-09
+
+### Added
+
+- Home page: a "Featured listings" strip after New listings, with listings from featured collections. It is hidden when there are none.
+
+### Changed
+
+- Requires `@medialane/sdk` 0.225.0 or newer.
+
 ## [0.326.0] — 2026-11-09
 
 ### Changed
