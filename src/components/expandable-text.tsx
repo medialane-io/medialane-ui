@@ -15,7 +15,7 @@ export function ExpandableText({ text, className }: { text: string; className?: 
 
   return (
     <div className={className}>
-      <p ref={ref} className={cn("text-sm text-muted-foreground leading-relaxed", !expanded && "line-clamp-3")}>
+      <p ref={ref} className={cn("text-base text-muted-foreground leading-relaxed", !expanded && "line-clamp-3")}>
         {text}
       </p>
       {overflows || expanded ? (
