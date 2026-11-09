@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.322.0] — 2026-11-09
+
+### Changed
+
+- Muted text has more contrast: brighter on the dark theme and darker on the light theme.
+
 ## [0.321.0] — 2026-11-09
 
 ### Fixed
