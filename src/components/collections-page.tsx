@@ -20,7 +20,7 @@ import { useMedialaneClient } from "../utils/use-medialane-client.js";
 import { SEARCH_MIN_LENGTH, useSearch } from "../utils/use-search.js";
 import { collectionHref, type ApiCollection } from "@medialane/sdk";
 
-const PAGE_SIZE = 24;
+const PAGE_SIZE = 25;
 
 const SORT_OPTIONS: { label: string; value: CollectionSort }[] = [
   { label: "Recent",      value: "recent"  },
@@ -140,7 +140,7 @@ export function CollectionsPage() {
 
   const { collections: featuredCollections, isLoading: featuredLoading } = useCollections(
     1,
-    8,
+    10,
     true,
     "recent",
     true,
@@ -203,9 +203,9 @@ export function CollectionsPage() {
       </div>
 
       {(featuredLoading || featuredCollections.length > 0) && (
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+        <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 sm:gap-5">
           {featuredLoading
-            ? Array.from({ length: 8 }).map((_, i) => <CollectionCardSkeleton key={i} />)
+            ? Array.from({ length: 10 }).map((_, i) => <CollectionCardSkeleton key={i} />)
             : featuredCollections.map((col) => (
                 <CollectionCard key={col.contractAddress} collection={col} />
               ))}
@@ -337,8 +337,8 @@ export function CollectionsPage() {
       </Dialog>
 
       {isInitialLoading ? (
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
-          {Array.from({ length: 8 }).map((_, i) => <CollectionCardSkeleton key={i} />)}
+        <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 sm:gap-5">
+          {Array.from({ length: 10 }).map((_, i) => <CollectionCardSkeleton key={i} />)}
         </div>
       ) : allCollections.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-24 gap-4 text-center">
@@ -357,7 +357,7 @@ export function CollectionsPage() {
         </div>
       ) : (
         <div className="space-y-6">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+          <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 sm:gap-5">
             {allCollections.map((col) => (
               <CollectionCard key={col.contractAddress} collection={col} />
             ))}

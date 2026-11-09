@@ -64,7 +64,7 @@ test("featured collections come first in the same grid without a heading", async
   const { view, queries } = setup();
   await waitFor(() => expect(view.getAllByText("Rio Drummers").length).toBe(2));
   expect(view.queryByText("Featured")).toBeNull();
-  expect(queries).toContainEqual(expect.objectContaining({ isFeatured: true, hideEmpty: true, limit: 8 }));
+  expect(queries).toContainEqual(expect.objectContaining({ isFeatured: true, hideEmpty: true, limit: 10 }));
 });
 
 test("the Drops filter asks for drop collections", async () => {
