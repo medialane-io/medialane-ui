@@ -6,9 +6,8 @@ import { Activity, Image as ImageIcon, LayoutGrid, ShoppingBag } from "lucide-re
 import type { ApiToken } from "@medialane/sdk";
 import { LoadMoreSentinel } from "./load-more-sentinel.js";
 import { Skeleton } from "./skeleton.js";
-import { TabsContent } from "./tabs.js";
-import { UnderlineTabs, type UnderlineTab } from "./underline-tabs.js";
-import { AddressDisplay } from "./address-display.js";
+import { PortfolioHeader } from "./portfolio-header.js";
+import { PortfolioChipFilter } from "./portfolio-chip-filter.js";
 import { HiddenContentBanner } from "./hidden-content-banner.js";
 import { TabEmptyState } from "./tab-empty-state.js";
 import { TokenCard, TokenCardSkeleton } from "./token-card.js";
@@ -33,6 +32,13 @@ import { useUserOrders } from "../utils/use-orders.js";
 import { useActivitiesByAddress } from "../utils/use-activities.js";
 
 type TabId = "assets" | "collections" | "listings" | "activity";
+
+const TABS: { key: TabId; label: string }[] = [
+  { key: "assets", label: "Assets" },
+  { key: "collections", label: "Collections" },
+  { key: "listings", label: "Listings" },
+  { key: "activity", label: "Activity" },
+];
 
 const GRID = "grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4";
 const isNft = (itemType: string) => itemType === "ERC721" || itemType === "ERC1155";
@@ -62,82 +68,85 @@ export function AccountPage({ address, useAssetActions, useMarketActions }: Acco
   const market = useMarketActions();
 
   const listings = orders.filter((o) => o.status === "ACTIVE" && isNft(o.offer.itemType));
-  const tabs: UnderlineTab[] = [
-    { id: "assets", label: "Assets", icon: ImageIcon, count: total ?? undefined },
-    { id: "collections", label: "Collections", icon: LayoutGrid, count: collectionsLoading ? undefined : collections.length },
-    { id: "listings", label: "Listings", icon: ShoppingBag, count: ordersLoading ? undefined : listings.length },
-    { id: "activity", label: "Activity", icon: Activity },
-  ];
+  const counts: Partial<Record<TabId, number | undefined>> = {
+    assets: total ?? undefined,
+    collections: collectionsLoading ? undefined : collections.length,
+    listings: ordersLoading ? undefined : listings.length,
+  };
+  const tabs = TABS.map(({ key, label }) => ({ key, label: counts[key] === undefined ? label : `${label} (${counts[key]})` }));
 
   return (
-    <div className="min-h-screen overflow-x-hidden pb-20">
+    <div className="space-y-6 px-4 pt-20 pb-8 sm:px-6 lg:px-8">
       {hidden === true ? <HiddenContentBanner /> : null}
 
-      <div className="flex items-center justify-between gap-3 px-6 pt-20 pb-6">
-        <AddressDisplay address={address} chars={6} className="min-w-0 text-2xl font-black tracking-tight tabular-nums sm:text-3xl" />
-        <span className="shrink-0 rounded-full bg-muted px-2.5 py-1 text-xs font-medium text-muted-foreground">Starknet</span>
-      </div>
+      <PortfolioHeader
+        address={address}
+        label="Account"
+        trailing={
+          <div className="ml-auto flex shrink-0 items-center gap-2">
+            <span className="rounded-full bg-muted px-2.5 py-1 text-xs font-medium text-muted-foreground">Starknet</span>
+            <MoreMenu explorerHref={`${EXPLORER_URL}/contract/${address}`} shareTitle={shortenAddress(address)} onReport={() => setReportOpen(true)} />
+          </div>
+        }
+      />
 
-      <UnderlineTabs
-        tabs={tabs}
-        value={activeTab}
-        onValueChange={(id) => setActiveTab(id as TabId)}
-        trailing={<MoreMenu explorerHref={`${EXPLORER_URL}/contract/${address}`} shareTitle={shortenAddress(address)} onReport={() => setReportOpen(true)} />}
-      >
-        <TabsContent value="assets" className="mt-6 px-6">
-          {tokensLoading ? (
-            <div className={GRID}>{Array.from({ length: 8 }).map((_, i) => <TokenCardSkeleton key={i} />)}</div>
-          ) : tokens.length === 0 ? (
-            <TabEmptyState icon={ImageIcon} heading="No assets yet" body="Works this account owns appear here." />
-          ) : (
-            <>
-              <div className={GRID}>
-                {tokens.map((t: ApiToken) => {
-                  const listing = t.activeOrders?.find((o) => isNft(o.offer.itemType));
-                  return (
-                    <TokenCard
-                      key={`${t.contractAddress}-${t.tokenId}`}
-                      token={t}
-                      isOwner={isOwner}
-                      usdValue={orderUsd(listing?.price, prices)}
-                      onList={isOwner ? actions.list : undefined}
-                      onTransfer={isOwner ? actions.transfer : undefined}
-                      onCancel={isOwner ? actions.cancel : undefined}
-                      onBuy={!isOwner && listing ? () => market.buy(listing) : undefined}
-                      onOffer={isOwner ? undefined : market.offer}
-                      onReport={setReportToken}
-                    />
-                  );
-                })}
-              </div>
-              <LoadMoreSentinel hasMore={hasMore} isLoading={isLoadingMore} onLoadMore={loadMore} />
-            </>
-          )}
-        </TabsContent>
+      <PortfolioChipFilter options={tabs} value={activeTab} onChange={(key) => setActiveTab(key as TabId)} showAll={false} />
 
-        <TabsContent value="collections" className="mt-6 px-6">
-          {collectionsLoading ? (
-            <div className="grid grid-cols-2 gap-4 lg:grid-cols-3">{Array.from({ length: 6 }).map((_, i) => <CollectionCardSkeleton key={i} />)}</div>
-          ) : collections.length === 0 ? (
-            <TabEmptyState icon={LayoutGrid} heading="No collections yet" body="Collections this account owns appear here." />
-          ) : (
-            <div className="grid grid-cols-2 gap-4 lg:grid-cols-3">{collections.map((c) => <CollectionCard key={c.contractAddress} collection={c} />)}</div>
-          )}
-        </TabsContent>
-
-        <TabsContent value="listings" className="mt-6 px-6">
-          {ordersLoading ? (
-            <div className={GRID}>{Array.from({ length: 4 }).map((_, i) => <ListingCardSkeleton key={i} />)}</div>
-          ) : listings.length === 0 ? (
-            <TabEmptyState icon={ShoppingBag} heading="No active listings" body="Works this account lists for sale appear here." />
-          ) : (
+      {activeTab === "assets" && (
+        tokensLoading ? (
+          <div className={GRID}>{Array.from({ length: 8 }).map((_, i) => <TokenCardSkeleton key={i} />)}</div>
+        ) : tokens.length === 0 ? (
+          <TabEmptyState icon={ImageIcon} heading="No assets yet" body="Works this account owns appear here." />
+        ) : (
+          <>
             <div className={GRID}>
-              {listings.map((o) => <ListingCard key={o.orderHash} order={o} onBuy={isOwner ? undefined : market.buy} usdValue={orderUsd(o.price, prices)} overflowMenu={<ListingCardMenu order={o} />} />)}
+              {tokens.map((t: ApiToken) => {
+                const listing = t.activeOrders?.find((o) => isNft(o.offer.itemType));
+                return (
+                  <TokenCard
+                    key={`${t.contractAddress}-${t.tokenId}`}
+                    token={t}
+                    isOwner={isOwner}
+                    usdValue={orderUsd(listing?.price, prices)}
+                    onList={isOwner ? actions.list : undefined}
+                    onTransfer={isOwner ? actions.transfer : undefined}
+                    onCancel={isOwner ? actions.cancel : undefined}
+                    onBuy={!isOwner && listing ? () => market.buy(listing) : undefined}
+                    onOffer={isOwner ? undefined : market.offer}
+                    onReport={setReportToken}
+                  />
+                );
+              })}
             </div>
-          )}
-        </TabsContent>
+            <LoadMoreSentinel hasMore={hasMore} isLoading={isLoadingMore} onLoadMore={loadMore} />
+          </>
+        )
+      )}
 
-        <TabsContent value="activity" className="mt-6 max-w-2xl px-6">
+      {activeTab === "collections" && (
+        collectionsLoading ? (
+          <div className="grid grid-cols-2 gap-4 lg:grid-cols-3">{Array.from({ length: 6 }).map((_, i) => <CollectionCardSkeleton key={i} />)}</div>
+        ) : collections.length === 0 ? (
+          <TabEmptyState icon={LayoutGrid} heading="No collections yet" body="Collections this account owns appear here." />
+        ) : (
+          <div className="grid grid-cols-2 gap-4 lg:grid-cols-3">{collections.map((c) => <CollectionCard key={c.contractAddress} collection={c} />)}</div>
+        )
+      )}
+
+      {activeTab === "listings" && (
+        ordersLoading ? (
+          <div className={GRID}>{Array.from({ length: 4 }).map((_, i) => <ListingCardSkeleton key={i} />)}</div>
+        ) : listings.length === 0 ? (
+          <TabEmptyState icon={ShoppingBag} heading="No active listings" body="Works this account lists for sale appear here." />
+        ) : (
+          <div className={GRID}>
+            {listings.map((o) => <ListingCard key={o.orderHash} order={o} onBuy={isOwner ? undefined : market.buy} usdValue={orderUsd(o.price, prices)} overflowMenu={<ListingCardMenu order={o} />} />)}
+          </div>
+        )
+      )}
+
+      {activeTab === "activity" ? (
+        <div className="max-w-2xl">
           {activitiesLoading ? (
             <div className="space-y-5">{Array.from({ length: 6 }).map((_, i) => <Skeleton key={i} className="h-10 w-full rounded-xl" />)}</div>
           ) : activities.length === 0 ? (
@@ -145,8 +154,8 @@ export function AccountPage({ address, useAssetActions, useMarketActions }: Acco
           ) : (
             <div>{activities.map((a, i) => <ActivityTimelineRow key={i} event={a} isLast={i === activities.length - 1} />)}</div>
           )}
-        </TabsContent>
-      </UnderlineTabs>
+        </div>
+      ) : null}
 
       {actions.dialogs}
       {market.dialogs}

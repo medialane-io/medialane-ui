@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.313.0] — 2026-11-09
+
+### Changed
+
+- The account page uses the portfolio's layout: the same page width and spacing, the same header, and the same pill tabs with counts.
+
+### Added
+
+- `PortfolioHeader` accepts `label` and `trailing`.
+
 ## [0.312.0] — 2026-11-08
 
 ### Changed
