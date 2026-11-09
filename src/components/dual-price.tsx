@@ -162,9 +162,9 @@ export function PriceChipContent({
   return (
     <>
       {stripDollarSign(usdValue)}
-      <span className={`font-semibold ${t.text}`}>USD</span>
+      <span className={t.text}>USD</span>
       <span className={t.dot}>·</span>
-      <span className={`inline-flex items-center gap-1 font-semibold ${t.text}`}>
+      <span className={`inline-flex items-center gap-1 ${t.text}`}>
         {currency && <CurrencyIcon symbol={currency} size={12} />}
         {stable ? currency : cryptoDisplay}
       </span>

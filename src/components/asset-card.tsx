@@ -118,7 +118,7 @@ export function AssetCard({
         {soulbound && <SoulboundBadge />}
 
         {hasPrice && !indexing && (
-          <div className="flex items-center gap-1.5 text-sm font-bold tabular-nums pt-0.5">
+          <div className="flex items-center gap-1.5 text-sm tabular-nums pt-0.5">
             <PriceChipContent
               amountFormatted={price!.formatted}
               currency={price!.currency}

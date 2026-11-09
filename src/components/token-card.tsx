@@ -104,19 +104,6 @@ export function TokenCard({
             }
           />
 
-          {listingOrder && (
-            <div className="absolute bottom-2 right-2 z-10">
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-sm font-bold bg-background/90 backdrop-blur-sm border border-border/40 shadow-sm tabular-nums">
-                <PriceChipContent
-                  amountFormatted={listingOrder.price.formatted}
-                  currency={listingOrder.price.currency}
-                  usdValue={usdValue}
-                  tone="card"
-                />
-              </span>
-            </div>
-          )}
-
           {(token.metadataStatus === "PENDING" || token.metadataStatus === "FETCHING") && (
             <div className="absolute bottom-0 inset-x-0 flex items-center justify-center gap-1.5 bg-black/50 backdrop-blur-sm py-1.5">
               <Loader2 className="h-3 w-3 animate-spin text-white/70" />
@@ -125,8 +112,18 @@ export function TokenCard({
           )}
         </div>
 
-        <div className="px-3 pt-2.5 pb-4 flex-1">
+        <div className="px-3 pt-2.5 pb-4 flex-1 space-y-1">
           <p className="text-base font-bold line-clamp-2 leading-snug">{name}</p>
+          {listingOrder && (
+            <p className="flex items-center justify-end gap-1.5 text-sm tabular-nums">
+              <PriceChipContent
+                amountFormatted={listingOrder.price.formatted}
+                currency={listingOrder.price.currency}
+                usdValue={usdValue}
+                tone="card"
+              />
+            </p>
+          )}
         </div>
       </Link>
 
