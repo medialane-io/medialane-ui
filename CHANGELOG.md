@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.323.0] — 2026-11-09
+
+### Changed
+
+- "Browse by Type" and "Featured Collections" use the same section heading as the other sections.
+- The Featured section on the discover page has its own icon, no longer shared with Collections.
+- Collections page: sort moved into the filters panel, and the filters button shows only its icon.
+- The collection card has no border and no longer says "Floor" next to the price.
+
 ## [0.322.0] — 2026-11-09
 
 ### Changed

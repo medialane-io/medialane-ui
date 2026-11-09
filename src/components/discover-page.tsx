@@ -1,6 +1,7 @@
 "use client";
 
 import { assetHref, collectionHref } from "@medialane/sdk";
+import { Sparkles } from "lucide-react";
 import { PageContainer } from "./page-container.js";
 import { DiscoverHero } from "./discover-hero.js";
 import { DiscoverCollectionsStrip } from "./discover-collections-strip.js";
@@ -47,6 +48,7 @@ export function DiscoverPage({ useMarketActions, heroBadge, heroHeadline }: Disc
               getHref={(c) => collectionHref("STARKNET", c.contractAddress)}
               allCollectionsHref="/collections"
               title="Featured"
+              icon={<Sparkles />}
             />
           )}
           <DiscoverCollectionsStrip

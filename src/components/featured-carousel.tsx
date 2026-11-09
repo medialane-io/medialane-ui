@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight, ArrowRight, Sparkles } from "lucide-react";
 import { FadeIn, EASE_OUT } from "./motion-primitives.js";
+import { SectionHeading } from "./section-heading.js";
 import { formatDisplayPrice } from "../utils/format.js";
 import type { ApiCollection } from "@medialane/sdk";
 import { useImageUrl } from "../utils/use-image-url.js";
@@ -68,10 +69,7 @@ export function FeaturedCarouselSkeleton() {
   return (
     <FadeIn>
       <section className="space-y-4">
-        <div className="flex items-center gap-2 mt-0.5">
-          <Sparkles className="h-4 w-4 text-brand-purple" />
-          <h2 className="text-xl font-bold">Featured Collections</h2>
-        </div>
+        <SectionHeading icon={<Sparkles />} title="Featured Collections" href="/collections" linkLabel="View all" />
         <div className="-mx-4 sm:-mx-6 lg:-mx-8 aspect-[16/7] sm:aspect-[21/9] bg-muted animate-pulse" />
       </section>
     </FadeIn>
@@ -105,18 +103,7 @@ export function FeaturedCarousel({
   return (
     <FadeIn>
       <section className="space-y-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2 mt-0.5">
-            <Sparkles className="h-4 w-4 text-brand-purple" />
-            <h2 className="text-xl font-bold">Featured Collections</h2>
-          </div>
-          <a
-            href={allCollectionsHref}
-            className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground px-3 py-1.5 rounded-md hover:bg-accent transition-colors"
-          >
-            View all <ArrowRight className="h-3.5 w-3.5" />
-          </a>
-        </div>
+        <SectionHeading icon={<Sparkles />} title="Featured Collections" href={allCollectionsHref} linkLabel="View all" />
 
         <div
           className="-mx-4 sm:-mx-6 lg:-mx-8 relative overflow-hidden aspect-[16/7] sm:aspect-[21/9] bg-muted"

@@ -38,7 +38,7 @@ export function CollectionCard({ collection, href, settingsHref, className }: Co
   const floor = parseFloorPrice(collection.floorPrice);
 
   return (
-    <MotionCard className={cn("card-base group relative", className)}>
+    <MotionCard className={cn("group relative overflow-hidden rounded-[calc(var(--radius)*1.25)]", className)}>
       {settingsHref && (
         <Link
           href={settingsHref}
@@ -88,7 +88,6 @@ export function CollectionCard({ collection, href, settingsHref, className }: Co
                 )}
                 {floor && (
                   <span className="inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-2xs font-bold text-white bg-black/30 backdrop-blur-md">
-                    Floor
                     <CurrencyIcon symbol={floor.symbol} size={10} />
                     {floor.amount}
                   </span>
@@ -104,7 +103,7 @@ export function CollectionCard({ collection, href, settingsHref, className }: Co
 
 export function CollectionCardSkeleton() {
   return (
-    <div className="card-base overflow-hidden">
+    <div className="overflow-hidden rounded-[calc(var(--radius)*1.25)]">
       <div className="relative aspect-square w-full overflow-hidden bg-muted">
         <div className="absolute inset-0 animate-pulse bg-muted" />
         <div className="absolute bottom-3 left-3 right-3 space-y-1.5">

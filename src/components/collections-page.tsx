@@ -2,10 +2,9 @@
 
 import { useState, useEffect, useRef } from "react";
 import useSWR from "swr";
-import { Layers, Eye, SlidersHorizontal, Award, Package, ArrowDownUp, Search, X } from "lucide-react";
+import { Layers, Eye, SlidersHorizontal, Award, Package, Search, X } from "lucide-react";
 import { Button } from "./button.js";
 import { Dialog, DialogContent, DialogTitle } from "./dialog.js";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./select.js";
 import { HelpIcon } from "./help-icon.js";
 import { Input } from "./input.js";
 import { ResultThumbnail } from "./result-thumbnail.js";
@@ -170,10 +169,11 @@ export function CollectionsPage() {
   const hasMore = meta?.total != null ? allCollections.length < meta.total : false;
   const isInitialLoading = isLoading && allCollections.length === 0;
 
-  const activeFilters = [!hideEmpty].filter(Boolean).length;
+  const activeFilters = [!hideEmpty, sort !== "recent"].filter(Boolean).length;
 
   const resetAll = () => {
     setHideEmpty(true);
+    setSort("recent");
   };
 
   const handleServiceChange = (val: string | undefined) => {
@@ -216,19 +216,9 @@ export function CollectionsPage() {
         <div className="flex flex-wrap items-center gap-2">
           <CollectionSearch />
           <div className="flex items-center gap-2 sm:ml-auto">
-            <Select value={sort} onValueChange={(v) => setSort(v as CollectionSort)}>
-              <SelectTrigger className="h-9 w-auto gap-1.5 text-xs" aria-label="Sort collections">
-                <ArrowDownUp className="h-3.5 w-3.5 text-muted-foreground" />
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {SORT_OPTIONS.map((opt) => (
-                  <SelectItem key={opt.value} value={opt.value} className="text-xs">{opt.label}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
             <button
               onClick={() => setFiltersOpen(true)}
+              aria-label="Filters"
               className={cn(
                 "relative flex items-center gap-1.5 h-9 px-3 rounded-lg border text-xs font-medium transition-colors",
                 activeFilters > 0 || service !== undefined
@@ -237,7 +227,6 @@ export function CollectionsPage() {
               )}
             >
               <SlidersHorizontal className="h-3.5 w-3.5" />
-              Filters
               {(activeFilters > 0 || service !== undefined) && (
                 <span className="flex h-4 w-4 items-center justify-center rounded-full bg-primary text-2xs font-bold text-primary-foreground">
                   {activeFilters + (service !== undefined ? 1 : 0)}
@@ -281,6 +270,26 @@ export function CollectionsPage() {
           </div>
 
           <div className="flex-1 overflow-y-auto px-5 py-4 space-y-5">
+
+            <div className="space-y-2">
+              <p className="text-2xs font-semibold text-muted-foreground">Sort by</p>
+              <div className="flex flex-wrap gap-1.5">
+                {SORT_OPTIONS.map(({ label, value }) => (
+                  <button
+                    key={value}
+                    onClick={() => setSort(value)}
+                    className={cn(
+                      "flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full border transition-colors whitespace-nowrap",
+                      sort === value
+                        ? "border-primary bg-primary/10 text-primary font-medium"
+                        : "border-border text-muted-foreground hover:border-primary/50"
+                    )}
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
+            </div>
 
             <div className="space-y-2">
               <p className="text-2xs font-semibold text-muted-foreground">Source</p>

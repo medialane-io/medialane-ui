@@ -1,22 +1,15 @@
 "use client";
 
 import Link from "./link.js";
-import { ArrowRight } from "lucide-react";
+import { LayoutGrid } from "lucide-react";
+import { SectionHeading } from "./section-heading.js";
 import { IP_TYPE_CONFIG } from "./ip-type-badge.js";
 import { cn } from "../utils/cn.js";
 
 export function IpTypeNav() {
   return (
     <section className="space-y-4">
-      <div className="flex items-center justify-between">
-        <h2 className="text-xl sm:text-2xl font-black">Browse by Type</h2>
-        <Link
-          href="/nft"
-          className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors"
-        >
-          View all <ArrowRight className="h-3.5 w-3.5" />
-        </Link>
-      </div>
+      <SectionHeading icon={<LayoutGrid />} title="Browse by Type" href="/nft" linkLabel="View all" />
 
       <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3">
         {IP_TYPE_CONFIG.map(({ slug, label, icon: Icon, colorClass, bgClass }) => (
