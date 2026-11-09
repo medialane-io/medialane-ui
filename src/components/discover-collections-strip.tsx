@@ -14,6 +14,7 @@ export interface DiscoverCollectionsStripProps {
 
   sectionLabel?: string;
   title?: string;
+  icon?: React.ReactNode;
 }
 
 export function DiscoverCollectionsStrip({
@@ -21,10 +22,11 @@ export function DiscoverCollectionsStrip({
   isLoading,
   allCollectionsHref = "/collections",
   title = "Collections",
+  icon = <Layers />,
 }: DiscoverCollectionsStripProps) {
   return (
     <ScrollSection
-      icon={<Layers className="h-4 w-4" />}
+      icon={icon}
       title={title}
       href={allCollectionsHref}
       linkLabel="View all"

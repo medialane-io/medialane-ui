@@ -48,10 +48,14 @@ test("shows the total collections and how many are multi editions", async () => 
   expect(queries).toContainEqual(expect.objectContaining({ standard: "ERC1155", hideEmpty: true, limit: 1 }));
 });
 
-test("sort is a visible control, not inside the filters dialog", async () => {
-  const { view } = setup();
+test("sort lives inside the filters dialog and the button is an icon", async () => {
+  const { view, queries } = setup();
   await waitFor(() => expect(view.getAllByText("Rio Drummers").length).toBeGreaterThan(0));
-  expect(view.getByLabelText("Sort collections")).toBeTruthy();
+  expect(view.queryByLabelText("Sort collections")).toBeNull();
+  expect(view.queryByText("Filters")).toBeNull();
+  fireEvent.click(view.getByLabelText("Filters"));
+  fireEvent.click(await view.findByText("Top volume"));
+  await waitFor(() => expect(queries.some((q) => q.sort === "volume")).toBe(true));
 });
 
 test("searching shows matching collections", async () => {
@@ -70,7 +74,7 @@ test("featured collections come first in the same grid without a heading", async
 test("the Drops filter asks for drop collections", async () => {
   const { view, queries } = setup();
   await waitFor(() => expect(view.getAllByText("Rio Drummers").length).toBeGreaterThan(0));
-  fireEvent.click(view.getByText("Filters"));
+  fireEvent.click(view.getByLabelText("Filters"));
   fireEvent.click(await view.findByText("Drops"));
   await waitFor(() => expect(queries.some((q) => q.service === "drop-collection")).toBe(true));
   expect(queries.find((q) => q.service === "drop-collection")).toMatchObject({ standard: "ERC721,ERC1155" });
