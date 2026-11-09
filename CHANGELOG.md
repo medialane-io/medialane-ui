@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.318.0] — 2026-11-09
+
+### Changed
+
+- The collections page shows 5 collections per row on wide screens, 10 featured collections, and loads 25 at a time so rows stay full.
+
 ## [0.317.0] — 2026-11-09
 
 ### Changed
