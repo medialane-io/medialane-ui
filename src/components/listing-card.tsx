@@ -5,9 +5,8 @@ import Link from "./link.js";
 import { ShoppingCart, Check, Zap, ArrowUpRight } from "lucide-react";
 import { MotionCard } from "./motion-primitives.js";
 import { AnimatedTokenMedia } from "./animated-token-media.js";
-import { CurrencyIcon, hasCurrencyIcon } from "./currency-icon.js";
+import { PriceDisplay } from "./price-display.js";
 import { cn } from "../utils/cn.js";
-import { formatDisplayPrice, isStableCurrency } from "../utils/format.js";
 import { timeAgo } from "../utils/time.js";
 import { isLivingRenderCollection } from "../data/living-render-collections.js";
 import { assetHref as buildAssetHref, type ApiOrder, type Chain } from "@medialane/sdk";
@@ -22,22 +21,7 @@ function CardPrice({
   currency: string | null | undefined;
   usdValue?: string | null;
 }) {
-  if (!amountFormatted) return null;
-  const amount = formatDisplayPrice(amountFormatted);
-  const primary = usdValue ?? amount;
-  const showAmount = !!usdValue && !isStableCurrency(currency);
-  const marker = hasCurrencyIcon(currency) ? <CurrencyIcon symbol={currency} size={14} /> : currency;
-  return (
-    <p className="flex items-center gap-1.5 tabular-nums">
-      <span className="text-base font-bold tracking-tight">{primary}</span>
-      {marker || showAmount ? (
-        <span className="inline-flex items-center gap-1 text-xs text-muted-foreground">
-          {marker}
-          {showAmount ? amount : null}
-        </span>
-      ) : null}
-    </p>
-  );
+  return <PriceDisplay amountFormatted={amountFormatted} currency={currency} usdValue={usdValue} scale="card" />;
 }
 
 export interface ListingCardProps {

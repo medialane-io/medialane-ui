@@ -72,7 +72,7 @@ test("a listed asset's price is shown above the Buy now button, with its expiry 
   expect(html).not.toContain("Buy for");
   expect(html).not.toContain("Expires in");
   expect(html).toContain("119");
-  expect(html).toContain("$6.66");
+  expect(html).toContain("≈ 6.66 USD");
   expect(html.indexOf("119")).toBeLessThan(html.indexOf("Buy now"));
   expect(html).toContain("Make offer");
 });
@@ -82,7 +82,7 @@ test("the owner's listed price sits in the Cancel listing button", () => {
   expect(html).not.toContain("Listed for");
   const button = html.match(/<button[^>]*>(?:(?!<\/button>).)*Cancel listing(?:(?!<\/button>).)*<\/button>/s)?.[0] ?? "";
   expect(button).toContain("119");
-  expect(button).toContain("$6.66");
+  expect(button).toContain("≈ 6.66 USD");
   expect(html).not.toContain("Buy now");
   expect(html).not.toContain("Last sale");
   expect(html).not.toContain("Floor");
@@ -93,7 +93,7 @@ test("signed out shows the price above the sign-in buttons", () => {
   expect(html).not.toContain("Buy for");
   expect(html).not.toContain("Expires in");
   expect(html).toContain("119");
-  expect(html).toContain("$6.66");
+  expect(html).toContain("≈ 6.66 USD");
   expect(html.indexOf("119")).toBeLessThan(html.indexOf("Sign in"));
   expect(html).not.toContain("Buy now");
 });

@@ -5,10 +5,9 @@ import {
   ArrowRightLeft, CheckCircle, Clock, GitBranch, HandCoins, Handshake, Loader2,
   Tag, X,
 } from "lucide-react";
-import { CurrencyIcon, CurrencyAmount } from "./currency-icon.js";
+import { PriceDisplay } from "./price-display.js";
 import { AddressDisplay } from "./address-display.js";
 import { ActionButton } from "./action-button.js";
-import { formatDisplayPrice } from "../utils/format.js";
 import { isExpired, timeUntil } from "../utils/time.js";
 import { isSameAddress } from "../utils/same-address.js";
 import { cn } from "../utils/cn.js";
@@ -64,12 +63,13 @@ function ActionRow({ children }: { children: ReactNode }) {
 
 function PriceBlock({ order, usdValue }: { order: ApiOrderLike; usdValue?: string | null }) {
   return (
-    <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
-      <CurrencyAmount amount={formatDisplayPrice(order.price.formatted)} symbol={order.price.currency ?? ""} iconSize={26} amountClassName="text-3xl font-bold text-foreground tabular-nums" />
-      <span className="text-lg font-semibold text-foreground">{order.price.currency}</span>
-      {usdValue ? <span className="text-sm tabular-nums text-muted-foreground">{usdValue}</span> : null}
-      <HelpIcon content={`Expires ${timeUntil(order.endTime)}`} />
-    </div>
+    <PriceDisplay
+      amountFormatted={order.price.formatted}
+      currency={order.price.currency}
+      usdValue={usdValue}
+      scale="hero"
+      trailing={<HelpIcon content={`Expires ${timeUntil(order.endTime)}`} />}
+    />
   );
 }
 
@@ -144,8 +144,7 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
     isOwner ? (
       <ActionButton action="buy" onClick={() => onOpenPurchase(liveCheapest)}>
         <span>Buy</span>
-        <CurrencyAmount amount={formatDisplayPrice(liveCheapest.price.formatted)} symbol={liveCheapest.price.currency ?? ""} iconSize={14} amountClassName="tabular-nums" />
-        {usdValue ? <span className="font-normal text-muted-foreground tabular-nums">· {usdValue}</span> : null}
+        <PriceDisplay amountFormatted={liveCheapest.price.formatted} currency={liveCheapest.price.currency} usdValue={usdValue} scale="card" />
       </ActionButton>
     ) : (
       <ActionButton action="buy" onClick={() => onOpenPurchase(liveCheapest)}>
@@ -172,8 +171,12 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
                   helpContent={`Expires ${timeUntil(liveMyListing.endTime)}`}
                 >
                   <span>Cancel listing</span>
-                  <CurrencyAmount amount={formatDisplayPrice(liveMyListing.price.formatted)} symbol={liveMyListing.price.currency ?? ""} iconSize={14} amountClassName="tabular-nums" />
-                  {liveMyListing.orderHash === liveCheapest?.orderHash && usdValue ? <span className="font-normal text-muted-foreground tabular-nums">· {usdValue}</span> : null}
+                  <PriceDisplay
+                    amountFormatted={liveMyListing.price.formatted}
+                    currency={liveMyListing.price.currency}
+                    usdValue={liveMyListing.orderHash === liveCheapest?.orderHash ? usdValue : null}
+                    scale="card"
+                  />
                 </ActionButton>
               ) : null}
               {!liveMyListing || (isERC1155 && canListMoreEditions !== false) ? (
@@ -238,10 +241,7 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
               <div className="min-w-0">
                 <p className="text-xs font-semibold text-amber-500">Your active offer</p>
                 <p className="text-xs text-muted-foreground flex items-center gap-1.5 mt-0.5">
-                  <span className="font-bold text-foreground inline-flex items-center gap-1">
-                    {formatDisplayPrice(myBid.price.formatted)}
-                    <CurrencyIcon symbol={myBid.price.currency ?? ""} size={12} />
-                  </span>
+                  <PriceDisplay amountFormatted={myBid.price.formatted} currency={myBid.price.currency} scale="row" />
                   <span>·</span>
                   <Clock className="h-3 w-3" />
                   {timeUntil(myBid.endTime)}
@@ -268,10 +268,7 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
                 <div key={bid.orderHash} className="flex items-center justify-between gap-3 py-2.5">
                   <div className="min-w-0">
                     <p className="text-sm font-bold">
-                      <span className="inline-flex items-center gap-1.5">
-                        {formatDisplayPrice(bid.price.formatted)}
-                        <CurrencyIcon symbol={bid.price.currency ?? ""} size={14} />
-                      </span>
+                      <PriceDisplay amountFormatted={bid.price.formatted} currency={bid.price.currency} scale="row" />
                     </p>
                     <div className="flex items-center gap-2 mt-0.5">
                       <AddressDisplay address={bid.offerer} chars={4} showCopy={false} className="text-xs text-muted-foreground" />

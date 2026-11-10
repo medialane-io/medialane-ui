@@ -3,7 +3,7 @@
 import Link from "./link.js";
 import { Loader2 } from "lucide-react";
 import { cn } from "../utils/cn.js";
-import { PriceChipContent } from "./dual-price.js";
+import { PriceDisplay } from "./price-display.js";
 import { IpTypeBadge } from "./ip-type-badge.js";
 import { SoulboundBadge } from "./soulbound-card.js";
 import { AnimatedTokenMedia } from "./animated-token-media.js";
@@ -118,12 +118,12 @@ export function AssetCard({
         {soulbound && <SoulboundBadge />}
 
         {hasPrice && !indexing && (
-          <div className="flex items-center gap-1.5 text-sm tabular-nums pt-0.5">
-            <PriceChipContent
+          <div className="pt-0.5">
+            <PriceDisplay
               amountFormatted={price!.formatted}
               currency={price!.currency}
               usdValue={price!.usdValue}
-              tone="solid"
+              scale="card"
             />
           </div>
         )}
