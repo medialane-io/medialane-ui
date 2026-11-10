@@ -18,7 +18,7 @@ function isNotIndexedYet(error: unknown): boolean {
   );
 }
 
-export function useToken( contract: string | null, tokenId: string | null) {
+export function useToken( contract: string | null, tokenId: string | null, initial?: ApiToken | null) {
   const client = useMedialaneClient();
   const [startedAt] = useState(() => Date.now());
 
@@ -28,8 +28,9 @@ export function useToken( contract: string | null, tokenId: string | null) {
     {
       revalidateOnFocus: false,
       shouldRetryOnError: false,
+      fallbackData: initial ?? undefined,
       refreshInterval: (latest) =>
-        latest || Date.now() - startedAt > INDEXING_WINDOW_MS ? 0 : INDEXING_POLL_MS,
+        latest || initial || Date.now() - startedAt > INDEXING_WINDOW_MS ? 0 : INDEXING_POLL_MS,
     }
   );
 
@@ -38,7 +39,7 @@ export function useToken( contract: string | null, tokenId: string | null) {
 
   return {
     token,
-    isLoading,
+    isLoading: isLoading && !token,
     isIndexing: !token && isNotIndexedYet(error) && withinWindow,
     error: isNotIndexedYet(error) ? undefined : error,
     mutate,

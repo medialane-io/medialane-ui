@@ -19,6 +19,8 @@ export function PageBackdrop({ image }: { image: string | null }) {
         src={image}
         alt=""
         aria-hidden
+        loading="lazy"
+        decoding="async"
         className="absolute inset-0 w-full h-full object-cover opacity-50 dark:opacity-40 scale-110"
         style={{ filter: "blur(80px) saturate(1.8)" }}
       />

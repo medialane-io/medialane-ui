@@ -321,3 +321,39 @@ for (const [layout, ipType] of [["standard", undefined], ["publication", "Public
     expect(container.querySelector('[aria-label="View full image"]') === null).toBe(true);
   });
 }
+
+test("with the server's token and collection the page shows its content at once and the main image is high priority", async () => {
+  const t = token({ metadata: { name: "Stones", description: "We could be heroes", image: "https://img.test/stones.png", attributes: [] } as never });
+  const pending = new Promise<never>(() => {});
+  const app = { getClient: () => ({ api: new Proxy({ tokens: { get: () => pending }, collections: { get: () => pending } } as Record<string, unknown>, { get: (target, key: string) => target[key] ?? (() => pending) }) }), getSigner: () => { throw new Error("unused"); }, walletAddress: null, onRequireWallet: () => {} } as unknown as MedialaneApp;
+  const view = render(
+    <SWRConfig value={{ provider: () => new Map(), dedupingInterval: 0 }}>
+      <MedialaneAppProvider value={app}>
+        <AssetPage contract="0xc0" tokenId="1" initialToken={t} initialCollection={collection()} useMarketActions={useMarketActions} />
+      </MedialaneAppProvider>
+    </SWRConfig>,
+  );
+  expect(view.getByText("Stones")).toBeTruthy();
+  expect(view.getByText("We could be heroes")).toBeTruthy();
+  const main = view.container.querySelector('img[alt="Stones"]');
+  expect(main?.getAttribute("fetchpriority")).toBe("high");
+  expect(view.container.querySelectorAll('img[loading="lazy"][aria-hidden]').length).toBe(0);
+});
+
+test("the server render already contains the asset's name and main image with a preload hint", async () => {
+  const { renderToString } = await import("react-dom/server");
+  const t = token({ metadata: { name: "Stones", description: "We could be heroes", image: "https://img.test/stones.png", attributes: [] } as never });
+  const app = { getClient: () => ({ api: new Proxy({} as Record<string, unknown>, { get: () => async () => ({ data: [], meta: { total: 0 } }) }) }), getSigner: () => { throw new Error("unused"); }, walletAddress: null, onRequireWallet: () => {} } as unknown as MedialaneApp;
+  const html = renderToString(
+    <SWRConfig value={{ provider: () => new Map() }}>
+      <MedialaneAppProvider value={app}>
+        <AssetPage contract="0xc0" tokenId="1" initialToken={t} initialCollection={collection()} useMarketActions={useMarketActions} />
+      </MedialaneAppProvider>
+    </SWRConfig>,
+  );
+  expect(html).toContain("<h1");
+  expect(html).toContain("Stones");
+  expect(html).toContain("stones.png");
+  expect(html).toContain('rel="preload" as="image"');
+  expect(html).toContain('fetchPriority="high"');
+});
