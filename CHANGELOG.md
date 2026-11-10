@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.332.0] — 2026-11-10
+
+### Changed
+
+- Discover page: Activities and Rewards are matching cards with the same header, row height and five rows each, so both end on the same line. The Rewards banner text now sits under its title.
+- Discover page: the features carousel sits at the bottom of the page under the title "Medialane features".
+
 ## [0.331.0] — 2026-11-10
 
 ### Changed

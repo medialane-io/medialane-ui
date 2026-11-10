@@ -6,7 +6,7 @@ export interface ScrollSectionProps {
   icon: React.ReactNode;
   title: string;
   subtitle?: React.ReactNode;
-  href: string;
+  href?: string;
   linkLabel?: string;
   children: React.ReactNode;
 }

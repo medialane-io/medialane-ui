@@ -68,8 +68,8 @@ export function DiscoverPage({ useMarketActions, heroBadge, heroHeadline }: Disc
         isOwnOrder={(o) => !!walletAddress && !!o.offerer && isSameAddress(o.offerer, walletAddress)}
       />
       <IpTypeNav />
-      <DiscoverFeatures />
       <DiscoverCommunitySection />
+      <DiscoverFeatures />
       {market.dialogs}
     </PageContainer>
   );

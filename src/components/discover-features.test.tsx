@@ -4,8 +4,9 @@ import { DiscoverFeatures } from "./discover-features.js";
 
 afterEach(() => cleanup());
 
-test("shows the thirteen features as a titled carousel of cards", () => {
+test("shows the thirteen features as a carousel of cards under the section title", () => {
   const view = render(<DiscoverFeatures />);
+  expect(view.getByRole("heading", { name: "Medialane features" })).toBeTruthy();
   const titles = Array.from(view.container.querySelectorAll("h3")).map((h) => h.textContent);
   expect(titles).toEqual([
     "99% to creators and owners",
@@ -22,6 +23,7 @@ test("shows the thirteen features as a titled carousel of cards", () => {
     "IP protection compliance",
     "Open source and auditable",
   ]);
-  expect(view.container.querySelectorAll("li svg").length).toBe(13);
+  expect(view.container.querySelectorAll("h3").length).toBe(13);
   expect(view.container.querySelectorAll("p").length).toBe(0);
+  expect(view.container.querySelectorAll("a").length).toBe(0);
 });
