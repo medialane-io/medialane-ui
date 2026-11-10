@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.331.0] — 2026-11-10
+
+### Changed
+
+- Discover page: the principles grid is replaced by a swipeable carousel of the platform's thirteen features, one icon and one name per card, in the same card style as the Launchpad strip.
+
 ## [0.330.0] — 2026-11-10
 
 ### Added
