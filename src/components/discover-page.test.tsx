@@ -57,3 +57,23 @@ test("discover shows a Featured strip of featured collections before Collections
   const collectionsHeading = view.getByRole("heading", { name: "Collections" });
   expect(featuredHeading.compareDocumentPosition(collectionsHeading) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
 });
+
+test("discover's Activities and Rewards cards share a header layout and ask for five rows each", async () => {
+  const activityQueries: Array<{ limit?: number }> = [];
+  const leaderboardCalls: unknown[][] = [];
+  const empty = async () => ({ data: [], meta: { page: 1, limit: 10, total: 0 } });
+  const client = { api: { platform: { stats: async () => ({ collections: 1, tokens: 2, sales: 3 }) }, orders: { list: empty }, collections: { list: empty }, activity: { list: async (q: { limit?: number }) => { activityQueries.push(q); return { data: [], meta: { page: 1, limit: 5, total: 0 } }; } }, creators: { list: empty }, rewards: { leaderboard: async (...a: unknown[]) => { leaderboardCalls.push(a); return { data: [], meta: { page: 1, limit: 5, total: 0 } }; }, batch: async () => ({ data: [] }) } } } as unknown as MedialaneClient;
+  const app = { getClient: () => client, getSigner: () => { throw new Error("unused"); }, walletAddress: ME, onRequireWallet: () => {} } as MedialaneApp;
+  const useMarketActions = () => ({ buy: () => {}, offer: () => {}, dialogs: null });
+  const view = render(<SWRConfig value={{ provider: () => new Map() }}><MedialaneAppProvider value={app}><DiscoverPage useMarketActions={useMarketActions} /></MedialaneAppProvider></SWRConfig>);
+  await waitFor(() => expect(activityQueries.length).toBeGreaterThan(0));
+  expect(activityQueries[0]?.limit).toBe(5);
+  await waitFor(() => expect(leaderboardCalls.length).toBeGreaterThan(0));
+  expect(JSON.stringify(leaderboardCalls[0])).toContain("5");
+  const activities = view.getByRole("heading", { name: "Activities" }).closest("section")!;
+  const rewards = view.getByRole("heading", { name: "Rewards" }).closest("section")!;
+  expect(activities.className).toBe(rewards.className);
+  expect(view.getByText("Earn XP. Share the Creator's Fund.")).toBeTruthy();
+  const features = view.getByRole("heading", { name: "Medialane features" }).closest("section")!;
+  expect(rewards.compareDocumentPosition(features) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+});

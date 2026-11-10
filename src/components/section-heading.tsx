@@ -7,7 +7,7 @@ export interface SectionHeadingProps {
   icon: React.ReactNode;
   title: string;
   subtitle?: React.ReactNode;
-  href: string;
+  href?: string;
   linkLabel?: string;
 }
 
@@ -21,12 +21,14 @@ export function SectionHeading({ icon, title, subtitle, href, linkLabel = "View 
           {subtitle && <p className="mt-1 flex items-center gap-1 text-2xs text-muted-foreground">{subtitle}</p>}
         </div>
       </div>
-      <Link
-        href={href}
-        className="inline-flex shrink-0 items-center gap-1 text-xs text-muted-foreground transition-colors hover:text-foreground"
-      >
-        {linkLabel} <ArrowRight className="h-3 w-3" />
-      </Link>
+      {href && (
+        <Link
+          href={href}
+          className="inline-flex shrink-0 items-center gap-1 text-xs text-muted-foreground transition-colors hover:text-foreground"
+        >
+          {linkLabel} <ArrowRight className="h-3 w-3" />
+        </Link>
+      )}
     </div>
   );
 }

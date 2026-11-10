@@ -1,4 +1,5 @@
 import {
+  BadgeCheck,
   Code,
   Database,
   DoorOpen,
@@ -14,6 +15,7 @@ import {
   ShieldCheck,
   type LucideIcon,
 } from "lucide-react";
+import { ScrollSection } from "./scroll-section.js";
 import { cn } from "../utils/cn.js";
 
 const HUES = [
@@ -42,26 +44,24 @@ const FEATURES: ReadonlyArray<{ icon: LucideIcon; title: string }> = [
 
 export function DiscoverFeatures() {
   return (
-    <section className="w-full overflow-x-auto scrollbar-hide">
-      <ul className="flex snap-x snap-mandatory gap-5 pb-2 sm:gap-6" style={{ width: "max-content" }}>
-        {FEATURES.map(({ icon: Icon, title }, i) => {
-          const hue = HUES[i % HUES.length]!;
-          return (
-            <li
-              key={title}
-              className={cn(
-                "flex min-h-[168px] w-56 shrink-0 snap-start flex-col gap-4 rounded-2xl border bg-card p-6 sm:w-64",
-                hue.border,
-              )}
-            >
-              <span className={cn("flex h-11 w-11 items-center justify-center rounded-xl", hue.tint)}>
-                <Icon className={cn("h-6 w-6", hue.text)} />
-              </span>
-              <h3 className="text-lg font-black leading-snug tracking-tight">{title}</h3>
-            </li>
-          );
-        })}
-      </ul>
-    </section>
+    <ScrollSection icon={<BadgeCheck />} title="Medialane features">
+      {FEATURES.map(({ icon: Icon, title }, i) => {
+        const hue = HUES[i % HUES.length]!;
+        return (
+          <div
+            key={title}
+            className={cn(
+              "flex min-h-[168px] w-56 shrink-0 snap-start flex-col gap-4 rounded-2xl border bg-card p-6 sm:w-64",
+              hue.border,
+            )}
+          >
+            <span className={cn("flex h-11 w-11 items-center justify-center rounded-xl", hue.tint)}>
+              <Icon className={cn("h-6 w-6", hue.text)} />
+            </span>
+            <h3 className="text-lg font-black leading-snug tracking-tight">{title}</h3>
+          </div>
+        );
+      })}
+    </ScrollSection>
   );
 }

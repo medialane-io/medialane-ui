@@ -33,7 +33,7 @@ function CreatorIdentity({ address, compact }: { address: string; compact?: bool
 
   return (
     <span className="inline-flex min-w-0 items-center gap-2.5">
-      <span className={cn("relative shrink-0 overflow-hidden rounded-full bg-foreground/[0.08]", compact ? "h-7 w-7" : "h-9 w-9")}>
+      <span className="relative h-9 w-9 shrink-0 overflow-hidden rounded-full bg-foreground/[0.08]">
         <Image
           src={avatarUrl ?? "/icon.png"}
           alt=""
@@ -78,7 +78,7 @@ export function LeaderboardPanel({
       {isLoading ? (
         <div className={compact ? "divide-y divide-border/40" : "space-y-1.5"}>
           {Array.from({ length: Math.min(limit, 6) }).map((_, i) => (
-            <Skeleton key={i} className={compact ? "h-11 w-full rounded-none" : "h-10 w-full rounded-lg"} />
+            <Skeleton key={i} className={compact ? "h-16 w-full rounded-none" : "h-10 w-full rounded-lg"} />
           ))}
         </div>
       ) : rows.length === 0 ? (

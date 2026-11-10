@@ -31,7 +31,7 @@ export function LeaderboardTable({ entries, highlightAddress, renderAddress, com
         {entries.map((e) => {
           const isViewer = highlightAddress != null && e.address === highlightAddress;
           return (
-            <div key={e.address} className={cn("flex items-center gap-3 px-4 py-2.5", isViewer && "bg-brand-rose/10")}>
+            <div key={e.address} className={cn("flex h-16 items-center gap-3 px-4", isViewer && "bg-brand-rose/10")}>
               <span className="w-4 shrink-0 text-xs font-medium tabular-nums text-muted-foreground">{e.rank}</span>
               <span className="min-w-0 flex-1 truncate text-sm font-semibold">
                 {renderAddress ? renderAddress(e.address) : shortenAddress(e.address)}
