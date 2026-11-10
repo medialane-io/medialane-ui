@@ -3,7 +3,7 @@
 import Link from "./link.js";
 import Image from "./image.js";
 import { cn } from "../utils/cn.js";
-import { DualPrice } from "./dual-price.js";
+import { PriceDisplay } from "./price-display.js";
 import {
   coinKind, coinKindLabel, coinAccentToken,
   type CoinCollectionLike, type CoinPriceLike,
@@ -73,12 +73,12 @@ function PriceCell({ price, status, isLoading }: { price: CoinPriceLike | null; 
 
   return (
     <span className="flex justify-end">
-      <DualPrice
+      <PriceDisplay
         amountFormatted={String(price.quotePerCoin)}
         currency={price.quoteSymbol}
         usdValue={usd}
         scale="card"
-        secondaryClassName="hidden sm:flex"
+        pillClassName="hidden sm:inline-flex"
       />
     </span>
   );

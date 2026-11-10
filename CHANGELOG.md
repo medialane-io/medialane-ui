@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.329.0] — 2026-11-10
+
+### Changed
+
+- Prices read the same everywhere: the token amount first, then the USD estimate in a pill on the same line, for example "42 STRK  ≈ 1.63 USD". The estimate is labelled USD instead of a bare "$".
+- Cards show the token icon without its name and shorten amounts from 1,000 (1.2K); the detail page and offer rows keep the name and the full amount.
+- Stablecoin prices show the amount alone.
+
 ## [0.328.0] — 2026-11-09
 
 ### Changed

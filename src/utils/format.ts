@@ -69,6 +69,15 @@ export function formatDisplayPrice(price: string | number | null | undefined): s
   return currencyPart ? `${formatted} ${currencyPart}` : formatted;
 }
 
+const COMPACT_FORMAT = new Intl.NumberFormat("en-US", { notation: "compact", maximumFractionDigits: 1 });
+
+export function formatCompactPrice(price: string | number | null | undefined): string {
+  if (price === null || price === undefined) return "";
+  const num = Number(String(price).split(" ")[0]);
+  if (!isFinite(num) || Math.abs(num) < 1000) return formatDisplayPrice(price);
+  return COMPACT_FORMAT.format(num);
+}
+
 export function parsePriceDisplay(raw: string | null | undefined): { numStr: string; symbol: string | null } {
   if (!raw) return { numStr: "—", symbol: null };
   const parts = raw.trim().split(" ");

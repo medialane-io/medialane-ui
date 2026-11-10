@@ -12,7 +12,7 @@ import {
 import { cn } from "../utils/cn.js";
 import { formatDisplayPrice } from "../utils/format.js";
 import { CurrencyIcon } from "./currency-icon.js";
-import { PriceChipContent } from "./dual-price.js";
+import { PriceDisplay } from "./price-display.js";
 import { IpTypeBadge } from "./ip-type-badge.js";
 import { AnimatedTokenMedia } from "./animated-token-media.js";
 import { isLivingRenderCollection } from "../data/living-render-collections.js";
@@ -115,14 +115,14 @@ export function TokenCard({
         <div className="px-3 pt-2.5 pb-4 flex-1 space-y-1">
           <p className="text-base font-bold line-clamp-2 leading-snug">{name}</p>
           {listingOrder && (
-            <p className="flex items-center justify-end gap-1.5 text-sm tabular-nums">
-              <PriceChipContent
+            <div className="flex justify-end">
+              <PriceDisplay
                 amountFormatted={listingOrder.price.formatted}
                 currency={listingOrder.price.currency}
                 usdValue={usdValue}
-                tone="card"
+                scale="card"
               />
-            </p>
+            </div>
           )}
         </div>
       </Link>
