@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.330.0] — 2026-11-10
+
+### Added
+
+- Discover page: a new section of ten principles (creators keep 99%, privacy by design, open to everyone, and more), shown identically in every app.
+
 ## [0.329.0] — 2026-11-10
 
 ### Changed
