@@ -3,10 +3,12 @@
 import { ExternalLink } from "lucide-react";
 import { Button } from "./button.js";
 import { externalLink } from "../utils/external-link.js";
+import { MarkdownText } from "./markdown-text.js";
 
 export interface AssetPublicationProps {
   name: string;
   text: string;
+  content?: string | null;
   image: string | null;
   imgError: boolean;
   onImageError: () => void;
@@ -14,7 +16,7 @@ export interface AssetPublicationProps {
   externalUrl?: string | null;
 }
 
-export function AssetPublication({ name, text, image, imgError, onImageError, author, externalUrl }: AssetPublicationProps) {
+export function AssetPublication({ name, text, content, image, imgError, onImageError, author, externalUrl }: AssetPublicationProps) {
   const link = externalLink(externalUrl);
   const paragraphs = text.split(/\n{2,}/).map((p) => p.trim()).filter(Boolean);
 
@@ -30,11 +32,15 @@ export function AssetPublication({ name, text, image, imgError, onImageError, au
         </div>
       ) : null}
 
-      <div className="max-w-3xl space-y-4 text-base leading-relaxed text-foreground break-words">
-        {paragraphs.map((paragraph, i) => (
-          <p key={i} className="whitespace-pre-line">{paragraph}</p>
-        ))}
-      </div>
+      {content ? (
+        <MarkdownText text={content} />
+      ) : (
+        <div className="max-w-3xl space-y-4 text-base leading-relaxed text-foreground break-words">
+          {paragraphs.map((paragraph, i) => (
+            <p key={i} className="whitespace-pre-line">{paragraph}</p>
+          ))}
+        </div>
+      )}
 
       {author || link ? (
         <div className="flex flex-wrap items-center gap-4">

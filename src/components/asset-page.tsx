@@ -379,6 +379,7 @@ function AssetPageView({
           <AssetPublication
             name={name}
             text={description!}
+            content={postContent}
             image={image}
             imgError={imgError}
             onImageError={() => setImgError(true)}
@@ -432,7 +433,7 @@ function AssetPageView({
           </TabsList>
 
           <TabsContent value="overview">
-            <AssetOverviewContent attributes={overview.attributes} hasTemplateData={overview.hasTemplateData} isDisplayAttr={overview.isDisplayAttr} content={postContent} link={overviewLink} />
+            <AssetOverviewContent attributes={overview.attributes} hasTemplateData={overview.hasTemplateData} isDisplayAttr={overview.isDisplayAttr} content={isPublication ? null : postContent} link={overviewLink} />
           </TabsContent>
 
           {config.market ? (

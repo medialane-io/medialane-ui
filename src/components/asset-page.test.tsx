@@ -169,30 +169,28 @@ test("other assets show their external URL in the overview, not under the descri
   expect(container.querySelector('[role="tabpanel"]')!.contains(link)).toBe(true);
 });
 
-test("a publication shows its description under the image and its Content in the overview", async () => {
+test("a publication with Content shows it in the article instead of the description, once", async () => {
   const { container } = renderPage(
     publication({ description: "Short summary.", attributes: [{ trait_type: "Content", value: "Full **post**.\n\nSecond paragraph." }] }),
     collection(),
   );
   await waitFor(() => expect(container.querySelector("article")).toBeTruthy());
-  const article = container.querySelector("article")!.textContent!;
-  expect(article).toContain("Short summary.");
-  expect(article).not.toContain("Full");
-  const overview = container.querySelector('[role="tabpanel"]')!;
-  expect(overview.textContent).toContain("Second paragraph.");
-  expect(overview.querySelector("strong")!.textContent).toBe("post");
-  expect(overview.textContent).not.toContain("**");
+  const article = container.querySelector("article")!;
+  expect(article.textContent).toContain("Second paragraph.");
+  expect(article.textContent).not.toContain("Short summary.");
+  expect(article.querySelector("strong")!.textContent).toBe("post");
+  expect(article.textContent).not.toContain("**");
   expect(container.textContent!.split("Second paragraph.").length).toBe(2);
 });
 
-test("the overview shows Content links as links and leaves out inline images", async () => {
+test("a publication shows Content links as links and leaves out inline images", async () => {
   const content = "Read [the source](https://source.test/post).\n\n![cover](http://source.test/a.jpg)";
   const { container } = renderPage(publication({ description: "Summary.", attributes: [{ trait_type: "Content", value: content }] }), collection());
   await waitFor(() => expect(container.querySelector("article")).toBeTruthy());
-  const overview = container.querySelector('[role="tabpanel"]')!;
-  const link = overview.querySelector('a[href="https://source.test/post"]')!;
+  const article = container.querySelector("article")!;
+  const link = article.querySelector('a[href="https://source.test/post"]')!;
   expect(link.getAttribute("rel")).toContain("noopener");
-  expect(overview.querySelector('img[src="http://source.test/a.jpg"]')).toBeNull();
+  expect(article.querySelector('img[src="http://source.test/a.jpg"]')).toBeNull();
 });
 
 test("a publication with a Content trait and no description keeps the standard layout and shows Content in the overview", async () => {
