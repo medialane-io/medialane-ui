@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.334.0] — 2026-11-10
+
+### Changed
+
+- Publication page: when a publication has full content, the article shows it, formatted, in place of the summary, and the overview no longer repeats it. Without full content, the summary shows as before.
+
 ## [0.333.0] — 2026-11-10
 
 ### Changed
