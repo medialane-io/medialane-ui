@@ -7,6 +7,7 @@ import { DiscoverHero } from "./discover-hero.js";
 import { DiscoverCollectionsStrip } from "./discover-collections-strip.js";
 import { DiscoverActivityStrip } from "./discover-feed-section.js";
 import { DiscoverCommunitySection } from "./discover-community-section.js";
+import { DiscoverPrinciples } from "./discover-principles.js";
 import { IpTypeNav } from "./ip-type-nav.js";
 import { useMedialaneApp } from "./medialane-app.js";
 import type { CollectionMarketActions } from "./collection-page.js";
@@ -67,6 +68,7 @@ export function DiscoverPage({ useMarketActions, heroBadge, heroHeadline }: Disc
         isOwnOrder={(o) => !!walletAddress && !!o.offerer && isSameAddress(o.offerer, walletAddress)}
       />
       <IpTypeNav />
+      <DiscoverPrinciples />
       <DiscoverCommunitySection />
       {market.dialogs}
     </PageContainer>
