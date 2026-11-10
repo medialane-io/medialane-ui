@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState, type ComponentType, type ReactNode } from "react";
-import { motion, useReducedMotion } from "framer-motion";
 import { Award } from "lucide-react";
 import { assetHref, collectionHref, getDerivativesTerm, getService, resolveRemixPolicy, type ApiActivity, type ApiCollection, type ApiOrder, type ApiToken, type Chain } from "@medialane/sdk";
 import { useRouter } from "./router.js";
@@ -132,12 +131,14 @@ export function AssetPageSkeleton() {
 export interface AssetPageProps {
   contract: string;
   tokenId: string;
+  initialToken?: ApiToken | null;
+  initialCollection?: ApiCollection | null;
   useMarketActions: (context: AssetMarketContext) => AssetMarketActions;
 }
 
-export function AssetPage({ contract, tokenId, useMarketActions }: AssetPageProps) {
-  const { token, isLoading, isIndexing } = useToken(contract, tokenId);
-  const { collection, isLoading: collectionLoading } = useCollection(contract);
+export function AssetPage({ contract, tokenId, initialToken, initialCollection, useMarketActions }: AssetPageProps) {
+  const { token, isLoading, isIndexing } = useToken(contract, tokenId, initialToken);
+  const { collection, isLoading: collectionLoading } = useCollection(contract, initialCollection);
   if (isLoading || collectionLoading) return <AssetPageSkeleton />;
   if (!token) return <AssetUnavailable isIndexing={isIndexing} />;
   const kind = detectAssetKind(collection?.service, collection?.standard ?? token.standard);
@@ -162,7 +163,6 @@ function AssetPageView({
   const resolveImage = useImageUrl();
   const config = KINDS[kind];
   const router = useRouter();
-  const shouldReduce = useReducedMotion();
   const { walletAddress } = useMedialaneApp();
 
   const { listings, mutate: mutateListings, isLoading: listingsLoading } = useTokenListings(contract, tokenId);
@@ -177,6 +177,7 @@ function AssetPageView({
   const [reportOpen, setReportOpen] = useState(false);
   const [commentOpen, setCommentOpen] = useState(false);
   const [imgError, setImgError] = useState(false);
+  const [mainImageLoaded, setMainImageLoaded] = useState(false);
 
   const name = token.metadata?.name || `${config.namePrefix} #${token.tokenId}`;
   const image = resolveImage(token.metadata?.image);
@@ -221,6 +222,7 @@ function AssetPageView({
   const video = (token.metadata?.ipType ?? "").toLowerCase() === "video" ? videoEmbed(attributes) : null;
   const audio = (token.metadata?.ipType ?? "").toLowerCase() === "audio" ? audioEmbed(attributes) : null;
   const isPublication = !!description && PUBLICATION_TYPES.has((token.metadata?.ipType ?? "").toLowerCase());
+  const usesMediaColumn = !video && !audio && !isPublication;
   const publisherName = collection?.name ?? contract.slice(0, 8) + "…";
   const overviewAttributes = postContent ? attributes.filter((a) => a.trait_type !== "Content") : attributes;
   const overview = video || audio
@@ -297,7 +299,7 @@ function AssetPageView({
   return (
     <div className="relative z-0 min-h-screen">
       {token.isHidden ? <HiddenContentBanner /> : null}
-      <PageBackdrop image={image} />
+      <PageBackdrop image={usesMediaColumn && !mainImageLoaded ? null : image} />
 
       <PageContainer className={isPublication ? "pt-20 space-y-8 pb-8 lg:px-16 xl:px-24" : "pt-20 space-y-8 pb-8"}>
         {video ? (
@@ -391,22 +393,17 @@ function AssetPageView({
         ) : (
         <div className="grid grid-cols-1 lg:grid-cols-2 lg:gap-10 gap-8 items-start">
           <AssetMediaColumn
-            shouldReduce={Boolean(shouldReduce)}
             image={image}
             imageAlt={name}
             imgError={imgError}
             onImageError={() => setImgError(true)}
+            onImageLoad={() => setMainImageLoaded(true)}
             animationUrl={token.metadata?.animationUrl}
             live={isLivingRenderCollection(token.chain as Chain, token.contractAddress)}
             fallback={<div className="aspect-square bg-muted" />}
           />
 
-          <motion.div
-            initial={shouldReduce ? false : { opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="space-y-6"
-          >
+          <div className="space-y-6">
             <AssetHeaderBlock
               name={name}
               description={token.metadata?.description}
@@ -423,7 +420,7 @@ function AssetPageView({
             {marketBlock}
 
             {detailsBlock}
-          </motion.div>
+          </div>
         </div>
         )}
 

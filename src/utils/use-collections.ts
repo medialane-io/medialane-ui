@@ -42,16 +42,16 @@ export function useCollections(
   };
 }
 
-export function useCollection( contract: string | null) {
+export function useCollection( contract: string | null, initial?: ApiCollection | null) {
   const client = useMedialaneClient();
 
   const { data, error, isLoading } = useSWR(
     contract ? queryKeys.collection(contract) : null,
     () => client.api.collections.get(contract!),
-    { revalidateOnFocus: false }
+    { revalidateOnFocus: false, fallbackData: initial ?? undefined }
   );
 
-  return { collection: data ?? null, isLoading, error };
+  return { collection: data ?? null, isLoading: isLoading && !data, error };
 }
 
 export function useCollectionsByOwner( owner: string | null) {

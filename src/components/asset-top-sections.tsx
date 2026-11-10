@@ -2,7 +2,6 @@
 
 import Link from "./link.js";
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
 import { useIntersectionActive } from "../utils/use-intersection-active.js";
 import { cn } from "../utils/cn.js";
 import { AddressDisplay } from "./address-display.js";
@@ -11,11 +10,11 @@ import { IpTypeBadge } from "./ip-type-badge.js";
 import { ExpandableText } from "./expandable-text.js";
 
 interface AssetMediaColumnProps {
-  shouldReduce: boolean;
   image: string | null;
   imageAlt: string;
   imgError: boolean;
   onImageError: () => void;
+  onImageLoad?: () => void;
   fallback: React.ReactNode;
 
 
@@ -25,11 +24,11 @@ interface AssetMediaColumnProps {
 }
 
 export function AssetMediaColumn({
-  shouldReduce,
   image,
   imageAlt,
   imgError,
   onImageError,
+  onImageLoad,
   fallback,
   animationUrl,
   live = false,
@@ -39,9 +38,14 @@ export function AssetMediaColumn({
   useEffect(() => setLoaded(false), [image]);
   const showLive = live && !!animationUrl && isVisible;
 
+  const markLoaded = () => {
+    setLoaded(true);
+    onImageLoad?.();
+  };
+
   const shimmer = !loaded && (
     <div
-      className="absolute inset-0 min-h-80 animate-[shimmer_1.6s_ease-in-out_infinite] bg-foreground/[0.06]"
+      className="absolute inset-0 animate-[shimmer_1.6s_ease-in-out_infinite] bg-foreground/[0.06]"
       style={{
         backgroundImage:
           "linear-gradient(90deg, transparent, color-mix(in srgb, var(--foreground) 8%, transparent), transparent)",
@@ -65,24 +69,21 @@ export function AssetMediaColumn({
       ) : !image || imgError ? (
         <div className="w-full overflow-hidden rounded-3xl">{fallback}</div>
       ) : (
-        <motion.div
-          initial={shouldReduce ? false : { opacity: 0, scale: 0.98 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5 }}
-          className="relative block w-full overflow-hidden rounded-3xl"
-        >
+        <div className={cn("relative block w-full overflow-hidden rounded-3xl", !loaded && "aspect-square")}>
           {shimmer}
           <img
+            ref={(el) => {
+              if (!loaded && el?.complete && el.naturalWidth > 0) markLoaded();
+            }}
             src={image}
             alt={imageAlt}
-            onLoad={() => setLoaded(true)}
+            fetchPriority="high"
+            decoding="async"
+            onLoad={markLoaded}
             onError={onImageError}
-            className={cn(
-              "w-full h-auto max-h-[80vh] object-contain transition-opacity duration-300",
-              loaded ? "opacity-100" : "opacity-0"
-            )}
+            className="relative w-full h-auto max-h-[80vh] object-contain"
           />
-        </motion.div>
+        </div>
       )}
 
     </div>

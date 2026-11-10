@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.333.0] — 2026-11-10
+
+### Changed
+
+- Asset page: it accepts the token and collection the server already loaded (`initialToken`, `initialCollection`), so the first HTML carries the title, details and main image with no skeleton and no second fetch. The browser still revalidates them. Without them it loads as before.
+- Asset page: the main image is a high-priority image in a square frame that fills in as it loads, the entrance fades no longer hide the content before the page hydrates, and the blurred backdrop loads lazily after the main image.
+
 ## [0.332.0] — 2026-11-10
 
 ### Changed
