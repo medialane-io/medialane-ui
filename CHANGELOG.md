@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.336.0] — 2026-11-11
+
+### Added
+
+- Recovery key section: an optional `actions` slot puts extra buttons on the same row as the recovery key buttons.
+
 ## [0.335.0] — 2026-11-11
 
 ### Changed
