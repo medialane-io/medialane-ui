@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.339.0] — 2026-11-11
+
+### Removed
+
+- Media wallet: the link to another wallet at the bottom, and the `externalWallet` prop.
+
 ## [0.338.0] — 2026-11-11
 
 ### Changed

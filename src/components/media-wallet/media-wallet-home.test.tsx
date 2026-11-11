@@ -23,7 +23,6 @@ const app = (over: Partial<MediaWalletAppProps>): MediaWalletAppProps =>
     useAccountEmail: () => null,
     useEmailStatus: () => null,
     emailBanner: { href: "/verify", text: () => "" },
-    externalWallet: { href: "https://wallet.example", label: "Use another wallet" },
     ...over,
   }) as unknown as MediaWalletAppProps;
 
@@ -65,9 +64,9 @@ test("no email banner once the email is verified", () => {
   expect(queryByText("Verify soon")).toBeNull();
 });
 
-test("the external wallet link uses the app's label and address", () => {
-  const { getByText } = renderHome(app({ externalWallet: { href: "https://starknet.example", label: "Use another Starknet wallet" } }));
-  expect(getByText("Use another Starknet wallet").closest("a")?.getAttribute("href")).toBe("https://starknet.example");
+test("the panel ends without a link to another wallet", () => {
+  const { queryByText } = renderHome(app({}));
+  expect(queryByText("Use another wallet")).toBeNull();
 });
 
 test("without minted NFTs the NFTs title is not shown", async () => {

@@ -30,7 +30,7 @@ export function MediaWalletHome({
   onClose: () => void;
   autoOpenReceive?: boolean;
 }) {
-  const { useWalletSession, useEmailStatus, resolveImage, emailBanner, externalWallet } = useMediaWalletApp();
+  const { useWalletSession, useEmailStatus, resolveImage, emailBanner } = useMediaWalletApp();
   const { address, isDeployed } = useWalletSession();
   const emailStatus = useEmailStatus();
   const router = useRouter();
@@ -230,15 +230,6 @@ export function MediaWalletHome({
           onClose={() => setActivated(false)}
         />
       )}
-
-      <a
-        href={externalWallet.href}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="mt-auto text-center text-xs text-muted-foreground/60 transition-colors hover:text-muted-foreground"
-      >
-        {externalWallet.label}
-      </a>
     </main>
   );
 }

@@ -39,7 +39,6 @@ export interface MediaWalletAppProps {
   useAccountEmail: () => string | null;
   useEmailStatus: () => { email: string | null; emailVerified: boolean; deadline?: string | null } | null;
   emailBanner: { href: string; text: (deadline: string | null | undefined) => string };
-  externalWallet: { href: string; label: string };
   useHeaderIdentity?: (address: string) => MediaWalletHeaderIdentity;
 }
 
