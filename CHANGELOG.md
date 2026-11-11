@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.335.0] — 2026-11-11
+
+### Changed
+
+- Rights: the license shows its full name and description in a full-width card, the small cards carry a status mark (allowed, not allowed, conditions), and the copyright note is its own card after them.
+
 ## [0.334.0] — 2026-11-10
 
 ### Changed

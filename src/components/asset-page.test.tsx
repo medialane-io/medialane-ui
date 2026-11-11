@@ -222,7 +222,8 @@ test("a publication keeps its rights in the overview like other assets", async (
   const { getByText } = renderPage(publication({ description: "Lead.\n\nBody.", attributes }), collection());
   await waitFor(() => expect(getByText("Lead.")).toBeTruthy());
   expect(getByText("Rights")).toBeTruthy();
-  expect(getByText("CC BY-SA")).toBeTruthy();
+  expect(getByText("Attribution ShareAlike")).toBeTruthy();
+  expect(getByText(/Berne Convention/)).toBeTruthy();
 });
 
 test("a publication has no publisher row above the title", async () => {

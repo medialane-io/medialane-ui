@@ -1,11 +1,12 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { Bot, DollarSign, ExternalLink, GitBranch, Globe, Percent, UserCheck } from "lucide-react";
+import { Check, CircleAlert, ExternalLink, Percent, X } from "lucide-react";
 import { IPTypeDisplay } from "./ip-type-display.js";
 import { AddressDisplay } from "./address-display.js";
 import { MarkdownText } from "./markdown-text.js";
 import { licenseSummary } from "../utils/license-summary.js";
+import { LICENSE_TYPES } from "../data/ip.js";
 
 interface AssetAttribute {
   trait_type?: string;
@@ -18,6 +19,18 @@ interface AssetOverviewContentProps {
   isDisplayAttr: (attribute: AssetAttribute) => boolean;
   content?: string | null;
   link?: string | null;
+}
+
+function licenseLabel(value: string): string {
+  const label = LICENSE_TYPES.find((license) => license.value === value)?.label ?? value;
+  return label.split(" — ")[1] ?? label;
+}
+
+function statusIcon(value: string): ReactNode {
+  const v = value.trim().toLowerCase();
+  if (["yes", "allowed", "worldwide", "not required"].includes(v)) return <Check className="h-4 w-4 text-emerald-500" />;
+  if (["no", "not allowed"].includes(v)) return <X className="h-4 w-4 text-destructive" />;
+  return <CircleAlert className="h-4 w-4 text-amber-500" />;
 }
 
 const isAddressLike = (v?: unknown): boolean =>
@@ -70,13 +83,15 @@ export function AssetOverviewContent({
   const hasLicenseData = !!(licenseType || commercialUse || derivatives || attribution);
   const displayAttributes = attributes.filter((attribute) => isDisplayAttr(attribute));
 
+  const licenseDescription = LICENSE_TYPES.find((license) => license.value === licenseType)?.description;
+
   const facts = [
-    { icon: <DollarSign className="h-4 w-4" />, label: "Commercial use", value: commercialUse },
-    { icon: <GitBranch className="h-4 w-4" />, label: "Derivatives", value: derivatives },
-    { icon: <UserCheck className="h-4 w-4" />, label: "Attribution", value: attribution },
-    { icon: <Globe className="h-4 w-4" />, label: "Territory", value: territory },
-    { icon: <Bot className="h-4 w-4" />, label: "AI & data mining", value: aiPolicy },
-    { icon: <Percent className="h-4 w-4" />, label: "Royalty", value: royalty },
+    { label: "Commercial use", value: commercialUse },
+    { label: "Derivatives", value: derivatives },
+    { label: "Attribution", value: attribution },
+    { label: "Territory", value: territory },
+    { label: "AI & data mining", value: aiPolicy },
+    { label: "Royalty", value: royalty, icon: <Percent className="h-4 w-4" /> },
   ].filter((row) => !!row.value);
 
   return (
@@ -100,27 +115,29 @@ export function AssetOverviewContent({
       {hasLicenseData ? (
         <section className="space-y-3">
           <h3 className="text-sm font-semibold text-muted-foreground">Rights</h3>
-          <div className="relative">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+            <div className="col-span-full flex flex-col gap-2 rounded-2xl bg-gradient-to-br from-primary/10 via-primary/5 to-accent/10 ring-1 ring-primary/15 p-5">
+              {licenseType ? (
+                <p className="text-xl sm:text-2xl font-bold leading-tight text-foreground">{licenseLabel(licenseType)}</p>
+              ) : null}
+              {licenseDescription ? (
+                <p className="text-sm text-muted-foreground">{licenseDescription}</p>
+              ) : null}
+              {summary ? (
+                <p className="text-base sm:text-lg font-semibold leading-snug text-foreground">{summary}</p>
+              ) : null}
+            </div>
 
-            <div className="relative grid grid-cols-2 sm:grid-cols-4 gap-3 [grid-auto-flow:dense] auto-rows-[minmax(6rem,auto)]">
+            {facts.map(({ icon, label, value }) => (
+              <Cell key={label} icon={icon ?? statusIcon(String(value))} label={label} value={value} />
+            ))}
 
-              <div className="col-span-2 sm:row-span-2 flex flex-col justify-between gap-4 rounded-2xl bg-gradient-to-br from-primary/10 via-primary/5 to-accent/10 ring-1 ring-primary/15 p-5">
-                {licenseType ? (
-                  <span className="pill-badge self-start text-2xs">{licenseType}</span>
-                ) : null}
-                {summary ? (
-                  <p className="text-base sm:text-lg font-semibold leading-snug text-foreground">{summary}</p>
-                ) : null}
-              </div>
-
-              {facts.map(({ icon, label, value }) => (
-                <Cell key={label} icon={icon} label={label} value={value} />
-              ))}
+            <div className="col-span-full rounded-xl bg-muted/25 ring-1 ring-border/40 p-3.5">
+              <p className="text-xs leading-relaxed text-muted-foreground">
+                Creative work is protected with international copyright law. The Berne Convention for the Protection of Literary and Artistic Works is the foundational international copyright treaty, ratified by 181 signatory countries.
+              </p>
             </div>
           </div>
-          <p className="text-xs text-muted-foreground/70">
-            Your creative work is protected with international copyright law the moment you create it. The Berne Convention for the Protection of Literary and Artistic Works is the foundational international copyright treaty, ratified by 181 signatory countries.
-          </p>
         </section>
       ) : null}
 
