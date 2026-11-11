@@ -90,7 +90,7 @@ export function TokenCard({
 
       <Link href={assetHref} className="flex flex-col flex-1">
 
-        <div className="relative aspect-square bg-muted overflow-hidden shrink-0">
+        <div className="relative aspect-square bg-foreground/[0.04] overflow-hidden shrink-0">
           <AnimatedTokenMedia
             image={image}
             animationUrl={animationUrl}
@@ -289,7 +289,7 @@ export function TokenCard({
 export function TokenCardSkeleton() {
   return (
     <div className="card-base overflow-hidden">
-      <div className="aspect-square w-full animate-pulse bg-muted" />
+      <div className="aspect-square w-full animate-pulse bg-foreground/[0.04]" />
       <div className="px-3 pt-2.5 pb-3 space-y-1.5">
         <div className="h-4 w-3/4 rounded-md animate-pulse bg-muted" />
       </div>

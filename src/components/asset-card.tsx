@@ -1,11 +1,11 @@
 "use client";
 
 import Link from "./link.js";
-import { Loader2 } from "lucide-react";
+import { Fingerprint, Loader2 } from "lucide-react";
 import { cn } from "../utils/cn.js";
-import { PriceDisplay } from "./price-display.js";
+import { CurrencyIcon, hasCurrencyIcon } from "./currency-icon.js";
+import { formatCompactPrice } from "../utils/format.js";
 import { IpTypeBadge } from "./ip-type-badge.js";
-import { SoulboundBadge } from "./soulbound-card.js";
 import { AnimatedTokenMedia } from "./animated-token-media.js";
 import { useImageUrl } from "../utils/use-image-url.js";
 
@@ -61,23 +61,27 @@ export function AssetCard({
 }: AssetCardProps) {
   const resolveImage = useImageUrl();
   const resolved = resolveImage(image, { width: 480 });
-  const hasPrice = !!price?.formatted;
+  const hasPrice = !!price?.formatted && !indexing;
 
   return (
     <div
       className={cn(
-        "group relative flex flex-col w-full overflow-hidden rounded-xl bg-card",
+        "group relative w-full overflow-hidden rounded-[calc(var(--radius)*1.25)]",
         className
       )}
     >
-
       {ipType && (
         <div className="absolute top-2 right-2 z-10">
-          <IpTypeBadge ipType={ipType} size="sm" baseUrl={ipTypeBaseUrl} />
+          <IpTypeBadge
+            ipType={ipType}
+            size="sm"
+            baseUrl={ipTypeBaseUrl}
+            className="bg-black/40 backdrop-blur-sm"
+          />
         </div>
       )}
 
-      <Link href={href} className="block relative aspect-square bg-muted overflow-hidden">
+      <Link href={href} className="block relative aspect-square bg-foreground/[0.04] overflow-hidden">
         <AnimatedTokenMedia
           image={resolved}
           animationUrl={animationUrl}
@@ -95,50 +99,55 @@ export function AssetCard({
           }
         />
 
-        {indexing && (
-          <div className="absolute bottom-0 inset-x-0 flex items-center justify-center gap-1.5 bg-black/50 backdrop-blur-sm py-1.5">
-            <Loader2 className="h-3 w-3 animate-spin text-white/70" />
-            <span className="text-2xs text-white/70">Indexing…</span>
-          </div>
-        )}
-      </Link>
+        <div className="absolute inset-x-2 bottom-2 flex flex-col items-start gap-1">
+          {indexing && (
+            <span className="flex items-center gap-1 rounded-full px-2.5 py-1 text-2xs text-white bg-black/30 backdrop-blur-md">
+              <Loader2 className="h-2.5 w-2.5 animate-spin" />
+              Indexing…
+            </span>
+          )}
 
-      <div className="px-3 py-3 space-y-1">
-        <Link href={href} className="block min-w-0">
-          <p className="text-base font-semibold tracking-tight line-clamp-2 break-words leading-snug">
+          {(hasPrice || soulbound) && (
+            <div className="flex flex-wrap items-center gap-1">
+              {soulbound && (
+                <span className="inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-2xs font-medium text-white bg-black/30 backdrop-blur-md">
+                  <Fingerprint className="h-2.5 w-2.5" aria-hidden />
+                  Soulbound
+                </span>
+              )}
+              {hasPrice && (
+                <span className="inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-2xs font-bold tabular-nums text-white bg-black/30 backdrop-blur-md">
+                  <CurrencyIcon symbol={price!.currency} size={10} />
+                  {formatCompactPrice(price!.formatted!)}
+                  {price!.currency && !hasCurrencyIcon(price!.currency) ? ` ${price!.currency}` : ""}
+                </span>
+              )}
+            </div>
+          )}
+
+          <p className="max-w-full truncate rounded-full px-3 py-1 text-sm font-bold leading-tight text-white bg-black/30 backdrop-blur-md">
             {name}
           </p>
           {subtitle && (
-            <p className="text-xs text-muted-foreground line-clamp-1 leading-snug">
+            <p className="max-w-full truncate rounded-full px-2.5 py-1 text-2xs font-medium leading-tight text-white bg-black/30 backdrop-blur-md">
               {subtitle}
             </p>
           )}
-        </Link>
-
-        {soulbound && <SoulboundBadge />}
-
-        {hasPrice && !indexing && (
-          <div className="pt-0.5">
-            <PriceDisplay
-              amountFormatted={price!.formatted}
-              currency={price!.currency}
-              usdValue={price!.usdValue}
-              scale="card"
-            />
-          </div>
-        )}
-      </div>
+        </div>
+      </Link>
     </div>
   );
 }
 
 export function AssetCardSkeleton() {
   return (
-    <div className="flex flex-col w-full overflow-hidden rounded-xl bg-card">
-      <div className="aspect-square w-full animate-pulse bg-muted" />
-      <div className="px-3 py-3 space-y-1.5">
-        <div className="h-4 w-3/4 rounded-md animate-pulse bg-muted" />
-        <div className="h-3.5 w-2/5 rounded-md animate-pulse bg-muted" />
+    <div className="overflow-hidden rounded-[calc(var(--radius)*1.25)]">
+      <div className="relative aspect-square w-full overflow-hidden bg-foreground/[0.04]">
+        <div className="absolute inset-0 animate-pulse bg-foreground/[0.04]" />
+        <div className="absolute bottom-3 left-3 right-3 space-y-1.5">
+          <div className="h-4 w-2/3 rounded-md bg-muted-foreground/20 animate-pulse" />
+          <div className="h-3 w-1/3 rounded-md bg-muted-foreground/20 animate-pulse" />
+        </div>
       </div>
     </div>
   );

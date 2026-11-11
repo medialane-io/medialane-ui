@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.341.0] — 2026-11-11
+
+### Changed
+
+- `AssetCard`: the artwork fills the card, with the price and name on glass pills over the image, like the collection card.
+- Card images load on a soft translucent tint instead of solid grey.
+
 ## [0.340.0] — 2026-11-11
 
 ### Added
