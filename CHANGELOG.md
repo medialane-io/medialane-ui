@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.337.0] — 2026-11-11
+
+### Changed
+
+- Rights: the facts use their original icons and color again.
+
 ## [0.336.0] — 2026-11-11
 
 ### Added

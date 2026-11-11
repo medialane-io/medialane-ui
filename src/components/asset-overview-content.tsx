@@ -1,7 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { Check, CircleAlert, ExternalLink, Percent, X } from "lucide-react";
+import { Bot, DollarSign, ExternalLink, GitBranch, Globe, Percent, UserCheck } from "lucide-react";
 import { IPTypeDisplay } from "./ip-type-display.js";
 import { AddressDisplay } from "./address-display.js";
 import { MarkdownText } from "./markdown-text.js";
@@ -24,13 +24,6 @@ interface AssetOverviewContentProps {
 function licenseLabel(value: string): string {
   const label = LICENSE_TYPES.find((license) => license.value === value)?.label ?? value;
   return label.split(" — ")[1] ?? label;
-}
-
-function statusIcon(value: string): ReactNode {
-  const v = value.trim().toLowerCase();
-  if (["yes", "allowed", "worldwide", "not required"].includes(v)) return <Check className="h-4 w-4 text-emerald-500" />;
-  if (["no", "not allowed"].includes(v)) return <X className="h-4 w-4 text-destructive" />;
-  return <CircleAlert className="h-4 w-4 text-amber-500" />;
 }
 
 const isAddressLike = (v?: unknown): boolean =>
@@ -86,12 +79,12 @@ export function AssetOverviewContent({
   const licenseDescription = LICENSE_TYPES.find((license) => license.value === licenseType)?.description;
 
   const facts = [
-    { label: "Commercial use", value: commercialUse },
-    { label: "Derivatives", value: derivatives },
-    { label: "Attribution", value: attribution },
-    { label: "Territory", value: territory },
-    { label: "AI & data mining", value: aiPolicy },
-    { label: "Royalty", value: royalty, icon: <Percent className="h-4 w-4" /> },
+    { icon: <DollarSign className="h-4 w-4" />, label: "Commercial use", value: commercialUse },
+    { icon: <GitBranch className="h-4 w-4" />, label: "Derivatives", value: derivatives },
+    { icon: <UserCheck className="h-4 w-4" />, label: "Attribution", value: attribution },
+    { icon: <Globe className="h-4 w-4" />, label: "Territory", value: territory },
+    { icon: <Bot className="h-4 w-4" />, label: "AI & data mining", value: aiPolicy },
+    { icon: <Percent className="h-4 w-4" />, label: "Royalty", value: royalty },
   ].filter((row) => !!row.value);
 
   return (
@@ -129,7 +122,7 @@ export function AssetOverviewContent({
             </div>
 
             {facts.map(({ icon, label, value }) => (
-              <Cell key={label} icon={icon ?? statusIcon(String(value))} label={label} value={value} />
+              <Cell key={label} icon={icon} label={label} value={value} />
             ))}
 
             <div className="col-span-full rounded-xl bg-muted/25 ring-1 ring-border/40 p-3.5">
