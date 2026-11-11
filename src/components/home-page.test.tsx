@@ -52,3 +52,19 @@ test("home shows a featured listings strip asking for featured collections only"
   expect(view.getByText("Featured")).toBeTruthy();
   expect(queries).toContainEqual(expect.objectContaining({ status: "ACTIVE", isFeatured: true }));
 });
+
+test("the featured listings strip stands alone with Buy through the given actions", async () => {
+  const { FeaturedListings } = await import("./home-page.js");
+  const queries: Record<string, unknown>[] = [];
+  const client = { api: { orders: { list: async (q: Record<string, unknown>) => { queries.push(q); return { data: [listing("9", OTHER)], meta: { page: 1, limit: 20, total: 1 } }; } } } } as unknown as MedialaneClient;
+  const app = { getClient: () => client, getSigner: () => { throw new Error("unused"); }, walletAddress: ME, onRequireWallet: () => {} } as MedialaneApp;
+  const bought: string[] = [];
+  const market = { buy: (o: ApiOrder) => bought.push(o.orderHash), offer: () => {}, dialogs: null };
+  globalThis.fetch = (async () => new Response(JSON.stringify({ data: { usd: { STRK: 0.5 } } }))) as unknown as typeof fetch;
+  const view = render(<SWRConfig value={{ provider: () => new Map() }}><MedialaneAppProvider value={app}><FeaturedListings market={market} /></MedialaneAppProvider></SWRConfig>);
+  await waitFor(() => expect(view.getAllByText("Piece 9").length).toBeGreaterThan(0));
+  expect(view.getByText("Featured")).toBeTruthy();
+  expect(queries).toContainEqual(expect.objectContaining({ status: "ACTIVE", isFeatured: true }));
+  fireEvent.click(view.getAllByRole("button").filter((b) => (b.textContent ?? "").trim() === "Buy")[0]!);
+  expect(bought).toEqual(["9"]);
+});
