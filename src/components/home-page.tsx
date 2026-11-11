@@ -87,7 +87,7 @@ function NewListings({ market }: { market: CollectionMarketActions }) {
   );
 }
 
-function FeaturedListings({ market }: { market: CollectionMarketActions }) {
+export function FeaturedListings({ market }: { market: CollectionMarketActions }) {
   return (
     <ListingsStrip
       market={market}

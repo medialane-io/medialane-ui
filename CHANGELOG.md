@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.340.0] — 2026-11-11
+
+### Added
+
+- `FeaturedListings`: the Featured strip of listed assets from featured collections, for pages other than the home page.
+
 ## [0.339.0] — 2026-11-11
 
 ### Removed

@@ -283,7 +283,7 @@ export { ApproveMintDialog, type ApproveMintDialogProps } from "./components/app
 export { DiscoverPage, type DiscoverPageProps } from "./components/discover-page.js";
 export { DiscoverCommunitySection } from "./components/discover-community-section.js";
 export { IpTypeNav } from "./components/ip-type-nav.js";
-export { HomePage, type HomePageProps } from "./components/home-page.js";
+export { HomePage, FeaturedListings, type HomePageProps } from "./components/home-page.js";
 export { CreatorsPage } from "./components/creators-page.js";
 export { BackButton } from "./components/back-button.js";
 export { SignInPrompt } from "./components/sign-in-prompt.js";
