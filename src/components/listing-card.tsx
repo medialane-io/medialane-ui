@@ -58,7 +58,7 @@ export function ListingCard({ order: rawOrder, inCart = false, onBuy, onCart, ov
     return (
       <MotionCard className="group overflow-hidden rounded-[calc(var(--radius)*1.25)] bg-card">
         <Link href={assetHref} className="block">
-          <div className="relative aspect-square bg-muted overflow-hidden">
+          <div className="relative aspect-square bg-foreground/[0.04] overflow-hidden">
             <AnimatedTokenMedia
               image={image}
               animationUrl={animationUrl}
@@ -87,7 +87,7 @@ export function ListingCard({ order: rawOrder, inCart = false, onBuy, onCart, ov
   return (
     <MotionCard className="group overflow-hidden rounded-[calc(var(--radius)*1.25)] bg-card">
       <Link href={assetHref} className="block">
-        <div className="relative aspect-square bg-muted overflow-hidden">
+        <div className="relative aspect-square bg-foreground/[0.04] overflow-hidden">
           <AnimatedTokenMedia
             image={image}
             animationUrl={animationUrl}
@@ -167,7 +167,7 @@ export function ListingCard({ order: rawOrder, inCart = false, onBuy, onCart, ov
 export function ListingCardSkeleton() {
   return (
     <div className="overflow-hidden rounded-[calc(var(--radius)*1.25)] bg-card">
-      <div className="aspect-square w-full bg-muted animate-pulse" />
+      <div className="aspect-square w-full bg-foreground/[0.04] animate-pulse" />
       <div className="p-3.5 space-y-2.5">
         <div className="space-y-1">
           <div className="h-4 w-3/4 bg-muted animate-pulse rounded" />
