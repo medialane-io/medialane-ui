@@ -4,14 +4,17 @@ mock.module("next/navigation", () => ({ useSearchParams: () => new URLSearchPara
 mock.module("next/image", () => ({ default: () => <div /> }));
 globalThis.fetch = (async () => new Response(JSON.stringify({ data: { usd: {} } }))) as unknown as typeof fetch;
 
-const { cleanup, render } = await import("@testing-library/react");
+const { cleanup, render, waitFor } = await import("@testing-library/react");
 const { MediaWalletHome } = await import("./media-wallet-home.js");
 const { MediaWalletAppContext } = await import("./types.js");
 const { MedialaneAppProvider } = await import("../medialane-app.js");
 import type { MediaWalletAppProps } from "./types.js";
 import type { MedialaneApp } from "../medialane-app.js";
 
-afterEach(() => cleanup());
+afterEach(() => {
+  cleanup();
+  ownedTokens = [];
+});
 
 const app = (over: Partial<MediaWalletAppProps>): MediaWalletAppProps =>
   ({
@@ -24,9 +27,11 @@ const app = (over: Partial<MediaWalletAppProps>): MediaWalletAppProps =>
     ...over,
   }) as unknown as MediaWalletAppProps;
 
+let ownedTokens: unknown[] = [];
+
 const medialaneApp = {
   getClient: () => ({
-    api: { tokens: { ownedBy: async () => ({ data: [] }) } },
+    api: { tokens: { ownedBy: async () => ({ data: ownedTokens }) } },
     provider: { callContract: async () => ["0x0", "0x0"] },
   }),
   getSigner: () => { throw new Error("unused"); },
@@ -63,4 +68,29 @@ test("no email banner once the email is verified", () => {
 test("the external wallet link uses the app's label and address", () => {
   const { getByText } = renderHome(app({ externalWallet: { href: "https://starknet.example", label: "Use another Starknet wallet" } }));
   expect(getByText("Use another Starknet wallet").closest("a")?.getAttribute("href")).toBe("https://starknet.example");
+});
+
+test("without minted NFTs the NFTs title is not shown", async () => {
+  const { queryByText, getByText } = renderHome(app({}));
+  expect(queryByText("NFTs")).toBeNull();
+  await waitFor(() => expect(getByText("Creator Launchpad")).toBeTruthy());
+  expect(queryByText("NFTs")).toBeNull();
+});
+
+test("the Creator Launchpad card comes after the NFTs", async () => {
+  ownedTokens = [{ contractAddress: "0xabc", tokenId: "1", metadata: { name: "One", image: null, ipType: null } }];
+  const { getByText } = renderHome(
+    app({ useWalletSession: () => ({ address: "0x36a8000000000000000000000000000000000030e3", hasWallet: true, isDeployed: true, signer: null }) } as never),
+  );
+  await waitFor(() => expect(getByText("NFTs")).toBeTruthy());
+  const nfts = getByText("NFTs");
+  const launchpad = getByText("Creator Launchpad");
+  expect(nfts.compareDocumentPosition(launchpad) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+});
+
+test("Fund your account is a soft button, not a filled one", () => {
+  const { getByText } = renderHome(app({}));
+  const button = getByText("Fund your account");
+  expect(button.className).toContain("bg-foreground/[0.06]");
+  expect(button.getAttribute("style")).toBeNull();
 });

@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.338.0] — 2026-11-11
+
+### Changed
+
+- Media wallet: Fund your account is a soft button, Creator Launchpad comes after the NFTs, and the NFTs title shows only when there are NFTs.
+
 ## [0.337.0] — 2026-11-11
 
 ### Changed

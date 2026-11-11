@@ -6,7 +6,6 @@ import { useRouter } from "../router.js";
 import { CurrencyIcon } from "../currency-icon.js";
 import { useTokenBalance } from "../../utils/media-wallet/use-erc20-balance.js";
 import { useTokensByOwner } from "../../utils/use-tokens.js";
-import { BRAND_COLOR } from "../../data/brand.js";
 import { ActivateCard } from "./activate-card.js";
 import { QuickAction } from "./quick-action.js";
 import { ReceiveCard } from "./receive-card.js";
@@ -136,22 +135,11 @@ export function MediaWalletHome({
               </span>
               <button
                 onClick={() => setPanel(panel === "receive" ? null : "receive")}
-                className="h-[48px] rounded-[13px] px-8 text-[15px] font-semibold text-white transition-transform active:scale-[0.99]"
-                style={{ background: `linear-gradient(115deg, ${BRAND_COLOR.blue}, ${BRAND_COLOR.purple})` }}
+                className="h-10 rounded-xl bg-foreground/[0.06] px-6 text-sm font-semibold text-foreground transition-colors hover:bg-foreground/[0.1] active:scale-[0.99]"
               >
                 Fund your account
               </button>
             </div>
-            <button
-              onClick={goLaunch}
-              className="flex flex-col items-center gap-2 rounded-[20px] border-2 border-dashed border-border px-6 py-8 text-center transition-colors hover:border-primary/50 active:scale-[0.99]"
-            >
-              <div className="grid h-11 w-11 place-items-center rounded-full bg-foreground/[0.06]">
-                <RocketIcon />
-              </div>
-              <span className="text-[15px] font-semibold text-foreground">Creator Launchpad</span>
-              <span className="text-xs text-muted-foreground">Protect and monetize your work</span>
-            </button>
           </div>
         )
       )}
@@ -213,13 +201,26 @@ export function MediaWalletHome({
         </section>
       )}
 
-      {(nftItems.length > 0 || loadingNfts) && (
+      {nftItems.length > 0 && (
         <section>
           <SectionHeader title="NFTs" />
           <div className="mt-2">
             <NftStrip items={nftItems} isLoading={loadingNfts} onNavigate={onClose} resolveImage={resolveImage} />
           </div>
         </section>
+      )}
+
+      {!funded && isDeployed === true && (
+        <button
+          onClick={goLaunch}
+          className="flex flex-col items-center gap-2 rounded-[20px] border-2 border-dashed border-border px-6 py-8 text-center transition-colors hover:border-primary/50 active:scale-[0.99]"
+        >
+          <div className="grid h-11 w-11 place-items-center rounded-full bg-foreground/[0.06]">
+            <RocketIcon />
+          </div>
+          <span className="text-[15px] font-semibold text-foreground">Creator Launchpad</span>
+          <span className="text-xs text-muted-foreground">Protect and monetize your work</span>
+        </button>
       )}
 
       {activated && (
