@@ -17,7 +17,7 @@ export function useComments(contract: string, tokenId: string, page = 1, limit =
   const { data, error, isLoading, mutate } = useSWR(
     contract && tokenId ? ["comments", contract, tokenId, page, limit] : null,
     () => client.api.tokens.comments(contract, tokenId, { page, limit }),
-    { refreshInterval: 60_000, revalidateOnFocus: false, dedupingInterval: 10_000 },
+    { revalidateOnFocus: false, dedupingInterval: 10_000 },
   );
   return { comments: data?.data ?? [], total: data?.meta?.total ?? 0, isLoading, error, mutate };
 }
