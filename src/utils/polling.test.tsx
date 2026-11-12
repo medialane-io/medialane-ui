@@ -1,5 +1,5 @@
-import { afterEach, beforeEach, expect, jest, test } from "bun:test";
-import { act, renderHook } from "@testing-library/react";
+import { beforeEach, expect, test } from "bun:test";
+import { act, renderHook, waitFor } from "@testing-library/react";
 import { SWRConfig } from "swr";
 import type { MedialaneClient } from "@medialane/sdk/starknet";
 import { MedialaneAppProvider, type MedialaneApp } from "../components/medialane-app.js";
@@ -14,6 +14,8 @@ import { useTokensByOwner } from "./use-tokens.js";
 import { useUsdPrices } from "./use-usd-prices.js";
 
 const ADDRESS = "0x" + "a".repeat(64);
+const BACKGROUND_MS = 25_000;
+const realSetTimeout = globalThis.setTimeout;
 
 let count = 0;
 const hit = async () => {
@@ -39,26 +41,26 @@ function Wrapper({ children }: { children: React.ReactNode }) {
   );
 }
 
-async function callsAfterFiveMinutes(use: () => unknown): Promise<number> {
-  jest.useFakeTimers();
-  renderHook(use, { wrapper: Wrapper });
-  for (let i = 0; i < 5; i++) await act(async () => { await Promise.resolve(); });
-  for (let i = 0; i < 10; i++) {
+async function backgroundTimersAfterLoad(use: () => unknown): Promise<number[]> {
+  const delays: number[] = [];
+  globalThis.setTimeout = ((fn: () => void, ms?: number, ...args: unknown[]) => {
+    if (typeof ms === "number" && ms >= BACKGROUND_MS) delays.push(ms);
+    return realSetTimeout(fn, ms, ...args);
+  }) as unknown as typeof setTimeout;
+  try {
+    renderHook(use, { wrapper: Wrapper });
+    await waitFor(() => expect(count).toBeGreaterThanOrEqual(1));
     await act(async () => {
-      jest.advanceTimersByTime(30_000);
-      await Promise.resolve();
-      await Promise.resolve();
+      await new Promise((resolve) => realSetTimeout(resolve, 30));
     });
+    return delays;
+  } finally {
+    globalThis.setTimeout = realSetTimeout;
   }
-  return count;
 }
 
 beforeEach(() => {
   count = 0;
-});
-
-afterEach(() => {
-  jest.useRealTimers();
 });
 
 const loadsOnce: Array<[string, () => unknown]> = [
@@ -77,28 +79,28 @@ const loadsOnce: Array<[string, () => unknown]> = [
 ];
 
 for (const [name, use] of loadsOnce) {
-  test(`${name} fetches once and does not poll`, async () => {
-    expect(await callsAfterFiveMinutes(use)).toBe(1);
+  test(`${name} schedules no background refresh`, async () => {
+    expect(await backgroundTimersAfterLoad(use)).toEqual([]);
   });
 }
 
-test("useUsdPrices fetches once and does not poll", async () => {
+test("useUsdPrices schedules no background refresh beyond sharing one result", async () => {
   const realFetch = globalThis.fetch;
   globalThis.fetch = (async () => {
     count++;
     return Response.json({ data: { usd: { STRK: 1 } } });
   }) as unknown as typeof fetch;
   try {
-    expect(await callsAfterFiveMinutes(() => useUsdPrices())).toBe(1);
+    expect(await backgroundTimersAfterLoad(() => useUsdPrices())).toEqual([60_000]);
   } finally {
     globalThis.fetch = realFetch;
   }
 });
 
-test("useTokenListings still refreshes while the token is viewed", async () => {
-  expect(await callsAfterFiveMinutes(() => useTokenListings(ADDRESS, "1"))).toBeGreaterThan(1);
+test("useTokenListings still refreshes every 60 seconds while the token is viewed", async () => {
+  expect(await backgroundTimersAfterLoad(() => useTokenListings(ADDRESS, "1"))).toEqual([60_000]);
 });
 
-test("useCounterOffers still refreshes while the order is viewed", async () => {
-  expect(await callsAfterFiveMinutes(() => useCounterOffers({ originalOrderHash: "0x1" }))).toBeGreaterThan(1);
+test("useCounterOffers still refreshes every 60 seconds while the order is viewed", async () => {
+  expect(await backgroundTimersAfterLoad(() => useCounterOffers({ originalOrderHash: "0x1" }))).toEqual([60_000]);
 });
