@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.343.0] — 2026-11-12
+
+### Added
+
+- `useSwapQuote` and `useRemixOffers`, shared by the apps. Both read the client and the wallet from `MedialaneAppProvider` and fetch only while `signedIn` is true.
+- `MedialaneApp.signedIn`: whether a session exists for the current wallet.
+
 ## [0.342.0] — 2026-11-12
 
 ### Changed

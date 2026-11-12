@@ -551,6 +551,9 @@ export {
   useReceivedOffers, useCollectionFloorListings,
 } from "./utils/use-orders.js";
 export { useTokenRemixes } from "./utils/use-remix-offers.js";
+export { useRemixOffers } from "./utils/use-my-remix-offers.js";
+export { useSwapQuote, swapQuoteKey } from "./utils/use-swap-quote.js";
+export type { SwapToken, SwapAmountMode, SwapQuoteSummary } from "./utils/use-swap-quote.js";
 export { RemixesTab } from "./components/remixes-tab.js";
 export type { RemixesTabProps } from "./components/remixes-tab.js";
 
