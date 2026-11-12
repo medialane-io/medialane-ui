@@ -1,4 +1,4 @@
-import type { ApiActivity, ApiOrder } from "@medialane/sdk";
+import type { ApiActivity } from "@medialane/sdk";
 import { assetHref } from "@medialane/sdk";
 import { formatDisplayPrice } from "./format.js";
 import { createImageResolver, type ImageResolver } from "./ipfs.js";
@@ -82,54 +82,4 @@ export function formatActivity(event: ApiActivity, resolveImage: ImageResolver =
     default:
       return { title: event.type ?? "Activity", description: name, image, href };
   }
-}
-
-export function formatOrderNotification(order: ApiOrder, resolveImage: ImageResolver = defaultResolver): FormattedEvent {
-  const name   = order.token?.name ?? `#${order.consideration.identifier}`;
-  const raw    = order.token?.image ?? null;
-  const image  = resolveImage(raw);
-  const href   = assetHref("STARKNET", order.consideration.token, order.consideration.identifier);
-  const p      = price(order.price);
-  const from   = short(order.offerer);
-
-  return {
-    title: `Offer on ${name}`,
-    description: p ? `${p} from ${from}` : `From ${from}`,
-    image,
-    href,
-  };
-}
-
-export function formatOfferAcceptedNotification(order: ApiOrder, resolveImage: ImageResolver = defaultResolver): FormattedEvent {
-  const name  = order.token?.name ?? `#${order.nftTokenId}`;
-  const raw   = order.token?.image ?? null;
-  const image = resolveImage(raw);
-  const href  = order.nftContract && order.nftTokenId
-    ? assetHref("STARKNET", order.nftContract, order.nftTokenId)
-    : "/portfolio/assets";
-  const p = price(order.price);
-
-  return {
-    title: `Your offer was accepted`,
-    description: p ? `${name} · ${p}` : name,
-    image,
-    href,
-  };
-}
-
-export function formatAssetReceivedNotification(event: ApiActivity, resolveImage: ImageResolver = defaultResolver): FormattedEvent {
-  const contract = event.nftContract ?? event.contractAddress ?? "";
-  const tokenId  = event.nftTokenId ?? event.tokenId ?? "";
-  const href     = contract && tokenId ? assetHref("STARKNET", contract, tokenId) : "/portfolio/assets";
-  const raw      = event.token?.image ?? null;
-  const image    = resolveImage(raw);
-  const name     = event.token?.name ?? (tokenId ? `#${tokenId}` : "an asset");
-  const from     = event.from ? short(event.from) : null;
-
-  return {
-    title: `Asset received`,
-    description: from ? `${name} from ${from}` : name,
-    image,
-    href,
-  };
 }

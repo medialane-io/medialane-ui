@@ -1,53 +1,15 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import useSWR from "swr";
-import Link from "next/link";
 import { useActivities } from "../utils/use-activities.js";
 import type { ApiActivitiesQuery, ApiActivity } from "@medialane/sdk";
 import { Skeleton } from "./skeleton.js";
 import { LoadMoreSentinel } from "./load-more-sentinel.js";
-import { Zap, Megaphone, ArrowRight, Pin } from "lucide-react";
+import { Zap } from "lucide-react";
 import { ACTIVITY_TYPE_CONFIG, TYPE_FILTERS } from "../data/activity.js";
 import { ActivityRow } from "./activity-row.js";
 import { cn } from "../utils/cn.js";
-import type { Announcement } from "../data/notification.js";
 import { emptyMessages } from "../utils/empty-messages.js";
-
-async function fetchAnnouncements(): Promise<Announcement[]> {
-  const res = await fetch("/api/announcements");
-  if (!res.ok) return [];
-  return res.json();
-}
-
-function AnnouncementsBanner({ announcements }: { announcements: Announcement[] }) {
-  const pinned = announcements.filter((a) => a.pinned);
-  if (pinned.length === 0) return null;
-  return (
-    <div className="space-y-2">
-      {pinned.map((ann) => (
-        <Link
-          key={ann.id}
-          href={ann.href}
-          className="flex items-start gap-3 rounded-xl border border-brand-purple/20 bg-brand-purple/5 px-4 py-3 hover:bg-brand-purple/10 transition-colors group"
-        >
-          <div className="h-8 w-8 rounded-lg bg-brand-purple/10 flex items-center justify-center shrink-0 mt-0.5">
-            <Megaphone className="h-3.5 w-3.5 text-brand-purple" />
-          </div>
-          <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-1.5 mb-0.5">
-              <Pin className="h-2.5 w-2.5 text-brand-purple/60" />
-              <span className="text-2xs font-bold uppercase tracking-widest text-brand-purple/60">Announcement</span>
-            </div>
-            <p className="text-sm font-semibold leading-snug">{ann.title}</p>
-            <p className="text-xs text-muted-foreground mt-0.5 truncate">{ann.body}</p>
-          </div>
-          <ArrowRight className="h-4 w-4 text-muted-foreground group-hover:text-foreground transition-colors shrink-0 mt-1" />
-        </Link>
-      ))}
-    </div>
-  );
-}
 
 const PAGE_SIZE = 30;
 
@@ -55,11 +17,6 @@ export function ActivitiesFeed() {
   const [page, setPage] = useState(1);
   const [typeFilter, setTypeFilter] = useState("");
   const [allActivities, setAllActivities] = useState<ApiActivity[]>([]);
-  const { data: announcements = [] } = useSWR<Announcement[]>(
-    "announcements",
-    fetchAnnouncements,
-    { revalidateOnFocus: false }
-  );
 
   const prevType = useRef(typeFilter);
   useEffect(() => {
@@ -100,8 +57,6 @@ export function ActivitiesFeed() {
 
   return (
     <div className="space-y-5">
-      <AnnouncementsBanner announcements={announcements} />
-
       {total != null && (
         <div className="flex items-center gap-2 text-sm text-muted-foreground">
           <span className="flex items-center gap-1.5">

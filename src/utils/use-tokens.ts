@@ -66,14 +66,13 @@ export function useTokensByOwner(
   address: string | null,
   page = 1,
   limit = 20,
-  refreshMs = 60_000,
 ) {
   const client = useMedialaneClient();
 
   const { data, error, isLoading, mutate } = useSWR(
     address ? queryKeys.tokensOwned(address, page, limit) : null,
     () => client.api.tokens.ownedBy(address!, { page: page, limit: limit }),
-    { revalidateOnFocus: false, refreshInterval: refreshMs, revalidateOnMount: true }
+    { revalidateOnFocus: false, revalidateOnMount: true }
   );
 
   return {

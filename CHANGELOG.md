@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.342.0] — 2026-11-12
+
+### Changed
+
+- Lists, prices, comments, activity and collections load once instead of refreshing in the background. A viewed token's listings and counter offers, live drops, balances and the indexing wait still refresh.
+
+### Removed
+
+- Notifications: `useNotifications`, `NotificationRow`, the notification types and icons, the read-state helpers and the three notification formatters.
+- The announcements banner on the activity feed.
+- The `refreshMs` argument of `useTokensByOwner`.
+
 ## [0.341.0] — 2026-11-11
 
 ### Changed

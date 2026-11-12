@@ -22,7 +22,6 @@ export {
   type PinnedAsset,
 } from "./utils/ipfs-upload.js";
 export { useIntersectionActive } from "./utils/use-intersection-active.js";
-export { getReadIds, markRead } from "./utils/notification-storage.js";
 export { licenseSummary } from "./utils/license-summary.js";
 export {
   isBareExecuteFailure,
@@ -229,9 +228,6 @@ export type { ContentTypeConfig } from "./data/gated-content-types.js";
 export { CollapsibleSection } from "./components/collapsible-section.js";
 export { useUsdPrices, usdPriceFor, usdValueFor } from "./utils/use-usd-prices.js";
 export type { UsdPrices } from "./utils/use-usd-prices.js";
-export { NotificationRow } from "./components/notification-row.js";
-export type { NotificationRowProps } from "./components/notification-row.js";
-export { NOTIFICATION_ICON, NOTIFICATION_COLOR, NOTIFICATION_LABEL } from "./data/notification-meta.js";
 export type { ActivityRowProps } from "./components/activity-row.js";
 export { ActivityFeedShell } from "./components/activity-feed-shell.js";
 export type { ActivityFeedShellProps } from "./components/activity-feed-shell.js";
@@ -513,9 +509,7 @@ export type {
 } from "./components/fast-mint/types.js";
 export { readBodyWithCap } from "./utils/proxy-body.js";
 export type { CappedBody } from "./utils/proxy-body.js";
-export {
-  formatActivity, formatOrderNotification, formatOfferAcceptedNotification, formatAssetReceivedNotification,
-} from "./utils/format-activity.js";
+export { formatActivity } from "./utils/format-activity.js";
 export type { FormattedEvent } from "./utils/format-activity.js";
 
 export { queryKeys, queryKeyPrefix, QUERY_PREFIX } from "./utils/query-keys.js";
@@ -556,8 +550,6 @@ export {
   useOrders, useOrder, useTokenListings, useUserOrders, useCounterOffers,
   useReceivedOffers, useCollectionFloorListings,
 } from "./utils/use-orders.js";
-export { useNotifications } from "./utils/use-notifications.js";
-export type { Notification, NotificationType, NotificationPriority, Announcement } from "./data/notification.js";
 export { useTokenRemixes } from "./utils/use-remix-offers.js";
 export { RemixesTab } from "./components/remixes-tab.js";
 export type { RemixesTabProps } from "./components/remixes-tab.js";

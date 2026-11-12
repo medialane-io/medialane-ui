@@ -9,7 +9,7 @@ export function useTokensByIpType( ipTypeSlug: string | null, page = 1, limit = 
   const { data, error, isLoading, mutate } = useSWR<ApiResponse<ApiToken[]>>(
     `tokens-by-type-${ipTypeSlug ?? "all"}-${page}-${limit}`,
     () => client.api.tokens.list({ page, limit, sort: "recent", ipType: ipTypeSlug ?? undefined }),
-    { revalidateOnFocus: false, refreshInterval: 30000 }
+    { revalidateOnFocus: false }
   );
   return { tokens: data?.data ?? [], meta: data?.meta, isLoading, error, mutate };
 }

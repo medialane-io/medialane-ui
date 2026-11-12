@@ -11,7 +11,7 @@ export function useActivities( query: ApiActivitiesQuery = {}) {
   const { data, error, isLoading, mutate } = useSWR<ApiResponse<ApiActivity[]>>(
     key,
     () => client.api.activity.list(query),
-    { revalidateOnFocus: false, refreshInterval: 30000 }
+    { revalidateOnFocus: false }
   );
 
   return {
@@ -29,7 +29,7 @@ export function useActivitiesByAddress( address: string | null) {
   const { data, error, isLoading, mutate } = useSWR(
     address ? `activities-${address}` : null,
     () => client.api.activity.byAddress(address!),
-    { revalidateOnFocus: false, refreshInterval: 30000 }
+    { revalidateOnFocus: false }
   );
 
   return { activities: data?.data ?? [], isLoading, error, mutate };

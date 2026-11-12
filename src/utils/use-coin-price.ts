@@ -7,14 +7,12 @@ import type { CoinCollectionLike, CoinPriceLike } from "../data/coins.js";
 import { useMedialaneClient } from "./use-medialane-client.js";
 import { normalizeAddress } from "@medialane/sdk";
 
-const REFRESH_MS = 60_000;
-
 function useAllCoinPrices() {
   const client = useMedialaneClient();
   const { data, isLoading } = useSWR<ApiCoinPrices>(
     "coin-prices",
     async () => await client.api.coins.prices(),
-    { revalidateOnFocus: false, refreshInterval: REFRESH_MS, shouldRetryOnError: false }
+    { revalidateOnFocus: false, shouldRetryOnError: false }
   );
   return { prices: data ?? null, isLoading };
 }

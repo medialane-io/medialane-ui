@@ -34,7 +34,6 @@ async function fetchUsdPrices(): Promise<UsdPrices | null> {
 
 export function useUsdPrices(): UsdPrices | null {
   const { data } = useSWR(PRICES_KEY, fetchUsdPrices, {
-    refreshInterval: REFRESH_MS,
     dedupingInterval: REFRESH_MS,
     revalidateOnFocus: false,
     revalidateOnReconnect: true,
