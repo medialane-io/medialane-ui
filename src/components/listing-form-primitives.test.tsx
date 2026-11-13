@@ -24,3 +24,9 @@ test("the asset summary shows the name and image", () => {
   expect(html).toContain('data-alt="Sunrise"');
   expect(html).toContain("Multi-edition");
 });
+
+test("the duration picker always renders three columns", () => {
+  const html = renderToStaticMarkup(<DurationPicker options={options} value={63072000} onChange={() => {}} {...({ cols: 4 } as object)} />);
+  expect(html).toContain("grid-cols-3");
+  expect(html).not.toContain("grid-cols-4");
+});

@@ -315,12 +315,11 @@ interface DurationPickerProps {
   value: number;
   onChange: (value: number) => void;
   disabled?: boolean;
-  cols?: 3 | 4;
 }
 
-export function DurationPicker({ options, value, onChange, disabled, cols = 3 }: DurationPickerProps) {
+export function DurationPicker({ options, value, onChange, disabled }: DurationPickerProps) {
   return (
-    <div className={cols === 4 ? "grid grid-cols-4 gap-2" : "grid grid-cols-3 gap-2"}>
+    <div className="grid grid-cols-3 gap-2">
       {options.map((opt) => (
         <Button
           key={opt.label}

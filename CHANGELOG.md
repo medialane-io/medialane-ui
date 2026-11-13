@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.350.0] — 2026-11-13
+
+### Added
+
+- `BrandButton`: the animated-border button, with `md` and `lg` sizes and an `asChild` option.
+- `OrderFields`, `orderFormSchema`, `counterOfferFormSchema` and `LISTABLE_CURRENCIES`: the price, currency, quantity and duration fields and their validation, shared by the listing and offer forms.
+- `useSession`, `refreshSession`, `sessionEmail` and `fetchSession`: the account session hook.
+
+### Changed
+
+- `DurationPicker` always shows three columns.
+
 ## [0.349.0] — 2026-11-13
 
 ### Changed
