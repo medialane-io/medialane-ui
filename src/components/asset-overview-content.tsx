@@ -60,20 +60,28 @@ const SPAN_LG_3: Record<number, string> = {
   3: "lg:col-span-3",
 };
 
-const DETAIL_TINTS = [
-  "bg-brand-blue/10 [&_p]:text-brand-blue",
-  "bg-brand-rose/10 [&_p]:text-brand-rose",
-  "bg-brand-purple/10 [&_p]:text-brand-purple",
-  "bg-brand-orange/10 [&_p]:text-brand-orange",
-];
+function detailSpans(count: number): number[] {
+  const out: number[] = [];
+  while (out.length < count) {
+    const left = count - out.length;
+    if (left >= 5) out.push(1, 2, 1);
+    else if (left === 4 || left === 2) out.push(...Array(left).fill(2));
+    else if (left === 3) out.push(1, 2, 1);
+    else out.push(4);
+  }
+  return out.slice(0, count);
+}
 
-function Cell({ label, value, className }: { label: string; value: ReactNode; className?: string }) {
+const DETAIL_DOTS = ["bg-brand-blue", "bg-brand-rose", "bg-brand-purple", "bg-brand-orange"];
+
+function Cell({ label, value, dot, className }: { label: string; value: ReactNode; dot: string; className?: string }) {
   return (
     <div
-      className={`flex flex-col justify-end gap-1 rounded-3xl px-5 py-4 min-h-[5.5rem] ${className ?? ""}`}
+      className={`flex flex-col justify-end gap-1.5 rounded-3xl bg-foreground/[0.06] px-5 py-4 min-h-[5.5rem] ${className ?? ""}`}
     >
-      <p className="text-xs font-medium truncate" title={label}>
-        {label}
+      <p className="flex items-center gap-2 text-xs font-medium text-muted-foreground" title={label}>
+        <span aria-hidden className={`h-2 w-2 shrink-0 rounded-full ${dot}`} />
+        <span className="truncate">{label}</span>
       </p>
       <div className="text-lg font-semibold leading-tight tracking-tight text-foreground break-words">{value}</div>
     </div>
@@ -104,7 +112,7 @@ export function AssetOverviewContent({
   const facts = [
     { icon: DollarSign, label: "Commercial use", value: commercialUse, tile: "bg-brand-orange text-white", pill: "bg-white/20" },
     { icon: GitBranch, label: "Derivatives", value: derivatives, tile: "bg-brand-rose text-white", pill: "bg-white/20" },
-    { icon: UserCheck, label: "Attribution", value: attribution, tile: "bg-foreground text-background", pill: "bg-background/15" },
+    { icon: UserCheck, label: "Attribution", value: attribution, tile: "bg-[hsl(250_45%_14%)] text-white ring-1 ring-white/10", pill: "bg-white/15" },
     { icon: Globe, label: "Territory", value: territory, tile: "bg-brand-blue text-white", pill: "bg-white/20" },
     { icon: Bot, label: "AI & data mining", value: aiPolicy, tile: "bg-brand-purple text-white", pill: "bg-white/20" },
     { icon: Percent, label: "Royalty", value: royalty, tile: "bg-brand-orange text-white", pill: "bg-white/20" },
@@ -114,7 +122,7 @@ export function AssetOverviewContent({
   const factSpansLg = bentoSpans(facts.length);
   const detailUnits = displayAttributes.map((attribute) => (isAddressLike(attribute.value) ? 2 : 1));
   const detailSpans2 = fillSpans(detailUnits, 2);
-  const detailSpansSm = fillSpans(detailUnits, 4);
+  const detailSpansSm = detailSpans(displayAttributes.length).map((span, index) => Math.max(span, detailUnits[index]));
 
   return (
     <div className="mt-4 space-y-7">
@@ -164,7 +172,7 @@ export function AssetOverviewContent({
                   key={label}
                   className={`relative flex flex-col justify-between gap-4 overflow-hidden rounded-[1.75rem] p-5 ${tile} ${SPAN_2[factSpans2[index]]} ${SPAN_LG_3[factSpansLg[index]]}`}
                 >
-                  <Icon aria-hidden className="pointer-events-none absolute -bottom-5 -right-4 h-28 w-28 opacity-15" />
+                  <Icon aria-hidden className="pointer-events-none absolute -right-3 -top-3 h-20 w-20 opacity-15" />
                   <span className={`relative inline-flex w-fit items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium ${pill}`}>
                     <Icon className="h-3.5 w-3.5" />
                     {label}
@@ -174,12 +182,12 @@ export function AssetOverviewContent({
               ))}
             </div>
 
-            <div className="relative col-span-2 lg:col-span-6 flex items-center gap-4 overflow-hidden rounded-[2rem] bg-brand-rose/10 p-5 sm:p-6">
-              <Scale aria-hidden className="pointer-events-none absolute -right-4 -bottom-8 h-32 w-32 -rotate-12 text-brand-rose/15" />
-              <span className="relative flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-brand-rose text-white">
+            <div className="relative col-span-2 lg:col-span-6 flex items-center gap-4 overflow-hidden rounded-[2rem] bg-gradient-to-r from-brand-rose to-brand-orange p-5 text-white sm:p-6">
+              <Scale aria-hidden className="pointer-events-none absolute -right-3 -top-4 h-24 w-24 -rotate-12 text-white/15" />
+              <span className="relative flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white/25">
                 <Scale className="h-5 w-5" />
               </span>
-              <p className="relative max-w-3xl text-sm leading-relaxed text-foreground/80">
+              <p className="relative pr-16 text-sm leading-relaxed text-white/95">
                 Creative work is protected with international copyright law. The Berne Convention for the Protection of Literary and Artistic Works is the foundational international copyright treaty, ratified by 181 signatory countries.
               </p>
             </div>
@@ -195,7 +203,8 @@ export function AssetOverviewContent({
               <Cell
                 key={index}
                 label={attribute.trait_type ?? "Trait"}
-                className={`${DETAIL_TINTS[index % DETAIL_TINTS.length]} ${SPAN_2[detailSpans2[index]]} ${SPAN_SM_4[detailSpansSm[index]]}`}
+                dot={DETAIL_DOTS[index % DETAIL_DOTS.length]}
+                className={`${SPAN_2[detailSpans2[index]]} ${SPAN_SM_4[detailSpansSm[index]]}`}
                 value={
                   isAddressLike(attribute.value) ? (
                     <AddressDisplay address={attribute.value!} chars={4} className="text-base font-semibold" />
