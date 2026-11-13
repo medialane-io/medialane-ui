@@ -101,8 +101,8 @@ export function AssetCard({
 
         <div className="absolute inset-x-2 bottom-2 flex flex-col items-start gap-1">
           {indexing && (
-            <span className="flex items-center gap-1 rounded-full px-2.5 py-1 text-2xs text-white bg-black/30 backdrop-blur-md">
-              <Loader2 className="h-2.5 w-2.5 animate-spin" />
+            <span className="flex items-center gap-1 rounded-full px-3 py-1 text-xs text-white bg-black/30 backdrop-blur-md">
+              <Loader2 className="h-3 w-3 animate-spin" />
               Indexing…
             </span>
           )}
@@ -110,14 +110,14 @@ export function AssetCard({
           {(hasPrice || soulbound) && (
             <div className="flex flex-wrap items-center gap-1">
               {soulbound && (
-                <span className="inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-2xs font-medium text-white bg-black/30 backdrop-blur-md">
-                  <Fingerprint className="h-2.5 w-2.5" aria-hidden />
+                <span className="inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-medium text-white bg-black/30 backdrop-blur-md">
+                  <Fingerprint className="h-3 w-3" aria-hidden />
                   Soulbound
                 </span>
               )}
               {hasPrice && (
-                <span className="inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-2xs font-bold tabular-nums text-white bg-black/30 backdrop-blur-md">
-                  <CurrencyIcon symbol={price!.currency} size={10} />
+                <span className="inline-flex items-center gap-1 rounded-full px-3 py-1 text-sm font-bold tabular-nums text-white bg-black/30 backdrop-blur-md">
+                  <CurrencyIcon symbol={price!.currency} size={14} />
                   {formatCompactPrice(price!.formatted!)}
                   {price!.currency && !hasCurrencyIcon(price!.currency) ? ` ${price!.currency}` : ""}
                 </span>
@@ -125,11 +125,11 @@ export function AssetCard({
             </div>
           )}
 
-          <p className="max-w-full truncate rounded-full px-3 py-1 text-sm font-bold leading-tight text-white bg-black/30 backdrop-blur-md">
+          <p className="max-w-full truncate rounded-full px-3.5 py-1.5 text-base font-bold leading-tight text-white bg-black/30 backdrop-blur-md">
             {name}
           </p>
           {subtitle && (
-            <p className="max-w-full truncate rounded-full px-2.5 py-1 text-2xs font-medium leading-tight text-white bg-black/30 backdrop-blur-md">
+            <p className="max-w-full truncate rounded-full px-3 py-1 text-xs font-medium leading-tight text-white bg-black/30 backdrop-blur-md">
               {subtitle}
             </p>
           )}
