@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.345.0] — 2026-11-13
+
+### Changed
+
+- `AssetCard`: the name and price are a little smaller and semibold instead of bold.
+
 ## [0.344.0] — 2026-11-13
 
 ### Changed

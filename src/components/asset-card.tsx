@@ -116,8 +116,8 @@ export function AssetCard({
                 </span>
               )}
               {hasPrice && (
-                <span className="inline-flex items-center gap-1 rounded-full px-3 py-1 text-sm font-bold tabular-nums text-white bg-black/30 backdrop-blur-md">
-                  <CurrencyIcon symbol={price!.currency} size={14} />
+                <span className="inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-semibold tabular-nums text-white bg-black/30 backdrop-blur-md">
+                  <CurrencyIcon symbol={price!.currency} size={12} />
                   {formatCompactPrice(price!.formatted!)}
                   {price!.currency && !hasCurrencyIcon(price!.currency) ? ` ${price!.currency}` : ""}
                 </span>
@@ -125,7 +125,7 @@ export function AssetCard({
             </div>
           )}
 
-          <p className="max-w-full truncate rounded-full px-3.5 py-1.5 text-base font-bold leading-tight text-white bg-black/30 backdrop-blur-md">
+          <p className="max-w-full truncate rounded-full px-3 py-1 text-sm font-semibold leading-tight text-white bg-black/30 backdrop-blur-md">
             {name}
           </p>
           {subtitle && (
