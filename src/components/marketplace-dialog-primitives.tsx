@@ -1,11 +1,12 @@
 "use client";
 
-import type { ReactNode } from "react";
+import { forwardRef, type ChangeEvent, type ComponentProps, type ReactNode } from "react";
 import Image from "./image.js";
 import { AlertCircle, ExternalLink, Loader2, Wallet } from "lucide-react";
 import { Alert, AlertDescription } from "./alert.js";
 import { Button } from "./button.js";
 import { CurrencyIcon } from "./currency-icon.js";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./select.js";
 import { cn } from "../utils/cn.js";
 import { formatDisplayPrice, isStableCurrency } from "../utils/format.js";
 
@@ -320,20 +321,116 @@ interface DurationPickerProps {
 
 export function DurationPicker({ options, value, onChange, disabled, cols = 3 }: DurationPickerProps) {
   return (
-    <div className={cols === 4 ? "grid grid-cols-4 gap-2" : "grid grid-cols-3 gap-2"}>
-      {options.map((opt) => (
-        <Button
-          key={opt.label}
-          type="button"
-          variant={value === opt.seconds ? "default" : "outline"}
-          size="sm"
-          onClick={() => onChange(opt.seconds)}
+    <div
+      role="radiogroup"
+      className={cn("grid gap-1 rounded-xl bg-muted/50 p-1", cols === 4 ? "grid-cols-4" : "grid-cols-3")}
+    >
+      {options.map((opt) => {
+        const selected = value === opt.seconds;
+        return (
+          <button
+            key={opt.label}
+            type="button"
+            role="radio"
+            aria-checked={selected}
+            onClick={() => onChange(opt.seconds)}
+            disabled={disabled}
+            className={cn(
+              "h-9 rounded-lg px-2 text-xs font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-purple/60 disabled:pointer-events-none disabled:opacity-50",
+              selected
+                ? "bg-gradient-to-br from-brand-blue to-brand-purple text-white shadow-sm"
+                : "text-muted-foreground hover:bg-background hover:text-foreground"
+            )}
+          >
+            {opt.label}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
+interface PriceCurrencyInputProps extends Omit<ComponentProps<"input">, "value" | "onChange" | "type"> {
+  value: string;
+  onChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  currency: string;
+  currencies: ReadonlyArray<string>;
+  onCurrencyChange: (currency: string) => void;
+}
+
+export const PriceCurrencyInput = forwardRef<HTMLInputElement, PriceCurrencyInputProps>(
+  ({ currency, currencies, onCurrencyChange, disabled, className, ...inputProps }, ref) => {
+    return (
+      <div
+        className={cn(
+          "flex items-center gap-2 rounded-xl border border-input bg-background pr-2 transition-shadow focus-within:border-brand-purple/60 focus-within:ring-2 focus-within:ring-brand-purple/25",
+          disabled && "opacity-60",
+          className
+        )}
+      >
+        <input
+          ref={ref}
+          type="number"
+          step="any"
+          min="0"
+          inputMode="decimal"
+          placeholder="0.00"
           disabled={disabled}
-          className="text-xs"
-        >
-          {opt.label}
-        </Button>
-      ))}
+          className="h-14 min-w-0 flex-1 bg-transparent px-4 text-2xl font-semibold tabular-nums outline-none placeholder:text-muted-foreground/40 disabled:cursor-not-allowed"
+          {...inputProps}
+        />
+        <Select value={currency} onValueChange={onCurrencyChange} disabled={disabled}>
+          <SelectTrigger
+            aria-label="Currency"
+            className="h-9 w-auto shrink-0 gap-1.5 rounded-lg border-0 bg-muted/70 px-2.5 text-xs font-bold hover:bg-muted focus:ring-brand-purple/40 focus:ring-offset-0"
+          >
+            <SelectValue>
+              <span className="flex items-center gap-1.5">
+                <CurrencyIcon symbol={currency} size={14} />
+                {currency}
+              </span>
+            </SelectValue>
+          </SelectTrigger>
+          <SelectContent align="end">
+            {currencies.map((c) => (
+              <SelectItem key={c} value={c}>
+                <span className="flex items-center gap-2">
+                  <CurrencyIcon symbol={c} size={14} />
+                  {c}
+                </span>
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+    );
+  }
+);
+PriceCurrencyInput.displayName = "PriceCurrencyInput";
+
+interface ListingAssetSummaryProps {
+  name: string;
+  image?: string | null;
+  fallbackIcon: ReactNode;
+  badge?: ReactNode;
+}
+
+export function ListingAssetSummary({ name, image, fallbackIcon, badge }: ListingAssetSummaryProps) {
+  return (
+    <div className="flex shrink-0 items-center gap-3.5 border-b border-border/60 bg-gradient-to-br from-brand-blue/[0.08] via-brand-purple/[0.05] to-transparent px-5 py-4 pr-12">
+      <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-xl bg-muted ring-1 ring-border/60">
+        {image ? (
+          <Image src={image} alt={name} fill sizes="64px" className="object-cover" unoptimized />
+        ) : (
+          <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-brand-blue/20 via-brand-purple/10 to-transparent">
+            {fallbackIcon}
+          </div>
+        )}
+      </div>
+      <div className="min-w-0 space-y-1.5">
+        <p className="truncate text-base font-semibold leading-tight">{name}</p>
+        {badge}
+      </div>
     </div>
   );
 }

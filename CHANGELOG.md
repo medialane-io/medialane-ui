@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.348.0] — 2026-11-13
+
+### Added
+
+- `PriceCurrencyInput`: a large price field with the currency chosen from a dropdown inside it.
+- `ListingAssetSummary`: a compact asset header with a thumbnail, name and optional badge.
+
+### Changed
+
+- `DurationPicker`: a segmented row with a brand-coloured selected option.
+
 ## [0.347.0] — 2026-11-13
 
 ### Changed
