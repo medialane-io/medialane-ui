@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.349.0] — 2026-11-13
+
+### Changed
+
+- `ListingAssetSummary`: no background or divider.
+- `DurationPicker`: back to separate buttons.
+
+### Removed
+
+- `PriceCurrencyInput`.
+
 ## [0.348.0] — 2026-11-13
 
 ### Added
