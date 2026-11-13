@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.344.0] — 2026-11-13
+
+### Changed
+
+- `AssetCard`: larger name and price, and larger status chips.
+
 ## [0.343.0] — 2026-11-12
 
 ### Added
