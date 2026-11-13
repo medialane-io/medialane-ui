@@ -206,8 +206,6 @@ export { OrderFields } from "./components/order-fields.js";
 export type { OrderFieldsProps } from "./components/order-fields.js";
 export { LISTABLE_CURRENCIES, orderFormSchema, counterOfferFormSchema } from "./utils/order-form.js";
 export type { OrderFormValues } from "./utils/order-form.js";
-export { BrandButton } from "./components/brand-button.js";
-export type { BrandButtonProps } from "./components/brand-button.js";
 export { ActivityRow } from "./components/activity-row.js";
 export { ActivityTimelineRow } from "./components/activity-timeline-row.js";
 export type { ActivityTimelineRowProps } from "./components/activity-timeline-row.js";
