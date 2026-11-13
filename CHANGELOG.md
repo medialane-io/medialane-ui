@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.346.0] — 2026-11-13
+
+### Changed
+
+- Asset page: the rights and details sections use a colourful bento layout.
+
 ## [0.345.0] — 2026-11-13
 
 ### Changed
