@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.350.0] — 2026-11-13
+
+### Added
+
+- `OrderFields`, `orderFormSchema`, `counterOfferFormSchema` and `LISTABLE_CURRENCIES`: the price, currency, quantity and duration fields and their validation, shared by the listing and offer forms.
+- `useSession`, `refreshSession`, `sessionEmail` and `fetchSession`: the account session hook.
+
+### Changed
+
+- `GradientButton` takes `asChild`, and a disabled one ignores pointer events and dims.
+- `DurationPicker` always shows three columns.
+
 ## [0.349.0] — 2026-11-13
 
 ### Changed
