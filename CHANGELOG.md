@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.347.0] — 2026-11-13
+
+### Changed
+
+- Asset page: refined rights and details tiles, with readable labels in both themes and a solid copyright notice.
+
 ## [0.346.0] — 2026-11-13
 
 ### Changed
