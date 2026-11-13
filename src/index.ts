@@ -198,6 +198,8 @@ export {
   OrderSummaryHero,
   CurrencyPicker,
   DurationPicker,
+  PriceCurrencyInput,
+  ListingAssetSummary,
   MarketplaceConfirmStep,
 } from "./components/marketplace-dialog-primitives.js";
 export { ActivityRow } from "./components/activity-row.js";
