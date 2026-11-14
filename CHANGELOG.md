@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.354.0] — 2026-11-14
+
+### Changed
+
+- `AccountsPage`: each account is an asset card showing its most recently received visible asset, with a type of work filter. The collection and asset counts are removed.
+- `useAccounts` takes the type of work.
+- Requires `@medialane/sdk` 0.230.0 or later.
+
 ## [0.353.0] — 2026-11-14
 
 ### Added

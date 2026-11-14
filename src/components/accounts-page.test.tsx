@@ -1,5 +1,5 @@
 import { expect, test, afterEach } from "bun:test";
-import { cleanup, render, waitFor } from "@testing-library/react";
+import { cleanup, fireEvent, render, waitFor } from "@testing-library/react";
 import { SWRConfig } from "swr";
 import type { MedialaneClient } from "@medialane/sdk/starknet";
 import type { MedialaneApp } from "./medialane-app.js";
@@ -23,23 +23,38 @@ function renderPage(list: (opts: { search?: string; page?: number; limit?: numbe
   );
 }
 
-test("lists onchain accounts by address with their counts, each linking to its account page", async () => {
+test("shows each account as a card with its featured asset, linking to its account page", async () => {
   const view = renderPage(async () => ({
     data: [
-      { address: A, collections: 2, assets: 1 },
-      { address: B, collections: 0, assets: 3 },
+      { address: A, image: "https://img.test/a.png", ipType: "Art" },
+      { address: B, image: null, ipType: null },
     ],
-    meta: { page: 1, limit: 24, total: 2 },
+    meta: { page: 1, limit: 24, total: 20000 },
   }));
 
-  await waitFor(() => expect(view.getByText("2 collections · 1 asset")).toBeTruthy());
-  expect(view.getByText("0 collections · 3 assets")).toBeTruthy();
-  expect(view.getByText("2")).toBeTruthy();
-  const hrefs = Array.from(view.container.querySelectorAll("a")).map((a) => a.getAttribute("href"));
+  await waitFor(() => expect(view.getByText("0x000000…000abc")).toBeTruthy());
+  expect(view.getByText("20,000")).toBeTruthy();
+  const hrefs = Array.from(view.container.querySelectorAll("a"))
+    .map((a) => a.getAttribute("href"))
+    .filter((href) => href?.startsWith("/account/"));
   expect(hrefs).toEqual([`/account/${A}`, `/account/${B}`]);
+});
+
+test("a type of work asks for the accounts holding it", async () => {
+  const calls: unknown[] = [];
+  const view = renderPage(async (opts) => {
+    calls.push(opts);
+    return { data: [], meta: { page: 1, limit: 24, total: 0 } };
+  });
+  await waitFor(() => expect(calls.length).toBe(1));
+
+  fireEvent.click(view.getByRole("button", { name: "Audio" }));
+
+  await waitFor(() => expect(calls[calls.length - 1]).toEqual({ search: undefined, ipType: "audio", page: 1, limit: 24 }));
+  expect(view.getByRole("button", { name: "Audio" }).getAttribute("aria-pressed")).toBe("true");
 });
 
 test("shows an empty state when there are no accounts", async () => {
   const view = renderPage(async () => ({ data: [], meta: { page: 1, limit: 24, total: 0 } }));
-  await waitFor(() => expect(view.getByText("No accounts yet")).toBeTruthy());
+  await waitFor(() => expect(view.getByText("No accounts found")).toBeTruthy());
 });
