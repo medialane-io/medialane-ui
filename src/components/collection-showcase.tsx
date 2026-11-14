@@ -76,7 +76,7 @@ export function CollectionShowcase({ collections, isLoading, getHref }: Collecti
         <motion.div
           key={active.contractAddress}
           aria-hidden
-          className="pointer-events-none absolute inset-0 scale-125 opacity-30 blur-3xl [-webkit-mask-image:linear-gradient(to_bottom,transparent_72px,black_220px)] [mask-image:linear-gradient(to_bottom,transparent_72px,black_220px)] dark:opacity-40"
+          className="pointer-events-none absolute inset-0 scale-125 opacity-30 blur-3xl dark:opacity-40"
           initial={reduceMotion ? false : { opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6 }}
