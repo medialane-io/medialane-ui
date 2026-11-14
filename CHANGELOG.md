@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.352.0] — 2026-11-14
+
+### Changed
+
+- `DiscoverFeatures`: each feature card shows a short description under its title, and several titles are reworded.
+
 ## [0.351.0] — 2026-11-14
 
 ### Changed
