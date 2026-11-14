@@ -26,26 +26,26 @@ const HUES = [
   { text: "text-brand-rose", border: "border-brand-rose/30", tint: "bg-brand-rose/10" },
 ];
 
-const FEATURES: ReadonlyArray<{ icon: LucideIcon; title: string }> = [
-  { icon: HandCoins, title: "99% to creators and owners" },
-  { icon: Globe, title: "Censorship resistance" },
-  { icon: ShieldCheck, title: "Stark cryptography" },
-  { icon: EyeOff, title: "Privacy by design" },
-  { icon: ScanEye, title: "Zero knowledge proof with Starknet" },
-  { icon: Percent, title: "Zero fees on protocols" },
-  { icon: Lock, title: "Immutable smart contracts" },
-  { icon: DoorOpen, title: "Permissionless" },
-  { icon: Database, title: "Smart contracts are the source of truth" },
-  { icon: FileCog, title: "Programmable IP" },
-  { icon: Gem, title: "Immutable assets" },
-  { icon: Scale, title: "IP protection compliance" },
-  { icon: Code, title: "Open source and auditable" },
+const FEATURES: ReadonlyArray<{ icon: LucideIcon; title: string; description: string }> = [
+  { icon: HandCoins, title: "Creator-first economy", description: "99% to creators/owners + 1% fee goes to the Creator Fund Airdrop." },
+  { icon: Globe, title: "Censorship resistance", description: "Assets and ownership live onchain on decentralized networks." },
+  { icon: ShieldCheck, title: "Stark cryptography", description: "All transactions are secured onchain by mathematical proofs." },
+  { icon: EyeOff, title: "Privacy by design", description: "Medialane is designed for user privacy and sovereignty." },
+  { icon: ScanEye, title: "Zero knowledge", description: "Information can be proven valid without revealing the data behind it." },
+  { icon: Percent, title: "Zero-fee protocols", description: "The smart contracts charge zero fees for interaction." },
+  { icon: Lock, title: "Immutable contracts", description: "All smart contracts are fully open source and immutable." },
+  { icon: DoorOpen, title: "Permissionless", description: "Anyone can create, trade and interact with onchain protocols." },
+  { icon: Database, title: "Onchain as the source of truth", description: "Assets, ownership, markets and data are read directly onchain." },
+  { icon: FileCog, title: "Programmable IP", description: "Licensing terms and rights are stored with the assets." },
+  { icon: Gem, title: "Decentralized portfolio", description: "Assets are stored onchain with licensing and metadata on IPFS." },
+  { icon: Scale, title: "Protection compliance", description: "Authorship and license are protected under international laws." },
+  { icon: Code, title: "Open source and auditable", description: "The code is public to audit, review and collaborate on." },
 ];
 
 export function DiscoverFeatures() {
   return (
     <ScrollSection icon={<BadgeCheck />} title="Medialane features">
-      {FEATURES.map(({ icon: Icon, title }, i) => {
+      {FEATURES.map(({ icon: Icon, title, description }, i) => {
         const hue = HUES[i % HUES.length]!;
         return (
           <div
@@ -58,7 +58,10 @@ export function DiscoverFeatures() {
             <span className={cn("flex h-11 w-11 items-center justify-center rounded-xl", hue.tint)}>
               <Icon className={cn("h-6 w-6", hue.text)} />
             </span>
-            <h3 className="text-lg font-black leading-snug tracking-tight">{title}</h3>
+            <div className="flex flex-col gap-1.5">
+              <h3 className="text-lg font-black leading-snug tracking-tight">{title}</h3>
+              <p className="text-sm leading-relaxed text-muted-foreground">{description}</p>
+            </div>
           </div>
         );
       })}
