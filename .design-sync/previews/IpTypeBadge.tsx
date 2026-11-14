@@ -9,7 +9,7 @@ export const AllTypes = () => (
     <IpTypeBadge ipType="Video" size="md" />
     <IpTypeBadge ipType="Literature" size="md" />
     <IpTypeBadge ipType="Photography" size="md" />
-    <IpTypeBadge ipType="Software" size="md" />
+    <IpTypeBadge ipType="Audio" size="md" />
     <IpTypeBadge ipType="Design" size="md" />
   </div>
 );

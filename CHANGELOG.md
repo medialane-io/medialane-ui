@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.359.0] — 2026-11-14
+
+### Removed
+
+- The Software, Patents and Custom IP types: their pages, filters, badges, mint options and templates. Existing assets keep their data and show without a type badge.
+
 ## [0.358.0] — 2026-11-14
 
 ### Changed
