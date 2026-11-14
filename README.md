@@ -220,7 +220,7 @@ import { IP_TYPES, LICENSE_TYPES, IP_TEMPLATES, DOC_UPLOAD, TEMPLATE_TRAIT_TYPES
 
 Canonical IP types, license presets, and per-type templates (embeds, socials,
 trait suggestions, and the `docUpload` config powering the document/PDF-to-IPFS
-upload on Documents / Patents / Publications / Software). The apps' `types/ip`
+upload on Documents / Publications). The apps' `types/ip`
 and `lib/ip-templates` are re-export shims of this layer; edit here, and the
 shims pick it up automatically.
 

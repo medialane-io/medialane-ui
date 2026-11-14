@@ -226,7 +226,7 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     description:
       "Create a sponsorship offer on an asset you own. Sponsors bid, you accept, and they receive a license. Payment settles directly between sponsor and author.",
     features: ["Direct settlement", "Owner-verified on-chain", "Open bidding or one invited sponsor"],
-    example: "Sponsor a song, an artwork, or a patent for a license",
+    example: "Sponsor a song or an artwork for a license",
     icon: Handshake,
     browseLinkLabel: "Browse offers",
 

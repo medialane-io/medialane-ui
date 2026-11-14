@@ -1,6 +1,6 @@
 import {
   Music, Palette, FileText, Hexagon, Clapperboard, Camera,
-  Award, MessageSquare, BookOpen, Building2, Code2, Layers,
+  MessageSquare, BookOpen, Building2,
   Music2, AudioLines, Youtube, Video, Twitter, Instagram, Facebook, Globe,
   type LucideIcon,
 } from "lucide-react";
@@ -147,29 +147,6 @@ export const IP_TEMPLATES: Record<IPType, IPTemplate> = {
       { key: "Author" }, { key: "Category" }, { key: "Language", placeholder: "English" },
     ],
   },
-  Patents: {
-    type: "Patents",
-    label: "Patents",
-    description: "Patents, inventions, technical innovations",
-    icon: Award,
-    color: { bg: "bg-amber-500/10", text: "text-amber-400", border: "border-amber-500/20" },
-    docUpload: DOC_UPLOAD,
-    traitSuggestions: [
-      { key: "Inventor" }, { key: "Field" }, { key: "Status" },
-    ],
-  },
-  Software: {
-    type: "Software",
-    label: "Software",
-    description: "Applications, scripts, algorithms, code libraries",
-    icon: Code2,
-    color: { bg: "bg-violet-500/10", text: "text-violet-400", border: "border-violet-500/20" },
-    docUpload: DOC_UPLOAD,
-    socials: ["website"],
-    traitSuggestions: [
-      { key: "Language", placeholder: "TypeScript" }, { key: "License" }, { key: "Platform" },
-    ],
-  },
   NFT: {
     type: "NFT",
     label: "NFT",
@@ -191,13 +168,6 @@ export const IP_TEMPLATES: Record<IPType, IPTemplate> = {
     traitSuggestions: [
       { key: "Asset Type" }, { key: "Location" }, { key: "Category" },
     ],
-  },
-  Custom: {
-    type: "Custom",
-    label: "Custom",
-    description: "Custom IP type — add your own trait pairs for any metadata",
-    icon: Layers,
-    color: { bg: "bg-muted/50", text: "text-muted-foreground", border: "border-border" },
   },
 };
 

@@ -13,7 +13,7 @@ export const Default = () => (
   <div style={{ background: 'hsl(224 50% 4%)', padding: '16px', display: 'grid', gridTemplateColumns: 'repeat(3, 200px)', gap: '12px' }}>
     <AssetCard {...SAMPLE} />
     <AssetCard {...SAMPLE} name="Neon Metropolis" subtitle="Digital Horizons" ipType="Art" price={{ formatted: '1.2', currency: 'STRK' }} />
-    <AssetCard {...SAMPLE} name="Solstice Protocol" subtitle="Open Source" ipType="Software" price={null} />
+    <AssetCard {...SAMPLE} name="Solstice Protocol" subtitle="Open Source" ipType="Documents" price={null} />
   </div>
 );
 

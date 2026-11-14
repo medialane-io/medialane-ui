@@ -1,8 +1,8 @@
 "use client";
 
 import {
-  Music, Palette, Film, Camera, Gem, Award,
-  FileText, BookOpen, File, Building, Code, Layers,
+  Music, Palette, Film, Camera, Gem,
+  FileText, BookOpen, File, Building, Layers,
 } from "lucide-react";
 import { cn } from "../utils/cn.js";
 import { IP_TYPE_DATA, IP_TYPE_DATA_MAP } from "../data/ip-types.js";
@@ -19,13 +19,10 @@ export const IP_TYPE_CONFIG: IpTypeConfig[] = IP_TYPE_DATA.map((d) => {
     art: Palette,
     photography: Camera,
     nft: Gem,
-    software: Code,
     rwa: Building,
-    patents: Award,
     posts: FileText,
     publications: BookOpen,
     documents: File,
-    custom: Layers,
   };
   return { ...d, icon: icons[d.slug] ?? Layers };
 });

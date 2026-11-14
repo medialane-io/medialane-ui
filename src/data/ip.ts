@@ -6,12 +6,9 @@ export const IP_TYPES = [
   "NFT",
   "Video",
   "Photography",
-  "Patents",
   "Posts",
   "Publications",
   "RWA",
-  "Software",
-  "Custom",
 ] as const;
 
 export type IPType = (typeof IP_TYPES)[number];
