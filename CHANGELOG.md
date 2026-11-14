@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.357.0] — 2026-11-14
+
+### Changed
+
+- Collection page: the "Set up your collection" panel is removed. Owners find a "Collection settings" link at the top of the options menu, before "View on explorer". `OwnerSetupPanel` is no longer exported. `MoreMenu` takes an optional `settingsHref`.
+
 ## [0.356.0] — 2026-11-14
 
 ### Changed

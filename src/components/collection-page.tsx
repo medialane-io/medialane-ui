@@ -12,7 +12,6 @@ import { MoreMenu } from "./more-menu.js";
 import { EXPLORER_URL } from "../utils/explorer-url.js";
 import { CollectionProvenanceTab } from "./collection-provenance-tab.js";
 import { ClubOwnerActions } from "./club-owner-actions.js";
-import { OwnerSetupPanel } from "./owner-setup-panel.js";
 import { TransferCollectionOwnership } from "./transfer-collection-ownership.js";
 import { HiddenContentBanner } from "./hidden-content-banner.js";
 import { ListingCard, ListingCardSkeleton } from "./listing-card.js";
@@ -263,6 +262,7 @@ export function CollectionPage({ contract, slots }: CollectionPageProps) {
                 <MoreMenu
                   explorerHref={`${EXPLORER_URL}/contract/${collection.contractAddress}`}
                   shareTitle={collection.name ?? "Collection"}
+                  settingsHref={isOwner ? `/portfolio/collections/${contract}/settings` : undefined}
                   onReport={() => setReportOpen(true)}
                 />
               ) : null}
@@ -323,14 +323,9 @@ export function CollectionPage({ contract, slots }: CollectionPageProps) {
         </Tabs>
       </div>
 
-      {collection && isOwner ? (
-        <div className="px-4 sm:px-6 pb-8 space-y-4">
-          <OwnerSetupPanel contract={contract} profile={profile ?? null} />
-          {canTransferCollectionOwnership(collection) ? (
-            <div className="flex justify-end">
-              <TransferCollectionOwnership collectionId={collection.collectionId!} currentOwner={collection.owner!} collectionName={collection.name} />
-            </div>
-          ) : null}
+      {collection && isOwner && canTransferCollectionOwnership(collection) ? (
+        <div className="flex justify-end px-4 sm:px-6 pb-8">
+          <TransferCollectionOwnership collectionId={collection.collectionId!} currentOwner={collection.owner!} collectionName={collection.name} />
         </div>
       ) : null}
 
