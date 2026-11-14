@@ -286,7 +286,7 @@ export { DiscoverPage, type DiscoverPageProps } from "./components/discover-page
 export { DiscoverCommunitySection } from "./components/discover-community-section.js";
 export { IpTypeNav } from "./components/ip-type-nav.js";
 export { HomePage, FeaturedListings, type HomePageProps } from "./components/home-page.js";
-export { CreatorsPage } from "./components/creators-page.js";
+export { AccountsPage } from "./components/accounts-page.js";
 export { BackButton } from "./components/back-button.js";
 export { SignInPrompt } from "./components/sign-in-prompt.js";
 export { LaunchpadPage, type LaunchpadPageProps } from "./components/launchpad-page.js";
@@ -545,7 +545,7 @@ export type {
   WalletWriteAction,
   WalletWriteStatus,
 } from "./components/media-wallet/types.js";
-export { useCreators } from "./utils/use-creators.js";
+export { useAccounts } from "./utils/use-accounts.js";
 export { useSearch, SEARCH_MIN_LENGTH, type UseSearchOptions } from "./utils/use-search.js";
 export {
   useRewards, useLeaderboard, useRewardsEvents, useRewardsConfig, useRewardsBatch,

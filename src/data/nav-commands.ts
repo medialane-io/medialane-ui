@@ -11,7 +11,7 @@ export const NAV_ITEMS = {
   portfolio: { id: "portfolio", label: "Portfolio", icon: Briefcase, href: "/portfolio", keywords: ["owned", "my nfts", "wallet", "account"], description: "Your assets & activity" },
   collections: { id: "collections", label: "Collections", icon: LayoutGrid, href: "/collections", keywords: ["nft", "drops", "browse"] },
   coins: { id: "coins", label: "Coins", icon: Coins, href: "/coins", keywords: ["token", "creator coin", "memecoin", "discover", "trade", "swap"] },
-  creators: { id: "creators", label: "Creators", icon: Users, href: "/creators", keywords: ["artists", "profile", "profiles", "community"] },
+  creators: { id: "creators", label: "Accounts", icon: Users, href: "/creators", keywords: ["creators", "artists", "addresses", "community"] },
   activities: { id: "activities", label: "Activity", icon: Activity, href: "/activities", keywords: ["history", "transactions", "feed", "events"] },
   rewards: { id: "rewards", label: "Rewards", icon: Trophy, href: "/rewards", keywords: ["xp", "points", "scoreboard", "leaderboard", "badges", "rank"] },
   airdrop: { id: "airdrop", label: "Airdrop", icon: Gift, href: "/airdrop", keywords: ["claim", "free", "drop", "genesis", "creator's fund"] },

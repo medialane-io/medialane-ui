@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.353.0] — 2026-11-14
+
+### Added
+
+- `AccountsPage` and `useAccounts`: the onchain accounts directory, listing every address with collections or assets, with an address search.
+
+### Removed
+
+- `CreatorsPage` and `useCreators`: the accounts directory replaces the list of creators that registered a name.
+
+### Changed
+
+- The navigation command and the creator page link say Accounts.
+- Requires `@medialane/sdk` 0.229.0 or later.
+
 ## [0.352.0] — 2026-11-14
 
 ### Changed
