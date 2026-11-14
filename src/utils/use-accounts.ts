@@ -7,12 +7,13 @@ import { QUERY_PREFIX } from "./query-keys.js";
 
 const EMPTY_ACCOUNTS: ApiAccount[] = [];
 
-export function useAccounts(search = "", limit = 24) {
+export function useAccounts(search = "", ipType = "", limit = 24) {
   const client = useMedialaneClient();
 
   const { data, error, isLoading, isValidating, setSize } = useSWRInfinite(
-    (index) => [QUERY_PREFIX.accountsPages, search, limit, index + 1] as const,
-    ([, query, pageSize, page]) => client.api.accounts.list({ search: query || undefined, page, limit: pageSize }),
+    (index) => [QUERY_PREFIX.accountsPages, search, ipType, limit, index + 1] as const,
+    ([, query, type, pageSize, page]) =>
+      client.api.accounts.list({ search: query || undefined, ipType: type || undefined, page, limit: pageSize }),
     { revalidateOnFocus: false, revalidateFirstPage: false },
   );
 
