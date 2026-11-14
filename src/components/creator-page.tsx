@@ -85,7 +85,7 @@ export function CreatorPage({ username, useAssetActions, useMarketActions }: Cre
       <div className="mx-auto max-w-lg space-y-4 px-4 py-24 text-center">
         <h1 className="text-2xl font-bold">Creator not found</h1>
         <p className="text-muted-foreground"><span className="tabular-nums">@{username}</span> isn&apos;t a profile yet.</p>
-        <Button variant="outline" asChild><Link href="/creators">Browse creators</Link></Button>
+        <Button variant="outline" asChild><Link href="/creators">Browse accounts</Link></Button>
       </div>
     );
   }
