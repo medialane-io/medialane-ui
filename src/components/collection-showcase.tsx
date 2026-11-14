@@ -26,7 +26,7 @@ function offsetFrom(index: number, current: number, count: number) {
 
 function ShowcaseSkeleton() {
   return (
-    <section className="px-4 pb-8 pt-10 sm:pt-14">
+    <section className="px-4 pb-8 pt-20 sm:pt-14">
       <Skeleton className={cn("mx-auto rounded-2xl", CARD_SIZE)} />
       <Skeleton className="mx-auto mt-6 h-9 w-56" />
     </section>
@@ -38,16 +38,23 @@ export function CollectionShowcase({ collections, isLoading, getHref }: Collecti
   const reduceMotion = useReducedMotion();
   const [current, setCurrent] = useState(0);
   const [paused, setPaused] = useState(false);
+  const [hidden, setHidden] = useState(false);
   const dragged = useRef(false);
   const count = collections.length;
 
   const go = (step: number) => setCurrent((index) => (index + step + count) % count);
 
   useEffect(() => {
-    if (count <= 1 || paused || reduceMotion) return;
+    const onVisibility = () => setHidden(document.hidden);
+    document.addEventListener("visibilitychange", onVisibility);
+    return () => document.removeEventListener("visibilitychange", onVisibility);
+  }, []);
+
+  useEffect(() => {
+    if (count <= 1 || paused || hidden || reduceMotion) return;
     const id = setInterval(() => setCurrent((index) => (index + 1) % count), AUTOPLAY_MS);
     return () => clearInterval(id);
-  }, [count, paused, reduceMotion]);
+  }, [count, paused, hidden, reduceMotion]);
 
   if (isLoading) return <ShowcaseSkeleton />;
   if (count === 0) return null;
@@ -59,7 +66,7 @@ export function CollectionShowcase({ collections, isLoading, getHref }: Collecti
 
   return (
     <section
-      className="relative overflow-hidden px-4 pb-8 pt-10 sm:pt-14"
+      className="relative overflow-hidden px-4 pb-8 pt-20 sm:pt-14"
       onPointerEnter={() => setPaused(true)}
       onPointerLeave={() => setPaused(false)}
       onFocus={() => setPaused(true)}
@@ -69,7 +76,7 @@ export function CollectionShowcase({ collections, isLoading, getHref }: Collecti
         <motion.div
           key={active.contractAddress}
           aria-hidden
-          className="pointer-events-none absolute inset-0 scale-125 opacity-30 blur-3xl dark:opacity-40"
+          className="pointer-events-none absolute inset-0 scale-125 opacity-30 blur-3xl [-webkit-mask-image:linear-gradient(to_bottom,transparent_72px,black_220px)] [mask-image:linear-gradient(to_bottom,transparent_72px,black_220px)] dark:opacity-40"
           initial={reduceMotion ? false : { opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6 }}
@@ -80,7 +87,16 @@ export function CollectionShowcase({ collections, isLoading, getHref }: Collecti
       <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-b from-transparent to-background" />
 
       <motion.div
-        className={cn("relative mx-auto touch-pan-y", CARD_SIZE)}
+        role="group"
+        aria-roledescription="carousel"
+        aria-label="Featured collections"
+        tabIndex={count > 1 ? 0 : -1}
+        onKeyDown={(event) => {
+          if (count <= 1) return;
+          if (event.key === "ArrowLeft") { event.preventDefault(); go(-1); }
+          else if (event.key === "ArrowRight") { event.preventDefault(); go(1); }
+        }}
+        className={cn("relative mx-auto touch-pan-y rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4 focus-visible:ring-offset-background", CARD_SIZE)}
         drag={count > 1 ? "x" : false}
         dragConstraints={{ left: 0, right: 0 }}
         dragElastic={0.2}
@@ -122,7 +138,7 @@ export function CollectionShowcase({ collections, isLoading, getHref }: Collecti
                 ) : (
                   <div className="absolute inset-0 bg-gradient-to-br from-brand-purple/40 via-brand-blue/20 to-brand-navy/60" />
                 )}
-                <span className={cn("absolute inset-0 bg-background/40 transition-opacity duration-500", offset === 0 ? "opacity-0" : "opacity-100")} />
+                <span className={cn("absolute inset-0 bg-black/30 transition-opacity duration-500", offset === 0 ? "opacity-0" : "opacity-100")} />
               </Link>
             </motion.div>
           );
@@ -131,6 +147,7 @@ export function CollectionShowcase({ collections, isLoading, getHref }: Collecti
 
       <motion.div
         key={active.contractAddress}
+        aria-live={paused ? "polite" : "off"}
         className="relative mt-8 flex flex-col items-center gap-1 text-center"
         initial={reduceMotion ? false : { opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}

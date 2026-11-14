@@ -39,6 +39,18 @@ test("the dots bring another collection to the front", () => {
   expect(view.queryByRole("heading", { level: 2, name: "TAO" })).toBeNull();
 });
 
+test("the arrow keys move between collections while the cards have focus, wrapping around", () => {
+  const view = render(<CollectionShowcase collections={COLLECTIONS} isLoading={false} getHref={getHref} />);
+  const stage = view.getByRole("group", { name: "Featured collections" });
+
+  fireEvent.keyDown(stage, { key: "ArrowRight" });
+  expect(view.getByRole("heading", { level: 2, name: "Harmonia" })).toBeTruthy();
+
+  fireEvent.keyDown(stage, { key: "ArrowLeft" });
+  fireEvent.keyDown(stage, { key: "ArrowLeft" });
+  expect(view.getByRole("heading", { level: 2, name: "Open Canvas" })).toBeTruthy();
+});
+
 test("a single collection shows no dots", () => {
   const view = render(<CollectionShowcase collections={[COLLECTIONS[0]!]} isLoading={false} getHref={getHref} />);
   expect(view.queryAllByRole("button").length).toBe(0);
