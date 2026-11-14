@@ -44,14 +44,12 @@ test("a single collection shows no dots", () => {
   expect(view.queryAllByRole("button").length).toBe(0);
 });
 
-test("without featured collections it shows the Medialane intro with its two links", () => {
+test("without featured collections it shows nothing", () => {
   const view = render(<CollectionShowcase collections={[]} isLoading={false} getHref={getHref} />);
-  expect(view.getByRole("heading", { level: 2, name: "Medialane" })).toBeTruthy();
-  expect(view.getByRole("link", { name: "Markets" }).getAttribute("href")).toBe("/marketplace");
-  expect(view.getByRole("link", { name: "Create" }).getAttribute("href")).toBe("/create/asset");
+  expect(view.container.innerHTML).toBe("");
 });
 
-test("while loading it shows neither collections nor the intro", () => {
+test("while loading it shows a skeleton without any heading", () => {
   const view = render(<CollectionShowcase collections={[]} isLoading getHref={getHref} />);
   expect(view.queryByRole("heading")).toBeNull();
 });

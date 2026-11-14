@@ -24,12 +24,3 @@ export const WithCollections = () => (
 export const Loading = () => (
   <CollectionShowcase collections={[]} isLoading getHref={(col) => `/collections/${col.contractAddress}`} />
 );
-
-export const Empty = () => (
-  <CollectionShowcase
-    collections={[]}
-    isLoading={false}
-    getHref={(col) => `/collections/${col.contractAddress}`}
-    placeholderHrefs={{ markets: '/marketplace', create: '/create' }}
-  />
-);

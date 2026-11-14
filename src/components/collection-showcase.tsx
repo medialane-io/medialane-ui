@@ -13,7 +13,6 @@ export interface CollectionShowcaseProps {
   collections: ApiCollection[];
   isLoading: boolean;
   getHref: (collection: ApiCollection) => string;
-  placeholderHrefs?: { markets?: string; create?: string };
 }
 
 const AUTOPLAY_MS = 6000;
@@ -25,23 +24,6 @@ function offsetFrom(index: number, current: number, count: number) {
   return distance > count / 2 ? distance - count : distance;
 }
 
-function Placeholder({ hrefs }: { hrefs: Required<CollectionShowcaseProps>["placeholderHrefs"] }) {
-  return (
-    <section className="flex flex-col items-center gap-4 px-4 py-16 text-center sm:py-24">
-      <h2 className="gradient-text text-4xl font-black sm:text-6xl">Medialane</h2>
-      <p className="max-w-md text-lg text-muted-foreground">New monetization revenues for creative works</p>
-      <div className="flex gap-3">
-        <Link href={hrefs.markets!} className="inline-flex items-center justify-center rounded-[11px] bg-brand-blue px-4 py-2 text-sm font-semibold text-white transition-all hover:brightness-110 active:scale-[0.98]">
-          Markets
-        </Link>
-        <Link href={hrefs.create!} className="inline-flex items-center justify-center rounded-[11px] border border-border bg-card px-4 py-2 text-sm font-semibold text-foreground transition-colors hover:bg-muted">
-          Create
-        </Link>
-      </div>
-    </section>
-  );
-}
-
 function ShowcaseSkeleton() {
   return (
     <section className="px-4 pb-8 pt-10 sm:pt-14">
@@ -51,8 +33,7 @@ function ShowcaseSkeleton() {
   );
 }
 
-export function CollectionShowcase({ collections, isLoading, getHref, placeholderHrefs = {} }: CollectionShowcaseProps) {
-  const hrefs = { markets: "/marketplace", create: "/create/asset", ...placeholderHrefs };
+export function CollectionShowcase({ collections, isLoading, getHref }: CollectionShowcaseProps) {
   const resolveImage = useImageUrl();
   const reduceMotion = useReducedMotion();
   const [current, setCurrent] = useState(0);
@@ -69,7 +50,7 @@ export function CollectionShowcase({ collections, isLoading, getHref, placeholde
   }, [count, paused, reduceMotion]);
 
   if (isLoading) return <ShowcaseSkeleton />;
-  if (count === 0) return <Placeholder hrefs={hrefs} />;
+  if (count === 0) return null;
 
   const active = collections[current % count]!;
   const activeImage = resolveImage(active.image, { width: 960 });
