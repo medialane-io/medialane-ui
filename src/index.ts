@@ -563,7 +563,6 @@ export type { SwapToken, SwapAmountMode, SwapQuoteSummary } from "./utils/use-sw
 export { RemixesTab } from "./components/remixes-tab.js";
 export type { RemixesTabProps } from "./components/remixes-tab.js";
 
-export { OwnerSetupPanel } from "./components/owner-setup-panel.js";
 export { DropCountdown } from "./components/drop-countdown.js";
 export {
   Dialog, DialogPortal, DialogOverlay, DialogClose, DialogTrigger,

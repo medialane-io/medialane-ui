@@ -90,6 +90,24 @@ test("the tab row holds the filters and a menu with explorer, share and report",
   expect(getByText("Report")).toBeTruthy();
 });
 
+test("the owner's menu leads with a Collection settings link", async () => {
+  const { getByText, getByRole, findByText } = renderPage(collection(), [token("1")], "0xowner");
+  await waitFor(() => expect(getByText("Hero 1")).toBeTruthy());
+  fireEvent.pointerDown(getByRole("button", { name: "More options" }), { button: 0, pointerType: "mouse" });
+  const link = (await findByText("Collection settings")).closest("a");
+  expect(link?.getAttribute("href")).toBe("/portfolio/collections/0xc0/settings");
+  expect(getByText("View on explorer")).toBeTruthy();
+});
+
+test("visitors see no Collection settings link and no setup panel", async () => {
+  const { getByText, getByRole, queryByText, findByText } = renderPage(collection(), [token("1")], null);
+  await waitFor(() => expect(getByText("Hero 1")).toBeTruthy());
+  fireEvent.pointerDown(getByRole("button", { name: "More options" }), { button: 0, pointerType: "mouse" });
+  await findByText("View on explorer");
+  expect(queryByText("Collection settings")).toBeNull();
+  expect(queryByText("Set up your collection")).toBeNull();
+});
+
 test("items of a soulbound collection carry the Soulbound badge", async () => {
   const { getByText, getAllByText } = renderPage(collection({ service: "pop-protocol" }), [token("1"), token("2")], null);
   await waitFor(() => expect(getByText("Hero 1")).toBeTruthy());

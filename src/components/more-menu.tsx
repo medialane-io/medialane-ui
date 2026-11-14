@@ -1,11 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { Check, ExternalLink, Flag, MoreHorizontal, Share2 } from "lucide-react";
+import { Check, ExternalLink, Flag, MoreHorizontal, Settings, Share2 } from "lucide-react";
+import Link from "./link.js";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./dropdown-menu.js";
 import { shareOrCopy } from "../utils/share.js";
 
-export function MoreMenu({ explorerHref, shareTitle, onReport }: { explorerHref: string; shareTitle: string; onReport: () => void }) {
+export function MoreMenu({ explorerHref, shareTitle, settingsHref, onReport }: { explorerHref: string; shareTitle: string; settingsHref?: string; onReport: () => void }) {
   const [copied, setCopied] = useState(false);
   return (
     <DropdownMenu>
@@ -16,6 +17,14 @@ export function MoreMenu({ explorerHref, shareTitle, onReport }: { explorerHref:
         <MoreHorizontal className="h-4 w-4" />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
+        {settingsHref ? (
+          <DropdownMenuItem asChild>
+            <Link href={settingsHref}>
+              <Settings />
+              Collection settings
+            </Link>
+          </DropdownMenuItem>
+        ) : null}
         <DropdownMenuItem asChild>
           <a href={explorerHref} target="_blank" rel="noopener noreferrer">
             <ExternalLink />
