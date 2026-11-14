@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.358.0] — 2026-11-14
+
+### Changed
+
+- `CollectionShowcase`: the halo behind the cards reaches the top edge, with no dark fade behind the header.
+
 ## [0.357.0] — 2026-11-14
 
 ### Changed
