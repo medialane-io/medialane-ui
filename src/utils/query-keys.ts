@@ -17,6 +17,7 @@ export const QUERY_PREFIX = {
   collectionTokens: "collection-tokens",
   userCollections: "user-collections",
   profileCollection: "profile-collection",
+  accountsPages: "accounts-pages",
 } as const;
 
 function normalizePart(value: string | number | boolean | null | undefined) {
