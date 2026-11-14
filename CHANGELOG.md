@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.355.1] — 2026-11-14
+
+### Changed
+
+- `CollectionShowcase`: more space above the cards on small screens, so the header no longer overlaps them.
+
 ## [0.355.0] — 2026-11-14
 
 ### Added

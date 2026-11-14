@@ -26,7 +26,7 @@ function offsetFrom(index: number, current: number, count: number) {
 
 function ShowcaseSkeleton() {
   return (
-    <section className="px-4 pb-8 pt-10 sm:pt-14">
+    <section className="px-4 pb-8 pt-20 sm:pt-14">
       <Skeleton className={cn("mx-auto rounded-2xl", CARD_SIZE)} />
       <Skeleton className="mx-auto mt-6 h-9 w-56" />
     </section>
@@ -59,7 +59,7 @@ export function CollectionShowcase({ collections, isLoading, getHref }: Collecti
 
   return (
     <section
-      className="relative overflow-hidden px-4 pb-8 pt-10 sm:pt-14"
+      className="relative overflow-hidden px-4 pb-8 pt-20 sm:pt-14"
       onPointerEnter={() => setPaused(true)}
       onPointerLeave={() => setPaused(false)}
       onFocus={() => setPaused(true)}
