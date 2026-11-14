@@ -5,7 +5,7 @@ import type { ReactNode } from "react";
 import { Sparkles, Tag, TrendingUp } from "lucide-react";
 import Link from "./link.js";
 import { PageContainer } from "./page-container.js";
-import { HeroSlider } from "./hero-slider.js";
+import { CollectionShowcase } from "./collection-showcase.js";
 import { ActivityTicker } from "./activity-ticker.js";
 import { ScrollSection } from "./scroll-section.js";
 import { ListingCard, ListingCardSkeleton } from "./listing-card.js";
@@ -129,7 +129,7 @@ export function HomePage({ useMarketActions, initialFeatured }: HomePageProps) {
   const { orders: tickerOrders } = useOrders({ status: "ACTIVE", sort: "recent", limit: 14 });
   return (
     <div className="pb-20">
-      <HeroSlider collections={featured} isLoading={featuredLoading} getHref={(c) => collectionHref("STARKNET", c.contractAddress)} />
+      <CollectionShowcase collections={featured} isLoading={featuredLoading} getHref={(c) => collectionHref("STARKNET", c.contractAddress)} />
       <PageContainer className="box-border max-w-full pt-6 pb-0">
         <ActivityTicker orders={tickerOrders} minItems={3} getHref={(o) => assetHref("STARKNET", o.nftContract, o.nftTokenId)} />
       </PageContainer>

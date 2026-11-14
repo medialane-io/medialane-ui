@@ -210,10 +210,6 @@ h1 {
   0%   { transform: translateX(0); }
   100% { transform: translateX(-50%); }
 }
-@keyframes kenburns {
-  0%   { transform: scale(1.0); }
-  100% { transform: scale(1.03); }
-}
 @keyframes border-flow {
   0%, 100% { background-position: 0% 50%; }
   50%       { background-position: 100% 50%; }
@@ -223,11 +219,10 @@ h1 {
 .animate-pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }
 .animate-spin-slow  { animation: spin-slow 24s linear infinite; }
 .animate-sparkle    { animation: pulse-glow 2.5s ease-in-out infinite; }
-.animate-kenburns   { animation: kenburns 8s ease-in-out infinite alternate; transform-origin: center center; }
 
 @media (prefers-reduced-motion: reduce) {
   .animate-float, .animate-pulse-glow, .animate-spin-slow,
-  .animate-sparkle, .animate-kenburns { animation: none; }
+  .animate-sparkle { animation: none; }
 }
 
 input[type="number"]::-webkit-outer-spin-button,

@@ -1,0 +1,188 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+import { motion, useReducedMotion } from "framer-motion";
+import type { ApiCollection } from "@medialane/sdk";
+import Link from "./link.js";
+import Image from "./image.js";
+import { Skeleton } from "./skeleton.js";
+import { cn } from "../utils/cn.js";
+import { useImageUrl } from "../utils/use-image-url.js";
+
+export interface CollectionShowcaseProps {
+  collections: ApiCollection[];
+  isLoading: boolean;
+  getHref: (collection: ApiCollection) => string;
+  placeholderHrefs?: { markets?: string; create?: string };
+}
+
+const AUTOPLAY_MS = 6000;
+const SWIPE_PX = 50;
+const CARD_SIZE = "aspect-[4/5] w-[58vw] max-w-[260px] sm:max-w-[300px] lg:max-w-[340px]";
+
+function offsetFrom(index: number, current: number, count: number) {
+  const distance = (index - current + count) % count;
+  return distance > count / 2 ? distance - count : distance;
+}
+
+function Placeholder({ hrefs }: { hrefs: Required<CollectionShowcaseProps>["placeholderHrefs"] }) {
+  return (
+    <section className="flex flex-col items-center gap-4 px-4 py-16 text-center sm:py-24">
+      <h2 className="gradient-text text-4xl font-black sm:text-6xl">Medialane</h2>
+      <p className="max-w-md text-lg text-muted-foreground">New monetization revenues for creative works</p>
+      <div className="flex gap-3">
+        <Link href={hrefs.markets!} className="inline-flex items-center justify-center rounded-[11px] bg-brand-blue px-4 py-2 text-sm font-semibold text-white transition-all hover:brightness-110 active:scale-[0.98]">
+          Markets
+        </Link>
+        <Link href={hrefs.create!} className="inline-flex items-center justify-center rounded-[11px] border border-border bg-card px-4 py-2 text-sm font-semibold text-foreground transition-colors hover:bg-muted">
+          Create
+        </Link>
+      </div>
+    </section>
+  );
+}
+
+function ShowcaseSkeleton() {
+  return (
+    <section className="px-4 pb-8 pt-10 sm:pt-14">
+      <Skeleton className={cn("mx-auto rounded-2xl", CARD_SIZE)} />
+      <Skeleton className="mx-auto mt-6 h-9 w-56" />
+    </section>
+  );
+}
+
+export function CollectionShowcase({ collections, isLoading, getHref, placeholderHrefs = {} }: CollectionShowcaseProps) {
+  const hrefs = { markets: "/marketplace", create: "/create/asset", ...placeholderHrefs };
+  const resolveImage = useImageUrl();
+  const reduceMotion = useReducedMotion();
+  const [current, setCurrent] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const dragged = useRef(false);
+  const count = collections.length;
+
+  const go = (step: number) => setCurrent((index) => (index + step + count) % count);
+
+  useEffect(() => {
+    if (count <= 1 || paused || reduceMotion) return;
+    const id = setInterval(() => setCurrent((index) => (index + 1) % count), AUTOPLAY_MS);
+    return () => clearInterval(id);
+  }, [count, paused, reduceMotion]);
+
+  if (isLoading) return <ShowcaseSkeleton />;
+  if (count === 0) return <Placeholder hrefs={hrefs} />;
+
+  const active = collections[current % count]!;
+  const activeImage = resolveImage(active.image, { width: 960 });
+  const supply = active.totalSupply;
+  const transition = reduceMotion ? { duration: 0 } : { type: "spring" as const, stiffness: 220, damping: 26 };
+
+  return (
+    <section
+      className="relative overflow-hidden px-4 pb-8 pt-10 sm:pt-14"
+      onPointerEnter={() => setPaused(true)}
+      onPointerLeave={() => setPaused(false)}
+      onFocus={() => setPaused(true)}
+      onBlur={() => setPaused(false)}
+    >
+      {activeImage && (
+        <motion.div
+          key={active.contractAddress}
+          aria-hidden
+          className="pointer-events-none absolute inset-0 scale-125 opacity-30 blur-3xl dark:opacity-40"
+          initial={reduceMotion ? false : { opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6 }}
+        >
+          <Image src={activeImage} alt="" fill className="object-cover" unoptimized />
+        </motion.div>
+      )}
+      <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-b from-transparent to-background" />
+
+      <motion.div
+        className={cn("relative mx-auto touch-pan-y", CARD_SIZE)}
+        drag={count > 1 ? "x" : false}
+        dragConstraints={{ left: 0, right: 0 }}
+        dragElastic={0.2}
+        onDragStart={() => { dragged.current = true; }}
+        onDragEnd={(_, info) => {
+          if (info.offset.x < -SWIPE_PX) go(1);
+          else if (info.offset.x > SWIPE_PX) go(-1);
+          setTimeout(() => { dragged.current = false; }, 0);
+        }}
+      >
+        {collections.map((collection, index) => {
+          const offset = offsetFrom(index, current, count);
+          const distance = Math.abs(offset);
+          const image = resolveImage(collection.image, { width: 640 });
+          const name = collection.name ?? "Collection";
+          return (
+            <motion.div
+              key={collection.contractAddress}
+              className={cn("absolute inset-0", distance > 2 && "pointer-events-none")}
+              initial={false}
+              animate={{
+                x: `${offset * 58}%`,
+                rotate: offset * 9,
+                scale: 1 - distance * 0.12,
+                opacity: distance > 2 ? 0 : 1,
+                zIndex: 10 - distance,
+              }}
+              transition={transition}
+            >
+              <Link
+                href={getHref(collection)}
+                aria-label={name}
+                draggable={false}
+                onClick={(event) => { if (dragged.current) event.preventDefault(); }}
+                className="relative block h-full w-full overflow-hidden rounded-2xl bg-muted shadow-2xl shadow-black/20 ring-1 ring-border dark:shadow-black/50"
+              >
+                {image ? (
+                  <Image src={image} alt="" fill sizes="(min-width: 1024px) 340px, 58vw" className="object-cover" priority={index === 0} unoptimized />
+                ) : (
+                  <div className="absolute inset-0 bg-gradient-to-br from-brand-purple/40 via-brand-blue/20 to-brand-navy/60" />
+                )}
+                <span className={cn("absolute inset-0 bg-background/40 transition-opacity duration-500", offset === 0 ? "opacity-0" : "opacity-100")} />
+              </Link>
+            </motion.div>
+          );
+        })}
+      </motion.div>
+
+      <motion.div
+        key={active.contractAddress}
+        className="relative mt-8 flex flex-col items-center gap-1 text-center"
+        initial={reduceMotion ? false : { opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
+      >
+        <Link href={getHref(active)} className="transition-opacity hover:opacity-80">
+          <h2 className="text-3xl font-semibold leading-tight tracking-tight text-foreground sm:text-4xl lg:text-5xl">
+            {active.name ?? "Collection"}
+          </h2>
+        </Link>
+        {supply != null && (
+          <p className="text-sm text-muted-foreground">
+            {supply.toLocaleString()} {supply === 1 ? "item" : "items"}
+          </p>
+        )}
+      </motion.div>
+
+      {count > 1 && (
+        <div className="relative mt-3 flex justify-center">
+          {collections.map((collection, index) => (
+            <button
+              key={collection.contractAddress}
+              type="button"
+              aria-label={`Show ${collection.name ?? "collection"}`}
+              aria-current={index === current ? "true" : undefined}
+              onClick={() => setCurrent(index)}
+              className="flex h-8 items-center px-0.5"
+            >
+              <span className={cn("h-1.5 rounded-full transition-all", index === current ? "w-6 bg-foreground" : "w-1.5 bg-foreground/30")} />
+            </button>
+          ))}
+        </div>
+      )}
+    </section>
+  );
+}

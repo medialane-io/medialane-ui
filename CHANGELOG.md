@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.355.0] — 2026-11-14
+
+### Added
+
+- `CollectionShowcase`: the featured collections as a fan of cards, with the active collection's name and item count below. Every card and the title link to the collection. It rotates slowly, pauses on hover and focus, and can be swiped or switched with the dots.
+
+### Removed
+
+- `HeroSlider` and `HeroSliderSkeleton`: `CollectionShowcase` replaces them on the home page.
+
 ## [0.354.0] — 2026-11-14
 
 ### Changed
