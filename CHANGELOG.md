@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.351.0] — 2026-11-14
+
+### Changed
+
+- Recovery key, guardian, transfer, burn and transaction dialog copy reworded in a neutral style.
+- `ExportKeySection`: the recovery key notice uses the default alert style.
+
 ## [0.350.0] — 2026-11-13
 
 ### Added

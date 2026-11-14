@@ -44,7 +44,7 @@ export function PopBurnButton({ collectionAddress, tokenId, onBurned }: PopBurnB
   return (
     <div className="space-y-2 rounded-xl border border-border p-3">
       <p className="text-xs text-muted-foreground">
-        This permanently destroys this credential. You won&apos;t be able to claim it again.
+        Burning removes this credential permanently.
       </p>
       {tx.phase === "error" && <p className="text-xs text-destructive">{tx.error}</p>}
       <div className="flex gap-2">

@@ -76,7 +76,7 @@ export function GuardianRecoverySection({
         <div>
           <h3 className="text-base font-bold text-foreground">Security &amp; Recovery</h3>
           <p className="text-sm text-muted-foreground mt-0.5">
-            A guardian can help you get back into this wallet if you ever lose this device.
+            A guardian is a trusted backup that helps restore this wallet on a new device.
           </p>
         </div>
       </div>
@@ -90,7 +90,7 @@ export function GuardianRecoverySection({
               {inProgress.status === "Ready"
                 ? "It can complete at any time."
                 : `It can complete on ${new Date(inProgress.readyAt * 1000).toLocaleString()}.`}{" "}
-              If this wasn&apos;t you, cancel it now.
+              The replacement can be stopped with the button below.
               {cancelError && <p className="mt-1 text-destructive">{cancelError}</p>}
               <Button
                 onClick={handleCancel}

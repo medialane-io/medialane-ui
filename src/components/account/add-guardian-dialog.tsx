@@ -50,10 +50,9 @@ export function AddGuardianDialog({ open, onOpenChange, sealed, onAdded, wallet 
             <Shield className="h-4 w-4" /> Add a guardian
           </DialogTitle>
           <DialogDescription>
-            A guardian can help you recover this wallet if you lose this device, but can
-            never move your funds. Paste the public key of a wallet you control — another
-            device&apos;s Media Wallet, for example. You can only set this up once from here;
-            changing it later isn&apos;t supported in this app yet.
+            A guardian is a trusted backup that helps restore this wallet on a new device. It
+            can never move funds. Paste the public key of a wallet already in use, such as
+            another device&apos;s Media Wallet. A guardian is set once from here.
           </DialogDescription>
         </DialogHeader>
         <div className="space-y-3">

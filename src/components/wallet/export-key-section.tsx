@@ -53,19 +53,16 @@ export function ExportKeySection({ loadSealed, unlock, actions }: ExportKeySecti
       <div>
         <p className="text-sm font-semibold">Recovery key</p>
         <p className="mt-1 text-xs text-muted-foreground leading-relaxed">
-          Save this somewhere private, such as a password manager. Paste it when you sign in on a
-          new phone or browser, or if you lose access to every device you use.
+          Used to sign in on a new phone or browser.
         </p>
       </div>
 
       {recoveryKey ? (
         <>
-          <Alert variant="destructive">
+          <Alert>
             <ShieldAlert className="h-4 w-4" />
             <AlertDescription className="text-xs leading-relaxed">
-              <span className="font-semibold">Anyone with this key controls your wallet.</span>{" "}
-              Medialane will never ask you for it. Treat any message requesting it as an attempt to
-              take your assets.
+              <span className="font-semibold">The recovery key gives full control of the wallet.</span>
             </AlertDescription>
           </Alert>
           <code className="block break-all rounded-xl bg-muted px-3 py-2.5 font-mono text-xs select-all">

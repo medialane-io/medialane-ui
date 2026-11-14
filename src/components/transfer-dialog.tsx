@@ -154,7 +154,7 @@ export function TransferDialog({
                 </div>
               </div>
               <MarketplaceConfirmStep
-                description="Transfer this asset? This action cannot be undone."
+                description="Transfer this asset?"
                 error={error}
                 secondaryLabel="Back"
                 onSecondary={() => { reset(); setStep("form"); }}
@@ -172,7 +172,7 @@ export function TransferDialog({
                 <Alert variant="destructive">
                   <AlertCircle className="h-4 w-4" />
                   <AlertDescription className="text-xs">
-                    This token has an active listing. A buyer could still complete the purchase after you transfer it — cancel the listing first, or proceed with caution.
+                    This token has an active listing. Cancelling the listing first keeps the sale from completing after the transfer.
                   </AlertDescription>
                 </Alert>
               )}
@@ -180,7 +180,7 @@ export function TransferDialog({
               <Alert>
                 <AlertCircle className="h-4 w-4" />
                 <AlertDescription className="text-xs">
-                  Transfers are permanent and irreversible. Double-check the recipient address before confirming.
+                  Transfers are final and recorded onchain.
                 </AlertDescription>
               </Alert>
 
