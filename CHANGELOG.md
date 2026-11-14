@@ -1,10 +1,10 @@
 # Changelog
 
-## [0.355.1] — 2026-11-14
+## [0.356.0] — 2026-11-14
 
 ### Changed
 
-- `CollectionShowcase`: more space above the cards on small screens, so the header no longer overlaps them.
+- `CollectionShowcase`: the arrow keys change the collection while the cards have focus, and the cards are announced as a carousel. More space above the cards on small screens so the header no longer overlaps them. The side cards are dimmed with a light black veil in both themes, the halo fades out behind the header, and rotation pauses while the tab is hidden.
 
 ## [0.355.0] — 2026-11-14
 
