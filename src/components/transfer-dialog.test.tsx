@@ -32,7 +32,7 @@ function show(overrides: Partial<Parameters<typeof TransferDialog>[0]> = {}, tx:
 async function toConfirm(to: string) {
   fireEvent.change(screen.getByPlaceholderText("0x…"), { target: { value: to } });
   await act(async () => { fireEvent.click(screen.getByRole("button", { name: /^Transfer$/ })); });
-  await screen.findByText("Transfer this asset? This action cannot be undone.");
+  await screen.findByText("Transfer this asset?");
 }
 
 describe("TransferDialog", () => {

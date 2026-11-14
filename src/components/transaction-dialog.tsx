@@ -67,7 +67,7 @@ export function TransactionDialog({ tx, title, workingLabel, firstStepLabel = "P
                 );
               })}
             </ol>
-            <p className="text-center text-xs text-muted-foreground">This usually takes 10–30 seconds. Do not close this window.</p>
+            <p className="text-center text-xs text-muted-foreground">This usually takes 10–30 seconds.</p>
           </div>
         )}
 
