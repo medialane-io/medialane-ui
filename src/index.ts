@@ -182,8 +182,8 @@ export type { AddGuardianDialogProps } from "./components/account/add-guardian-d
 export type { DeviceWallet, GuardianWallet, LoadSealedOwner } from "./components/account/wallet-types.js";
 export { ACTIVITY_TYPE_CONFIG, TYPE_FILTERS } from "./data/activity.js";
 export type { ActivityTypeConfig } from "./data/activity.js";
-export { HeroSlider, HeroSliderSkeleton } from "./components/hero-slider.js";
-export type { HeroSliderProps } from "./components/hero-slider.js";
+export { CollectionShowcase } from "./components/collection-showcase.js";
+export type { CollectionShowcaseProps } from "./components/collection-showcase.js";
 export { ActivityTicker } from "./components/activity-ticker.js";
 export type { ActivityTickerProps } from "./components/activity-ticker.js";
 export { ListingCard, ListingCardSkeleton } from "./components/listing-card.js";
