@@ -18,11 +18,11 @@ test("navGroups resolves shared ids in the app's order and keeps the app's own e
   const own = { id: "own", label: "Own", icon: Star, href: "/own" };
   const groups = navGroups([
     { items: ["home", "discover"] },
-    { heading: "Navigate", items: ["creators", own, "collections"] },
+    { heading: "Navigate", items: ["accounts", own, "collections"] },
   ]);
   expect(groups.map((g) => g.heading)).toEqual([undefined, "Navigate"]);
   expect(groups[0]!.items.map((i) => i.id)).toEqual(["home", "discover"]);
-  expect(groups[1]!.items.map((i) => i.id)).toEqual(["creators", "own", "collections"]);
+  expect(groups[1]!.items.map((i) => i.id)).toEqual(["accounts", "own", "collections"]);
   expect(groups[1]!.items[1]).toBe(own);
   expect(groups[0]!.items[0]).toBe(NAV_ITEMS.home);
 });

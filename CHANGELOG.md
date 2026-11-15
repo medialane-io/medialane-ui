@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.363.0] — 2026-11-15
+
+### Changed
+
+- The accounts directory lives at `/accounts`. The Accounts command and the "Browse accounts" link point there, and the navigation command id is now `accounts`.
+
 ## [0.362.0] — 2026-11-15
 
 ### Fixed
