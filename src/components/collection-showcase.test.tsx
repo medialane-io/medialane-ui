@@ -41,6 +41,15 @@ test("the dots bring another collection to the front", () => {
   expect(view.queryByRole("heading", { level: 2, name: "TAO" })).toBeNull();
 });
 
+test("every halo stays mounted when the collection changes, so the background crossfades instead of emptying", () => {
+  const view = render(<CollectionShowcase collections={COLLECTIONS} isLoading={false} getHref={getHref} />);
+  expect(view.container.querySelectorAll(".blur-3xl")).toHaveLength(3);
+
+  fireEvent.click(view.getByRole("button", { name: "Show Harmonia" }));
+
+  expect(view.container.querySelectorAll(".blur-3xl")).toHaveLength(3);
+});
+
 test("the arrow keys move between collections while the cards have focus, wrapping around", () => {
   const view = render(<CollectionShowcase collections={COLLECTIONS} isLoading={false} getHref={getHref} />);
   const stage = view.getByRole("group", { name: "Featured collections" });
