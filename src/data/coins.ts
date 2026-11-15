@@ -10,7 +10,6 @@ export interface CoinCollectionLike {
   symbol?: string | null;
   image?: string | null;
   service?: string | null;
-  claimedBy?: string | null;
   holderCount?: number | null;
 
   totalSupply?: string | null;

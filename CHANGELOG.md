@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.364.0] — 2026-11-15
+
+### Removed
+
+- `claimedBy` from the coin and collection types, following SDK 0.232.0.
+
 ## [0.363.0] — 2026-11-15
 
 ### Changed
