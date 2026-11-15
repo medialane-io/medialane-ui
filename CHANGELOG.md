@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.360.0] — 2026-11-15
+
+### Changed
+
+- `CollectionShowcase`: larger cards on desktop (up to 440px, and 500px on wide screens, capped by the viewport height), so the fan fills more of the width. Mobile is unchanged.
+
 ## [0.359.0] — 2026-11-14
 
 ### Removed
