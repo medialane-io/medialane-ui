@@ -17,7 +17,7 @@ export interface CollectionShowcaseProps {
 
 const AUTOPLAY_MS = 6000;
 const SWIPE_PX = 50;
-const CARD_SIZE = "aspect-[4/5] w-[58vw] max-w-[260px] sm:max-w-[300px] lg:max-w-[340px]";
+const CARD_SIZE = "aspect-[4/5] w-[58vw] max-w-[260px] sm:max-w-[300px] lg:max-w-[min(440px,60vh)] xl:max-w-[min(500px,62vh)]";
 
 function offsetFrom(index: number, current: number, count: number) {
   const distance = (index - current + count) % count;
