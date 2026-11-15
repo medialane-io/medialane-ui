@@ -14,11 +14,13 @@ const collection = (address: string, name: string, totalSupply: number | null = 
 const COLLECTIONS = [collection("0x1", "TAO", 2), collection("0x2", "Harmonia"), collection("0x3", "Open Canvas")];
 const getHref = (c: ApiCollection) => `/collections/${c.contractAddress}`;
 
-test("shows every featured collection as a card and the active one as the title, all linking to the collection", () => {
+test("every featured collection is a card with its name and item count, all linking to the collection", () => {
   const view = render(<CollectionShowcase collections={COLLECTIONS} isLoading={false} getHref={getHref} />);
 
   expect(view.getByRole("heading", { level: 2, name: "TAO" })).toBeTruthy();
   expect(view.getByText("2 items")).toBeTruthy();
+  expect(view.getAllByText("3 items")).toHaveLength(2);
+  expect(view.getAllByText("Harmonia").length).toBeGreaterThan(0);
   for (const name of ["TAO", "Harmonia", "Open Canvas"]) {
     const links = view.getAllByRole("link", { name });
     expect(links.length).toBeGreaterThan(0);

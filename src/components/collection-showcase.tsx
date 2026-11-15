@@ -61,7 +61,6 @@ export function CollectionShowcase({ collections, isLoading, getHref }: Collecti
 
   const active = collections[current % count]!;
   const activeImage = resolveImage(active.image, { width: 960 });
-  const supply = active.totalSupply;
   const transition = reduceMotion ? { duration: 0 } : { type: "spring" as const, stiffness: 220, damping: 26 };
 
   return (
@@ -139,34 +138,28 @@ export function CollectionShowcase({ collections, isLoading, getHref }: Collecti
                   <div className="absolute inset-0 bg-gradient-to-br from-brand-purple/40 via-brand-blue/20 to-brand-navy/60" />
                 )}
                 <span className={cn("absolute inset-0 bg-black/30 transition-opacity duration-500", offset === 0 ? "opacity-0" : "opacity-100")} />
+                <span className="absolute inset-x-3 bottom-3 flex flex-col items-start gap-1.5">
+                  <span className="max-w-full truncate rounded-full bg-black/30 px-4 py-1.5 text-base font-semibold leading-tight text-white backdrop-blur-md sm:text-lg">
+                    {name}
+                  </span>
+                  {collection.totalSupply != null && (
+                    <span className="rounded-full bg-black/30 px-3 py-1 text-xs font-medium tabular-nums text-white backdrop-blur-md">
+                      {collection.totalSupply.toLocaleString()} {collection.totalSupply === 1 ? "item" : "items"}
+                    </span>
+                  )}
+                </span>
               </Link>
             </motion.div>
           );
         })}
       </motion.div>
 
-      <motion.div
-        key={active.contractAddress}
-        aria-live={paused ? "polite" : "off"}
-        className="relative mt-8 flex flex-col items-center gap-1 text-center"
-        initial={reduceMotion ? false : { opacity: 0, y: 8 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4 }}
-      >
-        <Link href={getHref(active)} className="transition-opacity hover:opacity-80">
-          <h2 className="text-3xl font-semibold leading-tight tracking-tight text-foreground sm:text-4xl lg:text-5xl">
-            {active.name ?? "Collection"}
-          </h2>
-        </Link>
-        {supply != null && (
-          <p className="text-sm text-muted-foreground">
-            {supply.toLocaleString()} {supply === 1 ? "item" : "items"}
-          </p>
-        )}
-      </motion.div>
+      <h2 aria-live={paused ? "polite" : "off"} className="sr-only">
+        {active.name ?? "Collection"}
+      </h2>
 
       {count > 1 && (
-        <div className="relative mt-3 flex justify-center">
+        <div className="relative mt-4 flex justify-center">
           {collections.map((collection, index) => (
             <button
               key={collection.contractAddress}

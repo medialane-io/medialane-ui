@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.361.0] — 2026-11-15
+
+### Changed
+
+- `CollectionShowcase`: each card carries its name and item count in blurred pills, like the collection cards, and the title block below the cards is gone. The dots sit directly under the cards, which brings the content below closer to the top of the page. The active collection's name stays as a screen-reader heading.
+
 ## [0.360.0] — 2026-11-15
 
 ### Changed
