@@ -60,7 +60,6 @@ export function CollectionShowcase({ collections, isLoading, getHref }: Collecti
   if (count === 0) return null;
 
   const active = collections[current % count]!;
-  const activeImage = resolveImage(active.image, { width: 960 });
   const transition = reduceMotion ? { duration: 0 } : { type: "spring" as const, stiffness: 220, damping: 26 };
 
   return (
@@ -71,18 +70,22 @@ export function CollectionShowcase({ collections, isLoading, getHref }: Collecti
       onFocus={() => setPaused(true)}
       onBlur={() => setPaused(false)}
     >
-      {activeImage && (
-        <motion.div
-          key={active.contractAddress}
-          aria-hidden
-          className="pointer-events-none absolute inset-0 scale-125 opacity-30 blur-3xl dark:opacity-40"
-          initial={reduceMotion ? false : { opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6 }}
-        >
-          <Image src={activeImage} alt="" fill className="object-cover" unoptimized />
-        </motion.div>
-      )}
+      {collections.map((collection, index) => {
+        const haloImage = resolveImage(collection.image, { width: 960 });
+        if (!haloImage) return null;
+        return (
+          <motion.div
+            key={collection.contractAddress}
+            aria-hidden
+            className="pointer-events-none absolute inset-0 scale-125 blur-3xl"
+            initial={false}
+            animate={{ opacity: index === current ? 1 : 0 }}
+            transition={{ duration: reduceMotion ? 0 : 0.8 }}
+          >
+            <Image src={haloImage} alt="" fill className="object-cover" unoptimized />
+          </motion.div>
+        );
+      })}
       <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-b from-transparent to-background" />
 
       <motion.div
@@ -130,7 +133,7 @@ export function CollectionShowcase({ collections, isLoading, getHref }: Collecti
                 aria-label={name}
                 draggable={false}
                 onClick={(event) => { if (dragged.current) event.preventDefault(); }}
-                className="relative block h-full w-full overflow-hidden rounded-2xl bg-muted shadow-2xl shadow-black/20 ring-1 ring-border dark:shadow-black/50"
+                className="relative block h-full w-full overflow-hidden rounded-2xl bg-muted shadow-2xl shadow-black/20 dark:shadow-black/50"
               >
                 {image ? (
                   <Image src={image} alt="" fill sizes="(min-width: 1024px) 340px, 58vw" className="object-cover" priority={index === 0} unoptimized />
