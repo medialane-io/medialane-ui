@@ -4,6 +4,7 @@
 
 ### Fixed
 
+- `CollectionShowcase`: the cards have no border.
 - `CollectionShowcase`: the blurred background crossfades between collections. Every collection's halo stays mounted and fades in or out, so the page background no longer shows through between images.
 
 ## [0.361.0] — 2026-11-15

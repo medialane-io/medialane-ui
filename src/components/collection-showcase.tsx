@@ -133,7 +133,7 @@ export function CollectionShowcase({ collections, isLoading, getHref }: Collecti
                 aria-label={name}
                 draggable={false}
                 onClick={(event) => { if (dragged.current) event.preventDefault(); }}
-                className="relative block h-full w-full overflow-hidden rounded-2xl bg-muted shadow-2xl shadow-black/20 ring-1 ring-border dark:shadow-black/50"
+                className="relative block h-full w-full overflow-hidden rounded-2xl bg-muted shadow-2xl shadow-black/20 dark:shadow-black/50"
               >
                 {image ? (
                   <Image src={image} alt="" fill sizes="(min-width: 1024px) 340px, 58vw" className="object-cover" priority={index === 0} unoptimized />
