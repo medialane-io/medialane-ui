@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.365.0] — 2026-11-16
+
+### Changed
+
+- The launchpad page shows each group as its own section with a heading and a short description: Single NFTs, Limited Editions, Coins, Membership, Licensing and Claims. A sticky bar with search and a button per section scrolls to each one.
+- Claim Memecoin sits in Coins and IP Sponsorship in Licensing. The service groups `nfts` and `community` are now `single-nfts` and `membership`, and `licensing` is new.
+- `LaunchpadFilterBar` takes `sections` in place of `groups`, `activeGroups` and `onToggleGroup`. `LaunchpadGroupedSections` takes `defs` from the new `selectLaunchpadServices`. `useLaunchpadFilter` returns `query`, `setQuery` and `clear`.
+
+### Removed
+
+- Claim Collection Name no longer appears on the launchpad.
+
 ## [0.364.0] — 2026-11-15
 
 ### Removed

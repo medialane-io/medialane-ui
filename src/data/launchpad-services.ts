@@ -16,10 +16,11 @@ const TICKETS_TRANSFERABLE_FEATURE = hasCapability("ip-tickets", "transfer")
 export type ServiceStatus = "live" | "building" | "soon";
 
 export type ServiceGroup =
-  | "nfts"
+  | "single-nfts"
   | "limited-editions"
   | "coins"
-  | "community"
+  | "membership"
+  | "licensing"
   | "claims"
   | "coming-soon";
 
@@ -34,8 +35,8 @@ export interface ServiceGroupDefinition {
 
 export const LAUNCHPAD_SERVICE_GROUPS: ServiceGroupDefinition[] = [
   {
-    key: "nfts",
-    title: "Originals",
+    key: "single-nfts",
+    title: "Single NFTs",
     tagline: "Singular works, your own collections, timed drops, and remixes.",
   },
   {
@@ -46,17 +47,22 @@ export const LAUNCHPAD_SERVICE_GROUPS: ServiceGroupDefinition[] = [
   {
     key: "coins",
     title: "Coins",
-    tagline: "Launch your own coin.",
+    tagline: "Launch your own coin, or bring one you already made.",
   },
   {
-    key: "community",
-    title: "Community",
-    tagline: "Badges, tickets, memberships, and direct sponsorship.",
+    key: "membership",
+    title: "Membership",
+    tagline: "Badges, tickets, and club cards your audience holds.",
+  },
+  {
+    key: "licensing",
+    title: "Licensing",
+    tagline: "Let sponsors back your work in return for a license.",
   },
   {
     key: "claims",
     title: "Claims",
-    tagline: "Reserve your username or a collection's name, or bring in a collection or coin you already made.",
+    tagline: "Reserve your username, or bring in a collection you already made.",
   },
   {
     key: "coming-soon",
@@ -98,7 +104,7 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     example: "A song, a photo, an ebook, a short film",
     icon: ImagePlus,
     status: "live",
-    group: "nfts",
+    group: "single-nfts",
   },
   {
     key: "limited-editions",
@@ -126,7 +132,7 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     example: "A photography collection, an album of singles",
     icon: LayoutGrid,
     status: "live",
-    group: "nfts",
+    group: "single-nfts",
   },
   {
     key: "remix-asset",
@@ -140,7 +146,7 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     example: "A remix of a song, an artwork inspired by an original",
     icon: GitBranch,
     status: "live",
-    group: "nfts",
+    group: "single-nfts",
   },
 
   {
@@ -170,7 +176,7 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     icon: Award,
     browseLinkLabel: "Browse badges",
     status: "live",
-    group: "community",
+    group: "membership",
   },
   {
     key: "collection-drop",
@@ -185,7 +191,7 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     icon: Package,
     browseLinkLabel: "Browse drops",
     status: "live",
-    group: "nfts",
+    group: "single-nfts",
   },
   {
     key: "ip-tickets",
@@ -200,7 +206,7 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     browseLinkLabel: "Browse tickets",
 
     status: "live",
-    group: "community",
+    group: "membership",
   },
   {
     key: "ip-club",
@@ -215,7 +221,7 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     browseLinkLabel: "Browse clubs",
 
     status: "live",
-    group: "community",
+    group: "membership",
   },
   {
     key: "ip-sponsorship",
@@ -231,7 +237,7 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     browseLinkLabel: "Browse offers",
 
     status: "live",
-    group: "community",
+    group: "licensing",
   },
 
   {
@@ -261,7 +267,7 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     example: "Your unrug memecoin, listed on your creator profile",
     icon: Coins,
     status: "live",
-    group: "claims",
+    group: "coins",
   },
   {
     key: "claim-username",

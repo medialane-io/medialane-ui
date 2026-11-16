@@ -1,22 +1,32 @@
 import { describe, expect, test } from "bun:test";
 import { LAUNCHPAD_SERVICE_DEFINITIONS, LAUNCHPAD_SERVICE_GROUPS } from "./launchpad-services";
 
-const def = (key: string) => LAUNCHPAD_SERVICE_DEFINITIONS.find((d) => d.key === key);
+const groupOf = (key: string) => LAUNCHPAD_SERVICE_DEFINITIONS.find((d) => d.key === key)?.group;
 
-describe("which section each claim sits in", () => {
-  test("every claim card, including the memecoin claim, is in the Claims group", () => {
-    for (const key of ["claim-username", "claim-collection", "claim-collection-name", "claim-memecoin"]) {
-      expect(def(key)?.group).toBe("claims");
-    }
+describe("the launchpad sections", () => {
+  test("appear in this order", () => {
+    expect(LAUNCHPAD_SERVICE_GROUPS.map((g) => g.title)).toEqual([
+      "Single NFTs",
+      "Limited Editions",
+      "Coins",
+      "Membership",
+      "Licensing",
+      "Claims",
+      "Coming soon",
+    ]);
   });
 
-  test("the Coins section only talks about launching a coin, since claiming one lives under Claims", () => {
-    const coins = LAUNCHPAD_SERVICE_GROUPS.find((g) => g.key === "coins");
-    expect(coins?.tagline).toBe("Launch your own coin.");
+  test("each service sits in the section it belongs to", () => {
+    expect(["nfts", "create-collection", "collection-drop", "remix-asset"].map(groupOf)).toEqual(Array(4).fill("single-nfts"));
+    expect(["limited-editions", "create-1155"].map(groupOf)).toEqual(Array(2).fill("limited-editions"));
+    expect(["creator-coins", "claim-memecoin"].map(groupOf)).toEqual(Array(2).fill("coins"));
+    expect(["pop-protocol", "ip-tickets", "ip-club"].map(groupOf)).toEqual(Array(3).fill("membership"));
+    expect(groupOf("ip-sponsorship")).toBe("licensing");
+    expect(["claim-username", "claim-collection", "claim-collection-name"].map(groupOf)).toEqual(Array(3).fill("claims"));
   });
 
-  test("the Claims section's tagline covers bringing in a coin as well", () => {
-    const claims = LAUNCHPAD_SERVICE_GROUPS.find((g) => g.key === "claims");
-    expect(claims?.tagline.toLowerCase()).toContain("coin");
+  test("every service belongs to a listed section", () => {
+    const keys = new Set(LAUNCHPAD_SERVICE_GROUPS.map((g) => g.key));
+    for (const d of LAUNCHPAD_SERVICE_DEFINITIONS) expect(keys.has(d.group)).toBe(true);
   });
 });

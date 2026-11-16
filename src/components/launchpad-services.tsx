@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "./link.js";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Lock, ArrowRight, Check } from "lucide-react";
@@ -63,10 +63,11 @@ const DEFAULT_SLICE: GroupSlice = {
 };
 
 export const GROUP_SLICES: Record<ServiceGroup, GroupSlice> = {
-  "nfts": { tint: "bg-brand-blue/10", text: "text-brand-blue", border: "border-brand-blue/30" },
+  "single-nfts": { tint: "bg-brand-blue/10", text: "text-brand-blue", border: "border-brand-blue/30" },
   "limited-editions": { tint: "bg-brand-maeve/10", text: "text-brand-maeve", border: "border-brand-maeve/30" },
   "coins": { tint: "bg-brand-purple/10", text: "text-brand-purple", border: "border-brand-purple/30" },
-  "community": { tint: "bg-brand-rose/10", text: "text-brand-rose", border: "border-brand-rose/30" },
+  "membership": { tint: "bg-brand-rose/10", text: "text-brand-rose", border: "border-brand-rose/30" },
+  "licensing": { tint: "bg-brand-orange/10", text: "text-brand-orange", border: "border-brand-orange/30" },
   "claims": { tint: "bg-brand-orange/10", text: "text-brand-orange", border: "border-brand-orange/30" },
   "coming-soon": DEFAULT_SLICE,
 };
@@ -95,8 +96,6 @@ export const SERVICE_HUES: Record<string, ServiceHue> = {
 const GROUP_TITLE_BY_KEY = Object.fromEntries(
   LAUNCHPAD_SERVICE_GROUPS.map((g) => [g.key, g.title]),
 ) as Record<ServiceGroup, string>;
-
-const GROUP_KEYS = new Set(LAUNCHPAD_SERVICE_GROUPS.map((g) => g.key));
 
 export interface LaunchpadServiceCardProps {
   def: ServiceDefinition;
@@ -216,123 +215,110 @@ export function serviceMatchesQuery(def: ServiceDefinition, query: string): bool
   return haystack.includes(query.trim().toLowerCase());
 }
 
-function syncFilterUrl(query: string, groups: Set<ServiceGroup>) {
+function syncFilterUrl(query: string) {
   if (typeof window === "undefined") return;
   const params = new URLSearchParams(window.location.search);
   if (query.trim()) params.set("q", query.trim());
   else params.delete("q");
-  if (groups.size > 0) params.set("groups", [...groups].join(","));
-  else params.delete("groups");
   const qs = params.toString();
   window.history.replaceState(null, "", qs ? `${window.location.pathname}?${qs}` : window.location.pathname);
 }
 
 export function useLaunchpadFilter() {
   const [query, setQueryState] = useState("");
-  const [activeGroups, setActiveGroups] = useState<Set<ServiceGroup>>(new Set());
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const q = params.get("q");
+    const q = new URLSearchParams(window.location.search).get("q");
     if (q) setQueryState(q);
-    const g = params.get("groups");
-    if (g) {
-      const groups = g.split(",").filter((k): k is ServiceGroup => GROUP_KEYS.has(k as ServiceGroup));
-      if (groups.length > 0) setActiveGroups(new Set(groups));
-    }
   }, []);
-
-  const filterableGroups = LAUNCHPAD_SERVICE_GROUPS.filter((g) => g.key !== "coming-soon");
 
   const setQuery = (value: string) => {
     setQueryState(value);
-    syncFilterUrl(value, activeGroups);
+    syncFilterUrl(value);
   };
 
-  const toggleGroup = (key: ServiceGroup) => {
-    setActiveGroups((prev) => {
-      const next = new Set(prev);
-      if (next.has(key)) next.delete(key);
-      else next.add(key);
-      syncFilterUrl(query, next);
-      return next;
-    });
-  };
+  const clear = () => setQuery("");
 
-  const matches = (def: ServiceDefinition): boolean => {
-    if (activeGroups.size > 0 && !activeGroups.has(def.group)) return false;
-    if (def.status !== "live") return false;
-    return serviceMatchesQuery(def, query);
-  };
+  return { query, setQuery, clear };
+}
 
-  const totalMatches = useMemo(
-    () => LAUNCHPAD_SERVICE_DEFINITIONS.filter(matches).length,
+export interface LaunchpadServiceSelection {
+  query: string;
+  hideGroups?: string[];
+  excludeKeys?: string[];
+}
 
-    [query, activeGroups],
+export function selectLaunchpadServices({ query, hideGroups = [], excludeKeys = [] }: LaunchpadServiceSelection): ServiceDefinition[] {
+  return LAUNCHPAD_SERVICE_DEFINITIONS.filter(
+    (d) =>
+      !excludeKeys.includes(d.key) &&
+      !hideGroups.includes(d.group) &&
+      (d.group === "coming-soon" || d.status === "live") &&
+      serviceMatchesQuery(d, query),
   );
-
-  const clear = () => {
-    setQueryState("");
-    setActiveGroups(new Set());
-    syncFilterUrl("", new Set());
-  };
-
-  return { query, setQuery, activeGroups, toggleGroup, filterableGroups, totalMatches, clear };
 }
 
 export interface LaunchpadGroupedSectionsProps {
 
   overrides: ServiceOverrides;
 
-  query: string;
-
-  activeGroups: Set<ServiceGroup>;
+  defs: ServiceDefinition[];
 
   onClearFilters: () => void;
   className?: string;
-
-  excludeKeys?: string[];
 }
 
-export function LaunchpadGroupedSections({ overrides, query, activeGroups, onClearFilters, className, excludeKeys }: LaunchpadGroupedSectionsProps) {
-  const inActiveGroup = (d: ServiceDefinition) => activeGroups.size === 0 || activeGroups.has(d.group);
-  const inSearch = (d: ServiceDefinition) => serviceMatchesQuery(d, query);
-  const notExcluded = (d: ServiceDefinition) => !excludeKeys?.includes(d.key);
+export function launchpadSectionId(group: ServiceGroup): string {
+  return `launchpad-${group}`;
+}
 
-  const groupOrder = Object.fromEntries(LAUNCHPAD_SERVICE_GROUPS.map((g, i) => [g.key, i]));
-
-  const liveDefs = LAUNCHPAD_SERVICE_DEFINITIONS
-    .filter((d) => d.group !== "coming-soon" && d.status === "live" && notExcluded(d) && inActiveGroup(d) && inSearch(d))
-    .sort((a, b) => (groupOrder[a.group] ?? 99) - (groupOrder[b.group] ?? 99));
+export function LaunchpadGroupedSections({ overrides, defs, onClearFilters, className }: LaunchpadGroupedSectionsProps) {
+  const sections = LAUNCHPAD_SERVICE_GROUPS
+    .filter((g) => g.key !== "coming-soon")
+    .map((group) => ({ group, defs: defs.filter((d) => d.group === group.key) }))
+    .filter((s) => s.defs.length > 0);
 
   const comingSoonGroup = LAUNCHPAD_SERVICE_GROUPS.find((g) => g.key === "coming-soon");
-  const comingSoonDefs = LAUNCHPAD_SERVICE_DEFINITIONS.filter(
-    (d) => d.group === "coming-soon" && notExcluded(d) && inActiveGroup(d) && inSearch(d),
-  );
+  const comingSoonDefs = defs.filter((d) => d.group === "coming-soon");
 
   return (
-    <div className={cn("space-y-8", className)}>
-      {liveDefs.length === 0 && comingSoonDefs.length === 0 ? (
+    <div className={cn("space-y-12 sm:space-y-16", className)}>
+      {sections.length === 0 && comingSoonDefs.length === 0 ? (
         <div className="text-center py-16 space-y-3">
           <p className="text-lg font-semibold">No services match</p>
-          <p className="text-sm text-muted-foreground">Try a different search or clear your filters.</p>
+          <p className="text-sm text-muted-foreground">Try a different search or clear your search.</p>
           <button
             type="button"
             onClick={onClearFilters}
             className="inline-flex items-center h-9 px-4 rounded-full text-sm font-semibold bg-primary text-primary-foreground"
           >
-            Clear filters
+            Clear search
           </button>
         </div>
       ) : (
         <>
-          <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-5 sm:gap-6">
-            <AnimatePresence mode="popLayout">
-              {liveDefs.map((def, i) => (
-                <LaunchpadServiceCard key={def.key} def={def} override={overrides[def.key]} index={i} />
-              ))}
-            </AnimatePresence>
-          </motion.div>
+          {sections.map(({ group, defs: groupDefs }) => (
+            <section
+              key={group.key}
+              id={launchpadSectionId(group.key)}
+              aria-labelledby={`${launchpadSectionId(group.key)}-title`}
+              className="scroll-mt-20 space-y-5"
+            >
+              <div className="space-y-1">
+                <h2 id={`${launchpadSectionId(group.key)}-title`} className="text-2xl sm:text-3xl font-semibold leading-tight">
+                  {group.title}
+                </h2>
+                <p className="text-sm sm:text-base text-muted-foreground">{group.tagline}</p>
+              </div>
+              <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-5 sm:gap-6">
+                <AnimatePresence mode="popLayout">
+                  {groupDefs.map((def, i) => (
+                    <LaunchpadServiceCard key={def.key} def={def} override={overrides[def.key]} index={i} />
+                  ))}
+                </AnimatePresence>
+              </motion.div>
+            </section>
+          ))}
           {comingSoonGroup && comingSoonDefs.length > 0 && (
             <ComingSoonStrip group={comingSoonGroup} defs={comingSoonDefs} />
           )}
