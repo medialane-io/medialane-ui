@@ -1,4 +1,3 @@
-import type { ReactNode } from "react";
 import type { Call, TypedData } from "starknet";
 import type { ApiCollection } from "@medialane/sdk";
 import type { MedialaneClient } from "@medialane/sdk/starknet";
@@ -25,8 +24,6 @@ export interface FastMintProps {
   mediaKindLock?: MediaKind;
   onMinted?: (asset: MintedAsset) => void;
 
-  onNavigate?: (href: string) => void;
-
   collections: ApiCollection[];
   refetchCollections: () => Promise<ApiCollection[]>;
 
@@ -37,5 +34,4 @@ export interface FastMintProps {
   getUploadToken: () => Promise<string | null>;
   getSigner: () => Promise<FastMintSigner> | FastMintSigner;
   client: MedialaneClient;
-  successFooter?: ReactNode;
 }

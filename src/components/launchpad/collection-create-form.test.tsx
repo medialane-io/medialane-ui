@@ -90,16 +90,3 @@ test("single-editions links to the new collection by the address its registry ho
   const links = Array.from(view.container.ownerDocument.querySelectorAll("a")).map((a) => a.textContent);
   expect(links.indexOf("View collection")).toBeLessThan(links.indexOf("Mint an asset"));
 });
-
-test("a title and an uploaded file carried from Fast Mint fill the form", async () => {
-  window.history.replaceState(null, "", "/launchpad/club/create?name=Rio+Club&image=ipfs%3A%2F%2Fcarried");
-  try {
-    const { view } = setup([]);
-    await waitFor(() => expect((view.container.querySelector("input[name=name]") as HTMLInputElement).value).toBe("Rio Club"));
-    expect(view.getByText("✓ Uploaded")).toBeTruthy();
-    expect(view.getByRole("button", { name: "Change image" })).toBeTruthy();
-    expect(view.getByRole("button", { name: "Remove" })).toBeTruthy();
-  } finally {
-    window.history.replaceState(null, "", "/");
-  }
-});
