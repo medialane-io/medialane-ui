@@ -16,7 +16,8 @@ import { Dialog, DialogContent, DialogDescription, DialogTitle } from "../dialog
 import type { MetadataField } from "../ip-type-fields.js";
 import { Dropzone } from "./dropzone.js";
 import { SuccessView } from "./success-view.js";
-import { AssetTypePicker, CoverUpload, MediaRow } from "./asset-form-parts.js";
+import { CoverUpload, FormatPicker, MINT_FORMATS, MediaRow, type MintFormat } from "./asset-form-parts.js";
+import { handoffHref, type HandoffFormat } from "../../utils/launchpad-handoff.js";
 import { CollectionSection, type CollectionMode } from "./collection-section.js";
 import { LicensingSection } from "./licensing-section.js";
 import { IpTypeSection } from "./ip-type-section.js";
@@ -30,7 +31,7 @@ import type { FastMintProps, MediaKind, MintedAsset } from "./types.js";
 
 export function FastMint(props: FastMintProps) {
   const {
-    presentation = "inline", open = true, onClose, mediaKindLock, onMinted,
+    presentation = "inline", open = true, onClose, mediaKindLock, onMinted, onNavigate,
     collections, refetchCollections,
     hasWallet, walletAddress, onRequireWallet, connectLabel, getUploadToken, getSigner,
     client, successFooter,
@@ -46,7 +47,9 @@ export function FastMint(props: FastMintProps) {
   const mediaInputRef = useRef<HTMLInputElement>(null);
   const featureInputRef = useRef<HTMLInputElement>(null);
 
-  const [assetType, setAssetType] = useState<MintAssetType>("single");
+  const [format, setFormat] = useState<MintFormat>("single");
+  const assetType: MintAssetType = format === "editions" ? "editions" : "single";
+  const handoffFormat: HandoffFormat | null = format === "pop" || format === "tickets" || format === "club" ? format : null;
   const [editionCount, setEditionCount] = useState("10");
 
   const [collectionMode, setCollectionMode] = useState<CollectionMode>("existing");
@@ -106,6 +109,17 @@ export function FastMint(props: FastMintProps) {
     if (mediaInputRef.current) mediaInputRef.current.value = "";
   };
 
+  const handoffImageUri = mediaKind === "image" ? media.uri : feature.uri;
+  const handoffReady = !!media.uri && !media.uploading && !feature.uploading && !!handoffImageUri;
+
+  const continueToCreate = () => {
+    if (!handoffFormat || !handoffImageUri) return;
+    const href = handoffHref(handoffFormat, { name, imageUri: handoffImageUri });
+    onClose?.();
+    if (onNavigate) onNavigate(href);
+    else window.location.assign(href);
+  };
+
   const ready = !!media.uri && !media.uploading && name.trim().length > 0 &&
     (mediaKind === "image" || !!feature.uri) &&
     (collectionMode === "existing"
@@ -161,7 +175,7 @@ export function FastMint(props: FastMintProps) {
     form.reset();
     clearMedia();
     feature.clear();
-    setAssetType("single");
+    setFormat("single");
     setEditionCount("10");
     setCollectionMode("existing");
     setExistingCollectionId("");
@@ -175,7 +189,8 @@ export function FastMint(props: FastMintProps) {
   const selectedExistingCollection = assetType === "single"
     ? erc721Collections.find((c) => c.collectionId === existingCollectionId)
     : erc1155Collections.find((c) => c.contractAddress === existingCollectionContract);
-  const collectionLabel = media.uri
+  const formatTitle = MINT_FORMATS.find((f) => f.value === format)?.title ?? "";
+  const collectionLabel = handoffFormat ? undefined : media.uri
     ? (collectionMode === "new"
       ? (draft.name || "New collection")
       : (selectedExistingCollection?.name || "IP Asset"))
@@ -239,8 +254,15 @@ export function FastMint(props: FastMintProps) {
       {media.uri && (
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-8 items-start">
           <div className="space-y-5">
+            <FormatPicker
+              value={format}
+              onChange={setFormat}
+              editionCount={editionCount}
+              onEditionCount={setEditionCount}
+            />
+
             <div className="space-y-2">
-              <label className="text-sm font-medium">Title *</label>
+              <label className="text-sm font-medium">Title{!handoffFormat && " *"}</label>
               <Input
                 value={name}
                 onChange={(e) => form.setValue("name", e.target.value)}
@@ -248,24 +270,28 @@ export function FastMint(props: FastMintProps) {
               />
             </div>
 
-            <div className="space-y-2">
-              <label className="text-sm font-medium">Description</label>
-              <Textarea
-                value={description}
-                onChange={(e) => form.setValue("description", e.target.value)}
-                placeholder="Describe your work, its story, and any context for buyers…"
-                rows={3}
-              />
-            </div>
+            {!handoffFormat && (
+              <>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">Description</label>
+                  <Textarea
+                    value={description}
+                    onChange={(e) => form.setValue("description", e.target.value)}
+                    placeholder="Describe your work, its story, and any context for buyers…"
+                    rows={3}
+                  />
+                </div>
 
-            <div className="space-y-2">
-              <label className="text-sm font-medium">External link <span className="text-muted-foreground font-normal">(optional)</span></label>
-              <Input
-                value={form.watch("external_url")}
-                onChange={(e) => form.setValue("external_url", e.target.value)}
-                placeholder="https://yourwebsite.com"
-              />
-            </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">External link <span className="text-muted-foreground font-normal">(optional)</span></label>
+                  <Input
+                    value={form.watch("external_url")}
+                    onChange={(e) => form.setValue("external_url", e.target.value)}
+                    placeholder="https://yourwebsite.com"
+                  />
+                </div>
+              </>
+            )}
 
             {mediaKind !== "image" && (
               <CoverUpload
@@ -276,52 +302,65 @@ export function FastMint(props: FastMintProps) {
               />
             )}
 
-            <AssetTypePicker
-              value={assetType}
-              onChange={setAssetType}
-              editionCount={editionCount}
-              onEditionCount={setEditionCount}
-            />
+            {!handoffFormat && (
+              <>
+                <CollectionSection
+                  assetType={assetType}
+                  mode={collectionMode}
+                  onModeChange={setCollectionMode}
+                  collections={assetType === "single" ? erc721Collections : erc1155Collections}
+                  existingId={existingCollectionId}
+                  existingContract={existingCollectionContract}
+                  onExistingId={setExistingCollectionId}
+                  onExistingContract={setExistingCollectionContract}
+                  draft={draft}
+                  previewImage={previewImage}
+                />
 
-            <CollectionSection
-              assetType={assetType}
-              mode={collectionMode}
-              onModeChange={setCollectionMode}
-              collections={assetType === "single" ? erc721Collections : erc1155Collections}
-              existingId={existingCollectionId}
-              existingContract={existingCollectionContract}
-              onExistingId={setExistingCollectionId}
-              onExistingContract={setExistingCollectionContract}
-              draft={draft}
-              previewImage={previewImage}
-            />
+                <LicensingSection form={form} />
 
-            <LicensingSection form={form} />
-
-            <IpTypeSection
-              ipType={ipType}
-              onIpTypeChange={setIpType}
-              fieldsRef={templateFieldsRef}
-              uploadDocument={(file) => uploadFile(file, "document")}
-              existingDocument={mediaKind === "document" ? { uri: media.uri, name: mediaFile.name } : null}
-            />
+                <IpTypeSection
+                  ipType={ipType}
+                  onIpTypeChange={setIpType}
+                  fieldsRef={templateFieldsRef}
+                  uploadDocument={(file) => uploadFile(file, "document")}
+                  existingDocument={mediaKind === "document" ? { uri: media.uri, name: mediaFile.name } : null}
+                />
+              </>
+            )}
 
             {status === "error" && errorMsg && <p className="text-xs text-destructive">{errorMsg}</p>}
 
-            <button
-              type="button"
-              disabled={submitBlocked}
-              onClick={form.handleSubmit(onSubmit)}
-              className={cn(
-                "w-full h-12 text-base font-semibold text-white rounded-xl flex items-center justify-center gap-2 transition-all hover:brightness-110 active:scale-[0.98] bg-brand-blue",
-                submitBlocked && "opacity-40 pointer-events-none"
-              )}
-            >
-              {busy ? <><Loader2 className="h-4 w-4 animate-spin" />Minting…</> : assetType === "single" ? "Mint NFT" : "Mint Editions"}
-            </button>
-            <p className="text-xs text-center text-muted-foreground">
-              Zero platform fees to mint.
-            </p>
+            {handoffFormat ? (
+              <button
+                type="button"
+                disabled={!handoffReady}
+                onClick={continueToCreate}
+                className={cn(
+                  "w-full h-12 text-base font-semibold text-white rounded-xl flex items-center justify-center gap-2 transition-all hover:brightness-110 active:scale-[0.98] bg-brand-blue",
+                  !handoffReady && "opacity-40 pointer-events-none"
+                )}
+              >
+                Continue to {formatTitle}
+              </button>
+            ) : (
+              <>
+                <button
+                  type="button"
+                  disabled={submitBlocked}
+                  onClick={form.handleSubmit(onSubmit)}
+                  className={cn(
+                    "w-full h-12 text-base font-semibold text-white rounded-xl flex items-center justify-center gap-2 transition-all hover:brightness-110 active:scale-[0.98] bg-brand-blue",
+                    submitBlocked && "opacity-40 pointer-events-none"
+                  )}
+                >
+                  {busy ? <><Loader2 className="h-4 w-4 animate-spin" />Minting…</> : assetType === "single" ? "Mint NFT" : "Mint Editions"}
+                </button>
+                <p className="text-xs text-center text-muted-foreground">
+                  Zero platform fees to mint.
+                </p>
+              </>
+            )}
           </div>
 
           <div className="order-first lg:order-last lg:sticky lg:top-20 max-w-[260px] mx-auto w-full lg:max-w-none lg:mx-0">
