@@ -1,4 +1,5 @@
 import type { DraftItem } from "../../components/drop-item-list.js";
+import { isPositiveInteger, isSymbol } from "../launchpad-rules.js";
 import { parseAllowlist } from "./allowlist.js";
 import { MAX_DROP_SUPPLY, type DropKind, type DropLicense } from "./metadata.js";
 import { EMPTY_SALE, validateSale, type SaleDraft, type SaleErrors } from "./sale.js";
@@ -50,14 +51,14 @@ export function validateDropDraft(d: DropDraft, now: number): DropDraftErrors {
   const e: DropDraftErrors = { ...validateSale(d.sale, now) };
   if (d.kind === "edition") {
     if (!d.edition) e.artwork = "Add the artwork";
-    if (!/^[1-9]\d*$/.test(d.supply) || Number(d.supply) > MAX_DROP_SUPPLY) e.supply = `Enter a supply from 1 to ${thousands}`;
+    if (!isPositiveInteger(d.supply) || Number(d.supply) > MAX_DROP_SUPPLY) e.supply = `Enter a supply from 1 to ${thousands}`;
   } else if (d.items.length === 0) {
     e.artwork = "Add at least one item";
   } else if (d.items.length > MAX_DROP_SUPPLY) {
     e.artwork = `A collection holds up to ${thousands} items`;
   }
   if (!d.name.trim()) e.name = "Name your drop";
-  if (!/^[A-Z0-9]{1,10}$/.test(d.symbol)) e.symbol = "Use 1–10 capital letters or digits";
+  if (!isSymbol(d.symbol)) e.symbol = "Use 1–10 capital letters or digits";
   if (d.listOnly) {
     const list = parseAllowlist(d.allowlist);
     if (list.invalid.length > 0) {

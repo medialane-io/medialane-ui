@@ -61,11 +61,11 @@ test("the organizer publishes participants and gets their claim links", async ()
   await waitFor(() => expect(view.getByText("Download claim links (CSV)")).toBeTruthy());
 });
 
-test("the organizer issues a credential to one wallet", async () => {
+test("the organizer issues a certificate to one wallet", async () => {
   const { view, intents } = setup(ME);
-  await waitFor(() => expect(view.getByText("Issue credential")).toBeTruthy());
+  await waitFor(() => expect(view.getByText("Issue certificate")).toBeTruthy());
   fireEvent.change(view.getByPlaceholderText("0x..."), { target: { value: OTHER } });
-  fireEvent.click(view.getByText("Issue credential"));
-  await waitFor(() => expect(view.getByText("Credential issued")).toBeTruthy());
+  fireEvent.click(view.getByText("Issue certificate"));
+  await waitFor(() => expect(view.getByText("Certificate issued")).toBeTruthy());
   expect(intents[0]).toEqual({ kind: "pop-manage", params: { owner: ME, collection: C, action: "issue", recipient: OTHER } });
 });

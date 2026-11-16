@@ -4,9 +4,11 @@ import { Award } from "lucide-react";
 import { buildCollectionMetadata } from "@medialane/sdk";
 import { executeIntent } from "@medialane/sdk/starknet";
 import { Input } from "../../input.js";
+import { getMintFormatCopy } from "../../../data/launchpad-services.js";
 import { cn } from "../../../utils/cn.js";
 import { uploadJsonToIpfs } from "../../../utils/ipfs-upload.js";
 import { getDefaultClaimWindow } from "../../../utils/launchpad-defaults.js";
+import { isSymbol } from "../../../utils/launchpad-rules.js";
 import { claimEndTimestamp, popEventAttributes, popEventIntent } from "../../../utils/launchpad-actions.js";
 import { EVENT_TYPES, type PopEventType } from "../../launchpad/pop-create-fields.js";
 import { defineFormat, type FormatFieldsProps } from "./types.js";
@@ -17,8 +19,6 @@ interface PopState {
   claimEndDate: string;
   claimEndTime: string;
 }
-
-const SYMBOL_PATTERN = /^[A-Z0-9]{1,10}$/;
 
 function PopFields({ shared, state, update }: FormatFieldsProps<PopState>) {
   return (
@@ -100,14 +100,14 @@ function PopFields({ shared, state, update }: FormatFieldsProps<PopState>) {
 
 export const POP_FORMAT = defineFormat<PopState>({
   key: "pop",
-  title: "Immutable certificate",
-  hint: "Digital asset certificates for authenticity",
+  title: getMintFormatCopy("pop-protocol").name,
+  hint: getMintFormatCopy("pop-protocol").hint,
   icon: Award,
   submitLabel: () => "Create certificate",
   initial: () => ({ eventType: "Conference", isPublic: false, ...getDefaultClaimWindow() }),
   Fields: PopFields,
   isReady: (shared, state) =>
-    SYMBOL_PATTERN.test(shared.draft.symbol) &&
+    isSymbol(shared.draft.symbol) &&
     !!state.claimEndDate &&
     claimEndTimestamp(state.claimEndDate, state.claimEndTime || "23:59") * 1000 > Date.now(),
   previewLabel: (shared) => shared.draft.symbol || "POP",

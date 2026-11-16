@@ -53,25 +53,25 @@ function setup(ui: React.ReactNode, opts: { claimed?: boolean; root?: string } =
   return { view, intents, released };
 }
 
-test("a holder with a valid link claims the credential", async () => {
+test("a holder with a valid link claims the certificate", async () => {
   const list = buildPopAllowlist([ME]);
   window.location.hash = encodePopClaimFragment(Object.values(list.proofs)[0]!);
   const { view, intents, released } = setup(<PopClaimButton collectionAddress={C} />, { root: list.root });
-  fireEvent.click(await view.findByText("Claim credential"));
-  await waitFor(() => expect(view.getByText("Credential claimed")).toBeTruthy());
+  fireEvent.click(await view.findByText("Claim certificate"));
+  await waitFor(() => expect(view.getByText("Certificate claimed")).toBeTruthy());
   expect(intents[0]).toEqual({ kind: "pop-claim", params: { claimer: ME, collection: C, proof: Object.values(list.proofs)[0]! } });
   expect(released.length).toBe(1);
 });
 
-test("nothing is offered when the wallet already holds the credential", async () => {
+test("nothing is offered when the wallet already holds the certificate", async () => {
   const list = buildPopAllowlist([ME]);
   window.location.hash = encodePopClaimFragment(Object.values(list.proofs)[0]!);
   const { view } = setup(<PopClaimButton collectionAddress={C} />, { root: list.root, claimed: true });
   await new Promise((r) => setTimeout(r, 30));
-  expect(view.queryByText("Claim credential")).toBeNull();
+  expect(view.queryByText("Claim certificate")).toBeNull();
 });
 
-test("removing a credential asks first, then burns it", async () => {
+test("removing a certificate asks first, then burns it", async () => {
   let burned = 0;
   const { view, intents } = setup(<PopBurnButton collectionAddress={C} tokenId="4" onBurned={() => { burned++; }} />);
   fireEvent.click(view.getByText("Remove from my wallet"));

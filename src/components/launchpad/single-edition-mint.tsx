@@ -28,6 +28,7 @@ import { RewardEarned } from "../rewards/reward-earned.js";
 import { CollectionPicker } from "./collection-picker.js";
 import { AI_POLICIES, DERIVATIVES_OPTIONS, IP_TYPES, LICENSE_TYPES, type IPType } from "../../data/ip.js";
 import { cn } from "../../utils/cn.js";
+import { webLinkField } from "../../utils/launchpad-rules.js";
 import { runIntentCalls } from "../../utils/run-intent-calls.js";
 import { pinAssetMetadata, uploadFileToIpfs } from "../../utils/ipfs-upload.js";
 import { useCollectionsByOwner } from "../../utils/use-collections.js";
@@ -39,11 +40,7 @@ const schema = z.object({
   collectionId: z.string().min(1, "Select a collection"),
   name: z.string().min(1, "Name required").max(FIELD_LIMITS.name),
   description: z.string().max(FIELD_LIMITS.description).optional(),
-  external_url: z
-    .string()
-    .max(500)
-    .refine((v) => !v || v.startsWith("http://") || v.startsWith("https://"), { message: "Must start with http:// or https://" })
-    .optional(),
+  external_url: webLinkField(),
   ipType: z.enum(IP_TYPES),
   licenseType: z.string().min(1, "License required"),
   commercialUse: z.enum(["Yes", "No"]),

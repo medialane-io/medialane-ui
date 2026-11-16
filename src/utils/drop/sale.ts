@@ -1,5 +1,6 @@
 import { formatAmount, getListableTokens, getTokenByAddress, parseAmount, type DropTermsBody } from "@medialane/sdk";
 import { dropMintCost } from "@medialane/sdk/starknet";
+import { isPositiveInteger } from "../launchpad-rules.js";
 
 export interface SaleDraft {
   paid: boolean;
@@ -49,7 +50,7 @@ export function validateSale(d: SaleDraft, now: number): SaleErrors {
     const end = toSeconds(d.end);
     if (end === null || (start !== null && end <= start)) errors.end = "The sale must end after it starts";
   }
-  if (d.limitPerWallet && !/^[1-9]\d*$/.test(d.perWallet)) errors.perWallet = "Enter 1 or more";
+  if (d.limitPerWallet && !isPositiveInteger(d.perWallet)) errors.perWallet = "Enter 1 or more";
   return errors;
 }
 

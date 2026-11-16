@@ -50,7 +50,7 @@ function IssueSection({
         <span className="font-semibold text-sm">Issue directly</span>
       </div>
       <p className="text-xs text-muted-foreground">
-        Send the credential straight to one wallet — for a late participant, without republishing the list or
+        Send the certificate straight to one wallet — for a late participant, without republishing the list or
         changing anyone&apos;s claim link.
       </p>
       <input
@@ -71,7 +71,7 @@ function IssueSection({
         }}
       >
         <Send className="h-3.5 w-3.5 mr-1.5" />
-        Issue credential
+        Issue certificate
       </Button>
     </div>
   );
@@ -162,7 +162,7 @@ export function PopManagePage({ contract }: { contract: string }) {
     normalizeAddress("STARKNET", walletAddress) === normalizeAddress("STARKNET", collection.owner);
 
   const issue = (recipient: string) => {
-    setDone(successMessages.credentialIssued());
+    setDone(successMessages.certificateIssued());
     void tx.run(async (signer) => {
       await runIntentCalls(signer, () => app.getClient().api.intents.create("pop-manage", { owner: signer.address, collection: contract, action: "issue", recipient }));
     });

@@ -4,7 +4,9 @@ import { Eye, Ticket, Users } from "lucide-react";
 import { buildCollectionMetadata, collectionHref, getService } from "@medialane/sdk";
 import { deployedCollectionFromReceipt, executeIntent, executeIntents } from "@medialane/sdk/starknet";
 import { Input } from "../../input.js";
+import { getMintFormatCopy } from "../../../data/launchpad-services.js";
 import { pinAssetMetadata, uploadJsonToIpfs } from "../../../utils/ipfs-upload.js";
+import { isPositiveInteger } from "../../../utils/launchpad-rules.js";
 import { dateToUnixTimestamp, serviceCollectionIntent, tierIntents, tierTraits } from "../../../utils/launchpad-actions.js";
 import { CLUB_TIER_PRESET, TICKETS_TIER_PRESET, type TierMintPreset } from "../../launchpad/tier-mint-presets.js";
 import { CollectionSection, type CollectionMode } from "../collection-section.js";
@@ -20,13 +22,10 @@ interface TierState {
   endDate: string;
 }
 
-const SUPPLY_PATTERN = /^[1-9]\d*$/;
-
 function makeTierFormat(config: {
   key: "tickets" | "club";
+  service: string;
   preset: TierMintPreset;
-  title: string;
-  hint: string;
   icon: typeof Ticket;
   noun: string;
   supplyLabel: string;
@@ -34,6 +33,7 @@ function makeTierFormat(config: {
   addLabel: string;
 }) {
   const { preset, noun } = config;
+  const copy = getMintFormatCopy(config.service);
 
   const ownCollections = (shared: FormatShared) =>
     shared.collections.filter((c) => getService(c.service)?.id === preset.service && !!c.contractAddress);
@@ -81,14 +81,14 @@ function makeTierFormat(config: {
 
   return defineFormat<TierState>({
     key: config.key,
-    title: config.title,
-    hint: config.hint,
+    title: copy.name,
+    hint: copy.hint,
     icon: config.icon,
     submitLabel: () => config.submitLabel,
     initial: () => ({ mode: "existing", existingContract: "", supply: "100", startDate: "", endDate: "" }),
     Fields,
     isReady: (shared, state) => {
-      if (!SUPPLY_PATTERN.test(state.supply.trim())) return false;
+      if (!isPositiveInteger(state.supply)) return false;
       if (state.mode === "new") return shared.draft.name.trim().length > 0 && shared.draft.symbol.trim().length > 0;
       return state.existingContract !== "";
     },
@@ -183,8 +183,7 @@ function makeTierFormat(config: {
 export const TICKETS_FORMAT = makeTierFormat({
   key: "tickets",
   preset: TICKETS_TIER_PRESET,
-  title: "IP Ticket",
-  hint: "Tickets people hold and show at the door",
+  service: "ip-tickets",
   icon: Ticket,
   noun: "ticket collection",
   supplyLabel: "Number of tickets",
@@ -195,8 +194,7 @@ export const TICKETS_FORMAT = makeTierFormat({
 export const CLUB_FORMAT = makeTierFormat({
   key: "club",
   preset: CLUB_TIER_PRESET,
-  title: "IP Club",
-  hint: "Membership cards for your community",
+  service: "ip-club",
   icon: Users,
   noun: "club",
   supplyLabel: "Number of memberships",

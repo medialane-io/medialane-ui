@@ -1,5 +1,6 @@
 import * as z from "zod";
 import { FIELD_LIMITS } from "../../utils/field-limits.js";
+import { symbolField, webLinkField } from "../../utils/launchpad-rules.js";
 
 function parseDateTime(date: string, time: string): number | null {
   const timestamp = new Date(`${date}T${time}:00`).getTime();
@@ -9,19 +10,9 @@ function parseDateTime(date: string, time: string): number | null {
 export const popCreateSchema = z
   .object({
     name: z.string().min(1, "Event name required").max(FIELD_LIMITS.name),
-    symbol: z
-      .string()
-      .min(1, "Symbol required")
-      .max(FIELD_LIMITS.symbol)
-      .regex(/^[A-Z0-9]+$/, "Uppercase letters and numbers only"),
+    symbol: symbolField(),
     description: z.string().max(FIELD_LIMITS.description).optional(),
-    external_link: z
-      .string()
-      .max(500)
-      .refine((v) => !v || v.startsWith("http://") || v.startsWith("https://"), {
-        message: "Must start with http:// or https://",
-      })
-      .optional(),
+    external_link: webLinkField(),
     claimEndDate: z.string().min(1, "Claim end date required"),
     claimEndTime: z.string().default("23:59"),
   })

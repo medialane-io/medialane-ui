@@ -99,7 +99,7 @@ export function PopCreateFields({
             {EVENT_TYPES.find((event) => event.value === eventType)?.description}
           </p>
           <p className="text-xs text-muted-foreground">
-            This helps label the credential collection and makes the event easier to understand at a glance.
+            This helps label the certificate collection and makes the event easier to understand at a glance.
           </p>
         </div>
       </FadeIn>
@@ -226,7 +226,7 @@ export function PopCreateFields({
             <FormItem>
               <FormLabel>Description <span className="text-muted-foreground font-normal">(optional)</span></FormLabel>
               <FormControl>
-                <Textarea placeholder="What this credential recognizes" rows={3} {...field} />
+                <Textarea placeholder="What this certificate recognizes" rows={3} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -267,7 +267,7 @@ export function PopCreateFields({
             />
           </div>
           <p className="text-xs text-muted-foreground">
-            Participants can only claim credentials before this time. After it closes, the collection remains as the onchain record.
+            Participants can claim certificates until this time. After it closes, the collection remains as the onchain record.
           </p>
         </div>
       </FadeIn>

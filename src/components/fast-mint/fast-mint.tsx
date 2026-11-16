@@ -23,6 +23,7 @@ import { FORMATS, getFormat, initialFormatStates } from "./formats/registry.js";
 import type { FormatResult, FormatShared, MintFormat } from "./formats/types.js";
 import { DEFAULT_VALUES, type FormValues } from "./form.js";
 import { IP_TYPE_BY_KIND, MEDIA_ROUTE_MIME_TYPES, detectMediaKind } from "./media-kind.js";
+import { isWebLink } from "../../utils/launchpad-rules.js";
 import { useIpfsUpload } from "./use-ipfs-upload.js";
 import { useNewCollectionDraft } from "./use-new-collection-draft.js";
 import type { FastMintProps, MediaKind } from "./types.js";
@@ -123,7 +124,7 @@ export function FastMint(props: FastMintProps) {
     if (!hasWallet) { onRequireWallet(); return; }
     if (!shared || !walletAddress) return;
     const link = form.getValues("external_url");
-    if (link && !link.startsWith("http://") && !link.startsWith("https://")) {
+    if (!isWebLink(link)) {
       setErrorMsg("External link must start with http:// or https://");
       setStatus("error");
       return;

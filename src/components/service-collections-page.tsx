@@ -11,12 +11,13 @@ import { ServiceHeader } from "./service-header.js";
 import { CollectionCard } from "./collection-card.js";
 import { SignInPrompt } from "./sign-in-prompt.js";
 import { useMedialaneApp } from "./medialane-app.js";
+import { getLaunchpadService } from "../data/launchpad-services.js";
 import { useMyClubCollections, useMyTicketCollections } from "../utils/use-tiers.js";
 
 const KINDS = {
   tickets: {
     icon: Ticket,
-    title: "IP Tickets",
+    title: getLaunchpadService("ip-tickets").title,
     subtitle: "Create a tickets collection, then mint tickets from its collection page.",
     createHref: "/launchpad/tickets/create",
     createLabel: "Create collection",
@@ -29,7 +30,7 @@ const KINDS = {
   },
   club: {
     icon: Users,
-    title: "IP Club",
+    title: getLaunchpadService("ip-club").title,
     subtitle: "Create a club, then create membership tiers from its collection page.",
     createHref: "/launchpad/club/create",
     createLabel: "Create club",

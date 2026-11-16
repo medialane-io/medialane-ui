@@ -260,7 +260,7 @@ export { LaunchpadCtaBanner } from "./components/launchpad-cta-banner.js";
 export type { LaunchpadCtaBannerProps } from "./components/launchpad-cta-banner.js";
 export type { LaunchpadGroupedSectionsProps, LaunchpadServiceCardProps, ServiceOverride, ServiceOverrides } from "./components/launchpad-services.js";
 export { LAUNCHPAD_ROUTE_OVERRIDES } from "./components/launchpad-services.js";
-export { LAUNCHPAD_SERVICE_DEFINITIONS, LAUNCHPAD_SERVICE_GROUPS } from "./data/launchpad-services.js";
+export { COLLECTION_NAME_CLAIM, LAUNCHPAD_SERVICE_DEFINITIONS, LAUNCHPAD_SERVICE_GROUPS, getLaunchpadService } from "./data/launchpad-services.js";
 export type { ServiceDefinition, ServiceStatus, ServiceGroup, ServiceGroupDefinition } from "./data/launchpad-services.js";
 
 export { NavCommandMenu, useNavCommandMenu, relevanceFilter, matchCommands } from "./components/nav-command-menu.js";
