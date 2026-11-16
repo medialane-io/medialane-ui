@@ -15,13 +15,15 @@ import type { MedialaneApp } from "./medialane-app.js";
 
 afterEach(() => cleanup());
 
+const OWNER = "0x00000000000000000000000000000000000000000000000000000000000000aa";
+
 const token = (over: Partial<ApiToken> = {}) =>
   ({
     chain: "STARKNET",
     contractAddress: "0xc0",
     tokenId: "1",
     standard: "ERC721",
-    owner: "0xowner",
+    owner: OWNER,
     metadata: { name: "Stones", description: "We could be heroes", image: null, attributes: [] },
     ...over,
   }) as unknown as ApiToken;
@@ -48,8 +50,8 @@ const useMarketActions = () => ({
     dialogs: <div>app dialogs</div>,
 });
 
-const renderPage = (t: ApiToken, c: ApiCollection) => {
-  const app = { getClient: () => clientFor(t, c), getSigner: () => { throw new Error("unused"); }, walletAddress: null, onRequireWallet: () => {} } as unknown as MedialaneApp;
+const renderPage = (t: ApiToken, c: ApiCollection, walletAddress: string | null = null) => {
+  const app = { getClient: () => clientFor(t, c), getSigner: () => { throw new Error("unused"); }, walletAddress, onRequireWallet: () => {} } as unknown as MedialaneApp;
   return render(
     <SWRConfig value={{ provider: () => new Map(), dedupingInterval: 0 }}>
       <MedialaneAppProvider value={app}>
@@ -58,6 +60,21 @@ const renderPage = (t: ApiToken, c: ApiCollection) => {
     </SWRConfig>,
   );
 };
+
+test("an archived asset says so and gives its owner no market actions", async () => {
+  const { getByText, queryByText } = renderPage(token({ isArchived: true } as never), collection(), OWNER);
+  await waitFor(() => expect(getByText("Permanently archived")).toBeTruthy());
+  await new Promise((resolve) => setTimeout(resolve, 150));
+  expect(queryByText("Transfer")).toBeNull();
+  expect(queryByText("Sell")).toBeNull();
+});
+
+test("an asset that is not archived keeps its owner's market actions and shows no archive notice", async () => {
+  const { getByText, queryByText } = renderPage(token(), collection(), OWNER);
+  await waitFor(() => expect(getByText("Transfer")).toBeTruthy());
+  expect(getByText("Sell")).toBeTruthy();
+  expect(queryByText("Permanently archived")).toBeNull();
+});
 
 test("asset kind comes from the collection's service, then the token standard", () => {
   expect(detectAssetKind("ip-tickets", "ERC1155")).toBe("ticket");

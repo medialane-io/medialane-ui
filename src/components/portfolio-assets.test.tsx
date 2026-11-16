@@ -26,7 +26,7 @@ function renderGrid(tokens: ApiToken[]) {
   const calls: string[] = [];
   const useActions = (ctx: { refresh: () => void }) => {
     calls.push(typeof ctx.refresh);
-    return { list: (t: ApiToken) => calls.push(`list ${t.tokenId}`), transfer: (t: ApiToken) => calls.push(`transfer ${t.tokenId}`), cancel: (t: ApiToken) => calls.push(`cancel ${t.tokenId}`), dialogs: <div>app dialogs</div> };
+    return { list: (t: ApiToken) => calls.push(`list ${t.tokenId}`), transfer: (t: ApiToken) => calls.push(`transfer ${t.tokenId}`), cancel: (t: ApiToken) => calls.push(`cancel ${t.tokenId}`), archive: (t: ApiToken) => calls.push(`archive ${t.tokenId}`), dialogs: <div>app dialogs</div> };
   };
   globalThis.fetch = (async () => new Response(JSON.stringify({ data: { usd: { STRK: 0.5 } } }))) as unknown as typeof fetch;
   const view = render(<SWRConfig value={{ provider: () => new Map() }}><MedialaneAppProvider value={app}><PortfolioAssets address={ME} useActions={useActions} /></MedialaneAppProvider></SWRConfig>);
@@ -46,4 +46,12 @@ test("owned assets render with the app's dialogs and list through the app", asyn
 test("no owned assets shows the empty state", async () => {
   const { view } = renderGrid([]);
   await waitFor(() => expect(view.getByText("No assets yet")).toBeTruthy());
+});
+
+test("an owned asset can be archived through the app's action from its menu", async () => {
+  const { view, calls } = renderGrid([token("1", false)]);
+  await waitFor(() => expect(view.getByText("Piece 1")).toBeTruthy());
+  fireEvent.pointerDown(view.getByLabelText("More actions"), { button: 0, pointerType: "mouse" });
+  fireEvent.click(await view.findByText("Permanent archive"));
+  expect(calls).toContain("archive 1");
 });

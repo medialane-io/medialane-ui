@@ -157,6 +157,7 @@ function CollectionItems({ items, activeListings, mintHref, soulbound }: { items
                 fallbackId={t.tokenId}
                 indexing={t.metadataStatus === "PENDING" || t.metadataStatus === "FETCHING"}
                 soulbound={soulbound}
+                archived={t.isArchived}
               />
             );
           })}

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "./link.js";
-import { Fingerprint, Loader2 } from "lucide-react";
+import { Archive, Fingerprint, Loader2 } from "lucide-react";
 import { cn } from "../utils/cn.js";
 import { CurrencyIcon, hasCurrencyIcon } from "./currency-icon.js";
 import { formatCompactPrice } from "../utils/format.js";
@@ -40,6 +40,8 @@ export interface AssetCardProps {
 
   soulbound?: boolean;
 
+  archived?: boolean;
+
   ipTypeBaseUrl?: string;
   className?: string;
 }
@@ -56,6 +58,7 @@ export function AssetCard({
   fallbackId,
   indexing = false,
   soulbound = false,
+  archived = false,
   ipTypeBaseUrl = "",
   className,
 }: AssetCardProps) {
@@ -107,12 +110,18 @@ export function AssetCard({
             </span>
           )}
 
-          {(hasPrice || soulbound) && (
+          {(hasPrice || soulbound || archived) && (
             <div className="flex flex-wrap items-center gap-1">
               {soulbound && (
                 <span className="inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-medium text-white bg-black/30 backdrop-blur-md">
                   <Fingerprint className="h-3 w-3" aria-hidden />
                   Soulbound
+                </span>
+              )}
+              {archived && (
+                <span className="inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-medium text-white bg-black/30 backdrop-blur-md">
+                  <Archive className="h-3 w-3" aria-hidden />
+                  Archived
                 </span>
               )}
               {hasPrice && (

@@ -22,6 +22,7 @@ import { HiddenContentBanner } from "./hidden-content-banner.js";
 import { DropTokenLink } from "./drop/drop-token-link.js";
 import { FloatingCommentsButton } from "./floating-comments-button.js";
 import { AssetCommentsDialog } from "./asset-comments-dialog.js";
+import { ArchivedAssetNotice } from "./archived-asset-notice.js";
 import { PopBurnButton } from "./pop-burn-button.js";
 import { SoulboundCard } from "./soulbound-card.js";
 import { MembershipPanel, TicketPanel, type AssetTypePanelProps } from "./asset-type-panels.js";
@@ -232,9 +233,11 @@ function AssetPageView({
 
   const marketBlock = (
     <>
-      {Panel ? <Panel contract={contract} tokenId={tokenId} quantityOwned={market.quantityOwned} /> : null}
+      {token.isArchived ? <ArchivedAssetNotice /> : null}
 
-      {config.market ? (
+      {!token.isArchived && Panel ? <Panel contract={contract} tokenId={tokenId} quantityOwned={market.quantityOwned} /> : null}
+
+      {config.market && !token.isArchived ? (
         <AssetMarketplacePanel
           asset={token}
           compact={isPublication || !!video || !!audio}
