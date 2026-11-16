@@ -39,30 +39,23 @@ export interface TokenCardProps {
   usdValue?: string | null;
 }
 
-export function TokenCard({
-  token,
-  isOwner = false,
-  onList,
-  onTransfer,
-  onArchive,
-  onCancel,
-  onBuy,
-  onOffer,
-  onReport,
-  usdValue,
-}: TokenCardProps) {
+type TokenCardActions = Pick<TokenCardProps, "onList" | "onTransfer" | "onArchive" | "onCancel" | "onBuy" | "onOffer">;
+
+export function TokenCard({ token, isOwner = false, onReport, usdValue, ...handlers }: TokenCardProps) {
+  const archived = token.isArchived;
+  const { onList, onTransfer, onArchive, onCancel, onBuy, onOffer }: TokenCardActions = archived ? {} : handlers;
   const resolveImage = useImageUrl();
   const name = token.metadata?.name || `Token #${token.tokenId}`;
   const image = resolveImage(token.metadata?.image, { width: 480 });
   const animationUrl = token.metadata?.animationUrl ?? null;
   const ipType = token.metadata?.ipType;
 
-  const listingOrder = token.activeOrders?.find(
-    (o) => o.offer.itemType === "ERC721" || o.offer.itemType === "ERC1155"
-  );
+  const listingOrder = archived
+    ? undefined
+    : token.activeOrders?.find((o) => o.offer.itemType === "ERC721" || o.offer.itemType === "ERC1155");
 
   const profileLink = tokenProfileLink(token);
-  const hasPrimaryAction = isOwner ? !listingOrder : listingOrder ? !!onBuy : !!onOffer;
+  const hasPrimaryAction = isOwner ? !listingOrder && !!onList : listingOrder ? !!onBuy : !!onOffer;
 
   const chain = token.chain.toUpperCase() as Chain;
   const live = isLivingRenderCollection(chain, token.contractAddress);
@@ -106,6 +99,13 @@ export function TokenCard({
             }
           />
 
+          {archived && (
+            <span className="absolute bottom-2 left-2 inline-flex items-center gap-1 rounded-full bg-black/30 px-3 py-1 text-xs font-medium text-white backdrop-blur-md">
+              <Archive className="h-3 w-3" aria-hidden />
+              Archived
+            </span>
+          )}
+
           {(token.metadataStatus === "PENDING" || token.metadataStatus === "FETCHING") && (
             <div className="absolute bottom-0 inset-x-0 flex items-center justify-center gap-1.5 bg-black/50 backdrop-blur-sm py-1.5">
               <Loader2 className="h-3 w-3 animate-spin text-white/70" />
@@ -137,10 +137,10 @@ export function TokenCard({
         </Link>
 
         {isOwner ? (
-          !listingOrder ? (
+          !listingOrder && onList ? (
             <button
               className={cn(BTN_OUTLINE, "flex-1 text-brand-purple border-brand-purple/30 hover:bg-brand-purple/10 hover:text-brand-purple")}
-              onClick={(e) => { e.preventDefault(); e.stopPropagation(); onList?.(token); }}
+              onClick={(e) => { e.preventDefault(); e.stopPropagation(); onList(token); }}
             >
               <Tag className="h-3.5 w-3.5 mr-1.5" />
               Sell

@@ -7,6 +7,12 @@
 - `ArchiveAssetDialog`: a confirmation dialog that permanently archives a single NFT. It reads the collection id and archived state from chain, warns that archiving cannot be undone and flags an active listing, then sends one `archive` call to the registry.
 - `TokenCard` takes `onArchive`, and shows "Permanent archive" in the owner's menu for ERC721 assets. `PortfolioAssetActions` takes an optional `archive`, passed through the account, creator and portfolio asset grids.
 - `utils/archive-asset`: `archiveCall` and `readArchiveTarget`.
+- Archived tokens: `TokenCard` and `AssetCard` show an "Archived" label, and an archived token offers no sell, transfer, offer, buy or archive action. The asset page replaces its market actions with a notice that the asset is permanently archived.
+
+### Changed
+
+- `@medialane/sdk` peer range starts at 0.233.0, which adds `ApiToken.isArchived`.
+- An owner's `TokenCard` shows Sell only when the app provides a list action.
 
 ## [0.368.0] — 2026-11-16
 

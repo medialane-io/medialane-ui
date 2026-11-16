@@ -66,3 +66,18 @@ test("the archive action is not offered on editions, to visitors, or without a h
     expect(screen.queryByText("Permanent archive")).toBeNull();
   }
 });
+
+test("an archived token is labelled and offers no actions to its owner or to visitors", async () => {
+  const archivedToken = { ...token(false), isArchived: true } as ApiToken;
+  const owner = renderToStaticMarkup(<TokenCard token={archivedToken} isOwner onList={() => {}} onTransfer={() => {}} onArchive={() => {}} />);
+  expect(owner).toContain("Archived");
+  expect(owner).not.toContain(">Sell<");
+  const visitor = renderToStaticMarkup(<TokenCard token={archivedToken} onOffer={() => {}} onBuy={() => {}} />);
+  expect(visitor).toContain("Archived");
+  expect(visitor).not.toContain(">Offer<");
+  expect(views(owner)).toBe(1);
+
+  openMenu(<TokenCard token={archivedToken} isOwner onList={() => {}} onTransfer={() => {}} onArchive={() => {}} />);
+  await screen.findByText("View asset");
+  for (const label of ["Sell", "Transfer", "Permanent archive"]) expect(screen.queryByText(label)).toBeNull();
+});
