@@ -20,6 +20,10 @@ export const successMessages = {
     title: "Counter-offer created",
     description: `Your counter of ${price} on ${name} is recorded onchain.`,
   }),
+  archived: ({ name }: { name: string }): SuccessMessage => ({
+    title: "Asset archived",
+    description: `${name} is permanently archived onchain.`,
+  }),
   transferred: ({ name, to }: { name: string; to: string }): SuccessMessage => ({
     title: "Transfer completed",
     description: `${name} is owned by ${to}.`,

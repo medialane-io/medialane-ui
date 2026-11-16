@@ -3,7 +3,7 @@
 import Link from "./link.js";
 import {
   Loader2, ArrowUpRight, MoreHorizontal, Zap, HandCoins, Tag,
-  Layers, GitBranch, Flag, UserCircle2, ArrowRightLeft, XCircle,
+  Layers, GitBranch, Flag, UserCircle2, ArrowRightLeft, XCircle, Archive,
 } from "lucide-react";
 import {
   DropdownMenu, DropdownMenuContent, DropdownMenuItem,
@@ -31,6 +31,7 @@ export interface TokenCardProps {
   onList?: (token: ApiToken) => void;
   onTransfer?: (token: ApiToken) => void;
   onCancel?: (token: ApiToken) => void;
+  onArchive?: (token: ApiToken) => void;
   onBuy?: (token: ApiToken) => void;
   onOffer?: (token: ApiToken) => void;
   onReport?: (token: ApiToken) => void;
@@ -43,6 +44,7 @@ export function TokenCard({
   isOwner = false,
   onList,
   onTransfer,
+  onArchive,
   onCancel,
   onBuy,
   onOffer,
@@ -202,6 +204,15 @@ export function TokenCard({
                   >
                     <ArrowRightLeft className="h-3.5 w-3.5 text-muted-foreground" />
                     Transfer
+                  </DropdownMenuItem>
+                )}
+                {onArchive && token.standard === "ERC721" && (
+                  <DropdownMenuItem
+                    className="flex items-center gap-2 text-destructive focus:text-destructive"
+                    onClick={() => onArchive(token)}
+                  >
+                    <Archive className="h-3.5 w-3.5" />
+                    Permanent archive
                   </DropdownMenuItem>
                 )}
                 {listingOrder && onCancel && (

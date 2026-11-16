@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.369.0] — 2026-11-16
+
+### Added
+
+- `ArchiveAssetDialog`: a confirmation dialog that permanently archives a single NFT. It reads the collection id and archived state from chain, warns that archiving cannot be undone and flags an active listing, then sends one `archive` call to the registry.
+- `TokenCard` takes `onArchive`, and shows "Permanent archive" in the owner's menu for ERC721 assets. `PortfolioAssetActions` takes an optional `archive`, passed through the account, creator and portfolio asset grids.
+- `utils/archive-asset`: `archiveCall` and `readArchiveTarget`.
+
 ## [0.368.0] — 2026-11-16
 
 ### Added

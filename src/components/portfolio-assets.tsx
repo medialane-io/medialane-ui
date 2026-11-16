@@ -15,6 +15,7 @@ export interface PortfolioAssetActions {
   list: (token: ApiToken) => void;
   transfer: (token: ApiToken) => void;
   cancel: (token: ApiToken) => void;
+  archive?: (token: ApiToken) => void;
   dialogs?: ReactNode;
 }
 
@@ -77,6 +78,7 @@ export function PortfolioAssets({ address, useActions }: { address: string; useA
               onList={actions.list}
               onTransfer={actions.transfer}
               onCancel={actions.cancel}
+              onArchive={actions.archive}
               onReport={setReportToken}
             />
           ))}

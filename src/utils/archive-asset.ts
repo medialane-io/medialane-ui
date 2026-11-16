@@ -1,0 +1,43 @@
+import { cairo, type Call, type ProviderInterface } from "starknet";
+import { getCoordinates } from "@medialane/sdk";
+
+export interface ArchiveTarget {
+  collectionId: bigint;
+  registry: string;
+  archived: boolean;
+}
+
+type Reader = Pick<ProviderInterface, "callContract">;
+
+function u256(low: string, high: string): bigint {
+  return BigInt(low) + (BigInt(high) << 128n);
+}
+
+export function archiveCall(registry: string, collectionId: bigint, tokenId: bigint): Call {
+  const collection = cairo.uint256(collectionId);
+  const token = cairo.uint256(tokenId);
+  return {
+    contractAddress: registry,
+    entrypoint: "archive",
+    calldata: [String(collection.low), String(collection.high), String(token.low), String(token.high)],
+  };
+}
+
+export async function readArchiveTarget(provider: Reader, contract: string, tokenId: string): Promise<ArchiveTarget | null> {
+  try {
+    const registry = getCoordinates("STARKNET").collection721;
+    const [registryOfToken] = await provider.callContract({ contractAddress: contract, entrypoint: "get_registry", calldata: [] });
+    if (BigInt(registryOfToken) !== BigInt(registry)) return null;
+
+    const [low, high] = await provider.callContract({ contractAddress: contract, entrypoint: "get_collection_id", calldata: [] });
+    const token = cairo.uint256(BigInt(tokenId));
+    const [archived] = await provider.callContract({
+      contractAddress: contract,
+      entrypoint: "is_archived",
+      calldata: [String(token.low), String(token.high)],
+    });
+    return { collectionId: u256(low, high), registry, archived: BigInt(archived) !== 0n };
+  } catch {
+    return null;
+  }
+}

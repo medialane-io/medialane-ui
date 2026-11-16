@@ -136,6 +136,7 @@ export function CreatorPage({ username, useAssetActions, useMarketActions }: Cre
                     onList={isOwner ? actions.list : undefined}
                     onTransfer={isOwner ? actions.transfer : undefined}
                     onCancel={isOwner ? actions.cancel : undefined}
+                    onArchive={isOwner ? actions.archive : undefined}
                     onBuy={!isOwner && listing ? () => market.buy(listing) : undefined}
                     onOffer={isOwner ? undefined : market.offer}
                     onReport={setReportToken}
