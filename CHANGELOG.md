@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.369.1] — 2026-11-16
+
+### Fixed
+
+- `ArchiveAssetDialog` is exported from the package; 0.369.0 shipped without the export.
+
 ## [0.369.0] — 2026-11-16
 
 ### Added

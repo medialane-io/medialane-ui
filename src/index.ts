@@ -266,6 +266,7 @@ export type { ServiceDefinition, ServiceStatus, ServiceGroup, ServiceGroupDefini
 export { NavCommandMenu, useNavCommandMenu, relevanceFilter, matchCommands } from "./components/nav-command-menu.js";
 export { SearchPage } from "./components/search-page.js";
 export { PortfolioOrders, type PortfolioOrdersView, type PortfolioOrderActions, type UsePortfolioOrderActions } from "./components/portfolio-orders.js";
+export { ArchiveAssetDialog, type ArchiveAssetDialogProps } from "./components/archive-asset-dialog.js";
 export { PortfolioAssets, type PortfolioAssetActions, type UsePortfolioAssetActions } from "./components/portfolio-assets.js";
 export { PortfolioShell, PORTFOLIO_TABS, type PortfolioTab } from "./components/portfolio-shell.js";
 export { SoulboundCard, issuedAt } from "./components/soulbound-card.js";
