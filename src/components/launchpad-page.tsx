@@ -3,7 +3,8 @@
 import { useMemo, type ReactNode } from "react";
 import { getService } from "@medialane/sdk";
 import { FadeIn } from "./motion-primitives.js";
-import { LaunchpadGroupedSections, LAUNCHPAD_ROUTE_OVERRIDES, useLaunchpadFilter, type ServiceOverrides } from "./launchpad-services.js";
+import { LaunchpadGroupedSections, LAUNCHPAD_ROUTE_OVERRIDES, selectLaunchpadServices, useLaunchpadFilter, type ServiceOverrides } from "./launchpad-services.js";
+import { LAUNCHPAD_SERVICE_GROUPS } from "../data/launchpad-services.js";
 import { LaunchpadFilterBar } from "./launchpad-filter-bar.js";
 import { useMedialaneApp } from "./medialane-app.js";
 import { useCollectionsByOwner } from "../utils/use-collections.js";
@@ -13,6 +14,8 @@ export interface LaunchpadPageProps {
   hideGroups?: string[];
   excludeKeys?: string[];
 }
+
+const NOT_ON_LAUNCHPAD = ["claim-collection-name"];
 
 export function LaunchpadPage({ fastMint, hideGroups = [], excludeKeys }: LaunchpadPageProps) {
   const { walletAddress } = useMedialaneApp();
@@ -27,6 +30,16 @@ export function LaunchpadPage({ fastMint, hideGroups = [], excludeKeys }: Launch
     return { ...LAUNCHPAD_ROUTE_OVERRIDES, ...withMeta("nfts", nftCount), ...withMeta("limited-editions", editionsCount) };
   }, [collections]);
 
+  const defs = useMemo(
+    () => selectLaunchpadServices({ query: filter.query, hideGroups, excludeKeys: [...NOT_ON_LAUNCHPAD, ...(excludeKeys ?? [])] }),
+    [filter.query, hideGroups, excludeKeys],
+  );
+
+  const sections = LAUNCHPAD_SERVICE_GROUPS
+    .filter((g) => g.key !== "coming-soon")
+    .map((group) => ({ group, count: defs.filter((d) => d.group === group.key).length }))
+    .filter((s) => s.count > 0);
+
   return (
     <div className="relative pb-20 space-y-16 sm:space-y-24">
       <section className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 pt-20 sm:pt-24 space-y-6">
@@ -36,26 +49,11 @@ export function LaunchpadPage({ fastMint, hideGroups = [], excludeKeys }: Launch
         <FadeIn delay={0.06}>{fastMint}</FadeIn>
       </section>
 
-      <section className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
-        <FadeIn>
-          <h2 className="text-3xl sm:text-4xl font-semibold leading-tight">Launchpad Services</h2>
-        </FadeIn>
+      <section className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         <FadeIn delay={0.06}>
-          <LaunchpadFilterBar
-            query={filter.query}
-            onQueryChange={filter.setQuery}
-            groups={filter.filterableGroups.filter((g) => !hideGroups.includes(g.key))}
-            activeGroups={filter.activeGroups}
-            onToggleGroup={filter.toggleGroup}
-          />
+          <LaunchpadFilterBar query={filter.query} onQueryChange={filter.setQuery} sections={sections} />
         </FadeIn>
-        <LaunchpadGroupedSections
-          overrides={overrides}
-          query={filter.query}
-          activeGroups={filter.activeGroups}
-          onClearFilters={filter.clear}
-          excludeKeys={excludeKeys}
-        />
+        <LaunchpadGroupedSections overrides={overrides} defs={defs} onClearFilters={filter.clear} />
       </section>
     </div>
   );

@@ -2,31 +2,16 @@
 
 import { useEffect, useRef } from "react";
 import { Search, X } from "lucide-react";
-import { cn } from "../utils/cn.js";
-import { serviceMatchesQuery } from "./launchpad-services.js";
-import {
-  LAUNCHPAD_SERVICE_DEFINITIONS,
-  type ServiceGroup,
-  type ServiceGroupDefinition,
-} from "../data/launchpad-services.js";
+import { launchpadSectionId } from "./launchpad-services.js";
+import type { ServiceGroup, ServiceGroupDefinition } from "../data/launchpad-services.js";
 
 export interface LaunchpadFilterBarProps {
   query: string;
   onQueryChange: (value: string) => void;
-  groups: ServiceGroupDefinition[];
-  activeGroups: Set<ServiceGroup>;
-  onToggleGroup: (key: ServiceGroup) => void;
-
-  resultCount?: number;
+  sections: Array<{ group: ServiceGroupDefinition; count: number }>;
 }
 
-export function LaunchpadFilterBar({
-  query,
-  onQueryChange,
-  groups,
-  activeGroups,
-  onToggleGroup,
-}: LaunchpadFilterBarProps) {
+export function LaunchpadFilterBar({ query, onQueryChange, sections }: LaunchpadFilterBarProps) {
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -41,14 +26,14 @@ export function LaunchpadFilterBar({
     return () => window.removeEventListener("keydown", onKeyDown);
   }, []);
 
-  const countFor = (key: ServiceGroup) =>
-    LAUNCHPAD_SERVICE_DEFINITIONS.filter(
-      (d) => d.group === key && d.status === "live" && serviceMatchesQuery(d, query),
-    ).length;
+  const jumpTo = (key: ServiceGroup) => {
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    document.getElementById(launchpadSectionId(key))?.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+  };
 
   return (
-    <div className="flex flex-col sm:flex-row gap-3 sm:items-center">
-      <div className="relative flex-1 sm:max-w-xs">
+    <div className="sticky top-0 z-20 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-3 bg-background/95 backdrop-blur-sm flex flex-col lg:flex-row gap-3 lg:items-center">
+      <div className="relative lg:w-72 lg:shrink-0">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
         <input
           ref={inputRef}
@@ -74,32 +59,19 @@ export function LaunchpadFilterBar({
         )}
       </div>
 
-      <div className="flex flex-wrap gap-2 flex-1">
-        {groups.map((group) => {
-          const active = activeGroups.has(group.key);
-          const count = countFor(group.key);
-          return (
-            <button
-              key={group.key}
-              type="button"
-              onClick={() => onToggleGroup(group.key)}
-              aria-pressed={active}
-              className={cn(
-                "h-8 px-3.5 rounded-full text-xs font-semibold transition-colors border inline-flex items-center gap-1.5",
-                active
-                  ? "bg-gradient-to-r from-brand-purple to-brand-blue text-white border-transparent shadow-sm"
-                  : "bg-card text-muted-foreground border-border active:bg-muted/60 sm:hover:bg-muted/40",
-              )}
-            >
-              {group.title}
-              <span className={cn("tabular-nums", active ? "text-white/70" : "text-muted-foreground/60")}>
-                {count}
-              </span>
-            </button>
-          );
-        })}
-      </div>
-
+      <nav aria-label="Launchpad sections" className="flex gap-2 overflow-x-auto lg:flex-wrap lg:overflow-visible -mx-4 px-4 sm:mx-0 sm:px-0">
+        {sections.map(({ group, count }) => (
+          <button
+            key={group.key}
+            type="button"
+            onClick={() => jumpTo(group.key)}
+            className="h-8 shrink-0 px-3.5 rounded-full text-xs font-semibold transition-colors border inline-flex items-center gap-1.5 bg-card text-muted-foreground border-border active:bg-muted/60 sm:hover:bg-muted/40 sm:hover:text-foreground"
+          >
+            {group.title}
+            <span className="tabular-nums text-muted-foreground/60">{count}</span>
+          </button>
+        ))}
+      </nav>
     </div>
   );
 }
