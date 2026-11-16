@@ -9,7 +9,6 @@ import { Textarea } from "../textarea.js";
 import { Popover, PopoverContent, PopoverTrigger } from "../popover.js";
 import { cn } from "../../utils/cn.js";
 import { useImageUrl } from "../../utils/use-image-url.js";
-import { collectionKey, type MintAssetType } from "./mintable-collections.js";
 import type { useNewCollectionDraft } from "./use-new-collection-draft.js";
 
 function collectionDisplayLabel(col: ApiCollection) {
@@ -101,26 +100,24 @@ export function CollectionPicker({
 export type CollectionMode = "existing" | "new";
 
 export function CollectionSection({
-  assetType, mode, onModeChange, collections, existingId, existingContract, onExistingId, onExistingContract, draft, previewImage,
+  mode, onModeChange, collections, value, onValue, valueOf, draft, previewImage, noun = "collection",
 }: {
-  assetType: MintAssetType;
   mode: CollectionMode;
   onModeChange: (mode: CollectionMode) => void;
   collections: ApiCollection[];
-  existingId: string;
-  existingContract: string;
-  onExistingId: (id: string) => void;
-  onExistingContract: (contract: string) => void;
+  value: string;
+  onValue: (value: string) => void;
+  valueOf: (c: ApiCollection) => string | null | undefined;
   draft: ReturnType<typeof useNewCollectionDraft>;
   previewImage: string | null;
+  noun?: string;
 }) {
-  const single = assetType === "single";
   return (
     <div className="space-y-2">
       <div className="flex items-center justify-between">
         <label className="text-sm font-medium flex items-center gap-1.5">
           <Boxes className="h-4 w-4" />
-          Collection *
+          {noun.charAt(0).toUpperCase() + noun.slice(1)} *
         </label>
         <div className="flex rounded-lg border border-border overflow-hidden">
           <button
@@ -143,12 +140,7 @@ export function CollectionSection({
       </div>
 
       {mode === "existing" ? (
-        <CollectionPicker
-          collections={collections}
-          value={single ? existingId : existingContract}
-          onChange={single ? onExistingId : onExistingContract}
-          valueOf={collectionKey(assetType)}
-        />
+        <CollectionPicker collections={collections} value={value} onChange={onValue} valueOf={valueOf} />
       ) : (
         <div className="flex gap-3 rounded-xl border border-border p-3">
           <div className="relative h-16 w-16 rounded-lg overflow-hidden bg-muted shrink-0">
@@ -165,7 +157,7 @@ export function CollectionSection({
               <Input
                 value={draft.name}
                 onChange={(e) => draft.setName(e.target.value)}
-                placeholder="Collection name"
+                placeholder={`${noun.charAt(0).toUpperCase() + noun.slice(1)} name`}
                 className="h-9 text-sm"
               />
               <Input
@@ -178,11 +170,11 @@ export function CollectionSection({
             <Textarea
               value={draft.description}
               onChange={(e) => draft.setDescription(e.target.value)}
-              placeholder="Describe this collection…"
+              placeholder={`Describe this ${noun}…`}
               rows={2}
               className="text-sm resize-none"
             />
-            <p className="text-2xs text-muted-foreground">Prefilled from your asset — edit anything above.</p>
+            <p className="text-2xs text-muted-foreground">Prefilled from the title and description — edit anything above.</p>
           </div>
         </div>
       )}

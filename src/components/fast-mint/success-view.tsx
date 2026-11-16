@@ -1,81 +1,50 @@
 "use client";
 
-import type { ReactNode } from "react";
 import Link from "../link.js";
-import { CheckCircle2, Eye, Tag, ArrowRightLeft, GitBranch } from "lucide-react";
+import { CheckCircle2 } from "lucide-react";
 import { cn } from "../../utils/cn.js";
 import { Button } from "../button.js";
 import { MedialaneCollectionCard } from "../medialane-collection-card.js";
-import type { MintedAsset } from "./types.js";
+import { RewardEarned } from "../rewards/reward-earned.js";
+import type { FormatResult } from "./formats/types.js";
 
 export interface SuccessViewProps {
   presentation?: "inline" | "dialog";
   previewImage: string | null;
-  name: string;
-  collectionLabel?: string;
-  mintedAsset: MintedAsset | null;
+  result: FormatResult;
   onPublishAnother: () => void;
-  footer?: ReactNode;
 }
 
-export function SuccessView({
-  presentation = "inline",
-  previewImage,
-  name,
-  collectionLabel,
-  mintedAsset,
-  footer,
-  onPublishAnother,
-}: SuccessViewProps) {
+export function SuccessView({ presentation = "inline", previewImage, result, onPublishAnother }: SuccessViewProps) {
   return (
     <section className={cn(presentation === "dialog" ? "" : "rounded-2xl border border-border p-6 sm:p-8")}>
       <div className="grid grid-cols-1 sm:grid-cols-[220px_1fr] gap-6 items-start">
-        <MedialaneCollectionCard image={previewImage} name={name} collection={collectionLabel} />
+        <MedialaneCollectionCard image={previewImage} name={result.name} collection={result.collectionLabel} />
         <div className="space-y-5">
           <div className="space-y-1.5">
             <div className="flex items-center gap-2 text-green-500">
               <CheckCircle2 className="h-5 w-5" />
-              <p className="text-sm font-semibold">Asset published</p>
+              <p className="text-sm font-semibold">{result.headline}</p>
             </div>
-            <p className="text-sm text-muted-foreground">
-              It is recorded onchain with your wallet as owner.
-            </p>
+            <p className="text-sm text-muted-foreground">{result.detail}</p>
           </div>
 
-          {mintedAsset && (
+          {result.links.length > 0 && (
             <div className="grid grid-cols-2 gap-2.5">
-              <Link
-                href={`/asset/STARKNET/${mintedAsset.contract}/${mintedAsset.tokenId}`}
-                className="flex items-center gap-2 rounded-xl border border-border px-4 py-3 text-sm font-semibold hover:bg-muted/40 transition-colors"
-              >
-                <Eye className="h-4 w-4 text-muted-foreground" />
-                View asset
-              </Link>
-              <Link
-                href={`/asset/STARKNET/${mintedAsset.contract}/${mintedAsset.tokenId}?action=list`}
-                className="flex items-center gap-2 rounded-xl border border-border px-4 py-3 text-sm font-semibold hover:bg-muted/40 transition-colors"
-              >
-                <Tag className="h-4 w-4 text-muted-foreground" />
-                Sell on marketplace
-              </Link>
-              <Link
-                href={`/asset/STARKNET/${mintedAsset.contract}/${mintedAsset.tokenId}?action=transfer`}
-                className="flex items-center gap-2 rounded-xl border border-border px-4 py-3 text-sm font-semibold hover:bg-muted/40 transition-colors"
-              >
-                <ArrowRightLeft className="h-4 w-4 text-muted-foreground" />
-                Transfer
-              </Link>
-              <Link
-                href={`/create/remix/${mintedAsset.contract}/${mintedAsset.tokenId}`}
-                className="flex items-center gap-2 rounded-xl border border-border px-4 py-3 text-sm font-semibold hover:bg-muted/40 transition-colors"
-              >
-                <GitBranch className="h-4 w-4 text-muted-foreground" />
-                Create a remix
-              </Link>
+              {result.links.map(({ href, label, icon: Icon }) => (
+                <Link
+                  key={href}
+                  href={href}
+                  className="flex items-center gap-2 rounded-xl border border-border px-4 py-3 text-sm font-semibold hover:bg-muted/40 transition-colors"
+                >
+                  <Icon className="h-4 w-4 text-muted-foreground" />
+                  {label}
+                </Link>
+              ))}
             </div>
           )}
 
-          {footer}
+          <RewardEarned actionType={result.reward} />
 
           <Button variant="outline" onClick={onPublishAnother} className="w-full sm:w-auto">
             Publish another

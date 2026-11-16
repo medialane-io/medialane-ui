@@ -28,19 +28,12 @@ import { RewardEarned } from "../rewards/reward-earned.js";
 import { AI_POLICIES, DERIVATIVES_OPTIONS, LICENSE_TYPES } from "../../data/ip.js";
 import { cn } from "../../utils/cn.js";
 import { runIntentsCalls } from "../../utils/run-intent-calls.js";
-import { pinAssetMetadata } from "../../utils/ipfs-upload.js";
+import { dateToUnixTimestamp, tierIntents, tierTraits } from "../../utils/launchpad-actions.js";import { pinAssetMetadata } from "../../utils/ipfs-upload.js";
 import { useCollection } from "../../utils/use-collections.js";
 import { useCollectionProfile } from "../../utils/use-profiles.js";
 import { useTransaction } from "../../utils/use-transaction.js";
 import { useLaunchpadImageUpload } from "../../utils/use-launchpad-image-upload.js";
 import type { TierMintPreset } from "./tier-mint-presets.js";
-
-function dateToUnixTimestamp(dateStr: string | undefined): number | undefined {
-  if (!dateStr) return undefined;
-  const d = new Date(dateStr);
-  if (isNaN(d.getTime())) return undefined;
-  return Math.floor(d.getTime() / 1000);
-}
 
 function makeSchema(preset: TierMintPreset) {
   return z.object({
@@ -135,32 +128,20 @@ export function TierMintForm({ contract: rawContract, preset, aside }: TierMintF
         aiPolicy: values.aiPolicy,
         royalty: String(values.royalty),
         creator: address,
-        templateTraits: [
-          { traitType: "Type", value: preset.traitType },
-          { traitType: "Token Standard", value: "ERC-1155" },
-          { traitType: "Max Supply", value: values.maxSupply },
-          { traitType: "Collection Contract", value: contract },
-        ],
+        templateTraits: tierTraits(preset.traitType, values.maxSupply, contract),
       });
-      const tierId = await preset.predictNextId(api, contract);
-      const tierRes = await api.intents.create("create-tier", {
+      const intents = await tierIntents(api, {
         owner: address,
-        collection: contract,
+        contract,
         service: preset.service,
+        tierId: await preset.predictNextId(api, contract),
         maxSupply: values.maxSupply,
         startTime: dateToUnixTimestamp(values.startDate),
         endTime: dateToUnixTimestamp(values.endDate),
         royaltyBps: Math.round(values.royalty * 100),
         metadataUri: pinned.uri,
       });
-      const mintRes = await api.intents.create("mint", {
-        owner: address,
-        recipient: address,
-        collectionContract: contract,
-        tokenId: String(tierId),
-        amount: values.maxSupply,
-      });
-      await runIntentsCalls(signer, [tierRes, mintRes]);
+      await runIntentsCalls(signer, intents);
     });
   };
 

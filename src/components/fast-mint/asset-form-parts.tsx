@@ -2,13 +2,12 @@
 
 import type { RefObject } from "react";
 import Image from "next/image";
-import { Award, FileText, ImagePlus, Layers, Loader2, Music, Ticket, Users, Video } from "lucide-react";
-import { Input } from "../input.js";
+import { FileText, ImagePlus, Loader2, Music, Video } from "lucide-react";
 import { IP_TEMPLATES } from "../../data/ip-templates.js";
 import type { IPType } from "../../data/ip.js";
 import { acceptFor } from "../../utils/upload-limits.js";
 import { cn } from "../../utils/cn.js";
-import type { HandoffFormat } from "../../utils/launchpad-handoff.js";
+import type { FormatDefinition, MintFormat } from "./formats/types.js";
 import type { MediaKind } from "./types.js";
 
 const MEDIA_KIND_ICON: Record<MediaKind, typeof ImagePlus> = {
@@ -117,61 +116,35 @@ export function CoverUpload({
   );
 }
 
-export type MintFormat = "single" | "editions" | HandoffFormat;
-
-export const MINT_FORMATS: ReadonlyArray<{ value: MintFormat; icon: typeof ImagePlus; title: string; hint: string }> = [
-  { value: "single", icon: ImagePlus, title: "Single NFT", hint: "One copy, yours to keep or sell" },
-  { value: "editions", icon: Layers, title: "Limited Editions", hint: "Numbered copies people can collect" },
-  { value: "pop", icon: Award, title: "POP badge", hint: "A badge people claim to show they took part" },
-  { value: "tickets", icon: Ticket, title: "IP Ticket", hint: "Tickets people hold and show at the door" },
-  { value: "club", icon: Users, title: "IP Club", hint: "Membership cards for your community" },
-];
-
 export function FormatPicker({
-  value, onChange, editionCount, onEditionCount,
+  formats, value, onChange,
 }: {
+  formats: ReadonlyArray<Pick<FormatDefinition, "key" | "title" | "hint" | "icon">>;
   value: MintFormat;
   onChange: (format: MintFormat) => void;
-  editionCount: string;
-  onEditionCount: (count: string) => void;
 }) {
   return (
-    <>
-      <div className="space-y-2">
-        <label className="text-sm font-medium" id="fast-mint-format">What do you want to make with it?</label>
-        <div role="radiogroup" aria-labelledby="fast-mint-format" className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          {MINT_FORMATS.map(({ value: format, icon: Icon, title, hint }) => (
-            <button
-              key={format}
-              type="button"
-              role="radio"
-              aria-checked={value === format}
-              onClick={() => onChange(format)}
-              className={cn("flex items-start gap-3 rounded-xl border p-4 text-left transition-colors",
-                value === format ? "border-brand-blue bg-brand-blue/5" : "border-border hover:bg-muted/40")}
-            >
-              <Icon className={cn("h-5 w-5 shrink-0 mt-0.5", value === format ? "text-brand-blue" : "text-muted-foreground")} />
-              <span>
-                <span className="block text-sm font-semibold">{title}</span>
-                <span className="block text-xs mt-0.5 text-muted-foreground">{hint}</span>
-              </span>
-            </button>
-          ))}
-        </div>
+    <div className="space-y-2">
+      <label className="text-sm font-medium" id="fast-mint-format">What do you want to make with it?</label>
+      <div role="radiogroup" aria-labelledby="fast-mint-format" className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        {formats.map(({ key, icon: Icon, title, hint }) => (
+          <button
+            key={key}
+            type="button"
+            role="radio"
+            aria-checked={value === key}
+            onClick={() => onChange(key)}
+            className={cn("flex items-start gap-3 rounded-xl border p-4 text-left transition-colors",
+              value === key ? "border-brand-blue bg-brand-blue/5" : "border-border hover:bg-muted/40")}
+          >
+            <Icon className={cn("h-5 w-5 shrink-0 mt-0.5", value === key ? "text-brand-blue" : "text-muted-foreground")} />
+            <span>
+              <span className="block text-sm font-semibold">{title}</span>
+              <span className="block text-xs mt-0.5 text-muted-foreground">{hint}</span>
+            </span>
+          </button>
+        ))}
       </div>
-
-      {value === "editions" && (
-        <div className="space-y-2">
-          <label className="text-sm font-medium">Number of copies</label>
-          <Input
-            type="number"
-            min={1}
-            value={editionCount}
-            onChange={(e) => onEditionCount(e.target.value)}
-            className="max-w-[140px]"
-          />
-        </div>
-      )}
-    </>
+    </div>
   );
 }

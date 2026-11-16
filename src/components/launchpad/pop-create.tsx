@@ -17,18 +17,17 @@ import { PopCreateFields, type PopEventType } from "./pop-create-fields.js";
 import { popCreateSchema, type PopCreateValues } from "./pop-create-schema.js";
 import { getDefaultClaimWindow, suggestLaunchpadSymbol } from "../../utils/launchpad-defaults.js";
 import { runIntentCalls } from "../../utils/run-intent-calls.js";
+import { claimEndTimestamp, popEventAttributes, popEventIntent } from "../../utils/launchpad-actions.js";
 import { uploadJsonToIpfs } from "../../utils/ipfs-upload.js";
 import { useTransaction } from "../../utils/use-transaction.js";
 import { useLaunchpadImageUpload } from "../../utils/use-launchpad-image-upload.js";
-import { useAppliedHandoff } from "../../utils/launchpad-handoff.js";
-import { ipfsToHttp } from "../../utils/ipfs.js";
 
 export function PopCreate({ aside }: { aside?: ReactNode }) {
   const app = useMedialaneApp();
   const walletAddress = app.walletAddress;
   const tx = useTransaction();
-  const upload = useLaunchpadImageUpload({ successMessage: "Badge image uploaded", failureMessage: "Image upload failed" });
-  const { imagePreview, imageUri, imageUploading, uploadError, uploadSuccess, fileInputRef, handleImageSelect, clearImage, setImageUri, setImagePreview } = upload;
+  const upload = useLaunchpadImageUpload({ successMessage: "Certificate image uploaded", failureMessage: "Image upload failed" });
+  const { imagePreview, imageUri, imageUploading, uploadError, uploadSuccess, fileInputRef, handleImageSelect, clearImage } = upload;
   const [eventType, setEventType] = useState<PopEventType>("Conference");
   const [isPublic, setIsPublic] = useState(false);
   const [autoSymbol, setAutoSymbol] = useState("");
@@ -38,14 +37,6 @@ export function PopCreate({ aside }: { aside?: ReactNode }) {
     defaultValues: { name: "", symbol: "", description: "", external_link: "", claimEndDate: "", claimEndTime: "23:59" },
   });
   const eventName = form.watch("name");
-
-  useAppliedHandoff(({ name, imageUri: carried }) => {
-    if (name) form.setValue("name", name);
-    if (carried) {
-      setImageUri(carried);
-      setImagePreview(ipfsToHttp(carried));
-    }
-  });
 
   useEffect(() => {
     const defaults = getDefaultClaimWindow();
@@ -88,20 +79,15 @@ export function PopCreate({ aside }: { aside?: ReactNode }) {
           externalLink: values.external_link,
           owner: walletAddress,
         }),
-        attributes: [
-          { trait_type: "Visibility", value: isPublic ? "Public" : "Private" },
-          { trait_type: "Event Type", value: eventType },
-        ],
+        attributes: popEventAttributes(eventType, isPublic),
       });
-      const claimEndTimestamp = Math.floor(new Date(`${values.claimEndDate}T${values.claimEndTime}:00`).getTime() / 1000);
       await runIntentCalls(signer, () =>
-        api.intents.create("create-collection", {
+        popEventIntent(api, {
           owner: walletAddress,
           name: values.name,
           symbol: values.symbol,
           baseUri,
-          service: "pop-protocol",
-          claimEndTimestamp,
+          claimEndTimestamp: claimEndTimestamp(values.claimEndDate, values.claimEndTime),
         }),
       );
     });
@@ -114,12 +100,12 @@ export function PopCreate({ aside }: { aside?: ReactNode }) {
       title="Secure your account to create a POP event"
       description="Secure your account to deploy a credential collection onchain."
     >
-      <TransactionDialog tx={tx} title="Create POP event" workingLabel="Creating your POP event…" firstStepLabel="Upload badge metadata">
+      <TransactionDialog tx={tx} title="Create POP event" workingLabel="Creating your POP event…" firstStepLabel="Upload certificate metadata">
         <TransactionSuccess
           name={eventName || "Your event"}
           image={imagePreview}
           title="Event created"
-          description="Attendees can claim a proof of presence recorded onchain."
+          description="Immutable digital asset certificates, recorded onchain."
           actions={[{ href: "/launchpad/pop", label: "Back to POP launchpad" }, { label: "Create another", onClick: handleAgain }]}
         >
           <RewardEarned actionType="launch_launchpad" />
@@ -129,7 +115,7 @@ export function PopCreate({ aside }: { aside?: ReactNode }) {
       <ClaimRouteShell
         icon={<Award className="h-4 w-4 text-white" />}
         title="Create a POP Event"
-        subtitle="Give attendees a collectible badge that proves they were part of your event — free to publish."
+        subtitle="Immutable digital asset certificates — free to publish."
         aside={
           <>
             <MedialaneCollectionCard

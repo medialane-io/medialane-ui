@@ -7,6 +7,7 @@ import { profileHref } from "@medialane/sdk";
 import { describeError } from "../../utils/describe-error.js";
 import { uploadError } from "../../utils/upload-limits.js";
 import { uploadFileToIpfs, type SignedUploadKind } from "../../utils/ipfs-upload.js";
+import { invalidatePortfolioCache } from "../../utils/portfolio-cache.js";
 import { cn } from "../../utils/cn.js";
 import type { IPType } from "../../data/ip.js";
 import { Input } from "../input.js";
@@ -16,29 +17,27 @@ import { Dialog, DialogContent, DialogDescription, DialogTitle } from "../dialog
 import type { MetadataField } from "../ip-type-fields.js";
 import { Dropzone } from "./dropzone.js";
 import { SuccessView } from "./success-view.js";
-import { CoverUpload, FormatPicker, MINT_FORMATS, MediaRow, type MintFormat } from "./asset-form-parts.js";
-import { handoffHref, type HandoffFormat } from "../../utils/launchpad-handoff.js";
-import { CollectionSection, type CollectionMode } from "./collection-section.js";
-import { LicensingSection } from "./licensing-section.js";
-import { IpTypeSection } from "./ip-type-section.js";
+import { CoverUpload, FormatPicker, MediaRow } from "./asset-form-parts.js";
+import { PartialCreateError, type StepInfo } from "./create-then-add.js";
+import { FORMATS, getFormat, initialFormatStates } from "./formats/registry.js";
+import type { FormatResult, FormatShared, MintFormat } from "./formats/types.js";
 import { DEFAULT_VALUES, type FormValues } from "./form.js";
 import { IP_TYPE_BY_KIND, MEDIA_ROUTE_MIME_TYPES, detectMediaKind } from "./media-kind.js";
-import { mintAsset } from "./mint-asset.js";
-import { mintableCollections, type MintAssetType } from "./mintable-collections.js";
 import { useIpfsUpload } from "./use-ipfs-upload.js";
 import { useNewCollectionDraft } from "./use-new-collection-draft.js";
-import type { FastMintProps, MediaKind, MintedAsset } from "./types.js";
+import type { FastMintProps, MediaKind } from "./types.js";
 
 export function FastMint(props: FastMintProps) {
   const {
-    presentation = "inline", open = true, onClose, mediaKindLock, onMinted, onNavigate,
+    presentation = "inline", open = true, onClose, mediaKindLock, onMinted,
     collections, refetchCollections,
     hasWallet, walletAddress, onRequireWallet, connectLabel, getUploadToken, getSigner,
-    client, successFooter,
+    client,
   } = props;
 
   const [status, setStatus] = useState<"idle" | "minting" | "success" | "error">("idle");
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [step, setStep] = useState<StepInfo | null>(null);
 
   const media = useIpfsUpload();
   const feature = useIpfsUpload();
@@ -47,19 +46,13 @@ export function FastMint(props: FastMintProps) {
   const mediaInputRef = useRef<HTMLInputElement>(null);
   const featureInputRef = useRef<HTMLInputElement>(null);
 
-  const [format, setFormat] = useState<MintFormat>("single");
-  const assetType: MintAssetType = format === "editions" ? "editions" : "single";
-  const handoffFormat: HandoffFormat | null = format === "pop" || format === "tickets" || format === "club" ? format : null;
-  const [editionCount, setEditionCount] = useState("10");
-
-  const [collectionMode, setCollectionMode] = useState<CollectionMode>("existing");
-  const [existingCollectionId, setExistingCollectionId] = useState("");
-  const [existingCollectionContract, setExistingCollectionContract] = useState("");
+  const [formatKey, setFormatKey] = useState<MintFormat>("single");
+  const [formatStates, setFormatStates] = useState(initialFormatStates);
+  const [resume, setResume] = useState<{ format: MintFormat; destination: unknown } | null>(null);
+  const [result, setResult] = useState<FormatResult | null>(null);
 
   const [ipType, setIpType] = useState<IPType>("NFT");
   const templateFieldsRef = useRef<MetadataField[]>([]);
-
-  const [mintedAsset, setMintedAsset] = useState<MintedAsset | null>(null);
 
   const form = useForm<FormValues>({ defaultValues: DEFAULT_VALUES });
   const name = form.watch("name");
@@ -72,8 +65,10 @@ export function FastMint(props: FastMintProps) {
     }
   }, [walletAddress, form]);
 
-  const erc721Collections = mintableCollections("single", collections);
-  const erc1155Collections = mintableCollections("editions", collections);
+  const format = getFormat(formatKey);
+  const formatState = formatStates[formatKey];
+  const updateFormat = (patch: object) =>
+    setFormatStates((states) => ({ ...states, [formatKey]: { ...(states[formatKey] as object), ...patch } }));
 
   const uploadFile = async (file: File, kind: SignedUploadKind) => {
     const token = await getUploadToken();
@@ -109,61 +104,56 @@ export function FastMint(props: FastMintProps) {
     if (mediaInputRef.current) mediaInputRef.current.value = "";
   };
 
-  const handoffImageUri = mediaKind === "image" ? media.uri : feature.uri;
-  const handoffReady = !!media.uri && !media.uploading && !feature.uploading && !!handoffImageUri;
+  const image = mediaKind === "image" ? media.uri : feature.uri;
+  const previewImage = mediaKind === "image" ? media.preview : feature.preview;
 
-  const continueToCreate = () => {
-    if (!handoffFormat || !handoffImageUri) return;
-    const href = handoffHref(handoffFormat, { name, imageUri: handoffImageUri });
-    onClose?.();
-    if (onNavigate) onNavigate(href);
-    else window.location.assign(href);
-  };
+  const shared: FormatShared | null = media.uri && image && mediaFile
+    ? {
+        form, draft, collections,
+        walletAddress: walletAddress ?? "",
+        mediaKind, mediaUri: media.uri, mediaName: mediaFile.name, image, previewImage,
+        ipType, onIpTypeChange: setIpType, templateFieldsRef,
+        uploadDocument: (file) => uploadFile(file, "document"),
+      }
+    : null;
 
-  const ready = !!media.uri && !media.uploading && name.trim().length > 0 &&
-    (mediaKind === "image" || !!feature.uri) &&
-    (collectionMode === "existing"
-      ? assetType === "single" ? !!existingCollectionId : !!existingCollectionContract
-      : draft.name.trim().length > 0 && draft.symbol.trim().length > 0);
+  const ready = !!shared && !media.uploading && !feature.uploading && name.trim().length > 0 && format.isReady(shared, formatState);
 
-  const onSubmit = async (values: FormValues) => {
+  const onSubmit = async () => {
     if (!hasWallet) { onRequireWallet(); return; }
-    if (!walletAddress || !media.uri) return;
-    if (values.external_url && !values.external_url.startsWith("http://") && !values.external_url.startsWith("https://")) {
+    if (!shared || !walletAddress) return;
+    const link = form.getValues("external_url");
+    if (link && !link.startsWith("http://") && !link.startsWith("https://")) {
       setErrorMsg("External link must start with http:// or https://");
+      setStatus("error");
       return;
     }
 
     setStatus("minting");
     setErrorMsg(null);
+    setStep(null);
 
     try {
-      const asset = await mintAsset({
+      const outcome = await format.submit(shared, formatState, {
         client,
         signer: await getSigner(),
-        walletAddress,
-        values,
-        ipType,
-        templateFields: templateFieldsRef.current,
-        mediaKind,
-        mediaUri: media.uri,
-        featureUri: feature.uri,
-        assetType,
-        editionCount,
-        destination: collectionMode === "new"
-          ? { mode: "new", name: draft.name, symbol: draft.symbol, description: draft.description }
-          : { mode: "existing", collectionId: existingCollectionId, collectionContract: existingCollectionContract },
-        singleCollections: erc721Collections,
-        refetchCollections,
         getUploadToken,
+        resume: resume?.format === formatKey ? resume.destination : null,
+        onStep: setStep,
       });
-      if (asset) {
-        setMintedAsset(asset);
-        onMinted?.(asset);
-      }
+      setResult(outcome);
+      setResume(null);
       setStatus("success");
+      invalidatePortfolioCache(walletAddress);
+      if (outcome.asset) onMinted?.(outcome.asset);
+      void refetchCollections().catch(() => {});
     } catch (err) {
-      setErrorMsg(describeError(err).message);
+      if (err instanceof PartialCreateError) {
+        setResume({ format: formatKey, destination: err.destination });
+        setErrorMsg(`${err.message} ${describeError(err.reason).message} Press the button again to finish.`);
+      } else {
+        setErrorMsg(describeError(err).message);
+      }
       setStatus("error");
     }
   };
@@ -171,30 +161,18 @@ export function FastMint(props: FastMintProps) {
   const resetAll = () => {
     setStatus("idle");
     setErrorMsg(null);
-    setMintedAsset(null);
+    setStep(null);
+    setResult(null);
+    setResume(null);
     form.reset();
     clearMedia();
     feature.clear();
-    setFormat("single");
-    setEditionCount("10");
-    setCollectionMode("existing");
-    setExistingCollectionId("");
-    setExistingCollectionContract("");
+    setFormatStates(initialFormatStates());
     draft.reset();
     templateFieldsRef.current = [];
   };
 
   const busy = status === "minting";
-  const previewImage = mediaKind === "image" ? media.preview : feature.preview;
-  const selectedExistingCollection = assetType === "single"
-    ? erc721Collections.find((c) => c.collectionId === existingCollectionId)
-    : erc1155Collections.find((c) => c.contractAddress === existingCollectionContract);
-  const formatTitle = MINT_FORMATS.find((f) => f.value === format)?.title ?? "";
-  const collectionLabel = handoffFormat ? undefined : media.uri
-    ? (collectionMode === "new"
-      ? (draft.name || "New collection")
-      : (selectedExistingCollection?.name || "IP Asset"))
-    : undefined;
 
   const wrap = (node: React.ReactNode) => {
     if (presentation !== "dialog") return node;
@@ -209,17 +187,9 @@ export function FastMint(props: FastMintProps) {
     );
   };
 
-  if (status === "success") {
+  if (status === "success" && result) {
     return wrap(
-      <SuccessView
-        footer={successFooter}
-        presentation={presentation}
-        previewImage={previewImage}
-        name={name}
-        collectionLabel={collectionLabel}
-        mintedAsset={mintedAsset}
-        onPublishAnother={resetAll}
-      />
+      <SuccessView presentation={presentation} previewImage={previewImage} result={result} onPublishAnother={resetAll} />
     );
   }
 
@@ -237,6 +207,9 @@ export function FastMint(props: FastMintProps) {
   }
 
   const submitBlocked = !ready || busy || !hasWallet;
+  const buttonLabel = busy
+    ? `${step?.label ?? "Working"}…${step && step.total > 1 ? ` (${step.index} of ${step.total})` : ""}`
+    : format.submitLabel(formatState);
 
   return wrap(
     <section className="space-y-6">
@@ -254,15 +227,10 @@ export function FastMint(props: FastMintProps) {
       {media.uri && (
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-8 items-start">
           <div className="space-y-5">
-            <FormatPicker
-              value={format}
-              onChange={setFormat}
-              editionCount={editionCount}
-              onEditionCount={setEditionCount}
-            />
+            <FormatPicker formats={FORMATS} value={formatKey} onChange={setFormatKey} />
 
             <div className="space-y-2">
-              <label className="text-sm font-medium">Title{!handoffFormat && " *"}</label>
+              <label className="text-sm font-medium">Title *</label>
               <Input
                 value={name}
                 onChange={(e) => form.setValue("name", e.target.value)}
@@ -270,28 +238,24 @@ export function FastMint(props: FastMintProps) {
               />
             </div>
 
-            {!handoffFormat && (
-              <>
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">Description</label>
-                  <Textarea
-                    value={description}
-                    onChange={(e) => form.setValue("description", e.target.value)}
-                    placeholder="Describe your work, its story, and any context for buyers…"
-                    rows={3}
-                  />
-                </div>
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Description</label>
+              <Textarea
+                value={description}
+                onChange={(e) => form.setValue("description", e.target.value)}
+                placeholder="Describe your work, its story, and any context for buyers…"
+                rows={3}
+              />
+            </div>
 
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">External link <span className="text-muted-foreground font-normal">(optional)</span></label>
-                  <Input
-                    value={form.watch("external_url")}
-                    onChange={(e) => form.setValue("external_url", e.target.value)}
-                    placeholder="https://yourwebsite.com"
-                  />
-                </div>
-              </>
-            )}
+            <div className="space-y-2">
+              <label className="text-sm font-medium">External link <span className="text-muted-foreground font-normal">(optional)</span></label>
+              <Input
+                value={form.watch("external_url")}
+                onChange={(e) => form.setValue("external_url", e.target.value)}
+                placeholder="https://yourwebsite.com"
+              />
+            </div>
 
             {mediaKind !== "image" && (
               <CoverUpload
@@ -302,72 +266,32 @@ export function FastMint(props: FastMintProps) {
               />
             )}
 
-            {!handoffFormat && (
-              <>
-                <CollectionSection
-                  assetType={assetType}
-                  mode={collectionMode}
-                  onModeChange={setCollectionMode}
-                  collections={assetType === "single" ? erc721Collections : erc1155Collections}
-                  existingId={existingCollectionId}
-                  existingContract={existingCollectionContract}
-                  onExistingId={setExistingCollectionId}
-                  onExistingContract={setExistingCollectionContract}
-                  draft={draft}
-                  previewImage={previewImage}
-                />
-
-                <LicensingSection form={form} />
-
-                <IpTypeSection
-                  ipType={ipType}
-                  onIpTypeChange={setIpType}
-                  fieldsRef={templateFieldsRef}
-                  uploadDocument={(file) => uploadFile(file, "document")}
-                  existingDocument={mediaKind === "document" ? { uri: media.uri, name: mediaFile.name } : null}
-                />
-              </>
-            )}
+            {shared && <format.Fields shared={shared} state={formatState} update={updateFormat} />}
 
             {status === "error" && errorMsg && <p className="text-xs text-destructive">{errorMsg}</p>}
 
-            {handoffFormat ? (
-              <button
-                type="button"
-                disabled={!handoffReady}
-                onClick={continueToCreate}
-                className={cn(
-                  "w-full h-12 text-base font-semibold text-white rounded-xl flex items-center justify-center gap-2 transition-all hover:brightness-110 active:scale-[0.98] bg-brand-blue",
-                  !handoffReady && "opacity-40 pointer-events-none"
-                )}
-              >
-                Continue to {formatTitle}
-              </button>
-            ) : (
-              <>
-                <button
-                  type="button"
-                  disabled={submitBlocked}
-                  onClick={form.handleSubmit(onSubmit)}
-                  className={cn(
-                    "w-full h-12 text-base font-semibold text-white rounded-xl flex items-center justify-center gap-2 transition-all hover:brightness-110 active:scale-[0.98] bg-brand-blue",
-                    submitBlocked && "opacity-40 pointer-events-none"
-                  )}
-                >
-                  {busy ? <><Loader2 className="h-4 w-4 animate-spin" />Minting…</> : assetType === "single" ? "Mint NFT" : "Mint Editions"}
-                </button>
-                <p className="text-xs text-center text-muted-foreground">
-                  Zero platform fees to mint.
-                </p>
-              </>
-            )}
+            <button
+              type="button"
+              disabled={submitBlocked}
+              onClick={() => void onSubmit()}
+              className={cn(
+                "w-full h-12 text-base font-semibold text-white rounded-xl flex items-center justify-center gap-2 transition-all hover:brightness-110 active:scale-[0.98] bg-brand-blue",
+                submitBlocked && "opacity-40 pointer-events-none"
+              )}
+            >
+              {busy && <Loader2 className="h-4 w-4 animate-spin" />}
+              {buttonLabel}
+            </button>
+            <p className="text-xs text-center text-muted-foreground">
+              Zero platform fees to mint.
+            </p>
           </div>
 
           <div className="order-first lg:order-last lg:sticky lg:top-20 max-w-[260px] mx-auto w-full lg:max-w-none lg:mx-0">
             <MedialaneCollectionCard
               image={previewImage}
               name={name}
-              collection={collectionLabel}
+              collection={shared ? format.previewLabel(shared, formatState) : undefined}
               creator={walletAddress ? `${walletAddress.slice(0, 6)}…${walletAddress.slice(-4)}` : undefined}
               creatorHref={walletAddress ? profileHref({ address: walletAddress }) : undefined}
             />

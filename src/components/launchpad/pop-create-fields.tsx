@@ -28,7 +28,7 @@ import type { PopCreateValues } from "./pop-create-schema.js";
 
 export type PopEventType = "Conference" | "Bootcamp" | "Workshop" | "Hackathon" | "Meetup" | "Course" | "Other";
 
-const EVENT_TYPES: { value: PopEventType; label: string; icon: ElementType; description: string }[] = [
+export const EVENT_TYPES: { value: PopEventType; label: string; icon: ElementType; description: string }[] = [
   { value: "Conference", label: "Conference", icon: Mic2, description: "Talks & panels" },
   { value: "Bootcamp", label: "Bootcamp", icon: Code2, description: "Intensive training" },
   { value: "Workshop", label: "Workshop", icon: Wrench, description: "Hands-on learning" },
@@ -107,7 +107,7 @@ export function PopCreateFields({
       <FadeIn delay={0.1}>
         <div className="space-y-2">
           <p className="text-sm font-medium">
-            Badge image <span className="text-muted-foreground font-normal">(optional)</span>
+            Certificate image <span className="text-muted-foreground font-normal">(optional)</span>
           </p>
           <div className="flex items-center gap-4">
             <div
@@ -123,7 +123,7 @@ export function PopCreateFields({
               className="relative h-20 w-20 rounded-2xl border-2 border-dashed border-border bg-muted flex items-center justify-center overflow-hidden shrink-0 cursor-pointer hover:border-green-500/50 transition-colors"
             >
               {imagePreview ? (
-                <Image src={imagePreview} alt="Badge" fill unoptimized className="object-cover" />
+                <Image src={imagePreview} alt="Certificate" fill unoptimized className="object-cover" />
               ) : (
                 <ImagePlus className="h-6 w-6 text-muted-foreground" />
               )}
@@ -159,7 +159,7 @@ export function PopCreateFields({
                 ) : imagePreview ? (
                   "Change"
                 ) : (
-                  "Upload badge art"
+                  "Upload certificate art"
                 )}
               </Button>
               {imagePreview ? (

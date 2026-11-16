@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.367.0] — 2026-11-16
+
+### Changed
+
+- `FastMint` is one complete flow for every format. After the upload the creator picks Single NFT, Limited Editions, Immutable certificate, IP Ticket or IP Club, and publishes it without leaving the component. Title, description, link and image are entered once for all formats, and each format adds its own part: collection and licensing for NFTs, event details for a certificate, collection, supply and validity for tickets and clubs. A ticket or club collection that does not exist yet is created first, then the tickets or memberships are minted, shown as one progress with two steps. If the second step fails, the first is kept and the retry finishes it.
+- `FastMint` reads a new collection's address from the transaction receipt for every format, in place of waiting for the index.
+- The success screen shows the reward and the next steps for the format that was created.
+- POP is described as immutable certificates: the launchpad card, the create page, and the section line, which also no longer addresses the creator.
+- The launchpad section lines read neutrally.
+
+### Added
+
+- `utils/launchpad-actions`: the intents behind POP events, service collections and ticket or membership tiers, used by the create pages and `FastMint` alike.
+
+### Removed
+
+- `FastMint` props `successFooter` and `onNavigate`.
+- The hand-off from `FastMint` to the create pages, and the `name` and `image` page-address values that carried it.
+
 ## [0.366.0] — 2026-11-16
 
 ### Added
