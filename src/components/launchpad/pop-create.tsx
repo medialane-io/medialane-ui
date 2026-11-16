@@ -20,13 +20,15 @@ import { runIntentCalls } from "../../utils/run-intent-calls.js";
 import { uploadJsonToIpfs } from "../../utils/ipfs-upload.js";
 import { useTransaction } from "../../utils/use-transaction.js";
 import { useLaunchpadImageUpload } from "../../utils/use-launchpad-image-upload.js";
+import { useAppliedHandoff } from "../../utils/launchpad-handoff.js";
+import { ipfsToHttp } from "../../utils/ipfs.js";
 
 export function PopCreate({ aside }: { aside?: ReactNode }) {
   const app = useMedialaneApp();
   const walletAddress = app.walletAddress;
   const tx = useTransaction();
   const upload = useLaunchpadImageUpload({ successMessage: "Badge image uploaded", failureMessage: "Image upload failed" });
-  const { imagePreview, imageUri, imageUploading, uploadError, uploadSuccess, fileInputRef, handleImageSelect, clearImage } = upload;
+  const { imagePreview, imageUri, imageUploading, uploadError, uploadSuccess, fileInputRef, handleImageSelect, clearImage, setImageUri, setImagePreview } = upload;
   const [eventType, setEventType] = useState<PopEventType>("Conference");
   const [isPublic, setIsPublic] = useState(false);
   const [autoSymbol, setAutoSymbol] = useState("");
@@ -36,6 +38,14 @@ export function PopCreate({ aside }: { aside?: ReactNode }) {
     defaultValues: { name: "", symbol: "", description: "", external_link: "", claimEndDate: "", claimEndTime: "23:59" },
   });
   const eventName = form.watch("name");
+
+  useAppliedHandoff(({ name, imageUri: carried }) => {
+    if (name) form.setValue("name", name);
+    if (carried) {
+      setImageUri(carried);
+      setImagePreview(ipfsToHttp(carried));
+    }
+  });
 
   useEffect(() => {
     const defaults = getDefaultClaimWindow();

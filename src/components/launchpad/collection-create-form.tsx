@@ -26,6 +26,8 @@ import { runIntentCalls } from "../../utils/run-intent-calls.js";
 import { uploadJsonToIpfs } from "../../utils/ipfs-upload.js";
 import { useTransaction } from "../../utils/use-transaction.js";
 import { useLaunchpadImageUpload } from "../../utils/use-launchpad-image-upload.js";
+import { useAppliedHandoff } from "../../utils/launchpad-handoff.js";
+import { ipfsToHttp } from "../../utils/ipfs.js";
 import { invalidatePortfolioCache } from "../../utils/portfolio-cache.js";
 import { suggestLaunchpadSymbol } from "../../utils/launchpad-defaults.js";
 import type { CollectionCreatePreset } from "./collection-create-presets.js";
@@ -58,7 +60,7 @@ export function CollectionCreateForm({ preset, aside }: CollectionCreateFormProp
   const walletAddress = app.walletAddress;
   const tx = useTransaction();
   const upload = useLaunchpadImageUpload({ successMessage: "Image uploaded" });
-  const { imageFile, imagePreview, imageUri, imageUploading, uploadError, fileInputRef, handleImageSelect, clearImage } = upload;
+  const { imageFile, imagePreview, imageUri, imageUploading, uploadError, fileInputRef, handleImageSelect, clearImage, setImageUri, setImagePreview } = upload;
   const [autoSymbol, setAutoSymbol] = useState("");
   const [viewHref, setViewHref] = useState<string | null>(null);
   const Icon = preset.icon;
@@ -68,6 +70,14 @@ export function CollectionCreateForm({ preset, aside }: CollectionCreateFormProp
     defaultValues: { name: "", symbol: "", description: "", external_link: "" },
   });
   const name = form.watch("name");
+
+  useAppliedHandoff(({ name: carriedName, imageUri: carried }) => {
+    if (carriedName) form.setValue("name", carriedName);
+    if (carried) {
+      setImageUri(carried);
+      setImagePreview(ipfsToHttp(carried));
+    }
+  });
 
   useEffect(() => {
     if (!preset.suggestSymbol) return;
@@ -222,13 +232,13 @@ export function CollectionCreateForm({ preset, aside }: CollectionCreateFormProp
                         <Loader2 className="h-3.5 w-3.5 mr-1.5 animate-spin" />
                         Uploading…
                       </>
-                    ) : imageFile ? (
+                    ) : imageFile || imageUri ? (
                       "Change image"
                     ) : (
                       "Upload image"
                     )}
                   </Button>
-                  {imageFile && (
+                  {(imageFile || imageUri) && (
                     <button
                       type="button"
                       onClick={clearImage}

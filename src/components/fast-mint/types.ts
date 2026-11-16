@@ -25,6 +25,8 @@ export interface FastMintProps {
   mediaKindLock?: MediaKind;
   onMinted?: (asset: MintedAsset) => void;
 
+  onNavigate?: (href: string) => void;
+
   collections: ApiCollection[];
   refetchCollections: () => Promise<ApiCollection[]>;
 

@@ -59,3 +59,29 @@ test("an event without a name is not created", async () => {
   await waitFor(() => expect(view.getByText("Event name required")).toBeTruthy());
   expect(intents).toEqual([]);
 });
+
+test("a title and an uploaded file carried from Fast Mint fill the form and are used for the badge", async () => {
+  window.history.replaceState(null, "", "/launchpad/pop/create?name=Rio+Summit&image=ipfs%3A%2F%2Fcarried");
+  try {
+    const { view, intents, uploads } = setup();
+    await waitFor(() => expect((view.getByPlaceholderText("Starknet Hackathon 2026") as HTMLInputElement).value).toBe("Rio Summit"));
+    expect(view.getByText("✓ Uploaded")).toBeTruthy();
+    await waitFor(() => expect((view.getByPlaceholderText("SKHACK") as HTMLInputElement).value).not.toBe(""));
+    fireEvent.submit(view.container.querySelector("form")!);
+    await waitFor(() => expect(view.getByText("Back to POP launchpad")).toBeTruthy());
+    expect(uploads[0]).toMatchObject({ name: "Rio Summit", image: "ipfs://carried" });
+    expect(intents[0]).toMatchObject({ name: "Rio Summit" });
+  } finally {
+    window.history.replaceState(null, "", "/");
+  }
+});
+
+test("an image address that is not an uploaded file is not carried in", async () => {
+  window.history.replaceState(null, "", "/launchpad/pop/create?image=https%3A%2F%2Fexample.com%2Fa.png");
+  try {
+    const { view } = setup();
+    expect(view.queryByText("✓ Uploaded")).toBeNull();
+  } finally {
+    window.history.replaceState(null, "", "/");
+  }
+});

@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.366.0] — 2026-11-16
+
+### Added
+
+- `FastMint`: after the upload, the creator chooses what to make with it: Single NFT, Limited Editions, POP badge, IP Ticket or IP Club. Single NFT and Limited Editions mint as before. The other three continue to that service's create page with the uploaded file and the title carried over. `FastMint` takes an optional `onNavigate(href)` for the hand-off.
+- `PopCreate` and `CollectionCreateForm` fill the name and image from a `name` and an `ipfs://` `image` in the page address.
+
+### Changed
+
+- `FastMint`: the Asset Type picker is replaced by the format choice, shown first.
+
 ## [0.365.0] — 2026-11-16
 
 ### Changed
