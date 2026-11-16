@@ -1,42 +1,30 @@
 import { Skeleton } from "./skeleton.js";
+import { TokenCardSkeleton } from "./token-card.js";
 
 export function AccountLoading() {
   return (
-    <div className="pb-20 min-h-screen">
-
-      <Skeleton className="w-full h-48 sm:h-64 rounded-none" />
-
-      <div className="px-6">
-
-        <div className="-mt-14 sm:-mt-16 relative z-10">
-          <div className="flex flex-wrap items-end gap-x-4 gap-y-3 pb-6">
-            <Skeleton className="h-[88px] w-[88px] rounded-full shrink-0 ring-[3px] ring-background" />
-            <div className="flex-1 min-w-0 pb-1 space-y-2">
-              <Skeleton className="h-5 w-20 rounded-full" />
-              <Skeleton className="h-6 w-52" />
-              <Skeleton className="h-4 w-40" />
-            </div>
-            <Skeleton className="h-8 w-20 rounded-lg pb-1" />
-          </div>
+    <div className="space-y-6 px-4 pt-20 pb-8 sm:px-6 lg:px-8 min-h-screen">
+      <div className="flex items-center justify-between gap-4">
+        <div className="min-w-0 space-y-2">
+          <Skeleton className="h-3 w-16" />
+          <Skeleton className="h-8 w-64 sm:h-9 sm:w-80" />
         </div>
-
-        <div className="border-b border-border flex gap-1 pb-0 mb-0">
-          {[72, 80, 104, 76].map((w, i) => (
-            <Skeleton key={i} className="h-10 rounded-none" style={{ width: w }} />
-          ))}
+        <div className="ml-auto flex shrink-0 items-center gap-2">
+          <Skeleton className="h-7 w-20 rounded-full" />
+          <Skeleton className="h-9 w-9 rounded-full" />
         </div>
+      </div>
 
-        <div className="mt-6 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-          {Array.from({ length: 8 }).map((_, i) => (
-            <div key={i} className="rounded-2xl border border-border overflow-hidden">
-              <Skeleton className="aspect-square w-full" />
-              <div className="p-3 space-y-2">
-                <Skeleton className="h-4 w-3/4" />
-                <Skeleton className="h-3 w-1/2" />
-              </div>
-            </div>
-          ))}
-        </div>
+      <div className="flex items-center gap-1.5 overflow-hidden">
+        {[104, 132, 112, 84].map((w, i) => (
+          <Skeleton key={i} className="h-9 shrink-0 rounded-full" style={{ width: w }} />
+        ))}
+      </div>
+
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+        {Array.from({ length: 8 }).map((_, i) => (
+          <TokenCardSkeleton key={i} />
+        ))}
       </div>
     </div>
   );

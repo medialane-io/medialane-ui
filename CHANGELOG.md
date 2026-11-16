@@ -12,6 +12,7 @@
 
 - The `FastMint` picker and the ticket and club pages take their names from the service definitions.
 - Whole numbers reject leading zeros everywhere, as `FastMint` already did.
+- `AccountLoading` follows the account page: a text header, pill tabs and token cards, in place of the cover banner and round avatar. `TokenCardSkeleton` and `CollectionCardSkeleton` match the current cards.
 - POP wording is certificate throughout: create fields, claim and burn buttons, the manage page and their messages. The create pages no longer address the creator.
 
 ### Removed
