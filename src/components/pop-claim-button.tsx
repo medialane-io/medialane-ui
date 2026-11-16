@@ -59,12 +59,12 @@ export function PopClaimButton({ collectionAddress }: { collectionAddress: strin
       {(state === "ready" || busy) && (
         <Button size="sm" className="w-full gap-1.5" onClick={claim} disabled={busy}>
           {busy ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Award className="h-3.5 w-3.5" />}
-          {busy ? "Claiming…" : "Claim credential"}
+          {busy ? "Claiming…" : "Claim certificate"}
         </Button>
       )}
-      <TransactionDialog tx={tx} title="Claim credential" workingLabel="Claiming your credential…" firstStepLabel="Prepare claim">
+      <TransactionDialog tx={tx} title="Claim certificate" workingLabel="Claiming the certificate…" firstStepLabel="Prepare claim">
         <TransactionSuccess
-          name="Credential"
+          name="Certificate"
           {...successMessages.claimed()}
           txHash={tx.txHash}
           actions={[{ label: "Done", onClick: tx.reset }]}

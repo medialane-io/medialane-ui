@@ -260,7 +260,7 @@ export { LaunchpadCtaBanner } from "./components/launchpad-cta-banner.js";
 export type { LaunchpadCtaBannerProps } from "./components/launchpad-cta-banner.js";
 export type { LaunchpadGroupedSectionsProps, LaunchpadServiceCardProps, ServiceOverride, ServiceOverrides } from "./components/launchpad-services.js";
 export { LAUNCHPAD_ROUTE_OVERRIDES } from "./components/launchpad-services.js";
-export { LAUNCHPAD_SERVICE_DEFINITIONS, LAUNCHPAD_SERVICE_GROUPS } from "./data/launchpad-services.js";
+export { COLLECTION_NAME_CLAIM, LAUNCHPAD_SERVICE_DEFINITIONS, LAUNCHPAD_SERVICE_GROUPS, getLaunchpadService } from "./data/launchpad-services.js";
 export type { ServiceDefinition, ServiceStatus, ServiceGroup, ServiceGroupDefinition } from "./data/launchpad-services.js";
 
 export { NavCommandMenu, useNavCommandMenu, relevanceFilter, matchCommands } from "./components/nav-command-menu.js";
@@ -275,7 +275,7 @@ export { JourneyContent } from "./components/journey-content.js";
 export { PortfolioSnapshot, RewardsSnapshot } from "./components/settings-snapshots.js";
 export { RouteError } from "./components/route-error.js";
 export { CreateSponsorshipAside } from "./components/create-sponsorship-aside.js";
-export { AccountLoading, ActivitiesLoading, CollectionsLoading, CreatorLoading, MarketplaceLoading, PortfolioLoading } from "./components/page-skeletons.js";
+export { AccountLoading, ActivitiesLoading, CollectionLoading, CollectionsLoading, CreatorLoading, IpTypeLoading, MarketplaceLoading, PortfolioLoading } from "./components/page-skeletons.js";
 export { RewardsDashboard, REWARD_ACTION_LABELS } from "./components/rewards/rewards-dashboard.js";
 export { LeaderboardPanel, type LeaderboardPanelProps } from "./components/rewards/leaderboard-panel.js";
 export { CollectionNameClaim } from "./components/collection-name-claim.js";

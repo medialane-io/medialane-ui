@@ -15,8 +15,6 @@ export interface LaunchpadPageProps {
   excludeKeys?: string[];
 }
 
-const NOT_ON_LAUNCHPAD = ["claim-collection-name"];
-
 export function LaunchpadPage({ fastMint, hideGroups = [], excludeKeys }: LaunchpadPageProps) {
   const { walletAddress } = useMedialaneApp();
   const filter = useLaunchpadFilter();
@@ -31,7 +29,7 @@ export function LaunchpadPage({ fastMint, hideGroups = [], excludeKeys }: Launch
   }, [collections]);
 
   const defs = useMemo(
-    () => selectLaunchpadServices({ query: filter.query, hideGroups, excludeKeys: [...NOT_ON_LAUNCHPAD, ...(excludeKeys ?? [])] }),
+    () => selectLaunchpadServices({ query: filter.query, hideGroups, excludeKeys }),
     [filter.query, hideGroups, excludeKeys],
   );
 

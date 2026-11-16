@@ -1,5 +1,27 @@
 # Changelog
 
+## [0.368.0] — 2026-11-16
+
+### Added
+
+- `CollectionLoading` and `IpTypeLoading`, loading screens for the single collection page and the IP type page.
+- `utils/launchpad-rules`: the symbol, whole-number and web-link rules, as checks and as zod fields. The create pages, the edition and tier forms, the drop draft and `FastMint` use the same rules.
+- `getLaunchpadService`, and `ServiceDefinition.format`: the name and hint a service shows in the `FastMint` picker, kept on the service itself.
+- `COLLECTION_NAME_CLAIM`: the collection name claim, which is no longer a launchpad service.
+
+### Changed
+
+- The `FastMint` picker and the ticket and club pages take their names from the service definitions.
+- Whole numbers reject leading zeros everywhere, as `FastMint` already did.
+- `MarketplaceLoading` and `CollectionsLoading` follow their pages: the page container, a title with stat pills, and the same cards the pages show. `AssetCardSkeleton` matches the asset card.
+- `CollectionPage` shows asset skeletons while the collection loads, in place of an empty tab.
+- `AccountLoading` follows the account page: a text header, pill tabs and token cards, in place of the cover banner and round avatar. `TokenCardSkeleton` and `CollectionCardSkeleton` match the current cards.
+- POP wording is certificate throughout: create fields, claim and burn buttons, the manage page and their messages. The create pages no longer address the creator.
+
+### Removed
+
+- The hidden-key list in `LaunchpadPage`; the collection name claim is not in the launchpad list.
+
 ## [0.367.0] — 2026-11-16
 
 ### Changed

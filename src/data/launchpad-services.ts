@@ -88,12 +88,15 @@ export interface ServiceDefinition {
   example?: string;
 
   browseLinkLabel?: string;
+
+  format?: { name: string; hint: string };
 }
 
 export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
 
   {
     key: "nfts",
+    format: { name: "Single NFT", hint: "One copy to keep or sell" },
     cta: "Create",
     blurb: "Publish each work as a single copy in a collection you own.",
     title: "Single Edition NFT",
@@ -108,6 +111,7 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
   },
   {
     key: "limited-editions",
+    format: { name: "Limited Editions", hint: "Numbered copies people can collect" },
     cta: "Mint",
     blurb: "Release your work in numbered copies that can be collected and traded.",
     title: "Limited Editions NFT",
@@ -165,6 +169,7 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
   },
   {
     key: "pop-protocol",
+    format: { name: "Immutable certificate", hint: "Digital asset certificates for authenticity" },
     cta: "Create",
     blurb: "Digital asset certificates for authenticity.",
     title: "POP Protocol",
@@ -195,6 +200,7 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
   },
   {
     key: "ip-tickets",
+    format: { name: "IP Ticket", hint: "Tickets people hold and show at the door" },
     cta: "Create",
     blurb: "Create on-chain tickets your audience can hold and trade.",
     title: "IP Tickets",
@@ -210,6 +216,7 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
   },
   {
     key: "ip-club",
+    format: { name: "IP Club", hint: "Membership cards for a community" },
     cta: "Create",
     blurb: "Membership cards for your community.",
     title: "IP Club",
@@ -297,18 +304,31 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     status: "live",
     group: "claims",
   },
-  {
-    key: "claim-collection-name",
-    cta: "Claim",
-    blurb: "Give your collection a clean, memorable web address of its own.",
-    title: "Claim Collection Name",
-    subtitle: "Reserve your collection page URL",
-    description:
-      "Claim a custom name for your collection page and get a clean, shareable URL instead of a long technical address.",
-    features: ["Free claim", "Clean shareable URL", "Easy to remember and share"],
-    example: "medialane.io/collection/your-collection",
-    icon: Link2,
-    status: "live",
-    group: "claims",
-  },
 ];
+
+export const COLLECTION_NAME_CLAIM: ServiceDefinition = {
+  key: "claim-collection-name",
+  cta: "Claim",
+  blurb: "Give your collection a clean, memorable web address of its own.",
+  title: "Claim Collection Name",
+  subtitle: "Reserve your collection page URL",
+  description:
+    "Claim a custom name for your collection page and get a clean, shareable URL instead of a long technical address.",
+  features: ["Free claim", "Clean shareable URL", "Easy to remember and share"],
+  example: "medialane.io/collection/your-collection",
+  icon: Link2,
+  status: "live",
+  group: "claims",
+};
+
+export function getLaunchpadService(key: string): ServiceDefinition {
+  const found = LAUNCHPAD_SERVICE_DEFINITIONS.find((d) => d.key === key);
+  if (!found) throw new Error(`Unknown launchpad service: ${key}`);
+  return found;
+}
+
+export function getMintFormatCopy(key: string): { name: string; hint: string } {
+  const format = getLaunchpadService(key).format;
+  if (!format) throw new Error(`Launchpad service has no mint format: ${key}`);
+  return format;
+}

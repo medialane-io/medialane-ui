@@ -36,8 +36,8 @@ export const successMessages = {
     description: "Your comment is recorded onchain and appears here within about 30 seconds.",
   }),
   claimed: (): SuccessMessage => ({
-    title: "Credential claimed",
-    description: "The proof of participation is recorded onchain in your wallet.",
+    title: "Certificate claimed",
+    description: "The certificate is recorded onchain in the wallet that claimed it.",
   }),
   bidPlaced: (): SuccessMessage => ({
     title: "Bid placed",
@@ -59,9 +59,9 @@ export const successMessages = {
     title: "Ownership transferred",
     description: `${to} is the owner of ${name}.`,
   }),
-  credentialIssued: (): SuccessMessage => ({
-    title: "Credential issued",
-    description: "The credential is recorded onchain in the participant's wallet.",
+  certificateIssued: (): SuccessMessage => ({
+    title: "Certificate issued",
+    description: "The certificate is recorded onchain in the participant's wallet.",
   }),
   participantsPublished: ({ count }: { count: number }): SuccessMessage => ({
     title: "Participants published",

@@ -270,7 +270,7 @@ export function CollectionPage({ contract, slots }: CollectionPageProps) {
           </div>
 
           <TabsContent value="assets" className="mt-4">
-            {collection ? <CollectionItems items={items} activeListings={activeListings} mintHref={mintHref} soulbound={detectAssetKind(collection.service, collection.standard) === "pop"} /> : null}
+            {collection ? <CollectionItems items={items} activeListings={activeListings} mintHref={mintHref} soulbound={detectAssetKind(collection.service, collection.standard) === "pop"} /> : collectionLoading ? <div className={GRID}>{Array.from({ length: 8 }).map((_, i) => <AssetCardSkeleton key={i} />)}</div> : null}
           </TabsContent>
 
           <TabsContent value="market" className="mt-4">

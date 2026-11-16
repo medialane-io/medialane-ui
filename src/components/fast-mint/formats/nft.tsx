@@ -10,7 +10,9 @@ import {
   mintedTokenIdFromReceipt,
 } from "@medialane/sdk/starknet";
 import { Input } from "../../input.js";
+import { getMintFormatCopy } from "../../../data/launchpad-services.js";
 import { uploadJsonToIpfs } from "../../../utils/ipfs-upload.js";
+import { isPositiveInteger } from "../../../utils/launchpad-rules.js";
 import { CollectionSection, type CollectionMode } from "../collection-section.js";
 import { LicensingSection } from "../licensing-section.js";
 import { IpTypeSection } from "../ip-type-section.js";
@@ -71,6 +73,7 @@ async function pinTokenUri(shared: FormatShared, runtime: FormatRuntime): Promis
 
 function makeNftFormat(kind: MintAssetType) {
   const single = kind === "single";
+  const copy = getMintFormatCopy(single ? "nfts" : "limited-editions");
 
   function Fields({ shared, state, update }: FormatFieldsProps<NftState>) {
     return (
@@ -115,14 +118,14 @@ function makeNftFormat(kind: MintAssetType) {
 
   return defineFormat<NftState>({
     key: kind,
-    title: single ? "Single NFT" : "Limited Editions",
-    hint: single ? "One copy, yours to keep or sell" : "Numbered copies people can collect",
+    title: copy.name,
+    hint: copy.hint,
     icon: single ? ImagePlus : Layers,
     submitLabel: () => (single ? "Mint NFT" : "Mint Editions"),
     initial: () => ({ mode: "existing", existingId: "", existingContract: "", editionCount: "10" }),
     Fields,
     isReady: (shared, state) => {
-      if (!single && !/^[1-9]\d*$/.test(state.editionCount.trim())) return false;
+      if (!single && !isPositiveInteger(state.editionCount)) return false;
       if (state.mode === "new") return shared.draft.name.trim().length > 0 && shared.draft.symbol.trim().length > 0;
       return (single ? state.existingId : state.existingContract) !== "";
     },

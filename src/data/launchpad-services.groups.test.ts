@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { LAUNCHPAD_SERVICE_DEFINITIONS, LAUNCHPAD_SERVICE_GROUPS } from "./launchpad-services";
+import { COLLECTION_NAME_CLAIM, LAUNCHPAD_SERVICE_DEFINITIONS, LAUNCHPAD_SERVICE_GROUPS, getMintFormatCopy } from "./launchpad-services";
 
 const groupOf = (key: string) => LAUNCHPAD_SERVICE_DEFINITIONS.find((d) => d.key === key)?.group;
 
@@ -22,11 +22,22 @@ describe("the launchpad sections", () => {
     expect(["creator-coins", "claim-memecoin"].map(groupOf)).toEqual(Array(2).fill("coins"));
     expect(["pop-protocol", "ip-tickets", "ip-club"].map(groupOf)).toEqual(Array(3).fill("membership"));
     expect(groupOf("ip-sponsorship")).toBe("licensing");
-    expect(["claim-username", "claim-collection", "claim-collection-name"].map(groupOf)).toEqual(Array(3).fill("claims"));
+    expect(["claim-username", "claim-collection"].map(groupOf)).toEqual(Array(2).fill("claims"));
   });
 
   test("every service belongs to a listed section", () => {
     const keys = new Set(LAUNCHPAD_SERVICE_GROUPS.map((g) => g.key));
     for (const d of LAUNCHPAD_SERVICE_DEFINITIONS) expect(keys.has(d.group)).toBe(true);
+  });
+
+  test("the collection name claim is not a launchpad service", () => {
+    expect(LAUNCHPAD_SERVICE_DEFINITIONS.some((d) => d.key === COLLECTION_NAME_CLAIM.key)).toBe(false);
+    expect(COLLECTION_NAME_CLAIM.group).toBe("claims");
+  });
+
+  test("each service Fast Mint can make carries the name and hint the picker shows", () => {
+    const names = ["nfts", "limited-editions", "pop-protocol", "ip-tickets", "ip-club"].map((key) => getMintFormatCopy(key).name);
+    expect(names).toEqual(["Single NFT", "Limited Editions", "Immutable certificate", "IP Ticket", "IP Club"]);
+    expect(() => getMintFormatCopy("claim-username")).toThrow();
   });
 });

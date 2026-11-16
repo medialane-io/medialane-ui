@@ -1,7 +1,7 @@
 import { describe, expect, test } from "bun:test";
-import { LAUNCHPAD_SERVICE_DEFINITIONS } from "./launchpad-services";
+import { COLLECTION_NAME_CLAIM, LAUNCHPAD_SERVICE_DEFINITIONS } from "./launchpad-services";
 
-const example = (key: string) => LAUNCHPAD_SERVICE_DEFINITIONS.find((d) => d.key === key)?.example ?? "";
+const example = (key: string) => [...LAUNCHPAD_SERVICE_DEFINITIONS, COLLECTION_NAME_CLAIM].find((d) => d.key === key)?.example ?? "";
 
 describe("the example addresses on the claim cards", () => {
   test("a username claim shows the creator page address", () => {

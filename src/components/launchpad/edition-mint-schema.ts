@@ -1,26 +1,17 @@
 import * as z from "zod";
 import { FIELD_LIMITS } from "../../utils/field-limits.js";
+import { positiveIntegerField, webLinkField } from "../../utils/launchpad-rules.js";
 import { AI_POLICIES, DERIVATIVES_OPTIONS, IP_TYPES } from "../../data/ip.js";
 
 export const editionMintSchema = z.object({
-  value: z
-    .string()
-    .min(1, "Quantity required")
-    .regex(/^\d+$/, "Must be a positive integer")
-    .refine((v) => parseInt(v, 10) >= 1, "Minimum 1"),
+  value: positiveIntegerField("Quantity required"),
   recipient: z
     .string()
     .min(1, "Recipient address required")
     .regex(/^0x[0-9a-fA-F]+$/, "Enter a valid Starknet address"),
   name: z.string().min(1, "Token name required").max(FIELD_LIMITS.name),
   description: z.string().max(FIELD_LIMITS.description).optional(),
-  external_url: z
-    .string()
-    .max(500)
-    .refine((value) => !value || value.startsWith("http://") || value.startsWith("https://"), {
-      message: "Must start with http:// or https://",
-    })
-    .optional(),
+  external_url: webLinkField(),
   ipType: z.enum(IP_TYPES),
   licenseType: z.string().min(1, "License required"),
   commercialUse: z.enum(["Yes", "No"]),

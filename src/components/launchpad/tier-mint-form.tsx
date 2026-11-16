@@ -28,7 +28,9 @@ import { RewardEarned } from "../rewards/reward-earned.js";
 import { AI_POLICIES, DERIVATIVES_OPTIONS, LICENSE_TYPES } from "../../data/ip.js";
 import { cn } from "../../utils/cn.js";
 import { runIntentsCalls } from "../../utils/run-intent-calls.js";
-import { dateToUnixTimestamp, tierIntents, tierTraits } from "../../utils/launchpad-actions.js";import { pinAssetMetadata } from "../../utils/ipfs-upload.js";
+import { dateToUnixTimestamp, tierIntents, tierTraits } from "../../utils/launchpad-actions.js";
+import { positiveIntegerField, webLinkField } from "../../utils/launchpad-rules.js";
+import { pinAssetMetadata } from "../../utils/ipfs-upload.js";
 import { useCollection } from "../../utils/use-collections.js";
 import { useCollectionProfile } from "../../utils/use-profiles.js";
 import { useTransaction } from "../../utils/use-transaction.js";
@@ -39,16 +41,8 @@ function makeSchema(preset: TierMintPreset) {
   return z.object({
     name: z.string().min(1, preset.copy.nameRequired).max(FIELD_LIMITS.name),
     description: z.string().max(FIELD_LIMITS.description).optional(),
-    external_url: z
-      .string()
-      .max(500)
-      .refine((v) => !v || v.startsWith("http://") || v.startsWith("https://"), { message: "Must start with http:// or https://" })
-      .optional(),
-    maxSupply: z
-      .string()
-      .min(1, "Supply required")
-      .regex(/^\d+$/, "Must be a positive integer")
-      .refine((v) => parseInt(v, 10) >= 1, "Minimum supply is 1"),
+    external_url: webLinkField(),
+    maxSupply: positiveIntegerField("Supply required"),
     royalty: z.coerce.number().min(0).max(50).default(2.5),
     licenseType: z.string().min(1),
     commercialUse: z.enum(["Yes", "No"]),

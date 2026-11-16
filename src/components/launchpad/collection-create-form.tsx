@@ -29,23 +29,14 @@ import { useTransaction } from "../../utils/use-transaction.js";
 import { useLaunchpadImageUpload } from "../../utils/use-launchpad-image-upload.js";
 import { invalidatePortfolioCache } from "../../utils/portfolio-cache.js";
 import { suggestLaunchpadSymbol } from "../../utils/launchpad-defaults.js";
+import { symbolField, webLinkField } from "../../utils/launchpad-rules.js";
 import type { CollectionCreatePreset } from "./collection-create-presets.js";
 
 const schema = z.object({
   name: z.string().min(1, "Name required").max(FIELD_LIMITS.name),
-  symbol: z
-    .string()
-    .min(1, "Symbol required")
-    .max(FIELD_LIMITS.symbol, `Max ${FIELD_LIMITS.symbol} characters`)
-    .regex(/^[A-Z0-9]+$/, "Uppercase letters and numbers only"),
+  symbol: symbolField(),
   description: z.string().max(FIELD_LIMITS.description).optional(),
-  external_link: z
-    .string()
-    .max(500)
-    .refine((v) => !v || v.startsWith("http://") || v.startsWith("https://"), {
-      message: "Must start with http:// or https://",
-    })
-    .optional(),
+  external_link: webLinkField(),
 });
 type FormValues = z.infer<typeof schema>;
 

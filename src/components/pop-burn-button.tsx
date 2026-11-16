@@ -44,7 +44,7 @@ export function PopBurnButton({ collectionAddress, tokenId, onBurned }: PopBurnB
   return (
     <div className="space-y-2 rounded-xl border border-border p-3">
       <p className="text-xs text-muted-foreground">
-        Burning removes this credential permanently.
+        Burning removes this certificate permanently.
       </p>
       {tx.phase === "error" && <p className="text-xs text-destructive">{tx.error}</p>}
       <div className="flex gap-2">

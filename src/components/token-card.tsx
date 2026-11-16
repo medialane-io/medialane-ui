@@ -288,13 +288,16 @@ export function TokenCard({
 
 export function TokenCardSkeleton() {
   return (
-    <div className="card-base overflow-hidden">
+    <div className="card-base overflow-hidden flex flex-col w-full">
       <div className="aspect-square w-full animate-pulse bg-foreground/[0.04]" />
-      <div className="px-3 pt-2.5 pb-3 space-y-1.5">
-        <div className="h-4 w-3/4 rounded-md animate-pulse bg-muted" />
+      <div className="px-3 pt-2.5 pb-4 space-y-1">
+        <div className="h-5 w-3/4 rounded-md animate-pulse bg-muted" />
+        <div className="flex justify-end">
+          <div className="h-5 w-16 rounded-md animate-pulse bg-muted" />
+        </div>
       </div>
-      <div className="px-3 pb-3 flex gap-1.5">
-        <div className="h-8 w-8 rounded-[9px] animate-pulse bg-muted shrink-0" />
+      <div className="px-3 pb-3 flex items-center gap-1.5">
+        <div className="h-8 w-[72px] rounded-[9px] animate-pulse bg-muted shrink-0" />
         <div className="h-8 flex-1 rounded-[9px] animate-pulse bg-muted" />
         <div className="h-8 w-8 rounded-[9px] animate-pulse bg-muted shrink-0" />
       </div>

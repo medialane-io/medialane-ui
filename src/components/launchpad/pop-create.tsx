@@ -97,12 +97,12 @@ export function PopCreate({ aside }: { aside?: ReactNode }) {
     <WalletRequired
       icon={Award}
       iconClassName="text-green-500"
-      title="Secure your account to create a POP event"
-      description="Secure your account to deploy a credential collection onchain."
+      title="Secure an account to create a POP event"
+      description="A secured account is needed to deploy a certificate collection onchain."
     >
-      <TransactionDialog tx={tx} title="Create POP event" workingLabel="Creating your POP event…" firstStepLabel="Upload certificate metadata">
+      <TransactionDialog tx={tx} title="Create POP event" workingLabel="Creating the POP event…" firstStepLabel="Upload certificate metadata">
         <TransactionSuccess
-          name={eventName || "Your event"}
+          name={eventName || "New event"}
           image={imagePreview}
           title="Event created"
           description="Immutable digital asset certificates, recorded onchain."
