@@ -275,7 +275,7 @@ export { JourneyContent } from "./components/journey-content.js";
 export { PortfolioSnapshot, RewardsSnapshot } from "./components/settings-snapshots.js";
 export { RouteError } from "./components/route-error.js";
 export { CreateSponsorshipAside } from "./components/create-sponsorship-aside.js";
-export { AccountLoading, ActivitiesLoading, CollectionsLoading, CreatorLoading, MarketplaceLoading, PortfolioLoading } from "./components/page-skeletons.js";
+export { AccountLoading, ActivitiesLoading, CollectionLoading, CollectionsLoading, CreatorLoading, IpTypeLoading, MarketplaceLoading, PortfolioLoading } from "./components/page-skeletons.js";
 export { RewardsDashboard, REWARD_ACTION_LABELS } from "./components/rewards/rewards-dashboard.js";
 export { LeaderboardPanel, type LeaderboardPanelProps } from "./components/rewards/leaderboard-panel.js";
 export { CollectionNameClaim } from "./components/collection-name-claim.js";
