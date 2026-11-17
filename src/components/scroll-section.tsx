@@ -3,8 +3,8 @@
 import { SectionHeading } from "./section-heading.js";
 
 export interface ScrollSectionProps {
-  icon: React.ReactNode;
-  title: string;
+  icon?: React.ReactNode;
+  title?: string;
   subtitle?: React.ReactNode;
   href?: string;
   linkLabel?: string;
@@ -14,7 +14,7 @@ export interface ScrollSectionProps {
 export function ScrollSection({ icon, title, subtitle, href, linkLabel, children }: ScrollSectionProps) {
   return (
     <section className="space-y-4">
-      <SectionHeading icon={icon} title={title} subtitle={subtitle} href={href} linkLabel={linkLabel} />
+      {title ? <SectionHeading icon={icon} title={title} subtitle={subtitle} href={href} linkLabel={linkLabel} /> : null}
 
       <div className="w-full overflow-x-auto scrollbar-hide">
         <div className="flex gap-5 sm:gap-6 snap-x snap-mandatory pb-2" style={{ width: "max-content" }}>

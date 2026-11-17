@@ -141,16 +141,9 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
   );
 
   const buyButton = liveCheapest && (!isOwner || canBuyMore) ? (
-    isOwner ? (
-      <ActionButton action="buy" onClick={() => onOpenPurchase(liveCheapest)}>
-        <span>Buy</span>
-        <PriceDisplay amountFormatted={liveCheapest.price.formatted} currency={liveCheapest.price.currency} usdValue={usdValue} scale="card" />
-      </ActionButton>
-    ) : (
-      <ActionButton action="buy" onClick={() => onOpenPurchase(liveCheapest)}>
-        Buy now
-      </ActionButton>
-    )
+    <ActionButton action="buy" onClick={() => onOpenPurchase(liveCheapest)}>
+      Buy now
+    </ActionButton>
   ) : null;
 
   const listedPrice = !isOwner && liveCheapest ? <PriceBlock order={liveCheapest} usdValue={usdValue} /> : null;
@@ -160,7 +153,13 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
 
       <div className="relative space-y-4">
         {isOwner ? (
-          <div className="space-y-3">
+          <div className="space-y-4">
+            {liveMyListing ? (
+              <PriceBlock
+                order={liveMyListing}
+                usdValue={liveMyListing.orderHash === liveCheapest?.orderHash ? usdValue : null}
+              />
+            ) : null}
             <ActionRow>
               {liveMyListing ? (
                 <ActionButton
@@ -170,13 +169,7 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
                   tone="red"
                   helpContent={`Expires ${timeUntil(liveMyListing.endTime)}`}
                 >
-                  <span>Cancel listing</span>
-                  <PriceDisplay
-                    amountFormatted={liveMyListing.price.formatted}
-                    currency={liveMyListing.price.currency}
-                    usdValue={liveMyListing.orderHash === liveCheapest?.orderHash ? usdValue : null}
-                    scale="card"
-                  />
+                  Cancel listing
                 </ActionButton>
               ) : null}
               {!liveMyListing || (isERC1155 && canListMoreEditions !== false) ? (
@@ -197,7 +190,12 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
                 </ActionButton>
               ) : null}
             </ActionRow>
-            {buyButton ? <ActionRow>{buyButton}</ActionRow> : null}
+            {buyButton && liveCheapest ? (
+              <div className="space-y-4">
+                <PriceBlock order={liveCheapest} usdValue={usdValue} />
+                <ActionRow>{buyButton}</ActionRow>
+              </div>
+            ) : null}
           </div>
         ) : (
           <div className="space-y-4">
