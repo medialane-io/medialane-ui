@@ -72,17 +72,12 @@ function detailSpans(count: number): number[] {
   return out.slice(0, count);
 }
 
-const DETAIL_DOTS = ["bg-brand-blue", "bg-brand-rose", "bg-brand-purple", "bg-brand-orange"];
-
-function Cell({ label, value, dot, className }: { label: string; value: ReactNode; dot: string; className?: string }) {
+function Cell({ label, value, className }: { label: string; value: ReactNode; className?: string }) {
   return (
     <div
       className={`flex flex-col justify-end gap-1.5 rounded-3xl bg-foreground/[0.06] px-5 py-4 min-h-[5.5rem] ${className ?? ""}`}
     >
-      <p className="flex items-center gap-2 text-xs font-medium text-muted-foreground" title={label}>
-        <span aria-hidden className={`h-2 w-2 shrink-0 rounded-full ${dot}`} />
-        <span className="truncate">{label}</span>
-      </p>
+      <p className="truncate text-xs font-medium text-muted-foreground" title={label}>{label}</p>
       <div className="text-lg font-semibold leading-tight tracking-tight text-foreground break-words">{value}</div>
     </div>
   );
@@ -203,7 +198,6 @@ export function AssetOverviewContent({
               <Cell
                 key={index}
                 label={attribute.trait_type ?? "Trait"}
-                dot={DETAIL_DOTS[index % DETAIL_DOTS.length]}
                 className={`${SPAN_2[detailSpans2[index]]} ${SPAN_SM_4[detailSpansSm[index]]}`}
                 value={
                   isAddressLike(attribute.value) ? (

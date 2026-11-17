@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.372.0] — 2026-11-17
+
+### Changed
+
+- The owner's listed price shows above the Cancel listing button, like the buyer's price above Buy now. The Buy button for another seller's listing reads Buy now with its price above.
+- `FeaturedListings` takes `heading` (default true); false shows the strip without its title and link.
+- `ScrollSection` renders without a heading when no title is given.
+- Asset details cells no longer show colored dots.
+
 ## [0.371.1] — 2026-11-17
 
 ### Fixed

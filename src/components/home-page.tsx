@@ -31,7 +31,7 @@ const LAUNCHPAD_HREFS = {
 };
 
 function ListingsStrip({
-  market, icon, title, query, href, empty,
+  market, icon, title, query, href, empty, heading = true,
 }: {
   market: CollectionMarketActions;
   icon: ReactNode;
@@ -39,6 +39,7 @@ function ListingsStrip({
   query: ApiOrdersQuery;
   href: string;
   empty?: ReactNode;
+  heading?: boolean;
 }) {
   const { walletAddress } = useMedialaneApp();
   const { orders, isLoading } = useOrders(query);
@@ -46,7 +47,7 @@ function ListingsStrip({
   const listings = orders.filter((o) => o.offer.itemType === "ERC721" || o.offer.itemType === "ERC1155").slice(0, 10);
   if (!isLoading && listings.length === 0 && !empty) return null;
   return (
-    <ScrollSection icon={icon} title={title} href={href}>
+    <ScrollSection icon={heading ? icon : undefined} title={heading ? title : undefined} href={href}>
       {isLoading
         ? Array.from({ length: 8 }).map((_, i) => (
             <div key={i} className="w-56 shrink-0 snap-start sm:w-64"><ListingCardSkeleton /></div>
@@ -87,10 +88,11 @@ function NewListings({ market }: { market: CollectionMarketActions }) {
   );
 }
 
-export function FeaturedListings({ market }: { market: CollectionMarketActions }) {
+export function FeaturedListings({ market, heading = true }: { market: CollectionMarketActions; heading?: boolean }) {
   return (
     <ListingsStrip
       market={market}
+      heading={heading}
       icon={<Sparkles />}
       title="Featured"
       query={{ status: "ACTIVE", isFeatured: true, limit: 20, page: 1 }}

@@ -68,3 +68,15 @@ test("the featured listings strip stands alone with Buy through the given action
   fireEvent.click(view.getAllByRole("button").filter((b) => (b.textContent ?? "").trim() === "Buy")[0]!);
   expect(bought).toEqual(["9"]);
 });
+
+test("the featured listings strip can be shown without its heading", async () => {
+  const { FeaturedListings } = await import("./home-page.js");
+  const client = { api: { orders: { list: async () => ({ data: [listing("9", OTHER)], meta: { page: 1, limit: 20, total: 1 } }) } } } as unknown as MedialaneClient;
+  const app = { getClient: () => client, getSigner: () => { throw new Error("unused"); }, walletAddress: ME, onRequireWallet: () => {} } as MedialaneApp;
+  const market = { buy: () => {}, offer: () => {}, dialogs: null };
+  globalThis.fetch = (async () => new Response(JSON.stringify({ data: { usd: { STRK: 0.5 } } }))) as unknown as typeof fetch;
+  const view = render(<SWRConfig value={{ provider: () => new Map() }}><MedialaneAppProvider value={app}><FeaturedListings market={market} heading={false} /></MedialaneAppProvider></SWRConfig>);
+  await waitFor(() => expect(view.getAllByText("Piece 9").length).toBeGreaterThan(0));
+  expect(view.queryByText("Featured")).toBeNull();
+  expect(view.queryByText("View all")).toBeNull();
+});
