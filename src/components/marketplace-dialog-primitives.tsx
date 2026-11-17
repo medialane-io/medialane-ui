@@ -8,6 +8,12 @@ import { Button } from "./button.js";
 import { CurrencyIcon } from "./currency-icon.js";
 import { cn } from "../utils/cn.js";
 import { formatDisplayPrice, isStableCurrency } from "../utils/format.js";
+import { useImageUrl } from "../utils/use-image-url.js";
+
+function DialogImage({ src, alt, sizes }: { src: string; alt: string; sizes: string }) {
+  const resolveImage = useImageUrl();
+  return <Image src={resolveImage(src) ?? src} alt={alt} fill sizes={sizes} className="object-cover" unoptimized />;
+}
 
 interface MarketplaceTxLinkProps {
   txHash: string;
@@ -53,7 +59,7 @@ export function MarketplaceProcessingState({
     <div className="flex flex-col items-center gap-5 p-6 py-8">
       {imageUrl ? (
         <div className="relative h-20 w-20 rounded-2xl overflow-hidden border border-border">
-          <Image src={imageUrl} alt={imageAlt} fill sizes="80px" className="object-cover" unoptimized />
+          <DialogImage src={imageUrl} alt={imageAlt} sizes="80px" />
           <div className="absolute inset-0 bg-background/50 flex items-center justify-center">
             <Loader2 className="h-7 w-7 animate-spin text-primary" />
           </div>
@@ -129,7 +135,7 @@ export function MarketplaceErrorState({
       {tokenImage ? (
         <div className="relative">
           <div className="relative h-32 w-32 rounded-2xl overflow-hidden">
-            <Image src={tokenImage} alt={name} fill sizes="128px" className="object-cover" unoptimized />
+            <DialogImage src={tokenImage} alt={name} sizes="128px" />
           </div>
           <div className="absolute -bottom-2 -right-2 h-9 w-9 rounded-full bg-destructive flex items-center justify-center border-2 border-background">
             <AlertCircle className="h-5 w-5 text-white" />
@@ -184,7 +190,7 @@ export function MarketplaceDialogHero({
     <div className="relative flex justify-center pt-6 shrink-0">
       <div className="relative h-32 w-32 rounded-2xl overflow-hidden bg-muted">
         {tokenImage ? (
-          <Image src={tokenImage} alt={name} fill sizes="128px" className="object-cover" unoptimized />
+          <DialogImage src={tokenImage} alt={name} sizes="128px" />
         ) : (
           <div className="h-full w-full bg-gradient-to-br from-brand-blue/20 via-brand-purple/10 to-transparent flex items-center justify-center">
             {fallbackIcon}
@@ -231,7 +237,7 @@ export function OrderSummaryHero({
       <div className="flex justify-center pt-6 shrink-0">
         <div className="relative h-32 w-32 rounded-2xl overflow-hidden bg-muted">
           {image ? (
-            <Image src={image} alt={name} fill sizes="128px" className="object-cover" unoptimized />
+            <DialogImage src={image} alt={name} sizes="128px" />
           ) : (
             <div
               className={cn(
@@ -349,7 +355,7 @@ export function ListingAssetSummary({ name, image, fallbackIcon, badge }: Listin
     <div className="flex shrink-0 items-center gap-3.5 px-5 pb-1 pt-5 pr-12">
       <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-xl bg-muted">
         {image ? (
-          <Image src={image} alt={name} fill sizes="64px" className="object-cover" unoptimized />
+          <DialogImage src={image} alt={name} sizes="64px" />
         ) : (
           <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-brand-blue/20 via-brand-purple/10 to-transparent">
             {fallbackIcon}
