@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.370.1] — 2026-11-17
+
+### Fixed
+
+- The marketplace dialogs (list, cancel, transfer, archive, offer and the processing and error states) resolve the asset image through the app's image resolver, so an `ipfs://` image shows instead of an empty box.
+
 ## [0.370.0] — 2026-11-17
 
 ### Changed
