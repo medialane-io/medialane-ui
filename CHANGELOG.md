@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.371.0] — 2026-11-17
+
+### Fixed
+
+- `ArchiveAssetDialog` records the archive as an `archive-nft` intent and executes it with the intent id, so the call is sponsored like a transfer. Before, it sent a bare call that a wallet with a guardian could not pay for.
+
+### Changed
+
+- `@medialane/sdk` peer range starts at 0.234.0, which adds the `archive-nft` intent.
+- `utils/archive-asset`: `archiveCall` is removed; the SDK builds the call.
+
 ## [0.370.1] — 2026-11-17
 
 ### Fixed
