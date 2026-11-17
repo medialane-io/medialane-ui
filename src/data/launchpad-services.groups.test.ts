@@ -41,3 +41,18 @@ describe("the launchpad sections", () => {
     expect(() => getMintFormatCopy("claim-username")).toThrow();
   });
 });
+
+describe("the wording of the service cards", () => {
+  const second = /\b(you|your|yours|you're|you'll|you've|yourself)\b/i;
+  const withoutAddresses = (text: string) => text.replace(/medialane\.io\/\S+/g, "");
+
+  test("never addresses the reader and never uses the word badge", () => {
+    for (const d of [...LAUNCHPAD_SERVICE_DEFINITIONS, COLLECTION_NAME_CLAIM]) {
+      const copy = [d.blurb, d.subtitle, d.description, d.example ?? "", ...d.features, d.format?.name ?? "", d.format?.hint ?? ""].map(withoutAddresses);
+      for (const text of copy) {
+        expect(second.test(text), `${d.key}: ${text}`).toBe(false);
+        expect(/badge/i.test(text), `${d.key}: ${text}`).toBe(false);
+      }
+    }
+  });
+});

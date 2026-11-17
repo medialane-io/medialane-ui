@@ -8,6 +8,7 @@ import Link from "./link.js";
 import { Badge } from "./badge.js";
 import { Button } from "./button.js";
 import { EmptyOrError } from "./empty-or-error.js";
+import { Skeleton } from "./skeleton.js";
 import { cn } from "../utils/cn.js";
 import { EXPLORER_URL } from "../utils/explorer-url.js";
 import { formatDisplayPrice } from "../utils/format.js";
@@ -74,6 +75,24 @@ function expiryOf(order: ApiOrder) {
 
 function price(o: ApiOrder) {
   return `${formatDisplayPrice(o.price.formatted)} ${o.price.currency ?? ""}`.trim();
+}
+
+function OrderRowsSkeleton() {
+  return (
+    <div className="divide-y divide-border overflow-hidden rounded-lg border border-border">
+      {Array.from({ length: 3 }).map((_, i) => (
+        <div key={i} className="flex items-center gap-4 px-4 py-3">
+          <Skeleton className="h-12 w-12 shrink-0 rounded-lg" />
+          <div className="flex-1 space-y-2">
+            <Skeleton className="h-4 w-40" />
+            <Skeleton className="h-3 w-20" />
+          </div>
+          <Skeleton className="hidden h-4 w-20 sm:block" />
+          <Skeleton className="h-8 w-20 rounded-md" />
+        </div>
+      ))}
+    </div>
+  );
 }
 
 function OrderRow({ order, subtitle, from, priceCell, actions, isNew }: {
@@ -194,7 +213,7 @@ export function PortfolioOrders({ view, address, useActions }: {
         emptyDescription={config.emptyDescription}
         emptyCta={config.emptyCta}
         emptyIcon={<EmptyIcon className="h-7 w-7 text-muted-foreground" />}
-        skeletonCount={3}
+        skeletonNode={<OrderRowsSkeleton />}
       >
         <div className="space-y-1">
           {config.count && orders.length > 0 && <p className="pb-2 text-sm text-muted-foreground">{config.count(orders.length)}</p>}

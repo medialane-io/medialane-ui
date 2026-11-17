@@ -5,7 +5,7 @@ import { Activity } from "lucide-react";
 import { useActivitiesByAddress } from "../utils/use-activities.js";
 import { EmptyOrError } from "./empty-or-error.js";
 import { ACTIVITY_TYPE_CONFIG, TYPE_FILTERS } from "../data/activity.js";
-import { ActivityRow } from "./activity-row.js";
+import { ActivityListSkeleton, ActivityRow } from "./activity-row.js";
 import { cn } from "../utils/cn.js";
 import { EXPLORER_URL } from "../utils/explorer-url.js";
 
@@ -84,7 +84,7 @@ export function PortfolioActivity({ address }: PortfolioActivityProps) {
         emptyDescription="Start by listing or buying an asset on the marketplace."
         emptyCta={{ label: "Browse marketplace", href: "/marketplace" }}
         emptyIcon={<Activity className="h-7 w-7 text-muted-foreground" />}
-        skeletonCount={8}
+        skeletonNode={<ActivityListSkeleton count={8} />}
       >
         <div className="rounded-xl border border-border overflow-hidden divide-y divide-border/50">
           {displayed.map((activity, i) => (

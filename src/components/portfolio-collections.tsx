@@ -3,10 +3,12 @@
 import type { ReactNode } from "react";
 import { Download, Layers } from "lucide-react";
 import { useCollectionsByOwner } from "../utils/use-collections.js";
-import { CollectionCard } from "./collection-card.js";
+import { CollectionCard, CollectionCardSkeleton } from "./collection-card.js";
 import { EmptyOrError } from "./empty-or-error.js";
 import { useMedialaneApp } from "./medialane-app.js";
 import { CollectionTypeChoices, NewCollectionMenu } from "./new-collection-menu.js";
+
+const GRID = "grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4";
 
 export function PortfolioCollections({ claimPanel }: { claimPanel: ReactNode }) {
   const { walletAddress } = useMedialaneApp();
@@ -33,8 +35,13 @@ export function PortfolioCollections({ claimPanel }: { claimPanel: ReactNode }) 
         emptyDescription="If you just created a collection, it may take a few seconds to appear."
         emptyActions={<CollectionTypeChoices />}
         emptyIcon={<Layers className="h-7 w-7 text-muted-foreground" />}
+        skeletonNode={
+          <div className={GRID}>
+            {Array.from({ length: 8 }).map((_, i) => <CollectionCardSkeleton key={i} />)}
+          </div>
+        }
       >
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+        <div className={GRID}>
           {collections.map((col) => (
             <CollectionCard
               key={col.contractAddress}
