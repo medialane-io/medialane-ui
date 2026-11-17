@@ -10,6 +10,7 @@ import { Skeleton } from "./skeleton.js";
 import { TabsContent } from "./tabs.js";
 import { UnderlineTabs, type UnderlineTab } from "./underline-tabs.js";
 import { CreatorHeader } from "./creator-header.js";
+import { CreatorLoading } from "./page-skeletons.js";
 import { HiddenContentBanner } from "./hidden-content-banner.js";
 import { TabEmptyState } from "./tab-empty-state.js";
 import { TokenCard, TokenCardSkeleton } from "./token-card.js";
@@ -22,7 +23,6 @@ import { useMedialaneApp } from "./medialane-app.js";
 import { ReportDialog } from "./report-dialog.js";
 import type { UsePortfolioAssetActions } from "./portfolio-assets.js";
 import type { CollectionMarketActions } from "./collection-page.js";
-import { cn } from "../utils/cn.js";
 import { EXPLORER_URL } from "../utils/explorer-url.js";
 import { isSameAddress } from "../utils/same-address.js";
 import { orderUsd } from "../utils/order-usd.js";
@@ -71,14 +71,7 @@ export function CreatorPage({ username, useAssetActions, useMarketActions }: Cre
   const listings = orders.filter((o) => o.status === "ACTIVE" && isNft(o.offer.itemType));
   const identity = profileIdentity({ username: creator?.username, name: creator?.name, walletAddress: address });
 
-  if (creatorLoading) {
-    return (
-      <div className="min-h-screen pb-20">
-        <div className="px-6 pt-20 pb-6"><CreatorHeader creator={null} image={null} stats={[]} loading /></div>
-        <div className={cn("px-6", GRID)}>{Array.from({ length: 8 }).map((_, i) => <TokenCardSkeleton key={i} />)}</div>
-      </div>
-    );
-  }
+  if (creatorLoading) return <CreatorLoading />;
 
   if (!creator) {
     return (

@@ -4,6 +4,10 @@ import { AssetCardSkeleton } from "./asset-card.js";
 import { CollectionCardSkeleton } from "./collection-card.js";
 import { ListingCardSkeleton } from "./listing-card.js";
 import { PageContainer } from "./page-container.js";
+import { CreatorHeader } from "./creator-header.js";
+import { ActivityListSkeleton } from "./activity-row.js";
+
+const GRID = "grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4";
 
 export function AccountLoading() {
   return (
@@ -25,7 +29,7 @@ export function AccountLoading() {
         ))}
       </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+      <div className={GRID}>
         {Array.from({ length: 8 }).map((_, i) => (
           <TokenCardSkeleton key={i} />
         ))}
@@ -36,41 +40,21 @@ export function AccountLoading() {
 
 export function CreatorLoading() {
   return (
-    <div className="pb-20 min-h-screen">
-
-      <Skeleton className="w-full h-48 sm:h-64 rounded-none" />
-
-      <div className="px-6">
-
-        <div className="-mt-14 sm:-mt-16 relative z-10">
-          <div className="flex flex-wrap items-end gap-x-4 gap-y-3 pb-6">
-            <Skeleton className="h-[88px] w-[88px] rounded-full shrink-0 ring-[3px] ring-background" />
-            <div className="flex-1 min-w-0 pb-1 space-y-2">
-              <Skeleton className="h-5 w-20 rounded-full" />
-              <Skeleton className="h-6 w-52" />
-              <Skeleton className="h-4 w-40" />
-            </div>
-            <Skeleton className="h-8 w-20 rounded-lg pb-1" />
+    <div className="min-h-screen pb-20">
+      <div className="px-6 pt-20 pb-6">
+        <CreatorHeader creator={null} image={null} stats={[]} loading />
+      </div>
+      <div className="mt-4 flex items-center gap-0.5 px-6">
+        {[64, 92, 72, 68].map((w, i) => (
+          <div key={i} className="px-4 py-3">
+            <Skeleton className="h-4" style={{ width: w }} />
           </div>
-        </div>
-
-        <div className="border-b border-border flex gap-1 pb-0 mb-0">
-          {[72, 80, 104, 76].map((w, i) => (
-            <Skeleton key={i} className="h-10 rounded-none" style={{ width: w }} />
-          ))}
-        </div>
-
-        <div className="mt-6 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-          {Array.from({ length: 8 }).map((_, i) => (
-            <div key={i} className="rounded-2xl border border-border overflow-hidden">
-              <Skeleton className="aspect-square w-full" />
-              <div className="p-3 space-y-2">
-                <Skeleton className="h-4 w-3/4" />
-                <Skeleton className="h-3 w-1/2" />
-              </div>
-            </div>
-          ))}
-        </div>
+        ))}
+      </div>
+      <div className={`mt-6 px-6 ${GRID}`}>
+        {Array.from({ length: 8 }).map((_, i) => (
+          <TokenCardSkeleton key={i} />
+        ))}
       </div>
     </div>
   );
@@ -78,30 +62,20 @@ export function CreatorLoading() {
 
 export function ActivitiesLoading() {
   return (
-    <div className="mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 space-y-6">
-      <div className="space-y-1">
-        <Skeleton className="h-4 w-24" />
-        <Skeleton className="h-9 w-40" />
-        <Skeleton className="h-4 w-72" />
+    <PageContainer className="box-border max-w-full pt-14 pb-8 space-y-8">
+      <div className="space-y-2 pt-8">
+        <Skeleton className="h-9 w-64" />
       </div>
-      <div className="flex gap-2">
-        {Array.from({ length: 5 }).map((_, i) => (
-          <Skeleton key={i} className="h-8 w-20 rounded-md" />
-        ))}
+      <div className="space-y-5">
+        <Skeleton className="h-5 w-36" />
+        <div className="flex flex-wrap gap-2">
+          {[44, 64, 62, 78, 70, 88, 90].map((w, i) => (
+            <Skeleton key={i} className="h-7 rounded-full" style={{ width: w }} />
+          ))}
+        </div>
+        <ActivityListSkeleton />
       </div>
-      <div className="rounded-xl border border-border bg-card divide-y divide-border/60 overflow-hidden">
-        {Array.from({ length: 10 }).map((_, i) => (
-          <div key={i} className="flex items-center gap-3 px-4 py-3">
-            <Skeleton className="h-8 w-8 rounded-lg shrink-0" />
-            <div className="flex-1 space-y-1.5">
-              <Skeleton className="h-3.5 w-40" />
-              <Skeleton className="h-3 w-24" />
-            </div>
-            <Skeleton className="h-3 w-12" />
-          </div>
-        ))}
-      </div>
-    </div>
+    </PageContainer>
   );
 }
 
@@ -208,21 +182,10 @@ export function IpTypeLoading() {
 
 export function PortfolioLoading() {
   return (
-    <div className="mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 space-y-6">
-      <div className="space-y-1">
-        <Skeleton className="h-9 w-36" />
-        <Skeleton className="h-4 w-56" />
-      </div>
-      <div className="flex gap-1">
-        {Array.from({ length: 6 }).map((_, i) => (
-          <Skeleton key={i} className="h-9 w-28 rounded-md" />
-        ))}
-      </div>
-      <div className="space-y-3">
-        {Array.from({ length: 6 }).map((_, i) => (
-          <Skeleton key={i} className="h-20 w-full rounded-xl" />
-        ))}
-      </div>
+    <div className={GRID}>
+      {Array.from({ length: 10 }).map((_, i) => (
+        <TokenCardSkeleton key={i} />
+      ))}
     </div>
   );
 }

@@ -13,6 +13,7 @@ import { EXPLORER_URL } from "../utils/explorer-url.js";
 import type { ApiActivity } from "@medialane/sdk";
 import { assetHref, profileHref } from "@medialane/sdk";
 import { useImageUrl } from "../utils/use-image-url.js";
+import { Skeleton } from "./skeleton.js";
 
 const ACTIVITY_MESSAGES: Record<string, string> = {
   mint: "Newly minted",
@@ -22,6 +23,30 @@ const ACTIVITY_MESSAGES: Record<string, string> = {
   transfer: "Transferred",
   cancelled: "Listing cancelled",
 };
+
+export function ActivityListSkeleton({ count = 10 }: { count?: number }) {
+  return (
+    <div className="divide-y divide-border/50 rounded-xl border border-border overflow-hidden">
+      {Array.from({ length: count }).map((_, i) => (
+        <div key={i} className="flex items-center gap-3 px-4 py-3.5 bg-card">
+          <Skeleton className="h-8 w-8 rounded-lg shrink-0" />
+          <Skeleton className="h-9 w-9 rounded-md shrink-0" />
+          <div className="flex-1 space-y-2">
+            <Skeleton className="h-3.5 w-40" />
+            <Skeleton className="h-2.5 w-24" />
+          </div>
+          <div className="flex items-center gap-2.5">
+            <div className="space-y-1 text-right">
+              <Skeleton className="h-4 w-16" />
+              <Skeleton className="h-2.5 w-8" />
+            </div>
+            <Skeleton className="h-2.5 w-12 hidden sm:block" />
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
 
 export interface ActivityRowProps {
   activity: ApiActivity;

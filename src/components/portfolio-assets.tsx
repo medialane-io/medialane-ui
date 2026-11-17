@@ -5,7 +5,7 @@ import type { ApiToken } from "@medialane/sdk";
 import { ImageIcon } from "lucide-react";
 import { EmptyOrError } from "./empty-or-error.js";
 import { LoadMoreSentinel } from "./load-more-sentinel.js";
-import { TokenCard } from "./token-card.js";
+import { TokenCard, TokenCardSkeleton } from "./token-card.js";
 import { ReportDialog } from "./report-dialog.js";
 import { orderUsd } from "../utils/order-usd.js";
 import { useUsdPrices } from "../utils/use-usd-prices.js";
@@ -56,15 +56,7 @@ export function PortfolioAssets({ address, useActions }: { address: string; useA
         emptyIcon={<ImageIcon className="h-7 w-7 text-muted-foreground" />}
         skeletonNode={
           <div className={GRID}>
-            {Array.from({ length: 10 }).map((_, i) => (
-              <div key={i} className="animate-pulse overflow-hidden rounded-xl bg-muted">
-                <div className="aspect-square w-full bg-muted-foreground/10" />
-                <div className="space-y-2 p-3">
-                  <div className="h-4 w-3/4 rounded bg-muted-foreground/10" />
-                  <div className="h-3 w-1/2 rounded bg-muted-foreground/10" />
-                </div>
-              </div>
-            ))}
+            {Array.from({ length: 10 }).map((_, i) => <TokenCardSkeleton key={i} />)}
           </div>
         }
       >

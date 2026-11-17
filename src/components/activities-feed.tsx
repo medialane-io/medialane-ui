@@ -3,11 +3,10 @@
 import { useState, useEffect, useRef } from "react";
 import { useActivities } from "../utils/use-activities.js";
 import type { ApiActivitiesQuery, ApiActivity } from "@medialane/sdk";
-import { Skeleton } from "./skeleton.js";
 import { LoadMoreSentinel } from "./load-more-sentinel.js";
 import { Zap } from "lucide-react";
 import { ACTIVITY_TYPE_CONFIG, TYPE_FILTERS } from "../data/activity.js";
-import { ActivityRow } from "./activity-row.js";
+import { ActivityListSkeleton, ActivityRow } from "./activity-row.js";
 import { cn } from "../utils/cn.js";
 import { emptyMessages } from "../utils/empty-messages.js";
 
@@ -106,25 +105,7 @@ export function ActivitiesFeed() {
       </div>
 
       {isInitialLoading ? (
-        <div className="divide-y divide-border/50 rounded-xl border border-border overflow-hidden">
-          {Array.from({ length: 10 }).map((_, i) => (
-            <div key={i} className="flex items-center gap-3 px-4 py-3.5 bg-card">
-              <Skeleton className="h-8 w-8 rounded-lg shrink-0" />
-              <Skeleton className="h-9 w-9 rounded-md shrink-0" />
-              <div className="flex-1 space-y-2">
-                <Skeleton className="h-3.5 w-40" />
-                <Skeleton className="h-2.5 w-24" />
-              </div>
-              <div className="flex items-center gap-2.5">
-                <div className="space-y-1 text-right">
-                  <Skeleton className="h-4 w-16" />
-                  <Skeleton className="h-2.5 w-8" />
-                </div>
-                <Skeleton className="h-2.5 w-12 hidden sm:block" />
-              </div>
-            </div>
-          ))}
-        </div>
+        <ActivityListSkeleton />
       ) : allActivities.length === 0 ? (
         <div className="py-20 flex flex-col items-center gap-3 text-center">
           <div className="h-12 w-12 rounded-full bg-muted flex items-center justify-center">

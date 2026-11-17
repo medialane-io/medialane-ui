@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.370.0] — 2026-11-17
+
+### Changed
+
+- `CreatorLoading` shows the creator header block, the tab row and token cards, and the creator page uses it while the profile loads.
+- `ActivitiesLoading` shows the title, the filter pills and the activity rows. `ActivityListSkeleton` is the one row skeleton for the activities feed, the portfolio activity tab and the loading screen.
+- `PortfolioLoading` fills only the content area under the portfolio header with token cards. The portfolio assets, collections, activity and orders tabs show card, row and table skeletons that match their content.
+- Launchpad and claim card copy no longer addresses the reader.
+
 ## [0.369.1] — 2026-11-16
 
 ### Fixed
