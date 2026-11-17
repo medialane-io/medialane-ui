@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.372.1] — 2026-11-17
+
+### Changed
+
+- `TransferDialog` and `ArchiveAssetDialog` show "Confirming onchain…" while the transaction runs, like every other dialog.
+
 ## [0.372.0] — 2026-11-17
 
 ### Changed
