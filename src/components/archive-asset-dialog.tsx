@@ -89,7 +89,6 @@ export function ArchiveAssetDialog({
         <TransactionDialogStates
           phase={tx.phase}
           asset={{ name: displayName, image: tokenImage }}
-          statusMessage="Confirming on Starknet…"
           txHash={tx.txHash}
           error={tx.error}
           success={successMessages.archived({ name: displayName })}

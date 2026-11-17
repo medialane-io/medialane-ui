@@ -129,7 +129,6 @@ export function TransferDialog({
         <TransactionDialogStates
           phase={phase}
           asset={{ name: displayName, image: tokenImage }}
-          statusMessage="Confirming on Starknet…"
           txHash={txHash}
           error={error}
           success={successMessages.transferred({ name: displayName, to: recipientShort })}
