@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.371.1] — 2026-11-17
+
+### Fixed
+
+- `Image` passes an `ipfs://` source through the app's image resolver, so every dialog, success screen and card shows it instead of an empty box. The per-dialog resolving added in 0.370.1 is removed.
+
 ## [0.371.0] — 2026-11-17
 
 ### Fixed

@@ -1,47 +1,25 @@
-import { afterEach, beforeEach, expect, jest, mock, test } from "bun:test";
-import { act, cleanup, fireEvent, render } from "@testing-library/react";
+import { afterEach, expect, mock, test } from "bun:test";
+import { cleanup, render } from "@testing-library/react";
+import { MedialaneAppContext } from "./medialane-app.js";
+import Image from "./image.js";
 
-mock.module("next/image", () => ({
-  default: ({ src, alt, className, onError, onLoad }: { src: string; alt: string; className?: string; onError?: () => void; onLoad?: () => void }) => (
-    <img src={src} alt={alt} className={className} onError={onError} onLoad={onLoad} />
-  ),
-}));
+afterEach(cleanup);
 
-const { default: Image } = await import("./image.js");
+const IPFS = "ipfs://bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi/1.png";
 
-beforeEach(() => jest.useFakeTimers());
-afterEach(() => {
-  cleanup();
-  jest.useRealTimers();
+function withResolver(resolveImage: (uri: string | null | undefined) => string | null, children: React.ReactNode) {
+  return <MedialaneAppContext.Provider value={{ resolveImage } as never}>{children}</MedialaneAppContext.Provider>;
+}
+
+test("an ipfs link is passed through the app's image resolver, which a browser cannot load otherwise", () => {
+  const resolve = mock((uri: string | null | undefined) => (uri ? `https://gateway.test/${uri.slice(7)}` : null));
+  render(withResolver(resolve, <Image src={IPFS} alt="a" width={10} height={10} unoptimized />));
+  expect(resolve).toHaveBeenCalledWith(IPFS);
 });
 
-test("a failed image is requested again after five seconds", () => {
-  const { container } = render(<Image src="/a.jpg" alt="a" width={10} height={10} />);
-  const first = container.querySelector("img")!;
-  fireEvent.error(first);
-  expect(container.querySelector("img")!.className).toContain("invisible");
-  act(() => { jest.advanceTimersByTime(4999); });
-  expect(container.querySelector("img")).toBe(first);
-  act(() => { jest.advanceTimersByTime(1); });
-  expect(container.querySelector("img")).not.toBe(first);
-});
-
-test("a retried image shows once it loads", () => {
-  const { container } = render(<Image src="/a.jpg" alt="a" width={10} height={10} />);
-  fireEvent.error(container.querySelector("img")!);
-  act(() => { jest.advanceTimersByTime(5000); });
-  fireEvent.load(container.querySelector("img")!);
-  expect(container.querySelector("img")!.className).not.toContain("invisible");
-});
-
-test("the caller's onError runs only after the retries are used up", () => {
-  const failed = jest.fn();
-  const { container } = render(<Image src="/a.jpg" alt="a" width={10} height={10} onError={failed} />);
-  for (let i = 0; i < 6; i++) {
-    fireEvent.error(container.querySelector("img")!);
-    expect(failed).not.toHaveBeenCalled();
-    act(() => { jest.advanceTimersByTime(5000); });
-  }
-  fireEvent.error(container.querySelector("img")!);
-  expect(failed).toHaveBeenCalledTimes(1);
+test("any other address is left exactly as given", () => {
+  const resolve = mock((uri: string | null | undefined) => uri ?? null);
+  render(withResolver(resolve, <Image src="/api/img?url=x" alt="a" width={10} height={10} unoptimized />));
+  render(withResolver(resolve, <Image src="https://example.com/a.png" alt="a" width={10} height={10} unoptimized />));
+  expect(resolve).not.toHaveBeenCalled();
 });
