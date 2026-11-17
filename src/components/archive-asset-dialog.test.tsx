@@ -1,7 +1,8 @@
 import { afterEach, describe, expect, mock, test } from "bun:test";
 import { act, cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { getCoordinates } from "@medialane/sdk";
-import type { MedialaneClient } from "@medialane/sdk/starknet";
+import { buildIntent, type MedialaneClient } from "@medialane/sdk/starknet";
+import { resolveConfig } from "@medialane/sdk";
 
 mock.module("next/image", () => ({ default: ({ alt }: { alt?: string }) => <span data-alt={alt} /> }));
 
@@ -15,6 +16,8 @@ const REGISTRY = getCoordinates("STARKNET").collection721;
 
 function show(opts: { registry?: string; archived?: string; hasActiveListing?: boolean; wallet?: string | null; failExecute?: boolean } = {}) {
   const executed: Array<{ contractAddress: string; entrypoint: string; calldata: string[] }[]> = [];
+  const intents: Array<{ kind: string; params: unknown }> = [];
+  const sponsored: Array<string[] | undefined> = [];
   const log = { closes: 0, successes: 0 };
   const answers: Record<string, string[]> = {
     get_registry: [opts.registry ?? REGISTRY],
@@ -26,13 +29,19 @@ function show(opts: { registry?: string; archived?: string; hasActiveListing?: b
       callContract: async ({ entrypoint }: { entrypoint: string }) => answers[entrypoint],
       getTransactionReceipt: async () => ({ execution_status: "SUCCEEDED", events: [] }),
     },
-    api: { intents: { syncTransaction: async () => ({ pending: false }) } },
+    api: { intents: { syncTransaction: async () => ({ pending: false }), confirm: async () => ({}) } },
+    createIntent: async (kind: string, params: { owner: string; collectionId: string; tokenId: string }) => {
+      intents.push({ kind, params });
+      const { calls } = buildIntent("archive-nft", params, {}, resolveConfig({}));
+      return { id: "intent-1", requiresSignature: false, calls, expiresAt: "" };
+    },
   } as unknown as MedialaneClient;
   const signer = {
     address: ME,
-    execute: async (calls: never) => {
+    execute: async (calls: never, options?: { intentIds?: string[] }) => {
       if (opts.failExecute) throw new Error("User rejected request");
       executed.push(calls);
+      sponsored.push(options?.intentIds);
       return { txHash: "0x1" };
     },
     signTypedData: async () => [],
@@ -51,7 +60,7 @@ function show(opts: { registry?: string; archived?: string; hasActiveListing?: b
       />
     </MedialaneAppProvider>,
   );
-  return { executed, log };
+  return { executed, intents, sponsored, log };
 }
 
 describe("ArchiveAssetDialog", () => {
@@ -62,12 +71,14 @@ describe("ArchiveAssetDialog", () => {
     expect(executed).toEqual([]);
   });
 
-  test("confirming sends one archive call to the registry with the collection and token ids", async () => {
-    const { executed } = show();
+  test("confirming records an archive intent and sends its one call to the registry, sponsorable under that intent", async () => {
+    const { executed, intents, sponsored } = show();
     await screen.findByText("Archive this asset permanently?");
     await act(async () => { fireEvent.click(screen.getByRole("button", { name: "Archive permanently" })); });
     await waitFor(() => expect(executed).toHaveLength(1));
+    expect(intents).toEqual([{ kind: "archive-nft", params: { owner: ME, collectionId: "9", tokenId: "42" } }]);
     expect(executed[0]).toEqual([{ contractAddress: REGISTRY, entrypoint: "archive", calldata: ["9", "0", "42", "0"] }]);
+    expect(sponsored).toEqual([["intent-1"]]);
     await screen.findByText("Asset archived");
   });
 

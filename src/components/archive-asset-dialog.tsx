@@ -2,12 +2,13 @@
 
 import { useEffect, useState } from "react";
 import { AlertCircle, Archive } from "lucide-react";
+import { executeIntent } from "@medialane/sdk/starknet";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "./dialog.js";
 import { Alert, AlertDescription } from "./alert.js";
 import { MarketplaceConfirmStep, MarketplaceDialogHero } from "./marketplace-dialog-primitives.js";
 import { TransactionDialogStates } from "./transaction-dialog-states.js";
 import { useMedialaneApp } from "./medialane-app.js";
-import { archiveCall, readArchiveTarget, type ArchiveTarget } from "../utils/archive-asset.js";
+import { readArchiveTarget, type ArchiveTarget } from "../utils/archive-asset.js";
 import { invalidatePortfolioCache } from "../utils/portfolio-cache.js";
 import { successMessages } from "../utils/success-messages.js";
 import { isBusyPhase, useTransaction } from "../utils/use-transaction.js";
@@ -62,10 +63,12 @@ export function ArchiveAssetDialog({
 
   const archive = () => {
     if (check.status !== "ready" || !app.walletAddress) return;
-    const { registry, collectionId } = check.target;
+    const { collectionId } = check.target;
     const owner = app.walletAddress;
     void tx.run(async (signer) => {
-      await signer.execute([archiveCall(registry, collectionId, BigInt(tokenId))]);
+      const client = app.getClient();
+      const intent = await client.createIntent("archive-nft", { owner, collectionId: collectionId.toString(), tokenId });
+      await executeIntent(signer, client, intent);
       invalidatePortfolioCache(owner);
     });
   };

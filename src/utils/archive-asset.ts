@@ -1,4 +1,4 @@
-import { cairo, type Call, type ProviderInterface } from "starknet";
+import { cairo, type ProviderInterface } from "starknet";
 import { getCoordinates } from "@medialane/sdk";
 
 export interface ArchiveTarget {
@@ -11,16 +11,6 @@ type Reader = Pick<ProviderInterface, "callContract">;
 
 function u256(low: string, high: string): bigint {
   return BigInt(low) + (BigInt(high) << 128n);
-}
-
-export function archiveCall(registry: string, collectionId: bigint, tokenId: bigint): Call {
-  const collection = cairo.uint256(collectionId);
-  const token = cairo.uint256(tokenId);
-  return {
-    contractAddress: registry,
-    entrypoint: "archive",
-    calldata: [String(collection.low), String(collection.high), String(token.low), String(token.high)],
-  };
 }
 
 export async function readArchiveTarget(provider: Reader, contract: string, tokenId: string): Promise<ArchiveTarget | null> {

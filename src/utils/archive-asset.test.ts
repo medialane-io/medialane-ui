@@ -1,6 +1,6 @@
 import { describe, expect, it } from "bun:test";
 import { getCoordinates } from "@medialane/sdk";
-import { archiveCall, readArchiveTarget } from "./archive-asset";
+import { readArchiveTarget } from "./archive-asset";
 
 const REGISTRY = getCoordinates("STARKNET").collection721;
 const NFT = "0x123";
@@ -17,15 +17,6 @@ function reader(answers: Record<string, string[]>) {
     },
   };
 }
-
-describe("the archive call", () => {
-  it("targets the registry with the collection id and token id as u256 pairs", () => {
-    const call = archiveCall("0xabc", 7n, (1n << 128n) + 5n);
-    expect(call.contractAddress).toBe("0xabc");
-    expect(call.entrypoint).toBe("archive");
-    expect(call.calldata).toEqual(["7", "0", "5", "1"]);
-  });
-});
 
 describe("reading what can be archived", () => {
   it("returns the collection id and whether the token is archived, for a token of the registry", async () => {
