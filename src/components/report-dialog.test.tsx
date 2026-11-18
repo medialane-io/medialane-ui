@@ -20,7 +20,7 @@ function setup(opts: { ensureSignedIn?: () => Promise<void>; submit?: (body: unk
 test("submit stays off until a reason is picked, then sends the report", async () => {
   const order: string[] = [];
   const { view, sent } = setup({ ensureSignedIn: async () => { order.push("signed in"); } });
-  const submit = view.getByRole("button", { name: "Submit Report" }) as HTMLButtonElement;
+  const submit = view.getByRole("button", { name: "Submit report" }) as HTMLButtonElement;
   expect(submit.disabled).toBe(true);
   fireEvent.click(view.getByLabelText("Spam"));
   fireEvent.click(submit);
@@ -32,7 +32,7 @@ test("submit stays off until a reason is picked, then sends the report", async (
 test("a failed sign-in shows the reason and sends nothing", async () => {
   const { view, sent } = setup({ ensureSignedIn: async () => { throw new UserFacingError("Secure your account first"); } });
   fireEvent.click(view.getByLabelText("Spam"));
-  fireEvent.click(view.getByRole("button", { name: "Submit Report" }));
+  fireEvent.click(view.getByRole("button", { name: "Submit report" }));
   await waitFor(() => expect(view.getByText("Secure your account first")).toBeTruthy());
   expect(sent.length).toBe(0);
 });
@@ -40,7 +40,7 @@ test("a failed sign-in shows the reason and sends nothing", async () => {
 test("an already-reported item says so and can be retried or dismissed", async () => {
   const { view, closes } = setup({ submit: async () => { throw new MedialaneApiError(409, "dup"); } });
   fireEvent.click(view.getByLabelText("Spam"));
-  fireEvent.click(view.getByRole("button", { name: "Submit Report" }));
+  fireEvent.click(view.getByRole("button", { name: "Submit report" }));
   await waitFor(() => expect(view.getByText("You've already reported this content.")).toBeTruthy());
   fireEvent.click(view.getByRole("button", { name: "Dismiss" }));
   expect(closes).toEqual([false]);

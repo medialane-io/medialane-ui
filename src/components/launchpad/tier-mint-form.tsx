@@ -276,7 +276,7 @@ export function TierMintForm({ contract: rawContract, preset, aside }: TierMintF
                   <button type="button" className="w-full flex items-center justify-between px-0 py-3 sm:px-5 sm:py-4 hover:bg-muted/30 transition-colors">
                     <div className="flex items-center gap-2">
                       <ShieldCheck className="h-4 w-4 text-primary" />
-                      <span className="text-sm font-semibold">{t("Licensing Terms")}</span>
+                      <span className="text-sm font-semibold">{t("License terms")}</span>
                       <span className="text-xs text-muted-foreground font-normal">{t("Optional · Berne Convention")}</span>
                     </div>
                     <ChevronDown className={cn("h-4 w-4 text-muted-foreground transition-transform", licensingOpen && "rotate-180")} />

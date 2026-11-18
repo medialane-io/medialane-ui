@@ -6,7 +6,7 @@ export interface ServiceFormShellProps {
 
   icon: ReactNode;
   title: string;
-  subtitle: string;
+  subtitle?: string;
 
   headerAccessory?: ReactNode;
 

@@ -321,7 +321,7 @@ export function PopCreateFields({
           ) : (
             <>
               <Award className="h-4 w-4 mr-2" />
-              {t("Create Event")}
+              {t("Create event")}
             </>
           )}
         </Button>

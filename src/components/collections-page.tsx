@@ -34,7 +34,7 @@ const SORT_OPTIONS: { label: string; value: CollectionSort }[] = [
 
 const SERVICE_TABS = [
   { label: msg("All"),        value: undefined    },
-  { label: msg("POP Events"), value: "pop-protocol" },
+  { label: msg("POP events"), value: "pop-protocol" },
   { label: msg("Drops"),      value: "drop-collection" },
 ] as const;
 
@@ -191,7 +191,7 @@ export function CollectionsPage() {
 
       <div className="space-y-2 pt-8">
 
-        <h1 className="text-3xl font-bold">{t("Onchain Collections")}</h1>
+        <h1 className="text-3xl font-bold">{t("Onchain collections")}</h1>
         <div className="flex flex-wrap items-center gap-2 mt-1">
           {counts?.single != null && counts.multi != null && (
             <div className="flex items-center gap-1.5 rounded-full border border-border bg-card px-3.5 py-1.5 text-sm">

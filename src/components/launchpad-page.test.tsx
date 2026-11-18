@@ -39,9 +39,9 @@ test("each section can be reached from the jump bar", () => {
 test("the memecoin claim is in Coins and the collection name claim is not on the launchpad", () => {
   const view = renderPage();
   const coins = view.container.querySelector("#launchpad-coins")?.textContent ?? "";
-  expect(coins).toContain("Creator Coin");
-  expect(coins).toContain("Claim Memecoin");
-  expect(view.container.textContent).not.toContain("Claim Collection Name");
+  expect(coins).toContain("Creator coin");
+  expect(coins).toContain("Claim memecoin");
+  expect(view.container.textContent).not.toContain("Claim collection name");
 });
 
 test("an app can hide a whole section", () => {

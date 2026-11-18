@@ -55,7 +55,7 @@ export function LicensingSection({ form }: { form: UseFormReturn<FormValues> }) 
             <button type="button" className="w-full flex items-center justify-between px-4 py-3.5 hover:bg-muted/30 transition-colors">
               <span className="flex items-center gap-2">
                 <ShieldCheck className="h-4 w-4 text-primary" />
-                <span className="text-sm font-semibold">{t("Licensing Terms")}</span>
+                <span className="text-sm font-semibold">{t("License terms")}</span>
                 <span className="text-xs text-muted-foreground font-normal">{t("Optional · Berne Convention")}</span>
               </span>
               <ChevronDown className={cn("h-4 w-4 text-muted-foreground transition-transform", open && "rotate-180")} />

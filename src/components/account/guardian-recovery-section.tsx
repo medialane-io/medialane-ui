@@ -78,7 +78,7 @@ export function GuardianRecoverySection({
           <Shield className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
         </div>
         <div>
-          <h3 className="text-base font-bold text-foreground">{t("Security & Recovery")}</h3>
+          <h3 className="text-base font-bold text-foreground">{t("Security & recovery")}</h3>
           <p className="text-sm text-muted-foreground mt-0.5">
             {t("A guardian is a trusted backup that helps restore this wallet on a new device.")}
           </p>

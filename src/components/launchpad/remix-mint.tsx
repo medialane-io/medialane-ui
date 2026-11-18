@@ -265,7 +265,7 @@ export function RemixMint({ contract, tokenId }: { contract: string; tokenId: st
           </Link>
           <div className="flex items-center gap-2 text-primary">
             <GitBranch className="h-5 w-5" />
-            <span className="text-sm font-semibold">{t("Create Remix")}</span>
+            <span className="text-sm font-semibold">{t("Create remix")}</span>
           </div>
           <h1 className="text-3xl font-bold">{t("Mint a remix")}</h1>
           <p className="text-muted-foreground max-w-xl">{t("Mint a derivative work based on this asset. The parent attribution is embedded in the IPFS metadata.")}</p>
@@ -273,7 +273,7 @@ export function RemixMint({ contract, tokenId }: { contract: string; tokenId: st
 
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-8 items-start">
           <div className="space-y-4">
-            <Section title={t("Remix Artwork")} icon={<ImagePlus className="h-4 w-4" />}>
+            <Section title={t("Remix artwork")} icon={<ImagePlus className="h-4 w-4" />}>
               <div
                 className={cn("relative group rounded-xl border-2 border-dashed border-border transition-colors cursor-pointer overflow-hidden", "hover:border-primary/50 hover:bg-muted/30")}
                 onClick={() => fileInputRef.current?.click()}
@@ -303,9 +303,9 @@ export function RemixMint({ contract, tokenId }: { contract: string; tokenId: st
               </div>
             </Section>
 
-            <Section title={t("Remix Details")} icon={<GitBranch className="h-4 w-4" />}>
+            <Section title={t("Remix details")} icon={<GitBranch className="h-4 w-4" />}>
               <div className="space-y-1.5">
-                <Label>{t("Remix Name *")}</Label>
+                <Label>{t("Remix name *")}</Label>
                 <Input value={name} onChange={(e) => setName(e.target.value)} placeholder={`Remix of ${originalName}`} />
               </div>
               <div className="space-y-1.5">
@@ -341,14 +341,14 @@ export function RemixMint({ contract, tokenId }: { contract: string; tokenId: st
               )}
             </Section>
 
-            <Section title={t("IP Type")} icon={<Info className="h-4 w-4" />}>
+            <Section title={t("IP type")} icon={<Info className="h-4 w-4" />}>
               <Select value={ipType} onValueChange={setIpType}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>{IP_TYPES.map((t) => <SelectItem key={t} value={t}>{t}</SelectItem>)}</SelectContent>
               </Select>
             </Section>
 
-            <Section title={t("License Terms")} icon={<Shield className="h-4 w-4" />}>
+            <Section title={t("License terms")} icon={<Shield className="h-4 w-4" />}>
               <div className="space-y-1.5">
                 <Label>{t("License type")}</Label>
                 <Select value={licenseType} onValueChange={handleLicenseChange}>
@@ -393,7 +393,7 @@ export function RemixMint({ contract, tokenId }: { contract: string; tokenId: st
                 className="w-full h-12 rounded-[11px] flex items-center justify-center gap-2 text-base font-semibold text-white transition-all hover:brightness-110 active:scale-[0.98] bg-brand-rose disabled:opacity-50"
               >
                 <GitBranch className="h-5 w-5" />
-                {t("Mint Remix")}
+                {t("Mint remix")}
               </button>
             </div>
             <p className="text-xs text-center text-muted-foreground">{t("Two operations: IPFS metadata upload + on-chain mint. Gas is free.")}</p>
@@ -414,7 +414,7 @@ export function RemixMint({ contract, tokenId }: { contract: string; tokenId: st
                 </div>
                 {(attr("License") || attr("Commercial Use") || attr("Derivatives")) && (
                   <div className="rounded-lg bg-muted/40 p-3 space-y-1.5 text-xs">
-                    <p className="text-2xs font-semibold text-muted-foreground">{t("Original License")}</p>
+                    <p className="text-2xs font-semibold text-muted-foreground">{t("Original license")}</p>
                     {attr("License") && <div className="flex justify-between"><span className="text-muted-foreground">{t("License")}</span><span className="font-medium">{attr("License")}</span></div>}
                     {attr("Commercial Use") && <div className="flex justify-between"><span className="text-muted-foreground">{t("Commercial")}</span><span className="font-medium">{attr("Commercial Use")}</span></div>}
                     {attr("Derivatives") && <div className="flex justify-between"><span className="text-muted-foreground">{t("Derivatives")}</span><span className="font-medium">{attr("Derivatives")}</span></div>}
