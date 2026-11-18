@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.373.3] — 2026-11-18
+
+### Changed
+
+- Navigation menu: "Create Limited Edition Contract" is now "Create Limited Edition Collection". The browse entries for drops, tickets, clubs and sponsorship, the collection drop entry and the four section-specific documentation entries are no longer shared items.
+
 ## [0.373.2] — 2026-11-18
 
 ### Changed
