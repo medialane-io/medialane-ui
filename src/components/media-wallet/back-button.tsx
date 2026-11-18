@@ -1,7 +1,6 @@
 "use client";
 
 import { useT } from "../../i18n/provider.js";
-"use client";
 
 export function BackButton({ onBack }: { onBack: () => void }) {
   const t = useT();

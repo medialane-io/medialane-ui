@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.373.1] — 2026-11-18
+
+### Fixed
+
+- `media-wallet/back-button` carried a second `"use client"` line that an app build rejects. A test now checks that every directive appears once, before any code.
+
 ## [0.373.0] — 2026-11-18
 
 ### Added
