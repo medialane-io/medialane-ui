@@ -1,9 +1,12 @@
-import { expect, mock, test } from "bun:test";
+import { afterEach, expect, test } from "bun:test";
 import { render } from "@testing-library/react";
 
-mock.module("./catalog/en.js", () => ({ default: { probe: "English text" } }));
+import { EN } from "./catalogs.js";
+import { I18nProvider, useLocale, useT } from "./provider.js";
 
-const { I18nProvider, useLocale, useT } = await import("./provider.js");
+afterEach(() => {
+  delete EN.probe;
+});
 
 function Probe() {
   const t = useT();
@@ -15,6 +18,7 @@ function Probe() {
 }
 
 test("useT works without a provider and returns English", () => {
+  EN.probe = "English text";
   const { container } = render(<Probe />);
   expect(container.textContent).toBe("en|English text|missing");
 });
