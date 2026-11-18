@@ -242,8 +242,8 @@ test("limited editions mint the number of copies into a new editions collection"
   fireEvent.click(view.getByRole("button", { name: "New" }));
   title(view, "Prints");
   fireEvent.change(view.getByLabelText(/Number of copies/) as HTMLInputElement, { target: { value: "50" } });
-  await waitFor(() => expect(button(view, "Mint Editions").disabled).toBe(false));
-  fireEvent.click(button(view, "Mint Editions"));
+  await waitFor(() => expect(button(view, "Mint editions").disabled).toBe(false));
+  fireEvent.click(button(view, "Mint editions"));
   await waitFor(() => expect(view.getByText("Asset published")).toBeTruthy());
   expect(intents[1]!.params).toMatchObject({ value: "50", collectionContract: normalizeAddress("STARKNET", "0xed17") });
 });

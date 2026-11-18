@@ -233,7 +233,7 @@ export function EditionMintFields({
 
                 <FormField control={form.control} name="commercialUse" render={({ field }) => (
                   <FormItem>
-                    <FormLabel>{t("Commercial Use")}</FormLabel>
+                    <FormLabel>{t("Commercial use")}</FormLabel>
                     <ToggleGroup value={field.value} options={["Yes", "No"]} onChange={field.onChange} />
                   </FormItem>
                 )} />
@@ -274,14 +274,14 @@ export function EditionMintFields({
 
                     <FormField control={form.control} name="aiPolicy" render={({ field }) => (
                       <FormItem>
-                        <FormLabel>{t("AI & Data Mining")}</FormLabel>
+                        <FormLabel>{t("AI & data mining")}</FormLabel>
                         <ToggleGroup value={field.value} options={AI_POLICIES} onChange={field.onChange} />
                       </FormItem>
                     )} />
 
                     <FormField control={form.control} name="royalty" render={({ field }) => (
                       <FormItem>
-                        <FormLabel>{t("Royalty % (0-50)")}</FormLabel>
+                        <FormLabel>{t("Royalty % (0–50)")}</FormLabel>
                         <FormControl>
                           <Input
                             type="number"

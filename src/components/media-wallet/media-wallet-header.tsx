@@ -51,7 +51,7 @@ export function MediaWalletHeader({ address, onNavigate }: { address: string; on
       >
         {headline}
         {copied ? (
-          <span className="text-2xs font-normal text-muted-foreground">{t("copied ✓")}</span>
+          <span className="text-2xs font-normal text-muted-foreground">{t("Copied ✓")}</span>
         ) : (
           <CopyIcon className="shrink-0 opacity-50" />
         )}

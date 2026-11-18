@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.373.2] — 2026-11-18
+
+### Changed
+
+- One wording for one label: 26 interface labels that appeared in both Title Case and sentence case now use sentence case (for example "Create membership", "Commercial use", "View collection"). "Limited Editions" keeps its capitals as a product name. Metadata trait names such as "Commercial Use" are data and are unchanged.
+
 ## [0.373.1] — 2026-11-18
 
 ### Fixed

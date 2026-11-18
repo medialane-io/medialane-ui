@@ -172,7 +172,7 @@ export function LicenseRequestPage({ contract, tokenId }: { contract: string; to
         <>
           <Section title={t("License Terms")} icon={<Shield className="h-4 w-4" />}>
             <div className="space-y-1.5">
-              <Label>{t("License Type")}</Label>
+              <Label>{t("License type")}</Label>
               <Select value={licenseType} onValueChange={handleLicenseChange}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>
@@ -182,7 +182,7 @@ export function LicenseRequestPage({ contract, tokenId }: { contract: string; to
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-1.5">
-                <Label className="text-xs text-muted-foreground uppercase tracking-wide">{t("Commercial Use")}</Label>
+                <Label className="text-xs text-muted-foreground uppercase tracking-wide">{t("Commercial use")}</Label>
                 <ToggleGroup value={commercial ? "Yes" : "No"} options={["Yes", "No"]} onChange={(v) => setCommercial(v === "Yes")} />
               </div>
               <div className="space-y-1.5">

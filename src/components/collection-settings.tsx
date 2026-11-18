@@ -62,7 +62,7 @@ export function CollectionSettings({ contract }: { contract: string }) {
     <div className="space-y-6 max-w-2xl pb-16">
 
       <div>
-        <h1 className="text-xl font-semibold">{t("Collection Settings")}</h1>
+        <h1 className="text-xl font-semibold">{t("Collection settings")}</h1>
         <p className="text-sm text-muted-foreground mt-1">
           {t("Customize how your collection appears on Medialane and manage exclusive content for your community.")}
         </p>
@@ -166,7 +166,7 @@ export function CollectionSettings({ contract }: { contract: string }) {
       <SectionCard id="exclusive" className={form.gatedEnabled ? "border-emerald-500/30 bg-emerald-500/[0.03]" : ""}>
         <SectionHeader
           icon={Lock}
-          title={t("Exclusive Content")}
+          title={t("Exclusive content")}
           description={t("Reward your holders with exclusive content — only wallets that own a token from this collection can access it.")}
           iconClass={form.gatedEnabled ? "text-emerald-500" : "text-muted-foreground"}
           bgClass={form.gatedEnabled ? "bg-emerald-500/15" : "bg-muted"}
