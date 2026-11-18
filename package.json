@@ -1,6 +1,6 @@
 {
   "name": "@medialane/ui",
-  "version": "0.373.4",
+  "version": "0.374.0",
   "description": "Shared UI components for Medialane apps",
   "type": "module",
   "sideEffects": false,
@@ -23,6 +23,11 @@
       "types": "./dist/i18n/index.d.ts",
       "import": "./dist/i18n/index.js",
       "require": "./dist/i18n/index.cjs"
+    },
+    "./i18n-tools": {
+      "types": "./dist/i18n/tools/scan.d.ts",
+      "import": "./dist/i18n/tools/scan.js",
+      "require": "./dist/i18n/tools/scan.cjs"
     },
     "./utils/*": {
       "types": "./dist/utils/*.d.ts",
