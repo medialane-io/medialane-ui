@@ -5,6 +5,7 @@ import { assetHref } from "@medialane/sdk";
 import { GitBranch } from "lucide-react";
 import { useTokenRemixes } from "../utils/use-remix-offers.js";
 import { Skeleton } from "./skeleton.js";
+import { useT } from "../i18n/provider.js";
 
 export interface RemixesTabProps {
   contractAddress: string;
@@ -12,6 +13,7 @@ export interface RemixesTabProps {
 }
 
 export function RemixesTab({ contractAddress, tokenId }: RemixesTabProps) {
+  const t = useT();
   const { remixes, total, isLoading } = useTokenRemixes(contractAddress, tokenId);
 
   if (isLoading) {
@@ -30,15 +32,15 @@ export function RemixesTab({ contractAddress, tokenId }: RemixesTabProps) {
         <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
           <GitBranch className="h-5 w-5 text-primary" />
         </div>
-        <p className="text-sm font-medium">No remixes yet</p>
-        <p className="text-xs text-muted-foreground">Remix this asset to create the first derivative work.</p>
+        <p className="text-sm font-medium">{t("No remixes yet")}</p>
+        <p className="text-xs text-muted-foreground">{t("Remix this asset to create the first derivative work.")}</p>
       </div>
     );
   }
 
   return (
     <div className="space-y-3">
-      <p className="text-xs text-muted-foreground">{total} remix{total !== 1 ? "es" : ""} of this asset</p>
+      <p className="text-xs text-muted-foreground">{t.plural("{count} remix of this asset", "{count} remixes of this asset", total)}</p>
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
         {remixes.map((remix) =>
           remix.remixContract && remix.remixTokenId ? (
@@ -50,15 +52,15 @@ export function RemixesTab({ contractAddress, tokenId }: RemixesTabProps) {
               <div className="card-base p-3 space-y-1 hover:border-primary/40 transition-colors">
                 <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
                   <GitBranch className="h-3 w-3 text-primary" />
-                  <span className="text-primary font-medium">Remix</span>
+                  <span className="text-primary font-medium">{t("Remix")}</span>
                 </div>
                 <p className="text-2xs text-muted-foreground">{remix.licenseType}</p>
                 <div className="flex gap-1 flex-wrap">
                   {remix.commercial && (
-                    <span className="text-2xs px-1.5 py-0.5 rounded-full bg-brand-blue/10 text-brand-blue border border-brand-blue/20">Commercial</span>
+                    <span className="text-2xs px-1.5 py-0.5 rounded-full bg-brand-blue/10 text-brand-blue border border-brand-blue/20">{t("Commercial")}</span>
                   )}
                   {remix.derivatives && (
-                    <span className="text-2xs px-1.5 py-0.5 rounded-full bg-primary/10 text-primary border border-primary/20">Derivatives</span>
+                    <span className="text-2xs px-1.5 py-0.5 rounded-full bg-primary/10 text-primary border border-primary/20">{t("Derivatives")}</span>
                   )}
                 </div>
               </div>

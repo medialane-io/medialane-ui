@@ -1,7 +1,10 @@
+"use client";
+
 import type { ElementType } from "react";
 import Link from "./link.js";
 import { ArrowRight } from "lucide-react";
 import { cn } from "../utils/cn.js";
+import { useT } from "../i18n/provider.js";
 
 export interface CtaCardItem {
   icon: ElementType;
@@ -20,6 +23,7 @@ export interface CtaCardGridProps {
 }
 
 function CtaCard({ icon: Icon, title, description, links, href, gradient, iconGradient }: CtaCardItem) {
+  const t = useT();
   return (
     <div className="bento-cell p-6 sm:p-8 flex flex-col gap-6 relative overflow-hidden group hover:border-border/80 transition-colors">
       <div className={`absolute inset-0 opacity-[0.03] group-hover:opacity-[0.06] transition-opacity ${gradient} pointer-events-none`} />
@@ -46,8 +50,7 @@ function CtaCard({ icon: Icon, title, description, links, href, gradient, iconGr
       </ul>
 
       <div className="relative z-10 mt-auto">
-        <Link href={href} className="inline-flex items-center gap-1.5 text-sm border border-border rounded-md px-3 py-1.5 hover:border-primary/40 transition-colors group-hover:border-primary/40">
-          Explore {title} <ArrowRight className="h-3.5 w-3.5 ml-1.5" />
+        <Link href={href} className="inline-flex items-center gap-1.5 text-sm border border-border rounded-md px-3 py-1.5 hover:border-primary/40 transition-colors group-hover:border-primary/40">{t("Explore {title}", { title })} <ArrowRight className="h-3.5 w-3.5 ml-1.5" />
         </Link>
       </div>
     </div>

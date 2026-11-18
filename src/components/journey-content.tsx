@@ -7,6 +7,7 @@ import { LevelJourneyList } from "./rewards/level-journey-list.js";
 import { BadgeCatalog } from "./rewards/badge-catalog.js";
 import { Skeleton } from "./skeleton.js";
 import { useRewardsConfig } from "../utils/use-rewards.js";
+import { useT } from "../i18n/provider.js";
 
 const EXAMPLE_ACTION_TYPES = [
   "mint_asset", "buy_asset", "create_collection", "comment",
@@ -14,6 +15,7 @@ const EXAMPLE_ACTION_TYPES = [
 ];
 
 function Hero() {
+  const t = useT();
   return (
     <section className="py-14 space-y-5">
       <div className="flex items-center gap-3">
@@ -21,30 +23,27 @@ function Hero() {
           <Sparkles className="h-5 w-5" />
         </div>
         <h1 className="text-5xl sm:text-6xl font-black tracking-tight leading-[1.02]">
-          Your{" "}
+          {t("Your")}{" "}
           <span className="bg-gradient-to-r from-brand-orange to-brand-maeve bg-clip-text text-transparent">
-            Journey
+            {t("Journey")}
           </span>
         </h1>
       </div>
-      <p className="text-lg text-foreground/70 max-w-xl leading-relaxed font-medium">
-        Every level, every badge, every way to earn — the whole system, in one place. Check{" "}
-        <Link href="/rewards" className="text-foreground underline underline-offset-2 hover:text-brand-orange transition-colors">
-          your own score
-        </Link>{" "}
-        on Rewards.
-      </p>
+      <p className="text-lg text-foreground/70 max-w-xl leading-relaxed font-medium">{t.rich("Every level, every badge, every way to earn — the whole system, in one place. Check {link} on Rewards.", { link: <Link href="/rewards" className="text-foreground underline underline-offset-2 hover:text-brand-orange transition-colors">
+          {t("your own score")}
+        </Link> })}</p>
     </section>
   );
 }
 
 function LevelsSection() {
+  const t = useT();
   const { data: config, isLoading } = useRewardsConfig();
   return (
     <section className="py-14 space-y-6">
       <div>
-        <h2 className="text-2xl font-black tracking-tight">The Level Ladder</h2>
-        <p className="text-base text-foreground/60 mt-1.5 font-medium">50 levels, from Starter to Genesis.</p>
+        <h2 className="text-2xl font-black tracking-tight">{t("The Level Ladder")}</h2>
+        <p className="text-base text-foreground/60 mt-1.5 font-medium">{t("50 levels, from Starter to Genesis.")}</p>
       </div>
       {isLoading || !config ? (
         <Skeleton className="h-96 w-full rounded-2xl" />
@@ -56,17 +55,16 @@ function LevelsSection() {
 }
 
 function HowXpWorksSection() {
+  const t = useT();
   const { data: config, isLoading } = useRewardsConfig();
   const examples = config?.actions.filter((a) => EXAMPLE_ACTION_TYPES.includes(a.type)) ?? [];
 
   return (
     <section className="py-14 space-y-6">
       <div className="max-w-2xl">
-        <h2 className="text-2xl font-black tracking-tight">How XP works</h2>
+        <h2 className="text-2xl font-black tracking-tight">{t("How XP works")}</h2>
         <p className="text-base text-foreground/60 mt-1.5 font-medium leading-relaxed">
-          Every action earns real XP, automatically — no buying points, no gaming the system.
-          Some early actions and loyalty count extra. Scores and badges are
-          recalculated weekly.
+          {t("Every action earns real XP, automatically — no buying points, no gaming the system. Some early actions and loyalty count extra. Scores and badges are recalculated weekly.")}
         </p>
       </div>
       {isLoading || !config ? (
@@ -86,12 +84,13 @@ function HowXpWorksSection() {
 }
 
 function BadgesSection() {
+  const t = useT();
   const { data: config, isLoading } = useRewardsConfig();
   return (
     <section className="py-14 space-y-6">
       <div>
-        <h2 className="text-2xl font-black tracking-tight">Badges</h2>
-        <p className="text-base text-foreground/60 mt-1.5 font-medium">What&apos;s achievable, not just what you&apos;ve done.</p>
+        <h2 className="text-2xl font-black tracking-tight">{t("Badges")}</h2>
+        <p className="text-base text-foreground/60 mt-1.5 font-medium">{t("What's achievable, not just what you've done.")}</p>
       </div>
       {isLoading || !config ? (
         <Skeleton className="h-64 w-full rounded-2xl" />
@@ -103,6 +102,7 @@ function BadgesSection() {
 }
 
 function CtaSection({ startHint }: { startHint: string }) {
+  const t = useT();
   const { onRequireWallet } = useMedialaneApp();
   return (
     <section className="py-14 pb-20 grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -112,7 +112,7 @@ function CtaSection({ startHint }: { startHint: string }) {
         className="flex items-center justify-between rounded-2xl bg-gradient-to-br from-brand-orange to-brand-maeve p-6 text-left text-white"
       >
         <div>
-          <p className="font-black text-lg">New here?</p>
+          <p className="font-black text-lg">{t("New here?")}</p>
           <p className="text-sm font-medium text-white/80">{startHint}</p>
         </div>
         <ArrowRight className="h-5 w-5 shrink-0" />
@@ -122,8 +122,8 @@ function CtaSection({ startHint }: { startHint: string }) {
         className="flex items-center justify-between rounded-2xl bg-foreground/[0.04] hover:bg-foreground/[0.07] p-6 transition-colors"
       >
         <div>
-          <p className="font-black text-lg">Already earning?</p>
-          <p className="text-sm font-medium text-foreground/60">Check your score.</p>
+          <p className="font-black text-lg">{t("Already earning?")}</p>
+          <p className="text-sm font-medium text-foreground/60">{t("Check your score.")}</p>
         </div>
         <ArrowRight className="h-5 w-5 shrink-0" />
       </Link>

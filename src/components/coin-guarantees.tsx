@@ -2,6 +2,7 @@
 
 import { ExternalLink } from "lucide-react";
 import { cn } from "../utils/cn.js";
+import { useT } from "../i18n/provider.js";
 
 export interface CoinGuaranteesData {
   isLaunched: boolean;
@@ -86,6 +87,7 @@ export function CoinGuarantees({
   blockUrl,
   className,
 }: CoinGuaranteesProps) {
+  const t = useT();
   if (isLoading) {
     return (
       <div className={cn("space-y-2.5", className)}>
@@ -105,18 +107,18 @@ export function CoinGuarantees({
   return (
     <div className={className}>
       <p className="mb-1 text-2xs font-semibold uppercase tracking-wide text-muted-foreground">
-        Guaranteed by the contract
+        {t("Guaranteed by the contract")}
       </p>
 
       <Line
-        label="Creator allocation"
+        label={t("Creator allocation")}
         value={pct != null ? `${pct}%` : allocation != null ? compact(allocation) : "—"}
         detail={`capped at ${maxTeamAllocationPercent}%`}
         href={contractUrl}
       />
 
       <Line
-        label="Total supply"
+        label={t("Total supply")}
         value={supply != null ? compact(supply) : "—"}
         detail="fixed, cannot be increased"
         href={contractUrl}
@@ -124,18 +126,18 @@ export function CoinGuarantees({
 
       {data.isLaunched ? (
         <Line
-          label="Liquidity"
+          label={t("Liquidity")}
           value="Locked permanently"
           detail={data.liquidityPositionId ? `position #${data.liquidityPositionId}` : undefined}
           href={liquidityUrl}
         />
       ) : (
-        <Line label="Liquidity" value="Not launched yet" />
+        <Line label={t("Liquidity")} value="Not launched yet" />
       )}
 
       {data.launchedAtBlock != null && (
         <Line
-          label="Launched"
+          label={t("Launched")}
           value={`Block ${data.launchedAtBlock.toLocaleString()}`}
           href={blockUrl}
         />

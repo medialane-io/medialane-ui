@@ -12,6 +12,7 @@ import { TransactionDialogStates } from "./transaction-dialog-states.js";
 import { isBusyPhase, type TransactionPhase } from "../utils/use-transaction.js";
 import { formatDisplayPrice } from "../utils/format.js";
 import { successMessages } from "../utils/success-messages.js";
+import { useT } from "../i18n/provider.js";
 
 export interface ApproveMintDialogProps {
   offer: ApiRemixOffer | null;
@@ -33,6 +34,7 @@ export interface ApproveMintDialogProps {
 const keyOf = (c: ApiCollection) => c.collectionId ?? c.contractAddress;
 
 export function ApproveMintDialog({ offer, open, onOpenChange, collections, footerNote, newAssetHref, tx, onApprove }: ApproveMintDialogProps) {
+  const t = useT();
   const { phase, txHash, error, retryable = true, reset } = tx;
   const busy = isBusyPhase(phase);
   const [selectedKey, setSelectedKey] = useState<string | null>(null);
@@ -68,14 +70,14 @@ export function ApproveMintDialog({ offer, open, onOpenChange, collections, foot
       <DialogContent className="w-full max-w-sm p-0 overflow-hidden gap-0 flex flex-col max-h-[90svh]">
         <div className="flex items-center gap-2 pr-10 pl-5 py-4 border-b border-border/60">
           <GitBranch className="h-4 w-4 text-primary shrink-0" />
-          <DialogTitle className="text-base font-bold">Grant license &amp; mint</DialogTitle>
+          <DialogTitle className="text-base font-bold">{t("Grant license & mint")}</DialogTitle>
         </div>
-        <DialogDescription className="sr-only">Mint the derivative into one of your collections and sell it to the requester.</DialogDescription>
+        <DialogDescription className="sr-only">{t("Mint the derivative into one of your collections and sell it to the requester.")}</DialogDescription>
 
         <TransactionDialogStates
           phase={phase}
           asset={{ name: effectiveName }}
-          statusMessage="Minting and listing…"
+          statusMessage={t("Minting and listing…")}
           txHash={txHash}
           error={error}
           success={successMessages.licenseGranted({ price: priceDisplay })}
@@ -83,8 +85,8 @@ export function ApproveMintDialog({ offer, open, onOpenChange, collections, foot
             { label: "Done", onClick: close },
             ...(newAssetHref ? [{ label: "View new asset", href: newAssetHref }] : []),
           ]}
-          errorTitle="Minting failed"
-          errorDescription="The transaction was submitted, but the remix could not be completed."
+          errorTitle={t("Minting failed")}
+          errorDescription={t("The transaction was submitted, but the remix could not be completed.")}
           onRetry={retryable ? reset : undefined}
           onDone={close}
         >
@@ -97,25 +99,25 @@ export function ApproveMintDialog({ offer, open, onOpenChange, collections, foot
             )}
             {offer && (
               <div className="rounded-xl border border-border bg-muted/30 p-3 text-sm space-y-1">
-                <p><span className="text-muted-foreground">License</span> {offer.licenseType}</p>
-                <p><span className="text-muted-foreground">Price</span> {priceDisplay}</p>
+                <p><span className="text-muted-foreground">{t("License")}</span> {offer.licenseType}</p>
+                <p><span className="text-muted-foreground">{t("Price")}</span> {priceDisplay}</p>
                 {offer.message && <p className="text-muted-foreground italic">&quot;{offer.message}&quot;</p>}
               </div>
             )}
 
             <div className="space-y-1.5">
-              <Label htmlFor="remix-name">Remix Name</Label>
+              <Label htmlFor="remix-name">{t("Remix Name")}</Label>
               <Input id="remix-name" placeholder={effectiveName} value={remixName} onChange={(e) => setRemixName(e.target.value)} />
             </div>
 
             <div className="space-y-1.5">
-              <Label>Mint into collection</Label>
+              <Label>{t("Mint into collection")}</Label>
               {collections.length === 0 ? (
-                <p className="text-xs text-destructive">No eligible collections.</p>
+                <p className="text-xs text-destructive">{t("No eligible collections.")}</p>
               ) : (
                 <Select value={effectiveKey ?? ""} onValueChange={setSelectedKey}>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select collection" />
+                    <SelectValue placeholder={t("Select collection")} />
                   </SelectTrigger>
                   <SelectContent>
                     {collections.map((c) => (
@@ -139,7 +141,7 @@ export function ApproveMintDialog({ offer, open, onOpenChange, collections, foot
               disabled={busy || !selected}
             >
               {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <GitBranch className="h-4 w-4" />}
-              Grant license &amp; mint
+              {t("Grant license & mint")}
             </button>
             <p className="text-2xs text-center text-muted-foreground">{footerNote}</p>
           </div>

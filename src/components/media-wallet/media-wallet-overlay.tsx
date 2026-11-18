@@ -8,6 +8,7 @@ import { CurrencyIcon } from "../currency-icon.js";
 import { MediaWallet } from "./media-wallet.js";
 import { MEDIA_WALLET_PORTAL_ID } from "./action-modal.js";
 import { MediaWalletAppContext, type MediaWalletAppProps, type MediaWalletView } from "./types.js";
+import { useT } from "../../i18n/provider.js";
 
 const WL_OPEN = "ml:media-wallet-open";
 const WL_CLOSE = "ml:media-wallet-close";
@@ -21,6 +22,7 @@ export function useMediaWallet() {
 }
 
 export function MediaWalletOverlay(app: MediaWalletAppProps) {
+  const t = useT();
   const [open, setOpen] = React.useState(false);
   const [initialView, setInitialView] = React.useState<MediaWalletView | undefined>(undefined);
 
@@ -79,14 +81,14 @@ export function MediaWalletOverlay(app: MediaWalletAppProps) {
                 <Link
                   href="/settings"
                   onClick={close}
-                  aria-label="Settings"
+                  aria-label={t("Settings")}
                   className="grid h-8 w-8 place-items-center rounded-full bg-foreground/[0.06] text-muted-foreground transition-colors hover:bg-foreground/10 hover:text-foreground"
                 >
                   <CurrencyIcon symbol="STRK" size={16} />
                 </Link>
                 <button
                   onClick={close}
-                  aria-label="Close wallet"
+                  aria-label={t("Close wallet")}
                   className="grid h-8 w-8 place-items-center rounded-full bg-foreground/[0.06] text-muted-foreground transition-colors hover:bg-foreground/10 hover:text-foreground"
                 >
                   <X className="h-4 w-4" />

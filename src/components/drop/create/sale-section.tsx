@@ -8,18 +8,20 @@ import { Section, ToggleGroup } from "../../create-form-primitives.js";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../select.js";
 import { collectorPriceLine, type SaleDraft } from "../../../utils/drop/sale.js";
 import { FieldError, type SectionProps } from "./artwork-section.js";
+import { useT } from "../../../i18n/provider.js";
 
 export function SaleSection({ draft, setDraft, errors, feeBps }: SectionProps & { feeBps: number | null }) {
+  const t = useT();
   const sale = draft.sale;
   const set = (patch: Partial<SaleDraft>) => setDraft({ sale: { ...sale, ...patch } });
   const line = feeBps === null ? null : collectorPriceLine(sale, feeBps);
   return (
-    <Section title="Sale" icon={<Tag className="h-4 w-4" />}>
+    <Section title={t("Sale")} icon={<Tag className="h-4 w-4" />}>
       <ToggleGroup value={sale.paid ? "Paid" : "Free"} options={["Free", "Paid"]} onChange={(v) => set({ paid: v === "Paid" })} />
       {sale.paid && (
         <div className="space-y-1.5">
           <div className="flex gap-2">
-            <Input inputMode="decimal" placeholder="Price per token" value={sale.price} onChange={(e) => set({ price: e.target.value.trim() })} />
+            <Input inputMode="decimal" placeholder={t("Price per token")} value={sale.price} onChange={(e) => set({ price: e.target.value.trim() })} />
             <Select value={sale.tokenSymbol} onValueChange={(v) => set({ tokenSymbol: v })}>
               <SelectTrigger className="w-28"><SelectValue /></SelectTrigger>
               <SelectContent>{getListableTokens().map((t) => <SelectItem key={t.symbol} value={t.symbol}>{t.symbol}</SelectItem>)}</SelectContent>
@@ -29,21 +31,21 @@ export function SaleSection({ draft, setDraft, errors, feeBps }: SectionProps & 
           <FieldError message={errors.price} />
         </div>
       )}
-      <Toggle label="Starts now" checked={sale.startNow} onChange={(v) => set({ startNow: v })} />
+      <Toggle label={t("Starts now")} checked={sale.startNow} onChange={(v) => set({ startNow: v })} />
       {!sale.startNow && (
         <div className="space-y-1.5">
           <Input type="datetime-local" value={sale.start} onChange={(e) => set({ start: e.target.value })} />
           <FieldError message={errors.start} />
         </div>
       )}
-      <Toggle label="Has an end date" checked={sale.hasEnd} onChange={(v) => set({ hasEnd: v })} />
+      <Toggle label={t("Has an end date")} checked={sale.hasEnd} onChange={(v) => set({ hasEnd: v })} />
       {sale.hasEnd && (
         <div className="space-y-1.5">
           <Input type="datetime-local" value={sale.end} onChange={(e) => set({ end: e.target.value })} />
           <FieldError message={errors.end} />
         </div>
       )}
-      <Toggle label="Limit per wallet" checked={sale.limitPerWallet} onChange={(v) => set({ limitPerWallet: v })} />
+      <Toggle label={t("Limit per wallet")} checked={sale.limitPerWallet} onChange={(v) => set({ limitPerWallet: v })} />
       {sale.limitPerWallet && (
         <div className="space-y-1.5">
           <Input inputMode="numeric" className="max-w-[10rem]" value={sale.perWallet} onChange={(e) => set({ perWallet: e.target.value.trim() })} />

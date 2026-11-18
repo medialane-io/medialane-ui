@@ -8,6 +8,7 @@ import Image from "./image.js";
 import { Skeleton } from "./skeleton.js";
 import { cn } from "../utils/cn.js";
 import { useImageUrl } from "../utils/use-image-url.js";
+import { useT } from "../i18n/provider.js";
 
 export interface CollectionShowcaseProps {
   collections: ApiCollection[];
@@ -34,6 +35,7 @@ function ShowcaseSkeleton() {
 }
 
 export function CollectionShowcase({ collections, isLoading, getHref }: CollectionShowcaseProps) {
+  const t = useT();
   const resolveImage = useImageUrl();
   const reduceMotion = useReducedMotion();
   const [current, setCurrent] = useState(0);
@@ -91,7 +93,7 @@ export function CollectionShowcase({ collections, isLoading, getHref }: Collecti
       <motion.div
         role="group"
         aria-roledescription="carousel"
-        aria-label="Featured collections"
+        aria-label={t("Featured collections")}
         tabIndex={count > 1 ? 0 : -1}
         onKeyDown={(event) => {
           if (count <= 1) return;
@@ -147,7 +149,7 @@ export function CollectionShowcase({ collections, isLoading, getHref }: Collecti
                   </span>
                   {collection.totalSupply != null && (
                     <span className="rounded-full bg-black/30 px-3 py-1 text-xs font-medium tabular-nums text-white backdrop-blur-md">
-                      {collection.totalSupply.toLocaleString()} {collection.totalSupply === 1 ? "item" : "items"}
+                      {collection.totalSupply.toLocaleString()} {collection.totalSupply === 1 ? t("item") : t("items")}
                     </span>
                   )}
                 </span>
@@ -158,7 +160,7 @@ export function CollectionShowcase({ collections, isLoading, getHref }: Collecti
       </motion.div>
 
       <h2 aria-live={paused ? "polite" : "off"} className="sr-only">
-        {active.name ?? "Collection"}
+        {active.name ?? t("Collection")}
       </h2>
 
       {count > 1 && (

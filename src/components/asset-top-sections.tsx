@@ -8,6 +8,7 @@ import { AddressDisplay } from "./address-display.js";
 import { ParentAttributionBanner } from "./parent-attribution-banner.js";
 import { IpTypeBadge } from "./ip-type-badge.js";
 import { ExpandableText } from "./expandable-text.js";
+import { useT } from "../i18n/provider.js";
 
 interface AssetMediaColumnProps {
   image: string | null;
@@ -139,13 +140,14 @@ export interface AssetOwnerRowProps {
 }
 
 export function AssetOwnerRow({ ownerAddress, ownerHref, ipType }: AssetOwnerRowProps) {
+  const t = useT();
   if (!ownerAddress && !ipType) return null;
   return (
     <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-xs text-muted-foreground">
       {ipType ? <IpTypeBadge ipType={ipType} size="md" showLabel /> : null}
       {ownerAddress && ownerHref ? (
         <div className="flex items-center gap-1.5">
-          <span>Owner</span>
+          <span>{t("Owner")}</span>
           <Link href={ownerHref} className="hover:text-primary transition-colors font-medium">
             <AddressDisplay address={ownerAddress} />
           </Link>

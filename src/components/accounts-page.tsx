@@ -11,11 +11,13 @@ import { FadeIn, Stagger, StaggerItem } from "./motion-primitives.js";
 import { useAccounts } from "../utils/use-accounts.js";
 import { shortenAddress } from "../utils/address.js";
 import { cn } from "../utils/cn.js";
+import { useT } from "../i18n/provider.js";
 
 const GRID = "grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4";
 const CHIP = "shrink-0 rounded-full border px-3.5 py-1.5 text-sm font-medium transition-colors";
 
 export function AccountsPage() {
+  const t = useT();
   const [search, setSearch] = useState("");
   const [query, setQuery] = useState("");
   const [ipType, setIpType] = useState("");
@@ -32,17 +34,17 @@ export function AccountsPage() {
         <FadeIn>
           <span className="pill-badge mb-5 inline-flex">
             <Users className="h-3 w-3" />
-            Accounts directory
+            {t("Accounts directory")}
           </span>
         </FadeIn>
         <FadeIn delay={0.08}>
           <h1 className="mb-3 text-3xl font-semibold leading-tight sm:text-4xl lg:text-5xl">
-            Onchain <span className="gradient-text">accounts</span>
+            {t("Onchain")} <span className="gradient-text">{t("accounts")}</span>
           </h1>
         </FadeIn>
         <FadeIn delay={0.16}>
           <p className="mb-6 max-w-lg text-base leading-relaxed text-muted-foreground">
-            Every address with collections or assets onchain.
+            {t("Every address with collections or assets onchain.")}
           </p>
         </FadeIn>
         <FadeIn delay={0.22}>
@@ -50,21 +52,21 @@ export function AccountsPage() {
             {!isLoading && total > 0 && (
               <div className="flex items-center gap-2 rounded-full border border-border bg-card/80 px-4 py-1.5 text-sm">
                 <span className="font-bold tabular-nums">{total.toLocaleString("en-US")}</span>
-                <span className="text-muted-foreground">account{total === 1 ? "" : "s"}</span>
+                <span className="text-muted-foreground">{t("account")}{total === 1 ? "" : "s"}</span>
               </div>
             )}
             <div className="relative w-full sm:max-w-xs">
               <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
               <Input
                 className="pl-9 pr-9"
-                placeholder="Search by address…"
+                placeholder={t("Search by address…")}
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
               />
               {search && (
                 <button
                   type="button"
-                  aria-label="Clear search"
+                  aria-label={t("Clear search")}
                   onClick={() => setSearch("")}
                   className="absolute right-2.5 top-1/2 flex h-5 w-5 -translate-y-1/2 items-center justify-center rounded-full bg-muted transition-colors hover:bg-muted/80"
                 >
@@ -77,7 +79,7 @@ export function AccountsPage() {
       </section>
 
       <section className="space-y-6 px-4 py-8 sm:px-6 lg:px-8">
-        <div className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1 sm:mx-0 sm:px-0" role="group" aria-label="Type of work">
+        <div className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1 sm:mx-0 sm:px-0" role="group" aria-label={t("Type of work")}>
           {[{ slug: "", label: "All" }, ...IP_TYPE_CONFIG].map(({ slug, label }) => (
             <button
               key={slug || "all"}
@@ -124,7 +126,7 @@ export function AccountsPage() {
             <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-muted">
               <Users className="h-8 w-8 text-muted-foreground/40" />
             </div>
-            <p className="text-lg font-semibold">{query ? `No accounts found for "${query}"` : "No accounts found"}</p>
+            <p className="text-lg font-semibold">{query ? `No accounts found for "${query}"` : t("No accounts found")}</p>
           </div>
         )}
       </section>

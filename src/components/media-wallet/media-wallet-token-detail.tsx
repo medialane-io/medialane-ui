@@ -15,6 +15,7 @@ import { useUsdPrices, usdPriceFor } from "../../utils/use-usd-prices.js";
 import type { WalletToken } from "../../utils/media-wallet/wallet-tokens.js";
 import { useMediaWalletApp, type MediaWalletView } from "./types.js";
 import { useMedialaneApp } from "../medialane-app.js";
+import { useT } from "../../i18n/provider.js";
 
 export function MediaWalletTokenDetail({
   token,
@@ -23,6 +24,7 @@ export function MediaWalletTokenDetail({
   token: WalletToken;
   onNavigate: (view: MediaWalletView) => void;
 }) {
+  const t = useT();
   const { useWalletSession, explorerUrl } = useMediaWalletApp();
   const { address: walletAddress } = useWalletSession();
   const { rawBalance: bal } = useErc20Balance(token.address, walletAddress);
@@ -56,18 +58,18 @@ export function MediaWalletTokenDetail({
           {" · "}
           {heldValue != null ? fmtUsd(heldValue) : "—"}
         </div>
-        {price != null && <div className="mt-0.5 text-xs text-muted-foreground">{fmtUsd(price)} per {token.symbol}</div>}
+        {price != null && <div className="mt-0.5 text-xs text-muted-foreground">{t("{fmtUsd} per {symbol}", { fmtUsd: fmtUsd(price), symbol: token.symbol })}</div>}
       </section>
 
       <div className="grid grid-cols-2 gap-2">
         <QuickAction
-          label="Send"
+          label={t("Send")}
           action="offer"
           onClick={() => onNavigate({ name: "send", token })}
           icon={<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round"><path d="M12 19V5M5 12l7-7 7 7" /></svg>}
         />
         <QuickAction
-          label="Receive"
+          label={t("Receive")}
           action="buy"
           onClick={() => onNavigate({ name: "home" })}
           icon={<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round"><path d="M12 5v14M19 12l-7 7-7-7" /></svg>}
@@ -77,10 +79,10 @@ export function MediaWalletTokenDetail({
       <TokenActivity tokenAddress={token.address} walletAddress={walletAddress} />
 
       <section>
-        <SectionHeader title="Details" />
+        <SectionHeader title={t("Details")} />
         <div className="mt-2 flex flex-col divide-y divide-border/40 rounded-2xl bg-card/40 px-4 backdrop-blur-sm">
           <InfoRow
-            label="Network"
+            label={t("Network")}
             value={
               <span className="flex items-center gap-2">
                 <span className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-foreground/[0.06]">
@@ -90,9 +92,9 @@ export function MediaWalletTokenDetail({
               </span>
             }
           />
-          <InfoRow label="Standard" value="ERC-20" />
+          <InfoRow label={t("Standard")} value="ERC-20" />
           <InfoRow
-            label="Contract"
+            label={t("Contract")}
             value={
               <a href={voyager} target="_blank" rel="noopener noreferrer" className="font-mono text-brand-blue hover:underline">
                 {short(token.address)} ↗
@@ -106,6 +108,7 @@ export function MediaWalletTokenDetail({
 }
 
 function TokenActivity({ tokenAddress, walletAddress }: { tokenAddress: string; walletAddress: string | null }) {
+  const t = useT();
   const { getClient } = useMedialaneApp();
   const [items, setItems] = useState<ApiWalletActivity[] | null>(null);
   const [error, setError] = useState(false);
@@ -128,7 +131,7 @@ function TokenActivity({ tokenAddress, walletAddress }: { tokenAddress: string; 
 
   return (
     <section>
-      <SectionHeader title="Activity" />
+      <SectionHeader title={t("Activity")} />
       <div className="mt-2">
         {items === null ? (
           <div className="flex flex-col gap-2">

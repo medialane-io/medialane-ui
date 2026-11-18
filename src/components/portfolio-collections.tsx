@@ -7,10 +7,12 @@ import { CollectionCard, CollectionCardSkeleton } from "./collection-card.js";
 import { EmptyOrError } from "./empty-or-error.js";
 import { useMedialaneApp } from "./medialane-app.js";
 import { CollectionTypeChoices, NewCollectionMenu } from "./new-collection-menu.js";
+import { useT } from "../i18n/provider.js";
 
 const GRID = "grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4";
 
 export function PortfolioCollections({ claimPanel }: { claimPanel: ReactNode }) {
+  const t = useT();
   const { walletAddress } = useMedialaneApp();
   const { collections, isLoading, error, mutate } = useCollectionsByOwner(walletAddress ?? null);
 
@@ -18,7 +20,7 @@ export function PortfolioCollections({ claimPanel }: { claimPanel: ReactNode }) 
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <h2 className="text-lg font-semibold">Collections</h2>
+          <h2 className="text-lg font-semibold">{t("Collections")}</h2>
           {collections.length > 0 && (
             <span className="text-sm text-muted-foreground">({collections.length})</span>
           )}
@@ -31,8 +33,8 @@ export function PortfolioCollections({ claimPanel }: { claimPanel: ReactNode }) 
         error={error}
         isEmpty={collections.length === 0}
         onRetry={mutate}
-        emptyTitle="No collections yet"
-        emptyDescription="If you just created a collection, it may take a few seconds to appear."
+        emptyTitle={t("No collections yet")}
+        emptyDescription={t("If you just created a collection, it may take a few seconds to appear.")}
         emptyActions={<CollectionTypeChoices />}
         emptyIcon={<Layers className="h-7 w-7 text-muted-foreground" />}
         skeletonNode={
@@ -55,10 +57,10 @@ export function PortfolioCollections({ claimPanel }: { claimPanel: ReactNode }) 
       <div className="pt-6 border-t border-border space-y-4">
         <div className="flex items-center gap-2">
           <Download className="h-4 w-4 text-muted-foreground" />
-          <h3 className="text-sm font-semibold">Claim a collection</h3>
+          <h3 className="text-sm font-semibold">{t("Claim a collection")}</h3>
         </div>
         <p className="text-xs text-muted-foreground -mt-2">
-          Import an existing Starknet ERC-721 collection into your Medialane profile.
+          {t("Import an existing Starknet ERC-721 collection into your Medialane profile.")}
         </p>
         {claimPanel}
       </div>

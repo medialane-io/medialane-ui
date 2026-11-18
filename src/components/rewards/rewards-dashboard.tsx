@@ -38,6 +38,7 @@ import {
   Flame,
   Zap,
 } from "lucide-react";
+import { useT } from "../../i18n/provider.js";
 
 export const REWARD_ACTION_LABELS: Record<string, string> = {
   complete_profile: "Complete profile",
@@ -114,17 +115,16 @@ const EARN_GROUPS: {
 ];
 
 function Hero() {
+  const t = useT();
   return (
     <section className="space-y-5">
       <h1 className="text-5xl sm:text-6xl font-black tracking-tight leading-[1.02]">
-        Community <span className="bg-gradient-to-r from-brand-rose to-brand-orange bg-clip-text text-transparent">Rewards</span>
+        {t("Community")} <span className="bg-gradient-to-r from-brand-rose to-brand-orange bg-clip-text text-transparent">{t("Rewards")}</span>
       </h1>
       <p className="text-lg text-foreground/70 max-w-xl leading-relaxed font-medium">
-        Every action earns XP, and active members receive allocations from the
-        Creator&apos;s Fund based on how much they participate. Scores and
-        badges are recalculated weekly.{" "}
+        {t("Every action earns XP, and active members receive allocations from the Creator's Fund based on how much they participate. Scores and badges are recalculated weekly.")}{" "}
         <Link href="/journey" className="text-foreground underline underline-offset-2 hover:text-brand-orange transition-colors">
-          See the full system
+          {t("See the full system")}
         </Link>
         .
       </p>
@@ -133,22 +133,24 @@ function Hero() {
 }
 
 function SignInButton() {
+  const t = useT();
   const { onRequireWallet, connectLabel } = useMedialaneApp();
   return (
     <Button size="lg" className="w-full rounded-full px-7" onClick={onRequireWallet}>
-      {connectLabel ?? "Sign in"}
+      {connectLabel ?? t("Sign in")}
     </Button>
   );
 }
 
 function StatusPanel({ address }: { address: string | null | undefined }) {
+  const t = useT();
   const { data: rewards, isLoading } = useRewards(address);
   const { data: config } = useRewardsConfig();
 
   if (!address) {
     return (
       <div className="shrink-0 rounded-3xl bg-gradient-to-br from-brand-rose/10 via-brand-orange/[0.06] to-transparent p-6 space-y-3 sm:max-w-xs">
-        <p className="text-sm text-foreground/70 font-medium">Sign in to see your score.</p>
+        <p className="text-sm text-foreground/70 font-medium">{t("Sign in to see your score.")}</p>
         <SignInButton />
       </div>
     );
@@ -168,13 +170,13 @@ function StatusPanel({ address }: { address: string | null | undefined }) {
       <p className="text-6xl font-black tabular-nums leading-none tracking-tight">
         {rewards.totalXp.toLocaleString()}
       </p>
-      <p className="text-xs font-bold uppercase tracking-widest text-foreground/40 mt-1.5">XP earned</p>
+      <p className="text-xs font-bold uppercase tracking-widest text-foreground/40 mt-1.5">{t("XP earned")}</p>
 
       <div className="mt-4 flex items-center gap-2">
         <LevelBadge level={rewards.currentLevel} name={rewards.currentLevelName} badgeColor={rewards.badgeColor} size="md" />
       </div>
       {!hasXp && (
-        <p className="text-sm text-foreground/60 font-medium mt-2">Mint, collect, or complete your profile to start.</p>
+        <p className="text-sm text-foreground/60 font-medium mt-2">{t("Mint, collect, or complete your profile to start.")}</p>
       )}
       {rewards.nextLevel && (
         <div className="mt-3 space-y-1.5">
@@ -185,7 +187,7 @@ function StatusPanel({ address }: { address: string | null | undefined }) {
             />
           </div>
           <p className="text-sm font-semibold text-foreground/60">
-            {(nextLevelXp! - rewards.totalXp).toLocaleString()} XP to {rewards.nextLevel.name}
+            {t.rich("{value} XP to {name}", { value: (nextLevelXp! - rewards.totalXp).toLocaleString(), name: rewards.nextLevel.name })}
           </p>
         </div>
       )}
@@ -194,6 +196,7 @@ function StatusPanel({ address }: { address: string | null | undefined }) {
 }
 
 function PersonalPanel({ address }: { address: string | null | undefined }) {
+  const t = useT();
   const { data: rewards } = useRewards(address);
   const { data: events } = useRewardsEvents(address, 1, 6);
   const { data: config } = useRewardsConfig();
@@ -205,7 +208,7 @@ function PersonalPanel({ address }: { address: string | null | undefined }) {
 
   return (
     <section className="space-y-5">
-      <SectionTitle>Your breakdown</SectionTitle>
+      <SectionTitle>{t("Your breakdown")}</SectionTitle>
       <div className="divide-y divide-foreground/[0.06]">
         {Object.entries(rewards.breakdown)
           .sort(([, a], [, b]) => b - a)
@@ -231,11 +234,12 @@ function PersonalPanel({ address }: { address: string | null | undefined }) {
 }
 
 function CommunityPanel({ address }: { address: string | null | undefined }) {
+  const t = useT();
   return (
     <section className="space-y-5">
       <div>
-        <SectionTitle>Community</SectionTitle>
-        <p className="text-base text-foreground/60 mt-1.5 font-medium">Real members already earning XP.</p>
+        <SectionTitle>{t("Community")}</SectionTitle>
+        <p className="text-base text-foreground/60 mt-1.5 font-medium">{t("Real members already earning XP.")}</p>
       </div>
       <LeaderboardPanel myAddress={address} showHeading={false} limit={12} />
     </section>
@@ -243,9 +247,10 @@ function CommunityPanel({ address }: { address: string | null | undefined }) {
 }
 
 function EarnMorePanel() {
+  const t = useT();
   return (
     <section className="space-y-6">
-      <SectionTitle>Ways to earn</SectionTitle>
+      <SectionTitle>{t("Ways to earn")}</SectionTitle>
       {EARN_GROUPS.map((group) => (
         <div key={group.title} className="space-y-3">
           <p className={`text-sm font-black uppercase tracking-wide ${group.textClass}`}>{group.title}</p>
@@ -270,6 +275,7 @@ function EarnMorePanel() {
 }
 
 function CreatorsFundCard() {
+  const t = useT();
   return (
     <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-brand-rose to-brand-orange p-8 text-white">
       <div className="pointer-events-none absolute -top-16 -right-16 h-56 w-56 rounded-full bg-white/10 blur-3xl" />
@@ -277,12 +283,11 @@ function CreatorsFundCard() {
 
       <div className="relative space-y-6">
         <h2 className="text-3xl font-black tracking-tight leading-none">
-          Creator&apos;s Fund
+          {t("Creator's Fund")}
         </h2>
 
         <p className="text-base font-medium text-white/90 leading-relaxed max-w-sm">
-          A share of what Medialane earns is set aside in one public wallet and airdropped back
-          to the people creating and trading here, split by XP.
+          {t("A share of what Medialane earns is set aside in one public wallet and airdropped back to the people creating and trading here, split by XP.")}
         </p>
 
         <div className="flex flex-wrap items-center gap-4 pt-2">
@@ -291,7 +296,7 @@ function CreatorsFundCard() {
             className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-black text-brand-rose hover:bg-white/90 transition-colors"
           >
             <Gift className="h-4 w-4" />
-            How the fund works
+            {t("How the fund works")}
           </Link>
           <a
             href="https://medialane.org/creators-fund"
@@ -299,7 +304,7 @@ function CreatorsFundCard() {
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1.5 text-sm font-bold text-white/90 hover:text-white transition-colors"
           >
-            Watch the wallet
+            {t("Watch the wallet")}
             <ExternalLink className="h-3.5 w-3.5" />
           </a>
         </div>
@@ -309,6 +314,7 @@ function CreatorsFundCard() {
 }
 
 function BadgesPanel({ address }: { address: string | null | undefined }) {
+  const t = useT();
   const { data: config, isLoading } = useRewardsConfig();
   const { data: rewards } = useRewards(address);
 
@@ -328,7 +334,7 @@ function BadgesPanel({ address }: { address: string | null | undefined }) {
 
   return (
     <section className="space-y-4">
-      <SectionTitle>Badges to earn</SectionTitle>
+      <SectionTitle>{t("Badges to earn")}</SectionTitle>
       <div className="grid grid-cols-3 gap-3">
         {config.badges.map((badge: ApiRewardsBadge) => {
           const isEarned = earnedKeys.has(badge.key);

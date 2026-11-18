@@ -4,6 +4,7 @@ import { Layers, Plus, Sparkles, type LucideIcon } from "lucide-react";
 import Link from "./link.js";
 import { Button } from "./button.js";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./dropdown-menu.js";
+import { useT } from "../i18n/provider.js";
 
 interface CollectionType {
   id: "single" | "multi";
@@ -31,12 +32,13 @@ export const COLLECTION_TYPES: readonly CollectionType[] = [
 ];
 
 export function NewCollectionMenu() {
+  const t = useT();
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button size="sm">
           <Plus className="h-3.5 w-3.5 mr-1.5" />
-          New collection
+          {t("New collection")}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-64">

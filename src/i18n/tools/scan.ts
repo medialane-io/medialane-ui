@@ -22,9 +22,10 @@ export function scanSentences(files: Record<string, string>): Scan {
         if (ts.isIdentifier(callee) && (callee.text === "t" || callee.text === "msg")) {
           const sentence = literalText(node.arguments[0]);
           if (sentence !== null) sentences.add(sentence);
-        } else if (ts.isPropertyAccessExpression(callee) && ts.isIdentifier(callee.expression) && callee.expression.text === "t" && callee.name.text === "plural") {
-          const one = literalText(node.arguments[0]);
-          if (one !== null) plurals.add(one);
+        } else if (ts.isPropertyAccessExpression(callee) && ts.isIdentifier(callee.expression) && callee.expression.text === "t") {
+          const first = literalText(node.arguments[0]);
+          if (first !== null && callee.name.text === "plural") plurals.add(first);
+          if (first !== null && callee.name.text === "rich") sentences.add(first);
         }
       }
       ts.forEachChild(node, visit);

@@ -13,6 +13,7 @@ import { MarketplaceConfirmStep, MarketplaceDialogHero } from "./marketplace-dia
 import { TransactionDialogStates } from "./transaction-dialog-states.js";
 import { isBusyPhase, type TransactionPhase } from "../utils/use-transaction.js";
 import { successMessages } from "../utils/success-messages.js";
+import { useT } from "../i18n/provider.js";
 
 const schema = z.object({
   toAddress: z
@@ -62,6 +63,7 @@ export function TransferDialog({
   onTransfer,
   onSuccess,
 }: TransferDialogProps) {
+  const t = useT();
   const { phase, txHash, error, retryable = true, reset } = tx;
   const busy = isBusyPhase(phase);
   const [step, setStep] = useState<Step>("form");
@@ -121,9 +123,9 @@ export function TransferDialog({
   return (
     <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent className="max-w-[calc(100%-6px)] sm:max-w-md p-0 overflow-hidden gap-0 rounded-2xl flex flex-col max-h-[92svh]">
-        <DialogTitle className="sr-only">Transfer {displayName}</DialogTitle>
+        <DialogTitle className="sr-only">{t("Transfer {displayName}", { displayName })}</DialogTitle>
         <DialogDescription className="sr-only">
-          Enter a recipient Starknet address to transfer this asset onchain.
+          {t("Enter a recipient Starknet address to transfer this asset onchain.")}
         </DialogDescription>
 
         <TransactionDialogStates
@@ -133,8 +135,8 @@ export function TransferDialog({
           error={error}
           success={successMessages.transferred({ name: displayName, to: recipientShort })}
           successActions={[{ label: "Done", onClick: () => { close(); onSuccess?.(); } }]}
-          errorTitle="Transfer failed"
-          errorDescription="The transaction was submitted, but the transfer could not be completed."
+          errorTitle={t("Transfer failed")}
+          errorDescription={t("The transaction was submitted, but the transfer could not be completed.")}
           onRetry={retryable ? () => { reset(); setStep("form"); } : undefined}
           onDone={close}
         >
@@ -153,11 +155,11 @@ export function TransferDialog({
                 </div>
               </div>
               <MarketplaceConfirmStep
-                description="Transfer this asset?"
+                description={t("Transfer this asset?")}
                 error={error}
-                secondaryLabel="Back"
+                secondaryLabel={t("Back")}
                 onSecondary={() => { reset(); setStep("form"); }}
-                primaryLabel="Transfer"
+                primaryLabel={t("Transfer")}
                 onPrimary={() => { if (pendingAddress) onTransfer(pendingAddress); }}
                 primaryIcon={<ArrowRightLeft className="h-4 w-4" />}
                 footer={footer}
@@ -171,7 +173,7 @@ export function TransferDialog({
                 <Alert variant="destructive">
                   <AlertCircle className="h-4 w-4" />
                   <AlertDescription className="text-xs">
-                    This token has an active listing. Cancelling the listing first keeps the sale from completing after the transfer.
+                    {t("This token has an active listing. Cancelling the listing first keeps the sale from completing after the transfer.")}
                   </AlertDescription>
                 </Alert>
               )}
@@ -179,7 +181,7 @@ export function TransferDialog({
               <Alert>
                 <AlertCircle className="h-4 w-4" />
                 <AlertDescription className="text-xs">
-                  Transfers are final and recorded onchain.
+                  {t("Transfers are final and recorded onchain.")}
                 </AlertDescription>
               </Alert>
 
@@ -190,7 +192,7 @@ export function TransferDialog({
                     name="toAddress"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Recipient address</FormLabel>
+                        <FormLabel>{t("Recipient address")}</FormLabel>
                         <FormControl>
                           <Input placeholder="0x…" autoComplete="off" spellCheck={false} {...field} />
                         </FormControl>
@@ -214,7 +216,7 @@ export function TransferDialog({
                         className="w-full h-11 rounded-[11px] flex items-center justify-center gap-2 text-sm font-semibold text-white transition-all hover:brightness-110 active:scale-[0.98] bg-transparent"
                       >
                         <ArrowRightLeft className="h-4 w-4" />
-                        {canTransfer ? "Transfer" : connectLabel}
+                        {canTransfer ? t("Transfer") : connectLabel}
                       </button>
                     </div>
                     {footer}

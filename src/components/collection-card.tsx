@@ -10,6 +10,7 @@ import { MotionCard } from "./motion-primitives.js";
 import { CurrencyIcon } from "./currency-icon.js";
 import type { ApiCollection } from "@medialane/sdk";
 import { useImageUrl } from "../utils/use-image-url.js";
+import { useT } from "../i18n/provider.js";
 
 function parseFloorPrice(floor: string | null | undefined): { amount: string; symbol: string } | null {
   if (!floor) return null;
@@ -31,6 +32,7 @@ export interface CollectionCardProps {
 }
 
 export function CollectionCard({ collection, href, settingsHref, className }: CollectionCardProps) {
+  const t = useT();
   const resolveImage = useImageUrl();
   const [imgError, setImgError] = useState(false);
   const imageUrl = resolveImage(collection.image, { width: 480 });
@@ -44,7 +46,7 @@ export function CollectionCard({ collection, href, settingsHref, className }: Co
           href={settingsHref}
           onClick={(e) => e.stopPropagation()}
           className="absolute top-2 right-2 z-10 min-h-11 min-w-11 rounded-full flex items-center justify-center"
-          aria-label="Collection settings"
+          aria-label={t("Collection settings")}
         >
           <span className="flex h-7 w-7 items-center justify-center rounded-full bg-black/40 backdrop-blur-sm text-white/70 hover:text-white hover:bg-black/60 transition-colors">
             <Settings2 className="h-3.5 w-3.5" />
@@ -57,7 +59,7 @@ export function CollectionCard({ collection, href, settingsHref, className }: Co
           {showImage ? (
             <Image
               src={imageUrl}
-              alt={collection.name ?? "Collection"}
+              alt={collection.name ?? t("Collection")}
               fill
               className="object-cover card-media"
               onError={() => setImgError(true)}
@@ -71,11 +73,11 @@ export function CollectionCard({ collection, href, settingsHref, className }: Co
             {!collection.name && collection.metadataStatus === "PENDING" ? (
               <span className="flex items-center gap-1 rounded-full px-2.5 py-1 text-2xs text-white bg-black/30 backdrop-blur-md">
                 <Loader2 className="h-2.5 w-2.5 animate-spin" />
-                Indexing…
+                {t("Indexing…")}
               </span>
             ) : (
               <p className="max-w-full truncate rounded-full px-3 py-1 text-sm font-bold leading-tight text-white bg-black/30 backdrop-blur-md">
-                {collection.name ?? "Unnamed Collection"}
+                {collection.name ?? t("Unnamed Collection")}
               </p>
             )}
 

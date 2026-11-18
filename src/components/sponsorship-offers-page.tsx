@@ -11,6 +11,7 @@ import { ServiceHeader } from "./service-header.js";
 import { shortenAddress } from "../utils/address.js";
 import { useSponsorshipOffers } from "../utils/use-sponsorship.js";
 import { useToken } from "../utils/use-tokens.js";
+import { useT } from "../i18n/provider.js";
 
 const FEATURES = [
   "No escrow — direct settlement",
@@ -37,6 +38,7 @@ function OfferCard({ offer }: { offer: ApiSponsorshipOffer }) {
 }
 
 export function SponsorshipOffersPage() {
+  const t = useT();
   const { offers, isLoading } = useSponsorshipOffers();
   const openOffers = offers.filter((o) => o.open);
 
@@ -49,8 +51,8 @@ export function SponsorshipOffersPage() {
             <ServiceHeader
               plain
               icon={<Handshake className="h-4 w-4 text-white" />}
-              title="IP Sponsorship"
-              subtitle="Sponsorship offers anchored to your IP assets — a sponsor bids, you accept, they receive a license."
+              title={t("IP Sponsorship")}
+              subtitle={t("Sponsorship offers anchored to your IP assets — a sponsor bids, you accept, they receive a license.")}
             />
           </div>
         </FadeIn>
@@ -73,14 +75,14 @@ export function SponsorshipOffersPage() {
         <FadeIn>
           <div className="rounded-2xl border border-brand-rose/20 bg-brand-rose/5 p-5 flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
             <div className="space-y-0.5">
-              <p className="text-sm font-semibold">Start a sponsorship deal</p>
+              <p className="text-sm font-semibold">{t("Start a sponsorship deal")}</p>
               <p className="text-xs text-muted-foreground">
-                Offer one of your assets for sponsors to bid on, or propose terms directly on one you&apos;d like to sponsor.
+                {t("Offer one of your assets for sponsors to bid on, or propose terms directly on one you'd like to sponsor.")}
               </p>
             </div>
             <Button asChild size="sm" className="shrink-0 bg-brand-rose hover:brightness-110 text-white gap-1.5">
               <Link href="/launchpad/sponsorship/create">
-                Get started
+                {t("Get started")}
                 <ArrowRight className="h-3.5 w-3.5" />
               </Link>
             </Button>
@@ -91,8 +93,8 @@ export function SponsorshipOffersPage() {
       <section className="px-4 space-y-4 max-w-5xl mx-auto">
         <FadeIn>
           <div>
-            <p className="section-label">Open</p>
-            <h2 className="text-xl font-bold mt-0.5">Sponsorship offers</h2>
+            <p className="section-label">{t("Open")}</p>
+            <h2 className="text-xl font-bold mt-0.5">{t("Sponsorship offers")}</h2>
           </div>
         </FadeIn>
 
@@ -109,8 +111,8 @@ export function SponsorshipOffersPage() {
                 </div>
               </div>
               <div className="space-y-1">
-                <p className="font-semibold text-sm">No open sponsorship offers yet</p>
-                <p className="text-xs text-muted-foreground">Creators open offers from their asset pages — sponsors bid on them here.</p>
+                <p className="font-semibold text-sm">{t("No open sponsorship offers yet")}</p>
+                <p className="text-xs text-muted-foreground">{t("Creators open offers from their asset pages — sponsors bid on them here.")}</p>
               </div>
             </div>
           </FadeIn>

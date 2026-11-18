@@ -15,6 +15,7 @@ import { useOrders } from "../utils/use-orders.js";
 import { useCollections } from "../utils/use-collections.js";
 import { usePlatformStats } from "../utils/use-platform-stats.js";
 import { isSameAddress } from "../utils/same-address.js";
+import { useT } from "../i18n/provider.js";
 
 export interface DiscoverPageProps {
   useMarketActions: () => CollectionMarketActions;
@@ -23,6 +24,7 @@ export interface DiscoverPageProps {
 }
 
 export function DiscoverPage({ useMarketActions, heroBadge, heroHeadline }: DiscoverPageProps) {
+  const t = useT();
   const { walletAddress } = useMedialaneApp();
   const market = useMarketActions();
   const { stats } = usePlatformStats();
@@ -48,7 +50,7 @@ export function DiscoverPage({ useMarketActions, heroBadge, heroHeadline }: Disc
               isLoading={featuredLoading}
               getHref={(c) => collectionHref("STARKNET", c.contractAddress)}
               allCollectionsHref="/collections"
-              title="Featured"
+              title={t("Featured")}
               icon={<Sparkles />}
             />
           )}

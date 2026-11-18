@@ -9,6 +9,7 @@ import { TabEmptyState } from "../tab-empty-state.js";
 import { DropGrid, DropGridSkeleton } from "./drop-card.js";
 import { useDrops } from "../../utils/use-drops.js";
 import { useNow } from "../../utils/drop/use-now.js";
+import { useT } from "../../i18n/provider.js";
 
 const EMPTY: Record<ApiDropListStatus, { heading: string; body: string }> = {
   live: { heading: "No live drops", body: "Nothing is open for minting right now. Check Upcoming, or launch your own." },
@@ -23,6 +24,7 @@ export function DropListing({
   createHref?: string;
   myDropsHref?: string;
 }) {
+  const t = useT();
   const [tab, setTab] = useState<ApiDropListStatus>("live");
   const { drops, isLoading } = useDrops(tab);
   const now = useNow(60_000);
@@ -31,16 +33,16 @@ export function DropListing({
       <div className="flex flex-wrap items-center justify-between gap-3">
         <Tabs value={tab} onValueChange={(v) => setTab(v as ApiDropListStatus)}>
           <TabsList>
-            <TabsTrigger value="live">Live</TabsTrigger>
-            <TabsTrigger value="upcoming">Upcoming</TabsTrigger>
-            <TabsTrigger value="ended">Ended</TabsTrigger>
+            <TabsTrigger value="live">{t("Live")}</TabsTrigger>
+            <TabsTrigger value="upcoming">{t("Upcoming")}</TabsTrigger>
+            <TabsTrigger value="ended">{t("Ended")}</TabsTrigger>
           </TabsList>
         </Tabs>
         <div className="flex items-center gap-2">
-          <Link href={myDropsHref} className="inline-flex h-9 items-center rounded-md border border-border px-3 text-sm hover:bg-muted/60">My drops</Link>
+          <Link href={myDropsHref} className="inline-flex h-9 items-center rounded-md border border-border px-3 text-sm hover:bg-muted/60">{t("My drops")}</Link>
           <Link href={createHref} className="inline-flex h-9 items-center gap-1.5 rounded-md bg-primary px-3 text-sm font-semibold text-primary-foreground hover:brightness-110">
             <Plus className="h-3.5 w-3.5" />
-            Create a drop
+            {t("Create a drop")}
           </Link>
         </div>
       </div>

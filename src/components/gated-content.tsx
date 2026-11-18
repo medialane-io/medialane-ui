@@ -5,6 +5,7 @@ import type { ApiCollectionProfile } from "@medialane/sdk";
 import { BRAND_COLOR } from "../data/brand.js";
 import { GATED_CONTENT_TYPES, GATED_CONTENT_TYPE_FALLBACK } from "../data/gated-content-types.js";
 import { useMedialaneApp } from "./medialane-app.js";
+import { useT } from "../i18n/provider.js";
 
 export interface GatedContent {
   title: string | null;
@@ -30,6 +31,7 @@ export function GatedContentHero({
   state: GatedContentState;
   onViewExclusive: () => void;
 }) {
+  const t = useT();
   if (!profile?.hasGatedContent) return null;
   const title = profile.gatedContentTitle ?? "Exclusive content for holders";
 
@@ -44,7 +46,7 @@ export function GatedContentHero({
           <Icon className="h-5 w-5" />
         </div>
         <div className="flex-1 min-w-0">
-          <p className="text-2xs font-bold text-emerald-500 leading-none">✓ You&apos;re a holder — unlocked</p>
+          <p className="text-2xs font-bold text-emerald-500 leading-none">{t("✓ You're a holder — unlocked")}</p>
           <p className="text-sm font-bold text-foreground leading-snug mt-1 truncate">{state.content.title ?? title}</p>
         </div>
         <Unlock className="h-4 w-4 text-emerald-500 shrink-0" />
@@ -66,10 +68,10 @@ export function GatedContentHero({
             className="text-2xs font-bold leading-none mb-1"
             style={{ background: `linear-gradient(90deg, ${BRAND_COLOR.blue}, ${BRAND_COLOR.purple}, ${BRAND_COLOR.rose})`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}
           >
-            Holder exclusive
+            {t("Holder exclusive")}
           </p>
           <p className="text-sm font-bold text-foreground leading-snug truncate">{title}</p>
-          <p className="text-xs text-muted-foreground mt-0.5">Own a token from this collection to unlock</p>
+          <p className="text-xs text-muted-foreground mt-0.5">{t("Own a token from this collection to unlock")}</p>
         </div>
         <Sparkles className="h-4 w-4 text-muted-foreground/50 group-hover:text-primary transition-colors shrink-0" />
       </button>
@@ -95,11 +97,12 @@ function LockedNotice({ title, body, children }: { title: string; body: string; 
 const PRIMARY = "inline-flex items-center gap-2 bg-foreground text-background hover:opacity-90 font-semibold px-5 py-2.5 rounded-xl transition-all text-sm";
 
 export function GatedContentPanel({ state, onBrowseListings }: { state: GatedContentState; onBrowseListings: () => void }) {
+  const t = useT();
   const { connectLabel = "Sign in", onRequireWallet } = useMedialaneApp();
 
   if (state.status === "signed_out") {
     return (
-      <LockedNotice title={`${connectLabel} to unlock`} body="This collection has exclusive content for holders. Sign in so we can check your holdings.">
+      <LockedNotice title={`${connectLabel} to unlock`} body={t("This collection has exclusive content for holders. Sign in so we can check your holdings.")}>
         <button type="button" onClick={onRequireWallet} className={PRIMARY}>{connectLabel}</button>
       </LockedNotice>
     );
@@ -108,22 +111,22 @@ export function GatedContentPanel({ state, onBrowseListings }: { state: GatedCon
     return (
       <div className="py-16 flex flex-col items-center gap-3">
         <Loader2 className="h-8 w-8 animate-spin text-muted-foreground/40" />
-        <p className="text-xs text-muted-foreground">Checking your holdings…</p>
+        <p className="text-xs text-muted-foreground">{t("Checking your holdings…")}</p>
       </div>
     );
   }
   if (state.status === "not_holder") {
     return (
-      <LockedNotice title="Holders only" body="Hold at least one token from this collection to open the exclusive content.">
+      <LockedNotice title={t("Holders only")} body={t("Hold at least one token from this collection to open the exclusive content.")}>
         <button type="button" onClick={onBrowseListings} className={PRIMARY}>
           <ShoppingBag className="h-4 w-4" />
-          Browse listings
+          {t("Browse listings")}
         </button>
       </LockedNotice>
     );
   }
   if (state.status === "error") {
-    return <LockedNotice title="Couldn't check your holdings" body="Refresh the page to try again." />;
+    return <LockedNotice title={t("Couldn't check your holdings")} body={t("Refresh the page to try again.")} />;
   }
 
   const { icon: Icon, cta } = typeOf(state.content);
@@ -138,9 +141,9 @@ export function GatedContentPanel({ state, onBrowseListings }: { state: GatedCon
         </div>
       </div>
       <div className="space-y-1.5">
-        <p className="text-2xs font-bold text-emerald-500">✓ Verified holder</p>
-        <h3 className="text-xl font-bold">{state.content.title ?? "Exclusive content"}</h3>
-        <p className="text-sm text-muted-foreground">Your access is verified. Enjoy your exclusive content.</p>
+        <p className="text-2xs font-bold text-emerald-500">{t("✓ Verified holder")}</p>
+        <h3 className="text-xl font-bold">{state.content.title ?? t("Exclusive content")}</h3>
+        <p className="text-sm text-muted-foreground">{t("Your access is verified. Enjoy your exclusive content.")}</p>
       </div>
       <a
         href={state.content.url}

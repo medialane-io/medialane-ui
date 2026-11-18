@@ -2,6 +2,7 @@
 
 import { Info } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "./popover.js";
+import { useT } from "../i18n/provider.js";
 
 interface HelpIconProps {
   content: string;
@@ -10,12 +11,13 @@ interface HelpIconProps {
 }
 
 export function HelpIcon({ content, side = "top", className }: HelpIconProps) {
+  const t = useT();
   return (
     <Popover>
       <PopoverTrigger asChild>
         <button
           type="button"
-          aria-label="Help"
+          aria-label={t("Help")}
           onClick={(e) => e.stopPropagation()}
           className={`inline-flex items-center justify-center rounded-full text-muted-foreground/50 hover:text-muted-foreground active:text-muted-foreground transition-colors shrink-0 ${className ?? ""}`}
         >

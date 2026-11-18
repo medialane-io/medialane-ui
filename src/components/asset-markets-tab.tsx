@@ -8,6 +8,7 @@ import { isSameAddress } from "../utils/same-address.js";
 import { cn } from "../utils/cn.js";
 import { Clock, CheckCircle } from "lucide-react";
 import type { ApiOrder } from "@medialane/sdk";
+import { useT } from "../i18n/provider.js";
 
 function ActionButton({
   variant = "default",
@@ -50,15 +51,16 @@ export function AssetMarketsTab({
   onCancelClick,
   onAcceptClick,
 }: AssetMarketsTabProps) {
+  const t = useT();
   const liveListings = activeListings.filter((o) => !isExpired(o.endTime));
   const liveBids = activeBids.filter((o) => !isExpired(o.endTime));
 
   return (
     <div className="mt-4 space-y-6">
       <div>
-        <p className="text-xs font-semibold text-muted-foreground mb-2">Listings</p>
+        <p className="text-xs font-semibold text-muted-foreground mb-2">{t("Listings")}</p>
         {liveListings.length === 0 ? (
-          <p className="text-sm text-muted-foreground py-4 text-center">No active listings.</p>
+          <p className="text-sm text-muted-foreground py-4 text-center">{t("No active listings.")}</p>
         ) : (
           <div className="rounded-xl border border-border divide-y divide-border">
             {liveListings.map((order) => {
@@ -79,10 +81,10 @@ export function AssetMarketsTab({
                     <AddressDisplay address={order.offerer} chars={4} showCopy={false} className="text-xs text-muted-foreground" />
                     {isMyOrder ? (
                       <ActionButton variant="destructive" disabled={isProcessing} onClick={() => onCancelClick(order)}>
-                        Cancel
+                        {t("Cancel")}
                       </ActionButton>
                     ) : (
-                      <ActionButton onClick={() => onBuyClick(order)}>Buy</ActionButton>
+                      <ActionButton onClick={() => onBuyClick(order)}>{t("Buy")}</ActionButton>
                     )}
                   </div>
                 </div>
@@ -93,9 +95,9 @@ export function AssetMarketsTab({
       </div>
 
       <div>
-        <p className="text-xs font-semibold text-muted-foreground mb-2">Offers</p>
+        <p className="text-xs font-semibold text-muted-foreground mb-2">{t("Offers")}</p>
         {liveBids.length === 0 ? (
-          <p className="text-sm text-muted-foreground py-4 text-center">No active offers.</p>
+          <p className="text-sm text-muted-foreground py-4 text-center">{t("No active offers.")}</p>
         ) : (
           <div className="rounded-xl border border-border divide-y divide-border">
             {liveBids.map((bid) => (
@@ -117,7 +119,7 @@ export function AssetMarketsTab({
                   {isOwner && (
                     <ActionButton disabled={isProcessing} onClick={() => onAcceptClick(bid)}>
                       <CheckCircle className="h-3.5 w-3.5 mr-1.5" />
-                      Accept
+                      {t("Accept")}
                     </ActionButton>
                   )}
                 </div>

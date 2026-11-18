@@ -7,6 +7,7 @@ import { AddressDisplay } from "./address-display.js";
 import { MarkdownText } from "./markdown-text.js";
 import { licenseSummary } from "../utils/license-summary.js";
 import { LICENSE_TYPES } from "../data/ip.js";
+import { useT } from "../i18n/provider.js";
 
 interface AssetAttribute {
   trait_type?: string;
@@ -90,6 +91,7 @@ export function AssetOverviewContent({
   content,
   link,
 }: AssetOverviewContentProps) {
+  const t = useT();
   const attr = (trait: string) => attributes.find((attribute) => attribute.trait_type === trait)?.value;
   const licenseType = attr("License");
   const commercialUse = attr("Commercial Use");
@@ -123,7 +125,7 @@ export function AssetOverviewContent({
     <div className="mt-4 space-y-7">
       {content ? (
         <section className="space-y-3">
-          <h3 className="text-sm font-semibold text-muted-foreground">Content</h3>
+          <h3 className="text-sm font-semibold text-muted-foreground">{t("Content")}</h3>
           <MarkdownText text={content} />
         </section>
       ) : null}
@@ -131,7 +133,7 @@ export function AssetOverviewContent({
       {link ? (
         <a href={link} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
           <ExternalLink className="h-3.5 w-3.5" />
-          Open link
+          {t("Open link")}
         </a>
       ) : null}
 
@@ -139,7 +141,7 @@ export function AssetOverviewContent({
 
       {hasLicenseData ? (
         <section className="space-y-3">
-          <h3 className="text-sm font-semibold text-muted-foreground">Rights</h3>
+          <h3 className="text-sm font-semibold text-muted-foreground">{t("Rights")}</h3>
           <div className="grid grid-cols-2 lg:grid-cols-6 gap-3">
             <div className="relative col-span-2 lg:col-span-3 flex min-h-[15rem] flex-col justify-end overflow-hidden rounded-[2rem] bg-gradient-to-br from-brand-purple via-brand-blue to-brand-blue p-6 text-white sm:p-8">
               <span aria-hidden className="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full ring-[28px] ring-white/10" />
@@ -183,7 +185,7 @@ export function AssetOverviewContent({
                 <Scale className="h-5 w-5" />
               </span>
               <p className="relative pr-16 text-sm leading-relaxed text-white/95">
-                Creative work is protected with international copyright law. The Berne Convention for the Protection of Literary and Artistic Works is the foundational international copyright treaty, ratified by 181 signatory countries.
+                {t("Creative work is protected with international copyright law. The Berne Convention for the Protection of Literary and Artistic Works is the foundational international copyright treaty, ratified by 181 signatory countries.")}
               </p>
             </div>
           </div>
@@ -192,12 +194,12 @@ export function AssetOverviewContent({
 
       {displayAttributes.length > 0 ? (
         <section className="space-y-3">
-          <h3 className="text-sm font-semibold text-muted-foreground">Details</h3>
+          <h3 className="text-sm font-semibold text-muted-foreground">{t("Details")}</h3>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 [grid-auto-flow:dense]">
             {displayAttributes.map((attribute, index) => (
               <Cell
                 key={index}
-                label={attribute.trait_type ?? "Trait"}
+                label={attribute.trait_type ?? t("Trait")}
                 className={`${SPAN_2[detailSpans2[index]]} ${SPAN_SM_4[detailSpansSm[index]]}`}
                 value={
                   isAddressLike(attribute.value) ? (
@@ -213,7 +215,7 @@ export function AssetOverviewContent({
       ) : null}
 
       {!hasTemplateData && !hasLicenseData && displayAttributes.length === 0 ? (
-        <p className="text-sm text-muted-foreground">No additional details available.</p>
+        <p className="text-sm text-muted-foreground">{t("No additional details available.")}</p>
       ) : null}
     </div>
   );

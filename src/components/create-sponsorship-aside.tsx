@@ -2,8 +2,10 @@
 
 import { Handshake, ShieldCheck, Coins, Gift } from "lucide-react";
 import { ClaimRail } from "./claim-rail.js";
+import { useT } from "../i18n/provider.js";
 
 export function CreateSponsorshipAside() {
+  const t = useT();
   return (
     <ClaimRail
       included={[
@@ -17,8 +19,8 @@ export function CreateSponsorshipAside() {
         "Settle instantly: they receive a license, you receive payment",
       ]}
       trustIcon={Gift}
-      trustLead="No escrow, ever."
-      trust="The contract never holds funds — settlement is direct, sponsor to author."
+      trustLead={t("No escrow, ever.")}
+      trust={t("The contract never holds funds — settlement is direct, sponsor to author.")}
     />
   );
 }

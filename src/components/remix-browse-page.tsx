@@ -12,6 +12,7 @@ import { useMedialaneClient } from "../utils/use-medialane-client.js";
 import { useImageUrl } from "../utils/use-image-url.js";
 import type { ApiToken } from "@medialane/sdk";
 import { GitBranch, ImageIcon, Inbox } from "lucide-react";
+import { useT } from "../i18n/provider.js";
 
 const PAGE_SIZE = 24;
 
@@ -41,6 +42,7 @@ function useRemixableTokens() {
 }
 
 function RemixableCard({ token }: { token: ApiToken }) {
+  const t = useT();
   const [imgError, setImgError] = useState(false);
   const imageUrl = useImageUrl()(token.metadata?.image, { width: 480 });
   const showImage = imageUrl && !imgError;
@@ -70,11 +72,11 @@ function RemixableCard({ token }: { token: ApiToken }) {
       <div className="p-4 space-y-1">
         <p className="font-semibold text-sm leading-tight truncate">{name}</p>
         <p className="text-xs text-muted-foreground">
-          Derivatives: Allowed
+          {t("Derivatives: Allowed")}
         </p>
         <p className="text-xs font-semibold pt-1 inline-flex items-center gap-1.5">
           <GitBranch className="h-3 w-3" />
-          Remix this work
+          {t("Remix this work")}
         </p>
       </div>
     </Link>
@@ -94,6 +96,7 @@ function RemixableCardSkeleton() {
 }
 
 export function RemixBrowsePage() {
+  const t = useT();
   const { tokens, isLoading, hasMore, error, loadMore } = useRemixableTokens();
 
   return (
@@ -105,8 +108,8 @@ export function RemixBrowsePage() {
             <ServiceHeader
               plain
               icon={<GitBranch className="h-4 w-4 text-white" />}
-              title="Remix"
-              subtitle="Pick a work that is open to remixing. Attribution and royalties flow back to the original creator."
+              title={t("Remix")}
+              subtitle={t("Pick a work that is open to remixing. Attribution and royalties flow back to the original creator.")}
             />
           </div>
         </FadeIn>
@@ -121,18 +124,18 @@ export function RemixBrowsePage() {
           </div>
         ) : error && tokens.length === 0 ? (
           <div className="bento-cell p-10 flex flex-col items-center gap-3 text-center">
-            <p className="font-semibold">Could not load works</p>
-            <p className="text-sm text-muted-foreground">Check your connection and try again.</p>
-            <Button variant="outline" size="sm" onClick={() => location.reload()}>Retry</Button>
+            <p className="font-semibold">{t("Could not load works")}</p>
+            <p className="text-sm text-muted-foreground">{t("Check your connection and try again.")}</p>
+            <Button variant="outline" size="sm" onClick={() => location.reload()}>{t("Retry")}</Button>
           </div>
         ) : tokens.length === 0 ? (
           <FadeIn>
             <div className="bento-cell p-10 flex flex-col items-center gap-4 text-center">
               <Inbox className="h-10 w-10 text-muted-foreground/30" />
               <div>
-                <p className="font-semibold">No works open to remixing yet</p>
+                <p className="font-semibold">{t("No works open to remixing yet")}</p>
                 <p className="text-sm text-muted-foreground mt-1 max-w-sm">
-                  Works appear here when their creator sets the license to allow derivatives.
+                  {t("Works appear here when their creator sets the license to allow derivatives.")}
                 </p>
               </div>
             </div>
@@ -149,7 +152,7 @@ export function RemixBrowsePage() {
             {hasMore && (
               <div className="flex justify-center">
                 <Button variant="outline" onClick={loadMore} disabled={isLoading}>
-                  {isLoading ? "Loading…" : "Load more"}
+                  {isLoading ? t("Loading…") : t("Load more")}
                 </Button>
               </div>
             )}

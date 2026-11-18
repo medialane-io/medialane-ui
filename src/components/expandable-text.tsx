@@ -2,8 +2,10 @@
 
 import { useEffect, useRef, useState } from "react";
 import { cn } from "../utils/cn.js";
+import { useT } from "../i18n/provider.js";
 
 export function ExpandableText({ text, className }: { text: string; className?: string }) {
+  const t = useT();
   const ref = useRef<HTMLParagraphElement>(null);
   const [expanded, setExpanded] = useState(false);
   const [overflows, setOverflows] = useState(false);
@@ -24,7 +26,7 @@ export function ExpandableText({ text, className }: { text: string; className?: 
           onClick={() => setExpanded((e) => !e)}
           className="mt-1 text-xs text-muted-foreground hover:text-foreground underline-offset-2 hover:underline"
         >
-          {expanded ? "Show less" : "Show more"}
+          {expanded ? t("Show less") : t("Show more")}
         </button>
       ) : null}
     </div>

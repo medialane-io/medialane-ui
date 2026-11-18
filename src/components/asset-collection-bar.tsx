@@ -5,6 +5,7 @@ import Link from "./link.js";
 import { ArrowRight } from "lucide-react";
 import { CurrencyAmount } from "./currency-icon.js";
 import { parsePriceDisplay } from "../utils/format.js";
+import { useT } from "../i18n/provider.js";
 export interface AssetCollectionBarSibling {
   tokenId: string;
 
@@ -30,6 +31,7 @@ export function AssetCollectionBar({
   onNavigate,
   floorPriceRaw,
 }: AssetCollectionBarProps) {
+  const t = useT();
   const floor = floorPriceRaw ? parsePriceDisplay(floorPriceRaw) : null;
 
   const others = siblingTokens.filter(
@@ -52,7 +54,7 @@ export function AssetCollectionBar({
           </p>
           {floor?.symbol ? (
             <p className="mt-0.5 flex items-center gap-1.5 text-xs text-muted-foreground">
-              <span>Floor</span>
+              <span>{t("Floor")}</span>
               <CurrencyAmount amount={floor.numStr} symbol={floor.symbol} iconSize={11} amountClassName="font-semibold text-foreground" />
             </p>
           ) : null}

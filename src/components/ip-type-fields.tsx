@@ -20,6 +20,7 @@ import {
   SelectValue,
 } from "./select.js";
 import { Check, FileText, FileUp, Loader2, Plus, Trash2, X } from "lucide-react";
+import { useT } from "../i18n/provider.js";
 
 export type MetadataField = {
   traitType: string;
@@ -48,6 +49,7 @@ export interface IPTypeFieldsProps {
 }
 
 export function IPTypeFields({ ipType, onChange, uploadDocument, existingDocument }: IPTypeFieldsProps) {
+  const t = useT();
   const template = ipType ? IP_TEMPLATES[ipType] : null;
 
   const [embedValues, setEmbedValues] = useState<Record<string, string>>({});
@@ -150,20 +152,20 @@ export function IPTypeFields({ ipType, onChange, uploadDocument, existingDocumen
     <div className="space-y-5">
       <div className="flex items-center gap-2">
         <Icon className={`h-4 w-4 ${template.color.text}`} />
-        <p className="text-sm font-semibold">{template.label} Details</p>
+        <p className="text-sm font-semibold">{t("{label} Details", { label: template.label })}</p>
       </div>
 
       {docUpload && (uploadDocument || existingDocument) && (
         <section className="space-y-2">
           <p className="text-2xs font-semibold text-muted-foreground">
-            Document
+            {t("Document")}
           </p>
           {existingDocument ? (
             <div className="flex items-center gap-3 rounded-xl border border-emerald-500/30 bg-emerald-500/5 px-4 py-3">
               <FileText className="h-5 w-5 text-emerald-500 shrink-0" />
               <div className="min-w-0 flex-1">
                 <p className="text-sm font-medium truncate">{effectiveDocName}</p>
-                <p className="text-xs text-muted-foreground">Already attached as your uploaded file</p>
+                <p className="text-xs text-muted-foreground">{t("Already attached as your uploaded file")}</p>
               </div>
             </div>
           ) : docUri ? (
@@ -179,7 +181,7 @@ export function IPTypeFields({ ipType, onChange, uploadDocument, existingDocumen
                 size="icon"
                 className="h-8 w-8 shrink-0 text-muted-foreground hover:text-destructive"
                 onClick={clearDoc}
-                aria-label="Remove document"
+                aria-label={t("Remove document")}
               >
                 <X className="h-4 w-4" />
               </Button>
@@ -206,12 +208,12 @@ export function IPTypeFields({ ipType, onChange, uploadDocument, existingDocumen
                 {docUploading ? (
                   <>
                     <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" />
-                    Uploading…
+                    {t("Uploading…")}
                   </>
                 ) : (
                   <>
                     <FileUp className="mr-1.5 h-3.5 w-3.5" />
-                    Upload document
+                    {t("Upload document")}
                   </>
                 )}
               </Button>
@@ -224,7 +226,7 @@ export function IPTypeFields({ ipType, onChange, uploadDocument, existingDocumen
 
       {template.embeds && template.embeds.length > 0 && (
         <section className="space-y-3">
-          <p className="text-2xs font-semibold text-muted-foreground">Embeds</p>
+          <p className="text-2xs font-semibold text-muted-foreground">{t("Embeds")}</p>
           {template.embeds.map((platform) => {
             const meta = EMBED_PLATFORM_META[platform];
             const PIcon = meta.icon;
@@ -236,7 +238,7 @@ export function IPTypeFields({ ipType, onChange, uploadDocument, existingDocumen
                   {meta.label}
                   {looksLikeUrl(value) && (
                     <span className="ml-1 inline-flex items-center gap-0.5 text-2xs font-medium text-emerald-400">
-                      <Check className="h-3 w-3" /> connected
+                      <Check className="h-3 w-3" /> {t("connected")}
                     </span>
                   )}
                 </Label>
@@ -258,7 +260,7 @@ export function IPTypeFields({ ipType, onChange, uploadDocument, existingDocumen
 
       {template.socials && template.socials.length > 0 && (
         <section className="space-y-3">
-          <p className="text-2xs font-semibold text-muted-foreground">Social links</p>
+          <p className="text-2xs font-semibold text-muted-foreground">{t("Social links")}</p>
           {template.socials.map((platform) => {
             const meta = SOCIAL_PLATFORM_META[platform];
             const PIcon = meta.icon;
@@ -286,7 +288,7 @@ export function IPTypeFields({ ipType, onChange, uploadDocument, existingDocumen
       )}
 
       <section className="space-y-3 border-t border-border/60 pt-4">
-        <p className="text-sm font-semibold">Traits</p>
+        <p className="text-sm font-semibold">{t("Traits")}</p>
 
         {template.traitSuggestions && template.traitSuggestions.length > 0 && (
           <div className="flex flex-wrap gap-2">
@@ -316,7 +318,7 @@ export function IPTypeFields({ ipType, onChange, uploadDocument, existingDocumen
                 <Input
                   value={row.key}
                   onChange={(e) => updateTrait(row.id, { key: e.target.value })}
-                  placeholder="Trait name"
+                  placeholder={t("Trait name")}
                   className="h-9 text-sm"
                   maxLength={64}
                 />
@@ -326,7 +328,7 @@ export function IPTypeFields({ ipType, onChange, uploadDocument, existingDocumen
                     onValueChange={(v) => updateTrait(row.id, { value: v })}
                   >
                     <SelectTrigger className="h-9 text-sm">
-                      <SelectValue placeholder="Value" />
+                      <SelectValue placeholder={t("Value")} />
                     </SelectTrigger>
                     <SelectContent>
                       {row.options.map((opt) => (
@@ -338,7 +340,7 @@ export function IPTypeFields({ ipType, onChange, uploadDocument, existingDocumen
                   <Input
                     value={row.value}
                     onChange={(e) => updateTrait(row.id, { value: e.target.value })}
-                    placeholder="Value"
+                    placeholder={t("Value")}
                     className="h-9 text-sm"
                     maxLength={512}
                   />
@@ -349,7 +351,7 @@ export function IPTypeFields({ ipType, onChange, uploadDocument, existingDocumen
                   size="icon"
                   className="h-9 w-9 shrink-0 text-muted-foreground hover:text-destructive"
                   onClick={() => removeTrait(row.id)}
-                  aria-label="Remove trait"
+                  aria-label={t("Remove trait")}
                 >
                   <Trash2 className="h-4 w-4" />
                 </Button>
@@ -360,7 +362,7 @@ export function IPTypeFields({ ipType, onChange, uploadDocument, existingDocumen
 
         <Button type="button" variant="outline" size="sm" onClick={addCustomTrait}>
           <Plus className="mr-1.5 h-3.5 w-3.5" />
-          Add custom trait
+          {t("Add custom trait")}
         </Button>
       </section>
     </div>

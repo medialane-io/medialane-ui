@@ -11,6 +11,7 @@ import {
   CartesianGrid,
 } from "recharts";
 import type { ApiActivity } from "@medialane/sdk";
+import { useT } from "../i18n/provider.js";
 
 export interface PriceHistoryChartProps {
   history: ApiActivity[];
@@ -21,6 +22,7 @@ function parsePrice(formatted: string): number {
 }
 
 export function PriceHistoryChart({ history }: PriceHistoryChartProps) {
+  const t = useT();
   const chartData = useMemo(() => {
     const sales = history.filter(
       (e) => e.type === "sale" && e.price?.formatted != null
@@ -56,8 +58,7 @@ export function PriceHistoryChart({ history }: PriceHistoryChartProps) {
 
   return (
     <div className="rounded-xl bg-card/50 p-4 space-y-2">
-      <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-        Price history · {chartData.currency}
+      <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">{t("Price history · {currency}", { currency: chartData.currency })}
       </p>
       <ResponsiveContainer width="100%" height={160}>
         <LineChart

@@ -12,6 +12,7 @@ import { useOrders } from "../utils/use-orders.js";
 import { useImageUrl } from "../utils/use-image-url.js";
 import { useUsdPrices, usdValueFor } from "../utils/use-usd-prices.js";
 import { emptyMessages } from "../utils/empty-messages.js";
+import { useT } from "../i18n/provider.js";
 
 const PAGE_SIZE = 15;
 const BACKEND_PAGE_SIZE = 50;
@@ -42,6 +43,7 @@ function MarketplaceListingCard({ order, onBuy }: { order: ApiOrder; onBuy?: (or
 }
 
 export function ListingsGrid({ sort = "recent", currency, orderType = "", minPrice, maxPrice, initialOrders, onBuy }: ListingsGridProps) {
+  const t = useT();
   const { walletAddress } = useMedialaneApp();
   const [backendPage, setBackendPage] = useState(1);
   const [visiblePages, setVisiblePages] = useState(1);
@@ -127,7 +129,7 @@ export function ListingsGrid({ sort = "recent", currency, orderType = "", minPri
         <p className="text-muted-foreground max-w-sm">{empty.description}</p>
         {orderType !== "offers" && (
           <Button variant="outline" asChild>
-            <Link href="/create">Create &amp; Sell</Link>
+            <Link href="/create">{t("Create & Sell")}</Link>
           </Button>
         )}
       </div>
@@ -150,9 +152,7 @@ export function ListingsGrid({ sort = "recent", currency, orderType = "", minPri
         <LoadMoreSentinel hasMore={hasMore} isLoading={isLoadingMore} onLoadMore={handleLoadMore} />
 
         {!hasMore && filteredOrders.length > PAGE_SIZE && (
-          <p className="text-center text-xs text-muted-foreground">
-            All {filteredOrders.length} {orderType === "offers" ? "offers" : "listings"} shown
-          </p>
+          <p className="text-center text-xs text-muted-foreground">{orderType === "offers" ? t("All {count} offers shown", { count: filteredOrders.length }) : t("All {count} listings shown", { count: filteredOrders.length })}</p>
         )}
       </div>
     </>

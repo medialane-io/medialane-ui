@@ -12,6 +12,7 @@ import { readArchiveTarget, type ArchiveTarget } from "../utils/archive-asset.js
 import { invalidatePortfolioCache } from "../utils/portfolio-cache.js";
 import { successMessages } from "../utils/success-messages.js";
 import { isBusyPhase, useTransaction } from "../utils/use-transaction.js";
+import { useT } from "../i18n/provider.js";
 
 type Check = { status: "checking" } | { status: "unsupported" } | { status: "ready" | "archived"; target: ArchiveTarget };
 
@@ -36,6 +37,7 @@ export function ArchiveAssetDialog({
   hasActiveListing = false,
   onSuccess,
 }: ArchiveAssetDialogProps) {
+  const t = useT();
   const app = useMedialaneApp();
   const tx = useTransaction();
   const [check, setCheck] = useState<Check>({ status: "checking" });
@@ -83,8 +85,8 @@ export function ArchiveAssetDialog({
   return (
     <Dialog open={open} onOpenChange={(value) => { if (!value && !busy && tx.phase !== "success") close(); }}>
       <DialogContent className="max-w-[calc(100%-6px)] sm:max-w-md p-0 overflow-hidden gap-0 rounded-2xl flex flex-col max-h-[92svh]">
-        <DialogTitle className="sr-only">Archive {displayName}</DialogTitle>
-        <DialogDescription className="sr-only">Permanently archive this asset onchain.</DialogDescription>
+        <DialogTitle className="sr-only">{t("Archive {displayName}", { displayName })}</DialogTitle>
+        <DialogDescription className="sr-only">{t("Permanently archive this asset onchain.")}</DialogDescription>
 
         <TransactionDialogStates
           phase={tx.phase}
@@ -93,8 +95,8 @@ export function ArchiveAssetDialog({
           error={tx.error}
           success={successMessages.archived({ name: displayName })}
           successActions={[{ label: "Done", onClick: () => { close(); onSuccess?.(); } }]}
-          errorTitle="Archive failed"
-          errorDescription="The transaction could not be completed."
+          errorTitle={t("Archive failed")}
+          errorDescription={t("The transaction could not be completed.")}
           onRetry={tx.retryable ? tx.reset : undefined}
           onDone={close}
         >
@@ -113,24 +115,24 @@ export function ArchiveAssetDialog({
                 <Alert variant="destructive">
                   <AlertCircle className="h-4 w-4" />
                   <AlertDescription className="text-xs">
-                    Archiving is permanent and cannot be undone. The asset stays recorded onchain with its owner, creator and history, but it can no longer be transferred or archived again.
+                    {t("Archiving is permanent and cannot be undone. The asset stays recorded onchain with its owner, creator and history, but it can no longer be transferred or archived again.")}
                   </AlertDescription>
                 </Alert>
                 {hasActiveListing ? (
                   <Alert variant="destructive">
                     <AlertCircle className="h-4 w-4" />
                     <AlertDescription className="text-xs">
-                      This asset has an active listing. Cancel the listing first, so the sale can't be left open after archiving.
+                      {t("This asset has an active listing. Cancel the listing first, so the sale can't be left open after archiving.")}
                     </AlertDescription>
                   </Alert>
                 ) : null}
               </div>
             }
-            description={check.status === "checking" ? "Checking the asset…" : notice ?? "Archive this asset permanently?"}
+            description={check.status === "checking" ? t("Checking the asset…") : notice ?? t("Archive this asset permanently?")}
             error={tx.error}
-            secondaryLabel="Cancel"
+            secondaryLabel={t("Cancel")}
             onSecondary={close}
-            primaryLabel="Archive permanently"
+            primaryLabel={t("Archive permanently")}
             primaryVariant="destructive"
             primaryDisabled={check.status !== "ready" || !app.walletAddress}
             onPrimary={archive}

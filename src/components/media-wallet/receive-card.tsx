@@ -4,10 +4,12 @@ import { useState } from "react";
 import Image from "../image.js";
 import { AddressQr } from "./address-qr.js";
 import { CopyIcon } from "./copy-icon.js";
+import { useT } from "../../i18n/provider.js";
 
 const FUNDING_DOCS_URL = "https://docs.medialane.io/learn/funding-your-account";
 
 export function ReceiveCard({ address }: { address: string }) {
+  const t = useT();
   const [copied, setCopied] = useState(false);
 
   const copy = () => {
@@ -18,7 +20,7 @@ export function ReceiveCard({ address }: { address: string }) {
 
   return (
     <div className="flex flex-col gap-4">
-      <p className="text-center text-sm text-muted-foreground">Receive assets with your address:</p>
+      <p className="text-center text-sm text-muted-foreground">{t("Receive assets with your address:")}</p>
 
       <button
         onClick={copy}
@@ -26,7 +28,7 @@ export function ReceiveCard({ address }: { address: string }) {
       >
         <span className="break-all font-mono text-sm font-medium">{address}</span>
         {copied ? (
-          <span className="shrink-0 text-xs font-semibold text-muted-foreground">Copied ✓</span>
+          <span className="shrink-0 text-xs font-semibold text-muted-foreground">{t("Copied ✓")}</span>
         ) : (
           <CopyIcon className="shrink-0 opacity-50" />
         )}
@@ -39,20 +41,19 @@ export function ReceiveCard({ address }: { address: string }) {
           <Image src="/Starknet-icon.svg" alt="Starknet" width={20} height={20} />
         </div>
         <p className="text-sm leading-relaxed text-muted-foreground">
-          Your onchain account is self-custody and permissionless. Please use
-          only the Starknet blockchain to send and receive assets.
+          {t("Your onchain account is self-custody and permissionless. Please use only the Starknet blockchain to send and receive assets.")}
         </p>
       </div>
 
       <div className="flex flex-col items-center gap-2 pt-1 text-center">
-        <p className="text-xs text-muted-foreground">Don&apos;t have tokens yet?</p>
+        <p className="text-xs text-muted-foreground">{t("Don't have tokens yet?")}</p>
         <a
           href={FUNDING_DOCS_URL}
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex h-10 items-center justify-center rounded-full bg-brand-blue/10 px-5 text-sm font-semibold text-brand-blue transition-colors hover:bg-brand-blue/15"
         >
-          How to fund your account
+          {t("How to fund your account")}
         </a>
       </div>
     </div>

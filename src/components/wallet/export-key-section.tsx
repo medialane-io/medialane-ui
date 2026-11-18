@@ -6,6 +6,7 @@ import { encodeRecoveryKey, type SealedOwner } from "@medialane/sdk/starknet";
 import { describeError } from "../../utils/describe-error.js";
 import { Button } from "../button.js";
 import { Alert, AlertDescription } from "../alert.js";
+import { useT } from "../../i18n/provider.js";
 
 export interface ExportKeySectionProps {
   loadSealed: () => SealedOwner | null;
@@ -14,6 +15,7 @@ export interface ExportKeySectionProps {
 }
 
 export function ExportKeySection({ loadSealed, unlock, actions }: ExportKeySectionProps) {
+  const t = useT();
   const [recoveryKey, setRecoveryKey] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -51,9 +53,9 @@ export function ExportKeySection({ loadSealed, unlock, actions }: ExportKeySecti
   return (
     <div className="flex flex-col gap-3">
       <div>
-        <p className="text-sm font-semibold">Recovery key</p>
+        <p className="text-sm font-semibold">{t("Recovery key")}</p>
         <p className="mt-1 text-xs text-muted-foreground leading-relaxed">
-          Used to sign in on a new phone or browser.
+          {t("Used to sign in on a new phone or browser.")}
         </p>
       </div>
 
@@ -62,7 +64,7 @@ export function ExportKeySection({ loadSealed, unlock, actions }: ExportKeySecti
           <Alert>
             <ShieldAlert className="h-4 w-4" />
             <AlertDescription className="text-xs leading-relaxed">
-              <span className="font-semibold">The recovery key gives full control of the wallet.</span>
+              <span className="font-semibold">{t("The recovery key gives full control of the wallet.")}</span>
             </AlertDescription>
           </Alert>
           <code className="block break-all rounded-xl bg-muted px-3 py-2.5 font-mono text-xs select-all">
@@ -71,11 +73,11 @@ export function ExportKeySection({ loadSealed, unlock, actions }: ExportKeySecti
           <div className="flex flex-wrap items-center gap-2">
             <Button onClick={copy} variant="outline" size="sm">
               {copied ? <Check className="mr-1.5 h-3.5 w-3.5" /> : <Copy className="mr-1.5 h-3.5 w-3.5" />}
-              {copied ? "Copied" : "Copy key"}
+              {copied ? t("Copied") : t("Copy key")}
             </Button>
             <Button onClick={hide} variant="ghost" size="sm">
               <EyeOff className="mr-1.5 h-3.5 w-3.5" />
-              Hide
+              {t("Hide")}
             </Button>
             {actions}
           </div>
@@ -86,7 +88,7 @@ export function ExportKeySection({ loadSealed, unlock, actions }: ExportKeySecti
           <div className="flex flex-wrap items-center gap-2">
             <Button onClick={reveal} disabled={busy} variant="outline" size="sm">
               {busy ? <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" /> : <KeyRound className="mr-1.5 h-3.5 w-3.5" />}
-              Show recovery key
+              {t("Show recovery key")}
             </Button>
             {actions}
           </div>

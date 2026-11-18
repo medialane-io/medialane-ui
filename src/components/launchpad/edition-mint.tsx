@@ -24,6 +24,7 @@ import { pinAssetMetadata, uploadFileToIpfs } from "../../utils/ipfs-upload.js";
 import { useTransaction } from "../../utils/use-transaction.js";
 import { useLaunchpadImageUpload } from "../../utils/use-launchpad-image-upload.js";
 import { invalidatePortfolioCache } from "../../utils/portfolio-cache.js";
+import { useT } from "../../i18n/provider.js";
 
 const DEFAULTS: EditionMintValues = {
   value: "1",
@@ -42,6 +43,7 @@ const DEFAULTS: EditionMintValues = {
 };
 
 export function EditionMint({ contract: rawContract, aside }: { contract: string; aside?: ReactNode }) {
+  const t = useT();
   const app = useMedialaneApp();
   const walletAddress = app.walletAddress;
   const collectionAddress = normalizeAddress("STARKNET", rawContract);
@@ -141,27 +143,27 @@ export function EditionMint({ contract: rawContract, aside }: { contract: string
     <WalletRequired
       icon={Sparkles}
       iconClassName="text-brand-purple"
-      title="Secure your account to create"
-      description="Secure your account to mint tokens into a multi-editions collection."
+      title={t("Secure your account to create")}
+      description={t("Secure your account to mint tokens into a multi-editions collection.")}
     >
       {ownerCheck === "denied" ? (
         <div className="max-w-lg mx-auto px-4 pt-24 pb-8 text-center space-y-4">
           <Sparkles className="h-10 w-10 text-muted-foreground mx-auto" />
-          <h1 className="text-2xl font-bold">Not the owner</h1>
-          <p className="text-muted-foreground">Only the collection owner can mint tokens. Connect the wallet that deployed this collection.</p>
+          <h1 className="text-2xl font-bold">{t("Not the owner")}</h1>
+          <p className="text-muted-foreground">{t("Only the collection owner can mint tokens. Connect the wallet that deployed this collection.")}</p>
           <Button asChild variant="outline">
-            <Link href="/launchpad">Back to Launchpad</Link>
+            <Link href="/launchpad">{t("Back to Launchpad")}</Link>
           </Button>
         </div>
       ) : (
         <>
           <ClaimRouteShell
             icon={<Sparkles className="h-4 w-4 text-white" />}
-            title="Mint an Edition"
-            subtitle="Add a new piece to your collection — its details and authorship are saved permanently. Free to mint, and it's yours."
+            title={t("Mint an Edition")}
+            subtitle={t("Add a new piece to your collection — its details and authorship are saved permanently. Free to mint, and it's yours.")}
             headerAccessory={
               <div className="flex items-center gap-2 rounded-lg border border-border bg-background/60 px-3 py-2 max-w-full">
-                <span className="tabular-nums text-xs text-foreground/80 truncate">Collection: {collectionAddress}</span>
+                <span className="tabular-nums text-xs text-foreground/80 truncate">{t("Collection: {collectionAddress}", { collectionAddress })}</span>
               </div>
             }
             aside={
@@ -200,12 +202,12 @@ export function EditionMint({ contract: rawContract, aside }: { contract: string
             </Form>
           </ClaimRouteShell>
 
-          <TransactionDialog tx={tx} title="Mint an edition" workingLabel="Minting your edition…" firstStepLabel="Upload metadata">
+          <TransactionDialog tx={tx} title={t("Mint an edition")} workingLabel="Minting your edition…" firstStepLabel="Upload metadata">
             <TransactionSuccess
               name={form.getValues("name") || "Your token"}
               image={imagePreview}
-              title="Editions minted"
-              description="Each copy is recorded onchain with the license terms in its metadata."
+              title={t("Editions minted")}
+              description={t("Each copy is recorded onchain with the license terms in its metadata.")}
               actions={[
                 ...(mintedTokenId ? [{ href: assetHref("STARKNET", collectionAddress, mintedTokenId), label: "View asset" }] : []),
                 { href: "/portfolio/assets", label: "View portfolio" },

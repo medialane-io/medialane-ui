@@ -8,6 +8,7 @@ import { Button } from "./button.js";
 import { CurrencyIcon } from "./currency-icon.js";
 import { cn } from "../utils/cn.js";
 import { formatDisplayPrice, isStableCurrency } from "../utils/format.js";
+import { useT } from "../i18n/provider.js";
 
 interface MarketplaceTxLinkProps {
   txHash: string;
@@ -124,6 +125,7 @@ export function MarketplaceErrorState({
   onDone,
   doneLabel = "Done",
 }: MarketplaceErrorStateProps) {
+  const t = useT();
   return (
     <div className="flex flex-col items-center gap-5 p-6 py-8">
       {tokenImage ? (
@@ -154,7 +156,7 @@ export function MarketplaceErrorState({
       <div className="flex w-full gap-2">
         {onRetry ? (
           <Button variant="outline" className="flex-1 h-11" onClick={onRetry}>
-            Try again
+            {t("Try again")}
           </Button>
         ) : null}
         <Button className="flex-1 h-11" onClick={onDone}>{doneLabel}</Button>

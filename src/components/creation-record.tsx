@@ -5,6 +5,7 @@ import Link from "./link.js";
 import { normalizeAddress } from "@medialane/sdk";
 import { EXPLORER_URL } from "../utils/explorer-url.js";
 import { profileHref } from "@medialane/sdk";
+import { useT } from "../i18n/provider.js";
 
 export interface CreationRecordProps {
   originalCreator: string;
@@ -12,6 +13,7 @@ export interface CreationRecordProps {
 }
 
 export function CreationRecord({ originalCreator, registeredAt }: CreationRecordProps) {
+  const t = useT();
   const creator = originalCreator ? normalizeAddress("STARKNET", originalCreator) : "";
   const date = new Date(registeredAt * 1000);
   const formatted = date.toLocaleDateString(undefined, {
@@ -24,15 +26,14 @@ export function CreationRecord({ originalCreator, registeredAt }: CreationRecord
     <div className="rounded-lg bg-amber-500/5 p-4">
       <div className="flex items-center gap-2 mb-3">
         <Award className="h-4 w-4 text-amber-500" />
-        <p className="text-sm font-semibold text-amber-500">Creation Record</p>
+        <p className="text-sm font-semibold text-amber-500">{t("Creation Record")}</p>
       </div>
       <p className="text-xs text-muted-foreground mb-3">
-        Immutable on-chain authorship record set at mint and stored permanently
-        for legal evidence of creation (Berne Convention).
+        {t("Immutable on-chain authorship record set at mint and stored permanently for legal evidence of creation (Berne Convention).")}
       </p>
       <dl className="space-y-2 text-sm">
         <div className="flex items-center justify-between">
-          <dt className="text-muted-foreground">Original creator</dt>
+          <dt className="text-muted-foreground">{t("Original creator")}</dt>
           <dd className="tabular-nums">
             <Link href={profileHref({ address: creator })} className="hover:underline">
               {creator.slice(0, 6)}…{creator.slice(-4)}
@@ -40,7 +41,7 @@ export function CreationRecord({ originalCreator, registeredAt }: CreationRecord
           </dd>
         </div>
         <div className="flex items-center justify-between">
-          <dt className="text-muted-foreground">Registered at</dt>
+          <dt className="text-muted-foreground">{t("Registered at")}</dt>
           <dd>
             <a
               href={`${EXPLORER_URL}/contract/${creator}`}

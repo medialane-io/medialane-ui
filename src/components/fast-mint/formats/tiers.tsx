@@ -13,6 +13,7 @@ import { CollectionSection, type CollectionMode } from "../collection-section.js
 import { LicensingSection } from "../licensing-section.js";
 import { createThenAdd } from "../create-then-add.js";
 import { defineFormat, type FormatFieldsProps, type FormatShared } from "./types.js";
+import { useT } from "../../../i18n/provider.js";
 
 interface TierState {
   mode: CollectionMode;
@@ -39,6 +40,7 @@ function makeTierFormat(config: {
     shared.collections.filter((c) => getService(c.service)?.id === preset.service && !!c.contractAddress);
 
   function Fields({ shared, state, update }: FormatFieldsProps<TierState>) {
+  const t = useT();
     return (
       <>
         <CollectionSection
@@ -66,10 +68,10 @@ function makeTierFormat(config: {
         </div>
 
         <div className="space-y-2">
-          <label className="text-sm font-medium">Valid</label>
+          <label className="text-sm font-medium">{t("Valid")}</label>
           <div className="grid grid-cols-2 gap-2">
-            <Input type="date" aria-label="Valid from" value={state.startDate} onChange={(e) => update({ startDate: e.target.value })} />
-            <Input type="date" aria-label="Valid until" value={state.endDate} onChange={(e) => update({ endDate: e.target.value })} />
+            <Input type="date" aria-label={t("Valid from")} value={state.startDate} onChange={(e) => update({ startDate: e.target.value })} />
+            <Input type="date" aria-label={t("Valid until")} value={state.endDate} onChange={(e) => update({ endDate: e.target.value })} />
           </div>
           <p className="text-xs text-muted-foreground">{preset.copy.validUntilHint}</p>
         </div>

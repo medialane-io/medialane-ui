@@ -32,8 +32,10 @@ import { useToken, useTokenBalance } from "../../utils/use-tokens.js";
 import { useImageUrl } from "../../utils/use-image-url.js";
 import { useTransaction } from "../../utils/use-transaction.js";
 import { invalidatePortfolioCache } from "../../utils/portfolio-cache.js";
+import { useT } from "../../i18n/provider.js";
 
 export function RemixMint({ contract, tokenId }: { contract: string; tokenId: string }) {
+  const t = useT();
   const app = useMedialaneApp();
   const router = useRouter();
   const resolveImage = useImageUrl();
@@ -231,20 +233,20 @@ export function RemixMint({ contract, tokenId }: { contract: string; tokenId: st
   if (!token) {
     return (
       <div className="max-w-5xl mx-auto px-4 py-24 text-center space-y-4">
-        <p className="text-2xl font-bold">Asset not found</p>
-        <Button asChild variant="outline"><Link href="/">Go home</Link></Button>
+        <p className="text-2xl font-bold">{t("Asset not found")}</p>
+        <Button asChild variant="outline"><Link href="/">{t("Go home")}</Link></Button>
       </div>
     );
   }
 
   return (
     <WalletRequired {...gate}>
-      <TransactionDialog tx={tx} title="Mint a remix" workingLabel="Minting your remix…" firstStepLabel="Upload to IPFS">
+      <TransactionDialog tx={tx} title={t("Mint a remix")} workingLabel="Minting your remix…" firstStepLabel="Upload to IPFS">
         <TransactionSuccess
           name={name}
           image={imagePreview ?? originalImage ?? null}
-          title="Remix minted"
-          description="It is registered as a remix of the original asset and carries its own license terms."
+          title={t("Remix minted")}
+          description={t("It is registered as a remix of the original asset and carries its own license terms.")}
           actions={[
             ...(remixHref ? [{ href: remixHref, label: "View remix" }] : []),
             { href: "/portfolio/assets", label: "View portfolio" },
@@ -259,19 +261,19 @@ export function RemixMint({ contract, tokenId }: { contract: string; tokenId: st
         <div className="space-y-3">
           <Link href={assetHref("STARKNET", contract, tokenId)} className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
             <ChevronLeft className="h-4 w-4" />
-            Back to asset
+            {t("Back to asset")}
           </Link>
           <div className="flex items-center gap-2 text-primary">
             <GitBranch className="h-5 w-5" />
-            <span className="text-sm font-semibold">Create Remix</span>
+            <span className="text-sm font-semibold">{t("Create Remix")}</span>
           </div>
-          <h1 className="text-3xl font-bold">Mint a Remix</h1>
-          <p className="text-muted-foreground max-w-xl">Mint a derivative work based on this asset. The parent attribution is embedded in the IPFS metadata.</p>
+          <h1 className="text-3xl font-bold">{t("Mint a Remix")}</h1>
+          <p className="text-muted-foreground max-w-xl">{t("Mint a derivative work based on this asset. The parent attribution is embedded in the IPFS metadata.")}</p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-8 items-start">
           <div className="space-y-4">
-            <Section title="Remix Artwork" icon={<ImagePlus className="h-4 w-4" />}>
+            <Section title={t("Remix Artwork")} icon={<ImagePlus className="h-4 w-4" />}>
               <div
                 className={cn("relative group rounded-xl border-2 border-dashed border-border transition-colors cursor-pointer overflow-hidden", "hover:border-primary/50 hover:bg-muted/30")}
                 onClick={() => fileInputRef.current?.click()}
@@ -279,9 +281,9 @@ export function RemixMint({ contract, tokenId }: { contract: string; tokenId: st
                 <input ref={fileInputRef} type="file" accept={acceptFor("image")} className="hidden" onChange={(e) => { const f = e.target.files?.[0]; if (f) handleImageChange(f); }} />
                 {imagePreview ? (
                   <div className="relative aspect-square w-full">
-                    <Image src={imagePreview} alt="Remix preview" fill unoptimized className="object-cover" />
+                    <Image src={imagePreview} alt={t("Remix preview")} fill unoptimized className="object-cover" />
                     <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                      <p className="text-white text-sm font-medium flex items-center gap-2"><Upload className="h-4 w-4" /> Change image</p>
+                      <p className="text-white text-sm font-medium flex items-center gap-2"><Upload className="h-4 w-4" /> {t("Change image")}</p>
                     </div>
                   </div>
                 ) : (
@@ -293,38 +295,38 @@ export function RemixMint({ contract, tokenId }: { contract: string; tokenId: st
                     )}
                     <Upload className="h-8 w-8" />
                     <div className="text-center">
-                      <p className="text-sm font-medium">Upload remix artwork</p>
-                      <p className="text-xs mt-0.5">{originalImage ? "Leave empty to inherit original artwork" : "PNG, JPG, GIF, WebP up to 10MB"}</p>
+                      <p className="text-sm font-medium">{t("Upload remix artwork")}</p>
+                      <p className="text-xs mt-0.5">{originalImage ? t("Leave empty to inherit original artwork") : t("PNG, JPG, GIF, WebP up to 10MB")}</p>
                     </div>
                   </div>
                 )}
               </div>
             </Section>
 
-            <Section title="Remix Details" icon={<GitBranch className="h-4 w-4" />}>
+            <Section title={t("Remix Details")} icon={<GitBranch className="h-4 w-4" />}>
               <div className="space-y-1.5">
-                <Label>Remix Name *</Label>
+                <Label>{t("Remix Name *")}</Label>
                 <Input value={name} onChange={(e) => setName(e.target.value)} placeholder={`Remix of ${originalName}`} />
               </div>
               <div className="space-y-1.5">
-                <Label>Description</Label>
-                <Textarea value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Describe your remix, the creative changes you're making, or your vision for it…" rows={3} className="resize-none" />
+                <Label>{t("Description")}</Label>
+                <Textarea value={description} onChange={(e) => setDescription(e.target.value)} placeholder={t("Describe your remix, the creative changes you're making, or your vision for it…")} rows={3} className="resize-none" />
               </div>
             </Section>
 
-            <Section title="Collection" icon={<Boxes className="h-4 w-4" />}>
+            <Section title={t("Collection")} icon={<Boxes className="h-4 w-4" />}>
               {collectionsLoading ? (
                 <Skeleton className="h-10 w-full rounded-md" />
               ) : eligibleCollections.length === 0 ? (
                 <div className="rounded-lg border border-dashed border-border p-4 text-center space-y-2">
-                  <p className="text-sm text-muted-foreground">No eligible collections. Create one first.</p>
+                  <p className="text-sm text-muted-foreground">{t("No eligible collections. Create one first.")}</p>
                   <Button size="sm" variant="outline" asChild>
-                    <Link href="/launchpad/single-editions/collection"><Plus className="h-3.5 w-3.5 mr-1.5" />Create collection</Link>
+                    <Link href="/launchpad/single-editions/collection"><Plus className="h-3.5 w-3.5 mr-1.5" />{t("Create collection")}</Link>
                   </Button>
                 </div>
               ) : (
                 <Select value={collectionKey} onValueChange={setCollectionKey}>
-                  <SelectTrigger><SelectValue placeholder="Select a collection" /></SelectTrigger>
+                  <SelectTrigger><SelectValue placeholder={t("Select a collection")} /></SelectTrigger>
                   <SelectContent>
                     {eligibleCollections.map((c) => (
                       <SelectItem key={getCollectionKey(c)} value={getCollectionKey(c)}>
@@ -339,16 +341,16 @@ export function RemixMint({ contract, tokenId }: { contract: string; tokenId: st
               )}
             </Section>
 
-            <Section title="IP Type" icon={<Info className="h-4 w-4" />}>
+            <Section title={t("IP Type")} icon={<Info className="h-4 w-4" />}>
               <Select value={ipType} onValueChange={setIpType}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>{IP_TYPES.map((t) => <SelectItem key={t} value={t}>{t}</SelectItem>)}</SelectContent>
               </Select>
             </Section>
 
-            <Section title="License Terms" icon={<Shield className="h-4 w-4" />}>
+            <Section title={t("License Terms")} icon={<Shield className="h-4 w-4" />}>
               <div className="space-y-1.5">
-                <Label>License Type</Label>
+                <Label>{t("License Type")}</Label>
                 <Select value={licenseType} onValueChange={handleLicenseChange}>
                   <SelectTrigger><SelectValue /></SelectTrigger>
                   <SelectContent>{LICENSE_TYPES.map((l) => <SelectItem key={l.value} value={l.value}>{l.value}</SelectItem>)}</SelectContent>
@@ -356,11 +358,11 @@ export function RemixMint({ contract, tokenId }: { contract: string; tokenId: st
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-1.5">
-                  <Label className="text-xs text-muted-foreground uppercase tracking-wide">Commercial Use</Label>
+                  <Label className="text-xs text-muted-foreground uppercase tracking-wide">{t("Commercial Use")}</Label>
                   <ToggleGroup value={commercial ? "Yes" : "No"} options={["Yes", "No"]} onChange={(v) => setCommercial(v === "Yes")} />
                 </div>
                 <div className="space-y-1.5">
-                  <Label className="text-xs text-muted-foreground uppercase tracking-wide">Derivatives</Label>
+                  <Label className="text-xs text-muted-foreground uppercase tracking-wide">{t("Derivatives")}</Label>
                   <ToggleGroup value={derivatives ? "Allowed" : "Not Allowed"} options={["Allowed", "Not Allowed"]} onChange={(v) => setDerivatives(v === "Allowed")} />
                 </div>
               </div>
@@ -368,14 +370,14 @@ export function RemixMint({ contract, tokenId }: { contract: string; tokenId: st
                 <CollapsibleTrigger asChild>
                   <button type="button" className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors">
                     <ChevronDown className={cn("h-3.5 w-3.5 transition-transform", advancedOpen && "rotate-180")} />
-                    Royalty & advanced
+                    {t("Royalty & advanced")}
                   </button>
                 </CollapsibleTrigger>
                 <CollapsibleContent className="pt-3 space-y-3">
                   <div className="space-y-1.5">
-                    <Label className="flex items-center gap-1.5"><Percent className="h-3.5 w-3.5" />Royalty %</Label>
+                    <Label className="flex items-center gap-1.5"><Percent className="h-3.5 w-3.5" />{t("Royalty %")}</Label>
                     <Input type="number" min="0" max="50" step="1" placeholder="0" value={royalty} onChange={(e) => setRoyalty(e.target.value)} />
-                    <p className="text-xs text-muted-foreground">Percentage of future sales sent back to you (0–50%)</p>
+                    <p className="text-xs text-muted-foreground">{t("Percentage of future sales sent back to you (0–50%)")}</p>
                   </div>
                 </CollapsibleContent>
               </Collapsible>
@@ -391,10 +393,10 @@ export function RemixMint({ contract, tokenId }: { contract: string; tokenId: st
                 className="w-full h-12 rounded-[11px] flex items-center justify-center gap-2 text-base font-semibold text-white transition-all hover:brightness-110 active:scale-[0.98] bg-brand-rose disabled:opacity-50"
               >
                 <GitBranch className="h-5 w-5" />
-                Mint Remix
+                {t("Mint Remix")}
               </button>
             </div>
-            <p className="text-xs text-center text-muted-foreground">Two operations: IPFS metadata upload + on-chain mint. Gas is free.</p>
+            <p className="text-xs text-center text-muted-foreground">{t("Two operations: IPFS metadata upload + on-chain mint. Gas is free.")}</p>
           </div>
 
           <div className="space-y-4 lg:sticky lg:top-16">
@@ -402,7 +404,7 @@ export function RemixMint({ contract, tokenId }: { contract: string; tokenId: st
               <div className="relative aspect-square w-full bg-muted">
                 {originalImage && <Image src={originalImage} alt={originalName} fill unoptimized className="object-cover" />}
                 <div className="absolute top-2 left-2">
-                  <Badge variant="secondary" className="text-2xs gap-1"><GitBranch className="h-3 w-3" />Original</Badge>
+                  <Badge variant="secondary" className="text-2xs gap-1"><GitBranch className="h-3 w-3" />{t("Original")}</Badge>
                 </div>
               </div>
               <div className="p-4 space-y-3">
@@ -412,20 +414,20 @@ export function RemixMint({ contract, tokenId }: { contract: string; tokenId: st
                 </div>
                 {(attr("License") || attr("Commercial Use") || attr("Derivatives")) && (
                   <div className="rounded-lg bg-muted/40 p-3 space-y-1.5 text-xs">
-                    <p className="text-2xs font-semibold text-muted-foreground">Original License</p>
-                    {attr("License") && <div className="flex justify-between"><span className="text-muted-foreground">License</span><span className="font-medium">{attr("License")}</span></div>}
-                    {attr("Commercial Use") && <div className="flex justify-between"><span className="text-muted-foreground">Commercial</span><span className="font-medium">{attr("Commercial Use")}</span></div>}
-                    {attr("Derivatives") && <div className="flex justify-between"><span className="text-muted-foreground">Derivatives</span><span className="font-medium">{attr("Derivatives")}</span></div>}
+                    <p className="text-2xs font-semibold text-muted-foreground">{t("Original License")}</p>
+                    {attr("License") && <div className="flex justify-between"><span className="text-muted-foreground">{t("License")}</span><span className="font-medium">{attr("License")}</span></div>}
+                    {attr("Commercial Use") && <div className="flex justify-between"><span className="text-muted-foreground">{t("Commercial")}</span><span className="font-medium">{attr("Commercial Use")}</span></div>}
+                    {attr("Derivatives") && <div className="flex justify-between"><span className="text-muted-foreground">{t("Derivatives")}</span><span className="font-medium">{attr("Derivatives")}</span></div>}
                   </div>
                 )}
               </div>
             </div>
             <div className="rounded-xl border border-primary/20 bg-primary/5 p-4 space-y-3 text-sm">
-              <p className="font-semibold flex items-center gap-2"><Info className="h-4 w-4 text-primary" />What happens next</p>
+              <p className="font-semibold flex items-center gap-2"><Info className="h-4 w-4 text-primary" />{t("What happens next")}</p>
               <ol className="space-y-2 text-muted-foreground text-xs list-decimal list-inside">
-                <li>Your artwork and metadata are uploaded to IPFS</li>
-                <li>A new NFT is minted in the selected collection</li>
-                <li>Parent attribution is embedded on-chain permanently</li>
+                <li>{t("Your artwork and metadata are uploaded to IPFS")}</li>
+                <li>{t("A new NFT is minted in the selected collection")}</li>
+                <li>{t("Parent attribution is embedded on-chain permanently")}</li>
               </ol>
             </div>
           </div>

@@ -15,6 +15,7 @@ import { useSponsorshipBids, useSponsorshipLicenses, useSponsorshipOffers, useSp
 import { emptyMessages, type EmptyMessage } from "../utils/empty-messages.js";
 import { successMessages, type SuccessMessage } from "../utils/success-messages.js";
 import { useTransaction } from "../utils/use-transaction.js";
+import { useT } from "../i18n/provider.js";
 
 type Api = ReturnType<ReturnType<typeof useMedialaneApp>["getClient"]>["api"];
 
@@ -48,6 +49,7 @@ function Spinner({ active, idle, className }: { active: boolean; idle: React.Rea
 }
 
 function OfferBidsRow({ offer }: { offer: ApiSponsorshipOffer }) {
+  const t = useT();
   const { walletAddress } = useMedialaneApp();
   const { bids, isLoading, mutate } = useSponsorshipBids(offer.offerId);
   const action = useRowAction({ title: "Accept bid", working: "Accepting the bid…", message: successMessages.bidAccepted() });
@@ -58,7 +60,7 @@ function OfferBidsRow({ offer }: { offer: ApiSponsorshipOffer }) {
     <div className="space-y-1.5 rounded-lg bg-muted/30 p-3">
       {action.dialog}
       <p className="text-xs font-semibold text-muted-foreground">
-        Bids on <Link href={assetHref("STARKNET", offer.nftContract, offer.tokenId)} className="underline underline-offset-2">View asset</Link>
+        {t("Bids on")} <Link href={assetHref("STARKNET", offer.nftContract, offer.tokenId)} className="underline underline-offset-2">{t("View asset")}</Link>
       </p>
       {bids.map((bid) => (
         <div key={bid.id} className="flex items-center justify-between gap-2 text-xs">
@@ -66,7 +68,7 @@ function OfferBidsRow({ offer }: { offer: ApiSponsorshipOffer }) {
           <Button
             size="sm"
             className="bg-brand-rose hover:brightness-110 text-white h-7 px-2.5"
-            aria-label="Accept bid"
+            aria-label={t("Accept bid")}
             disabled={action.busy || !walletAddress}
             onClick={() =>
               action.run(
@@ -85,11 +87,12 @@ function OfferBidsRow({ offer }: { offer: ApiSponsorshipOffer }) {
 }
 
 function ReceivedProposals({ walletAddress }: { walletAddress: string }) {
+  const t = useT();
   const { proposals, isLoading, mutate } = useSponsorshipProposals({ owner: walletAddress, open: true });
   const action = useRowAction({ title: "Respond to proposal", working: "Sending your response…", message: successMessages.responseSent() });
 
   if (isLoading) return <Skeleton className="h-20 w-full rounded-xl" />;
-  if (proposals.length === 0) return <p className="text-sm text-muted-foreground">No proposals awaiting your decision.</p>;
+  if (proposals.length === 0) return <p className="text-sm text-muted-foreground">{t("No proposals awaiting your decision.")}</p>;
 
   const respond = (proposalId: string, decision: "accept" | "reject") =>
     action.run(
@@ -108,17 +111,17 @@ function ReceivedProposals({ walletAddress }: { walletAddress: string }) {
         <div key={p.id} className="bento-cell p-4 flex items-center justify-between gap-3">
           <div className="min-w-0">
             <p className="text-sm font-semibold">
-              <Link href={assetHref("STARKNET", p.nftContract, p.tokenId)} className="hover:underline">View asset</Link>
+              <Link href={assetHref("STARKNET", p.nftContract, p.tokenId)} className="hover:underline">{t("View asset")}</Link>
             </p>
             <p className="text-xs text-muted-foreground">
-              <AddressDisplay address={p.proposer} chars={4} showCopy={false} /> proposed {p.amount}
+              <AddressDisplay address={p.proposer} chars={4} showCopy={false} />{" "}{t("proposed {amount}", { amount: p.amount })}
             </p>
           </div>
           <div className="flex gap-1.5 shrink-0">
-            <Button size="sm" variant="outline" aria-label="Decline proposal" disabled={action.busy} onClick={() => respond(p.proposalId, "reject")}>
+            <Button size="sm" variant="outline" aria-label={t("Decline proposal")} disabled={action.busy} onClick={() => respond(p.proposalId, "reject")}>
               <Spinner active={action.busy && action.activeId === p.proposalId} idle={<X className="h-3 w-3" />} />
             </Button>
-            <Button size="sm" className="bg-brand-rose hover:brightness-110 text-white" aria-label="Accept proposal" disabled={action.busy} onClick={() => respond(p.proposalId, "accept")}>
+            <Button size="sm" className="bg-brand-rose hover:brightness-110 text-white" aria-label={t("Accept proposal")} disabled={action.busy} onClick={() => respond(p.proposalId, "accept")}>
               <Spinner active={action.busy && action.activeId === p.proposalId} idle={<CheckCircle2 className="h-3 w-3" />} />
             </Button>
           </div>
@@ -129,11 +132,12 @@ function ReceivedProposals({ walletAddress }: { walletAddress: string }) {
 }
 
 function SentProposals({ walletAddress }: { walletAddress: string }) {
+  const t = useT();
   const { proposals, isLoading, mutate } = useSponsorshipProposals({ proposer: walletAddress, open: true });
   const action = useRowAction({ title: "Withdraw proposal", working: "Withdrawing your proposal…", message: successMessages.proposalWithdrawn() });
 
   if (isLoading) return <Skeleton className="h-20 w-full rounded-xl" />;
-  if (proposals.length === 0) return <p className="text-sm text-muted-foreground">No pending proposals sent.</p>;
+  if (proposals.length === 0) return <p className="text-sm text-muted-foreground">{t("No pending proposals sent.")}</p>;
 
   return (
     <div className="space-y-2">
@@ -142,9 +146,9 @@ function SentProposals({ walletAddress }: { walletAddress: string }) {
         <div key={p.id} className="bento-cell p-4 flex items-center justify-between gap-3">
           <div className="min-w-0">
             <p className="text-sm font-semibold">
-              <Link href={assetHref("STARKNET", p.nftContract, p.tokenId)} className="hover:underline">View asset</Link>
+              <Link href={assetHref("STARKNET", p.nftContract, p.tokenId)} className="hover:underline">{t("View asset")}</Link>
             </p>
-            <p className="text-xs text-muted-foreground">You proposed {p.amount}</p>
+            <p className="text-xs text-muted-foreground">{t("You proposed {amount}", { amount: p.amount })}</p>
           </div>
           <Button
             size="sm"
@@ -155,7 +159,7 @@ function SentProposals({ walletAddress }: { walletAddress: string }) {
             }
           >
             <Spinner active={action.busy && action.activeId === p.proposalId} idle={null} className="mr-1.5" />
-            Withdraw
+            {t("Withdraw")}
           </Button>
         </div>
       ))}
@@ -177,6 +181,7 @@ function LicenseList({ loading, empty, children }: { loading: boolean; empty: Em
 }
 
 export function PortfolioSponsorships() {
+  const t = useT();
   const { walletAddress } = useMedialaneApp();
   const { offers } = useSponsorshipOffers(walletAddress ? { author: walletAddress, open: true } : undefined);
   const { licenses: held, isLoading: heldLoading } = useSponsorshipLicenses(walletAddress ? { holder: walletAddress } : undefined);
@@ -187,13 +192,13 @@ export function PortfolioSponsorships() {
   return (
     <div className="space-y-8">
       <section className="space-y-3">
-        <h2 className="text-sm font-bold flex items-center gap-2"><Handshake className="h-4 w-4 text-brand-rose" />Proposals awaiting your decision</h2>
+        <h2 className="text-sm font-bold flex items-center gap-2"><Handshake className="h-4 w-4 text-brand-rose" />{t("Proposals awaiting your decision")}</h2>
         <ReceivedProposals walletAddress={walletAddress} />
       </section>
 
       {offers.length > 0 && (
         <section className="space-y-3">
-          <h2 className="text-sm font-bold">Bids on your offers</h2>
+          <h2 className="text-sm font-bold">{t("Bids on your offers")}</h2>
           <div className="space-y-2">
             {offers.map((o) => <OfferBidsRow key={o.id} offer={o} />)}
           </div>
@@ -201,33 +206,33 @@ export function PortfolioSponsorships() {
       )}
 
       <section className="space-y-3">
-        <h2 className="text-sm font-bold">Proposals you&apos;ve sent</h2>
+        <h2 className="text-sm font-bold">{t("Proposals you've sent")}</h2>
         <SentProposals walletAddress={walletAddress} />
       </section>
 
       <section className="space-y-3">
-        <h2 className="text-sm font-bold">Licenses you hold</h2>
+        <h2 className="text-sm font-bold">{t("Licenses you hold")}</h2>
         <LicenseList loading={heldLoading} empty={emptyMessages.heldLicenses}>
           {held.map((l) => (
             <div key={l.id} className="bento-cell p-4">
               <p className="text-sm font-semibold">
-                <Link href={assetHref("STARKNET", l.assetContract, l.assetTokenId)} className="hover:underline">License on this asset</Link>
+                <Link href={assetHref("STARKNET", l.assetContract, l.assetTokenId)} className="hover:underline">{t("License on this asset")}</Link>
               </p>
-              <p className="text-xs text-muted-foreground">from <AddressDisplay address={l.author} chars={4} showCopy={false} /></p>
+              <p className="text-xs text-muted-foreground">{t("from")} <AddressDisplay address={l.author} chars={4} showCopy={false} /></p>
             </div>
           ))}
         </LicenseList>
       </section>
 
       <section className="space-y-3">
-        <h2 className="text-sm font-bold">Licenses issued on your work</h2>
+        <h2 className="text-sm font-bold">{t("Licenses issued on your work")}</h2>
         <LicenseList loading={issuedLoading} empty={emptyMessages.issuedLicenses}>
           {issued.map((l) => (
             <div key={l.id} className="bento-cell p-4">
               <p className="text-sm font-semibold">
-                <Link href={assetHref("STARKNET", l.assetContract, l.assetTokenId)} className="hover:underline">License on this asset</Link>
+                <Link href={assetHref("STARKNET", l.assetContract, l.assetTokenId)} className="hover:underline">{t("License on this asset")}</Link>
               </p>
-              <p className="text-xs text-muted-foreground">held by <AddressDisplay address={l.currentHolder ?? l.recipient} chars={4} showCopy={false} /></p>
+              <p className="text-xs text-muted-foreground">{t("held by")} <AddressDisplay address={l.currentHolder ?? l.recipient} chars={4} showCopy={false} /></p>
             </div>
           ))}
         </LicenseList>

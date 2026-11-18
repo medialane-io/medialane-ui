@@ -20,6 +20,7 @@ import { assetHref as buildAssetHref, collectionHref as buildCollectionHref } fr
 import type { ApiToken, Chain } from "@medialane/sdk";
 import { tokenProfileLink } from "../utils/token-profile-link.js";
 import { useImageUrl } from "../utils/use-image-url.js";
+import { useT } from "../i18n/provider.js";
 
 
 const BTN_BASE = "h-8 rounded-[9px] flex items-center justify-center gap-1.5 text-xs font-semibold transition-all active:scale-[0.98] shadow-none border-0";
@@ -42,6 +43,7 @@ export interface TokenCardProps {
 type TokenCardActions = Pick<TokenCardProps, "onList" | "onTransfer" | "onArchive" | "onCancel" | "onBuy" | "onOffer">;
 
 export function TokenCard({ token, isOwner = false, onReport, usdValue, ...handlers }: TokenCardProps) {
+  const t = useT();
   const archived = token.isArchived;
   const { onList, onTransfer, onArchive, onCancel, onBuy, onOffer }: TokenCardActions = archived ? {} : handlers;
   const resolveImage = useImageUrl();
@@ -102,14 +104,14 @@ export function TokenCard({ token, isOwner = false, onReport, usdValue, ...handl
           {archived && (
             <span className="absolute bottom-2 left-2 inline-flex items-center gap-1 rounded-full bg-black/30 px-3 py-1 text-xs font-medium text-white backdrop-blur-md">
               <Archive className="h-3 w-3" aria-hidden />
-              Archived
+              {t("Archived")}
             </span>
           )}
 
           {(token.metadataStatus === "PENDING" || token.metadataStatus === "FETCHING") && (
             <div className="absolute bottom-0 inset-x-0 flex items-center justify-center gap-1.5 bg-black/50 backdrop-blur-sm py-1.5">
               <Loader2 className="h-3 w-3 animate-spin text-white/70" />
-              <span className="text-2xs text-white/70">Indexing…</span>
+              <span className="text-2xs text-white/70">{t("Indexing…")}</span>
             </div>
           )}
         </div>
@@ -133,7 +135,7 @@ export function TokenCard({ token, isOwner = false, onReport, usdValue, ...handl
 
         <Link href={assetHref} className={cn(BTN_OUTLINE, "px-2.5", hasPrimaryAction ? "shrink-0" : "flex-1")}>
           <ArrowUpRight className="h-3.5 w-3.5" />
-          View
+          {t("View")}
         </Link>
 
         {isOwner ? (
@@ -143,7 +145,7 @@ export function TokenCard({ token, isOwner = false, onReport, usdValue, ...handl
               onClick={(e) => { e.preventDefault(); e.stopPropagation(); onList(token); }}
             >
               <Tag className="h-3.5 w-3.5 mr-1.5" />
-              Sell
+              {t("Sell")}
             </button>
           ) : null
         ) : listingOrder && onBuy ? (
@@ -153,7 +155,7 @@ export function TokenCard({ token, isOwner = false, onReport, usdValue, ...handl
               onClick={handleBuy}
             >
               <Zap className="h-3.5 w-3.5 shrink-0" />
-              Buy
+              {t("Buy")}
             </button>
           </div>
         ) : !listingOrder && onOffer ? (
@@ -162,7 +164,7 @@ export function TokenCard({ token, isOwner = false, onReport, usdValue, ...handl
             onClick={handleOffer}
           >
             <HandCoins className="h-3.5 w-3.5 mr-1.5" />
-            Offer
+            {t("Offer")}
           </button>
         ) : null}
 
@@ -170,7 +172,7 @@ export function TokenCard({ token, isOwner = false, onReport, usdValue, ...handl
           <DropdownMenuTrigger asChild>
             <button
               className={cn(BTN_OUTLINE, "w-8 p-0 shrink-0")}
-              aria-label="More actions"
+              aria-label={t("More actions")}
             >
               <MoreHorizontal className="h-3.5 w-3.5" />
             </button>
@@ -180,7 +182,7 @@ export function TokenCard({ token, isOwner = false, onReport, usdValue, ...handl
             <DropdownMenuItem asChild>
               <Link href={assetHref} className="flex items-center gap-2">
                 <ArrowUpRight className="h-3.5 w-3.5 text-muted-foreground" />
-                View asset
+                {t("View asset")}
               </Link>
             </DropdownMenuItem>
 
@@ -194,7 +196,7 @@ export function TokenCard({ token, isOwner = false, onReport, usdValue, ...handl
                     onClick={() => onList(token)}
                   >
                     <Tag className="h-3.5 w-3.5" />
-                    Sell
+                    {t("Sell")}
                   </DropdownMenuItem>
                 )}
                 {onTransfer && (
@@ -203,7 +205,7 @@ export function TokenCard({ token, isOwner = false, onReport, usdValue, ...handl
                     onClick={() => onTransfer(token)}
                   >
                     <ArrowRightLeft className="h-3.5 w-3.5 text-muted-foreground" />
-                    Transfer
+                    {t("Transfer")}
                   </DropdownMenuItem>
                 )}
                 {onArchive && token.standard === "ERC721" && (
@@ -212,7 +214,7 @@ export function TokenCard({ token, isOwner = false, onReport, usdValue, ...handl
                     onClick={() => onArchive(token)}
                   >
                     <Archive className="h-3.5 w-3.5" />
-                    Permanent archive
+                    {t("Permanent archive")}
                   </DropdownMenuItem>
                 )}
                 {listingOrder && onCancel && (
@@ -221,7 +223,7 @@ export function TokenCard({ token, isOwner = false, onReport, usdValue, ...handl
                     onClick={() => onCancel(token)}
                   >
                     <XCircle className="h-3.5 w-3.5" />
-                    Cancel listing
+                    {t("Cancel listing")}
                   </DropdownMenuItem>
                 )}
               </>
@@ -234,7 +236,7 @@ export function TokenCard({ token, isOwner = false, onReport, usdValue, ...handl
                   >
                     <Zap className="h-3.5 w-3.5" />
                     <span className="flex items-center gap-1">
-                      Buy —
+                      {t("Buy —")}
                       <CurrencyIcon symbol={listingOrder.price.currency} size={12} />
                       {formatDisplayPrice(listingOrder.price.formatted)}
                     </span>
@@ -246,7 +248,7 @@ export function TokenCard({ token, isOwner = false, onReport, usdValue, ...handl
                     onClick={handleOffer}
                   >
                     <HandCoins className="h-3.5 w-3.5" />
-                    Make offer
+                    {t("Make offer")}
                   </DropdownMenuItem>
                 )}
               </>
@@ -255,7 +257,7 @@ export function TokenCard({ token, isOwner = false, onReport, usdValue, ...handl
             <DropdownMenuItem asChild>
               <Link href={remixHref} className="flex items-center gap-2 text-brand-purple focus:text-brand-purple">
                 <GitBranch className="h-3.5 w-3.5" />
-                Remix
+                {t("Remix")}
               </Link>
             </DropdownMenuItem>
 
@@ -264,7 +266,7 @@ export function TokenCard({ token, isOwner = false, onReport, usdValue, ...handl
             <DropdownMenuItem asChild>
               <Link href={collectionHref} className="flex items-center gap-2">
                 <Layers className="h-3.5 w-3.5 text-muted-foreground" />
-                View collection
+                {t("View collection")}
               </Link>
             </DropdownMenuItem>
 
@@ -285,7 +287,7 @@ export function TokenCard({ token, isOwner = false, onReport, usdValue, ...handl
                   onClick={() => onReport(token)}
                 >
                   <Flag className="h-3.5 w-3.5" />
-                  Report
+                  {t("Report")}
                 </DropdownMenuItem>
               </>
             )}

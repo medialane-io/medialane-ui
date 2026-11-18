@@ -6,6 +6,7 @@ import { cn } from "../../utils/cn.js";
 import { Button } from "../button.js";
 import type { MediaKind } from "./types.js";
 import { acceptFor } from "../../utils/upload-limits.js";
+import { useT } from "../../i18n/provider.js";
 
 export interface DropzoneProps {
   mediaKindLock?: MediaKind;
@@ -24,6 +25,7 @@ export function Dropzone({
   onFileSelected,
   connectLabel = "Sign in",
 }: DropzoneProps) {
+  const t = useT();
   const mediaInputRef = useRef<HTMLInputElement>(null);
 
   const openMediaPicker = () => {
@@ -35,7 +37,7 @@ export function Dropzone({
     <section
       role="button"
       tabIndex={0}
-      aria-label={hasWallet ? "Upload media" : `${connectLabel} to upload media`}
+      aria-label={hasWallet ? t("Upload media") : `${connectLabel} to upload media`}
       onClick={openMediaPicker}
       onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openMediaPicker(); } }}
       onDragOver={(e) => e.preventDefault()}
@@ -50,10 +52,10 @@ export function Dropzone({
       </div>
       <div className="space-y-1.5 px-6">
         <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">
-          {mediaKindLock ? `Drop or upload an ${mediaKindLock}` : "Drop or upload your media"}
+          {mediaKindLock ? `Drop or upload an ${mediaKindLock}` : t("Drop or upload your media")}
         </h2>
         <p className="text-base text-muted-foreground max-w-sm mx-auto">
-          {mediaKindLock === "image" ? "It becomes your avatar and app theme." : "Protect your creation and monetize it worldwide."}
+          {mediaKindLock === "image" ? t("It becomes your avatar and app theme.") : t("Protect your creation and monetize it worldwide.")}
         </p>
       </div>
       <Button
@@ -65,7 +67,7 @@ export function Dropzone({
         {hasWallet ? (
           <>
             <Upload className="h-3.5 w-3.5 mr-1.5" />
-            Browse files
+            {t("Browse files")}
           </>
         ) : (
           <>
@@ -75,7 +77,7 @@ export function Dropzone({
         )}
       </Button>
       <p className="text-2xs text-muted-foreground/70">
-        {mediaKindLock === "image" ? "JPG, PNG, GIF, WebP, or SVG" : "Images, audio, video, PDFs and documents"}
+        {mediaKindLock === "image" ? t("JPG, PNG, GIF, WebP, or SVG") : t("Images, audio, video, PDFs and documents")}
       </p>
       <input
         ref={mediaInputRef}

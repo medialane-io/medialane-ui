@@ -18,6 +18,7 @@ import { cn } from "../utils/cn.js";
 import { isSameAddress } from "../utils/same-address.js";
 import { useTokensByIpType } from "../utils/use-tokens-by-ip-type.js";
 import { emptyMessages } from "../utils/empty-messages.js";
+import { useT } from "../i18n/provider.js";
 
 const PAGE_SIZE = 24;
 
@@ -43,6 +44,7 @@ export interface IpTypePageProps {
 }
 
 export function IpTypePage({ slug, useMarketActions }: IpTypePageProps) {
+  const t = useT();
   const { walletAddress } = useMedialaneApp();
   const market = useMarketActions();
   const config = IP_TYPE_MAP[slug];
@@ -155,9 +157,9 @@ export function IpTypePage({ slug, useMarketActions }: IpTypePageProps) {
             <h1 className="text-3xl font-semibold">{config?.label ?? slug}</h1>
             <p className="text-muted-foreground mt-0.5">
               {meta?.total != null ? (
-                <>{meta.total.toLocaleString()} assets · {listedCount} market</>
+                <>{t("{total} assets · {listedCount} market", { total: meta.total.toLocaleString(), listedCount })}</>
               ) : (
-                "Browsing indexed digital assets on Medialane"
+                t("Browsing indexed digital assets on Medialane")
               )}
             </p>
           </div>
@@ -166,7 +168,7 @@ export function IpTypePage({ slug, useMarketActions }: IpTypePageProps) {
         <div className="flex items-center gap-2 flex-wrap">
           <button
             onClick={() => setFiltersOpen(true)}
-            aria-label="Filters"
+            aria-label={t("Filters")}
             className={cn(
               "inline-flex items-center gap-1.5 text-xs px-3.5 py-2 rounded-full border font-medium transition-colors",
               hasActiveFilters
@@ -184,13 +186,13 @@ export function IpTypePage({ slug, useMarketActions }: IpTypePageProps) {
 
           {listedOnly && (
             <Badge variant="secondary" className="cursor-pointer gap-1 text-xs" onClick={() => setListedOnly(false)}>
-              Listed only
+              {t("Listed only")}
               <XIcon className="h-3 w-3" />
             </Badge>
           )}
           {sortOrder !== "recent" && (
             <Badge variant="secondary" className="cursor-pointer gap-1 text-xs" onClick={() => setSortOrder("recent")}>
-              {sortOrder === "price_asc" ? "Price ↑" : "Price ↓"}
+              {sortOrder === "price_asc" ? t("Price ↑") : t("Price ↓")}
               <XIcon className="h-3 w-3" />
             </Badge>
           )}
@@ -213,11 +215,11 @@ export function IpTypePage({ slug, useMarketActions }: IpTypePageProps) {
             <div className="flex items-center justify-between px-5 py-4 border-b border-border/60 pr-12">
               <DialogTitle className="text-base font-bold flex items-center gap-2">
                 <SlidersHorizontal className="h-4 w-4 text-primary" />
-                Filters
+                {t("Filters")}
               </DialogTitle>
               {hasActiveFilters && (
                 <Button variant="ghost" size="sm" className="h-7 text-xs text-muted-foreground" onClick={resetAll}>
-                  Clear all
+                  {t("Clear all")}
                 </Button>
               )}
             </div>
@@ -225,9 +227,9 @@ export function IpTypePage({ slug, useMarketActions }: IpTypePageProps) {
             <div className="flex-1 overflow-y-auto px-5 py-4 space-y-5">
 
               <div className="space-y-2">
-                <p className="text-2xs font-semibold text-muted-foreground">Status</p>
+                <p className="text-2xs font-semibold text-muted-foreground">{t("Status")}</p>
                 <div className="flex flex-wrap gap-1.5">
-                  <FilterChip active={!listedOnly} onClick={() => setListedOnly(false)} label="All" />
+                  <FilterChip active={!listedOnly} onClick={() => setListedOnly(false)} label={t("All")} />
                   <FilterChip
                     active={listedOnly}
                     onClick={() => setListedOnly(true)}
@@ -237,35 +239,35 @@ export function IpTypePage({ slug, useMarketActions }: IpTypePageProps) {
               </div>
 
               <div className="space-y-2">
-                <p className="text-2xs font-semibold text-muted-foreground">Sort</p>
+                <p className="text-2xs font-semibold text-muted-foreground">{t("Sort")}</p>
                 <div className="flex flex-wrap gap-1.5">
-                  <FilterChip active={sortOrder === "recent"} onClick={() => setSortOrder("recent")} label="Recent" />
-                  <FilterChip active={sortOrder === "price_asc"} onClick={() => setSortOrder("price_asc")} label="Price ↑" />
-                  <FilterChip active={sortOrder === "price_desc"} onClick={() => setSortOrder("price_desc")} label="Price ↓" />
+                  <FilterChip active={sortOrder === "recent"} onClick={() => setSortOrder("recent")} label={t("Recent")} />
+                  <FilterChip active={sortOrder === "price_asc"} onClick={() => setSortOrder("price_asc")} label={t("Price ↑")} />
+                  <FilterChip active={sortOrder === "price_desc"} onClick={() => setSortOrder("price_desc")} label={t("Price ↓")} />
                 </div>
               </div>
 
               <div className="space-y-2">
-                <p className="text-2xs font-semibold text-muted-foreground">License</p>
+                <p className="text-2xs font-semibold text-muted-foreground">{t("License")}</p>
                 <div className="flex flex-wrap gap-1.5">
                   {["all", "CC0", "CC BY", "CC BY-SA", "CC BY-NC", "CC BY-ND", "Custom"].map((lic) => (
                     <FilterChip
                       key={lic}
                       active={licenseFilter === lic}
                       onClick={() => setLicenseFilter(lic)}
-                      label={lic === "all" ? "All licenses" : lic}
+                      label={lic === "all" ? t("All licenses") : lic}
                     />
                   ))}
                 </div>
               </div>
 
               <div className="space-y-2">
-                <p className="text-2xs font-semibold text-muted-foreground">Creator</p>
+                <p className="text-2xs font-semibold text-muted-foreground">{t("Creator")}</p>
                 <div className="relative">
                   <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
                   <Input
                     className="h-9 text-sm pl-8"
-                    placeholder="Name or wallet address…"
+                    placeholder={t("Name or wallet address…")}
                     value={creatorSearchInput}
                     onChange={(e) => setCreatorSearchInput(e.target.value)}
                   />
@@ -273,7 +275,7 @@ export function IpTypePage({ slug, useMarketActions }: IpTypePageProps) {
               </div>
 
               <div className="space-y-2 pt-1 border-t border-border/60">
-                <p className="text-2xs font-semibold text-muted-foreground">IP Type</p>
+                <p className="text-2xs font-semibold text-muted-foreground">{t("IP Type")}</p>
                 <div className="flex flex-wrap gap-1.5">
                   {IP_TYPE_CONFIG.map((t) => (
                     <Link
@@ -296,7 +298,7 @@ export function IpTypePage({ slug, useMarketActions }: IpTypePageProps) {
 
             <div className="px-5 py-3 border-t border-border/60">
               <Button className="w-full" onClick={() => setFiltersOpen(false)}>
-                Apply filters
+                {t("Apply filters")}
               </Button>
             </div>
           </DialogContent>
@@ -318,16 +320,16 @@ export function IpTypePage({ slug, useMarketActions }: IpTypePageProps) {
           )}
           <div>
             <p className="font-semibold text-lg">
-              {listedOnly ? "Listed assets appear here" : emptyMessages.assetsOfType.title}
+              {listedOnly ? t("Listed assets appear here") : emptyMessages.assetsOfType.title}
             </p>
             <p className="text-muted-foreground text-sm mt-1">
               {listedOnly
-                ? "Try removing the 'Listed only' filter to see all assets."
+                ? t("Try removing the 'Listed only' filter to see all assets.")
                 : emptyMessages.assetsOfType.description}
             </p>
           </div>
           <Button asChild variant="outline">
-            <Link href="/launchpad/single-editions">Create Asset</Link>
+            <Link href="/launchpad/single-editions">{t("Create Asset")}</Link>
           </Button>
         </div>
       ) : (

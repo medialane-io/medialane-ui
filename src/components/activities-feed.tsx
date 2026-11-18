@@ -9,10 +9,12 @@ import { ACTIVITY_TYPE_CONFIG, TYPE_FILTERS } from "../data/activity.js";
 import { ActivityListSkeleton, ActivityRow } from "./activity-row.js";
 import { cn } from "../utils/cn.js";
 import { emptyMessages } from "../utils/empty-messages.js";
+import { useT } from "../i18n/provider.js";
 
 const PAGE_SIZE = 30;
 
 export function ActivitiesFeed() {
+  const t = useT();
   const [page, setPage] = useState(1);
   const [typeFilter, setTypeFilter] = useState("");
   const [allActivities, setAllActivities] = useState<ApiActivity[]>([]);
@@ -63,12 +65,12 @@ export function ActivitiesFeed() {
             <span className="font-semibold text-foreground tabular-nums">
               {total.toLocaleString()}
             </span>
-            {typeFilter ? `${typeFilter} events` : "total events"}
+            {typeFilter ? `${typeFilter} events` : t("total events")}
           </span>
           {typeFilter && allActivities.length > 0 && (
             <>
               <span className="text-muted-foreground/40">·</span>
-              <span>{allActivities.length.toLocaleString()} loaded</span>
+              <span>{t("{count} loaded", { count: allActivities.length.toLocaleString() })}</span>
             </>
           )}
         </div>

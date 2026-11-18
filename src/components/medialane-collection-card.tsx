@@ -2,6 +2,7 @@
 
 import { ImageIcon } from "lucide-react";
 import { cn } from "../utils/cn.js";
+import { useT } from "../i18n/provider.js";
 
 export interface MedialaneCollectionCardProps {
 
@@ -28,6 +29,7 @@ export function MedialaneCollectionCard({
   creatorHref,
   className,
 }: MedialaneCollectionCardProps) {
+  const t = useT();
   const displayName = name?.trim() || "Untitled";
 
   return (
@@ -67,7 +69,7 @@ export function MedialaneCollectionCard({
             <div className="my-3 h-px bg-black/10 dark:bg-white/10" />
             <div className="flex items-center gap-2">
               <span className="text-2xs font-bold tracking-[0.18em] text-brand-navy/50 dark:text-white/50">
-                STARKNET
+                {t("STARKNET")}
               </span>
               {creator && (
                 creatorHref ? (

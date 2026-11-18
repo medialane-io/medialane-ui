@@ -6,6 +6,7 @@ import Link from "./link.js";
 import { RefreshCw, AlertCircle } from "lucide-react";
 import { ReactNode } from "react";
 import { describeError } from "../utils/describe-error.js";
+import { useT } from "../i18n/provider.js";
 
 interface EmptyOrErrorProps {
   isLoading: boolean;
@@ -37,6 +38,7 @@ export function EmptyOrError({
   skeletonNode,
   children,
 }: EmptyOrErrorProps) {
+  const t = useT();
   if (isLoading) {
     if (skeletonNode) return <>{skeletonNode}</>;
     return (
@@ -60,7 +62,7 @@ export function EmptyOrError({
         {onRetry && (
           <Button variant="outline" size="sm" onClick={onRetry}>
             <RefreshCw className="h-3.5 w-3.5 mr-1.5" />
-            Try again
+            {t("Try again")}
           </Button>
         )}
       </div>
@@ -83,7 +85,7 @@ export function EmptyOrError({
           {onRetry && (
             <Button variant="outline" size="sm" onClick={onRetry}>
               <RefreshCw className="h-3.5 w-3.5 mr-1.5" />
-              Refresh
+              {t("Refresh")}
             </Button>
           )}
           {emptyCta && (

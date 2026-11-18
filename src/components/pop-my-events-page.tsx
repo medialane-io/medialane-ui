@@ -11,8 +11,10 @@ import { SignInPrompt } from "./sign-in-prompt.js";
 import { useMedialaneApp } from "./medialane-app.js";
 import { useImageUrl } from "../utils/use-image-url.js";
 import { useMyPopEvents } from "../utils/use-pop.js";
+import { useT } from "../i18n/provider.js";
 
 function MyEventCard({ collection }: { collection: ApiCollection }) {
+  const t = useT();
   const imageUrl = useImageUrl()(collection.image, { width: 128 });
   const initial = (collection.name ?? "E").charAt(0).toUpperCase();
 
@@ -20,7 +22,7 @@ function MyEventCard({ collection }: { collection: ApiCollection }) {
     <div className="bento-cell overflow-hidden flex gap-4 p-4 items-center">
       <div className="relative h-16 w-16 rounded-xl overflow-hidden bg-muted shrink-0">
         {imageUrl ? (
-          <Image src={imageUrl} alt={collection.name ?? "Event"} fill className="object-cover" unoptimized />
+          <Image src={imageUrl} alt={collection.name ?? t("Event")} fill className="object-cover" unoptimized />
         ) : (
           <div className="absolute inset-0 bg-gradient-to-br from-green-500/40 to-green-900/50 flex items-center justify-center">
             <span className="text-2xl font-black text-white/20">{initial}</span>
@@ -28,19 +30,19 @@ function MyEventCard({ collection }: { collection: ApiCollection }) {
         )}
       </div>
       <div className="flex-1 min-w-0 space-y-0.5">
-        <p className="font-bold text-sm truncate">{collection.name ?? "Unnamed Event"}</p>
+        <p className="font-bold text-sm truncate">{collection.name ?? t("Unnamed Event")}</p>
         {collection.symbol && (
           <p className="text-xs text-muted-foreground">{collection.symbol}</p>
         )}
         <p className="text-xs text-muted-foreground">
-          {(collection.totalSupply ?? 0).toLocaleString()} claimed
+          {(collection.totalSupply ?? 0).toLocaleString()} {t("claimed")}
         </p>
       </div>
       <div className="flex items-center gap-2 shrink-0">
         <Button asChild variant="outline" size="sm">
           <Link href={`/launchpad/pop/${collection.contractAddress}/manage`}>
             <Settings className="h-3.5 w-3.5 mr-1" />
-            Manage
+            {t("Manage")}
           </Link>
         </Button>
       </div>
@@ -49,6 +51,7 @@ function MyEventCard({ collection }: { collection: ApiCollection }) {
 }
 
 export function PopMyEventsPage() {
+  const t = useT();
   const { walletAddress, walletLoading } = useMedialaneApp();
   const { events: collections, isLoading } = useMyPopEvents(walletAddress);
 
@@ -56,7 +59,7 @@ export function PopMyEventsPage() {
     return (
       <div className="mx-auto max-w-lg px-4 pt-24 pb-8">
         {walletLoading ? <Skeleton className="h-40 w-full rounded-xl" /> : (
-          <SignInPrompt icon={<Award className="h-10 w-10 text-muted-foreground/20" />} title="Sign in to see your events" />
+          <SignInPrompt icon={<Award className="h-10 w-10 text-muted-foreground/20" />} title={t("Sign in to see your events")} />
         )}
       </div>
     );
@@ -69,15 +72,15 @@ export function PopMyEventsPage() {
           <div>
             <span className="pill-badge inline-flex gap-1.5 mb-2">
               <Award className="h-3 w-3" />
-              POP Protocol
+              {t("POP Protocol")}
             </span>
-            <h1 className="text-2xl font-bold mt-1">My Events</h1>
-            <p className="text-sm text-muted-foreground">Events you&apos;ve created</p>
+            <h1 className="text-2xl font-bold mt-1">{t("My Events")}</h1>
+            <p className="text-sm text-muted-foreground">{t("Events you've created")}</p>
           </div>
           <Button asChild size="sm" className="bg-green-600 hover:bg-green-700 text-white gap-1.5">
             <Link href="/launchpad/pop/create">
               <Plus className="h-3.5 w-3.5" />
-              New event
+              {t("New event")}
             </Link>
           </Button>
         </div>
@@ -93,11 +96,11 @@ export function PopMyEventsPage() {
         <FadeIn>
           <div className="bento-cell border-dashed p-16 text-center space-y-3">
             <Award className="h-10 w-10 text-muted-foreground/20 mx-auto" />
-            <p className="text-sm text-muted-foreground">No events yet</p>
+            <p className="text-sm text-muted-foreground">{t("No events yet")}</p>
             <Button asChild size="sm" className="bg-green-600 hover:bg-green-700 text-white gap-1.5">
               <Link href="/launchpad/pop/create">
                 <Plus className="h-3.5 w-3.5" />
-                Create your first event
+                {t("Create your first event")}
               </Link>
             </Button>
           </div>

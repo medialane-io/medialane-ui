@@ -8,6 +8,7 @@ import { timeAgo } from "../utils/time.js";
 import { formatDisplayPrice } from "../utils/format.js";
 import { assetHref, type ApiActivity } from "@medialane/sdk";
 import { cn } from "../utils/cn.js";
+import { useT } from "../i18n/provider.js";
 
 
 const ACTIVITY_META: Record<string, { label: string; textColor: string; bg: string }> = {
@@ -37,6 +38,7 @@ export function ActivityTimelineRow({
   event,
   isLast,
 }: ActivityTimelineRowProps) {
+  const t = useT();
   const meta = ACTIVITY_META[event.type] ?? ACTIVITY_META.transfer;
   const Icon = ACTIVITY_ICONS[event.type] ?? ArrowRightLeft;
   const tokenId = event.nftTokenId ?? event.tokenId;
@@ -59,7 +61,7 @@ export function ActivityTimelineRow({
               </span>
               {contract && tokenId && (
                 <Link href={assetHref(event.chain ?? "STARKNET", contract, tokenId)} className="text-xs text-muted-foreground hover:text-foreground transition-colors">
-                  View asset
+                  {t("View asset")}
                 </Link>
               )}
             </div>

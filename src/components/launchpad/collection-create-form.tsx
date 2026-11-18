@@ -31,6 +31,7 @@ import { invalidatePortfolioCache } from "../../utils/portfolio-cache.js";
 import { suggestLaunchpadSymbol } from "../../utils/launchpad-defaults.js";
 import { symbolField, webLinkField } from "../../utils/launchpad-rules.js";
 import type { CollectionCreatePreset } from "./collection-create-presets.js";
+import { useT } from "../../i18n/provider.js";
 
 const schema = z.object({
   name: z.string().min(1, "Name required").max(FIELD_LIMITS.name),
@@ -46,6 +47,7 @@ export interface CollectionCreateFormProps {
 }
 
 export function CollectionCreateForm({ preset, aside }: CollectionCreateFormProps) {
+  const t = useT();
   const app = useMedialaneApp();
   const walletAddress = app.walletAddress;
   const tx = useTransaction();
@@ -212,12 +214,12 @@ export function CollectionCreateForm({ preset, aside }: CollectionCreateFormProp
                     {imageUploading ? (
                       <>
                         <Loader2 className="h-3.5 w-3.5 mr-1.5 animate-spin" />
-                        Uploading…
+                        {t("Uploading…")}
                       </>
                     ) : imageFile ? (
-                      "Change image"
+                      t("Change image")
                     ) : (
-                      "Upload image"
+                      t("Upload image")
                     )}
                   </Button>
                   {imageFile && (
@@ -226,12 +228,12 @@ export function CollectionCreateForm({ preset, aside }: CollectionCreateFormProp
                       onClick={clearImage}
                       className="flex items-center gap-1 text-xs text-muted-foreground hover:text-destructive transition-colors"
                     >
-                      <X className="h-3 w-3" /> Remove
+                      <X className="h-3 w-3" /> {t("Remove")}
                     </button>
                   )}
                   <p className="text-xs text-muted-foreground">
-                    JPG, PNG, GIF, SVG or WebP
-                    {imageUri && <span className="ml-2 text-emerald-500 font-medium">✓ Uploaded</span>}
+                    {t("JPG, PNG, GIF, SVG or WebP")}
+                    {imageUri && <span className="ml-2 text-emerald-500 font-medium">{t("✓ Uploaded")}</span>}
                   </p>
                   {copy.imageHelp && <p className="text-xs text-muted-foreground">{copy.imageHelp}</p>}
                   {uploadError && <p className="text-xs text-destructive">{uploadError}</p>}
@@ -250,7 +252,7 @@ export function CollectionCreateForm({ preset, aside }: CollectionCreateFormProp
 
             <FormField control={form.control} name="symbol" render={({ field }) => (
               <FormItem>
-                <FormLabel>Symbol *</FormLabel>
+                <FormLabel>{t("Symbol *")}</FormLabel>
                 <FormControl>
                   <Input
                     placeholder={copy.symbolPlaceholder}
@@ -266,7 +268,7 @@ export function CollectionCreateForm({ preset, aside }: CollectionCreateFormProp
 
             <FormField control={form.control} name="description" render={({ field }) => (
               <FormItem>
-                <FormLabel>Description <span className="text-muted-foreground font-normal">(optional)</span></FormLabel>
+                <FormLabel>{t("Description")} <span className="text-muted-foreground font-normal">{t("(optional)")}</span></FormLabel>
                 <FormControl><Textarea placeholder={copy.descriptionPlaceholder} rows={3} {...field} /></FormControl>
                 {copy.descriptionHint && <FormDescription>{copy.descriptionHint}</FormDescription>}
                 <FormMessage />

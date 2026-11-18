@@ -4,6 +4,7 @@ import { useMemo } from "react";
 import { SlidersHorizontal, X, Check } from "lucide-react";
 import { cn } from "../utils/cn.js";
 import type { ApiToken, CollectionTokensSort } from "@medialane/sdk";
+import { useT } from "../i18n/provider.js";
 
 const EXCLUDED_TRAIT_TYPES = new Set(["registration"]);
 
@@ -112,11 +113,12 @@ export function CollectionFiltersTrigger({
   showButton = true,
   showChips = true,
 }: CollectionFiltersTriggerProps) {
+  const t = useT();
   if (!showButton && (!showChips || (sortIsDefault && activeEntries.length === 0))) return null;
   return (
     <div className="flex items-center justify-end gap-2 flex-wrap">
       {showButton && (
-        <button onClick={onOpen} className={TRIGGER_BTN} aria-label="Filters">
+        <button onClick={onOpen} className={TRIGGER_BTN} aria-label={t("Filters")}>
           <SlidersHorizontal className="h-3.5 w-3.5" />
           {totalActiveCount > 0 && (
             <span className="h-4 min-w-4 rounded-full bg-primary text-2xs font-bold text-primary-foreground flex items-center justify-center px-1 -mr-1">
@@ -133,7 +135,7 @@ export function CollectionFiltersTrigger({
           onClick={onSortReset}
           className="inline-flex items-center gap-1 h-8 px-2.5 rounded-md border border-primary/40 bg-primary/10 text-xs font-medium text-foreground hover:bg-primary/20 transition-colors"
         >
-          <span className="text-muted-foreground text-2xs">Sort:</span>
+          <span className="text-muted-foreground text-2xs">{t("Sort:")}</span>
           <span>{SORT_OPTIONS.find((o) => o.value === sort)?.label}</span>
           <X className="h-3 w-3 text-muted-foreground ml-0.5" />
         </button>
@@ -157,7 +159,7 @@ export function CollectionFiltersTrigger({
           onClick={onClearAll}
           className="text-xs text-muted-foreground hover:text-foreground underline-offset-2 hover:underline transition-colors"
         >
-          Clear all
+          {t("Clear all")}
         </button>
       )}
         </>
@@ -185,12 +187,13 @@ export function CollectionFiltersBody({
   selected,
   onToggleValue,
 }: CollectionFiltersBodyProps) {
+  const t = useT();
   return (
     <div className="flex-1 min-w-0 overflow-y-auto overflow-x-hidden px-5 py-3 space-y-4">
 
       <div>
         <div className="mb-2">
-          <span className="text-sm font-medium">Sort by</span>
+          <span className="text-sm font-medium">{t("Sort by")}</span>
         </div>
         <div className="flex flex-wrap gap-1.5">
           {SORT_OPTIONS.map(({ value, label }) => {
@@ -220,8 +223,7 @@ export function CollectionFiltersBody({
                 <div className="flex items-center justify-between gap-3 mb-2">
                   <span className="min-w-0 truncate text-sm font-medium" title={section.traitType}>{section.traitType}</span>
                   <span className="shrink-0 text-2xs text-muted-foreground">
-                    {section.values.length} values
-                  </span>
+                    {t("{count} values", { count: section.values.length })}</span>
                 </div>
                 <div className="flex flex-wrap gap-1.5">
                   {section.values.map(({ value, count }) => {

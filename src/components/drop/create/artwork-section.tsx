@@ -10,6 +10,7 @@ import { MAX_DROP_SUPPLY } from "../../../utils/drop/metadata.js";
 import type { DropDraft, DropDraftErrors } from "../../../utils/drop/draft.js";
 import { previewUrl } from "../../../utils/drop/preview.js";
 import { acceptFor } from "../../../utils/upload-limits.js";
+import { useT } from "../../../i18n/provider.js";
 
 export interface SectionProps {
   draft: DropDraft;
@@ -36,8 +37,9 @@ export function ImagePick({ file, onPick, label }: { file: File | null; onPick: 
 }
 
 export function ArtworkSection({ draft, setDraft, errors }: SectionProps) {
+  const t = useT();
   return (
-    <Section title="Artwork" icon={<Images className="h-4 w-4" />}>
+    <Section title={t("Artwork")} icon={<Images className="h-4 w-4" />}>
       <ToggleGroup
         value={draft.kind === "edition" ? "Edition" : "Collection"}
         options={["Edition", "Collection"]}
@@ -45,16 +47,16 @@ export function ArtworkSection({ draft, setDraft, errors }: SectionProps) {
       />
       <p className="text-xs text-muted-foreground">
         {draft.kind === "edition"
-          ? "One artwork, sold as numbered copies."
-          : "Many unique items — each image becomes its own token."}
+          ? t("One artwork, sold as numbered copies.")
+          : t("Many unique items — each image becomes its own token.")}
       </p>
       {draft.kind === "edition" ? (
         <div className="space-y-4">
-          <ImagePick file={draft.edition} onPick={(f) => setDraft({ edition: f })} label="Choose the artwork" />
+          <ImagePick file={draft.edition} onPick={(f) => setDraft({ edition: f })} label={t("Choose the artwork")} />
           <div className="space-y-1.5">
-            <label className="text-sm font-medium" htmlFor="drop-supply">Copies</label>
+            <label className="text-sm font-medium" htmlFor="drop-supply">{t("Copies")}</label>
             <Input id="drop-supply" inputMode="numeric" value={draft.supply} onChange={(e) => setDraft({ supply: e.target.value.trim() })} className="max-w-[10rem]" />
-            <p className="text-xs text-muted-foreground">Up to {MAX_DROP_SUPPLY.toLocaleString("en-US")}.</p>
+            <p className="text-xs text-muted-foreground">{t("Up to {MAX_DROP_SUPPLY}.", { MAX_DROP_SUPPLY: MAX_DROP_SUPPLY.toLocaleString("en-US") })}</p>
             <FieldError message={errors.supply} />
           </div>
         </div>

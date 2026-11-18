@@ -14,6 +14,7 @@ import { markOffersAsSeen } from "../utils/seen-offers.js";
 import { useReceivedOffers, useUserOrders } from "../utils/use-orders.js";
 import { useRewards } from "../utils/use-rewards.js";
 import { useMySponsorshipDealCounts } from "../utils/use-sponsorship.js";
+import { useT } from "../i18n/provider.js";
 
 export interface PortfolioTab {
   key: string;
@@ -35,14 +36,15 @@ export const PORTFOLIO_TABS: PortfolioTab[] = [
 ];
 
 function SignedOut() {
+  const t = useT();
   const { onRequireWallet, connectLabel } = useMedialaneApp();
   return (
     <div className="mx-auto max-w-lg space-y-4 px-4 pt-24 pb-8 text-center">
       <Wallet className="mx-auto h-10 w-10 text-muted-foreground" />
-      <h1 className="text-2xl font-bold">Your portfolio</h1>
-      <p className="text-muted-foreground">Sign in to see your assets, listings and offers.</p>
+      <h1 className="text-2xl font-bold">{t("Your portfolio")}</h1>
+      <p className="text-muted-foreground">{t("Sign in to see your assets, listings and offers.")}</p>
       <Button size="lg" className="rounded-full px-7" onClick={onRequireWallet}>
-        {connectLabel ?? "Sign in"}
+        {connectLabel ?? t("Sign in")}
       </Button>
     </div>
   );

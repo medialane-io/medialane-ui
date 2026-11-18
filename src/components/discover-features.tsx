@@ -1,3 +1,5 @@
+"use client";
+
 import {
   BadgeCheck,
   Code,
@@ -17,6 +19,7 @@ import {
 } from "lucide-react";
 import { ScrollSection } from "./scroll-section.js";
 import { cn } from "../utils/cn.js";
+import { useT } from "../i18n/provider.js";
 
 const HUES = [
   { text: "text-brand-blue", border: "border-brand-blue/30", tint: "bg-brand-blue/10" },
@@ -43,8 +46,9 @@ const FEATURES: ReadonlyArray<{ icon: LucideIcon; title: string; description: st
 ];
 
 export function DiscoverFeatures() {
+  const t = useT();
   return (
-    <ScrollSection icon={<BadgeCheck />} title="Medialane features">
+    <ScrollSection icon={<BadgeCheck />} title={t("Medialane features")}>
       {FEATURES.map(({ icon: Icon, title, description }, i) => {
         const hue = HUES[i % HUES.length]!;
         return (

@@ -5,6 +5,7 @@ import { Wallet } from "lucide-react";
 import { Button } from "./button.js";
 import { Skeleton } from "./skeleton.js";
 import { useMedialaneApp } from "./medialane-app.js";
+import { useT } from "../i18n/provider.js";
 
 export interface WalletRequiredProps {
   icon: ElementType;
@@ -15,6 +16,7 @@ export interface WalletRequiredProps {
 }
 
 export function WalletRequired({ icon: Icon, iconClassName = "text-muted-foreground", title, description, children }: WalletRequiredProps) {
+  const t = useT();
   const { walletAddress, walletLoading, onRequireWallet, connectLabel } = useMedialaneApp();
 
   if (walletAddress) return <>{children}</>;
@@ -41,7 +43,7 @@ export function WalletRequired({ icon: Icon, iconClassName = "text-muted-foregro
           className="bg-transparent text-white rounded-[7px] hover:bg-transparent hover:brightness-110 active:scale-[0.98] transition-all"
         >
           <Wallet className="h-4 w-4 mr-1.5" />
-          {connectLabel ?? "Connect"}
+          {connectLabel ?? t("Connect")}
         </Button>
       </div>
     </div>

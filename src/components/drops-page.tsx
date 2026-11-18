@@ -6,8 +6,10 @@ import { DropFeatures } from "./drop/drop-features.js";
 import { DropListing } from "./drop/drop-listing.js";
 import { FadeIn } from "./motion-primitives.js";
 import { BackButton } from "./back-button.js";
+import { useT } from "../i18n/provider.js";
 
 export function DropsPage() {
+  const t = useT();
   return (
     <div className="pb-16 space-y-10">
 
@@ -18,8 +20,8 @@ export function DropsPage() {
             <ServiceHeader
               plain
               icon={<Package className="h-4 w-4 text-white" />}
-              title="Drops"
-              subtitle="Timed releases with a fixed supply. Browse live drops to collect, or launch your own."
+              title={t("Drops")}
+              subtitle={t("Timed releases with a fixed supply. Browse live drops to collect, or launch your own.")}
             />
           </div>
         </FadeIn>

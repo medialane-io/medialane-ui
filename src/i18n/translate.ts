@@ -16,12 +16,20 @@ function pluralCategory(locale: string, count: number): Intl.LDMLPluralRule {
 
 function fill(template: string, vars?: Vars): string {
   if (!vars) return template;
-  return template.replace(/\{(\w+)\}/g, (placeholder, name: string) => (name in vars ? String(vars[name]) : placeholder));
+  return template.replace(/\{(\w+)\}/g, (placeholder, name: string) => {
+    if (!(name in vars)) return placeholder;
+    const value = vars[name];
+    return value === undefined || value === null ? "" : String(value);
+  });
+}
+
+export function lookup(messages: Catalog, text: string): string {
+  const entry = messages[text];
+  return typeof entry === "string" ? entry : text;
 }
 
 export function translate({ messages, text, vars }: { messages: Catalog; text: string; vars?: Vars }): string {
-  const entry = messages[text];
-  return fill(typeof entry === "string" ? entry : text, vars);
+  return fill(lookup(messages, text), vars);
 }
 
 export function translatePlural({
@@ -48,7 +56,7 @@ export function translatePlural({
         : pluralCategory("en", count) === "one"
           ? one
           : other;
-  return fill(template, { ...vars, count });
+  return fill(template, { count, ...vars });
 }
 
 export const msg = (text: string): string => text;

@@ -17,6 +17,7 @@ import { draftSupply, type DropDraft } from "../../../utils/drop/draft.js";
 import { uploadAll, type UploadTask } from "../../../utils/drop/upload.js";
 import { launchDrop, saveExclusiveContent } from "../../../utils/drop/actions.js";
 import { useMedialaneApp } from "../../medialane-app.js";
+import { useT } from "../../../i18n/provider.js";
 
 type Step =
   | { kind: "review" }
@@ -26,6 +27,7 @@ type Step =
   | { kind: "error"; message: string };
 
 export function LaunchDialog({ open, onClose, draft }: { open: boolean; onClose: () => void; draft: DropDraft }) {
+  const t = useT();
   const app = useMedialaneApp();
   const [step, setStep] = useState<Step>({ kind: "review" });
   const [tasks, setTasks] = useState<UploadTask[]>([]);
@@ -107,57 +109,57 @@ export function LaunchDialog({ open, onClose, draft }: { open: boolean; onClose:
   return (
     <Dialog open={open} onOpenChange={(next) => { if (!next) close(); }}>
       <DialogContent className="gap-5" hideClose={step.kind === "uploading" || step.kind === "launching"}>
-        <DialogDescription className="sr-only">Review the drop and launch it.</DialogDescription>
+        <DialogDescription className="sr-only">{t("Review the drop and launch it.")}</DialogDescription>
         {step.kind === "review" && (
           <>
-            <DialogTitle className="text-lg font-semibold">Review and launch</DialogTitle>
+            <DialogTitle className="text-lg font-semibold">{t("Review and launch")}</DialogTitle>
             <div className="space-y-2 rounded-xl border border-border p-4 text-sm">
               <p className="font-semibold">{draft.name}</p>
-              <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Fixed after launch</p>
-              <Row label="Price" value={priceLabel(terms.price, terms.paymentToken)} />
-              <Row label="Supply" value={`${draftSupply(draft).toLocaleString("en-US")} ${draft.kind === "edition" ? (draftSupply(draft) === 1 ? "copy" : "copies") : draftSupply(draft) === 1 ? "item" : "items"}`} />
-              <Row label="Starts" value={terms.startTime === 0 ? "At launch" : new Date(terms.startTime * 1000).toLocaleString()} />
-              <Row label="Ends" value={terms.endTime === 0 ? "No end date" : new Date(terms.endTime * 1000).toLocaleString()} />
-              <Row label="Per wallet" value={terms.maxPerWallet === "0" ? "No limit" : terms.maxPerWallet} />
-              <Row label="Who can mint" value={list ? `${Object.keys(list.proofs).length} wallets on a list` : "Everyone"} />
-              <p className="pt-1 text-xs text-muted-foreground">The artwork and these terms can't be changed after launch. You can change the list later.</p>
+              <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">{t("Fixed after launch")}</p>
+              <Row label={t("Price")} value={priceLabel(terms.price, terms.paymentToken)} />
+              <Row label={t("Supply")} value={`${draftSupply(draft).toLocaleString("en-US")} ${draft.kind === "edition" ? (draftSupply(draft) === 1 ? "copy" : "copies") : draftSupply(draft) === 1 ? "item" : "items"}`} />
+              <Row label={t("Starts")} value={terms.startTime === 0 ? "At launch" : new Date(terms.startTime * 1000).toLocaleString()} />
+              <Row label={t("Ends")} value={terms.endTime === 0 ? "No end date" : new Date(terms.endTime * 1000).toLocaleString()} />
+              <Row label={t("Per wallet")} value={terms.maxPerWallet === "0" ? "No limit" : terms.maxPerWallet} />
+              <Row label={t("Who can mint")} value={list ? `${Object.keys(list.proofs).length} wallets on a list` : "Everyone"} />
+              <p className="pt-1 text-xs text-muted-foreground">{t("The artwork and these terms can't be changed after launch. You can change the list later.")}</p>
             </div>
-            <GradientButton big onClick={() => void run()}>Launch drop</GradientButton>
+            <GradientButton big onClick={() => void run()}>{t("Launch drop")}</GradientButton>
           </>
         )}
         {step.kind === "uploading" && (
           <>
-            <DialogTitle className="flex items-center gap-2 text-lg font-semibold"><Loader2 className="h-4 w-4 animate-spin" />Uploading</DialogTitle>
-            <p className="text-sm text-muted-foreground">{tasks.filter((t) => t.status === "done").length} of {tasks.length} files</p>
+            <DialogTitle className="flex items-center gap-2 text-lg font-semibold"><Loader2 className="h-4 w-4 animate-spin" />{t("Uploading")}</DialogTitle>
+            <p className="text-sm text-muted-foreground">{t("{done} of {total} files", { done: tasks.filter((task) => task.status === "done").length, total: tasks.length })}</p>
           </>
         )}
         {step.kind === "launching" && (
-          <DialogTitle className="flex items-center gap-2 text-lg font-semibold"><Loader2 className="h-4 w-4 animate-spin" />Launching your drop…</DialogTitle>
+          <DialogTitle className="flex items-center gap-2 text-lg font-semibold"><Loader2 className="h-4 w-4 animate-spin" />{t("Launching your drop…")}</DialogTitle>
         )}
         {step.kind === "error" && (
           <>
-            <DialogTitle className="flex items-center gap-2 text-lg font-semibold"><XCircle className="h-4 w-4 text-destructive" />Not launched</DialogTitle>
+            <DialogTitle className="flex items-center gap-2 text-lg font-semibold"><XCircle className="h-4 w-4 text-destructive" />{t("Not launched")}</DialogTitle>
             <p className="text-sm text-muted-foreground">{step.message}</p>
             {tasks.some((t) => t.status === "failed") && (
               <ul className="space-y-1 text-xs text-muted-foreground">
                 {tasks.filter((t) => t.status === "failed").map((t) => <li key={t.id}>{t.file.name}: {t.error}</li>)}
               </ul>
             )}
-            <Button onClick={() => void run()} className="gap-1.5"><RotateCcw className="h-3.5 w-3.5" />Try again</Button>
+            <Button onClick={() => void run()} className="gap-1.5"><RotateCcw className="h-3.5 w-3.5" />{t("Try again")}</Button>
           </>
         )}
         {step.kind === "done" && (
           <>
-            <DialogTitle className="flex items-center gap-2 text-lg font-semibold"><CheckCircle2 className="h-5 w-5 text-green-500" />Your drop is live</DialogTitle>
+            <DialogTitle className="flex items-center gap-2 text-lg font-semibold"><CheckCircle2 className="h-5 w-5 text-green-500" />{t("Your drop is live")}</DialogTitle>
             {step.warning && <p className="text-sm text-brand-orange">{step.warning}</p>}
             <div className="flex flex-wrap gap-2">
               <ShareButton title={draft.name} url={`${window.location.origin}${dropHref(step.collection)}`} variant="outline" />
-              <Button asChild variant="outline"><a href={dropHref(step.collection)}>View drop</a></Button>
+              <Button asChild variant="outline"><a href={dropHref(step.collection)}>{t("View drop")}</a></Button>
               {step.links.length > 0 && (
-                <Button variant="outline" onClick={() => downloadCsv(popClaimLinksCsv(step.links), "claim-links.csv")}>Download claim links</Button>
+                <Button variant="outline" onClick={() => downloadCsv(popClaimLinksCsv(step.links), "claim-links.csv")}>{t("Download claim links")}</Button>
               )}
             </div>
-            {step.links.length > 0 && <p className="text-xs text-muted-foreground">Send each wallet its link — the link is what lets it mint.</p>}
+            {step.links.length > 0 && <p className="text-xs text-muted-foreground">{t("Send each wallet its link — the link is what lets it mint.")}</p>}
           </>
         )}
       </DialogContent>

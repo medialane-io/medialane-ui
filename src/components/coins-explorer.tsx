@@ -8,6 +8,7 @@ import { StatPillRow } from "./stat-tile.js";
 import { orderCoins, type CoinPriceSort } from "../data/coin-order.js";
 import { coinKind, coinKindLabelPlural, coinServiceIds, COIN_KINDS, type CoinCollectionLike, type CoinKind } from "../data/coins.js";
 import { emptyMessages } from "../utils/empty-messages.js";
+import { useT } from "../i18n/provider.js";
 
 export type CoinFilter = "all" | CoinKind;
 export type CoinSort = "recent" | "name";
@@ -40,6 +41,7 @@ const SORT_OPTIONS: { label: string; value: CoinSort }[] = [
 const noPriceMap: UsePriceMap = () => ({ prices: {}, isLoading: false });
 
 export function CoinsExplorer({ useCoins, usePrice, usePriceMap, coinHref, heading = true, action }: CoinsExplorerProps) {
+  const t = useT();
   const [filter, setFilter] = useState<CoinFilter>("all");
   const [sort, setSort] = useState<CoinSort>("recent");
   const [query, setQuery] = useState("");
@@ -79,7 +81,7 @@ export function CoinsExplorer({ useCoins, usePrice, usePriceMap, coinHref, headi
       {heading && (
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div className="space-y-2">
-            <h1 className="text-3xl font-bold">Creator coins &amp; memecoins</h1>
+            <h1 className="text-3xl font-bold">{t("Creator coins & memecoins")}</h1>
             <StatPillRow
               items={statItems}
               onSelect={(index) => setFilter(pillFilters[index])}
@@ -96,14 +98,14 @@ export function CoinsExplorer({ useCoins, usePrice, usePriceMap, coinHref, headi
           <input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search coins by name or symbol…"
+            placeholder={t("Search coins by name or symbol…")}
             className="w-full rounded-lg border border-border bg-background py-2 pl-9 pr-3 text-sm outline-none focus:border-primary/50"
           />
         </div>
         <select
           value={sort}
           onChange={(e) => setSort(e.target.value as CoinSort)}
-          aria-label="Sort coins"
+          aria-label={t("Sort coins")}
           className="shrink-0 rounded-lg border border-border bg-background px-2.5 py-2 text-xs font-medium text-foreground outline-none focus:border-primary/50"
         >
           {SORT_OPTIONS.map(({ label, value }) => (
@@ -114,17 +116,17 @@ export function CoinsExplorer({ useCoins, usePrice, usePriceMap, coinHref, headi
 
       <div>
         <div className={cn(COIN_GRID, "border-b border-border px-2 pb-2 text-2xs font-medium uppercase tracking-wide text-muted-foreground")}>
-          <span>Token</span>
+          <span>{t("Token")}</span>
           {usePriceMap ? (
             <button
               type="button"
               onClick={() => setPriceSort(priceSort === undefined ? "desc" : priceSort === "desc" ? "asc" : undefined)}
               className={cn("text-right uppercase tracking-wide", priceSort ? "text-foreground" : "text-muted-foreground")}
             >
-              Price{priceSort === "desc" ? " ↓" : priceSort === "asc" ? " ↑" : ""}
+              {t("Price")}{priceSort === "desc" ? " ↓" : priceSort === "asc" ? " ↑" : ""}
             </button>
           ) : (
-            <span className="text-right">Price</span>
+            <span className="text-right">{t("Price")}</span>
           )}
         </div>
 

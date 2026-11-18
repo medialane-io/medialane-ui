@@ -19,6 +19,7 @@ import { IpTypeSection } from "../ip-type-section.js";
 import { collectionKey, mintableCollections, type MintAssetType } from "../mintable-collections.js";
 import { createThenAdd } from "../create-then-add.js";
 import { defineFormat, type FormatFieldsProps, type FormatResult, type FormatRuntime, type FormatShared } from "./types.js";
+import { useT } from "../../../i18n/provider.js";
 
 interface NftState {
   mode: CollectionMode;
@@ -76,11 +77,12 @@ function makeNftFormat(kind: MintAssetType) {
   const copy = getMintFormatCopy(single ? "nfts" : "limited-editions");
 
   function Fields({ shared, state, update }: FormatFieldsProps<NftState>) {
+  const t = useT();
     return (
       <>
         {!single && (
           <div className="space-y-2">
-            <label className="text-sm font-medium" htmlFor="fast-mint-copies">Number of copies</label>
+            <label className="text-sm font-medium" htmlFor="fast-mint-copies">{t("Number of copies")}</label>
             <Input
               id="fast-mint-copies"
               type="number"

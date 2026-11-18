@@ -7,6 +7,7 @@ import { ScrollSection } from "./scroll-section.js";
 import { SERVICE_HUES } from "./launchpad-services.js";
 import { LAUNCHPAD_SERVICE_DEFINITIONS } from "../data/launchpad-services.js";
 import { cn } from "../utils/cn.js";
+import { useT } from "../i18n/provider.js";
 
 export interface LaunchpadStripProps {
 
@@ -92,6 +93,7 @@ export function LaunchpadStrip({
   marketplaceHref,
   launchpadHref = "/launchpad",
 }: LaunchpadStripProps) {
+  const t = useT();
   const cards: StripCard[] = [
     ...STRIP_ORDER.flatMap((key) => {
       const def = DEF_BY_KEY[key];
@@ -125,7 +127,7 @@ export function LaunchpadStrip({
   return (
     <ScrollSection
       icon={<Rocket className="h-4 w-4" />}
-      title="Launchpad"
+      title={t("Launchpad")}
       href={launchpadHref}
       linkLabel="Explore"
     >

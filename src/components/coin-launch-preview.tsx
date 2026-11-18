@@ -4,6 +4,7 @@ import Image from "./image.js";
 import { TrendingUp } from "lucide-react";
 import { cn } from "../utils/cn.js";
 import { CurrencyIcon } from "./currency-icon.js";
+import { useT } from "../i18n/provider.js";
 
 export interface CoinPreviewData {
   name: string;
@@ -29,6 +30,7 @@ function StatValue({ children }: { children: React.ReactNode }) {
 }
 
 export function CoinLaunchPreview({ data, className }: { data: CoinPreviewData; className?: string }) {
+  const t = useT();
   const { name, symbol, description, imageUrl, supplyHuman, price, quoteSymbol, teamPct } = data;
   const marketCap = supplyHuman != null ? supplyHuman * price : null;
   const yourCoins = supplyHuman != null ? supplyHuman * (teamPct / 100) : null;
@@ -36,7 +38,7 @@ export function CoinLaunchPreview({ data, className }: { data: CoinPreviewData; 
   return (
     <div className={cn("rounded-2xl bg-muted/50 dark:bg-card overflow-hidden", className)}>
       <div className="px-5 pt-4">
-        <p className="section-label">Live preview</p>
+        <p className="section-label">{t("Live preview")}</p>
       </div>
 
       <div className="p-5 space-y-4">
@@ -53,9 +55,9 @@ export function CoinLaunchPreview({ data, className }: { data: CoinPreviewData; 
           </div>
           <div className="min-w-0 flex-1">
             <p className={cn("font-bold text-lg leading-snug truncate", !name && "text-muted-foreground/50")}>
-              {name || "Your coin"}
+              {name || t("Your coin")}
             </p>
-            <p className="text-sm text-muted-foreground tabular-nums">{symbol ? `$${symbol}` : "$SYMBOL"}</p>
+            <p className="text-sm text-muted-foreground tabular-nums">{symbol ? `$${symbol}` : t("$SYMBOL")}</p>
           </div>
         </div>
 
@@ -65,7 +67,7 @@ export function CoinLaunchPreview({ data, className }: { data: CoinPreviewData; 
 
         <div className="rounded-xl bg-muted/50 dark:bg-muted/30 p-4 space-y-3">
           <div>
-            <p className="text-2xs uppercase tracking-wide text-muted-foreground">Market cap</p>
+            <p className="text-2xs uppercase tracking-wide text-muted-foreground">{t("Market cap")}</p>
             <p className="text-2xl">
               {marketCap != null ? (
                 <StatValue>
@@ -78,20 +80,19 @@ export function CoinLaunchPreview({ data, className }: { data: CoinPreviewData; 
             </p>
           </div>
           <div className="flex items-center justify-between text-sm border-t border-border/60 pt-3">
-            <span className="text-muted-foreground">Launch price</span>
+            <span className="text-muted-foreground">{t("Launch price")}</span>
             <span className="inline-flex items-center gap-1 font-semibold tabular-nums">
               <CurrencyIcon symbol={quoteSymbol} size={14} />
-              {price} {quoteSymbol} / coin
-            </span>
+              {t("{price} {quoteSymbol} / coin", { price, quoteSymbol })}</span>
           </div>
         </div>
 
         <div className="space-y-1.5">
           <div className="flex items-center justify-between text-sm">
             <span className="font-medium text-brand-orange">
-              You keep {teamPct}%{yourCoins != null ? ` · ${yourCoins.toLocaleString()} ${symbol || "coins"}` : ""}
+              {t("You keep")} {teamPct}%{yourCoins != null ? ` · ${yourCoins.toLocaleString()} ${symbol || "coins"}` : ""}
             </span>
-            <span className="text-muted-foreground">Community {100 - teamPct}%</span>
+            <span className="text-muted-foreground">{t("Community")} {100 - teamPct}%</span>
           </div>
           <div className="flex h-2.5 rounded-full overflow-hidden bg-muted-foreground/15">
             {teamPct > 0 && <div style={{ width: `${teamPct}%`, background: COIN_GRADIENT }} />}
@@ -100,7 +101,7 @@ export function CoinLaunchPreview({ data, className }: { data: CoinPreviewData; 
         </div>
 
         <p className="text-2xs text-muted-foreground/70">
-          Liquidity locks permanently at launch.
+          {t("Liquidity locks permanently at launch.")}
         </p>
       </div>
     </div>

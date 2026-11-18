@@ -1,5 +1,5 @@
 import { expect, test } from "bun:test";
-import { translate, translatePlural, msg } from "./translate.js";
+import { lookup, translate, translatePlural, msg } from "./translate.js";
 import { loadCatalog } from "./catalogs.js";
 
 test("returns the sentence as written when no translation exists", () => {
@@ -57,4 +57,18 @@ test("loadCatalog returns an empty catalog for en and an unknown language, and t
   expect(await loadCatalog("en", loaders)).toEqual({});
   expect(await loadCatalog("xx", loaders)).toEqual({});
   expect(await loadCatalog("pt", loaders)).toBe(pt);
+});
+
+test("a var that is present but undefined renders as nothing", () => {
+  expect(translate({ messages: {}, text: "Floor {price}", vars: { price: undefined as unknown as string } })).toBe("Floor ");
+});
+
+test("lookup returns the translation, or the sentence when there is none", () => {
+  expect(lookup({ "Hello {name}": "Olá {name}" }, "Hello {name}")).toBe("Olá {name}");
+  expect(lookup({}, "Hello {name}")).toBe("Hello {name}");
+  expect(lookup({ "{count} item": { other: "x" } }, "{count} item")).toBe("{count} item");
+});
+
+test("plural lets vars show a formatted count in place of the number", () => {
+  expect(translatePlural({ locale: "en", messages: {}, one: "{count} holder", other: "{count} holders", count: 1200, vars: { count: "1,200" } })).toBe("1,200 holders");
 });

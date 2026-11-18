@@ -12,6 +12,7 @@ import {
   TrendingUp, Activity, ArrowRight, ExternalLink, Fingerprint, UserCheck,
 } from "lucide-react";
 import type { ApiActivity } from "@medialane/sdk";
+import { useT } from "../i18n/provider.js";
 
 const PriceHistoryChart = dynamic(
   () => import("./price-history-chart.js").then((m) => m.PriceHistoryChart),
@@ -47,6 +48,7 @@ export function AssetProvenanceTab({
   originalCreator,
   registeredAt,
 }: AssetProvenanceTabProps) {
+  const t = useT();
   const sales = history.filter((e) => e.type === "sale");
 
   const totalVolumeParts = sales.reduce<Record<string, { amount: number; currency: string }>>((acc, e) => {
@@ -71,8 +73,8 @@ export function AssetProvenanceTab({
       <div className="flex items-center gap-2 rounded-lg bg-primary/5 px-4 py-2.5">
         <Fingerprint className="h-4 w-4 text-primary shrink-0" />
         <div className="min-w-0">
-          <p className="text-xs font-semibold text-primary">Onchain Provenance</p>
-          <p className="text-xs text-muted-foreground">Every transfer and sale is immutably recorded on Starknet — this history cannot be altered.</p>
+          <p className="text-xs font-semibold text-primary">{t("Onchain Provenance")}</p>
+          <p className="text-xs text-muted-foreground">{t("Every transfer and sale is immutably recorded on Starknet — this history cannot be altered.")}</p>
         </div>
         <a
           href={`${EXPLORER_URL}/contract/${contract}`}
@@ -80,7 +82,7 @@ export function AssetProvenanceTab({
           rel="noopener noreferrer"
           className="shrink-0 flex items-center gap-1 text-2xs text-muted-foreground hover:text-foreground transition-colors ml-auto"
         >
-          Contract <ExternalLink className="h-3 w-3" />
+          {t("Contract")} <ExternalLink className="h-3 w-3" />
         </a>
       </div>
 
@@ -93,12 +95,12 @@ export function AssetProvenanceTab({
           <div className="rounded-xl bg-muted/20 p-3 text-center">
             <Activity className="h-4 w-4 text-muted-foreground mx-auto mb-1" />
             <p className="text-lg font-bold">{history.length}</p>
-            <p className="text-2xs text-muted-foreground">Events</p>
+            <p className="text-2xs text-muted-foreground">{t("Events")}</p>
           </div>
           <div className="rounded-xl bg-muted/20 p-3 text-center">
             <ShoppingCart className="h-4 w-4 text-muted-foreground mx-auto mb-1" />
             <p className="text-lg font-bold">{sales.length}</p>
-            <p className="text-2xs text-muted-foreground">Sales</p>
+            <p className="text-2xs text-muted-foreground">{t("Sales")}</p>
           </div>
           <div className="rounded-xl bg-muted/20 p-3 text-center">
             <TrendingUp className="h-4 w-4 text-muted-foreground mx-auto mb-1" />
@@ -113,19 +115,19 @@ export function AssetProvenanceTab({
             ) : (
               <p className="text-lg font-bold">—</p>
             )}
-            <p className="text-2xs text-muted-foreground">Volume</p>
+            <p className="text-2xs text-muted-foreground">{t("Volume")}</p>
           </div>
           <div className="rounded-xl bg-muted/20 p-3 text-center">
             <UserCheck className="h-4 w-4 text-muted-foreground mx-auto mb-1" />
             <p className="text-lg font-bold">{allActors.size}</p>
-            <p className="text-2xs text-muted-foreground">Participants</p>
+            <p className="text-2xs text-muted-foreground">{t("Participants")}</p>
           </div>
         </div>
       )}
 
       {remixCount > 0 && (
         <div className="space-y-2">
-          <p className="text-xs font-semibold text-muted-foreground">Remixes ({remixCount})</p>
+          <p className="text-xs font-semibold text-muted-foreground">{t("Remixes ({remixCount})", { remixCount })}</p>
           <RemixesTab contractAddress={contract} tokenId={tokenId} />
         </div>
       )}
@@ -134,10 +136,9 @@ export function AssetProvenanceTab({
 
       <div className="space-y-2">
         <p className="text-xs font-semibold text-muted-foreground">
-          History
+          {t("History")}
           {firstEvent && (
-            <span className="ml-2 font-normal normal-case">
-              · first activity {timeAgo(firstEvent.timestamp)}
+            <span className="ml-2 font-normal normal-case">{t("· first activity {timeAgo}", { timeAgo: timeAgo(firstEvent.timestamp) })}
             </span>
           )}
         </p>
@@ -145,7 +146,7 @@ export function AssetProvenanceTab({
         {history.length === 0 ? (
           <div className="rounded-xl bg-muted/10 py-12 flex flex-col items-center gap-3 text-center">
             <Activity className="h-8 w-8 text-muted-foreground/30" />
-            <p className="text-sm text-muted-foreground">No activity recorded yet.</p>
+            <p className="text-sm text-muted-foreground">{t("No activity recorded yet.")}</p>
           </div>
         ) : (
           <div className="relative">
@@ -247,7 +248,7 @@ export function AssetProvenanceTab({
                               rel="noopener noreferrer"
                               onClick={(e) => e.stopPropagation()}
                               className="text-muted-foreground/40 hover:text-muted-foreground transition-colors"
-                              title="View transaction"
+                              title={t("View transaction")}
                             >
                               <ExternalLink className="h-3 w-3" />
                             </a>

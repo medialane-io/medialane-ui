@@ -3,6 +3,7 @@
 import Link from "./link.js";
 import { ArrowRight } from "lucide-react";
 import { cn } from "../utils/cn.js";
+import { useT } from "../i18n/provider.js";
 
 export type PortfolioSectionColor =
   | "blue"
@@ -40,6 +41,7 @@ export function PortfolioSection({
   children,
   className,
 }: PortfolioSectionProps) {
+  const t = useT();
   return (
     <section
       className={cn(
@@ -57,7 +59,7 @@ export function PortfolioSection({
           href={href}
           className="inline-flex items-center gap-1 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors"
         >
-          View all
+          {t("View all")}
           <ArrowRight className="h-3 w-3" />
         </Link>
       </div>

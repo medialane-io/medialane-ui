@@ -5,6 +5,7 @@ import { CalendarX2, CheckCircle2, Clock, Infinity as InfinityIcon, Ticket, User
 import { useIsMemberOf, useMembershipOnchain, useTicketOnchain, type TierOnchain } from "../utils/use-tiers.js";
 import { useMedialaneApp } from "./medialane-app.js";
 import { cn } from "../utils/cn.js";
+import { useT } from "../i18n/provider.js";
 
 type TierStatus = "upcoming" | "active" | "ended" | "always";
 
@@ -75,6 +76,7 @@ export interface AssetTypePanelProps {
 }
 
 export function TicketPanel({ contract, tokenId }: AssetTypePanelProps) {
+  const t = useT();
   const { ticket } = useTicketOnchain(contract, tokenId);
   if (!ticket) return null;
   return (
@@ -82,13 +84,14 @@ export function TicketPanel({ contract, tokenId }: AssetTypePanelProps) {
       tier={ticket}
       icon={Ticket}
       iconClassName="text-brand-blue"
-      title="Ticket"
+      title={t("Ticket")}
       labels={{ upcoming: "Upcoming", active: "Happening now", ended: "Ended" }}
     />
   );
 }
 
 export function MembershipPanel({ contract, tokenId, quantityOwned }: AssetTypePanelProps) {
+  const t = useT();
   const { walletAddress } = useMedialaneApp();
   const { membership } = useMembershipOnchain(contract, tokenId);
   const { isMember } = useIsMemberOf(contract, tokenId, walletAddress);
@@ -101,19 +104,19 @@ export function MembershipPanel({ contract, tokenId, quantityOwned }: AssetTypeP
       tier={membership}
       icon={Users}
       iconClassName="text-brand-purple"
-      title="Membership"
+      title={t("Membership")}
       labels={{ upcoming: "Upcoming", active: "Active", ended: "Ended", always: "Lifetime" }}
       footer={cards > 0 ? (
         <div className="flex items-center gap-2 border-t border-border/60 pt-3">
           {isMember ? (
             <>
               <CheckCircle2 className="h-4 w-4 text-teal-500" />
-              <p className="text-sm font-medium">Active member · {cardLabel}</p>
+              <p className="text-sm font-medium">{t("Active member · {cardLabel}", { cardLabel })}</p>
             </>
           ) : (
             <>
               <Clock className="h-4 w-4 text-muted-foreground" />
-              <p className="text-sm text-muted-foreground">{status === "upcoming" ? "Starts soon" : "Ended"} · {cardLabel}</p>
+              <p className="text-sm text-muted-foreground">{status === "upcoming" ? t("Starts soon") : t("Ended")} · {cardLabel}</p>
             </>
           )}
         </div>

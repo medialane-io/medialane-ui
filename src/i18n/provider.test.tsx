@@ -35,3 +35,34 @@ test("useT returns the same function while the language and messages are unchang
   rerender();
   expect(result.current).toBe(first);
 });
+
+test("t.rich puts elements where the placeholders are", () => {
+  function Rich() {
+    const t = useT();
+    return <p>{t.rich("Your claim for {name} is pending", { name: <b>Ana</b> })}</p>;
+  }
+  const { container } = render(<Rich />);
+  expect(container.innerHTML).toBe("<p>Your claim for <b>Ana</b> is pending</p>");
+});
+
+test("t.rich follows the translation's word order", () => {
+  function Rich() {
+    const t = useT();
+    return <p>{t.rich("Your claim for {name} is pending", { name: <b>Ana</b> })}</p>;
+  }
+  const { container } = render(
+    <I18nProvider locale="pt" messages={{ "Your claim for {name} is pending": "{name}: o seu pedido está pendente" }}>
+      <Rich />
+    </I18nProvider>,
+  );
+  expect(container.innerHTML).toBe("<p><b>Ana</b>: o seu pedido está pendente</p>");
+});
+
+test("t.rich renders a false or missing value as nothing and keeps unknown placeholders", () => {
+  function Rich() {
+    const t = useT();
+    return <p>{t.rich("Markets {count}{extra}", { count: false, other: <i /> })}</p>;
+  }
+  const { container } = render(<Rich />);
+  expect(container.innerHTML).toBe("<p>Markets {extra}</p>");
+});

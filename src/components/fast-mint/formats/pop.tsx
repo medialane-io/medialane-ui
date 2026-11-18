@@ -12,6 +12,7 @@ import { isSymbol } from "../../../utils/launchpad-rules.js";
 import { claimEndTimestamp, popEventAttributes, popEventIntent } from "../../../utils/launchpad-actions.js";
 import { EVENT_TYPES, type PopEventType } from "../../launchpad/pop-create-fields.js";
 import { defineFormat, type FormatFieldsProps } from "./types.js";
+import { useT } from "../../../i18n/provider.js";
 
 interface PopState {
   eventType: PopEventType;
@@ -21,10 +22,11 @@ interface PopState {
 }
 
 function PopFields({ shared, state, update }: FormatFieldsProps<PopState>) {
+  const t = useT();
   return (
     <>
       <div className="space-y-2">
-        <label className="text-sm font-medium">What kind of event is this?</label>
+        <label className="text-sm font-medium">{t("What kind of event is this?")}</label>
         <div className="grid grid-cols-4 gap-2">
           {EVENT_TYPES.map(({ value, label, icon: Icon }) => {
             const selected = state.eventType === value;
@@ -50,35 +52,35 @@ function PopFields({ shared, state, update }: FormatFieldsProps<PopState>) {
       </div>
 
       <div className="space-y-2">
-        <label className="text-sm font-medium" htmlFor="fast-mint-symbol">Symbol *</label>
+        <label className="text-sm font-medium" htmlFor="fast-mint-symbol">{t("Symbol *")}</label>
         <Input
           id="fast-mint-symbol"
           value={shared.draft.symbol}
           onChange={(e) => shared.draft.setSymbol(e.target.value.toUpperCase())}
-          placeholder="SKHACK"
+          placeholder={t("SKHACK")}
           className="max-w-[160px]"
         />
       </div>
 
       <div className="space-y-2">
-        <label className="text-sm font-medium">Claim window closes *</label>
+        <label className="text-sm font-medium">{t("Claim window closes *")}</label>
         <div className="flex gap-2 items-center">
-          <Input type="date" aria-label="Claim window closing date" value={state.claimEndDate} onChange={(e) => update({ claimEndDate: e.target.value })} className="flex-1" />
-          <Input type="time" aria-label="Claim window closing time" value={state.claimEndTime} onChange={(e) => update({ claimEndTime: e.target.value })} className="w-28" />
+          <Input type="date" aria-label={t("Claim window closing date")} value={state.claimEndDate} onChange={(e) => update({ claimEndDate: e.target.value })} className="flex-1" />
+          <Input type="time" aria-label={t("Claim window closing time")} value={state.claimEndTime} onChange={(e) => update({ claimEndTime: e.target.value })} className="w-28" />
         </div>
       </div>
 
       <div className="flex items-center justify-between p-4 rounded-xl border border-border bg-muted/20">
         <div className="space-y-0.5">
-          <p className="text-sm font-medium">Event visibility</p>
+          <p className="text-sm font-medium">{t("Event visibility")}</p>
           <p className="text-xs text-muted-foreground">
-            {state.isPublic ? "Listed publicly on the POP launchpad" : "Only accessible via direct link"}
+            {state.isPublic ? t("Listed publicly on the POP launchpad") : t("Only accessible via direct link")}
           </p>
         </div>
         <button
           type="button"
           role="switch"
-          aria-label="Event visibility"
+          aria-label={t("Event visibility")}
           aria-checked={state.isPublic}
           onClick={() => update({ isPublic: !state.isPublic })}
           className={cn(

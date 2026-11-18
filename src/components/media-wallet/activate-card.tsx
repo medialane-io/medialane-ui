@@ -5,8 +5,10 @@ import { ActionButton } from "../action-button.js";
 import { describeError } from "../../utils/describe-error.js";
 import { BRAND_GRADIENT } from "../../data/brand.js";
 import { useMediaWalletApp } from "./types.js";
+import { useT } from "../../i18n/provider.js";
 
 export function ActivateCard({ onActivated }: { onActivated: (txHash?: string) => void }) {
+  const t = useT();
   const { wallet } = useMediaWalletApp();
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -36,10 +38,10 @@ export function ActivateCard({ onActivated }: { onActivated: (txHash?: string) =
           style={{ "--ml-grad": BRAND_GRADIENT } as React.CSSProperties}
         >
           {busy && <span className="h-4 w-4 animate-spin rounded-full border-2 border-foreground/25 border-t-foreground" />}
-          Activate my wallet
+          {t("Activate my wallet")}
         </ActionButton>
         <p className="mx-auto max-w-[22rem] text-sm leading-relaxed text-muted-foreground">
-          Your account is stored securely and ready whenever you need it. Activating is free — no gas fees.
+          {t("Your account is stored securely and ready whenever you need it. Activating is free — no gas fees.")}
         </p>
         {error && <p className="text-xs text-destructive">{error}</p>}
       </div>

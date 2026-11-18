@@ -13,6 +13,7 @@ import { SignInPrompt } from "./sign-in-prompt.js";
 import { useMedialaneApp } from "./medialane-app.js";
 import { getLaunchpadService } from "../data/launchpad-services.js";
 import { useMyClubCollections, useMyTicketCollections } from "../utils/use-tiers.js";
+import { useT } from "../i18n/provider.js";
 
 const KINDS = {
   tickets: {
@@ -44,6 +45,7 @@ const KINDS = {
 } as const;
 
 export function ServiceCollectionsPage({ kind }: { kind: keyof typeof KINDS }) {
+  const t = useT();
   const config = KINDS[kind];
   const Icon = config.icon;
   const { walletAddress, walletLoading } = useMedialaneApp();
@@ -83,7 +85,7 @@ export function ServiceCollectionsPage({ kind }: { kind: keyof typeof KINDS }) {
         </div>
 
         {!walletAddress && !walletLoading ? (
-          <SignInPrompt icon={iconTile} title="Sign in to see your collections" />
+          <SignInPrompt icon={iconTile} title={t("Sign in to see your collections")} />
         ) : isLoading || walletLoading ? (
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
             {Array.from({ length: 4 }).map((_, i) => <Skeleton key={i} className="aspect-square rounded-2xl" />)}

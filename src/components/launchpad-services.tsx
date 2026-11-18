@@ -13,6 +13,7 @@ import {
   type ServiceGroupDefinition,
   type ServiceStatus,
 } from "../data/launchpad-services.js";
+import { useT } from "../i18n/provider.js";
 
 export interface ServiceOverride {
 
@@ -105,6 +106,7 @@ export interface LaunchpadServiceCardProps {
 }
 
 export function LaunchpadServiceCard({ def, override = {}, index = 0 }: LaunchpadServiceCardProps) {
+  const t = useT();
   const { icon: Icon, title, group, features, cta } = def;
   const status = override.status ?? def.status;
   const blurb = override.blurb ?? def.blurb;
@@ -124,7 +126,7 @@ export function LaunchpadServiceCard({ def, override = {}, index = 0 }: Launchpa
         {!live ? (
           <span className="flex items-center gap-1 text-2xs font-medium text-muted-foreground/60 pt-1">
             <Lock className="h-3 w-3" />
-            Coming soon
+            {t("Coming soon")}
           </span>
         ) : override.meta ? (
           <span className="text-xs font-semibold tabular-nums px-2.5 py-1 rounded-full bg-muted/50 text-foreground/80">
@@ -273,6 +275,7 @@ export function launchpadSectionId(group: ServiceGroup): string {
 }
 
 export function LaunchpadGroupedSections({ overrides, defs, onClearFilters, className }: LaunchpadGroupedSectionsProps) {
+  const t = useT();
   const sections = LAUNCHPAD_SERVICE_GROUPS
     .filter((g) => g.key !== "coming-soon")
     .map((group) => ({ group, defs: defs.filter((d) => d.group === group.key) }))
@@ -285,14 +288,14 @@ export function LaunchpadGroupedSections({ overrides, defs, onClearFilters, clas
     <div className={cn("space-y-12 sm:space-y-16", className)}>
       {sections.length === 0 && comingSoonDefs.length === 0 ? (
         <div className="text-center py-16 space-y-3">
-          <p className="text-lg font-semibold">No services match</p>
-          <p className="text-sm text-muted-foreground">Try a different search or clear your search.</p>
+          <p className="text-lg font-semibold">{t("No services match")}</p>
+          <p className="text-sm text-muted-foreground">{t("Try a different search or clear your search.")}</p>
           <button
             type="button"
             onClick={onClearFilters}
             className="inline-flex items-center h-9 px-4 rounded-full text-sm font-semibold bg-primary text-primary-foreground"
           >
-            Clear search
+            {t("Clear search")}
           </button>
         </div>
       ) : (

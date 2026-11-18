@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Search, Plus, Sparkles } from "lucide-react";
 import { cn } from "../utils/cn.js";
 import { AssetPickerCell, isSameAsset } from "./asset-picker-cell.js";
+import { useT } from "../i18n/provider.js";
 
 export interface OwnedAsset {
   contractAddress: string;
@@ -26,6 +27,7 @@ export interface AssetPickerProps {
 }
 
 function MintPromoCard({ onMintClick }: { onMintClick: () => void }) {
+  const t = useT();
   return (
     <div className="rounded-2xl p-[1.5px] bg-gradient-to-br from-brand-purple to-brand-orange">
       <div className="rounded-[15px] bg-card p-5 flex flex-col sm:flex-row sm:items-center gap-4">
@@ -33,8 +35,8 @@ function MintPromoCard({ onMintClick }: { onMintClick: () => void }) {
           <Sparkles className="h-5 w-5 text-white" />
         </div>
         <div className="flex-1 min-w-0">
-          <p className="text-sm font-bold text-foreground">Mint your first asset</p>
-          <p className="text-xs text-muted-foreground mt-0.5">It becomes your avatar and app theme — ready in seconds.</p>
+          <p className="text-sm font-bold text-foreground">{t("Mint your first asset")}</p>
+          <p className="text-xs text-muted-foreground mt-0.5">{t("It becomes your avatar and app theme — ready in seconds.")}</p>
         </div>
         <div className="btn-border-animated shrink-0 p-[1px] rounded-xl">
           <button
@@ -42,7 +44,7 @@ function MintPromoCard({ onMintClick }: { onMintClick: () => void }) {
             onClick={onMintClick}
             className="h-10 px-4 rounded-[11px] bg-card text-sm font-semibold text-foreground hover:brightness-110 active:scale-[0.98] transition-all whitespace-nowrap"
           >
-            Mint an asset
+            {t("Mint an asset")}
           </button>
         </div>
       </div>
@@ -51,6 +53,7 @@ function MintPromoCard({ onMintClick }: { onMintClick: () => void }) {
 }
 
 function MintTile({ onMintClick }: { onMintClick: () => void }) {
+  const t = useT();
   return (
     <button
       type="button"
@@ -58,7 +61,7 @@ function MintTile({ onMintClick }: { onMintClick: () => void }) {
       className="aspect-square rounded-xl border-2 border-dashed border-brand-purple/40 hover:border-brand-purple/70 hover:bg-brand-purple/5 transition-colors flex flex-col items-center justify-center gap-1 text-brand-purple"
     >
       <Plus className="h-4 w-4" />
-      <span className="text-2xs font-semibold">New</span>
+      <span className="text-2xs font-semibold">{t("New")}</span>
     </button>
   );
 }
@@ -66,6 +69,7 @@ function MintTile({ onMintClick }: { onMintClick: () => void }) {
 export function AssetPicker({
   assets, isLoading, selected, onSelect, emptyStateHref, emptyStateLabel, onMintClick, className,
 }: AssetPickerProps) {
+  const t = useT();
   const [query, setQuery] = useState("");
   const filtered = query
     ? assets.filter((a) => a.name.toLowerCase().includes(query.toLowerCase()))
@@ -85,10 +89,10 @@ export function AssetPicker({
     if (onMintClick) return <MintPromoCard onMintClick={onMintClick} />;
     return (
       <div className={cn("rounded-xl border border-dashed border-border/60 p-6 text-center text-sm text-muted-foreground", className)}>
-        You don&apos;t own any assets yet.
+        {t("You don't own any assets yet.")}
         {emptyStateHref ? (
           <a href={emptyStateHref} className="ml-1 font-semibold text-foreground underline underline-offset-2">
-            {emptyStateLabel ?? "Create one"}
+            {emptyStateLabel ?? t("Create one")}
           </a>
         ) : null}
       </div>
@@ -104,7 +108,7 @@ export function AssetPicker({
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search your assets"
+            placeholder={t("Search your assets")}
             className="w-full h-10 rounded-full border border-border bg-card pl-9 pr-4 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-brand-purple/40 focus:border-brand-purple/40"
           />
         </div>
@@ -123,7 +127,7 @@ export function AssetPicker({
       </div>
 
       {query && filtered.length === 0 ? (
-        <p className="text-xs text-muted-foreground text-center py-4">No assets match &quot;{query}&quot;.</p>
+        <p className="text-xs text-muted-foreground text-center py-4">{t("No assets match \"{query}\".", { query })}</p>
       ) : null}
     </div>
   );

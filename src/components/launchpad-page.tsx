@@ -8,6 +8,7 @@ import { LAUNCHPAD_SERVICE_GROUPS } from "../data/launchpad-services.js";
 import { LaunchpadFilterBar } from "./launchpad-filter-bar.js";
 import { useMedialaneApp } from "./medialane-app.js";
 import { useCollectionsByOwner } from "../utils/use-collections.js";
+import { useT } from "../i18n/provider.js";
 
 export interface LaunchpadPageProps {
   fastMint: ReactNode;
@@ -16,6 +17,7 @@ export interface LaunchpadPageProps {
 }
 
 export function LaunchpadPage({ fastMint, hideGroups = [], excludeKeys }: LaunchpadPageProps) {
+  const t = useT();
   const { walletAddress } = useMedialaneApp();
   const filter = useLaunchpadFilter();
   const { collections } = useCollectionsByOwner(walletAddress);
@@ -42,7 +44,7 @@ export function LaunchpadPage({ fastMint, hideGroups = [], excludeKeys }: Launch
     <div className="relative pb-20 space-y-16 sm:space-y-24">
       <section className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 pt-20 sm:pt-24 space-y-6">
         <FadeIn>
-          <h1 className="text-3xl sm:text-4xl font-semibold leading-tight">Creator Launchpad</h1>
+          <h1 className="text-3xl sm:text-4xl font-semibold leading-tight">{t("Creator Launchpad")}</h1>
         </FadeIn>
         <FadeIn delay={0.06}>{fastMint}</FadeIn>
       </section>

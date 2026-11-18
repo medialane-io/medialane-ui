@@ -28,3 +28,7 @@ test("ignores dynamic arguments and functions with other names", () => {
 test("reads a template literal without variables as a sentence", () => {
   expect([...scanSentences({ "c.ts": "t(`Plain template`)" }).sentences]).toEqual(["Plain template"]);
 });
+
+test("reads the sentence of t.rich", () => {
+  expect([...scanSentences({ "d.tsx": `t.rich("Your claim for {name} is pending", { name })` }).sentences]).toEqual(["Your claim for {name} is pending"]);
+});

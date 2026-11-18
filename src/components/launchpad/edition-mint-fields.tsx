@@ -18,6 +18,7 @@ import { ToggleGroup } from "../create-form-primitives.js";
 import { AI_POLICIES, DERIVATIVES_OPTIONS, IP_TYPES, LICENSE_TYPES, type IPType } from "../../data/ip.js";
 import { cn } from "../../utils/cn.js";
 import type { EditionMintValues } from "./edition-mint-schema.js";
+import { useT } from "../../i18n/provider.js";
 
 interface EditionMintFieldsProps {
   form: UseFormReturn<EditionMintValues>;
@@ -46,6 +47,7 @@ export function EditionMintFields({
   onMetadataFieldsChange,
   uploadDocument,
 }: EditionMintFieldsProps) {
+  const t = useT();
   const [licensingOpen, setLicensingOpen] = useState(false);
   const [advancedOpen, setAdvancedOpen] = useState(false);
   const [ipTypeOpen, setIpTypeOpen] = useState(false);
@@ -65,7 +67,7 @@ export function EditionMintFields({
       <FadeIn delay={0.06}>
         <div className="space-y-2">
           <p className="text-sm font-medium">
-            Asset image <span className="text-destructive">*</span>
+            {t("Asset image")} <span className="text-destructive">*</span>
           </p>
           <div className="flex items-center gap-4">
             <div
@@ -76,7 +78,7 @@ export function EditionMintFields({
               className="relative h-20 w-20 rounded-2xl border-2 border-dashed border-border bg-muted flex items-center justify-center overflow-hidden shrink-0 cursor-pointer hover:border-brand-purple/50 transition-colors"
             >
               {imagePreview ? (
-                <Image src={imagePreview} alt="Token" fill unoptimized className="object-cover" />
+                <Image src={imagePreview} alt={t("Token")} fill unoptimized className="object-cover" />
               ) : (
                 <ImagePlus className="h-6 w-6 text-muted-foreground" />
               )}
@@ -107,10 +109,10 @@ export function EditionMintFields({
                 {imageUploading ? (
                   <>
                     <Loader2 className="h-3.5 w-3.5 mr-1.5 animate-spin" />
-                    Uploading…
+                    {t("Uploading…")}
                   </>
                 ) : (
-                  imagePreview ? "Change" : "Upload image"
+                  imagePreview ? t("Change") : t("Upload image")
                 )}
               </Button>
               {imagePreview ? (
@@ -119,17 +121,17 @@ export function EditionMintFields({
                   onClick={onClearImage}
                   className="flex items-center gap-1 text-xs text-muted-foreground hover:text-destructive transition-colors"
                 >
-                  <X className="h-3 w-3" /> Remove
+                  <X className="h-3 w-3" /> {t("Remove")}
                 </button>
               ) : null}
               <p className="text-xs text-muted-foreground">
                 {imageUri ? (
-                  <span className="text-brand-purple">✓ Uploaded</span>
+                  <span className="text-brand-purple">{t("✓ Uploaded")}</span>
                 ) : (
-                  "JPG, PNG, SVG or WebP"
+                  t("JPG, PNG, SVG or WebP")
                 )}
               </p>
-              <p className="text-xs text-muted-foreground">This media and metadata are pinned before the first mint is submitted.</p>
+              <p className="text-xs text-muted-foreground">{t("This media and metadata are pinned before the first mint is submitted.")}</p>
             </div>
           </div>
         </div>
@@ -138,9 +140,9 @@ export function EditionMintFields({
       <FadeIn delay={0.08}>
         <FormField control={form.control} name="name" render={({ field }) => (
           <FormItem>
-            <FormLabel>Token name *</FormLabel>
-            <FormControl><Input placeholder="Genesis Track #1" {...field} /></FormControl>
-            <FormDescription>The title collectors will see for this edition.</FormDescription>
+            <FormLabel>{t("Token name *")}</FormLabel>
+            <FormControl><Input placeholder={t("Genesis Track #1")} {...field} /></FormControl>
+            <FormDescription>{t("The title collectors will see for this edition.")}</FormDescription>
             <FormMessage />
           </FormItem>
         )} />
@@ -149,11 +151,11 @@ export function EditionMintFields({
       <FadeIn delay={0.1}>
         <FormField control={form.control} name="description" render={({ field }) => (
           <FormItem>
-            <FormLabel>Description <span className="text-muted-foreground font-normal">(optional)</span></FormLabel>
+            <FormLabel>{t("Description")} <span className="text-muted-foreground font-normal">{t("(optional)")}</span></FormLabel>
             <FormControl>
-              <Textarea placeholder="Describe this digital asset…" rows={3} {...field} />
+              <Textarea placeholder={t("Describe this digital asset…")} rows={3} {...field} />
             </FormControl>
-            <FormDescription>Add context, utility, or creative notes for this token edition.</FormDescription>
+            <FormDescription>{t("Add context, utility, or creative notes for this token edition.")}</FormDescription>
             <FormMessage />
           </FormItem>
         )} />
@@ -162,9 +164,9 @@ export function EditionMintFields({
       <FadeIn delay={0.12}>
         <FormField control={form.control} name="external_url" render={({ field }) => (
           <FormItem>
-            <FormLabel>External link <span className="text-muted-foreground font-normal">(optional)</span></FormLabel>
-            <FormControl><Input placeholder="https://yourwebsite.com" {...field} /></FormControl>
-            <FormDescription>Canonical link for this edition.</FormDescription>
+            <FormLabel>{t("External link")} <span className="text-muted-foreground font-normal">{t("(optional)")}</span></FormLabel>
+            <FormControl><Input placeholder={t("https://yourwebsite.com")} {...field} /></FormControl>
+            <FormDescription>{t("Canonical link for this edition.")}</FormDescription>
             <FormMessage />
           </FormItem>
         )} />
@@ -173,11 +175,11 @@ export function EditionMintFields({
       <FadeIn delay={0.14}>
         <FormField control={form.control} name="value" render={({ field }) => (
           <FormItem>
-            <FormLabel>Quantity *</FormLabel>
+            <FormLabel>{t("Quantity *")}</FormLabel>
             <FormControl>
               <Input type="number" min={1} placeholder="1" className="max-w-[180px]" {...field} />
             </FormControl>
-            <FormDescription>Number of copies to mint for this token ID.</FormDescription>
+            <FormDescription>{t("Number of copies to mint for this token ID.")}</FormDescription>
             <FormMessage />
           </FormItem>
         )} />
@@ -186,11 +188,11 @@ export function EditionMintFields({
       <FadeIn delay={0.16}>
         <FormField control={form.control} name="recipient" render={({ field }) => (
           <FormItem>
-            <FormLabel>Recipient *</FormLabel>
+            <FormLabel>{t("Recipient *")}</FormLabel>
             <FormControl>
               <Input placeholder="0x…" {...field} />
             </FormControl>
-            <FormDescription>Account that receives the minted tokens. Defaults to your account.</FormDescription>
+            <FormDescription>{t("Account that receives the minted tokens. Defaults to your account.")}</FormDescription>
             <FormMessage />
           </FormItem>
         )} />
@@ -201,16 +203,16 @@ export function EditionMintFields({
           open={licensingOpen}
           onOpenChange={setLicensingOpen}
           icon={<ShieldCheck className="h-4 w-4 text-primary" />}
-          label="Licensing Terms"
-          hint="Optional · Berne Convention"
+          label={t("Licensing Terms")}
+          hint={t("Optional · Berne Convention")}
         >
                 <p className="text-xs text-muted-foreground">
-                  Set the licensing terms for this edition — saved permanently with it.
+                  {t("Set the licensing terms for this edition — saved permanently with it.")}
                 </p>
 
                 <FormField control={form.control} name="licenseType" render={({ field }) => (
                   <FormItem>
-                    <FormLabel>License</FormLabel>
+                    <FormLabel>{t("License")}</FormLabel>
                     <Select value={field.value} onValueChange={handleLicenseChange}>
                       <FormControl>
                         <SelectTrigger><SelectValue /></SelectTrigger>
@@ -231,21 +233,21 @@ export function EditionMintFields({
 
                 <FormField control={form.control} name="commercialUse" render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Commercial Use</FormLabel>
+                    <FormLabel>{t("Commercial Use")}</FormLabel>
                     <ToggleGroup value={field.value} options={["Yes", "No"]} onChange={field.onChange} />
                   </FormItem>
                 )} />
 
                 <FormField control={form.control} name="derivatives" render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Derivatives</FormLabel>
+                    <FormLabel>{t("Derivatives")}</FormLabel>
                     <ToggleGroup value={field.value} options={DERIVATIVES_OPTIONS} onChange={field.onChange} />
                   </FormItem>
                 )} />
 
                 <FormField control={form.control} name="attribution" render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Attribution</FormLabel>
+                    <FormLabel>{t("Attribution")}</FormLabel>
                     <ToggleGroup value={field.value} options={["Required", "Not Required"]} onChange={field.onChange} />
                   </FormItem>
                 )} />
@@ -257,29 +259,29 @@ export function EditionMintFields({
                       className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors"
                     >
                       <ChevronDown className={cn("h-3.5 w-3.5 transition-transform", advancedOpen && "rotate-180")} />
-                      Advanced options
+                      {t("Advanced options")}
                     </button>
                   </CollapsibleTrigger>
                   <CollapsibleContent className="space-y-4 pt-3">
                     <FormField control={form.control} name="geographicScope" render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Territory</FormLabel>
+                        <FormLabel>{t("Territory")}</FormLabel>
                         <FormControl>
-                          <Input placeholder="Worldwide" {...field} />
+                          <Input placeholder={t("Worldwide")} {...field} />
                         </FormControl>
                       </FormItem>
                     )} />
 
                     <FormField control={form.control} name="aiPolicy" render={({ field }) => (
                       <FormItem>
-                        <FormLabel>AI &amp; Data Mining</FormLabel>
+                        <FormLabel>{t("AI & Data Mining")}</FormLabel>
                         <ToggleGroup value={field.value} options={AI_POLICIES} onChange={field.onChange} />
                       </FormItem>
                     )} />
 
                     <FormField control={form.control} name="royalty" render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Royalty % (0-50)</FormLabel>
+                        <FormLabel>{t("Royalty % (0-50)")}</FormLabel>
                         <FormControl>
                           <Input
                             type="number"
@@ -304,16 +306,16 @@ export function EditionMintFields({
           open={ipTypeOpen}
           onOpenChange={setIpTypeOpen}
           icon={<Layers className="h-4 w-4 text-primary" />}
-          label="IP Type &amp; Metadata"
-          hint="Optional"
+          label={t("IP Type & Metadata")}
+          hint={t("Optional")}
         >
                 <p className="text-xs text-muted-foreground">
-                  Choose a content type, fill suggested metadata, or add your own trait pairs.
+                  {t("Choose a content type, fill suggested metadata, or add your own trait pairs.")}
                 </p>
 
                 <FormField control={form.control} name="ipType" render={({ field }) => (
                   <FormItem>
-                    <FormLabel>IP Type</FormLabel>
+                    <FormLabel>{t("IP Type")}</FormLabel>
                     <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
                         <SelectTrigger><SelectValue /></SelectTrigger>
@@ -344,10 +346,10 @@ export function EditionMintFields({
           disabled={mintDisabled}
         >
           <Sparkles className="h-4 w-4 mr-2" />
-          Mint Edition
+          {t("Mint Edition")}
         </Button>
         <p className="text-xs text-center text-muted-foreground mt-2">
-          Free to mint — protocol fee is zero.
+          {t("Free to mint — protocol fee is zero.")}
         </p>
       </FadeIn>
     </div>

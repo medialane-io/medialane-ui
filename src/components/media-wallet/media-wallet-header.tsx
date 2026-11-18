@@ -6,10 +6,12 @@ import Image from "../image.js";
 import { short } from "../../utils/media-wallet/wallet-format.js";
 import { CopyIcon } from "./copy-icon.js";
 import { useMediaWalletApp, type MediaWalletHeaderIdentity } from "./types.js";
+import { useT } from "../../i18n/provider.js";
 
 const noIdentity = (): MediaWalletHeaderIdentity => ({});
 
 export function MediaWalletHeader({ address, onNavigate }: { address: string; onNavigate: () => void }) {
+  const t = useT();
   const { useHeaderIdentity = noIdentity, useAccountEmail } = useMediaWalletApp();
   const headerIdentity = useHeaderIdentity(address);
   const accountEmail = useAccountEmail();
@@ -29,7 +31,7 @@ export function MediaWalletHeader({ address, onNavigate }: { address: string; on
       <Link
         href="/settings"
         onClick={onNavigate}
-        aria-label="Profile and settings"
+        aria-label={t("Profile and settings")}
         className="relative h-20 w-20 shrink-0 transition-transform active:scale-95"
       >
         <div className="relative h-full w-full overflow-hidden rounded-full bg-foreground/[0.06] ring-2 ring-foreground/10">
@@ -49,7 +51,7 @@ export function MediaWalletHeader({ address, onNavigate }: { address: string; on
       >
         {headline}
         {copied ? (
-          <span className="text-2xs font-normal text-muted-foreground">copied ✓</span>
+          <span className="text-2xs font-normal text-muted-foreground">{t("copied ✓")}</span>
         ) : (
           <CopyIcon className="shrink-0 opacity-50" />
         )}

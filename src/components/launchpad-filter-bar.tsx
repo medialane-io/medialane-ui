@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import { Search, X } from "lucide-react";
 import { launchpadSectionId } from "./launchpad-services.js";
 import type { ServiceGroup, ServiceGroupDefinition } from "../data/launchpad-services.js";
+import { useT } from "../i18n/provider.js";
 
 export interface LaunchpadFilterBarProps {
   query: string;
@@ -12,6 +13,7 @@ export interface LaunchpadFilterBarProps {
 }
 
 export function LaunchpadFilterBar({ query, onQueryChange, sections }: LaunchpadFilterBarProps) {
+  const t = useT();
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -40,14 +42,14 @@ export function LaunchpadFilterBar({ query, onQueryChange, sections }: Launchpad
           type="text"
           value={query}
           onChange={(e) => onQueryChange(e.target.value)}
-          placeholder="Search services"
+          placeholder={t("Search services")}
           className="w-full h-10 rounded-full border border-border bg-card pl-9 pr-9 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-brand-purple/40 focus:border-brand-purple/40"
         />
         {query ? (
           <button
             type="button"
             onClick={() => onQueryChange("")}
-            aria-label="Clear search"
+            aria-label={t("Clear search")}
             className="absolute right-2.5 top-1/2 -translate-y-1/2 h-5 w-5 flex items-center justify-center rounded-full text-muted-foreground hover:text-foreground transition-colors"
           >
             <X className="h-3.5 w-3.5" />
@@ -59,7 +61,7 @@ export function LaunchpadFilterBar({ query, onQueryChange, sections }: Launchpad
         )}
       </div>
 
-      <nav aria-label="Launchpad sections" className="flex gap-2 overflow-x-auto lg:flex-wrap lg:overflow-visible -mx-4 px-4 sm:mx-0 sm:px-0">
+      <nav aria-label={t("Launchpad sections")} className="flex gap-2 overflow-x-auto lg:flex-wrap lg:overflow-visible -mx-4 px-4 sm:mx-0 sm:px-0">
         {sections.map(({ group, count }) => (
           <button
             key={group.key}

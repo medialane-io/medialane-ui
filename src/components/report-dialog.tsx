@@ -10,6 +10,7 @@ import { Textarea } from "./textarea.js";
 import { Label } from "./label.js";
 import { useMedialaneApp, type ReportTarget } from "./medialane-app.js";
 import { describeError } from "../utils/describe-error.js";
+import { useT } from "../i18n/provider.js";
 
 const CATEGORIES = [
   { value: "COPYRIGHT_PIRACY", label: "Copyright / Piracy" },
@@ -28,6 +29,7 @@ export interface ReportDialogProps {
 }
 
 export function ReportDialog({ target, open, onOpenChange }: ReportDialogProps) {
+  const t = useT();
   const { getClient, ensureSignedIn } = useMedialaneApp();
   const [categories, setCategories] = useState<string[]>([]);
   const [description, setDescription] = useState("");
@@ -92,8 +94,7 @@ export function ReportDialog({ target, open, onOpenChange }: ReportDialogProps) 
       <DialogContent className="max-w-md">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <Flag className="w-4 h-4" />
-            Report {targetLabel}
+            <Flag className="w-4 h-4" />{t("Report {targetLabel}", { targetLabel })}
           </DialogTitle>
         </DialogHeader>
 
@@ -101,18 +102,18 @@ export function ReportDialog({ target, open, onOpenChange }: ReportDialogProps) 
           <div className="flex flex-col items-center gap-4 py-4 text-center">
             <CheckCircle className="h-10 w-10 text-emerald-500" />
             <div className="space-y-1">
-              <p className="font-semibold">Report submitted</p>
-              <p className="text-sm text-muted-foreground">Our team will review it.</p>
+              <p className="font-semibold">{t("Report submitted")}</p>
+              <p className="text-sm text-muted-foreground">{t("Our team will review it.")}</p>
             </div>
-            <Button className="w-full" onClick={close}>Done</Button>
+            <Button className="w-full" onClick={close}>{t("Done")}</Button>
           </div>
         ) : submitStep === "error" ? (
           <div className="flex flex-col items-center gap-4 py-4 text-center">
             <AlertCircle className="h-10 w-10 text-destructive" />
             <p className="text-sm text-muted-foreground">{submitError}</p>
             <div className="flex gap-2 w-full">
-              <Button variant="outline" className="flex-1" onClick={() => { setSubmitStep("idle"); setSubmitError(null); }}>Try again</Button>
-              <Button variant="outline" className="flex-1" onClick={close}>Dismiss</Button>
+              <Button variant="outline" className="flex-1" onClick={() => { setSubmitStep("idle"); setSubmitError(null); }}>{t("Try again")}</Button>
+              <Button variant="outline" className="flex-1" onClick={close}>{t("Dismiss")}</Button>
             </div>
           </div>
         ) : (
@@ -120,9 +121,9 @@ export function ReportDialog({ target, open, onOpenChange }: ReportDialogProps) 
             <div className="space-y-4">
               <div className="space-y-3">
                 <Label className="text-sm font-medium">
-                  What&apos;s wrong with this content?{" "}
+                  {t("What's wrong with this content?")}{" "}
                   <span className="text-muted-foreground font-normal">
-                    (select all that apply)
+                    {t("(select all that apply)")}
                   </span>
                 </Label>
                 <div className="grid grid-cols-1 gap-2">
@@ -147,12 +148,12 @@ export function ReportDialog({ target, open, onOpenChange }: ReportDialogProps) 
 
               <div className="space-y-2">
                 <Label htmlFor="report-description" className="text-sm font-medium">
-                  Additional details{" "}
-                  <span className="text-muted-foreground font-normal">(optional)</span>
+                  {t("Additional details")}{" "}
+                  <span className="text-muted-foreground font-normal">{t("(optional)")}</span>
                 </Label>
                 <Textarea
                   id="report-description"
-                  placeholder="Describe the issue in more detail (optional)"
+                  placeholder={t("Describe the issue in more detail (optional)")}
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   maxLength={500}
@@ -165,20 +166,19 @@ export function ReportDialog({ target, open, onOpenChange }: ReportDialogProps) 
               </div>
 
               <p className="text-xs text-muted-foreground">
-                Reports are reviewed by the Medialane DAO team. Content remains
-                accessible onchain and via the permissionless dapp.
+                {t("Reports are reviewed by the Medialane DAO team. Content remains accessible onchain and via the permissionless dapp.")}
               </p>
             </div>
 
             <DialogFooter>
               <Button variant="ghost" onClick={close} disabled={submitStep === "submitting"}>
-                Cancel
+                {t("Cancel")}
               </Button>
               <Button
                 onClick={handleSubmit}
                 disabled={categories.length === 0 || submitStep === "submitting"}
               >
-                {submitStep === "submitting" ? <><Loader2 className="h-4 w-4 mr-2 animate-spin" />Submitting…</> : "Submit Report"}
+                {submitStep === "submitting" ? <><Loader2 className="h-4 w-4 mr-2 animate-spin" />{t("Submitting…")}</> : t("Submit Report")}
               </Button>
             </DialogFooter>
           </>

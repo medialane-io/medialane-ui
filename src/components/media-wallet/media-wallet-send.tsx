@@ -19,6 +19,7 @@ import { shortenAddress } from "../../utils/address.js";
 import { sendToken } from "../../utils/send-token.js";
 import { successMessages } from "../../utils/success-messages.js";
 import { useMedialaneApp } from "../medialane-app.js";
+import { useT } from "../../i18n/provider.js";
 
 function isValidStarknetAddress(address: string): boolean {
   try {
@@ -49,6 +50,7 @@ export function MediaWalletSend({
   onNavigate: (view: MediaWalletView) => void;
   onDone: () => void;
 }) {
+  const t = useT();
   const { useWalletSession, useWriteAction } = useMediaWalletApp();
   const { getClient } = useMedialaneApp();
   const { address } = useWalletSession();
@@ -125,7 +127,7 @@ export function MediaWalletSend({
     <main className="flex flex-col gap-6 px-5 pb-8 pt-2">
       <div className="flex items-center gap-3">
         <BackButton onBack={() => onNavigate({ name: "home" })} />
-        <h1 className="font-[family-name:var(--font-display)] text-2xl font-extrabold tracking-tight">Send</h1>
+        <h1 className="font-[family-name:var(--font-display)] text-2xl font-extrabold tracking-tight">{t("Send")}</h1>
       </div>
 
       {error && (
@@ -140,7 +142,7 @@ export function MediaWalletSend({
             <input
               value={to}
               onChange={(e) => setTo(e.target.value)}
-              placeholder="Recipient  0x…"
+              placeholder={t("Recipient  0x…")}
               spellCheck={false}
               className="w-0 flex-1 rounded-2xl border border-border bg-foreground/[0.05] px-4 py-3 font-mono text-sm outline-none transition-colors focus:border-brand-purple"
             />
@@ -149,12 +151,12 @@ export function MediaWalletSend({
                 onClick={pasteRecipient}
                 className="shrink-0 rounded-2xl border border-border bg-foreground/[0.05] px-3 py-3 text-xs font-semibold text-muted-foreground transition-colors hover:text-foreground"
               >
-                Paste
+                {t("Paste")}
               </button>
             )}
           </div>
           {to.trim() !== "" && !recipientValid && (
-            <p className="mt-1.5 px-1 text-xs text-destructive">Not a valid Starknet address.</p>
+            <p className="mt-1.5 px-1 text-xs text-destructive">{t("Not a valid Starknet address.")}</p>
           )}
         </div>
 
@@ -172,7 +174,7 @@ export function MediaWalletSend({
                 onClick={setMax}
                 className="rounded-full bg-foreground/[0.06] px-2 py-1 text-2xs font-bold text-muted-foreground transition-colors hover:text-foreground"
               >
-                MAX
+                {t("MAX")}
               </button>
               <button
                 onClick={() => setPickerOpen(true)}
@@ -184,9 +186,9 @@ export function MediaWalletSend({
           </div>
           <div className="mt-1.5 flex items-center justify-between px-1">
             <span className="text-xs text-muted-foreground">
-              Balance: {currencyBalance != null ? fmt(currencyBalance, currency.decimals) : "…"}
+              {t("Balance:")} {currencyBalance != null ? fmt(currencyBalance, currency.decimals) : "…"}
             </span>
-            {amountOverBalance && <span className="text-xs text-destructive">Amount exceeds balance.</span>}
+            {amountOverBalance && <span className="text-xs text-destructive">{t("Amount exceeds balance.")}</span>}
           </div>
         </div>
 
@@ -197,14 +199,14 @@ export function MediaWalletSend({
           disabled={status === "processing" || !composeReady}
           className="mt-1 w-full disabled:pointer-events-none disabled:opacity-40"
         >
-          Review Transfer
+          {t("Review Transfer")}
         </ActionButton>
-        <TrustNote>Gas paid from your balance. Transfers are permanent and recorded onchain.</TrustNote>
+        <TrustNote>{t("Gas paid from your balance. Transfers are permanent and recorded onchain.")}</TrustNote>
       </div>
 
       {pickerOpen && (
         <CurrencySheet
-          title="Choose currency"
+          title={t("Choose currency")}
           tokens={WALLET_TOKENS}
           balances={pinnedBalancesBySymbol}
           onSelect={(t) => {
@@ -216,7 +218,7 @@ export function MediaWalletSend({
       )}
 
       {confirmOpen && (
-        <ActionModal title="Review Transfer" onClose={() => setConfirmOpen(false)}>
+        <ActionModal title={t("Review Transfer")} onClose={() => setConfirmOpen(false)}>
           <div className="flex flex-col gap-4">
             <div className="flex items-center gap-3">
               <div className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-foreground/[0.06]">
@@ -225,8 +227,8 @@ export function MediaWalletSend({
                 </svg>
               </div>
               <div className="min-w-0 flex-1">
-                <div className="font-semibold">Send</div>
-                <div className="truncate font-mono text-xs text-muted-foreground">To: {short(to.trim())}</div>
+                <div className="font-semibold">{t("Send")}</div>
+                <div className="truncate font-mono text-xs text-muted-foreground">{t("To: {short}", { short: short(to.trim()) })}</div>
               </div>
             </div>
 
@@ -240,47 +242,47 @@ export function MediaWalletSend({
 
             <div className="flex flex-col divide-y divide-border/40 rounded-2xl bg-foreground/[0.05] px-4">
               <div className="flex items-center justify-between py-3 text-sm">
-                <span className="text-muted-foreground">Amount</span>
+                <span className="text-muted-foreground">{t("Amount")}</span>
                 <span className="font-medium">{amount.trim()} {currency.symbol}</span>
               </div>
               <div className="flex items-center justify-between py-3 text-sm">
-                <span className="text-muted-foreground">Recipient</span>
+                <span className="text-muted-foreground">{t("Recipient")}</span>
                 <span className="font-mono font-medium">{short(to.trim())}</span>
               </div>
               <div className="flex items-center justify-between py-3 text-sm">
-                <span className="text-muted-foreground">Contract</span>
+                <span className="text-muted-foreground">{t("Contract")}</span>
                 <span className="font-medium">{currency.symbol}</span>
               </div>
               <div className="flex items-center justify-between py-3 text-sm">
-                <span className="text-muted-foreground">Call</span>
-                <span className="font-medium underline">transfer</span>
+                <span className="text-muted-foreground">{t("Call")}</span>
+                <span className="font-medium underline">{t("transfer")}</span>
               </div>
             </div>
 
             <div className="flex items-center justify-between rounded-2xl border border-border px-4 py-3 text-sm">
-              <span className="text-muted-foreground">Estimated fee</span>
+              <span className="text-muted-foreground">{t("Estimated fee")}</span>
               <span className="font-medium">
-                {feeError ? "Unavailable" : fee ? `${fmt(fee.raw, 18, 6)} ${fee.unit === "FRI" ? "STRK" : "ETH"}` : "Estimating…"}
+                {feeError ? t("Unavailable") : fee ? `${fmt(fee.raw, 18, 6)} ${fee.unit === "FRI" ? "STRK" : "ETH"}` : t("Estimating…")}
               </span>
             </div>
-            {feeError && <p className="px-1 text-xs text-destructive">Fee estimate failed: {feeError}</p>}
+            {feeError && <p className="px-1 text-xs text-destructive">{t("Fee estimate failed: {feeError}", { feeError })}</p>}
 
             <div className="flex gap-3">
               <button
                 onClick={() => setConfirmOpen(false)}
                 className="flex-1 rounded-2xl border border-border py-3 text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground"
               >
-                Reject
+                {t("Reject")}
               </button>
               <ActionButton action="offer" big onClick={send} className="flex-1">
-                Confirm
+                {t("Confirm")}
               </ActionButton>
             </div>
           </div>
         </ActionModal>
       )}
 
-      {status === "processing" && <BusyOverlay label="Signing & sending…" />}
+      {status === "processing" && <BusyOverlay label={t("Signing & sending…")} />}
       {status === "success" && txHash && (
         <SuccessDialog
           title={sentMessage.title}

@@ -2,6 +2,7 @@
 
 import { cn } from "../../utils/cn.js";
 import type { DropPhase } from "../../utils/drop/view.js";
+import { useT } from "../../i18n/provider.js";
 
 export function DropStatusBadge({ phase }: { phase: DropPhase }) {
   const map = {
@@ -20,12 +21,13 @@ export function DropStatusBadge({ phase }: { phase: DropPhase }) {
 }
 
 export function DropSupplyProgress({ minted, max }: { minted: number; max: number }) {
+  const t = useT();
   const pct = max > 0 ? Math.min(100, (minted / max) * 100) : 0;
   return (
     <div className="space-y-1.5">
       <div className="flex justify-between text-xs text-muted-foreground">
-        <span>{minted.toLocaleString()} minted</span>
-        <span>of {max.toLocaleString()}</span>
+        <span>{t("{minted} minted", { minted: minted.toLocaleString() })}</span>
+        <span>{t("of {max}", { max: max.toLocaleString() })}</span>
       </div>
       <div className="h-2 rounded-full bg-muted overflow-hidden">
         <div
@@ -33,7 +35,7 @@ export function DropSupplyProgress({ minted, max }: { minted: number; max: numbe
           style={{ width: `${pct}%` }}
         />
       </div>
-      <p className="text-xs text-muted-foreground">{pct.toFixed(1)}% claimed</p>
+      <p className="text-xs text-muted-foreground">{t("{pct}% claimed", { pct: pct.toFixed(1) })}</p>
     </div>
   );
 }

@@ -15,6 +15,7 @@ import { downloadCsv } from "../create/launch-dialog.js";
 import { describeError } from "../../../utils/describe-error.js";
 import { parseAllowlist } from "../../../utils/drop/allowlist.js";
 import { priceLabel, supplyLabel } from "../../../utils/drop/sale.js";
+import { useT } from "../../../i18n/provider.js";
 
 export interface DropManageProps {
   contract: string;
@@ -29,6 +30,7 @@ export interface DropManageProps {
 type Pending = { title: string; body: string; act: () => Promise<void> } | null;
 
 export function DropManage({ contract, indexed, onchain, mints, run, saveExclusive }: DropManageProps) {
+  const t = useT();
   const [pending, setPending] = useState<Pending>(null);
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
@@ -63,49 +65,47 @@ export function DropManage({ contract, indexed, onchain, mints, run, saveExclusi
       {message && <p className="rounded-lg bg-muted/50 px-3 py-2 text-sm">{message}</p>}
 
       <section className="space-y-3">
-        <h3 className="text-sm font-semibold">Overview</h3>
+        <h3 className="text-sm font-semibold">{t("Overview")}</h3>
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-          <StatTile label="Minted" value={supplyLabel(onchain.totalMinted.toString(), onchain.maxSupply.toString())} />
-          <StatTile label="Revenue" value={priceLabel(indexed?.revenue ?? "0", onchain.paymentToken)} />
-          <StatTile label="Collectors" value={indexed?.collectors ?? 0} />
+          <StatTile label={t("Minted")} value={supplyLabel(onchain.totalMinted.toString(), onchain.maxSupply.toString())} />
+          <StatTile label={t("Revenue")} value={priceLabel(indexed?.revenue ?? "0", onchain.paymentToken)} />
+          <StatTile label={t("Collectors")} value={indexed?.collectors ?? 0} />
         </div>
         <DropActivityList mints={mints} />
       </section>
 
       <section className="space-y-3">
-        <h3 className="text-sm font-semibold">Who can mint</h3>
-        <p className="text-sm text-muted-foreground">{listed ? "Only wallets on your list can mint." : "Everyone can mint."}</p>
-        <Textarea rows={5} placeholder="Paste wallet addresses, one per line" value={listText} onChange={(e) => { setListText(e.target.value); setLinks([]); }} />
-        {parsed.invalid.length > 0 && <p className="text-xs text-destructive">{parsed.invalid.length} line(s) aren't wallet addresses: {parsed.invalid.slice(0, 3).join(", ")}</p>}
+        <h3 className="text-sm font-semibold">{t("Who can mint")}</h3>
+        <p className="text-sm text-muted-foreground">{listed ? t("Only wallets on your list can mint.") : t("Everyone can mint.")}</p>
+        <Textarea rows={5} placeholder={t("Paste wallet addresses, one per line")} value={listText} onChange={(e) => { setListText(e.target.value); setLinks([]); }} />
+        {parsed.invalid.length > 0 && <p className="text-xs text-destructive">{t("{count} line(s) aren't wallet addresses: {value}", { count: parsed.invalid.length, value: parsed.invalid.slice(0, 3).join(", ") })}</p>}
         <div className="flex flex-wrap gap-2">
           {list && sameList && (
-            <Button variant="outline" onClick={() => setLinks(dropClaimLinks(window.location.origin, contract, list))}>This is your current list — get its claim links</Button>
+            <Button variant="outline" onClick={() => setLinks(dropClaimLinks(window.location.origin, contract, list))}>{t("This is your current list — get its claim links")}</Button>
           )}
           {list && !sameList && parsed.invalid.length === 0 && (
             <Button onClick={() => setPending({
               title: "List published",
               body: `Only these ${parsed.addresses.length} wallets will be able to mint. Claim links for your previous list stop working for wallets not on this one.`,
               act: async () => { await run({ action: "set_allowlist_root", root: list.root }); setLinks(dropClaimLinks(window.location.origin, contract, list)); },
-            })}>Publish this list</Button>
+            })}>{t("Publish this list")}</Button>
           )}
           {listed && (
             <Button variant="outline" onClick={() => setPending({
               title: "Drop opened to everyone",
               body: "Anyone will be able to mint, with or without a claim link.",
               act: () => run({ action: "set_allowlist_root", root: "0x0" }),
-            })}>Open to everyone</Button>
+            })}>{t("Open to everyone")}</Button>
           )}
-          {links.length > 0 && <Button variant="outline" onClick={() => downloadCsv(popClaimLinksCsv(links), "claim-links.csv")}>Download claim links</Button>}
+          {links.length > 0 && <Button variant="outline" onClick={() => downloadCsv(popClaimLinksCsv(links), "claim-links.csv")}>{t("Download claim links")}</Button>}
         </div>
       </section>
 
       <section className="space-y-3">
-        <h3 className="text-sm font-semibold">Gift</h3>
-        <p className="text-sm text-muted-foreground">
-          Mint free tokens to a wallet{left !== null ? ` · ${left.toString()} left` : ""}. Gifts don't count toward that wallet's limit.
-        </p>
+        <h3 className="text-sm font-semibold">{t("Gift")}</h3>
+        <p className="text-sm text-muted-foreground">{left !== null ? t("Mint free tokens to a wallet · {left} left. Gifts don't count toward that wallet's limit.", { left: left.toString() }) : t("Mint free tokens to a wallet. Gifts don't count toward that wallet's limit.")}</p>
         <div className="flex gap-2">
-          <Input placeholder="Wallet address" value={gift.to} onChange={(e) => setGift({ ...gift, to: e.target.value.trim() })} />
+          <Input placeholder={t("Wallet address")} value={gift.to} onChange={(e) => setGift({ ...gift, to: e.target.value.trim() })} />
           <Input className="w-20" inputMode="numeric" value={gift.quantity} onChange={(e) => setGift({ ...gift, quantity: e.target.value.trim() })} />
         </div>
         <Button
@@ -115,33 +115,33 @@ export function DropManage({ contract, indexed, onchain, mints, run, saveExclusi
             body: `Mint ${gift.quantity} free token(s) to ${gift.to}.`,
             act: () => run({ action: "issue", recipient: gift.to, quantity: gift.quantity }),
           })}
-        >Send gift</Button>
+        >{t("Send gift")}</Button>
       </section>
 
       <section className="space-y-3">
-        <h3 className="text-sm font-semibold">Share</h3>
+        <h3 className="text-sm font-semibold">{t("Share")}</h3>
         <div className="flex gap-2">
           <Input readOnly value={shareUrl} />
-          <ShareButton title={indexed?.name ?? "Drop"} url={shareUrl} variant="outline" />
+          <ShareButton title={indexed?.name ?? t("Drop")} url={shareUrl} variant="outline" />
         </div>
       </section>
 
       <section className="space-y-3">
-        <h3 className="text-sm font-semibold">Exclusive content</h3>
+        <h3 className="text-sm font-semibold">{t("Exclusive content")}</h3>
         <ExclusiveFields value={exclusive} onChange={setExclusive} />
         <div className="flex gap-2">
-          <Button disabled={!/^https:\/\//.test(exclusive.url)} onClick={() => setPending({ title: "Exclusive content saved", body: "Holders will see this link.", act: () => saveExclusive(exclusive) })}>Save</Button>
-          <Button variant="outline" onClick={() => setPending({ title: "Exclusive content removed", body: "Holders will no longer see a link.", act: () => saveExclusive(null) })}>Remove</Button>
+          <Button disabled={!/^https:\/\//.test(exclusive.url)} onClick={() => setPending({ title: "Exclusive content saved", body: "Holders will see this link.", act: () => saveExclusive(exclusive) })}>{t("Save")}</Button>
+          <Button variant="outline" onClick={() => setPending({ title: "Exclusive content removed", body: "Holders will no longer see a link.", act: () => saveExclusive(null) })}>{t("Remove")}</Button>
         </div>
       </section>
 
       <Dialog open={pending !== null} onOpenChange={(next) => { if (!next && !busy) setPending(null); }}>
         <DialogContent className="sm:max-w-md" hideClose={busy}>
-          <DialogTitle className="sr-only">Confirm</DialogTitle>
+          <DialogTitle className="sr-only">{t("Confirm")}</DialogTitle>
           <DialogDescription className="text-sm text-foreground">{pending?.body}</DialogDescription>
           <div className="flex justify-end gap-2">
-            <Button variant="outline" disabled={busy} onClick={() => setPending(null)}>Cancel</Button>
-            <Button disabled={busy} onClick={() => void confirm()}>{busy ? "Working…" : "Confirm"}</Button>
+            <Button variant="outline" disabled={busy} onClick={() => setPending(null)}>{t("Cancel")}</Button>
+            <Button disabled={busy} onClick={() => void confirm()}>{busy ? t("Working…") : t("Confirm")}</Button>
           </div>
         </DialogContent>
       </Dialog>

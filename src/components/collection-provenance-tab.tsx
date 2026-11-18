@@ -16,6 +16,7 @@ import { EXPLORER_URL } from "../utils/explorer-url.js";
 import { formatDisplayPrice } from "../utils/format.js";
 import { timeAgo } from "../utils/time.js";
 import { cn } from "../utils/cn.js";
+import { useT } from "../i18n/provider.js";
 
 const PAGE_SIZE = 30;
 
@@ -50,6 +51,7 @@ function groupByDay(events: ApiActivity[]) {
 }
 
 function ProvenanceEvent({ event, showAsset }: { event: ApiActivity; showAsset: boolean }) {
+  const t = useT();
   const resolveImage = useImageUrl();
   const config = ACTIVITY_TYPE_CONFIG[event.type];
   const Icon = config?.icon ?? ExternalLink;
@@ -65,7 +67,7 @@ function ProvenanceEvent({ event, showAsset }: { event: ApiActivity; showAsset: 
 
   const actorLink = actor ? (
     <span className="text-sm font-normal text-muted-foreground">
-      by{" "}
+      {t("by")}{" "}
       <Link
         href={profileHref({ address: actor })}
         className="font-medium text-foreground/80 hover:text-primary transition-colors"
@@ -156,7 +158,7 @@ function ProvenanceEvent({ event, showAsset }: { event: ApiActivity; showAsset: 
               target="_blank"
               rel="noopener noreferrer"
               className="rounded-md p-1 hover:bg-muted hover:text-foreground transition-colors"
-              aria-label="View transaction"
+              aria-label={t("View transaction")}
             >
               <ExternalLink className="h-3.5 w-3.5" aria-hidden />
             </a>
@@ -189,6 +191,7 @@ export interface CollectionProvenanceTabProps {
 }
 
 export function CollectionProvenanceTab({ contract }: CollectionProvenanceTabProps) {
+  const t = useT();
   const [page, setPage] = useState(1);
   const [all, setAll] = useState<ApiActivity[]>([]);
   const { activities, meta, isLoading } = useActivities({ contract, page, limit: PAGE_SIZE });
@@ -211,9 +214,9 @@ export function CollectionProvenanceTab({ contract }: CollectionProvenanceTabPro
     return (
       <div className="py-20 flex flex-col items-center gap-3 text-center">
         <Inbox className="h-10 w-10 text-muted-foreground/40" />
-        <p className="text-sm font-medium text-muted-foreground">No history yet</p>
+        <p className="text-sm font-medium text-muted-foreground">{t("No history yet")}</p>
         <p className="text-xs text-muted-foreground/70 max-w-xs">
-          Mints, transfers, listings and sales will appear here as they happen.
+          {t("Mints, transfers, listings and sales will appear here as they happen.")}
         </p>
       </div>
     );

@@ -13,6 +13,7 @@ import { HelpIcon } from "./help-icon.js";
 import { IP_TYPES } from "../data/ip.js";
 import { useDebouncedValue } from "../utils/use-debounced-value.js";
 import { cn } from "../utils/cn.js";
+import { useT } from "../i18n/provider.js";
 
 const SORT_OPTIONS = [
   { label: "Recent", value: "recent" },
@@ -145,10 +146,11 @@ function ActiveChip({ children, onClear }: { children: ReactNode; onClear: () =>
 }
 
 export function FiltersButton({ filters }: { filters: MarketplaceFilters }) {
+  const t = useT();
   return (
     <button
       onClick={() => filters.setOpen(true)}
-      aria-label="Filters"
+      aria-label={t("Filters")}
       className={cn(
         "relative flex items-center gap-1.5 h-9 px-3 rounded-lg border text-xs font-medium transition-colors shrink-0",
         filters.count > 0
@@ -191,6 +193,7 @@ export function ActiveFilters({ filters }: { filters: MarketplaceFilters }) {
 }
 
 export function FiltersDialog({ filters }: { filters: MarketplaceFilters }) {
+  const t = useT();
   const { open, setOpen, sort, setSort, orderType, setOrderType, currency, selectCurrency, minInput, setMinInput, maxInput, setMaxInput, reset, count } = filters;
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -199,25 +202,25 @@ export function FiltersDialog({ filters }: { filters: MarketplaceFilters }) {
         <div className="flex items-center justify-between px-5 py-4 border-b border-border/60 pr-12">
           <DialogTitle className="text-base font-bold flex items-center gap-2">
             <SlidersHorizontal className="h-4 w-4 text-primary" />
-            Filters
+            {t("Filters")}
           </DialogTitle>
           {count > 0 && (
             <Button variant="ghost" size="sm" className="h-7 text-xs text-muted-foreground" onClick={reset}>
-              Clear all
+              {t("Clear all")}
             </Button>
           )}
         </div>
 
         <div className="flex-1 overflow-y-auto px-5 py-4 space-y-5">
-          <ChipGroup title="Sort" options={SORT_OPTIONS} value={sort} onSelect={setSort} />
-          <ChipGroup title="Order type" options={TYPE_OPTIONS} value={orderType} onSelect={setOrderType} />
-          <ChipGroup title="Currency" options={CURRENCY_OPTIONS} value={currency} onSelect={selectCurrency} />
+          <ChipGroup title={t("Sort")} options={SORT_OPTIONS} value={sort} onSelect={setSort} />
+          <ChipGroup title={t("Order type")} options={TYPE_OPTIONS} value={orderType} onSelect={setOrderType} />
+          <ChipGroup title={t("Currency")} options={CURRENCY_OPTIONS} value={currency} onSelect={selectCurrency} />
 
           <div className="space-y-2">
-            <p className="text-2xs font-semibold text-muted-foreground">Price range</p>
+            <p className="text-2xs font-semibold text-muted-foreground">{t("Price range")}</p>
             <div className="flex items-center gap-2">
               <Input
-                placeholder="Min"
+                placeholder={t("Min")}
                 value={minInput}
                 onChange={(e) => setMinInput(e.target.value)}
                 className="h-9 text-sm"
@@ -226,7 +229,7 @@ export function FiltersDialog({ filters }: { filters: MarketplaceFilters }) {
               />
               <span className="text-sm text-muted-foreground shrink-0">–</span>
               <Input
-                placeholder="Max"
+                placeholder={t("Max")}
                 value={maxInput}
                 onChange={(e) => setMaxInput(e.target.value)}
                 className="h-9 text-sm"
@@ -238,11 +241,11 @@ export function FiltersDialog({ filters }: { filters: MarketplaceFilters }) {
 
           <div className="space-y-2 pt-1 border-t border-border/60">
             <p className="flex items-center gap-1 text-2xs font-semibold text-muted-foreground">
-              IP Type
+              {t("IP Type")}
               <HelpIcon content="Filter by intellectual property category — Art, Audio, Video, and more" side="right" />
             </p>
             <div className="flex flex-wrap gap-1.5">
-              <IpTypeChip href="/marketplace" label="All" />
+              <IpTypeChip href="/marketplace" label={t("All")} />
               {IP_TYPES.map((type) => (
                 <IpTypeChip key={type} href={`/${type.toLowerCase()}`} label={type} />
               ))}
@@ -252,7 +255,7 @@ export function FiltersDialog({ filters }: { filters: MarketplaceFilters }) {
 
         <div className="px-5 py-3 border-t border-border/60">
           <Button className="w-full" onClick={() => setOpen(false)}>
-            Apply filters
+            {t("Apply filters")}
           </Button>
         </div>
 

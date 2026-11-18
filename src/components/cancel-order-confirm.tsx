@@ -2,6 +2,7 @@
 
 import type { ComponentProps } from "react";
 import { MarketplaceConfirmStep, OrderSummaryHero } from "./marketplace-dialog-primitives.js";
+import { useT } from "../i18n/provider.js";
 
 export interface CancelOrderConfirmProps {
   variant: "listing" | "offer";
@@ -14,13 +15,14 @@ export interface CancelOrderConfirmProps {
 }
 
 export function CancelOrderConfirm({ variant, name, image, price, error, onKeep, onConfirm }: CancelOrderConfirmProps) {
+  const t = useT();
   return (
     <div>
       <OrderSummaryHero name={name} image={image} price={price} tone="destructive" />
       <MarketplaceConfirmStep
-        description="This order will be permanently removed onchain."
+        description={t("This order will be permanently removed onchain.")}
         error={error}
-        secondaryLabel="Keep it"
+        secondaryLabel={t("Keep it")}
         onSecondary={onKeep}
         primaryLabel={`Cancel ${variant}`}
         onPrimary={onConfirm}

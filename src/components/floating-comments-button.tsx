@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { MessageCircle } from "lucide-react";
+import { useT } from "../i18n/provider.js";
 
 interface FloatingCommentsButtonProps {
   onClick: () => void;
@@ -10,6 +11,7 @@ interface FloatingCommentsButtonProps {
 }
 
 export function FloatingCommentsButton({ onClick, commentTotal }: FloatingCommentsButtonProps) {
+  const t = useT();
   const [expanded, setExpanded] = useState(true);
   const prefersReducedMotion = useReducedMotion();
 
@@ -27,7 +29,7 @@ export function FloatingCommentsButton({ onClick, commentTotal }: FloatingCommen
       <div className="relative">
         <motion.button
           onClick={onClick}
-          aria-label="Open on-chain comments"
+          aria-label={t("Open on-chain comments")}
           animate={{ width: expanded ? 192 : 56 }}
           transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
           className="flex items-center justify-center gap-2 h-14 rounded-2xl border border-border bg-card/95 backdrop-blur-sm shadow-md hover:shadow-lg hover:bg-accent overflow-hidden active:scale-95"
@@ -41,7 +43,7 @@ export function FloatingCommentsButton({ onClick, commentTotal }: FloatingCommen
                 exit={{ opacity: 0, transition: { duration: 0.15 } }}
                 className="text-sm font-medium text-foreground whitespace-nowrap"
               >
-                Onchain comments
+                {t("Onchain comments")}
               </motion.span>
             )}
           </AnimatePresence>

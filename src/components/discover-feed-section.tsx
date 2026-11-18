@@ -8,6 +8,7 @@ import { ActivityCard, ActivityCardSkeleton } from "./activity-card.js";
 import { timeAgo } from "../utils/time.js";
 import type { ApiOrder, ApiActivity } from "@medialane/sdk";
 import { emptyMessages } from "../utils/empty-messages.js";
+import { useT } from "../i18n/provider.js";
 
 export interface DiscoverFeedSectionProps {
   orders: ApiOrder[];
@@ -56,11 +57,12 @@ export function DiscoverActivityStrip({
   onBuyOrder,
   isOwnOrder,
 }: DiscoverActivityStripProps) {
+  const t = useT();
   return (
     <FadeIn>
       <StripShell
         icon={<Tag className="h-4 w-4" />}
-        title="Activity"
+        title={t("Activity")}
         href={marketplaceHref}
         linkLabel="View all"
       >
@@ -72,7 +74,7 @@ export function DiscoverActivityStrip({
             ))
           : orders.length === 0
           ? (
-              <p className="text-sm text-muted-foreground py-4">No active listings yet.</p>
+              <p className="text-sm text-muted-foreground py-4">{t("No active listings yet.")}</p>
             )
           : orders.map((order) => {
               const own = isOwnOrder?.(order) ?? false;
@@ -101,6 +103,7 @@ export function DiscoverFeedSection({
   onBuyOrder,
   isOwnOrder,
 }: DiscoverFeedSectionProps) {
+  const t = useT();
   return (
     <div className="space-y-14 sm:space-y-20">
       <DiscoverActivityStrip
@@ -114,11 +117,10 @@ export function DiscoverFeedSection({
       <FadeIn delay={0.08}>
         <StripShell
           icon={<Activity className="h-4 w-4" />}
-          title="Community"
+          title={t("Community")}
           subtitle={
             <span className="flex items-center gap-1">
-              <RefreshCw className="h-2.5 w-2.5" />
-              Updated {timeAgo(lastUpdated)}
+              <RefreshCw className="h-2.5 w-2.5" />{t("Updated {timeAgo}", { timeAgo: timeAgo(lastUpdated) })}
             </span>
           }
           href={activitiesHref}

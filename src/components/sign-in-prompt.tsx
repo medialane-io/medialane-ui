@@ -3,8 +3,10 @@
 import type { ReactNode } from "react";
 import { Button } from "./button.js";
 import { useMedialaneApp } from "./medialane-app.js";
+import { useT } from "../i18n/provider.js";
 
 export function SignInPrompt({ title, text, icon }: { title: string; text?: string; icon?: ReactNode }) {
+  const t = useT();
   const { onRequireWallet, connectLabel } = useMedialaneApp();
   return (
     <div className="bento-cell space-y-4 border-dashed p-10 text-center">
@@ -14,7 +16,7 @@ export function SignInPrompt({ title, text, icon }: { title: string; text?: stri
         {text ? <p className="text-xs text-muted-foreground">{text}</p> : null}
       </div>
       <Button size="sm" className="rounded-full px-5" onClick={onRequireWallet}>
-        {connectLabel ?? "Sign in"}
+        {connectLabel ?? t("Sign in")}
       </Button>
     </div>
   );

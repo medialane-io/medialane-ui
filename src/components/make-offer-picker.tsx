@@ -9,8 +9,10 @@ import { Input } from "./input.js";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "./sheet.js";
 import { useCollectionTokens } from "../utils/use-collections.js";
 import { useImageUrl } from "../utils/use-image-url.js";
+import { useT } from "../i18n/provider.js";
 
 export function MakeOfferPicker({ contract, onPick }: { contract: string; onPick: (token: ApiToken) => void }) {
+  const t = useT();
   const resolveImage = useImageUrl();
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
@@ -27,19 +29,19 @@ export function MakeOfferPicker({ contract, onPick }: { contract: string; onPick
     <>
       <Button variant="outline" size="sm" className="gap-1.5" onClick={() => setOpen(true)}>
         <Gavel className="h-3.5 w-3.5" />
-        Make an offer
+        {t("Make an offer")}
       </Button>
 
       <Sheet open={open} onOpenChange={setOpen}>
         <SheetContent side="right" className="w-full sm:w-96 p-0 flex flex-col">
           <SheetHeader className="px-5 py-4 border-b border-border shrink-0 space-y-3">
-            <SheetTitle className="text-sm font-semibold">Choose an item to offer on</SheetTitle>
+            <SheetTitle className="text-sm font-semibold">{t("Choose an item to offer on")}</SheetTitle>
             <div className="relative">
               <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
               <Input
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="Search by name or token ID"
+                placeholder={t("Search by name or token ID")}
                 className="pl-8 h-9 text-xs"
               />
             </div>
@@ -72,7 +74,7 @@ export function MakeOfferPicker({ contract, onPick }: { contract: string; onPick
                   );
                 })}
             {!isLoading && filtered.length === 0 && (
-              <p className="col-span-3 text-center text-xs text-muted-foreground py-8">No items match &quot;{query}&quot;</p>
+              <p className="col-span-3 text-center text-xs text-muted-foreground py-8">{t("No items match \"{query}\"", { query })}</p>
             )}
           </div>
         </SheetContent>

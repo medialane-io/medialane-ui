@@ -8,6 +8,7 @@ import { Badge } from "../badge.js";
 import { describeError } from "../../utils/describe-error.js";
 import { DeviceApprovalDialog } from "./device-approval-dialog.js";
 import type { DeviceWallet, LoadSealedOwner } from "./wallet-types.js";
+import { useT } from "../../i18n/provider.js";
 
 const short = (v: string) => `${v.slice(0, 10)}…${v.slice(-6)}`;
 
@@ -18,6 +19,7 @@ export interface DevicesSectionProps {
 }
 
 export function DevicesSection({ walletAddress, wallet, loadSealed }: DevicesSectionProps) {
+  const t = useT();
   const [devices, setDevices] = useState<DeviceEntry[] | null>(null);
   const [addOpen, setAddOpen] = useState(false);
   const [busyGuid, setBusyGuid] = useState<string | null>(null);
@@ -61,21 +63,21 @@ export function DevicesSection({ walletAddress, wallet, loadSealed }: DevicesSec
     <div className="rounded-2xl border border-border/60 bg-card p-5 sm:p-6 space-y-5">
       <div className="flex items-start justify-between gap-3">
         <div>
-          <h3 className="text-base font-bold text-foreground">Your devices</h3>
+          <h3 className="text-base font-bold text-foreground">{t("Your devices")}</h3>
           <p className="text-sm text-muted-foreground mt-0.5">
-            Each device signs for itself. Add one to use this account somewhere else.
+            {t("Each device signs for itself. Add one to use this account somewhere else.")}
           </p>
         </div>
         <Button size="sm" variant="outline" onClick={() => setAddOpen(true)}>
           <Plus className="h-4 w-4 mr-1" />
-          Add
+          {t("Add")}
         </Button>
       </div>
 
       {devices === null ? (
         <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
       ) : devices.length === 0 ? (
-        <p className="text-sm text-muted-foreground">No devices found for this account.</p>
+        <p className="text-sm text-muted-foreground">{t("No devices found for this account.")}</p>
       ) : (
         <ul className="space-y-2">
           {devices.map((device) => (
@@ -88,7 +90,7 @@ export function DevicesSection({ walletAddress, wallet, loadSealed }: DevicesSec
                 <span className="font-mono text-xs text-muted-foreground truncate">
                   {short(device.guid)}
                 </span>
-                {device.isThisDevice ? <Badge variant="secondary">This device</Badge> : null}
+                {device.isThisDevice ? <Badge variant="secondary">{t("This device")}</Badge> : null}
               </div>
               {device.isThisDevice ? null : (
                 <Button
@@ -97,7 +99,7 @@ export function DevicesSection({ walletAddress, wallet, loadSealed }: DevicesSec
                   disabled={!canRemoveDevice(devices, device.guid) || busyGuid !== null}
                   onClick={() => handleRemove(device)}
                 >
-                  {busyGuid === device.guid ? <Loader2 className="h-4 w-4 animate-spin" /> : "Remove"}
+                  {busyGuid === device.guid ? <Loader2 className="h-4 w-4 animate-spin" /> : t("Remove")}
                 </Button>
               )}
             </li>

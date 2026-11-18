@@ -4,6 +4,7 @@ import * as React from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { User, Wallet } from "lucide-react";
 import { cn } from "../utils/cn.js";
+import { useT } from "../i18n/provider.js";
 
 export interface NavBrandButtonProps {
 
@@ -15,11 +16,12 @@ export interface NavBrandButtonProps {
 }
 
 export function NavBrandButton({ onClick, className, iconSrc = "/icon.png", ...rest }: NavBrandButtonProps) {
+  const t = useT();
   return (
     <button
       type="button"
       onClick={onClick ?? (() => document.dispatchEvent(new CustomEvent(ML_NAV_OPEN)))}
-      aria-label={rest["aria-label"] ?? "Open navigation"}
+      aria-label={rest["aria-label"] ?? t("Open navigation")}
       className={cn(
         "group flex h-11 items-center gap-2 rounded-full",
         "bg-background/10 pl-2.5 pr-3 backdrop-blur-xl backdrop-saturate-150",
@@ -85,12 +87,13 @@ export interface NavWalletTriggerProps {
 
 export const NavWalletTrigger = React.forwardRef<HTMLButtonElement, NavWalletTriggerProps>(
   function NavWalletTrigger({ onClick, className, connected = false, iconSrc, disconnectedIcon, connectedIcon, ...rest }, ref) {
+  const t = useT();
     return (
       <button
         ref={ref}
         type="button"
         onClick={onClick}
-        aria-label={rest["aria-label"] ?? (connected ? "Account" : "Connect wallet")}
+        aria-label={rest["aria-label"] ?? (connected ? t("Account") : t("Connect wallet"))}
         className={cn(
           "ml-nav-wallet-trigger relative flex h-11 w-11 items-center justify-center rounded-full",
           "bg-background/10 text-muted-foreground backdrop-blur-xl backdrop-saturate-150",
@@ -129,6 +132,7 @@ export interface NavAccountSheetProps {
 }
 
 export function NavAccountSheet({ children }: NavAccountSheetProps) {
+  const t = useT();
   const [open, setOpen] = React.useState(false);
 
   React.useEffect(() => {
@@ -186,7 +190,7 @@ export function NavAccountSheet({ children }: NavAccountSheetProps) {
               <button
                 onClick={() => setOpen(false)}
                 className="absolute right-3 top-3 rounded-md p-1 text-muted-foreground/70 transition-colors hover:bg-muted/50 hover:text-foreground"
-                aria-label="Close"
+                aria-label={t("Close")}
               >
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
                   <path d="M18 6 6 18M6 6l12 12" />
