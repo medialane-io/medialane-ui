@@ -251,10 +251,10 @@ export function LicenseTermsBuilder({
           className={INPUT_BASE}
         >
           {LICENSE_TYPES.map((l) => (
-            <option key={l.value} value={l.value}>{l.label}</option>
+            <option key={l.value} value={l.value}>{t(l.label)}</option>
           ))}
         </select>
-        {selectedLicense ? <p className={FIELD_HELP}>{selectedLicense.description}</p> : null}
+        {selectedLicense ? <p className={FIELD_HELP}>{t(selectedLicense.description)}</p> : null}
       </div>
 
       <div className="space-y-1.5">

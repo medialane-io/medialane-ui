@@ -69,7 +69,7 @@ export function PopClaimButton({ collectionAddress }: { collectionAddress: strin
           name="Certificate"
           {...successMessages.claimed(t)}
           txHash={tx.txHash}
-          actions={[{ label: "Done", onClick: tx.reset }]}
+          actions={[{ label: t("Done"), onClick: tx.reset }]}
         >
           <RewardEarned actionType="claim_pop" />
         </TransactionSuccess>

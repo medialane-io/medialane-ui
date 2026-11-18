@@ -11,15 +11,16 @@ import { Label } from "./label.js";
 import { useMedialaneApp, type ReportTarget } from "./medialane-app.js";
 import { describeError } from "../utils/describe-error.js";
 import { useT } from "../i18n/provider.js";
+import { msg } from "../i18n/translate.js";
 
 const CATEGORIES = [
-  { value: "COPYRIGHT_PIRACY", label: "Copyright / Piracy" },
-  { value: "VIOLENCE_GRAPHIC", label: "Violence / Graphic content" },
-  { value: "HATE_SPEECH", label: "Hate speech" },
-  { value: "SCAM_FRAUD", label: "Scam / Fraud" },
-  { value: "SPAM", label: "Spam" },
-  { value: "NSFW", label: "NSFW / Adult content" },
-  { value: "OTHER", label: "Other" },
+  { value: "COPYRIGHT_PIRACY", label: msg("Copyright / Piracy") },
+  { value: "VIOLENCE_GRAPHIC", label: msg("Violence / Graphic content") },
+  { value: "HATE_SPEECH", label: msg("Hate speech") },
+  { value: "SCAM_FRAUD", label: msg("Scam / Fraud") },
+  { value: "SPAM", label: msg("Spam") },
+  { value: "NSFW", label: msg("NSFW / Adult content") },
+  { value: "OTHER", label: msg("Other") },
 ] as const;
 
 export interface ReportDialogProps {

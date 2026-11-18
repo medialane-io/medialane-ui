@@ -86,10 +86,10 @@ export function CreatorPage({ username, useAssetActions, useMarketActions }: Cre
   }
 
   const tabs: UnderlineTab[] = [
-    { id: "assets", label: "Assets", icon: ImageIcon, count: meta?.total ?? undefined },
-    { id: "collections", label: "Collections", icon: LayoutGrid, count: collectionsLoading ? undefined : collections.length },
-    { id: "listings", label: "Listings", icon: ShoppingBag, count: activeTab === "listings" && !ordersLoading ? listings.length : undefined },
-    { id: "activity", label: "Activity", icon: Activity },
+    { id: "assets", label: t("Assets"), icon: ImageIcon, count: meta?.total ?? undefined },
+    { id: "collections", label: t("Collections"), icon: LayoutGrid, count: collectionsLoading ? undefined : collections.length },
+    { id: "listings", label: t("Listings"), icon: ShoppingBag, count: activeTab === "listings" && !ordersLoading ? listings.length : undefined },
+    { id: "activity", label: t("Activity"), icon: Activity },
   ];
 
   return (
@@ -101,8 +101,8 @@ export function CreatorPage({ username, useAssetActions, useMarketActions }: Cre
           creator={creator}
           image={resolveImage(creator.avatarImage || tokens[0]?.metadata?.image)}
           stats={[
-            { label: "Assets", value: meta?.total ?? null },
-            { label: "Collections", value: collectionsLoading ? null : collections.length },
+            { label: t("Assets"), value: meta?.total ?? null },
+            { label: t("Collections"), value: collectionsLoading ? null : collections.length },
           ]}
         />
       </div>

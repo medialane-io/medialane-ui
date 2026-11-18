@@ -219,13 +219,13 @@ export function EditionMintFields({
                       </FormControl>
                       <SelectContent>
                         {LICENSE_TYPES.map((license) => (
-                          <SelectItem key={license.value} value={license.value}>{license.label}</SelectItem>
+                          <SelectItem key={license.value} value={license.value}>{t(license.label)}</SelectItem>
                         ))}
                       </SelectContent>
                     </Select>
                     {(() => {
                       const preset = LICENSE_TYPES.find((license) => license.value === field.value);
-                      return preset ? <p className="text-xs text-muted-foreground mt-1">{preset.description}</p> : null;
+                      return preset ? <p className="text-xs text-muted-foreground mt-1">{t(preset.description)}</p> : null;
                     })()}
                     <FormMessage />
                   </FormItem>

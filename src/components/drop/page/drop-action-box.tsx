@@ -25,7 +25,7 @@ export function DropActionBox({ view, minted, maxSupply, quantity, onQuantity, o
         <DropStatusBadge phase={view.phase} />
         <span className="text-xs text-muted-foreground">{view.statusText}</span>
       </div>
-      {view.countdown && <DropCountdown targetTs={view.countdown.target} label={view.countdown.label} />}
+      {view.countdown && <DropCountdown targetTs={view.countdown.target} label={t(view.countdown.label)} />}
       {maxSupply > 0n
         ? <DropSupplyProgress minted={Number(minted)} max={Number(maxSupply)} />
         : <p className="text-sm text-muted-foreground">{t("{value} minted", { value: Number(minted).toLocaleString("en-US") })}</p>}
@@ -46,7 +46,7 @@ export function DropActionBox({ view, minted, maxSupply, quantity, onQuantity, o
       {view.totalText && <p className="text-sm text-muted-foreground">{view.totalText}</p>}
       {view.eligibility && <p className="text-sm">{view.eligibility}</p>}
       <GradientButton big disabled={view.button.action === "none"} onClick={onAction} className="disabled:opacity-50">
-        {view.button.label}
+        {t(view.button.label)}
       </GradientButton>
     </div>
   );

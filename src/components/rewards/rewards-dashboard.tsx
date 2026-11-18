@@ -39,6 +39,7 @@ import {
   Zap,
 } from "lucide-react";
 import { useT } from "../../i18n/provider.js";
+import { msg } from "../../i18n/translate.js";
 
 export const REWARD_ACTION_LABELS: Record<string, string> = {
   complete_profile: "Complete profile",
@@ -79,37 +80,37 @@ const EARN_GROUPS: {
   items: { label: string; href: string; Icon: LucideIcon }[];
 }[] = [
   {
-    title: "Create",
+    title: msg("Create"),
     textClass: "text-brand-purple",
     tileClass: "bg-brand-purple",
     items: [
-      { label: "Create a collection", href: "/launchpad/single-editions/collection", Icon: Layers },
-      { label: "Mint an asset", href: "/launchpad/single-editions", Icon: Palette },
-      { label: "Launch a drop or POP", href: "/launchpad", Icon: Rocket },
-      { label: "Launch a creator coin", href: "/launchpad/coin/create", Icon: Coins },
-      { label: "Remix existing work", href: "/marketplace", Icon: GitBranch },
+      { label: msg("Create a collection"), href: "/launchpad/single-editions/collection", Icon: Layers },
+      { label: msg("Mint an asset"), href: "/launchpad/single-editions", Icon: Palette },
+      { label: msg("Launch a drop or POP"), href: "/launchpad", Icon: Rocket },
+      { label: msg("Launch a creator coin"), href: "/launchpad/coin/create", Icon: Coins },
+      { label: msg("Remix existing work"), href: "/marketplace", Icon: GitBranch },
     ],
   },
   {
-    title: "Collect",
+    title: msg("Collect"),
     textClass: "text-brand-blue",
     tileClass: "bg-brand-blue",
     items: [
-      { label: "Collect an asset", href: "/marketplace", Icon: ShoppingBag },
-      { label: "Make an offer", href: "/marketplace", Icon: Handshake },
-      { label: "Sell an asset", href: "/portfolio/assets", Icon: Tag },
-      { label: "Get an event ticket", href: "/launchpad", Icon: Ticket },
+      { label: msg("Collect an asset"), href: "/marketplace", Icon: ShoppingBag },
+      { label: msg("Make an offer"), href: "/marketplace", Icon: Handshake },
+      { label: msg("Sell an asset"), href: "/portfolio/assets", Icon: Tag },
+      { label: msg("Get an event ticket"), href: "/launchpad", Icon: Ticket },
     ],
   },
   {
-    title: "Connect",
+    title: msg("Connect"),
     textClass: "text-brand-rose",
     tileClass: "bg-brand-rose",
     items: [
-      { label: "Start or join a club", href: "/launchpad", Icon: UserRoundCheck },
-      { label: "Open a sponsorship", href: "/launchpad", Icon: Handshake },
-      { label: "Join the conversation", href: "/marketplace", Icon: MessageSquare },
-      { label: "Complete your profile", href: "/settings", Icon: UserRoundCheck },
+      { label: msg("Start or join a club"), href: "/launchpad", Icon: UserRoundCheck },
+      { label: msg("Open a sponsorship"), href: "/launchpad", Icon: Handshake },
+      { label: msg("Join the conversation"), href: "/marketplace", Icon: MessageSquare },
+      { label: msg("Complete your profile"), href: "/settings", Icon: UserRoundCheck },
     ],
   },
 ];
@@ -253,7 +254,7 @@ function EarnMorePanel() {
       <SectionTitle>{t("Ways to earn")}</SectionTitle>
       {EARN_GROUPS.map((group) => (
         <div key={group.title} className="space-y-3">
-          <p className={`text-sm font-black uppercase tracking-wide ${group.textClass}`}>{group.title}</p>
+          <p className={`text-sm font-black uppercase tracking-wide ${group.textClass}`}>{t(group.title)}</p>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
             {group.items.map(({ label, href, Icon }) => (
               <Link

@@ -5,11 +5,12 @@ import type { DropPhase } from "../../utils/drop/view.js";
 import { useT } from "../../i18n/provider.js";
 
 export function DropStatusBadge({ phase }: { phase: DropPhase }) {
+  const t = useT();
   const map = {
-    live:       { label: "Live",     cls: "text-green-400 bg-green-500/10" },
-    upcoming:   { label: "Upcoming", cls: "text-brand-blue bg-brand-blue/10" },
-    ended:      { label: "Ended",    cls: "text-muted-foreground bg-muted" },
-    "sold-out": { label: "Sold out", cls: "text-brand-orange bg-brand-orange/10" },
+    live:       { label: t("Live"),     cls: "text-green-400 bg-green-500/10" },
+    upcoming:   { label: t("Upcoming"), cls: "text-brand-blue bg-brand-blue/10" },
+    ended:      { label: t("Ended"),    cls: "text-muted-foreground bg-muted" },
+    "sold-out": { label: t("Sold out"), cls: "text-brand-orange bg-brand-orange/10" },
   } as const;
   const { label, cls } = map[phase];
   return (

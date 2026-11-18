@@ -82,8 +82,8 @@ export function ApproveMintDialog({ offer, open, onOpenChange, collections, foot
           error={error}
           success={successMessages.licenseGranted({ price: priceDisplay }, t)}
           successActions={[
-            { label: "Done", onClick: close },
-            ...(newAssetHref ? [{ label: "View new asset", href: newAssetHref }] : []),
+            { label: t("Done"), onClick: close },
+            ...(newAssetHref ? [{ label: t("View new asset"), href: newAssetHref }] : []),
           ]}
           errorTitle={t("Minting failed")}
           errorDescription={t("The transaction was submitted, but the remix could not be completed.")}

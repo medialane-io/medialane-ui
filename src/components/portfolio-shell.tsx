@@ -15,6 +15,7 @@ import { useReceivedOffers, useUserOrders } from "../utils/use-orders.js";
 import { useRewards } from "../utils/use-rewards.js";
 import { useMySponsorshipDealCounts } from "../utils/use-sponsorship.js";
 import { useT } from "../i18n/provider.js";
+import { msg } from "../i18n/translate.js";
 
 export interface PortfolioTab {
   key: string;
@@ -24,15 +25,15 @@ export interface PortfolioTab {
 }
 
 export const PORTFOLIO_TABS: PortfolioTab[] = [
-  { key: "assets", label: "Assets", href: "/portfolio/assets" },
-  { key: "collections", label: "Collections", href: "/portfolio/collections" },
-  { key: "listings", label: "Listings", href: "/portfolio/listings", hideWhenEmpty: true },
-  { key: "received", label: "Offers received", href: "/portfolio/received", hideWhenEmpty: true },
-  { key: "offers", label: "Offers sent", href: "/portfolio/offers", hideWhenEmpty: true },
-  { key: "counter", label: "Counter-offers", href: "/portfolio/counter-offers", hideWhenEmpty: true },
-  { key: "licensing", label: "Licensing", href: "/portfolio/licensing", hideWhenEmpty: true },
-  { key: "sponsorship", label: "Sponsorships", href: "/portfolio/sponsorships", hideWhenEmpty: true },
-  { key: "activity", label: "Activity", href: "/portfolio/activity" },
+  { key: "assets", label: msg("Assets"), href: "/portfolio/assets" },
+  { key: "collections", label: msg("Collections"), href: "/portfolio/collections" },
+  { key: "listings", label: msg("Listings"), href: "/portfolio/listings", hideWhenEmpty: true },
+  { key: "received", label: msg("Offers received"), href: "/portfolio/received", hideWhenEmpty: true },
+  { key: "offers", label: msg("Offers sent"), href: "/portfolio/offers", hideWhenEmpty: true },
+  { key: "counter", label: msg("Counter-offers"), href: "/portfolio/counter-offers", hideWhenEmpty: true },
+  { key: "licensing", label: msg("Licensing"), href: "/portfolio/licensing", hideWhenEmpty: true },
+  { key: "sponsorship", label: msg("Sponsorships"), href: "/portfolio/sponsorships", hideWhenEmpty: true },
+  { key: "activity", label: msg("Activity"), href: "/portfolio/activity" },
 ];
 
 function SignedOut() {

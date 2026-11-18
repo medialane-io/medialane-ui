@@ -52,7 +52,7 @@ export function LaunchDialog({ open, onClose, draft }: { open: boolean; onClose:
         const done = await uploadAll(initial, async (f) => (await uploadFileToIpfs(client.api, f, "image")).uri, setTasks);
         setTasks(done);
         if (done.some((t) => t.status !== "done")) {
-          setStep({ kind: "error", message: "Some files didn't upload. Retry to send only those." });
+          setStep({ kind: "error", message: t("Some files didn't upload. Retry to send only those.") });
           return;
         }
         const art = done.filter((t) => t.id.startsWith("art-"));
@@ -69,7 +69,7 @@ export function LaunchDialog({ open, onClose, draft }: { open: boolean; onClose:
           supply: draftSupply(draft),
         });
         if (metadataBytes(metadata) > MAX_DROP_METADATA_BYTES) {
-          setStep({ kind: "error", message: "The descriptions are too long for this many tokens. Shorten them and try again." });
+          setStep({ kind: "error", message: t("The descriptions are too long for this many tokens. Shorten them and try again.") });
           return;
         }
         uri = (await uploadDirectoryToIpfs(client.api, metadata)).baseUri;

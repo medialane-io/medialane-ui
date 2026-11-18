@@ -80,7 +80,7 @@ export function AccountsPage() {
 
       <section className="space-y-6 px-4 py-8 sm:px-6 lg:px-8">
         <div className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1 sm:mx-0 sm:px-0" role="group" aria-label={t("Type of work")}>
-          {[{ slug: "", label: "All" }, ...IP_TYPE_CONFIG].map(({ slug, label }) => (
+          {[{ slug: "", label: t("All") }, ...IP_TYPE_CONFIG].map(({ slug, label }) => (
             <button
               key={slug || "all"}
               type="button"

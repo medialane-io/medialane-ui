@@ -19,15 +19,16 @@ import { SectionCard, SectionHeader, FieldRow, HelperText } from "./settings-sec
 import { CollectionSlugClaimSection } from "./collection-slug-claim.js";
 import { useCollectionSettings } from "../utils/use-collection-settings.js";
 import { useT } from "../i18n/provider.js";
+import { msg } from "../i18n/translate.js";
 
 const DESC_MAX = 500;
 
 const CONTENT_TYPES = [
-  { value: "VIDEO",    label: "Video",       icon: Video,    hint: "YouTube, Vimeo, or any video URL" },
-  { value: "AUDIO",    label: "Audio",        icon: Music,    hint: "Spotify, SoundCloud, MP3 link…" },
-  { value: "STREAM",   label: "Live stream",  icon: Radio,    hint: "Twitch, YouTube Live, etc." },
-  { value: "DOCUMENT", label: "Document",     icon: FileText, hint: "PDF, Notion, Google Doc…" },
-  { value: "LINK",     label: "Link",         icon: Link2,    hint: "Any URL" },
+  { value: "VIDEO",    label: msg("Video"),       icon: Video,    hint: msg("YouTube, Vimeo, or any video URL") },
+  { value: "AUDIO",    label: msg("Audio"),        icon: Music,    hint: msg("Spotify, SoundCloud, MP3 link…") },
+  { value: "STREAM",   label: msg("Live stream"),  icon: Radio,    hint: msg("Twitch, YouTube Live, etc.") },
+  { value: "DOCUMENT", label: msg("Document"),     icon: FileText, hint: msg("PDF, Notion, Google Doc…") },
+  { value: "LINK",     label: msg("Link"),         icon: Link2,    hint: msg("Any URL") },
 ];
 
 export function CollectionSettings({ contract }: { contract: string }) {
@@ -249,7 +250,7 @@ export function CollectionSettings({ contract }: { contract: string }) {
                   </SelectContent>
                 </Select>
                 {selectedContentType && (
-                  <HelperText>{selectedContentType.hint}</HelperText>
+                  <HelperText>{t(selectedContentType.hint)}</HelperText>
                 )}
               </FieldRow>
 
@@ -298,7 +299,7 @@ export function CollectionSettings({ contract }: { contract: string }) {
         <div className="space-y-4 pt-1 border-t border-border">
           {([
             { key: "websiteUrl" as const,  icon: Globe,          label: "Website",    placeholder: "https://myproject.xyz" },
-            { key: "twitterUrl" as const,  icon: Twitter,        label: "Twitter / X", placeholder: "https://twitter.com/…" },
+            { key: "twitterUrl" as const,  icon: Twitter,        label: t("Twitter / X"), placeholder: "https://twitter.com/…" },
             { key: "discordUrl" as const,  icon: MessageCircle,  label: "Discord",    placeholder: "https://discord.gg/…" },
             { key: "telegramUrl" as const, icon: Send,           label: "Telegram",   placeholder: "https://t.me/…" },
           ] as const).map(({ key, icon: Icon, label, placeholder }) => (

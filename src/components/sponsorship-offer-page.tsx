@@ -97,7 +97,7 @@ export function SponsorshipOfferPage({ offerId }: { offerId: string }) {
           name={name}
           {...copy.message(t)}
           txHash={tx.txHash}
-          actions={[{ label: "Done", onClick: tx.reset }]}
+          actions={[{ label: t("Done"), onClick: tx.reset }]}
         >
           {action === "bid" && <RewardEarned actionType="place_sponsorship_bid" />}
         </TransactionSuccess>
@@ -182,7 +182,7 @@ export function SponsorshipOfferPage({ offerId }: { offerId: string }) {
               </div>
               {!walletAddress && (
                 <button type="button" className="text-xs text-muted-foreground underline" onClick={app.onRequireWallet}>
-                  {app.connectLabel ?? "Connect"} {t("to place a bid")}
+                  {app.connectLabel ?? t("Connect")} {t("to place a bid")}
                 </button>
               )}
               {!paymentToken && <p className="text-xs text-destructive">{t("This offer uses a currency the app does not support yet.")}</p>}

@@ -19,21 +19,22 @@ import { useMedialaneClient } from "../utils/use-medialane-client.js";
 import { SEARCH_MIN_LENGTH, useSearch } from "../utils/use-search.js";
 import { collectionHref, type ApiCollection } from "@medialane/sdk";
 import { useT } from "../i18n/provider.js";
+import { msg } from "../i18n/translate.js";
 
 const PAGE_SIZE = 25;
 
 const SORT_OPTIONS: { label: string; value: CollectionSort }[] = [
-  { label: "Recent",      value: "recent"  },
-  { label: "Most assets", value: "supply"  },
-  { label: "Top volume",  value: "volume"  },
-  { label: "Floor ↑",    value: "floor"   },
+  { label: msg("Recent"),      value: "recent"  },
+  { label: msg("Most assets"), value: "supply"  },
+  { label: msg("Top volume"),  value: "volume"  },
+  { label: msg("Floor ↑"),    value: "floor"   },
   { label: "A → Z",      value: "name"    },
 ];
 
 const SERVICE_TABS = [
-  { label: "All",        value: undefined    },
-  { label: "POP Events", value: "pop-protocol" },
-  { label: "Drops",      value: "drop-collection" },
+  { label: msg("All"),        value: undefined    },
+  { label: msg("POP Events"), value: "pop-protocol" },
+  { label: msg("Drops"),      value: "drop-collection" },
 ] as const;
 
 function useStandardCounts() {
@@ -243,7 +244,7 @@ export function CollectionsPage() {
             {service !== undefined && (
               <span className="flex items-center gap-1 text-xs px-2.5 py-1 rounded-full border border-primary/40 bg-primary/10 text-primary">
                 {service === "drop-collection" ? <Package className="h-3 w-3" /> : <Award className="h-3 w-3" />}
-                {SERVICE_TABS.find((t) => t.value === service)?.label}
+                {t(SERVICE_TABS.find((tab) => tab.value === service)?.label ?? "")}
                 <button onClick={() => setService(undefined)} className="ml-0.5 hover:text-primary/60" aria-label={t("Remove source filter")}>×</button>
               </span>
             )}

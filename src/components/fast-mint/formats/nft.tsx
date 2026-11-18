@@ -38,10 +38,10 @@ function assetLinks(contract: string | null, tokenId: string | null): FormatResu
   if (!contract || !tokenId) return [];
   const asset = `/asset/STARKNET/${contract}/${tokenId}`;
   return [
-    { href: asset, label: "View asset", icon: Eye },
-    { href: `${asset}?action=list`, label: "Sell on marketplace", icon: Tag },
-    { href: `${asset}?action=transfer`, label: "Transfer", icon: ArrowRightLeft },
-    { href: `/create/remix/${contract}/${tokenId}`, label: "Create a remix", icon: GitBranch },
+    { href: asset, label: msg("View asset"), icon: Eye },
+    { href: `${asset}?action=list`, label: msg("Sell on marketplace"), icon: Tag },
+    { href: `${asset}?action=transfer`, label: msg("Transfer"), icon: ArrowRightLeft },
+    { href: `/create/remix/${contract}/${tokenId}`, label: msg("Create a remix"), icon: GitBranch },
   ];
 }
 

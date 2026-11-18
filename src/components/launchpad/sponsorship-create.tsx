@@ -245,7 +245,7 @@ export function SponsorshipCreate({ aside }: { aside?: ReactNode }) {
               ? t("The offer is recorded onchain with the asset and terms you chose.")
               : t("The proposal is recorded onchain with the amount and duration you chose.")
           }
-          actions={[{ href: "/launchpad/sponsorship", label: "Back to Sponsorship launchpad" }, { label: "Create another", onClick: handleAgain }]}
+          actions={[{ href: "/launchpad/sponsorship", label: t("Back to Sponsorship launchpad") }, { label: t("Create another"), onClick: handleAgain }]}
         >
           {mode === "offer" && <RewardEarned actionType="create_sponsorship_offer" />}
         </TransactionSuccess>

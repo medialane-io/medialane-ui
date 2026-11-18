@@ -169,7 +169,7 @@ export function IPTypeDisplay({ attributes }: IPTypeDisplayProps) {
           return (
             <div key={platform} className="space-y-1.5">
               <p className="text-xs font-medium text-muted-foreground">
-                {meta.label}
+                {t(meta.label)}
               </p>
               {COMPACT[platform] ? (
                 <iframe
@@ -178,7 +178,7 @@ export function IPTypeDisplay({ attributes }: IPTypeDisplayProps) {
                   height={166}
                   allow="autoplay"
                   loading="lazy"
-                  title={meta.label}
+                  title={t(meta.label)}
                 />
               ) : (
                 <div className="relative w-full aspect-video rounded-xl overflow-hidden bg-muted/20">
@@ -188,7 +188,7 @@ export function IPTypeDisplay({ attributes }: IPTypeDisplayProps) {
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowFullScreen
                     loading="lazy"
-                    title={meta.label}
+                    title={t(meta.label)}
                   />
                 </div>
               )}
@@ -199,7 +199,7 @@ export function IPTypeDisplay({ attributes }: IPTypeDisplayProps) {
         return (
           <div key={platform}>
             <p className="text-xs font-medium text-muted-foreground mb-1">
-              {meta.label}
+              {t(meta.label)}
             </p>
             <a
               href={value}
@@ -231,7 +231,7 @@ export function IPTypeDisplay({ attributes }: IPTypeDisplayProps) {
                   className="inline-flex items-center gap-1.5 rounded-full border border-border bg-muted/30 px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:border-primary/40 hover:text-foreground"
                 >
                   <SIcon className="h-3.5 w-3.5" />
-                  {meta.label}
+                  {t(meta.label)}
                 </a>
               );
             })}

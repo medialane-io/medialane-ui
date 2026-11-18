@@ -13,6 +13,7 @@ import {
 } from "react-hook-form";
 import { cn } from "../utils/cn.js";
 import { Label } from "./label.js";
+import { useT } from "../i18n/provider.js";
 
 const Form = FormProvider;
 
@@ -137,7 +138,8 @@ const FormMessage = React.forwardRef<
   React.HTMLAttributes<HTMLParagraphElement>
 >(({ className, children, ...props }, ref) => {
   const { error, formMessageId } = useFormField();
-  const body = error ? String(error?.message) : children;
+  const t = useT();
+  const body = error ? t(String(error?.message)) : children;
 
   if (!body) {
     return null;

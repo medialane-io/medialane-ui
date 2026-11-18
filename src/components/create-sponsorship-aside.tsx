@@ -9,9 +9,9 @@ export function CreateSponsorshipAside() {
   return (
     <ClaimRail
       included={[
-        { icon: Handshake, title: "Direct settlement", desc: "Sponsor pays you directly — no escrow, no middleman." },
-        { icon: ShieldCheck, title: "Owner-verified", desc: "You must own the asset, checked on-chain when you create and when you accept." },
-        { icon: Coins, title: "Open bidding", desc: "Any sponsor can bid, or invite one specific sponsor." },
+        { icon: Handshake, title: t("Direct settlement"), desc: "Sponsor pays you directly — no escrow, no middleman." },
+        { icon: ShieldCheck, title: t("Owner-verified"), desc: "You must own the asset, checked on-chain when you create and when you accept." },
+        { icon: Coins, title: t("Open bidding"), desc: "Any sponsor can bid, or invite one specific sponsor." },
       ]}
       steps={[
         "Choose your terms — an asset you own, or one you'd like to sponsor",

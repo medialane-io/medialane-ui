@@ -63,7 +63,7 @@ export function TransferCollectionOwnership({ collectionId, currentOwner, collec
 
       <Dialog open={open} onOpenChange={(next) => { if (!next) close(); }}>
         <DialogContent className="max-w-[calc(100%-6px)] sm:max-w-md p-0 overflow-hidden gap-0 rounded-2xl">
-          <DialogTitle className="sr-only">{t("Transfer ownership of")} {collectionName ?? "collection"}</DialogTitle>
+          <DialogTitle className="sr-only">{t("Transfer ownership of")} {collectionName ?? t("collection")}</DialogTitle>
           <DialogDescription className="sr-only">{t("Transfer the on-chain owner of this collection. Existing tokens are unaffected.")}</DialogDescription>
 
           {confirming ? (
@@ -116,7 +116,7 @@ export function TransferCollectionOwnership({ collectionId, currentOwner, collec
           name={collectionName ?? "Collection"}
           {...successMessages.ownershipTransferred({ name: collectionName ?? "the collection", to: shortenAddress(trimmed) }, t)}
           txHash={tx.txHash}
-          actions={[{ label: "Done", onClick: tx.reset }]}
+          actions={[{ label: t("Done"), onClick: tx.reset }]}
         />
       </TransactionDialog>
     </>

@@ -98,7 +98,7 @@ export function TransferDialog({
     if (walletAddress) {
       try {
         if (BigInt(values.toAddress) === BigInt(walletAddress)) {
-          form.setError("toAddress", { message: "Cannot transfer to yourself" });
+          form.setError("toAddress", { message: t("Cannot transfer to yourself") });
           return;
         }
       } catch {
@@ -134,7 +134,7 @@ export function TransferDialog({
           txHash={txHash}
           error={error}
           success={successMessages.transferred({ name: displayName, to: recipientShort }, t)}
-          successActions={[{ label: "Done", onClick: () => { close(); onSuccess?.(); } }]}
+          successActions={[{ label: t("Done"), onClick: () => { close(); onSuccess?.(); } }]}
           errorTitle={t("Transfer failed")}
           errorDescription={t("The transaction was submitted, but the transfer could not be completed.")}
           onRetry={retryable ? () => { reset(); setStep("form"); } : undefined}

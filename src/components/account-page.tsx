@@ -31,14 +31,15 @@ import { useCollectionsByOwner } from "../utils/use-collections.js";
 import { useUserOrders } from "../utils/use-orders.js";
 import { useActivitiesByAddress } from "../utils/use-activities.js";
 import { useT } from "../i18n/provider.js";
+import { msg } from "../i18n/translate.js";
 
 type TabId = "assets" | "collections" | "listings" | "activity";
 
 const TABS: { key: TabId; label: string }[] = [
-  { key: "assets", label: "Assets" },
-  { key: "collections", label: "Collections" },
-  { key: "listings", label: "Listings" },
-  { key: "activity", label: "Activity" },
+  { key: "assets", label: msg("Assets") },
+  { key: "collections", label: msg("Collections") },
+  { key: "listings", label: msg("Listings") },
+  { key: "activity", label: msg("Activity") },
 ];
 
 const GRID = "grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4";

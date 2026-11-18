@@ -26,7 +26,7 @@ export function CollectionNameClaim() {
         onRetry={mutate}
         emptyTitle={t("No collections to name yet")}
         emptyDescription={t("Create a collection first — then give it a clean, memorable URL.")}
-        emptyCta={{ label: "Create a collection", href: "/launchpad/single-editions/collection" }}
+        emptyCta={{ label: t("Create a collection"), href: "/launchpad/single-editions/collection" }}
       />
 
       {collections.map((c) => {

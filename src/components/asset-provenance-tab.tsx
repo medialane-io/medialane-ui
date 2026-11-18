@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import type { ApiActivity } from "@medialane/sdk";
 import { useT } from "../i18n/provider.js";
+import { msg } from "../i18n/translate.js";
 
 const PriceHistoryChart = dynamic(
   () => import("./price-history-chart.js").then((m) => m.PriceHistoryChart),
@@ -23,12 +24,12 @@ const PriceHistoryChart = dynamic(
 );
 
 const EVENT_STYLE: Record<string, { label: string; icon: React.ReactNode; badgeCls: string }> = {
-  sale:      { label: "Sale",      icon: <ShoppingCart className="h-3.5 w-3.5" />,   badgeCls: "bg-emerald-500/15 text-emerald-500 border-emerald-500/20" },
-  mint:      { label: "Minted",    icon: <CheckCircle className="h-3.5 w-3.5" />,    badgeCls: "bg-teal-500/15 text-teal-500 border-teal-500/20"          },
-  listing:   { label: "Listed",    icon: <Tag className="h-3.5 w-3.5" />,            badgeCls: "bg-brand-blue/15 text-brand-blue border-brand-blue/20"          },
-  offer:     { label: "Offer",     icon: <HandCoins className="h-3.5 w-3.5" />,      badgeCls: "bg-amber-500/15 text-amber-500 border-amber-500/20"       },
-  transfer:  { label: "Transfer",  icon: <ArrowRightLeft className="h-3.5 w-3.5" />, badgeCls: "bg-brand-purple/15 text-brand-purple border-brand-purple/20"    },
-  cancelled: { label: "Cancelled", icon: <X className="h-3.5 w-3.5" />,              badgeCls: "bg-red-500/15 text-red-400 border-red-500/20"             },
+  sale:      { label: msg("Sale"),      icon: <ShoppingCart className="h-3.5 w-3.5" />,   badgeCls: "bg-emerald-500/15 text-emerald-500 border-emerald-500/20" },
+  mint:      { label: msg("Minted"),    icon: <CheckCircle className="h-3.5 w-3.5" />,    badgeCls: "bg-teal-500/15 text-teal-500 border-teal-500/20"          },
+  listing:   { label: msg("Listed"),    icon: <Tag className="h-3.5 w-3.5" />,            badgeCls: "bg-brand-blue/15 text-brand-blue border-brand-blue/20"          },
+  offer:     { label: msg("Offer"),     icon: <HandCoins className="h-3.5 w-3.5" />,      badgeCls: "bg-amber-500/15 text-amber-500 border-amber-500/20"       },
+  transfer:  { label: msg("Transfer"),  icon: <ArrowRightLeft className="h-3.5 w-3.5" />, badgeCls: "bg-brand-purple/15 text-brand-purple border-brand-purple/20"    },
+  cancelled: { label: msg("Cancelled"), icon: <X className="h-3.5 w-3.5" />,              badgeCls: "bg-red-500/15 text-red-400 border-red-500/20"             },
 };
 
 interface AssetProvenanceTabProps {
@@ -187,7 +188,7 @@ export function AssetProvenanceTab({
                           <div className="flex items-center gap-2 flex-wrap">
                             <span className={`inline-flex items-center gap-1 text-xs font-semibold px-2 py-0.5 rounded-full border ${style.badgeCls}`}>
                               {style.icon}
-                              {style.label}
+                              {t(style.label)}
                             </span>
                             {actor && (
                               <span className="flex items-center gap-1 text-xs text-muted-foreground">

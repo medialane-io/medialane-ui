@@ -26,17 +26,18 @@ import { ExternalLinkField } from "../external-link-field.js";
 import { cn } from "../../utils/cn.js";
 import type { PopCreateValues } from "./pop-create-schema.js";
 import { useT } from "../../i18n/provider.js";
+import { msg } from "../../i18n/translate.js";
 
 export type PopEventType = "Conference" | "Bootcamp" | "Workshop" | "Hackathon" | "Meetup" | "Course" | "Other";
 
 export const EVENT_TYPES: { value: PopEventType; label: string; icon: ElementType; description: string }[] = [
-  { value: "Conference", label: "Conference", icon: Mic2, description: "Talks & panels" },
-  { value: "Bootcamp", label: "Bootcamp", icon: Code2, description: "Intensive training" },
-  { value: "Workshop", label: "Workshop", icon: Wrench, description: "Hands-on learning" },
-  { value: "Hackathon", label: "Hackathon", icon: Zap, description: "Build & compete" },
-  { value: "Meetup", label: "Meetup", icon: Users, description: "Community gathering" },
-  { value: "Course", label: "Course", icon: BookOpen, description: "Structured learning" },
-  { value: "Other", label: "Other", icon: Star, description: "Something unique" },
+  { value: "Conference", label: msg("Conference"), icon: Mic2, description: msg("Talks & panels") },
+  { value: "Bootcamp", label: msg("Bootcamp"), icon: Code2, description: msg("Intensive training") },
+  { value: "Workshop", label: msg("Workshop"), icon: Wrench, description: msg("Hands-on learning") },
+  { value: "Hackathon", label: msg("Hackathon"), icon: Zap, description: msg("Build & compete") },
+  { value: "Meetup", label: msg("Meetup"), icon: Users, description: msg("Community gathering") },
+  { value: "Course", label: msg("Course"), icon: BookOpen, description: msg("Structured learning") },
+  { value: "Other", label: msg("Other"), icon: Star, description: msg("Something unique") },
 ];
 
 interface PopCreateFieldsProps {
@@ -98,7 +99,7 @@ export function PopCreateFields({
             })}
           </div>
           <p className="text-xs text-muted-foreground">
-            {EVENT_TYPES.find((event) => event.value === eventType)?.description}
+            {t(EVENT_TYPES.find((event) => event.value === eventType)?.description ?? "")}
           </p>
           <p className="text-xs text-muted-foreground">
             {t("This helps label the certificate collection and makes the event easier to understand at a glance.")}

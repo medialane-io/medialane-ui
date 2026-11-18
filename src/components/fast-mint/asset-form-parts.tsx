@@ -64,7 +64,7 @@ export function MediaRow({
               )}
             >
               <TemplateIcon className="h-3 w-3" />
-              {template.label}
+              {t(template.label)}
             </span>
           )}
         </div>

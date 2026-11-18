@@ -196,9 +196,9 @@ export function SingleEditionMint({ aside }: { aside?: ReactNode }) {
           title={t("Asset minted")}
           description={t("Your wallet is the owner. The license terms and royalty are recorded in its metadata.")}
           actions={[
-            ...(mintedHref ? [{ href: mintedHref, label: "View asset" }] : []),
-            { href: "/portfolio/assets", label: "View portfolio" },
-            { label: "Mint another", onClick: handleAgain },
+            ...(mintedHref ? [{ href: mintedHref, label: t("View asset") }] : []),
+            { href: "/portfolio/assets", label: t("View portfolio") },
+            { label: t("Mint another"), onClick: handleAgain },
           ]}
         >
           <RewardEarned actionType="mint_asset" />
@@ -322,9 +322,9 @@ export function SingleEditionMint({ aside }: { aside?: ReactNode }) {
                   <FormLabel>{t("License")}</FormLabel>
                   <Select value={field.value} onValueChange={handleLicenseChange}>
                     <FormControl><SelectTrigger><SelectValue /></SelectTrigger></FormControl>
-                    <SelectContent>{LICENSE_TYPES.map((l) => <SelectItem key={l.value} value={l.value}>{l.label}</SelectItem>)}</SelectContent>
+                    <SelectContent>{LICENSE_TYPES.map((l) => <SelectItem key={l.value} value={l.value}>{t(l.label)}</SelectItem>)}</SelectContent>
                   </Select>
-                  {(() => { const def = LICENSE_TYPES.find((l) => l.value === field.value); return def ? <p className="text-xs text-muted-foreground mt-1">{def.description}</p> : null; })()}
+                  {(() => { const def = LICENSE_TYPES.find((l) => l.value === field.value); return def ? <p className="text-xs text-muted-foreground mt-1">{t(def.description)}</p> : null; })()}
                   <FormMessage />
                 </FormItem>
               )} />

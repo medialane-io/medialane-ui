@@ -5,14 +5,15 @@ import { SlidersHorizontal, X, Check } from "lucide-react";
 import { cn } from "../utils/cn.js";
 import type { ApiToken, CollectionTokensSort } from "@medialane/sdk";
 import { useT } from "../i18n/provider.js";
+import { msg } from "../i18n/translate.js";
 
 const EXCLUDED_TRAIT_TYPES = new Set(["registration"]);
 
 export const SORT_OPTIONS: { value: CollectionTokensSort; label: string }[] = [
-  { value: "recent", label: "Recent" },
-  { value: "oldest", label: "Oldest" },
-  { value: "name", label: "Name" },
-  { value: "price", label: "Price" },
+  { value: "recent", label: msg("Recent") },
+  { value: "oldest", label: msg("Oldest") },
+  { value: "name", label: msg("Name") },
+  { value: "price", label: msg("Price") },
 ];
 
 export interface TraitSection {
@@ -136,7 +137,7 @@ export function CollectionFiltersTrigger({
           className="inline-flex items-center gap-1 h-8 px-2.5 rounded-md border border-primary/40 bg-primary/10 text-xs font-medium text-foreground hover:bg-primary/20 transition-colors"
         >
           <span className="text-muted-foreground text-2xs">{t("Sort:")}</span>
-          <span>{SORT_OPTIONS.find((o) => o.value === sort)?.label}</span>
+          <span>{t(SORT_OPTIONS.find((o) => o.value === sort)?.label ?? "")}</span>
           <X className="h-3 w-3 text-muted-foreground ml-0.5" />
         </button>
       )}

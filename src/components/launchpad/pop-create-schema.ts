@@ -1,6 +1,7 @@
 import * as z from "zod";
 import { FIELD_LIMITS } from "../../utils/field-limits.js";
 import { symbolField, webLinkField } from "../../utils/launchpad-rules.js";
+import { msg } from "../../i18n/translate.js";
 
 function parseDateTime(date: string, time: string): number | null {
   const timestamp = new Date(`${date}T${time}:00`).getTime();
@@ -23,7 +24,7 @@ export const popCreateSchema = z
       context.addIssue({
         code: z.ZodIssueCode.custom,
         path: ["claimEndDate"],
-        message: "Enter a valid claim end date and time",
+        message: msg("Enter a valid claim end date and time"),
       });
       return;
     }
@@ -32,7 +33,7 @@ export const popCreateSchema = z
       context.addIssue({
         code: z.ZodIssueCode.custom,
         path: ["claimEndDate"],
-        message: "Claim window must end in the future",
+        message: msg("Claim window must end in the future"),
       });
     }
   });

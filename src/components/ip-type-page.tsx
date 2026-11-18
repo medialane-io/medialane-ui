@@ -277,19 +277,19 @@ export function IpTypePage({ slug, useMarketActions }: IpTypePageProps) {
               <div className="space-y-2 pt-1 border-t border-border/60">
                 <p className="text-2xs font-semibold text-muted-foreground">{t("IP Type")}</p>
                 <div className="flex flex-wrap gap-1.5">
-                  {IP_TYPE_CONFIG.map((t) => (
+                  {IP_TYPE_CONFIG.map((tab) => (
                     <Link
-                      key={t.slug}
-                      href={`/${t.slug}`}
+                      key={tab.slug}
+                      href={`/${tab.slug}`}
                       className={cn(
                         "inline-flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full border transition-colors whitespace-nowrap",
-                        t.slug === slug
+                        tab.slug === slug
                           ? "border-primary bg-primary/10 text-primary font-medium"
                           : "border-border text-muted-foreground hover:border-primary/50"
                       )}
                     >
-                      <t.icon className={cn("h-3 w-3", t.slug === slug ? t.colorClass : "")} />
-                      {t.label}
+                      <tab.icon className={cn("h-3 w-3", tab.slug === slug ? tab.colorClass : "")} />
+                      {t(tab.label)}
                     </Link>
                   ))}
                 </div>

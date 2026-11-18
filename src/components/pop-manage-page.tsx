@@ -126,7 +126,7 @@ function AllowlistSection({
         ) : (
           <>
             <CheckCircle2 className="h-3.5 w-3.5 mr-1.5" />
-            {t("Publish")} {parsed.length > 0 ? `${parsed.length} participant${parsed.length !== 1 ? "s" : ""}` : "participants"}
+            {t("Publish")} {parsed.length > 0 ? `${parsed.length} participant${parsed.length !== 1 ? "s" : ""}` : t("participants")}
           </>
         )}
       </Button>
@@ -209,7 +209,7 @@ export function PopManagePage({ contract }: { contract: string }) {
       ) : (
         <div className="max-w-xl mx-auto px-4 pt-10 pb-16 space-y-6">
           <TransactionDialog tx={tx} title={t("Manage event")} workingLabel="Updating your event…" firstStepLabel="Prepare">
-            <TransactionSuccess name={collection.name ?? "Event"} title={done.title} description={done.description} txHash={tx.txHash} actions={[{ label: "Done", onClick: tx.reset }]} />
+            <TransactionSuccess name={collection.name ?? "Event"} title={done.title} description={done.description} txHash={tx.txHash} actions={[{ label: t("Done"), onClick: tx.reset }]} />
           </TransactionDialog>
 
           <FadeIn>

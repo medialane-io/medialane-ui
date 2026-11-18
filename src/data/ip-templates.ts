@@ -5,6 +5,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import type { IPType } from "./ip.js";
+import { msg } from "../i18n/translate.js";
 
 export type EmbedPlatform = "spotify" | "soundcloud" | "youtube" | "tiktok" | "vimeo";
 
@@ -27,7 +28,7 @@ export const SOCIAL_PLATFORM_META: Record<
 > = {
   x:         { label: "X",         icon: Twitter,   traitKey: "X",         placeholder: "https://x.com/…" },
   instagram: { label: "Instagram", icon: Instagram, traitKey: "Instagram", placeholder: "https://instagram.com/…" },
-  facebook:  { label: "Facebook",  icon: Facebook,  traitKey: "Facebook",  placeholder: "https://facebook.com/…" },
+  facebook:  { label: msg("Facebook"),  icon: Facebook,  traitKey: "Facebook",  placeholder: "https://facebook.com/…" },
   tiktok:    { label: "TikTok",    icon: Video,     traitKey: "TikTok",    placeholder: "https://tiktok.com/@…" },
   website:   { label: "Website",   icon: Globe,     traitKey: "Website",   placeholder: "https://…" },
 };
@@ -61,25 +62,25 @@ export interface IPTemplate {
 
 export const DOC_UPLOAD: DocUploadConfig = {
   traitType: "Document File",
-  hint: "Stored permanently on IPFS — an immutable, timestamped copy of your work (proof of authorship under the Berne Convention).",
+  hint: msg("Stored permanently on IPFS — an immutable, timestamped copy of your work (proof of authorship under the Berne Convention)."),
 };
 
 export const IP_TEMPLATES: Record<IPType, IPTemplate> = {
   Audio: {
     type: "Audio",
-    label: "Audio",
-    description: "Music, podcasts, sound effects, audio art",
+    label: msg("Audio"),
+    description: msg("Music, podcasts, sound effects, audio art"),
     icon: Music,
     color: { bg: "bg-blue-500/10", text: "text-blue-400", border: "border-blue-500/20" },
     embeds: ["spotify", "soundcloud"],
     traitSuggestions: [
-      { key: "Artist" }, { key: "Genre", placeholder: "Soundtrack" }, { key: "Mood" }, { key: "Label" },
+      { key: "Artist" }, { key: "Genre", placeholder: msg("Soundtrack") }, { key: "Mood" }, { key: "Label" },
     ],
   },
   Video: {
     type: "Video",
-    label: "Video",
-    description: "Films, animations, short-form video content",
+    label: msg("Video"),
+    description: msg("Films, animations, short-form video content"),
     icon: Clapperboard,
     color: { bg: "bg-red-500/10", text: "text-red-400", border: "border-red-500/20" },
     embeds: ["youtube", "tiktok", "vimeo"],
@@ -89,25 +90,25 @@ export const IP_TEMPLATES: Record<IPType, IPTemplate> = {
   },
   Art: {
     type: "Art",
-    label: "Art",
-    description: "Digital and physical artwork, illustrations, generative art",
+    label: msg("Art"),
+    description: msg("Digital and physical artwork, illustrations, generative art"),
     icon: Palette,
     color: { bg: "bg-purple-500/10", text: "text-purple-400", border: "border-purple-500/20" },
     traitSuggestions: [
-      { key: "Medium", placeholder: "Oil on canvas" },
-      { key: "Style", placeholder: "Impressionism" },
+      { key: "Medium", placeholder: msg("Oil on canvas") },
+      { key: "Style", placeholder: msg("Impressionism") },
       { key: "Materials" },
       { key: "Series" },
     ],
   },
   Photography: {
     type: "Photography",
-    label: "Photography",
-    description: "Photography, photo essays, visual documentation",
+    label: msg("Photography"),
+    description: msg("Photography, photo essays, visual documentation"),
     icon: Camera,
     color: { bg: "bg-orange-500/10", text: "text-orange-400", border: "border-orange-500/20" },
     traitSuggestions: [
-      { key: "Camera", placeholder: "Sony A7 IV" },
+      { key: "Camera", placeholder: msg("Sony A7 IV") },
       { key: "Location" },
       { key: "Series" },
       { key: "Edition" },
@@ -115,8 +116,8 @@ export const IP_TEMPLATES: Record<IPType, IPTemplate> = {
   },
   Posts: {
     type: "Posts",
-    label: "Posts",
-    description: "Articles, blog posts, social media content, essays",
+    label: msg("Posts"),
+    description: msg("Articles, blog posts, social media content, essays"),
     icon: MessageSquare,
     color: { bg: "bg-sky-500/10", text: "text-sky-400", border: "border-sky-500/20" },
     socials: ["x", "instagram", "facebook", "tiktok", "website"],
@@ -126,31 +127,31 @@ export const IP_TEMPLATES: Record<IPType, IPTemplate> = {
   },
   Publications: {
     type: "Publications",
-    label: "Publications",
-    description: "Books, journals, magazines, academic papers",
+    label: msg("Publications"),
+    description: msg("Books, journals, magazines, academic papers"),
     icon: BookOpen,
     color: { bg: "bg-indigo-500/10", text: "text-indigo-400", border: "border-indigo-500/20" },
     docUpload: DOC_UPLOAD,
     socials: ["x", "instagram", "website"],
     traitSuggestions: [
-      { key: "Author" }, { key: "Publisher" }, { key: "Language", placeholder: "English" }, { key: "Edition" },
+      { key: "Author" }, { key: "Publisher" }, { key: "Language", placeholder: msg("English") }, { key: "Edition" },
     ],
   },
   Documents: {
     type: "Documents",
-    label: "Documents",
-    description: "Contracts, reports, whitepapers, legal documents",
+    label: msg("Documents"),
+    description: msg("Contracts, reports, whitepapers, legal documents"),
     icon: FileText,
     color: { bg: "bg-zinc-500/10", text: "text-zinc-400", border: "border-zinc-500/20" },
     docUpload: DOC_UPLOAD,
     traitSuggestions: [
-      { key: "Author" }, { key: "Category" }, { key: "Language", placeholder: "English" },
+      { key: "Author" }, { key: "Category" }, { key: "Language", placeholder: msg("English") },
     ],
   },
   NFT: {
     type: "NFT",
-    label: "NFT",
-    description: "Blockchain-native digital assets and collectibles",
+    label: msg("NFT"),
+    description: msg("Blockchain-native digital assets and collectibles"),
     icon: Hexagon,
     color: { bg: "bg-teal-500/10", text: "text-teal-400", border: "border-teal-500/20" },
     traitSuggestions: [
@@ -161,8 +162,8 @@ export const IP_TEMPLATES: Record<IPType, IPTemplate> = {
   },
   RWA: {
     type: "RWA",
-    label: "Real World Asset",
-    description: "Tokenized physical assets: real estate, commodities, collectibles",
+    label: msg("Real World Asset"),
+    description: msg("Tokenized physical assets: real estate, commodities, collectibles"),
     icon: Building2,
     color: { bg: "bg-emerald-500/10", text: "text-emerald-400", border: "border-emerald-500/20" },
     traitSuggestions: [

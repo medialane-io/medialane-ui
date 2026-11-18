@@ -108,7 +108,7 @@ export function PopCreate({ aside }: { aside?: ReactNode }) {
           image={imagePreview}
           title={t("Event created")}
           description={t("Immutable digital asset certificates, recorded onchain.")}
-          actions={[{ href: "/launchpad/pop", label: "Back to POP launchpad" }, { label: "Create another", onClick: handleAgain }]}
+          actions={[{ href: "/launchpad/pop", label: t("Back to POP launchpad") }, { label: t("Create another"), onClick: handleAgain }]}
         >
           <RewardEarned actionType="launch_launchpad" />
         </TransactionSuccess>

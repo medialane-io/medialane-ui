@@ -116,10 +116,10 @@ export function LaunchpadStrip({
           key: "marketplace",
           href: marketplaceHref,
           icon: ShoppingBag,
-          title: "Marketplace",
-          blurb: "Discover and trade works from creators — gasless, instantly settled.",
+          title: t("Marketplace"),
+          blurb: t("Discover and trade works from creators — gasless, instantly settled."),
           example: "Buy an art print, make an offer on a music track",
-          cta: "Browse",
+          cta: t("Browse"),
           hue: MARKETPLACE_HUE,
         }]
       : []),

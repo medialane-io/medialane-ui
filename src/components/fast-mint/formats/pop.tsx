@@ -120,7 +120,7 @@ export const POP_FORMAT = defineFormat<PopState>({
     const uploadToken = await runtime.getUploadToken();
     if (!uploadToken) throw new Error("Sign in first");
 
-    onStep({ label: "Creating", index: 1, total: 1 });
+    onStep({ label: msg("Creating"), index: 1, total: 1 });
     const baseUri = await uploadJsonToIpfs(client.api, {
       ...buildCollectionMetadata({
         name: values.name,
@@ -144,7 +144,7 @@ export const POP_FORMAT = defineFormat<PopState>({
       headline: "Certificate created",
       detail: "It is recorded onchain with your wallet as owner.",
       name: values.name,
-      links: [{ href: "/launchpad/pop", label: "Open POP", icon: Award }],
+      links: [{ href: "/launchpad/pop", label: msg("Open POP"), icon: Award }],
       reward: "launch_launchpad",
     };
   },

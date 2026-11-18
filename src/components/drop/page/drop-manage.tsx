@@ -47,7 +47,7 @@ export function DropManage({ contract, indexed, onchain, mints, run, saveExclusi
     setBusy(true);
     try {
       await pending.act();
-      setMessage(`${pending.title} — done.`);
+      setMessage(t("{title} — done.", { title: pending.title }));
     } catch (err) {
       setMessage(describeError(err).message);
     } finally {
@@ -85,14 +85,14 @@ export function DropManage({ contract, indexed, onchain, mints, run, saveExclusi
           )}
           {list && !sameList && parsed.invalid.length === 0 && (
             <Button onClick={() => setPending({
-              title: "List published",
+              title: t("List published"),
               body: `Only these ${parsed.addresses.length} wallets will be able to mint. Claim links for your previous list stop working for wallets not on this one.`,
               act: async () => { await run({ action: "set_allowlist_root", root: list.root }); setLinks(dropClaimLinks(window.location.origin, contract, list)); },
             })}>{t("Publish this list")}</Button>
           )}
           {listed && (
             <Button variant="outline" onClick={() => setPending({
-              title: "Drop opened to everyone",
+              title: t("Drop opened to everyone"),
               body: "Anyone will be able to mint, with or without a claim link.",
               act: () => run({ action: "set_allowlist_root", root: "0x0" }),
             })}>{t("Open to everyone")}</Button>
@@ -111,7 +111,7 @@ export function DropManage({ contract, indexed, onchain, mints, run, saveExclusi
         <Button
           disabled={parseAllowlist(gift.to).addresses.length !== 1 || !/^[1-9]\d*$/.test(gift.quantity)}
           onClick={() => setPending({
-            title: "Gift sent",
+            title: t("Gift sent"),
             body: `Mint ${gift.quantity} free token(s) to ${gift.to}.`,
             act: () => run({ action: "issue", recipient: gift.to, quantity: gift.quantity }),
           })}
@@ -130,8 +130,8 @@ export function DropManage({ contract, indexed, onchain, mints, run, saveExclusi
         <h3 className="text-sm font-semibold">{t("Exclusive content")}</h3>
         <ExclusiveFields value={exclusive} onChange={setExclusive} />
         <div className="flex gap-2">
-          <Button disabled={!/^https:\/\//.test(exclusive.url)} onClick={() => setPending({ title: "Exclusive content saved", body: "Holders will see this link.", act: () => saveExclusive(exclusive) })}>{t("Save")}</Button>
-          <Button variant="outline" onClick={() => setPending({ title: "Exclusive content removed", body: "Holders will no longer see a link.", act: () => saveExclusive(null) })}>{t("Remove")}</Button>
+          <Button disabled={!/^https:\/\//.test(exclusive.url)} onClick={() => setPending({ title: t("Exclusive content saved"), body: "Holders will see this link.", act: () => saveExclusive(exclusive) })}>{t("Save")}</Button>
+          <Button variant="outline" onClick={() => setPending({ title: t("Exclusive content removed"), body: "Holders will no longer see a link.", act: () => saveExclusive(null) })}>{t("Remove")}</Button>
         </div>
       </section>
 

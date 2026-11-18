@@ -68,7 +68,7 @@ export function LicensingSection({ form }: { form: UseFormReturn<FormValues> }) 
                 <Select value={form.watch("licenseType")} onValueChange={handleLicenseChange}>
                   <SelectTrigger><SelectValue /></SelectTrigger>
                   <SelectContent>
-                    {LICENSE_TYPES.map((l) => <SelectItem key={l.value} value={l.value}>{l.label}</SelectItem>)}
+                    {LICENSE_TYPES.map((l) => <SelectItem key={l.value} value={l.value}>{t(l.label)}</SelectItem>)}
                   </SelectContent>
                 </Select>
               </div>

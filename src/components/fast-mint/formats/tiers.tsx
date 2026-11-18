@@ -176,7 +176,7 @@ function makeTierFormat(config: {
         detail: preset.success.description,
         name: values.name,
         collectionLabel: ownCollections(shared).find((c) => c.contractAddress === contract)?.name || (state.mode === "new" ? shared.draft.name : undefined),
-        links: [{ href: collectionHref("STARKNET", contract), label: "View collection", icon: Eye }],
+        links: [{ href: collectionHref("STARKNET", contract), label: msg("View collection"), icon: Eye }],
         reward: "launch_launchpad",
       };
     },

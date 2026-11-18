@@ -229,7 +229,7 @@ export function CommentsSection({ contract, tokenId, className }: CommentsSectio
         {!hasWallet ? (
           <div className="flex items-center justify-center px-4 h-16">
             <button type="button" onClick={app.onRequireWallet} className="text-sm text-primary hover:underline">
-              {app.connectLabel ?? "Connect"} {t("to comment")}
+              {app.connectLabel ?? t("Connect")} {t("to comment")}
             </button>
           </div>
         ) : (
@@ -305,7 +305,7 @@ export function CommentsSection({ contract, tokenId, className }: CommentsSectio
           name="Comment"
           {...successMessages.commented(t)}
           txHash={tx.txHash}
-          actions={[{ label: "Done", onClick: tx.reset }]}
+          actions={[{ label: t("Done"), onClick: tx.reset }]}
         >
           <RewardEarned actionType="comment" />
         </TransactionSuccess>

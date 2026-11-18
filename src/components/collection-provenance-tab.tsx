@@ -226,7 +226,7 @@ export function CollectionProvenanceTab({ contract }: CollectionProvenanceTabPro
     <div className="space-y-8">
       {groups.map((group) => (
         <section key={group.label}>
-          <h3 className="mb-3 font-display text-lg font-bold">{group.label}</h3>
+          <h3 className="mb-3 font-display text-lg font-bold">{t(group.label)}</h3>
           <ol className="grid gap-2.5 lg:grid-cols-2">
             {group.events.map((event, i) => (
               <ProvenanceEvent

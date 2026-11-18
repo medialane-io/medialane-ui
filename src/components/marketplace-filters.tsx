@@ -14,17 +14,18 @@ import { IP_TYPES } from "../data/ip.js";
 import { useDebouncedValue } from "../utils/use-debounced-value.js";
 import { cn } from "../utils/cn.js";
 import { useT } from "../i18n/provider.js";
+import { msg } from "../i18n/translate.js";
 
 const SORT_OPTIONS = [
-  { label: "Recent", value: "recent" },
-  { label: "Price ↑", value: "price_asc" },
-  { label: "Price ↓", value: "price_desc" },
+  { label: msg("Recent"), value: "recent" },
+  { label: msg("Price ↑"), value: "price_asc" },
+  { label: msg("Price ↓"), value: "price_desc" },
 ];
 
 const TYPE_OPTIONS = [
-  { label: "All", value: "" },
-  { label: "Listings", value: "listings" },
-  { label: "Offers", value: "offers" },
+  { label: msg("All"), value: "" },
+  { label: msg("Listings"), value: "listings" },
+  { label: msg("Offers"), value: "offers" },
 ];
 
 const CURRENCY_OPTIONS = SUPPORTED_TOKENS.map((t) => ({
@@ -104,6 +105,7 @@ function ChipGroup({ title, options, value, onSelect }: {
   value: string;
   onSelect: (value: string) => void;
 }) {
+  const t = useT();
   return (
     <div className="space-y-2">
       <p className="text-2xs font-semibold text-muted-foreground">{title}</p>
@@ -111,7 +113,7 @@ function ChipGroup({ title, options, value, onSelect }: {
         {options.map((opt) => (
           <button key={opt.value} onClick={() => onSelect(opt.value)} className={chipClass(value === opt.value)}>
             {opt.icon}
-            <span>{opt.label}</span>
+            <span>{t(opt.label)}</span>
           </button>
         ))}
       </div>
@@ -169,15 +171,16 @@ export function FiltersButton({ filters }: { filters: MarketplaceFilters }) {
 }
 
 export function ActiveFilters({ filters }: { filters: MarketplaceFilters }) {
+  const t = useT();
   const { sort, setSort, orderType, setOrderType, currency, selectCurrency, minPrice, maxPrice, minInput, maxInput, clearPrice, count } = filters;
   if (count === 0) return null;
   return (
     <div className="flex flex-wrap gap-1.5">
       {sort !== "recent" && (
-        <ActiveChip onClear={() => setSort("recent")}>{SORT_OPTIONS.find((o) => o.value === sort)?.label}</ActiveChip>
+        <ActiveChip onClear={() => setSort("recent")}>{t(SORT_OPTIONS.find((o) => o.value === sort)?.label ?? "")}</ActiveChip>
       )}
       {orderType && (
-        <ActiveChip onClear={() => setOrderType("")}>{TYPE_OPTIONS.find((o) => o.value === orderType)?.label}</ActiveChip>
+        <ActiveChip onClear={() => setOrderType("")}>{t(TYPE_OPTIONS.find((o) => o.value === orderType)?.label ?? "")}</ActiveChip>
       )}
       {currency && (
         <ActiveChip onClear={() => selectCurrency(currency)}>

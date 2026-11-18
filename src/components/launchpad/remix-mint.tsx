@@ -214,7 +214,7 @@ export function RemixMint({ contract, tokenId }: { contract: string; tokenId: st
     setRemixHref(null);
   };
 
-  const gate = { icon: GitBranch, title: "Connect to create a remix", description: "Connect to mint a derivative of this asset." };
+  const gate = { icon: GitBranch, title: t("Connect to create a remix"), description: t("Connect to mint a derivative of this asset.") };
 
   if (tokenLoading) {
     return (
@@ -248,9 +248,9 @@ export function RemixMint({ contract, tokenId }: { contract: string; tokenId: st
           title={t("Remix minted")}
           description={t("It is registered as a remix of the original asset and carries its own license terms.")}
           actions={[
-            ...(remixHref ? [{ href: remixHref, label: "View remix" }] : []),
-            { href: "/portfolio/assets", label: "View portfolio" },
-            { label: "Close", onClick: handleAgain },
+            ...(remixHref ? [{ href: remixHref, label: t("View remix") }] : []),
+            { href: "/portfolio/assets", label: t("View portfolio") },
+            { label: t("Close"), onClick: handleAgain },
           ]}
         >
           <RewardEarned actionType="mint_asset" />

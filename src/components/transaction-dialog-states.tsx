@@ -6,6 +6,7 @@ import { MarketplaceErrorState, MarketplaceProcessingState } from "./marketplace
 import { EXPLORER_URL } from "../utils/explorer-url.js";
 import { isBusyPhase, type TransactionPhase } from "../utils/use-transaction.js";
 import type { SuccessMessage } from "../utils/success-messages.js";
+import { useT } from "../i18n/provider.js";
 
 export interface TransactionDialogStatesProps {
   phase: TransactionPhase;
@@ -40,6 +41,7 @@ export function TransactionDialogStates({
   onDone,
   children,
 }: TransactionDialogStatesProps) {
+  const t = useT();
   const busy = isBusyPhase(phase);
 
   if (phase === "success" && !error) {
@@ -49,7 +51,7 @@ export function TransactionDialogStates({
         image={asset.image}
         {...success}
         txHash={txHash}
-        actions={successActions ?? [{ label: "Done", onClick: onDone }]}
+        actions={successActions ?? [{ label: t("Done"), onClick: onDone }]}
       >
         {successChildren}
       </DialogTransactionSuccess>

@@ -2,6 +2,8 @@ import { Ticket, Users } from "lucide-react";
 import type { ElementType } from "react";
 import type { ApiClient } from "@medialane/sdk";
 import { predictNextMembershipId, predictNextTicketId } from "../../utils/use-tiers.js";
+import { msg } from "../../i18n/translate.js";
+import type { T } from "../../i18n/make-t.js";
 
 export interface TierMintPreset {
   service: "ip-club" | "ip-tickets";
@@ -18,7 +20,7 @@ export interface TierMintPreset {
   notOwner: { message: string; back: { href: string; label: string } };
   dialog: { title: string; workingLabel: string; firstStepLabel: string };
   success: { title: string; description: string; againLabel: string };
-  shell: { title: string; subtitle: (collectionName: string | null) => string };
+  shell: { title: string; subtitle: (collectionName: string | null, t: T) => string };
   cardFallbackSymbol: string;
   copy: {
     imageHeading: string;
@@ -43,26 +45,26 @@ export const CLUB_TIER_PRESET: TierMintPreset = {
   hoverBorderClass: "hover:border-brand-purple/50",
   uploadedClass: "text-brand-purple",
   suggestExternalLink: false,
-  signedOut: { title: "Secure your account to create memberships", description: "Create a membership tier and mint its supply to your account." },
-  back: { href: "/launchpad/club", label: "← Back" },
-  notOwner: { message: "You don't own this club.", back: { href: "/launchpad/club", label: "← Back to clubs" } },
-  dialog: { title: "Create membership", workingLabel: "Creating your membership…", firstStepLabel: "Upload membership metadata" },
-  success: { title: "Membership created", description: "The supply is minted to your wallet and ready to sell.", againLabel: "Create another membership" },
+  signedOut: { title: msg("Secure your account to create memberships"), description: msg("Create a membership tier and mint its supply to your account.") },
+  back: { href: "/launchpad/club", label: msg("← Back") },
+  notOwner: { message: msg("You don't own this club."), back: { href: "/launchpad/club", label: msg("← Back to clubs") } },
+  dialog: { title: msg("Create membership"), workingLabel: msg("Creating your membership…"), firstStepLabel: msg("Upload membership metadata") },
+  success: { title: msg("Membership created"), description: msg("The supply is minted to your wallet and ready to sell."), againLabel: msg("Create another membership") },
   shell: {
-    title: "Create Membership",
-    subtitle: (name) => `Add a new membership tier to ${name ?? "your club"} and mint its supply to your wallet, ready to sell.`,
+    title: msg("Create Membership"),
+    subtitle: (name, t) => t("Add a new membership tier to {name} and mint its supply to your wallet, ready to sell.", { name: name ?? t("your club") }),
   },
   cardFallbackSymbol: "Club",
   copy: {
-    imageHeading: "Membership image",
-    imageAlt: "Membership",
-    imageRequired: "Add a membership image.",
-    nameLabel: "Membership name",
-    nameRequired: "Membership name required",
-    namePlaceholder: "Kalamaha Fan Club — 2026 Season Pass",
-    descriptionPlaceholder: "What does this membership unlock?",
-    validUntilHint: "Blank = lifetime membership.",
-    submit: "Create Membership",
+    imageHeading: msg("Membership image"),
+    imageAlt: msg("Membership"),
+    imageRequired: msg("Add a membership image."),
+    nameLabel: msg("Membership name"),
+    nameRequired: msg("Membership name required"),
+    namePlaceholder: msg("Kalamaha Fan Club — 2026 Season Pass"),
+    descriptionPlaceholder: msg("What does this membership unlock?"),
+    validUntilHint: msg("Blank = lifetime membership."),
+    submit: msg("Create Membership"),
   },
 };
 
@@ -76,25 +78,25 @@ export const TICKETS_TIER_PRESET: TierMintPreset = {
   hoverBorderClass: "hover:border-teal-500/50",
   uploadedClass: "text-teal-500",
   suggestExternalLink: true,
-  signedOut: { title: "Secure your account to mint tickets", description: "Create a ticket type and mint its supply to your account." },
-  back: { href: "/launchpad/tickets", label: "← Back" },
-  notOwner: { message: "You don't own this tickets collection.", back: { href: "/launchpad/tickets", label: "← Back to tickets" } },
-  dialog: { title: "Mint tickets", workingLabel: "Minting your tickets…", firstStepLabel: "Upload ticket metadata" },
-  success: { title: "Tickets minted", description: "Each ticket is recorded onchain under your wallet.", againLabel: "Mint another ticket" },
+  signedOut: { title: msg("Secure your account to mint tickets"), description: msg("Create a ticket type and mint its supply to your account.") },
+  back: { href: "/launchpad/tickets", label: msg("← Back") },
+  notOwner: { message: msg("You don't own this tickets collection."), back: { href: "/launchpad/tickets", label: msg("← Back to tickets") } },
+  dialog: { title: msg("Mint tickets"), workingLabel: msg("Minting your tickets…"), firstStepLabel: msg("Upload ticket metadata") },
+  success: { title: msg("Tickets minted"), description: msg("Each ticket is recorded onchain under your wallet."), againLabel: msg("Mint another ticket") },
   shell: {
-    title: "Mint Tickets",
-    subtitle: (name) => `Add a new ticket type to ${name ?? "your collection"} and mint its supply to your wallet, ready to sell.`,
+    title: msg("Mint Tickets"),
+    subtitle: (name, t) => t("Add a new ticket type to {name} and mint its supply to your wallet, ready to sell.", { name: name ?? t("your collection") }),
   },
   cardFallbackSymbol: "Tickets",
   copy: {
-    imageHeading: "Ticket image",
-    imageAlt: "Ticket",
-    imageRequired: "Add a ticket image.",
-    nameLabel: "Ticket name",
-    nameRequired: "Ticket name required",
-    namePlaceholder: "Summer Concert 2026 — General Admission",
-    descriptionPlaceholder: "What does this ticket admit or unlock?",
-    validUntilHint: "Blank = always valid.",
-    submit: "Mint Tickets",
+    imageHeading: msg("Ticket image"),
+    imageAlt: msg("Ticket"),
+    imageRequired: msg("Add a ticket image."),
+    nameLabel: msg("Ticket name"),
+    nameRequired: msg("Ticket name required"),
+    namePlaceholder: msg("Summer Concert 2026 — General Admission"),
+    descriptionPlaceholder: msg("What does this ticket admit or unlock?"),
+    validUntilHint: msg("Blank = always valid."),
+    submit: msg("Mint Tickets"),
   },
 };

@@ -209,9 +209,9 @@ export function EditionMint({ contract: rawContract, aside }: { contract: string
               title={t("Editions minted")}
               description={t("Each copy is recorded onchain with the license terms in its metadata.")}
               actions={[
-                ...(mintedTokenId ? [{ href: assetHref("STARKNET", collectionAddress, mintedTokenId), label: "View asset" }] : []),
-                { href: "/portfolio/assets", label: "View portfolio" },
-                { label: "Mint another", onClick: handleAgain },
+                ...(mintedTokenId ? [{ href: assetHref("STARKNET", collectionAddress, mintedTokenId), label: t("View asset") }] : []),
+                { href: "/portfolio/assets", label: t("View portfolio") },
+                { label: t("Mint another"), onClick: handleAgain },
               ]}
             >
               <RewardEarned actionType="mint_asset" />

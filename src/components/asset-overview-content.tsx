@@ -107,12 +107,12 @@ export function AssetOverviewContent({
   const licenseDescription = LICENSE_TYPES.find((license) => license.value === licenseType)?.description;
 
   const facts = [
-    { icon: DollarSign, label: "Commercial use", value: commercialUse, tile: "bg-brand-orange text-white", pill: "bg-white/20" },
-    { icon: GitBranch, label: "Derivatives", value: derivatives, tile: "bg-brand-rose text-white", pill: "bg-white/20" },
-    { icon: UserCheck, label: "Attribution", value: attribution, tile: "bg-[hsl(250_45%_14%)] text-white ring-1 ring-white/10", pill: "bg-white/15" },
-    { icon: Globe, label: "Territory", value: territory, tile: "bg-brand-blue text-white", pill: "bg-white/20" },
-    { icon: Bot, label: "AI & data mining", value: aiPolicy, tile: "bg-brand-purple text-white", pill: "bg-white/20" },
-    { icon: Percent, label: "Royalty", value: royalty, tile: "bg-brand-orange text-white", pill: "bg-white/20" },
+    { icon: DollarSign, label: t("Commercial use"), value: commercialUse, tile: "bg-brand-orange text-white", pill: "bg-white/20" },
+    { icon: GitBranch, label: t("Derivatives"), value: derivatives, tile: "bg-brand-rose text-white", pill: "bg-white/20" },
+    { icon: UserCheck, label: t("Attribution"), value: attribution, tile: "bg-[hsl(250_45%_14%)] text-white ring-1 ring-white/10", pill: "bg-white/15" },
+    { icon: Globe, label: t("Territory"), value: territory, tile: "bg-brand-blue text-white", pill: "bg-white/20" },
+    { icon: Bot, label: t("AI & data mining"), value: aiPolicy, tile: "bg-brand-purple text-white", pill: "bg-white/20" },
+    { icon: Percent, label: t("Royalty"), value: royalty, tile: "bg-brand-orange text-white", pill: "bg-white/20" },
   ].filter((row) => !!row.value);
 
   const factSpans2 = fillSpans(facts.map(() => 1), 2);

@@ -9,6 +9,7 @@ import { orderCoins, type CoinPriceSort } from "../data/coin-order.js";
 import { coinKind, coinKindLabelPlural, coinServiceIds, COIN_KINDS, type CoinCollectionLike, type CoinKind } from "../data/coins.js";
 import { emptyMessages } from "../utils/empty-messages.js";
 import { useT } from "../i18n/provider.js";
+import { msg } from "../i18n/translate.js";
 
 export type CoinFilter = "all" | CoinKind;
 export type CoinSort = "recent" | "name";
@@ -34,8 +35,8 @@ export interface CoinsExplorerProps {
 }
 
 const SORT_OPTIONS: { label: string; value: CoinSort }[] = [
-  { label: "Recently launched", value: "recent" },
-  { label: "Name", value: "name" },
+  { label: msg("Recently launched"), value: "recent" },
+  { label: msg("Name"), value: "name" },
 ];
 
 const noPriceMap: UsePriceMap = () => ({ prices: {}, isLoading: false });

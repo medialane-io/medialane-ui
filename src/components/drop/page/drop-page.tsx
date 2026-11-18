@@ -103,7 +103,7 @@ export function DropPage(props: { contract: string; initialTab?: string; portfol
         <div className="lg:hidden">
           <DropActionBox view={view} minted={onchain.totalMinted} maxSupply={onchain.maxSupply} quantity={quantity} onQuantity={setQuantity} onAction={onAction} />
           <div className="fixed inset-x-0 bottom-0 z-30 border-t border-border bg-background/95 p-3 backdrop-blur">
-            <GradientButton disabled={view.button.action === "none"} onClick={onAction}>{view.button.label}</GradientButton>
+            <GradientButton disabled={view.button.action === "none"} onClick={onAction}>{t(view.button.label)}</GradientButton>
           </div>
         </div>
       )}

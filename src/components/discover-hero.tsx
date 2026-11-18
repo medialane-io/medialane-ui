@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { KineticWords, EASE_OUT } from "./motion-primitives.js";
 import { ActivityTicker } from "./activity-ticker.js";
 import type { ApiOrder } from "@medialane/sdk";
+import { useT } from "../i18n/provider.js";
 
 export interface DiscoverHeroProps {
   stats: { collections: number; tokens: number; sales: number } | null;
@@ -20,6 +21,7 @@ export function DiscoverHero({
   headlineText = "Create, share & explore",
   getTickerHref,
 }: DiscoverHeroProps) {
+  const t = useT();
   return (
     <div className="space-y-6 pt-2">
       {badgeText ? (
@@ -52,8 +54,8 @@ export function DiscoverHero({
           transition={{ duration: 0.4, delay: 0.35, ease: EASE_OUT }}
         >
           {[
-            { label: "Collections", value: stats.collections },
-            { label: "Assets", value: stats.tokens },
+            { label: t("Collections"), value: stats.collections },
+            { label: t("Assets"), value: stats.tokens },
           ].map(({ label, value }) => (
             <div
               key={label}

@@ -90,7 +90,7 @@ export function EmptyOrError({
           )}
           {emptyCta && (
             <Button size="sm" asChild>
-              <Link href={emptyCta.href}>{emptyCta.label}</Link>
+              <Link href={emptyCta.href}>{t(emptyCta.label)}</Link>
             </Button>
           )}
         </div>

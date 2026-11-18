@@ -10,11 +10,12 @@ import { DropGrid, DropGridSkeleton } from "./drop-card.js";
 import { useDrops } from "../../utils/use-drops.js";
 import { useNow } from "../../utils/drop/use-now.js";
 import { useT } from "../../i18n/provider.js";
+import { msg } from "../../i18n/translate.js";
 
 const EMPTY: Record<ApiDropListStatus, { heading: string; body: string }> = {
-  live: { heading: "No live drops", body: "Nothing is open for minting right now. Check Upcoming, or launch your own." },
-  upcoming: { heading: "No upcoming drops", body: "Scheduled drops will show here before they open." },
-  ended: { heading: "No ended drops", body: "Drops that sold out or closed will show here." },
+  live: { heading: msg("No live drops"), body: "Nothing is open for minting right now. Check Upcoming, or launch your own." },
+  upcoming: { heading: msg("No upcoming drops"), body: "Scheduled drops will show here before they open." },
+  ended: { heading: msg("No ended drops"), body: "Drops that sold out or closed will show here." },
 };
 
 export function DropListing({

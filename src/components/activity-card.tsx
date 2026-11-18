@@ -11,6 +11,7 @@ import { formatDisplayPrice } from "../utils/format.js";
 import { cn } from "../utils/cn.js";
 import { assetHref, type ApiActivity, type Chain } from "@medialane/sdk";
 import { useImageUrl } from "../utils/use-image-url.js";
+import { useT } from "../i18n/provider.js";
 
 type ActivityWithEnrichment = ApiActivity & {
   chain?: Chain;
@@ -49,6 +50,7 @@ export function ActivityCard({
 }: ActivityCardProps) {
   const resolveImage = useImageUrl();
   const activity = rawActivity as ActivityWithEnrichment;
+  const t = useT();
   const config = ACTIVITY_TYPE_CONFIG[activity.type] ?? {
     label: activity.type,
     variant: "outline" as const,
@@ -99,7 +101,7 @@ export function ActivityCard({
 
         <span className="absolute top-2.5 left-2.5 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-2xs font-semibold bg-background/75 backdrop-blur-md border border-border/40">
           <Icon className={cn("h-3 w-3", config.colorClass)} aria-hidden />
-          <span className={config.colorClass}>{config.label}</span>
+          <span className={config.colorClass}>{t(config.label)}</span>
         </span>
         {amount && (
           <span className="absolute bottom-2.5 right-2.5 px-2 py-0.5 rounded-full text-2xs font-bold bg-violet-500 text-white">

@@ -2,6 +2,7 @@ import type { ApiActivity } from "@medialane/sdk";
 import { assetHref } from "@medialane/sdk";
 import { formatDisplayPrice } from "./format.js";
 import { createImageResolver, type ImageResolver } from "./ipfs.js";
+import { msg } from "../i18n/translate.js";
 
 const defaultResolver = createImageResolver();
 
@@ -75,7 +76,7 @@ export function formatActivity(event: ApiActivity, resolveImage: ImageResolver =
       };
     case "cancelled":
       return {
-        title: "Listing cancelled",
+        title: msg("Listing cancelled"),
         description: name,
         image, href,
       };

@@ -23,7 +23,7 @@ export function ExclusiveFields({ value, onChange }: { value: ExclusiveValue; on
       <p className="text-xs text-muted-foreground">{t("Only holders see this link. Use a private or unlisted one.")}</p>
       <Select value={value.type} onValueChange={(type) => onChange({ ...value, type })}>
         <SelectTrigger><SelectValue placeholder={t("Kind of content")} /></SelectTrigger>
-        <SelectContent>{TYPES.map((t) => <SelectItem key={t.value} value={t.value}>{t.label}</SelectItem>)}</SelectContent>
+        <SelectContent>{TYPES.map((type) => <SelectItem key={type.value} value={type.value}>{t(type.label)}</SelectItem>)}</SelectContent>
       </Select>
     </div>
   );

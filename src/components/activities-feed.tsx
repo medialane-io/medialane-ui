@@ -100,7 +100,7 @@ export function ActivitiesFeed() {
                   )}
                 />
               )}
-              {f.label}
+              {t(f.label)}
             </button>
           );
         })}

@@ -59,7 +59,7 @@ export function PortfolioActivity({ address }: PortfolioActivityProps) {
                   )}
                 />
               )}
-              {f.label}
+              {t(f.label)}
               {!isLoading && count != null && count > 0 && (
                 <span
                   className={cn(
@@ -84,7 +84,7 @@ export function PortfolioActivity({ address }: PortfolioActivityProps) {
         onRetry={mutate}
         emptyTitle={typeFilter ? `No ${typeFilter} events yet` : t("No activity yet")}
         emptyDescription={t("Start by listing or buying an asset on the marketplace.")}
-        emptyCta={{ label: "Browse marketplace", href: "/marketplace" }}
+        emptyCta={{ label: t("Browse marketplace"), href: "/marketplace" }}
         emptyIcon={<Activity className="h-7 w-7 text-muted-foreground" />}
         skeletonNode={<ActivityListSkeleton count={8} />}
       >

@@ -274,7 +274,7 @@ export function TokenCard({ token, isOwner = false, onReport, usdValue, ...handl
               <DropdownMenuItem asChild>
                 <Link href={profileLink.href} className="flex items-center gap-2">
                   <UserCircle2 className="h-3.5 w-3.5 text-muted-foreground" />
-                  {profileLink.label}
+                  {t(profileLink.label)}
                 </Link>
               </DropdownMenuItem>
             )}

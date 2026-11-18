@@ -48,7 +48,7 @@ export function DetailsSection({ draft, setDraft, errors }: SectionProps) {
           setLicense(def ? { licenseType: v, commercialUse: def.commercialUse, derivatives: def.derivatives, attribution: def.attribution } : { licenseType: v });
         }}>
           <SelectTrigger><SelectValue /></SelectTrigger>
-          <SelectContent>{LICENSE_TYPES.map((l) => <SelectItem key={l.value} value={l.value}>{l.label}</SelectItem>)}</SelectContent>
+          <SelectContent>{LICENSE_TYPES.map((l) => <SelectItem key={l.value} value={l.value}>{t(l.label)}</SelectItem>)}</SelectContent>
         </Select>
         <p className="text-xs font-medium">{t("Commercial use")}</p>
         <ToggleGroup value={license.commercialUse} options={["Yes", "No"]} onChange={(v) => setLicense({ commercialUse: v })} />

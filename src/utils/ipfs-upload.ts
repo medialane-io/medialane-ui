@@ -1,4 +1,5 @@
 import { buildAssetMetadata, UserFacingError, type ApiClient, type BuildAssetMetadataInput } from "@medialane/sdk";
+import { msg } from "../i18n/translate.js";
 
 export const FILE_UPLOAD_FAILED =
   "We couldn't upload your file. Check your connection and try again, or choose a different file.";
@@ -158,12 +159,12 @@ export function isUserRejection(err: unknown): boolean {
 export function uploadFailureToast(err: unknown): { title: string; description?: string } {
   if (isUserRejection(err)) {
     return {
-      title: "Signature declined",
-      description: "Try again and approve the request in your wallet.",
+      title: msg("Signature declined"),
+      description: msg("Try again and approve the request in your wallet."),
     };
   }
   return {
-    title: "Upload failed",
+    title: msg("Upload failed"),
     description: err instanceof Error ? err.message : undefined,
   };
 }

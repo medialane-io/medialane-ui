@@ -22,8 +22,8 @@ export function NavThemeToggle() {
       className="flex items-center gap-0.5 rounded-lg bg-muted/40 p-0.5"
     >
       {[
-        { key: "light", label: "Light theme", Icon: Sun, active: !isDark },
-        { key: "dark", label: "Dark theme", Icon: Moon, active: isDark },
+        { key: "light", label: t("Light theme"), Icon: Sun, active: !isDark },
+        { key: "dark", label: t("Dark theme"), Icon: Moon, active: isDark },
       ].map(({ key, label, Icon, active }) => (
         <button
           key={key}

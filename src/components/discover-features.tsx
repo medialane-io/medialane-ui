@@ -20,6 +20,7 @@ import {
 import { ScrollSection } from "./scroll-section.js";
 import { cn } from "../utils/cn.js";
 import { useT } from "../i18n/provider.js";
+import { msg } from "../i18n/translate.js";
 
 const HUES = [
   { text: "text-brand-blue", border: "border-brand-blue/30", tint: "bg-brand-blue/10" },
@@ -30,19 +31,19 @@ const HUES = [
 ];
 
 const FEATURES: ReadonlyArray<{ icon: LucideIcon; title: string; description: string }> = [
-  { icon: HandCoins, title: "Creator-first economy", description: "99% to creators/owners + 1% fee goes to the Creator Fund Airdrop." },
-  { icon: Globe, title: "Censorship resistance", description: "Assets and ownership live onchain on decentralized networks." },
-  { icon: ShieldCheck, title: "Stark cryptography", description: "All transactions are secured onchain by mathematical proofs." },
-  { icon: EyeOff, title: "Privacy by design", description: "Medialane is designed for user privacy and sovereignty." },
-  { icon: ScanEye, title: "Zero knowledge", description: "Information can be proven valid without revealing the data behind it." },
-  { icon: Percent, title: "Zero-fee protocols", description: "The smart contracts charge zero fees for interaction." },
-  { icon: Lock, title: "Immutable contracts", description: "All smart contracts are fully open source and immutable." },
-  { icon: DoorOpen, title: "Permissionless", description: "Anyone can create, trade and interact with onchain protocols." },
-  { icon: Database, title: "Onchain as the source of truth", description: "Assets, ownership, markets and data are read directly onchain." },
-  { icon: FileCog, title: "Programmable IP", description: "Licensing terms and rights are stored with the assets." },
-  { icon: Gem, title: "Decentralized portfolio", description: "Assets are stored onchain with licensing and metadata on IPFS." },
-  { icon: Scale, title: "Protection compliance", description: "Authorship and license are protected under international laws." },
-  { icon: Code, title: "Open source and auditable", description: "The code is public to audit, review and collaborate on." },
+  { icon: HandCoins, title: msg("Creator-first economy"), description: msg("99% to creators/owners + 1% fee goes to the Creator Fund Airdrop.") },
+  { icon: Globe, title: msg("Censorship resistance"), description: msg("Assets and ownership live onchain on decentralized networks.") },
+  { icon: ShieldCheck, title: msg("Stark cryptography"), description: msg("All transactions are secured onchain by mathematical proofs.") },
+  { icon: EyeOff, title: msg("Privacy by design"), description: msg("Medialane is designed for user privacy and sovereignty.") },
+  { icon: ScanEye, title: msg("Zero knowledge"), description: msg("Information can be proven valid without revealing the data behind it.") },
+  { icon: Percent, title: msg("Zero-fee protocols"), description: msg("The smart contracts charge zero fees for interaction.") },
+  { icon: Lock, title: msg("Immutable contracts"), description: msg("All smart contracts are fully open source and immutable.") },
+  { icon: DoorOpen, title: msg("Permissionless"), description: msg("Anyone can create, trade and interact with onchain protocols.") },
+  { icon: Database, title: msg("Onchain as the source of truth"), description: msg("Assets, ownership, markets and data are read directly onchain.") },
+  { icon: FileCog, title: msg("Programmable IP"), description: msg("Licensing terms and rights are stored with the assets.") },
+  { icon: Gem, title: msg("Decentralized portfolio"), description: msg("Assets are stored onchain with licensing and metadata on IPFS.") },
+  { icon: Scale, title: msg("Protection compliance"), description: msg("Authorship and license are protected under international laws.") },
+  { icon: Code, title: msg("Open source and auditable"), description: msg("The code is public to audit, review and collaborate on.") },
 ];
 
 export function DiscoverFeatures() {

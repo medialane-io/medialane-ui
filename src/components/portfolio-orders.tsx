@@ -18,6 +18,7 @@ import { getSeenOffers } from "../utils/seen-offers.js";
 import { useImageUrl } from "../utils/use-image-url.js";
 import { useCounterOffers, useReceivedOffers, useUserOrders } from "../utils/use-orders.js";
 import { useT } from "../i18n/provider.js";
+import { msg } from "../i18n/translate.js";
 
 export type PortfolioOrdersView = "listings" | "offers" | "received" | "counter-offers";
 
@@ -35,7 +36,7 @@ const VIEWS = {
   listings: {
     emptyTitle: "No active listings",
     emptyDescription: "Sell an asset to get started.",
-    emptyCta: { label: "Browse assets", href: "/portfolio/assets" },
+    emptyCta: { label: msg("Browse assets"), href: "/portfolio/assets" },
     emptyIcon: Tag,
     priceLabel: "Price",
     count: (n: number) => `${n} active listing${n === 1 ? "" : "s"}`,
@@ -43,7 +44,7 @@ const VIEWS = {
   offers: {
     emptyTitle: "No offers sent yet",
     emptyDescription: "Browse the marketplace to make offers on assets.",
-    emptyCta: { label: "Browse marketplace", href: "/marketplace" },
+    emptyCta: { label: msg("Browse marketplace"), href: "/marketplace" },
     emptyIcon: HandCoins,
     priceLabel: "Offer price",
     count: (n: number) => `${n} active offer${n === 1 ? "" : "s"}`,
@@ -129,7 +130,7 @@ function OrderRow({ order, subtitle, from, priceCell, actions, isNew }: {
       )}
       <div className="hidden shrink-0 text-right sm:block">{priceCell}</div>
       <div className="hidden shrink-0 md:block">
-        <p className={cn("text-sm", expiry.expired && "text-muted-foreground", expiry.urgent && "font-medium text-destructive")}>{expiry.label}</p>
+        <p className={cn("text-sm", expiry.expired && "text-muted-foreground", expiry.urgent && "font-medium text-destructive")}>{t(expiry.label)}</p>
       </div>
       <div className="flex shrink-0 items-center gap-2">
         {order.txHash?.created && (

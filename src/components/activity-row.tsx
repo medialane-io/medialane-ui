@@ -108,8 +108,8 @@ export function ActivityRow({
           config.bgClass,
           compact ? "h-7 w-7" : "h-8 w-8"
         )}
-        title={config.label}
-        aria-label={config.label}
+        title={t(config.label)}
+        aria-label={t(config.label)}
       >
         <Icon
           className={cn("shrink-0", config.colorClass, compact ? "h-3.5 w-3.5" : "h-4 w-4")}

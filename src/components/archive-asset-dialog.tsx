@@ -94,7 +94,7 @@ export function ArchiveAssetDialog({
           txHash={tx.txHash}
           error={tx.error}
           success={successMessages.archived({ name: displayName }, t)}
-          successActions={[{ label: "Done", onClick: () => { close(); onSuccess?.(); } }]}
+          successActions={[{ label: t("Done"), onClick: () => { close(); onSuccess?.(); } }]}
           errorTitle={t("Archive failed")}
           errorDescription={t("The transaction could not be completed.")}
           onRetry={tx.retryable ? tx.reset : undefined}

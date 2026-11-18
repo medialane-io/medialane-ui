@@ -193,9 +193,9 @@ export function CoinCreate({ aside, tradeHref }: CoinCreateProps) {
           title={t("Coin launched")}
           description={t("The supply is fixed and the liquidity is locked.")}
           actions={[
-            ...(coinAddress ? [{ href: tradeHref(coinAddress), label: "View & trade your coin" }] : []),
-            { href: "/launchpad", label: "Back to Launchpad" },
-            { label: "Launch another coin", onClick: handleReset },
+            ...(coinAddress ? [{ href: tradeHref(coinAddress), label: t("View & trade your coin") }] : []),
+            { href: "/launchpad", label: t("Back to Launchpad") },
+            { label: t("Launch another coin"), onClick: handleReset },
           ]}
         >
           {profileStatus === "saving" && (

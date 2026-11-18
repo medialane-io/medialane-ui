@@ -3,6 +3,7 @@
 import Link from "./link.js";
 import { ArrowRight, Zap, Coins, Gift } from "lucide-react";
 import { useT } from "../i18n/provider.js";
+import { msg } from "../i18n/translate.js";
 
 export interface RewardsSectionProps {
   rewardsHref: string;
@@ -16,12 +17,12 @@ const pillars = [
   },
   {
     icon: Coins,
-    label: "Creator's Fund",
+    label: msg("Creator's Fund"),
     detail: "Your XP grows your share of the shared pool.",
   },
   {
     icon: Gift,
-    label: "Airdrop",
+    label: msg("Airdrop"),
     detail: "Claim your share on-chain, every round.",
   },
 ];

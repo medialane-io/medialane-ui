@@ -140,23 +140,23 @@ export function CollectionCreateForm({ preset, aside }: CollectionCreateFormProp
   const actions = preset.actions({ address: deployedAddress, collectionHref: viewHref });
 
   return (
-    <WalletRequired icon={Icon} iconClassName={preset.iconClass} title={preset.signedOut.title} description={preset.signedOut.description}>
-      <TransactionDialog tx={tx} title={preset.dialog.title} workingLabel={preset.dialog.workingLabel} firstStepLabel={preset.dialog.firstStepLabel}>
+    <WalletRequired icon={Icon} iconClassName={preset.iconClass} title={t(preset.signedOut.title)} description={t(preset.signedOut.description)}>
+      <TransactionDialog tx={tx} title={t(preset.dialog.title)} workingLabel={t(preset.dialog.workingLabel)} firstStepLabel={t(preset.dialog.firstStepLabel)}>
         <TransactionSuccess
-          name={name || preset.success.fallbackName}
+          name={name || t(preset.success.fallbackName)}
           image={imagePreview}
-          title={preset.success.title}
-          description={preset.success.description}
-          actions={[actions.primary, actions.secondary, { label: preset.success.againLabel, onClick: handleAgain }]}
+          title={t(preset.success.title)}
+          description={t(preset.success.description)}
+          actions={[actions.primary, actions.secondary, { label: t(preset.success.againLabel), onClick: handleAgain }]}
         >
-          <RewardEarned actionType={preset.success.reward} />
+          <RewardEarned actionType={t(preset.success.reward)} />
         </TransactionSuccess>
       </TransactionDialog>
 
       <ClaimRouteShell
         icon={<Icon className="h-4 w-4 text-white" />}
-        title={preset.shell.title}
-        subtitle={preset.shell.subtitle}
+        title={t(preset.shell.title)}
+        subtitle={t(preset.shell.subtitle)}
         aside={
           <>
             <MedialaneCollectionCard

@@ -218,7 +218,7 @@ export function IPTypeFields({ ipType, onChange, uploadDocument, existingDocumen
                 )}
               </Button>
               {docError && <p className="text-xs text-destructive">{docError}</p>}
-              <p className="text-xs text-muted-foreground leading-relaxed">{docUpload.hint}</p>
+              <p className="text-xs text-muted-foreground leading-relaxed">{t(docUpload.hint)}</p>
             </div>
           )}
         </section>
@@ -235,7 +235,7 @@ export function IPTypeFields({ ipType, onChange, uploadDocument, existingDocumen
               <div key={platform} className="space-y-1.5">
                 <Label className="flex items-center gap-1.5 text-xs text-muted-foreground">
                   <PIcon className="h-3.5 w-3.5" />
-                  {meta.label}
+                  {t(meta.label)}
                   {looksLikeUrl(value) && (
                     <span className="ml-1 inline-flex items-center gap-0.5 text-2xs font-medium text-emerald-400">
                       <Check className="h-3 w-3" /> {t("connected")}
@@ -269,7 +269,7 @@ export function IPTypeFields({ ipType, onChange, uploadDocument, existingDocumen
               <div key={platform} className="space-y-1.5">
                 <Label className="flex items-center gap-1.5 text-xs text-muted-foreground">
                   <PIcon className="h-3.5 w-3.5" />
-                  {meta.label}
+                  {t(meta.label)}
                 </Label>
                 <Input
                   type="url"

@@ -130,7 +130,7 @@ function CollectionItems({ items, activeListings, mintHref, soulbound }: { items
 
   if (allTokens.length === 0) {
     return mintHref ? (
-      <EmptyState title={t("Ready for your first work")} body={t("Mint into this collection and it appears here.")} action={{ href: mintHref, label: "Mint your first work" }} />
+      <EmptyState title={t("Ready for your first work")} body={t("Mint into this collection and it appears here.")} action={{ href: mintHref, label: t("Mint your first work") }} />
     ) : (
       <EmptyState title={t("No items yet")} body={t("Tokens in this collection will appear here once indexed.")} />
     );

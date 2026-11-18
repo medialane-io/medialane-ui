@@ -1,4 +1,5 @@
 import type { PasskeySupport } from "./passkey-support.js";
+import { msg } from "../i18n/translate.js";
 
 export type WalletFailureKind =
   | "cancelled"
@@ -36,13 +37,13 @@ export function describeWalletFailure(err: unknown, support: PasskeySupport = "u
     return support === "unavailable"
       ? {
           kind: "no-passkeys",
-          message: "Passkeys aren't available in this window. Open Medialane in a regular browser window (not Guest or Incognito) and try again.",
+          message: msg("Passkeys aren't available in this window. Open Medialane in a regular browser window (not Guest or Incognito) and try again."),
           canRetry: true,
         }
       : {
           kind: "cancelled",
           message:
-            "The passkey prompt was closed. Try again to finish setting up your account. If your browser says your device can't be used, open Medialane in a regular browser window (not Guest or Incognito).",
+            msg("The passkey prompt was closed. Try again to finish setting up your account. If your browser says your device can't be used, open Medialane in a regular browser window (not Guest or Incognito)."),
           canRetry: true,
         };
   }
@@ -51,14 +52,14 @@ export function describeWalletFailure(err: unknown, support: PasskeySupport = "u
   if (unsupported === "no-prf") {
     return {
       kind: "unsupported-passkey",
-      message: "Update your browser, or open Medialane on another device, then try again.",
+      message: msg("Update your browser, or open Medialane on another device, then try again."),
       canRetry: true,
     };
   }
   if (unsupported === "no-webauthn") {
     return {
       kind: "no-passkeys",
-      message: "Open Medialane in a regular browser window or on another device to continue.",
+      message: msg("Open Medialane in a regular browser window or on another device to continue."),
       canRetry: false,
     };
   }
@@ -66,18 +67,18 @@ export function describeWalletFailure(err: unknown, support: PasskeySupport = "u
   if (/has not appeared|submitted but/i.test(raw)) {
     return {
       kind: "still-deploying",
-      message: "Your wallet is still being set up. Give it a minute, then try again. Nothing is lost.",
+      message: msg("Your wallet is still being set up. Give it a minute, then try again. Nothing is lost."),
       canRetry: true,
     };
   }
 
   if (/deploy/i.test(raw)) {
-    return { kind: "deployment", message: "We couldn't finish setting up your wallet. Please try again in a moment.", canRetry: true };
+    return { kind: "deployment", message: msg("We couldn't finish setting up your wallet. Please try again in a moment."), canRetry: true };
   }
 
   if (/failed to fetch|networkerror|load failed|network request failed/i.test(raw)) {
-    return { kind: "network", message: "We couldn't reach Medialane. Check your connection and try again.", canRetry: true };
+    return { kind: "network", message: msg("We couldn't reach Medialane. Check your connection and try again."), canRetry: true };
   }
 
-  return { kind: "unknown", message: "We couldn't finish setting up your account. Please try again.", canRetry: true };
+  return { kind: "unknown", message: msg("We couldn't finish setting up your account. Please try again."), canRetry: true };
 }
