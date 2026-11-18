@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.373.0] — 2026-11-18
+
+### Added
+
+- `@medialane/ui/i18n`: `I18nProvider`, `useT` (with `t.plural` and `t.rich`), `useLocale`, `useFormat`, `loadCatalog`, `resolveLocale`, `withLocale` and `msg`. The English sentence is the key, English needs no catalog, and a language's catalog loads only when that language is requested. An app that does not mount `I18nProvider` renders English exactly as before.
+- `NavLanguageSwitch`: a language picker that remembers the choice and moves to the prefixed or unprefixed path.
+- `Link`, `useRouter` and `usePathname` add the language prefix for non-English languages; `usePathname` returns the path without it.
+
+### Changed
+
+- The text, labels, tables, presets and messages of every component go through `t`, with their original English.
+- `successMessages` helpers take an optional trailing `t`; `cancelled` takes `kind: "listing" | "offer"`.
+- Numbers and dates format with the page language instead of the runtime's default locale, so the server and the browser produce the same text. English is the default. The price and number helpers in `utils/format` take an optional trailing language.
+- `matchCommands`, `serviceMatchesQuery` and `selectLaunchpadServices` take an optional `translate` so search matches translated text as well as English.
+- Form errors translate where they are shown.
+- Components that read the language are client components; twelve that had no `"use client"` now have it.
+
 ## [0.372.1] — 2026-11-17
 
 ### Changed
