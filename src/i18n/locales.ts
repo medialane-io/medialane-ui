@@ -6,4 +6,7 @@ export interface LocaleInfo {
 
 export const DEFAULT_LOCALE = "en";
 
-export const LOCALES: readonly LocaleInfo[] = [{ code: "en", name: "English", dir: "ltr" }];
+export const LOCALES: readonly LocaleInfo[] = [
+  { code: "en", name: "English", dir: "ltr" },
+  { code: "pt", name: "Português", dir: "ltr" },
+];

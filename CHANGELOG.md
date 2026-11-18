@@ -6,6 +6,13 @@
 
 - Navigation menu: "Create Limited Edition Contract" is now "Create Limited Edition Collection". The browse entries for drops, tickets, clubs and sponsorship, the collection drop entry and the four section-specific documentation entries are no longer shared items.
 
+## [0.374.0] — 2026-11-18
+
+### Added
+
+- Portuguese (`pt`, Brazil): a catalog for all 1,578 sentences in the package, loaded only when a visitor reads Portuguese. `LOCALES` now lists English and Portuguese, so `NavLanguageSwitch` offers both and `resolveLocale` accepts `/pt` paths and `pt` browser languages.
+- `@medialane/ui/i18n-tools`: `scanSentences` and `readSources`, so an app can check its own catalog against the sentences its code uses. Needs `typescript`, and is for tests and scripts only.
+
 ## [0.373.4] — 2026-11-18
 
 ### Changed
