@@ -50,6 +50,7 @@
   "scripts": {
     "build": "tsup",
     "test": "bun test",
+    "i18n:missing": "bun src/i18n/tools/missing.ts",
     "prepublishOnly": "bun run typecheck && bun test && bun run build",
     "dev": "tsup --watch",
     "typecheck": "tsc --noEmit",

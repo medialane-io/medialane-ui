@@ -1,61 +1,50 @@
 import { expect, test } from "bun:test";
-import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
-import { EN, loadCatalog } from "./catalogs.js";
+import { loadCatalog } from "./catalogs.js";
 import { LOCALES } from "./locales.js";
+import { readSources, scanSentences } from "./tools/scan.js";
 import type { Catalog } from "./translate.js";
 
 const SRC = join(import.meta.dir, "..");
 
-function missingFrom(base: Catalog, other: Catalog): string[] {
-  return Object.keys(other).filter((key) => !(key in base));
-}
-
-function emptyValues(catalog: Catalog): string[] {
-  return Object.keys(catalog).filter((key) => catalog[key].trim() === "");
-}
-
-function sourceFiles(dir: string): string[] {
-  return readdirSync(dir).flatMap((name) => {
-    const path = join(dir, name);
-    if (statSync(path).isDirectory()) return sourceFiles(path);
-    return /\.tsx?$/.test(name) && !/\.test\.tsx?$/.test(name) ? [path] : [];
-  });
-}
-
-function usedKeys(source: string): string[] {
-  const keys: string[] = [];
-  for (const match of source.matchAll(/\bt\(\s*(["'`])([^"'`$]+)\1/g)) keys.push(match[2]);
-  return keys;
-}
-
-function isKnown(catalog: Catalog, key: string): boolean {
-  return key in catalog || `${key}.other` in catalog;
-}
-
-test("the checks catch a key missing from English and an empty value", () => {
-  expect(missingFrom({ a: "A" }, { a: "A", b: "B" })).toEqual(["b"]);
-  expect(emptyValues({ a: "A", b: " " })).toEqual(["b"]);
-  expect(usedKeys(`t("nav.home"); t('items', { count: 2 }); t(dynamic); t(\`a.\${b}\`)`)).toEqual(["nav.home", "items"]);
-});
-
-test("every non-English catalog key exists in English", async () => {
-  for (const { code } of LOCALES.filter((locale) => locale.code !== "en")) {
-    expect(missingFrom(EN, await loadCatalog(code))).toEqual([]);
-  }
-});
+const { sentences, plurals } = scanSentences(readSources(SRC));
+const known = new Set([...sentences, ...plurals]);
+const placeholders = (text: string) => [...text.matchAll(/\{(\w+)\}/g)].map((match) => match[1]).sort();
+const values = (entry: Catalog[string]) => (typeof entry === "string" ? [entry] : Object.values(entry).filter((v): v is string => !!v));
+const otherLocales = LOCALES.filter((locale) => locale.code !== "en");
 
 test("no catalog value is empty", async () => {
-  for (const { code } of LOCALES) {
-    expect(emptyValues(await loadCatalog(code))).toEqual([]);
+  for (const { code } of otherLocales) {
+    const catalog = await loadCatalog(code);
+    for (const [sentence, entry] of Object.entries(catalog)) {
+      expect(values(entry).every((value) => value.trim() !== ""), `${code}: ${sentence}`).toBe(true);
+    }
   }
 });
 
-test("every key passed to useT or t( in src exists in English", () => {
-  const unknown = sourceFiles(SRC).flatMap((file) =>
-    usedKeys(readFileSync(file, "utf8"))
-      .filter((key) => !isKnown(EN, key))
-      .map((key) => `${file.slice(SRC.length + 1)}: ${key}`),
-  );
-  expect(unknown).toEqual([]);
+test("every translation key is a sentence the code still uses", async () => {
+  for (const { code } of otherLocales) {
+    const obsolete = Object.keys(await loadCatalog(code)).filter((sentence) => !known.has(sentence));
+    expect(obsolete, code).toEqual([]);
+  }
+});
+
+test("every placeholder in a sentence appears in its translation and no other does", async () => {
+  for (const { code } of otherLocales) {
+    for (const [sentence, entry] of Object.entries(await loadCatalog(code))) {
+      for (const value of values(entry)) {
+        expect(placeholders(value), `${code}: ${sentence}`).toEqual(placeholders(sentence));
+      }
+    }
+  }
+});
+
+test("plural entries use only categories the language has", async () => {
+  for (const { code } of otherLocales) {
+    const allowed = new Set([...new Intl.PluralRules(code).resolvedOptions().pluralCategories, "other"]);
+    for (const [sentence, entry] of Object.entries(await loadCatalog(code))) {
+      if (typeof entry === "string") continue;
+      expect(Object.keys(entry).filter((category) => !allowed.has(category as Intl.LDMLPluralRule)), `${code}: ${sentence}`).toEqual([]);
+    }
+  }
 });
