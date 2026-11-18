@@ -1,12 +1,13 @@
 "use client";
 
 import { Layers, Package, Timer, Users } from "lucide-react";
+import { msg } from "../../i18n/translate.js";
 
 const FEATURES = [
-  { icon: Layers, title: "Edition or collection", desc: "One artwork in numbered copies, or many unique items." },
-  { icon: Timer, title: "Your sale window", desc: "Open now or on a date, close whenever you choose — or never." },
-  { icon: Users, title: "Everyone or a list", desc: "Open to all, or only the wallets you invite with claim links." },
-  { icon: Package, title: "Collectors own them", desc: "Each token is theirs to keep, sell or trade anywhere." },
+  { icon: Layers, title: msg("Edition or collection"), desc: "One artwork in numbered copies, or many unique items." },
+  { icon: Timer, title: msg("Your sale window"), desc: "Open now or on a date, close whenever you choose — or never." },
+  { icon: Users, title: msg("Everyone or a list"), desc: "Open to all, or only the wallets you invite with claim links." },
+  { icon: Package, title: msg("Collectors own them"), desc: "Each token is theirs to keep, sell or trade anywhere." },
 ];
 
 export function DropFeatures() {

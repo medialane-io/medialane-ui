@@ -4,6 +4,7 @@ import { ExternalLink } from "lucide-react";
 import { Button } from "./button.js";
 import { externalLink } from "../utils/external-link.js";
 import { MarkdownText } from "./markdown-text.js";
+import { useT } from "../i18n/provider.js";
 
 export interface AssetPublicationProps {
   name: string;
@@ -17,6 +18,7 @@ export interface AssetPublicationProps {
 }
 
 export function AssetPublication({ name, text, content, image, imgError, onImageError, author, externalUrl }: AssetPublicationProps) {
+  const t = useT();
   const link = externalLink(externalUrl);
   const paragraphs = text.split(/\n{2,}/).map((p) => p.trim()).filter(Boolean);
 
@@ -48,7 +50,7 @@ export function AssetPublication({ name, text, content, image, imgError, onImage
           {link ? (
             <Button asChild variant="outline">
               <a href={link} target="_blank" rel="noopener noreferrer">
-                Read more
+                {t("Read more")}
                 <ExternalLink />
               </a>
             </Button>

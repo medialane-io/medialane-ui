@@ -5,6 +5,7 @@ import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "./form
 import { Input } from "./input.js";
 import { CurrencyPicker, DurationPicker } from "./marketplace-dialog-primitives.js";
 import { LISTABLE_CURRENCIES, type OrderFormValues } from "../utils/order-form.js";
+import { useT } from "../i18n/provider.js";
 
 export interface OrderFieldsProps {
   form: UseFormReturn<OrderFormValues>;
@@ -15,6 +16,7 @@ export interface OrderFieldsProps {
 }
 
 export function OrderFields({ form, durationOptions, busy, priceLabel, quantity }: OrderFieldsProps) {
+  const t = useT();
   return (
     <>
       <FormField
@@ -43,7 +45,7 @@ export function OrderFields({ form, durationOptions, busy, priceLabel, quantity 
         name="currency"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Currency</FormLabel>
+            <FormLabel>{t("Currency")}</FormLabel>
             <FormControl>
               <CurrencyPicker currencies={LISTABLE_CURRENCIES} value={field.value} onChange={field.onChange} disabled={busy} />
             </FormControl>
@@ -58,8 +60,8 @@ export function OrderFields({ form, durationOptions, busy, priceLabel, quantity 
           render={({ field }) => (
             <FormItem>
               <div className="flex items-center justify-between">
-                <FormLabel>Quantity</FormLabel>
-                {quantity.owned != null && <span className="text-xs text-muted-foreground">You own {quantity.owned}</span>}
+                <FormLabel>{t("Quantity")}</FormLabel>
+                {quantity.owned != null && <span className="text-xs text-muted-foreground">{t("You own {owned}", { owned: quantity.owned })}</span>}
               </div>
               <FormControl>
                 <Input type="number" min="1" step="1" placeholder="1" disabled={busy} {...field} />
@@ -75,7 +77,7 @@ export function OrderFields({ form, durationOptions, busy, priceLabel, quantity 
         name="durationSeconds"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Duration</FormLabel>
+            <FormLabel>{t("Duration")}</FormLabel>
             <FormControl>
               <DurationPicker options={durationOptions} value={field.value} onChange={field.onChange} disabled={busy} />
             </FormControl>

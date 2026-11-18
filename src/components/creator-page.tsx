@@ -35,6 +35,7 @@ import { useCollectionsByOwner } from "../utils/use-collections.js";
 import { useUserOrders } from "../utils/use-orders.js";
 import { useActivitiesByAddress } from "../utils/use-activities.js";
 import { useCreatorByUsername } from "../utils/use-profiles.js";
+import { useT } from "../i18n/provider.js";
 
 type TabId = "assets" | "collections" | "listings" | "activity";
 
@@ -48,6 +49,7 @@ export interface CreatorPageProps {
 }
 
 export function CreatorPage({ username, useAssetActions, useMarketActions }: CreatorPageProps) {
+  const t = useT();
   const { walletAddress } = useMedialaneApp();
   const client = useMedialaneClient();
   const resolveImage = useImageUrl();
@@ -76,18 +78,18 @@ export function CreatorPage({ username, useAssetActions, useMarketActions }: Cre
   if (!creator) {
     return (
       <div className="mx-auto max-w-lg space-y-4 px-4 py-24 text-center">
-        <h1 className="text-2xl font-bold">Creator not found</h1>
-        <p className="text-muted-foreground"><span className="tabular-nums">@{username}</span> isn&apos;t a profile yet.</p>
-        <Button variant="outline" asChild><Link href="/accounts">Browse accounts</Link></Button>
+        <h1 className="text-2xl font-bold">{t("Creator not found")}</h1>
+        <p className="text-muted-foreground"><span className="tabular-nums">@{username}</span> {t("isn't a profile yet.")}</p>
+        <Button variant="outline" asChild><Link href="/accounts">{t("Browse accounts")}</Link></Button>
       </div>
     );
   }
 
   const tabs: UnderlineTab[] = [
-    { id: "assets", label: "Assets", icon: ImageIcon, count: meta?.total ?? undefined },
-    { id: "collections", label: "Collections", icon: LayoutGrid, count: collectionsLoading ? undefined : collections.length },
-    { id: "listings", label: "Listings", icon: ShoppingBag, count: activeTab === "listings" && !ordersLoading ? listings.length : undefined },
-    { id: "activity", label: "Activity", icon: Activity },
+    { id: "assets", label: t("Assets"), icon: ImageIcon, count: meta?.total ?? undefined },
+    { id: "collections", label: t("Collections"), icon: LayoutGrid, count: collectionsLoading ? undefined : collections.length },
+    { id: "listings", label: t("Listings"), icon: ShoppingBag, count: activeTab === "listings" && !ordersLoading ? listings.length : undefined },
+    { id: "activity", label: t("Activity"), icon: Activity },
   ];
 
   return (
@@ -99,8 +101,8 @@ export function CreatorPage({ username, useAssetActions, useMarketActions }: Cre
           creator={creator}
           image={resolveImage(creator.avatarImage || tokens[0]?.metadata?.image)}
           stats={[
-            { label: "Assets", value: meta?.total ?? null },
-            { label: "Collections", value: collectionsLoading ? null : collections.length },
+            { label: t("Assets"), value: meta?.total ?? null },
+            { label: t("Collections"), value: collectionsLoading ? null : collections.length },
           ]}
         />
       </div>
@@ -115,7 +117,7 @@ export function CreatorPage({ username, useAssetActions, useMarketActions }: Cre
           {tokensLoading ? (
             <div className={GRID}>{Array.from({ length: 8 }).map((_, i) => <TokenCardSkeleton key={i} />)}</div>
           ) : tokens.length === 0 ? (
-            <TabEmptyState icon={ImageIcon} heading="No assets yet" body="Works this creator makes on Medialane appear here." />
+            <TabEmptyState icon={ImageIcon} heading={t("No assets yet")} body={t("Works this creator makes on Medialane appear here.")} />
           ) : (
             <div className={GRID}>
               {tokens.map((t: ApiToken) => {
@@ -144,7 +146,7 @@ export function CreatorPage({ username, useAssetActions, useMarketActions }: Cre
           {collectionsLoading ? (
             <div className="grid grid-cols-2 gap-4 lg:grid-cols-3">{Array.from({ length: 6 }).map((_, i) => <CollectionCardSkeleton key={i} />)}</div>
           ) : collections.length === 0 ? (
-            <TabEmptyState icon={LayoutGrid} heading="No collections yet" body="Collections this creator makes appear here." />
+            <TabEmptyState icon={LayoutGrid} heading={t("No collections yet")} body={t("Collections this creator makes appear here.")} />
           ) : (
             <div className="grid grid-cols-2 gap-4 lg:grid-cols-3">{collections.map((c) => <CollectionCard key={c.contractAddress} collection={c} />)}</div>
           )}
@@ -154,7 +156,7 @@ export function CreatorPage({ username, useAssetActions, useMarketActions }: Cre
           {ordersLoading ? (
             <div className={GRID}>{Array.from({ length: 4 }).map((_, i) => <ListingCardSkeleton key={i} />)}</div>
           ) : listings.length === 0 ? (
-            <TabEmptyState icon={ShoppingBag} heading="No active listings" body="Works this creator lists for sale appear here." />
+            <TabEmptyState icon={ShoppingBag} heading={t("No active listings")} body={t("Works this creator lists for sale appear here.")} />
           ) : (
             <div className={GRID}>
               {listings.map((o) => <ListingCard key={o.orderHash} order={o} onBuy={isOwner ? undefined : market.buy} usdValue={orderUsd(o.price, prices)} overflowMenu={<ListingCardMenu order={o} />} />)}
@@ -166,7 +168,7 @@ export function CreatorPage({ username, useAssetActions, useMarketActions }: Cre
           {activitiesLoading ? (
             <div className="space-y-5">{Array.from({ length: 6 }).map((_, i) => <Skeleton key={i} className="h-10 w-full rounded-xl" />)}</div>
           ) : activities.length === 0 ? (
-            <TabEmptyState icon={Activity} heading="No activity yet" body="This creator's activity appears here as it happens." />
+            <TabEmptyState icon={Activity} heading={t("No activity yet")} body={t("This creator's activity appears here as it happens.")} />
           ) : (
             <div>{activities.map((a, i) => <ActivityTimelineRow key={i} event={a} isLast={i === activities.length - 1} />)}</div>
           )}

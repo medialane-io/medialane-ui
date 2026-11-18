@@ -18,21 +18,24 @@ import { useCollections, type CollectionSort } from "../utils/use-collections.js
 import { useMedialaneClient } from "../utils/use-medialane-client.js";
 import { SEARCH_MIN_LENGTH, useSearch } from "../utils/use-search.js";
 import { collectionHref, type ApiCollection } from "@medialane/sdk";
+import { useT } from "../i18n/provider.js";
+import { msg } from "../i18n/translate.js";
+import { useFormat } from "../i18n/use-format.js";
 
 const PAGE_SIZE = 25;
 
 const SORT_OPTIONS: { label: string; value: CollectionSort }[] = [
-  { label: "Recent",      value: "recent"  },
-  { label: "Most assets", value: "supply"  },
-  { label: "Top volume",  value: "volume"  },
-  { label: "Floor ↑",    value: "floor"   },
+  { label: msg("Recent"),      value: "recent"  },
+  { label: msg("Most assets"), value: "supply"  },
+  { label: msg("Top volume"),  value: "volume"  },
+  { label: msg("Floor ↑"),    value: "floor"   },
   { label: "A → Z",      value: "name"    },
 ];
 
 const SERVICE_TABS = [
-  { label: "All",        value: undefined    },
-  { label: "POP Events", value: "pop-protocol" },
-  { label: "Drops",      value: "drop-collection" },
+  { label: msg("All"),        value: undefined    },
+  { label: msg("POP Events"), value: "pop-protocol" },
+  { label: msg("Drops"),      value: "drop-collection" },
 ] as const;
 
 function useStandardCounts() {
@@ -53,6 +56,7 @@ function useStandardCounts() {
 }
 
 function CollectionSearch() {
+  const t = useT();
   const router = useRouter();
   const [value, setValue] = useState("");
   const [query, setQuery] = useState("");
@@ -76,8 +80,8 @@ function CollectionSearch() {
       <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
       <Input
         className="h-9 pl-9 pr-9 text-sm"
-        placeholder="Search collections"
-        aria-label="Search collections"
+        placeholder={t("Search collections")}
+        aria-label={t("Search collections")}
         value={value}
         onChange={(e) => { setValue(e.target.value); setOpen(true); }}
         onFocus={() => setOpen(true)}
@@ -90,7 +94,7 @@ function CollectionSearch() {
       />
       {value && (
         <button
-          aria-label="Clear search"
+          aria-label={t("Clear search")}
           className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
           onClick={clear}
         >
@@ -119,6 +123,8 @@ function CollectionSearch() {
 }
 
 export function CollectionsPage() {
+  const intl = useFormat();
+  const t = useT();
   const counts = useStandardCounts();
   const [sort, setSort]           = useState<CollectionSort>("recent");
   const [hideEmpty, setHideEmpty] = useState(true);
@@ -185,18 +191,18 @@ export function CollectionsPage() {
 
       <div className="space-y-2 pt-8">
 
-        <h1 className="text-3xl font-bold">Onchain Collections</h1>
+        <h1 className="text-3xl font-bold">{t("Onchain Collections")}</h1>
         <div className="flex flex-wrap items-center gap-2 mt-1">
           {counts?.single != null && counts.multi != null && (
             <div className="flex items-center gap-1.5 rounded-full border border-border bg-card px-3.5 py-1.5 text-sm">
-              <span className="font-bold tabular-nums">{(counts.single + counts.multi).toLocaleString()}</span>
-              <span className="text-muted-foreground">Collections</span>
+              <span className="font-bold tabular-nums">{intl.number((counts.single + counts.multi))}</span>
+              <span className="text-muted-foreground">{t("Collections")}</span>
             </div>
           )}
           {counts?.multi != null && (
             <div className="flex items-center gap-1.5 rounded-full border border-border bg-card px-3.5 py-1.5 text-sm">
-              <span className="font-bold tabular-nums">{counts.multi.toLocaleString()}</span>
-              <span className="text-muted-foreground">Multi editions</span>
+              <span className="font-bold tabular-nums">{intl.number(counts.multi)}</span>
+              <span className="text-muted-foreground">{t("Multi editions")}</span>
             </div>
           )}
         </div>
@@ -218,7 +224,7 @@ export function CollectionsPage() {
           <div className="flex items-center gap-2 sm:ml-auto">
             <button
               onClick={() => setFiltersOpen(true)}
-              aria-label="Filters"
+              aria-label={t("Filters")}
               className={cn(
                 "relative flex items-center gap-1.5 h-9 px-3 rounded-lg border text-xs font-medium transition-colors",
                 activeFilters > 0 || service !== undefined
@@ -240,14 +246,14 @@ export function CollectionsPage() {
             {service !== undefined && (
               <span className="flex items-center gap-1 text-xs px-2.5 py-1 rounded-full border border-primary/40 bg-primary/10 text-primary">
                 {service === "drop-collection" ? <Package className="h-3 w-3" /> : <Award className="h-3 w-3" />}
-                {SERVICE_TABS.find((t) => t.value === service)?.label}
-                <button onClick={() => setService(undefined)} className="ml-0.5 hover:text-primary/60" aria-label="Remove source filter">×</button>
+                {t(SERVICE_TABS.find((tab) => tab.value === service)?.label ?? "")}
+                <button onClick={() => setService(undefined)} className="ml-0.5 hover:text-primary/60" aria-label={t("Remove source filter")}>×</button>
               </span>
             )}
             {!hideEmpty && (
               <span className="flex items-center gap-1 text-xs px-2.5 py-1 rounded-full border border-primary/40 bg-primary/10 text-primary">
-                Show empty
-                <button onClick={() => setHideEmpty(true)} className="ml-0.5 hover:text-primary/60" aria-label="Remove show empty filter">×</button>
+                {t("Show empty")}
+                <button onClick={() => setHideEmpty(true)} className="ml-0.5 hover:text-primary/60" aria-label={t("Remove show empty filter")}>×</button>
               </span>
             )}
           </div>
@@ -260,11 +266,11 @@ export function CollectionsPage() {
           <div className="flex items-center justify-between px-5 py-4 border-b border-border/60 pr-12">
             <DialogTitle className="text-base font-bold flex items-center gap-2">
               <SlidersHorizontal className="h-4 w-4 text-primary" />
-              Filters
+              {t("Filters")}
             </DialogTitle>
             {(activeFilters > 0 || service !== undefined) && (
               <Button variant="ghost" size="sm" className="h-7 text-xs text-muted-foreground" onClick={() => { resetAll(); setService(undefined); }}>
-                Clear all
+                {t("Clear all")}
               </Button>
             )}
           </div>
@@ -272,7 +278,7 @@ export function CollectionsPage() {
           <div className="flex-1 overflow-y-auto px-5 py-4 space-y-5">
 
             <div className="space-y-2">
-              <p className="text-2xs font-semibold text-muted-foreground">Sort by</p>
+              <p className="text-2xs font-semibold text-muted-foreground">{t("Sort by")}</p>
               <div className="flex flex-wrap gap-1.5">
                 {SORT_OPTIONS.map(({ label, value }) => (
                   <button
@@ -292,7 +298,7 @@ export function CollectionsPage() {
             </div>
 
             <div className="space-y-2">
-              <p className="text-2xs font-semibold text-muted-foreground">Source</p>
+              <p className="text-2xs font-semibold text-muted-foreground">{t("Source")}</p>
               <div className="flex flex-wrap gap-1.5">
                 {SERVICE_TABS.map(({ label, value }) => (
                   <button
@@ -314,7 +320,7 @@ export function CollectionsPage() {
             </div>
 
             <div className="space-y-2">
-              <p className="text-2xs font-semibold text-muted-foreground">Show</p>
+              <p className="text-2xs font-semibold text-muted-foreground">{t("Show")}</p>
               <div className="flex flex-col gap-2">
                 <div className="flex items-center gap-2">
                   <button
@@ -327,7 +333,7 @@ export function CollectionsPage() {
                     )}
                   >
                     <Eye className="h-4 w-4 shrink-0" />
-                    Show empty collections
+                    {t("Show empty collections")}
                   </button>
                   <HelpIcon content="Include collections with no minted assets yet — hidden by default to keep the feed clean" side="left" />
                 </div>
@@ -338,7 +344,7 @@ export function CollectionsPage() {
 
           <div className="px-5 py-3 border-t border-border/60">
             <Button className="w-full" onClick={() => setFiltersOpen(false)}>
-              Show results
+              {t("Show results")}
             </Button>
           </div>
 
@@ -352,15 +358,15 @@ export function CollectionsPage() {
       ) : allCollections.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-24 gap-4 text-center">
           <Layers className="h-12 w-12 text-muted-foreground/30" />
-          <p className="text-2xl font-bold">No collections found</p>
+          <p className="text-2xl font-bold">{t("No collections found")}</p>
           <p className="text-muted-foreground max-w-sm">
             {hideEmpty
-              ? "No collections with assets yet."
-              : "Deploy the first collection on Medialane."}
+              ? t("No collections with assets yet.")
+              : t("Deploy the first collection on Medialane.")}
           </p>
           {activeFilters > 0 && (
             <Button variant="outline" size="sm" onClick={resetAll}>
-              Clear filters
+              {t("Clear filters")}
             </Button>
           )}
         </div>

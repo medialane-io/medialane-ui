@@ -5,13 +5,15 @@ import { Check, ExternalLink, Flag, MoreHorizontal, Settings, Share2 } from "luc
 import Link from "./link.js";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./dropdown-menu.js";
 import { shareOrCopy } from "../utils/share.js";
+import { useT } from "../i18n/provider.js";
 
 export function MoreMenu({ explorerHref, shareTitle, settingsHref, onReport }: { explorerHref: string; shareTitle: string; settingsHref?: string; onReport: () => void }) {
+  const t = useT();
   const [copied, setCopied] = useState(false);
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
-        aria-label="More options"
+        aria-label={t("More options")}
         className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-md border border-input bg-background text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
       >
         <MoreHorizontal className="h-4 w-4" />
@@ -21,14 +23,14 @@ export function MoreMenu({ explorerHref, shareTitle, settingsHref, onReport }: {
           <DropdownMenuItem asChild>
             <Link href={settingsHref}>
               <Settings />
-              Collection settings
+              {t("Collection settings")}
             </Link>
           </DropdownMenuItem>
         ) : null}
         <DropdownMenuItem asChild>
           <a href={explorerHref} target="_blank" rel="noopener noreferrer">
             <ExternalLink />
-            View on explorer
+            {t("View on explorer")}
           </a>
         </DropdownMenuItem>
         <DropdownMenuItem
@@ -42,11 +44,11 @@ export function MoreMenu({ explorerHref, shareTitle, settingsHref, onReport }: {
           }}
         >
           {copied ? <Check className="text-emerald-500" /> : <Share2 />}
-          {copied ? "Link copied" : "Share"}
+          {copied ? t("Link copied") : t("Share")}
         </DropdownMenuItem>
         <DropdownMenuItem onSelect={onReport}>
           <Flag />
-          Report
+          {t("Report")}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

@@ -8,6 +8,7 @@ import { SectionHeading } from "./section-heading.js";
 import { formatDisplayPrice } from "../utils/format.js";
 import type { ApiCollection } from "@medialane/sdk";
 import { useImageUrl } from "../utils/use-image-url.js";
+import { useT } from "../i18n/provider.js";
 
 export interface FeaturedCarouselProps {
   collections: ApiCollection[];
@@ -17,6 +18,7 @@ export interface FeaturedCarouselProps {
 }
 
 function Slide({ collection, href }: { collection: ApiCollection; href: string }) {
+  const t = useT();
   const resolveImage = useImageUrl();
   const name = collection.name ?? "Featured Collection";
   const image = resolveImage(collection.image);
@@ -42,12 +44,12 @@ function Slide({ collection, href }: { collection: ApiCollection; href: string }
         <div className="flex items-center gap-4 mb-5">
           {collection.totalSupply != null && (
             <span className="text-sm text-white/70">
-              <span className="font-bold text-white">{collection.totalSupply}</span> items
+              <span className="font-bold text-white">{collection.totalSupply}</span> {t("items")}
             </span>
           )}
           {collection.floorPrice && (
             <span className="text-sm text-white/70">
-              Floor{" "}
+              {t("Floor")}{" "}
               <span className="font-bold text-brand-orange">
                 {formatDisplayPrice(collection.floorPrice)}
               </span>
@@ -58,7 +60,7 @@ function Slide({ collection, href }: { collection: ApiCollection; href: string }
           href={href}
           className="inline-flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-lg bg-white/15 hover:bg-white/25 text-white border border-white/20 backdrop-blur-sm transition-colors"
         >
-          View Collection <ArrowRight className="h-3.5 w-3.5" />
+          {t("View Collection")} <ArrowRight className="h-3.5 w-3.5" />
         </a>
       </div>
     </div>
@@ -66,10 +68,11 @@ function Slide({ collection, href }: { collection: ApiCollection; href: string }
 }
 
 export function FeaturedCarouselSkeleton() {
+  const t = useT();
   return (
     <FadeIn>
       <section className="space-y-4">
-        <SectionHeading icon={<Sparkles />} title="Featured Collections" href="/collections" linkLabel="View all" />
+        <SectionHeading icon={<Sparkles />} title={t("Featured Collections")} href="/collections" linkLabel="View all" />
         <div className="-mx-4 sm:-mx-6 lg:-mx-8 aspect-[16/7] sm:aspect-[21/9] bg-muted animate-pulse" />
       </section>
     </FadeIn>
@@ -82,6 +85,7 @@ export function FeaturedCarousel({
   getHref,
   allCollectionsHref = "/collections",
 }: FeaturedCarouselProps) {
+  const t = useT();
   const [active, setActive] = useState(0);
   const [paused, setPaused] = useState(false);
   const total = collections.length;
@@ -103,7 +107,7 @@ export function FeaturedCarousel({
   return (
     <FadeIn>
       <section className="space-y-4">
-        <SectionHeading icon={<Sparkles />} title="Featured Collections" href={allCollectionsHref} linkLabel="View all" />
+        <SectionHeading icon={<Sparkles />} title={t("Featured Collections")} href={allCollectionsHref} linkLabel="View all" />
 
         <div
           className="-mx-4 sm:-mx-6 lg:-mx-8 relative overflow-hidden aspect-[16/7] sm:aspect-[21/9] bg-muted"
@@ -128,7 +132,7 @@ export function FeaturedCarousel({
               <button
                 onClick={prev}
                 className="absolute left-3 top-1/2 -translate-y-1/2 min-h-11 min-w-11 rounded-full flex items-center justify-center z-10"
-                aria-label="Previous"
+                aria-label={t("Previous")}
               >
                 <span className="flex h-9 w-9 items-center justify-center rounded-full bg-black/40 border border-white/10 backdrop-blur-sm text-white hover:bg-black/60 transition-colors">
                   <ChevronLeft className="h-4 w-4" />
@@ -137,7 +141,7 @@ export function FeaturedCarousel({
               <button
                 onClick={next}
                 className="absolute right-3 top-1/2 -translate-y-1/2 min-h-11 min-w-11 rounded-full flex items-center justify-center z-10"
-                aria-label="Next"
+                aria-label={t("Next")}
               >
                 <span className="flex h-9 w-9 items-center justify-center rounded-full bg-black/40 border border-white/10 backdrop-blur-sm text-white hover:bg-black/60 transition-colors">
                   <ChevronRight className="h-4 w-4" />

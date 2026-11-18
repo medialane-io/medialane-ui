@@ -6,6 +6,7 @@ import { Badge } from "./badge.js";
 import { Dialog, DialogContent, DialogTitle } from "./dialog.js";
 import { useCollectionFilters, CollectionFiltersTrigger, CollectionFiltersBody } from "./collection-filters.js";
 import type { ApiToken, CollectionTokensSort } from "@medialane/sdk";
+import { useT } from "../i18n/provider.js";
 
 export interface CollectionFiltersDialogProps {
   tokens: ApiToken[];
@@ -24,6 +25,7 @@ export function CollectionFiltersDialog({
   onSortChange,
   chips = true,
 }: CollectionFiltersDialogProps) {
+  const t = useT();
   const [open, setOpen] = useState(false);
   const { traitSections, activeEntries, totalActiveCount, sortIsDefault, toggleValue, clearAll, removeFilter } =
     useCollectionFilters(tokens, selected, onChange, sort, onSortChange);
@@ -48,11 +50,10 @@ export function CollectionFiltersDialog({
           <div className="flex items-center justify-between pr-10 pl-5 py-4 border-b border-border/60 shrink-0">
             <DialogTitle className="text-base font-bold flex items-center gap-2">
               <SlidersHorizontal className="h-4 w-4" />
-              Filters
+              {t("Filters")}
               {totalActiveCount > 0 && (
                 <Badge variant="secondary" className="text-2xs font-medium">
-                  {totalActiveCount} active
-                </Badge>
+                  {t("{totalActiveCount} active", { totalActiveCount })}</Badge>
               )}
             </DialogTitle>
             {totalActiveCount > 0 && (
@@ -60,7 +61,7 @@ export function CollectionFiltersDialog({
                 onClick={clearAll}
                 className="text-2xs text-muted-foreground hover:text-foreground underline-offset-2 hover:underline transition-colors"
               >
-                Clear all
+                {t("Clear all")}
               </button>
             )}
           </div>
@@ -80,7 +81,7 @@ export function CollectionFiltersDialog({
             >
               {totalActiveCount > 0
                 ? `Show results (${totalActiveCount} filter${totalActiveCount > 1 ? "s" : ""})`
-                : "Close"}
+                : t("Close")}
             </button>
           </div>
 

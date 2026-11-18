@@ -20,12 +20,14 @@ import { useTokensByOwner } from "../../utils/use-tokens.js";
 import { usePendingProposalsForAsset } from "../../utils/use-sponsorship.js";
 import { useTransaction } from "../../utils/use-transaction.js";
 import { shortenAddress } from "../../utils/address.js";
+import { useT } from "../../i18n/provider.js";
 
 type Mode = "offer" | "propose";
 
 const TOKEN_SYMBOLS = SUPPORTED_TOKENS.filter((t) => t.listable).map((t) => t.symbol);
 
 function PendingProposalsPanel({ nftContract }: { nftContract: string }) {
+  const t = useT();
   const app = useMedialaneApp();
   const walletAddress = app.walletAddress;
   const { proposals, isLoading, mutate } = usePendingProposalsForAsset(nftContract);
@@ -53,18 +55,18 @@ function PendingProposalsPanel({ nftContract }: { nftContract: string }) {
 
   return (
     <div className="rounded-xl border border-border bg-card p-4 space-y-3">
-      <p className="text-sm font-semibold">Pending proposals</p>
+      <p className="text-sm font-semibold">{t("Pending proposals")}</p>
       {proposals.map((p) => (
         <div key={p.proposalId} className="flex items-center justify-between gap-3 text-sm">
           <span className="truncate text-muted-foreground">{shortenAddress(p.proposer)} — {p.amount}</span>
           <div className="flex gap-2 shrink-0">
             <Button size="sm" variant="outline" disabled={busy} onClick={() => respond(p.proposalId, "reject")}>
               {busy && activeId === p.proposalId ? <Loader2 className="h-3 w-3 animate-spin" /> : <X className="h-3 w-3" />}
-              Decline
+              {t("Decline")}
             </Button>
             <Button size="sm" className="bg-brand-rose hover:brightness-110 text-white" disabled={busy} onClick={() => respond(p.proposalId, "accept")}>
               {busy && activeId === p.proposalId ? <Loader2 className="h-3 w-3 animate-spin" /> : <CheckCircle2 className="h-3 w-3" />}
-              Accept
+              {t("Accept")}
             </Button>
           </div>
         </div>
@@ -73,7 +75,7 @@ function PendingProposalsPanel({ nftContract }: { nftContract: string }) {
         <div className="flex items-center gap-2 text-xs text-destructive" role="alert">
           <AlertCircle className="h-3.5 w-3.5" />
           {tx.error}
-          <button type="button" className="underline" onClick={tx.reset}>Dismiss</button>
+          <button type="button" className="underline" onClick={tx.reset}>{t("Dismiss")}</button>
         </div>
       )}
     </div>
@@ -81,6 +83,7 @@ function PendingProposalsPanel({ nftContract }: { nftContract: string }) {
 }
 
 export function SponsorshipCreate({ aside }: { aside?: ReactNode }) {
+  const t = useT();
   const app = useMedialaneApp();
   const walletAddress = app.walletAddress;
   const resolveImage = useImageUrl();
@@ -154,13 +157,13 @@ export function SponsorshipCreate({ aside }: { aside?: ReactNode }) {
     <WalletRequired
       icon={Handshake}
       iconClassName="text-brand-rose"
-      title="Secure your account to set up a sponsorship"
-      description="Secure your account to publish onchain."
+      title={t("Secure your account to set up a sponsorship")}
+      description={t("Secure your account to publish onchain.")}
     >
       <ClaimRouteShell
         icon={<Handshake className="h-4 w-4 text-white" />}
-        title="Set up a sponsorship"
-        subtitle="Found IP you'd like to back? Propose terms directly to its owner. Own something worth sponsoring? Post it and let sponsors bid."
+        title={t("Set up a sponsorship")}
+        subtitle={t("Found IP you'd like to back? Propose terms directly to its owner. Own something worth sponsoring? Post it and let sponsors bid.")}
         aside={aside}
       >
         <div className="space-y-6">
@@ -176,14 +179,14 @@ export function SponsorshipCreate({ aside }: { aside?: ReactNode }) {
                     : "px-4 py-1.5 rounded-full text-sm font-semibold text-muted-foreground"
                 }
               >
-                {m === "offer" ? "Offer my asset" : "Propose to sponsor"}
+                {m === "offer" ? t("Offer my asset") : t("Propose to sponsor")}
               </button>
             ))}
           </div>
 
           {mode === "offer" ? (
             <div className="space-y-2">
-              <p className="text-sm font-semibold">Pick an asset you own</p>
+              <p className="text-sm font-semibold">{t("Pick an asset you own")}</p>
               <AssetPicker
                 assets={ownedAssets}
                 isLoading={assetsLoading}
@@ -196,8 +199,8 @@ export function SponsorshipCreate({ aside }: { aside?: ReactNode }) {
             </div>
           ) : (
             <div className="space-y-2">
-              <p className="text-sm font-semibold">Which asset do you want to sponsor?</p>
-              <AssetSearchPicker search={searchAssets} selected={proposeAsset} onSelect={setProposeAsset} placeholder="Search by asset name or creator" />
+              <p className="text-sm font-semibold">{t("Which asset do you want to sponsor?")}</p>
+              <AssetSearchPicker search={searchAssets} selected={proposeAsset} onSelect={setProposeAsset} placeholder={t("Search by asset name or creator")} />
             </div>
           )}
 
@@ -221,7 +224,7 @@ export function SponsorshipCreate({ aside }: { aside?: ReactNode }) {
               className="w-full h-12 rounded-[15px] flex items-center justify-center gap-2 text-base font-semibold text-white bg-transparent transition-all hover:brightness-110 active:scale-[0.98] disabled:opacity-50"
             >
               <Handshake className="h-4 w-4" />
-              {mode === "offer" ? "Create Offer" : "Send proposal"}
+              {mode === "offer" ? t("Create Offer") : t("Send proposal")}
             </button>
           </div>
         </div>
@@ -229,20 +232,20 @@ export function SponsorshipCreate({ aside }: { aside?: ReactNode }) {
 
       <TransactionDialog
         tx={tx}
-        title={mode === "offer" ? "Create sponsorship offer" : "Send proposal"}
+        title={mode === "offer" ? t("Create sponsorship offer") : t("Send proposal")}
         workingLabel={mode === "offer" ? "Creating your sponsorship offer…" : "Sending your proposal…"}
         firstStepLabel="Upload license terms"
       >
         <TransactionSuccess
           name={chosen?.name ?? "Your sponsorship"}
           image={chosen?.image ?? null}
-          title={mode === "offer" ? "Offer created" : "Proposal sent"}
+          title={mode === "offer" ? t("Offer created") : t("Proposal sent")}
           description={
             mode === "offer"
-              ? "The offer is recorded onchain with the asset and terms you chose."
-              : "The proposal is recorded onchain with the amount and duration you chose."
+              ? t("The offer is recorded onchain with the asset and terms you chose.")
+              : t("The proposal is recorded onchain with the amount and duration you chose.")
           }
-          actions={[{ href: "/launchpad/sponsorship", label: "Back to Sponsorship launchpad" }, { label: "Create another", onClick: handleAgain }]}
+          actions={[{ href: "/launchpad/sponsorship", label: t("Back to Sponsorship launchpad") }, { label: t("Create another"), onClick: handleAgain }]}
         >
           {mode === "offer" && <RewardEarned actionType="create_sponsorship_offer" />}
         </TransactionSuccess>

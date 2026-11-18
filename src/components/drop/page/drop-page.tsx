@@ -23,10 +23,12 @@ import { claimProofFor } from "../../../utils/drop/claim-proof.js";
 import { manageDrop, mintDrop, saveExclusiveContent } from "../../../utils/drop/actions.js";
 import { useMedialaneApp } from "../../medialane-app.js";
 import { useImageUrl } from "../../../utils/use-image-url.js";
+import { useT } from "../../../i18n/provider.js";
 
 type TokenFile = { image?: string; attributes?: { trait_type?: string; value?: string }[] };
 
 export function DropPage(props: { contract: string; initialTab?: string; portfolioHref?: string }) {
+  const t = useT();
   const resolveImage = useImageUrl();
   const app = useMedialaneApp();
   const { contract } = props;
@@ -54,7 +56,7 @@ export function DropPage(props: { contract: string; initialTab?: string; portfol
     return (
       <div className="space-y-3 py-24 text-center">
         <Package className="mx-auto h-10 w-10 text-muted-foreground/30" />
-        <p className="text-sm text-muted-foreground">This drop wasn't found. A new drop can take a minute to appear.</p>
+        <p className="text-sm text-muted-foreground">{t("This drop wasn't found. A new drop can take a minute to appear.")}</p>
       </div>
     );
   }
@@ -101,21 +103,21 @@ export function DropPage(props: { contract: string; initialTab?: string; portfol
         <div className="lg:hidden">
           <DropActionBox view={view} minted={onchain.totalMinted} maxSupply={onchain.maxSupply} quantity={quantity} onQuantity={setQuantity} onAction={onAction} />
           <div className="fixed inset-x-0 bottom-0 z-30 border-t border-border bg-background/95 p-3 backdrop-blur">
-            <GradientButton disabled={view.button.action === "none"} onClick={onAction}>{view.button.label}</GradientButton>
+            <GradientButton disabled={view.button.action === "none"} onClick={onAction}>{t(view.button.label)}</GradientButton>
           </div>
         </div>
       )}
 
       <Tabs defaultValue={props.initialTab === "manage" && isOrganizer ? "manage" : "about"}>
         <TabsList>
-          <TabsTrigger value="about">About</TabsTrigger>
-          {isCollection && <TabsTrigger value="items">Items</TabsTrigger>}
-          <TabsTrigger value="activity">Activity</TabsTrigger>
-          <TabsTrigger value="license">License</TabsTrigger>
-          {isOrganizer && <TabsTrigger value="manage">Manage</TabsTrigger>}
+          <TabsTrigger value="about">{t("About")}</TabsTrigger>
+          {isCollection && <TabsTrigger value="items">{t("Items")}</TabsTrigger>}
+          <TabsTrigger value="activity">{t("Activity")}</TabsTrigger>
+          <TabsTrigger value="license">{t("License")}</TabsTrigger>
+          {isOrganizer && <TabsTrigger value="manage">{t("Manage")}</TabsTrigger>}
         </TabsList>
         <TabsContent value="about" className="pt-6">
-          <p className="whitespace-pre-line text-sm leading-relaxed text-muted-foreground">{indexed?.description || "No description."}</p>
+          <p className="whitespace-pre-line text-sm leading-relaxed text-muted-foreground">{indexed?.description || t("No description.")}</p>
         </TabsContent>
         {isCollection && (
           <TabsContent value="items" className="pt-6">

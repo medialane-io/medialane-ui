@@ -6,6 +6,7 @@ import { Button } from "./button.js";
 import { useMedialaneApp } from "./medialane-app.js";
 import { runIntentCalls } from "../utils/run-intent-calls.js";
 import { useTransaction } from "../utils/use-transaction.js";
+import { useT } from "../i18n/provider.js";
 
 export interface PopBurnButtonProps {
   collectionAddress: string;
@@ -14,6 +15,7 @@ export interface PopBurnButtonProps {
 }
 
 export function PopBurnButton({ collectionAddress, tokenId, onBurned }: PopBurnButtonProps) {
+  const t = useT();
   const app = useMedialaneApp();
   const [confirming, setConfirming] = useState(false);
   const tx = useTransaction();
@@ -24,14 +26,14 @@ export function PopBurnButton({ collectionAddress, tokenId, onBurned }: PopBurnB
   }, [tx.phase, onBurned]);
 
   if (tx.phase === "success") {
-    return <p className="text-xs text-muted-foreground">Removed from your wallet.</p>;
+    return <p className="text-xs text-muted-foreground">{t("Removed from your wallet.")}</p>;
   }
 
   if (!confirming) {
     return (
       <Button variant="ghost" size="sm" className="text-muted-foreground" onClick={() => setConfirming(true)}>
         <Trash2 className="h-3.5 w-3.5 mr-1.5" />
-        Remove from my wallet
+        {t("Remove from my wallet")}
       </Button>
     );
   }
@@ -44,15 +46,15 @@ export function PopBurnButton({ collectionAddress, tokenId, onBurned }: PopBurnB
   return (
     <div className="space-y-2 rounded-xl border border-border p-3">
       <p className="text-xs text-muted-foreground">
-        Burning removes this certificate permanently.
+        {t("Burning removes this certificate permanently.")}
       </p>
       {tx.phase === "error" && <p className="text-xs text-destructive">{tx.error}</p>}
       <div className="flex gap-2">
         <Button variant="outline" size="sm" className="flex-1" disabled={busy} onClick={() => setConfirming(false)}>
-          Keep it
+          {t("Keep it")}
         </Button>
         <Button variant="destructive" size="sm" className="flex-1" disabled={busy} onClick={remove}>
-          {busy ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : "Remove"}
+          {busy ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : t("Remove")}
         </Button>
       </div>
     </div>

@@ -1,6 +1,7 @@
 import { MedialaneApiError, PasskeyCancelledError, UserFacingError } from "@medialane/sdk";
 import { WrongNetworkError, isBareExecuteFailure, isUserRejectedRequest, collectErrorText } from "./wallet-error.js";
 import { describeWalletFailure, passkeyUnsupportedReason } from "./wallet-failure.js";
+import { msg } from "../i18n/translate.js";
 
 export const NOT_SUBMITTED = "Request not completed. Nothing was submitted.";
 export const NETWORK_BUSY = "Our service is very busy right now. Please try again in a minute.";
@@ -50,7 +51,7 @@ export function describeError(error: unknown): ErrorNotice {
   if (error instanceof PasskeyCancelledError || isUserRejectedRequest(error)) {
     const unclear = isBareExecuteFailure(error) || error instanceof PasskeyCancelledError;
     return {
-      title: "Request not completed",
+      title: msg("Request not completed"),
       message: NOT_SUBMITTED,
       description: unclear
         ? "Your wallet didn't complete this request. You may have closed or declined it, it may need extra verification such as 2FA before it can sign, or it may have hit a temporary network hiccup. Try again in a moment."

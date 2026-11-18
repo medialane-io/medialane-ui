@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Copy, Check } from "lucide-react";
 import { cn } from "../utils/cn.js";
 import { shortenAddress } from "../utils/address.js";
+import { useT } from "../i18n/provider.js";
 
 export interface AddressDisplayProps {
   address: string;
@@ -19,6 +20,7 @@ export function AddressDisplay({
   chars = 4,
   showCopy = true,
 }: AddressDisplayProps) {
+  const t = useT();
   const [copied, setCopied] = useState(false);
 
   const handleCopy = async () => {
@@ -38,7 +40,7 @@ export function AddressDisplay({
         <button
           onClick={handleCopy}
           className="opacity-60 hover:opacity-100 transition-opacity"
-          aria-label="Copy address"
+          aria-label={t("Copy address")}
         >
           {copied
             ? <Check className="h-3 w-3 text-emerald-500" />

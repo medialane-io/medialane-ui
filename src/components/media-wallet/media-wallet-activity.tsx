@@ -15,6 +15,8 @@ import { useMediaWalletApp, type MediaWalletView } from "./types.js";
 import { useMedialaneApp } from "../medialane-app.js";
 import { BRAND_COLOR } from "../../data/brand.js";
 import { emptyMessages } from "../../utils/empty-messages.js";
+import { useT } from "../../i18n/provider.js";
+import { useFormat } from "../../i18n/use-format.js";
 
 const GRADS = ([["blue", "purple"], ["purple", "rose"], ["rose", "orange"], ["purple", "blue"]] as const).map(
   ([from, to]) => `linear-gradient(135deg, ${BRAND_COLOR[from]}, ${BRAND_COLOR[to]})`,
@@ -26,6 +28,7 @@ const gradFor = (seed: string) => {
 };
 
 export function MediaWalletActivity({ onNavigate }: { onNavigate: (view: MediaWalletView) => void }) {
+  const t = useT();
   const { useWalletSession } = useMediaWalletApp();
   const { getClient } = useMedialaneApp();
   const { address } = useWalletSession();
@@ -62,16 +65,16 @@ export function MediaWalletActivity({ onNavigate }: { onNavigate: (view: MediaWa
     <main className="flex flex-col gap-4 px-5 pb-8 pt-2">
       <div className="flex items-center gap-3">
         <BackButton onBack={() => onNavigate({ name: "home" })} />
-        <h1 className="font-[family-name:var(--font-display)] text-2xl font-extrabold tracking-tight">Activity</h1>
+        <h1 className="font-[family-name:var(--font-display)] text-2xl font-extrabold tracking-tight">{t("Activity")}</h1>
       </div>
 
-      {!address && <div className="text-sm text-muted-foreground">No wallet found on this device.</div>}
+      {!address && <div className="text-sm text-muted-foreground">{t("No wallet found on this device.")}</div>}
       {error && <ActivityLoadError onRetry={load} />}
       {loading && !items && !error && <ActivityLoading />}
       {items && items.length === 0 && (
         <div>
-          <p className="text-sm font-medium">{emptyMessages.walletActivity.title}</p>
-          <p className="text-sm text-muted-foreground">{emptyMessages.walletActivity.description}</p>
+          <p className="text-sm font-medium">{t(emptyMessages.walletActivity.title)}</p>
+          <p className="text-sm text-muted-foreground">{t(emptyMessages.walletActivity.description)}</p>
         </div>
       )}
 
@@ -122,11 +125,13 @@ function WalletActivityRow({
 }
 
 function ActivityDetailModal({ a, onClose }: { a: ApiWalletActivity; onClose: () => void }) {
+  const intl = useFormat();
+  const t = useT();
   const { explorerUrl } = useMediaWalletApp();
   const [copied, setCopied] = useState(false);
   const subtitle = walletActivitySubtitle(a);
   const amount = walletActivityAmount(a);
-  const fullDate = new Date(a.timestamp).toLocaleString(undefined, {
+  const fullDate = intl.dateTime(new Date(a.timestamp), {
     dateStyle: "medium",
     timeStyle: "short",
   });
@@ -148,13 +153,13 @@ function ActivityDetailModal({ a, onClose }: { a: ApiWalletActivity; onClose: ()
 
         <div className="flex flex-col divide-y divide-border/40 rounded-2xl bg-foreground/[0.05] px-4">
           <div className="flex items-center justify-between py-3">
-            <span className="text-xs text-muted-foreground">Date</span>
+            <span className="text-xs text-muted-foreground">{t("Date")}</span>
             <span className="text-sm font-medium">{fullDate}</span>
           </div>
           <div className="flex items-center justify-between py-3">
-            <span className="text-xs text-muted-foreground">Transaction</span>
+            <span className="text-xs text-muted-foreground">{t("Transaction")}</span>
             <button onClick={copyHash} className="font-mono text-sm font-medium transition-opacity active:opacity-60">
-              {copied ? "Copied ✓" : short(a.txHash)}
+              {copied ? t("Copied ✓") : short(a.txHash)}
             </button>
           </div>
         </div>
@@ -165,7 +170,7 @@ function ActivityDetailModal({ a, onClose }: { a: ApiWalletActivity; onClose: ()
           rel="noopener noreferrer"
           className="text-center text-xs font-medium text-muted-foreground underline underline-offset-2"
         >
-          View on Voyager ↗
+          {t("View on Voyager ↗")}
         </a>
       </div>
     </ActionModal>
@@ -200,15 +205,17 @@ function ProtocolActivityRow({ item }: { item: ApiActivity }) {
 }
 
 function ActivityLoading() {
+  const t = useT();
   return (
     <div className="flex min-h-[40vh] flex-col items-center justify-center gap-3">
       <span className="h-6 w-6 animate-spin rounded-full border-2 border-border border-t-foreground" />
-      <div className="text-sm text-muted-foreground">Loading your activity…</div>
+      <div className="text-sm text-muted-foreground">{t("Loading your activity…")}</div>
     </div>
   );
 }
 
 function ActivityLoadError({ onRetry }: { onRetry: () => void }) {
+  const t = useT();
   return (
     <div className="card-base flex flex-col items-center gap-3 px-6 py-8 text-center">
       <div className="grid h-11 w-11 place-items-center rounded-2xl bg-destructive/10 text-destructive">
@@ -218,16 +225,16 @@ function ActivityLoadError({ onRetry }: { onRetry: () => void }) {
         </svg>
       </div>
       <div>
-        <div className="text-sm font-semibold">Couldn&apos;t load your activity</div>
+        <div className="text-sm font-semibold">{t("Couldn't load your activity")}</div>
         <p className="mx-auto mt-1 max-w-[16rem] text-xs leading-relaxed text-muted-foreground">
-          There was a problem reaching the server. Check your connection and try again.
+          {t("There was a problem reaching the server. Check your connection and try again.")}
         </p>
       </div>
       <button
         onClick={onRetry}
         className="rounded-full border border-border px-4 py-2 text-xs font-semibold text-foreground transition-colors hover:bg-card"
       >
-        Try again
+        {t("Try again")}
       </button>
     </div>
   );

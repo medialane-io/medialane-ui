@@ -5,6 +5,8 @@ import Link from "./link.js";
 import { ArrowUpRight, Gem, LayoutGrid, Tag, Trophy } from "lucide-react";
 import { LevelBadge } from "./rewards/level-badge.js";
 import { useRewards } from "../utils/use-rewards.js";
+import { useT } from "../i18n/provider.js";
+import { useFormat } from "../i18n/use-format.js";
 
 function SnapshotStat({ icon: Icon, value, label }: { icon: React.ElementType; value: number; label: string }) {
   return (
@@ -19,22 +21,23 @@ function SnapshotStat({ icon: Icon, value, label }: { icon: React.ElementType; v
 }
 
 export function PortfolioSnapshot({ assets, listings, collections }: { assets: number; listings: number; collections: number }) {
+  const t = useT();
   return (
     <div className="rounded-2xl border border-border/60 bg-card p-5 space-y-4">
       <div>
-        <p className="text-2xs font-semibold uppercase tracking-wide text-muted-foreground">Portfolio</p>
-        <p className="mt-0.5 text-xs text-muted-foreground/70">What you own on Medialane</p>
+        <p className="text-2xs font-semibold uppercase tracking-wide text-muted-foreground">{t("Portfolio")}</p>
+        <p className="mt-0.5 text-xs text-muted-foreground/70">{t("What you own on Medialane")}</p>
       </div>
       <div className="flex items-center border-t border-border/60 pt-4">
-        <SnapshotStat icon={Gem} value={assets} label="Assets" />
-        <SnapshotStat icon={Tag} value={listings} label="Listed" />
-        <SnapshotStat icon={LayoutGrid} value={collections} label="Collections" />
+        <SnapshotStat icon={Gem} value={assets} label={t("Assets")} />
+        <SnapshotStat icon={Tag} value={listings} label={t("Listed")} />
+        <SnapshotStat icon={LayoutGrid} value={collections} label={t("Collections")} />
       </div>
       <Link
         href="/portfolio"
         className="flex items-center justify-center gap-1 text-xs font-medium text-primary hover:underline"
       >
-        View portfolio
+        {t("View portfolio")}
         <ArrowUpRight className="h-3 w-3" />
       </Link>
     </div>
@@ -42,6 +45,8 @@ export function PortfolioSnapshot({ assets, listings, collections }: { assets: n
 }
 
 export function RewardsSnapshot({ address }: { address?: string | null }) {
+  const intl = useFormat();
+  const t = useT();
   const { data: rewards } = useRewards(address);
   if (!rewards) return null;
 
@@ -49,15 +54,15 @@ export function RewardsSnapshot({ address }: { address?: string | null }) {
     <div className="rounded-2xl border border-border/60 bg-card p-5 space-y-4">
       <div className="flex items-center justify-between">
         <div>
-          <p className="text-2xs font-semibold uppercase tracking-wide text-muted-foreground">Rewards</p>
-          <p className="mt-0.5 text-xs text-muted-foreground/70">Your creator journey</p>
+          <p className="text-2xs font-semibold uppercase tracking-wide text-muted-foreground">{t("Rewards")}</p>
+          <p className="mt-0.5 text-xs text-muted-foreground/70">{t("Your creator journey")}</p>
         </div>
         <Trophy className="h-4 w-4 text-muted-foreground/50" />
       </div>
       <div className="border-t border-border/60 pt-4 space-y-2">
         <div className="flex items-center justify-between">
           <LevelBadge level={rewards.currentLevel} name={rewards.currentLevelName} badgeColor={rewards.badgeColor} />
-          <span className="text-xs tabular-nums text-muted-foreground">{rewards.totalXp.toLocaleString()} XP</span>
+          <span className="text-xs tabular-nums text-muted-foreground">{t("{totalXp} XP", { totalXp: intl.number(rewards.totalXp) })}</span>
         </div>
         <div className="h-2 rounded-full bg-muted-foreground/15 overflow-hidden">
           <div
@@ -67,7 +72,7 @@ export function RewardsSnapshot({ address }: { address?: string | null }) {
         </div>
         {rewards.nextLevel && (
           <p className="text-[10.5px] text-muted-foreground">
-            {rewards.nextLevel.xpRequired - rewards.totalXp} XP to Lv.{rewards.nextLevel.level} {rewards.nextLevel.name}
+            {t.rich("{value} XP to Lv.{level} {name}", { value: rewards.nextLevel.xpRequired - rewards.totalXp, level: rewards.nextLevel.level, name: rewards.nextLevel.name })}
           </p>
         )}
       </div>
@@ -75,7 +80,7 @@ export function RewardsSnapshot({ address }: { address?: string | null }) {
         href="/rewards"
         className="flex items-center justify-center gap-1 text-xs font-medium text-primary hover:underline"
       >
-        View rewards
+        {t("View rewards")}
         <ArrowUpRight className="h-3 w-3" />
       </Link>
     </div>

@@ -6,6 +6,7 @@ import { Dialog, DialogContent, DialogDescription, DialogTitle } from "../../dia
 import { GradientButton } from "../../gradient-button.js";
 import { Button } from "../../button.js";
 import { describeError } from "../../../utils/describe-error.js";
+import { useT } from "../../../i18n/provider.js";
 
 type Step = { kind: "confirm" } | { kind: "minting" } | { kind: "done"; tokenIds: string[] } | { kind: "error"; message: string };
 
@@ -20,6 +21,7 @@ export function DropMintDialog({
   onMint: () => Promise<{ tokenIds: string[] }>;
   portfolioHref: string;
 }) {
+  const t = useT();
   const [step, setStep] = useState<Step>({ kind: "confirm" });
   const mint = async () => {
     setStep({ kind: "minting" });
@@ -37,26 +39,26 @@ export function DropMintDialog({
   return (
     <Dialog open={open} onOpenChange={(next) => { if (!next) close(); }}>
       <DialogContent className="gap-5 sm:max-w-md" hideClose={step.kind === "minting"}>
-        <DialogDescription className="sr-only">Mint from this drop.</DialogDescription>
+        <DialogDescription className="sr-only">{t("Mint from this drop.")}</DialogDescription>
         {step.kind === "confirm" && (
           <>
-            <DialogTitle className="text-lg font-semibold">Mint {quantity.toString()} from {name}</DialogTitle>
+            <DialogTitle className="text-lg font-semibold">{t("Mint {quantity} from {name}", { quantity: quantity.toString(), name })}</DialogTitle>
             {totalText && <p className="text-sm text-muted-foreground">{totalText}</p>}
-            <GradientButton big onClick={() => void mint()}>Confirm mint</GradientButton>
+            <GradientButton big onClick={() => void mint()}>{t("Confirm mint")}</GradientButton>
           </>
         )}
-        {step.kind === "minting" && <DialogTitle className="flex items-center gap-2 text-lg font-semibold"><Loader2 className="h-4 w-4 animate-spin" />Minting…</DialogTitle>}
+        {step.kind === "minting" && <DialogTitle className="flex items-center gap-2 text-lg font-semibold"><Loader2 className="h-4 w-4 animate-spin" />{t("Minting…")}</DialogTitle>}
         {step.kind === "done" && (
           <>
-            <DialogTitle className="flex items-center gap-2 text-lg font-semibold"><CheckCircle2 className="h-5 w-5 text-green-500" />Minted</DialogTitle>
-            <Button asChild><a href={portfolioHref}>View in portfolio</a></Button>
+            <DialogTitle className="flex items-center gap-2 text-lg font-semibold"><CheckCircle2 className="h-5 w-5 text-green-500" />{t("Minted")}</DialogTitle>
+            <Button asChild><a href={portfolioHref}>{t("View in portfolio")}</a></Button>
           </>
         )}
         {step.kind === "error" && (
           <>
-            <DialogTitle className="flex items-center gap-2 text-lg font-semibold"><XCircle className="h-4 w-4 text-destructive" />Not minted</DialogTitle>
+            <DialogTitle className="flex items-center gap-2 text-lg font-semibold"><XCircle className="h-4 w-4 text-destructive" />{t("Not minted")}</DialogTitle>
             <p className="text-sm text-muted-foreground">{step.message}</p>
-            <Button onClick={() => void mint()}>Try again</Button>
+            <Button onClick={() => void mint()}>{t("Try again")}</Button>
           </>
         )}
       </DialogContent>

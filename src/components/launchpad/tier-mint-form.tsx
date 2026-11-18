@@ -36,6 +36,7 @@ import { useCollectionProfile } from "../../utils/use-profiles.js";
 import { useTransaction } from "../../utils/use-transaction.js";
 import { useLaunchpadImageUpload } from "../../utils/use-launchpad-image-upload.js";
 import type { TierMintPreset } from "./tier-mint-presets.js";
+import { useT } from "../../i18n/provider.js";
 
 function makeSchema(preset: TierMintPreset) {
   return z.object({
@@ -64,6 +65,7 @@ export interface TierMintFormProps {
 }
 
 export function TierMintForm({ contract: rawContract, preset, aside }: TierMintFormProps) {
+  const t = useT();
   const app = useMedialaneApp();
   const address = app.walletAddress;
   const contract = normalizeAddress("STARKNET", rawContract);
@@ -139,7 +141,7 @@ export function TierMintForm({ contract: rawContract, preset, aside }: TierMintF
     });
   };
 
-  const gateProps = { icon: Icon, iconClassName: preset.iconClass, title: preset.signedOut.title, description: preset.signedOut.description };
+  const gateProps = { icon: Icon, iconClassName: preset.iconClass, title: t(preset.signedOut.title), description: t(preset.signedOut.description) };
   const inputId = `mint-${preset.service}-file-input`;
   const busy = tx.phase !== "idle" || imageUploading;
 
@@ -160,8 +162,8 @@ export function TierMintForm({ contract: rawContract, preset, aside }: TierMintF
       <WalletRequired {...gateProps}>
         <div className="max-w-xl mx-auto px-4 pt-24 pb-8 text-center space-y-4">
           <AlertCircle className="h-10 w-10 text-muted-foreground/20 mx-auto" />
-          <p className="text-muted-foreground">Collection not found.</p>
-          <Button asChild variant="outline" size="sm"><Link href={preset.back.href}>{preset.back.label}</Link></Button>
+          <p className="text-muted-foreground">{t("Collection not found.")}</p>
+          <Button asChild variant="outline" size="sm"><Link href={preset.back.href}>{t(preset.back.label)}</Link></Button>
         </div>
       </WalletRequired>
     );
@@ -172,8 +174,8 @@ export function TierMintForm({ contract: rawContract, preset, aside }: TierMintF
       <WalletRequired {...gateProps}>
         <div className="max-w-xl mx-auto px-4 pt-24 pb-8 text-center space-y-4">
           <Icon className="h-10 w-10 text-muted-foreground/20 mx-auto" />
-          <p className="text-muted-foreground">{preset.notOwner.message}</p>
-          <Button asChild variant="outline" size="sm"><Link href={preset.notOwner.back.href}>{preset.notOwner.back.label}</Link></Button>
+          <p className="text-muted-foreground">{t(preset.notOwner.message)}</p>
+          <Button asChild variant="outline" size="sm"><Link href={preset.notOwner.back.href}>{t(preset.notOwner.back.label)}</Link></Button>
         </div>
       </WalletRequired>
     );
@@ -181,13 +183,13 @@ export function TierMintForm({ contract: rawContract, preset, aside }: TierMintF
 
   return (
     <WalletRequired {...gateProps}>
-      <TransactionDialog tx={tx} title={preset.dialog.title} workingLabel={preset.dialog.workingLabel} firstStepLabel={preset.dialog.firstStepLabel}>
+      <TransactionDialog tx={tx} title={t(preset.dialog.title)} workingLabel={t(preset.dialog.workingLabel)} firstStepLabel={t(preset.dialog.firstStepLabel)}>
         <TransactionSuccess
           name={form.getValues("name")}
           image={imagePreview}
-          title={preset.success.title}
-          description={preset.success.description}
-          actions={[{ href: collectionHref("STARKNET", contract), label: "View collection" }, { label: preset.success.againLabel, onClick: handleAgain }]}
+          title={t(preset.success.title)}
+          description={t(preset.success.description)}
+          actions={[{ href: collectionHref("STARKNET", contract), label: t("View collection") }, { label: t(preset.success.againLabel), onClick: handleAgain }]}
         >
           <RewardEarned actionType="launch_launchpad" />
         </TransactionSuccess>
@@ -195,8 +197,8 @@ export function TierMintForm({ contract: rawContract, preset, aside }: TierMintF
 
       <ClaimRouteShell
         icon={<Icon className="h-4 w-4 text-white" />}
-        title={preset.shell.title}
-        subtitle={preset.shell.subtitle(collection.name ?? null)}
+        title={t(preset.shell.title)}
+        subtitle={preset.shell.subtitle(collection.name ?? null, t)}
         aside={
           <>
             <MedialaneCollectionCard
@@ -213,7 +215,7 @@ export function TierMintForm({ contract: rawContract, preset, aside }: TierMintF
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
             <div className="space-y-2">
-              <p className="text-sm font-medium">{preset.copy.imageHeading} <span className="text-destructive">*</span></p>
+              <p className="text-sm font-medium">{t(preset.copy.imageHeading)} <span className="text-destructive">*</span></p>
               <div className="flex items-center gap-4">
                 <div
                   role="button"
@@ -222,20 +224,20 @@ export function TierMintForm({ contract: rawContract, preset, aside }: TierMintF
                   onKeyDown={(e) => { if (e.key === "Enter") fileInputRef.current?.click(); }}
                   className={cn("relative h-20 w-20 rounded-2xl border-2 border-dashed border-border bg-muted flex items-center justify-center overflow-hidden shrink-0 cursor-pointer transition-colors", preset.hoverBorderClass)}
                 >
-                  {imagePreview ? <Image src={imagePreview} alt={preset.copy.imageAlt} fill unoptimized className="object-cover" /> : <ImagePlus className="h-6 w-6 text-muted-foreground" />}
+                  {imagePreview ? <Image src={imagePreview} alt={t(preset.copy.imageAlt)} fill unoptimized className="object-cover" /> : <ImagePlus className="h-6 w-6 text-muted-foreground" />}
                   {imageUploading && <div className="absolute inset-0 bg-background/70 flex items-center justify-center"><Loader2 className="h-4 w-4 animate-spin" /></div>}
                 </div>
                 <div className="space-y-1.5">
                   <input id={inputId} ref={fileInputRef} type="file" accept={acceptFor("image")} className="hidden" onChange={(e) => { const f = e.target.files?.[0]; if (f) void handleImageSelect(f); }} />
                   <Button type="button" variant="outline" size="sm" disabled={imageUploading} onClick={() => fileInputRef.current?.click()}>
-                    {imageUploading ? <><Loader2 className="h-3.5 w-3.5 mr-1.5 animate-spin" />Uploading…</> : imagePreview ? "Change" : "Upload image"}
+                    {imageUploading ? <><Loader2 className="h-3.5 w-3.5 mr-1.5 animate-spin" />{t("Uploading…")}</> : imagePreview ? t("Change") : t("Upload image")}
                   </Button>
                   {imagePreview && (
                     <button type="button" onClick={clearImage} className="flex items-center gap-1 text-xs text-muted-foreground hover:text-destructive transition-colors">
-                      <X className="h-3 w-3" /> Remove
+                      <X className="h-3 w-3" /> {t("Remove")}
                     </button>
                   )}
-                  <p className="text-xs text-muted-foreground">{imageUri ? <span className={preset.uploadedClass}>✓ Uploaded</span> : "JPG, PNG, SVG or WebP"}</p>
+                  <p className="text-xs text-muted-foreground">{imageUri ? <span className={preset.uploadedClass}>{t("✓ Uploaded")}</span> : t("JPG, PNG, SVG or WebP")}</p>
                 </div>
               </div>
             </div>
@@ -246,24 +248,24 @@ export function TierMintForm({ contract: rawContract, preset, aside }: TierMintF
 
             <FormField control={form.control} name="name" render={({ field }) => (
               <FormItem>
-                <FormLabel>{preset.copy.nameLabel} <span className="text-destructive">*</span></FormLabel>
-                <FormControl><Input placeholder={preset.copy.namePlaceholder} {...field} /></FormControl>
+                <FormLabel>{t(preset.copy.nameLabel)} <span className="text-destructive">*</span></FormLabel>
+                <FormControl><Input placeholder={t(preset.copy.namePlaceholder)} {...field} /></FormControl>
                 <FormMessage />
               </FormItem>
             )} />
 
             <FormField control={form.control} name="description" render={({ field }) => (
               <FormItem>
-                <FormLabel>Description <span className="text-muted-foreground font-normal">(optional)</span></FormLabel>
-                <FormControl><Textarea placeholder={preset.copy.descriptionPlaceholder} rows={3} {...field} /></FormControl>
+                <FormLabel>{t("Description")} <span className="text-muted-foreground font-normal">{t("(optional)")}</span></FormLabel>
+                <FormControl><Textarea placeholder={t(preset.copy.descriptionPlaceholder)} rows={3} {...field} /></FormControl>
                 <FormMessage />
               </FormItem>
             )} />
 
             <FormField control={form.control} name="external_url" render={({ field }) => (
               <FormItem>
-                <FormLabel>External link <span className="text-muted-foreground font-normal">(optional)</span></FormLabel>
-                <FormControl><Input placeholder="https://yourwebsite.com" {...field} /></FormControl>
+                <FormLabel>{t("External link")} <span className="text-muted-foreground font-normal">{t("(optional)")}</span></FormLabel>
+                <FormControl><Input placeholder={t("https://yourwebsite.com")} {...field} /></FormControl>
                 <FormMessage />
               </FormItem>
             )} />
@@ -274,8 +276,8 @@ export function TierMintForm({ contract: rawContract, preset, aside }: TierMintF
                   <button type="button" className="w-full flex items-center justify-between px-0 py-3 sm:px-5 sm:py-4 hover:bg-muted/30 transition-colors">
                     <div className="flex items-center gap-2">
                       <ShieldCheck className="h-4 w-4 text-primary" />
-                      <span className="text-sm font-semibold">Licensing Terms</span>
-                      <span className="text-xs text-muted-foreground font-normal">Optional · Berne Convention</span>
+                      <span className="text-sm font-semibold">{t("Licensing Terms")}</span>
+                      <span className="text-xs text-muted-foreground font-normal">{t("Optional · Berne Convention")}</span>
                     </div>
                     <ChevronDown className={cn("h-4 w-4 text-muted-foreground transition-transform", licensingOpen && "rotate-180")} />
                   </button>
@@ -284,7 +286,7 @@ export function TierMintForm({ contract: rawContract, preset, aside }: TierMintF
                   <div className="px-0 pb-4 sm:px-5 sm:pb-5 space-y-4 border-t border-border/60 pt-4">
                     <FormField control={form.control} name="licenseType" render={({ field }) => (
                       <FormItem>
-                        <FormLabel>License</FormLabel>
+                        <FormLabel>{t("License")}</FormLabel>
                         <Select value={field.value} onValueChange={(value) => {
                           form.setValue("licenseType", value);
                           const def = LICENSE_TYPES.find((l) => l.value === value);
@@ -295,37 +297,37 @@ export function TierMintForm({ contract: rawContract, preset, aside }: TierMintF
                           }
                         }}>
                           <FormControl><SelectTrigger><SelectValue /></SelectTrigger></FormControl>
-                          <SelectContent>{LICENSE_TYPES.map((l) => <SelectItem key={l.value} value={l.value}>{l.label}</SelectItem>)}</SelectContent>
+                          <SelectContent>{LICENSE_TYPES.map((l) => <SelectItem key={l.value} value={l.value}>{t(l.label)}</SelectItem>)}</SelectContent>
                         </Select>
-                        {(() => { const def = LICENSE_TYPES.find((l) => l.value === field.value); return def ? <p className="text-xs text-muted-foreground mt-1">{def.description}</p> : null; })()}
+                        {(() => { const def = LICENSE_TYPES.find((l) => l.value === field.value); return def ? <p className="text-xs text-muted-foreground mt-1">{t(def.description)}</p> : null; })()}
                         <FormMessage />
                       </FormItem>
                     )} />
                     <FormField control={form.control} name="commercialUse" render={({ field }) => (
-                      <FormItem><FormLabel>Commercial Use</FormLabel><ToggleGroup value={field.value} options={["Yes", "No"]} onChange={field.onChange} /></FormItem>
+                      <FormItem><FormLabel>{t("Commercial Use")}</FormLabel><ToggleGroup value={field.value} options={["Yes", "No"]} onChange={field.onChange} /></FormItem>
                     )} />
                     <FormField control={form.control} name="derivatives" render={({ field }) => (
-                      <FormItem><FormLabel>Derivatives</FormLabel><ToggleGroup value={field.value} options={DERIVATIVES_OPTIONS} onChange={field.onChange} /></FormItem>
+                      <FormItem><FormLabel>{t("Derivatives")}</FormLabel><ToggleGroup value={field.value} options={DERIVATIVES_OPTIONS} onChange={field.onChange} /></FormItem>
                     )} />
                     <FormField control={form.control} name="attribution" render={({ field }) => (
-                      <FormItem><FormLabel>Attribution</FormLabel><ToggleGroup value={field.value} options={["Required", "Not Required"]} onChange={field.onChange} /></FormItem>
+                      <FormItem><FormLabel>{t("Attribution")}</FormLabel><ToggleGroup value={field.value} options={["Required", "Not Required"]} onChange={field.onChange} /></FormItem>
                     )} />
                     <Collapsible open={advancedOpen} onOpenChange={setAdvancedOpen}>
                       <CollapsibleTrigger asChild>
                         <button type="button" className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors">
                           <ChevronDown className={cn("h-3.5 w-3.5 transition-transform", advancedOpen && "rotate-180")} />
-                          Advanced options
+                          {t("Advanced options")}
                         </button>
                       </CollapsibleTrigger>
                       <CollapsibleContent className="space-y-4 pt-3">
                         <FormField control={form.control} name="geographicScope" render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Territory</FormLabel>
-                            <FormControl><Input placeholder="Worldwide" {...field} /></FormControl>
+                            <FormLabel>{t("Territory")}</FormLabel>
+                            <FormControl><Input placeholder={t("Worldwide")} {...field} /></FormControl>
                           </FormItem>
                         )} />
                         <FormField control={form.control} name="aiPolicy" render={({ field }) => (
-                          <FormItem><FormLabel>AI &amp; Data Mining</FormLabel><ToggleGroup value={field.value} options={AI_POLICIES} onChange={field.onChange} /></FormItem>
+                          <FormItem><FormLabel>{t("AI & Data Mining")}</FormLabel><ToggleGroup value={field.value} options={AI_POLICIES} onChange={field.onChange} /></FormItem>
                         )} />
                       </CollapsibleContent>
                     </Collapsible>
@@ -337,17 +339,17 @@ export function TierMintForm({ contract: rawContract, preset, aside }: TierMintF
             <div className="grid grid-cols-2 gap-4">
               <FormField control={form.control} name="maxSupply" render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Supply <span className="text-destructive">*</span></FormLabel>
+                  <FormLabel>{t("Supply")} <span className="text-destructive">*</span></FormLabel>
                   <FormControl><Input type="number" min="1" placeholder="100" {...field} /></FormControl>
-                  <FormDescription>Minted to your account.</FormDescription>
+                  <FormDescription>{t("Minted to your account.")}</FormDescription>
                   <FormMessage />
                 </FormItem>
               )} />
               <FormField control={form.control} name="royalty" render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Royalty % (0–50)</FormLabel>
+                  <FormLabel>{t("Royalty % (0–50)")}</FormLabel>
                   <FormControl><Input type="number" min={0} max={50} step={0.5} placeholder="2.5" {...field} onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)} /></FormControl>
-                  <FormDescription>On secondary sales.</FormDescription>
+                  <FormDescription>{t("On secondary sales.")}</FormDescription>
                   <FormMessage />
                 </FormItem>
               )} />
@@ -356,17 +358,17 @@ export function TierMintForm({ contract: rawContract, preset, aside }: TierMintF
             <div className="grid grid-cols-2 gap-4">
               <FormField control={form.control} name="startDate" render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Valid from <span className="text-muted-foreground font-normal">(optional)</span></FormLabel>
+                  <FormLabel>{t("Valid from")} <span className="text-muted-foreground font-normal">{t("(optional)")}</span></FormLabel>
                   <FormControl><Input type="datetime-local" {...field} /></FormControl>
-                  <FormDescription>You can mint and sell before it opens.</FormDescription>
+                  <FormDescription>{t("You can mint and sell before it opens.")}</FormDescription>
                   <FormMessage />
                 </FormItem>
               )} />
               <FormField control={form.control} name="endDate" render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Valid until <span className="text-muted-foreground font-normal">(optional)</span></FormLabel>
+                  <FormLabel>{t("Valid until")} <span className="text-muted-foreground font-normal">{t("(optional)")}</span></FormLabel>
                   <FormControl><Input type="datetime-local" {...field} /></FormControl>
-                  <FormDescription>{preset.copy.validUntilHint}</FormDescription>
+                  <FormDescription>{t(preset.copy.validUntilHint)}</FormDescription>
                   <FormMessage />
                 </FormItem>
               )} />
@@ -378,7 +380,7 @@ export function TierMintForm({ contract: rawContract, preset, aside }: TierMintF
               className={`w-full h-12 text-base font-semibold text-white rounded-xl flex items-center justify-center gap-2 transition-all hover:brightness-110 active:scale-[0.98] ${preset.buttonClass} ${busy ? "opacity-40 pointer-events-none" : ""}`}
             >
               <Icon className="h-4 w-4 mr-2" />
-              {preset.copy.submit}
+              {t(preset.copy.submit)}
             </button>
           </form>
         </Form>

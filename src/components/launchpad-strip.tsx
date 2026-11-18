@@ -5,8 +5,9 @@ import { ShoppingBag, ArrowRight, Rocket } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { ScrollSection } from "./scroll-section.js";
 import { SERVICE_HUES } from "./launchpad-services.js";
-import { LAUNCHPAD_SERVICE_DEFINITIONS } from "../data/launchpad-services.js";
+import { LAUNCHPAD_SERVICE_DEFINITIONS, localizeService } from "../data/launchpad-services.js";
 import { cn } from "../utils/cn.js";
+import { useT } from "../i18n/provider.js";
 
 export interface LaunchpadStripProps {
 
@@ -92,11 +93,13 @@ export function LaunchpadStrip({
   marketplaceHref,
   launchpadHref = "/launchpad",
 }: LaunchpadStripProps) {
+  const t = useT();
   const cards: StripCard[] = [
     ...STRIP_ORDER.flatMap((key) => {
-      const def = DEF_BY_KEY[key];
+      const source = DEF_BY_KEY[key];
       const href = hrefs[key];
-      if (!def || !href) return [];
+      if (!source || !href) return [];
+      const def = localizeService(t, source);
       return [{
         key,
         href,
@@ -113,10 +116,10 @@ export function LaunchpadStrip({
           key: "marketplace",
           href: marketplaceHref,
           icon: ShoppingBag,
-          title: "Marketplace",
-          blurb: "Discover and trade works from creators — gasless, instantly settled.",
+          title: t("Marketplace"),
+          blurb: t("Discover and trade works from creators — gasless, instantly settled."),
           example: "Buy an art print, make an offer on a music track",
-          cta: "Browse",
+          cta: t("Browse"),
           hue: MARKETPLACE_HUE,
         }]
       : []),
@@ -125,7 +128,7 @@ export function LaunchpadStrip({
   return (
     <ScrollSection
       icon={<Rocket className="h-4 w-4" />}
-      title="Launchpad"
+      title={t("Launchpad")}
       href={launchpadHref}
       linkLabel="Explore"
     >

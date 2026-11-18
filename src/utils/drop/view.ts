@@ -1,6 +1,9 @@
 import { formatAmount, getTokenByAddress } from "@medialane/sdk";
 import { dropMintCost, type DropMintState, type DropOnchain } from "@medialane/sdk/starknet";
 import { priceLabel } from "./sale.js";
+import { msg } from "../../i18n/translate.js";
+import { formatDateTime } from "../../i18n/format.js";
+import { DEFAULT_LOCALE } from "../../i18n/locales.js";
 
 export type DropPhase = "upcoming" | "live" | "sold-out" | "ended";
 
@@ -22,7 +25,7 @@ export interface ActionBoxView {
   maxQuantity: bigint;
 }
 
-const when = (ts: number) => new Date(ts * 1000).toLocaleString(undefined, { weekday: "short", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
+const when = (ts: number, locale: string = DEFAULT_LOCALE) => formatDateTime(ts * 1000, locale, { weekday: "short", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
 
 /** Everything the mint box shows, decided from chain state before any transaction. */
 export function actionBoxView(input: {
@@ -45,8 +48,8 @@ export function actionBoxView(input: {
     : phase === "ended" ? "Ended"
     : drop.endTime === 0 ? "Live · no end date" : "Live";
   const countdown =
-    phase === "upcoming" ? { label: "Starts in", target: drop.startTime }
-    : phase === "live" && drop.endTime !== 0 ? { label: "Ends in", target: drop.endTime }
+    phase === "upcoming" ? { label: msg("Starts in"), target: drop.startTime }
+    : phase === "live" && drop.endTime !== 0 ? { label: msg("Ends in"), target: drop.endTime }
     : null;
 
   let totalText: string | null = null;
@@ -58,15 +61,15 @@ export function actionBoxView(input: {
   const button: ActionBoxView["button"] = (() => {
     switch (mint.state) {
       case "ready": return { label: `Mint ${quantity}`, action: "mint" };
-      case "no-wallet": return { label: "Sign in to mint", action: "sign-in" };
+      case "no-wallet": return { label: msg("Sign in to mint"), action: "sign-in" };
       case "upcoming": return { label: `Starts ${when(drop.startTime)}`, action: "none" };
-      case "ended": return { label: "This drop has ended", action: "none" };
-      case "sold-out": return { label: "Sold out", action: "none" };
-      case "no-link": return { label: "Open your claim link to mint", action: "none" };
-      case "not-on-list": return { label: "This wallet isn't on the list", action: "none" };
+      case "ended": return { label: msg("This drop has ended"), action: "none" };
+      case "sold-out": return { label: msg("Sold out"), action: "none" };
+      case "no-link": return { label: msg("Open your claim link to mint"), action: "none" };
+      case "not-on-list": return { label: msg("This wallet isn't on the list"), action: "none" };
       case "limit-reached": return { label: `You've minted your limit (${drop.maxPerWallet})`, action: "none" };
       case "insufficient-balance": return { label: `Not enough ${token?.symbol ?? "balance"}`, action: "none" };
-      case "loading": return { label: "Checking…", action: "none" };
+      case "loading": return { label: msg("Checking…"), action: "none" };
     }
   })();
 

@@ -30,14 +30,16 @@ import { useOwnedTokens } from "../utils/use-tokens.js";
 import { useCollectionsByOwner } from "../utils/use-collections.js";
 import { useUserOrders } from "../utils/use-orders.js";
 import { useActivitiesByAddress } from "../utils/use-activities.js";
+import { useT } from "../i18n/provider.js";
+import { msg } from "../i18n/translate.js";
 
 type TabId = "assets" | "collections" | "listings" | "activity";
 
 const TABS: { key: TabId; label: string }[] = [
-  { key: "assets", label: "Assets" },
-  { key: "collections", label: "Collections" },
-  { key: "listings", label: "Listings" },
-  { key: "activity", label: "Activity" },
+  { key: "assets", label: msg("Assets") },
+  { key: "collections", label: msg("Collections") },
+  { key: "listings", label: msg("Listings") },
+  { key: "activity", label: msg("Activity") },
 ];
 
 const GRID = "grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4";
@@ -50,6 +52,7 @@ export interface AccountPageProps {
 }
 
 export function AccountPage({ address, useAssetActions, useMarketActions }: AccountPageProps) {
+  const t = useT();
   const { walletAddress } = useMedialaneApp();
   const client = useMedialaneClient();
   const prices = useUsdPrices();
@@ -81,7 +84,7 @@ export function AccountPage({ address, useAssetActions, useMarketActions }: Acco
 
       <PortfolioHeader
         address={address}
-        label="Account"
+        label={t("Account")}
         trailing={
           <div className="ml-auto flex shrink-0 items-center gap-2">
             <span className="rounded-full bg-muted px-2.5 py-1 text-xs font-medium text-muted-foreground">Starknet</span>
@@ -96,7 +99,7 @@ export function AccountPage({ address, useAssetActions, useMarketActions }: Acco
         tokensLoading ? (
           <div className={GRID}>{Array.from({ length: 8 }).map((_, i) => <TokenCardSkeleton key={i} />)}</div>
         ) : tokens.length === 0 ? (
-          <TabEmptyState icon={ImageIcon} heading="No assets yet" body="Works this account owns appear here." />
+          <TabEmptyState icon={ImageIcon} heading={t("No assets yet")} body={t("Works this account owns appear here.")} />
         ) : (
           <>
             <div className={GRID}>
@@ -128,7 +131,7 @@ export function AccountPage({ address, useAssetActions, useMarketActions }: Acco
         collectionsLoading ? (
           <div className="grid grid-cols-2 gap-4 lg:grid-cols-3">{Array.from({ length: 6 }).map((_, i) => <CollectionCardSkeleton key={i} />)}</div>
         ) : collections.length === 0 ? (
-          <TabEmptyState icon={LayoutGrid} heading="No collections yet" body="Collections this account owns appear here." />
+          <TabEmptyState icon={LayoutGrid} heading={t("No collections yet")} body={t("Collections this account owns appear here.")} />
         ) : (
           <div className="grid grid-cols-2 gap-4 lg:grid-cols-3">{collections.map((c) => <CollectionCard key={c.contractAddress} collection={c} />)}</div>
         )
@@ -138,7 +141,7 @@ export function AccountPage({ address, useAssetActions, useMarketActions }: Acco
         ordersLoading ? (
           <div className={GRID}>{Array.from({ length: 4 }).map((_, i) => <ListingCardSkeleton key={i} />)}</div>
         ) : listings.length === 0 ? (
-          <TabEmptyState icon={ShoppingBag} heading="No active listings" body="Works this account lists for sale appear here." />
+          <TabEmptyState icon={ShoppingBag} heading={t("No active listings")} body={t("Works this account lists for sale appear here.")} />
         ) : (
           <div className={GRID}>
             {listings.map((o) => <ListingCard key={o.orderHash} order={o} onBuy={isOwner ? undefined : market.buy} usdValue={orderUsd(o.price, prices)} overflowMenu={<ListingCardMenu order={o} />} />)}
@@ -151,7 +154,7 @@ export function AccountPage({ address, useAssetActions, useMarketActions }: Acco
           {activitiesLoading ? (
             <div className="space-y-5">{Array.from({ length: 6 }).map((_, i) => <Skeleton key={i} className="h-10 w-full rounded-xl" />)}</div>
           ) : activities.length === 0 ? (
-            <TabEmptyState icon={Activity} heading="No activity yet" body="This account's activity appears here as it happens." />
+            <TabEmptyState icon={Activity} heading={t("No activity yet")} body={t("This account's activity appears here as it happens.")} />
           ) : (
             <div>{activities.map((a, i) => <ActivityTimelineRow key={i} event={a} isLast={i === activities.length - 1} />)}</div>
           )}

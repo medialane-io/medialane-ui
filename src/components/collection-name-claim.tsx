@@ -9,8 +9,10 @@ import { useImageUrl } from "../utils/use-image-url.js";
 import { Button } from "./button.js";
 import { EmptyOrError } from "./empty-or-error.js";
 import { CheckCircle2, ImageIcon, Plus, ArrowRight } from "lucide-react";
+import { useT } from "../i18n/provider.js";
 
 export function CollectionNameClaim() {
+  const t = useT();
   const { walletAddress } = useMedialaneApp();
   const resolveImage = useImageUrl();
   const { collections, isLoading, error, mutate } = useCollectionsByOwner(walletAddress);
@@ -22,9 +24,9 @@ export function CollectionNameClaim() {
         error={error}
         isEmpty={collections.length === 0}
         onRetry={mutate}
-        emptyTitle="No collections to name yet"
-        emptyDescription="Create a collection first — then give it a clean, memorable URL."
-        emptyCta={{ label: "Create a collection", href: "/launchpad/single-editions/collection" }}
+        emptyTitle={t("No collections to name yet")}
+        emptyDescription={t("Create a collection first — then give it a clean, memorable URL.")}
+        emptyCta={{ label: t("Create a collection"), href: "/launchpad/single-editions/collection" }}
       />
 
       {collections.map((c) => {
@@ -38,27 +40,27 @@ export function CollectionNameClaim() {
           >
             <div className="h-12 w-12 rounded-xl overflow-hidden bg-muted shrink-0 flex items-center justify-center">
               {img ? (
-                <Image src={img} alt={c.name ?? "Collection"} width={48} height={48} className="h-full w-full object-cover" unoptimized />
+                <Image src={img} alt={c.name ?? t("Collection")} width={48} height={48} className="h-full w-full object-cover" unoptimized />
               ) : (
                 <ImageIcon className="h-5 w-5 text-muted-foreground" />
               )}
             </div>
 
             <div className="min-w-0 flex-1">
-              <p className="font-semibold truncate">{c.name ?? "Untitled collection"}</p>
+              <p className="font-semibold truncate">{c.name ?? t("Untitled collection")}</p>
               {slug ? (
                 <p className="text-xs text-emerald-600 dark:text-emerald-400 flex items-center gap-1 mt-0.5">
                   <CheckCircle2 className="h-3 w-3 shrink-0" />
                   <span className="tabular-nums truncate">medialane.io/collection/{slug}</span>
                 </p>
               ) : (
-                <p className="text-xs text-muted-foreground mt-0.5">No custom name yet</p>
+                <p className="text-xs text-muted-foreground mt-0.5">{t("No custom name yet")}</p>
               )}
             </div>
 
             <Button variant={slug ? "outline" : "default"} size="sm" asChild className="shrink-0">
               <Link href={settingsHref}>
-                {slug ? "Edit name" : "Set name"}
+                {slug ? t("Edit name") : t("Set name")}
                 <ArrowRight className="h-3.5 w-3.5 ml-1" />
               </Link>
             </Button>
@@ -70,7 +72,7 @@ export function CollectionNameClaim() {
         <Button variant="ghost" size="sm" asChild className="text-muted-foreground">
           <Link href="/launchpad/single-editions/collection">
             <Plus className="h-3.5 w-3.5 mr-1.5" />
-            Create another collection
+            {t("Create another collection")}
           </Link>
         </Button>
       )}

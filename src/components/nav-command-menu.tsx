@@ -10,6 +10,7 @@ import { cn } from "../utils/cn.js";
 import { profileIdentity } from "../utils/profile-identity.js";
 import { useSearch, SEARCH_MIN_LENGTH } from "../utils/use-search.js";
 import { ResultThumbnail } from "./result-thumbnail.js";
+import { useT } from "../i18n/provider.js";
 
 export interface NavCommand {
   id: string;
@@ -77,16 +78,16 @@ export function relevanceFilter(value: string, search: string, keywords?: string
   return score >= RELEVANCE_FLOOR ? score : 0;
 }
 
-function commandValue(item: NavCommand) {
-  return [item.label, ...(item.keywords ?? [])].join(" ");
+function commandValue(item: NavCommand, translate: (text: string) => string) {
+  return [translate(item.label), item.label, ...(item.keywords ?? [])].join(" ");
 }
 
-export function matchCommands(commands: NavCommandGroup[], query: string): NavCommand[] {
+export function matchCommands(commands: NavCommandGroup[], query: string, translate: (text: string) => string = (text) => text): NavCommand[] {
   const q = query.trim();
   if (!q) return [];
   return commands
     .flatMap((group) => group.items)
-    .map((item) => ({ item, score: relevanceFilter(commandValue(item), q) }))
+    .map((item) => ({ item, score: relevanceFilter(commandValue(item, translate), q) }))
     .filter(({ score }) => score > 0)
     .sort((a, b) => b.score - a.score)
     .map(({ item }) => item);
@@ -151,6 +152,7 @@ function SearchResults({ query, debouncedQuery, onNavigate }: {
   debouncedQuery: string;
   onNavigate: (href: string) => void;
 }) {
+  const t = useT();
   const { results } = useMenuSearch(debouncedQuery);
   const creators = results?.creators ?? [];
   const collections = results?.collections ?? [];
@@ -160,7 +162,7 @@ function SearchResults({ query, debouncedQuery, onNavigate }: {
   return (
     <>
       {creators.length > 0 && (
-        <Command.Group heading="Creators" className={GROUP_HEADING_CLASSES}>
+        <Command.Group heading={t("Creators")} className={GROUP_HEADING_CLASSES}>
           {creators.map((creator) => {
             const { identity, name } = profileIdentity(creator);
             return (
@@ -177,7 +179,7 @@ function SearchResults({ query, debouncedQuery, onNavigate }: {
         </Command.Group>
       )}
       {collections.length > 0 && (
-        <Command.Group heading="Collections" className={GROUP_HEADING_CLASSES}>
+        <Command.Group heading={t("Collections")} className={GROUP_HEADING_CLASSES}>
           {collections.map((col) => {
             const label = col.name ?? "Untitled";
             return (
@@ -193,7 +195,7 @@ function SearchResults({ query, debouncedQuery, onNavigate }: {
         </Command.Group>
       )}
       {tokens.length > 0 && (
-        <Command.Group heading="Assets" className={GROUP_HEADING_CLASSES}>
+        <Command.Group heading={t("Assets")} className={GROUP_HEADING_CLASSES}>
           {tokens.map((token) => {
             const label = token.name ?? `#${token.tokenId}`;
             return (
@@ -225,9 +227,10 @@ function SearchResults({ query, debouncedQuery, onNavigate }: {
 }
 
 function CommandRow({ item, primary, onSelect }: { item: NavCommand; primary: boolean; onSelect: () => void }) {
+  const t = useT();
   return (
     <Command.Item
-      value={commandValue(item)}
+      value={commandValue(item, t)}
       onSelect={onSelect}
       className={cn(
         "group/item flex cursor-pointer items-center gap-3 rounded-xl",
@@ -264,11 +267,11 @@ function CommandRow({ item, primary, onSelect }: { item: NavCommand; primary: bo
             primary ? "text-base font-medium" : "text-sm"
           )}
         >
-          {item.label}
+          {t(item.label)}
         </span>
         {item.description && (
           <span className="mt-0.5 block truncate text-[11.5px] leading-tight text-muted-foreground">
-            {item.description}
+            {t(item.description)}
           </span>
         )}
       </span>
@@ -297,12 +300,13 @@ export function NavCommandMenu({
   brandSlot,
   search = false,
 }: NavCommandMenuProps) {
+  const t = useT();
   const [open, setOpen] = React.useState(false);
   const [query, setQuery] = React.useState("");
   const debouncedQuery = useDebouncedQuery(query);
   const searching = query.trim().length > 0;
   const searchingContent = search && query.trim().length >= SEARCH_MIN_LENGTH;
-  const matches = React.useMemo(() => matchCommands(commands, query), [commands, query]);
+  const matches = React.useMemo(() => matchCommands(commands, query, t), [commands, query, t]);
   const router = useRouter();
   const inputRef = React.useRef<HTMLInputElement>(null);
 
@@ -383,7 +387,7 @@ export function NavCommandMenu({
                 )}
                 onClick={(e) => e.stopPropagation()}
               >
-                <Command shouldFilter={false} label="Medialane navigation" className="flex min-h-0 flex-1 flex-col">
+                <Command shouldFilter={false} label={t("Medialane navigation")} className="flex min-h-0 flex-1 flex-col">
 
                   <div className="flex justify-center pt-2.5 sm:hidden" aria-hidden="true">
                     <span className="h-1 w-9 rounded-full bg-muted-foreground/30" />
@@ -404,14 +408,14 @@ export function NavCommandMenu({
                       ref={inputRef}
                       value={query}
                       onValueChange={setQuery}
-                      placeholder="Search or run a command…"
+                      placeholder={t("Search or run a command…")}
                       className="flex-1 bg-transparent text-base outline-none placeholder:text-muted-foreground"
                     />
-                    <Kbd className="hidden sm:inline-flex">esc</Kbd>
+                    <Kbd className="hidden sm:inline-flex">{t("esc")}</Kbd>
                     <button
                       onClick={() => setOpen(false)}
                       className="rounded-md p-1 transition-colors hover:bg-muted/50 sm:hidden"
-                      aria-label="Close"
+                      aria-label={t("Close")}
                     >
                       <X className="h-4 w-4 text-muted-foreground" />
                     </button>
@@ -419,7 +423,7 @@ export function NavCommandMenu({
 
                   <Command.List className="min-h-0 flex-1 overflow-y-auto overscroll-contain p-2">
                     <Command.Empty className="py-8 text-center text-sm text-muted-foreground">
-                      No results found.
+                      {t("No results found.")}
                     </Command.Empty>
 
                     {searching ? (
@@ -448,7 +452,7 @@ export function NavCommandMenu({
                           {i > 0 && (
                             <Command.Separator className="my-1.5 h-px bg-border/40" />
                           )}
-                          <Command.Group heading={group.heading} className={GROUP_HEADING_CLASSES}>
+                          <Command.Group heading={group.heading && t(group.heading)} className={GROUP_HEADING_CLASSES}>
                             {group.items.map((item) => (
                               <CommandRow
                                 key={item.id}
@@ -475,14 +479,14 @@ export function NavCommandMenu({
                       {footerSlot}
                       {showKeyboardHints && (
                         <span className="hidden items-center gap-3 text-[10.5px] text-muted-foreground/70 sm:flex">
-                          <span className="flex items-center gap-1"><Kbd>↑</Kbd><Kbd>↓</Kbd> Navigate</span>
-                          <span className="flex items-center gap-1"><Kbd>↵</Kbd> Open</span>
+                          <span className="flex items-center gap-1"><Kbd>↑</Kbd><Kbd>↓</Kbd> {t("Navigate")}</span>
+                          <span className="flex items-center gap-1"><Kbd>↵</Kbd> {t("Open")}</span>
                         </span>
                       )}
                     </div>
                     {brandSlot ?? (
                       <span className="flex shrink-0 items-center gap-2 text-2xs text-muted-foreground/50">
-                        medialane
+                        {t("medialane")}
                         <Kbd className="hidden sm:inline-flex">⌘K</Kbd>
                       </span>
                     )}

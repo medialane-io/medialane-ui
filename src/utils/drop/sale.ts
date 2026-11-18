@@ -1,6 +1,7 @@
 import { formatAmount, getListableTokens, getTokenByAddress, parseAmount, type DropTermsBody } from "@medialane/sdk";
 import { dropMintCost } from "@medialane/sdk/starknet";
 import { isPositiveInteger } from "../launchpad-rules.js";
+import { formatNumber } from "../../i18n/format.js";
 
 export interface SaleDraft {
   paid: boolean;
@@ -83,7 +84,7 @@ export function priceLabel(price: string, paymentToken: string): string {
   return token ? `${formatAmount(price, token.decimals)} ${token.symbol}` : "Paid";
 }
 
-const count = (v: string) => Number(v).toLocaleString("en-US");
+const count = (v: string) => formatNumber(Number(v));
 
 export function supplyLabel(minted: string, maxSupply: string): string {
   return maxSupply === "0" ? `${count(minted)} minted` : `${count(minted)} / ${count(maxSupply)} minted`;

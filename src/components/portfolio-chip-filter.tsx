@@ -2,6 +2,7 @@
 
 import Link from "./link.js";
 import { cn } from "../utils/cn.js";
+import { useT } from "../i18n/provider.js";
 
 export interface PortfolioChipFilterOption {
   key: string;
@@ -32,7 +33,8 @@ export function PortfolioChipFilter({
   showAll = true,
   className,
 }: PortfolioChipFilterProps) {
-  const items = showAll ? [{ key: "all", label: "All" }, ...options] : options;
+  const t = useT();
+  const items = showAll ? [{ key: "all", label: t("All") }, ...options] : options;
 
   return (
     <div

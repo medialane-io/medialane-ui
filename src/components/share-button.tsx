@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Share2, Check } from "lucide-react";
 import { cn } from "../utils/cn.js";
 import { shareOrCopy } from "../utils/share.js";
+import { useT } from "../i18n/provider.js";
 
 export interface ShareButtonProps {
   title: string;
@@ -33,6 +34,7 @@ export function ShareButton({
   size = "sm",
   className,
 }: ShareButtonProps) {
+  const t = useT();
   const [copied, setCopied] = useState(false);
 
   const handleShare = async () => {
@@ -59,7 +61,7 @@ export function ShareButton({
         : <Share2 className="h-3.5 w-3.5" />
       }
       {size !== "icon" && (
-        <span className="ml-1.5">{copied ? "Copied" : "Share"}</span>
+        <span className="ml-1.5">{copied ? t("Copied") : t("Share")}</span>
       )}
     </button>
   );

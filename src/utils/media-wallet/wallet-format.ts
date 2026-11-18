@@ -1,4 +1,6 @@
 import { formatAmount } from "@medialane/sdk";
+import { formatDate, formatNumber } from "../../i18n/format.js";
+import { DEFAULT_LOCALE } from "../../i18n/locales.js";
 
 export const short = (a?: string | null): string =>
   a && a.length > 12 ? `${a.slice(0, 6)}…${a.slice(-4)}` : a ?? "";
@@ -18,12 +20,12 @@ export const fmt = (raw: bigint | null, decimals = 18, dp = 4): string => {
   return t ? `${whole}.${t}` : whole;
 };
 
-export const fmtUsd = (n: number): string =>
-  n > 0 && n < 0.01 ? "<$0.01" : `$${n.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+export const fmtUsd = (n: number, locale: string = DEFAULT_LOCALE): string =>
+  n > 0 && n < 0.01 ? "<$0.01" : `$${formatNumber(n, locale, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 
-export const when = (iso: string): string => {
+export const when = (iso: string, locale: string = DEFAULT_LOCALE): string => {
   const d = new Date(iso);
   return Number.isNaN(d.getTime())
     ? iso
-    : d.toLocaleDateString(undefined, { month: "short", day: "numeric" });
+    : formatDate(d, locale, { month: "short", day: "numeric" });
 };

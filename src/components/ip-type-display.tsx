@@ -9,6 +9,7 @@ import {
 } from "../data/ip-templates.js";
 import { ipfsToHttp } from "../utils/ipfs.js";
 import { ExternalLink, FileText, ShieldCheck } from "lucide-react";
+import { useT } from "../i18n/provider.js";
 
 interface Attr {
   trait_type?: string | null;
@@ -104,6 +105,7 @@ const COMPACT: Record<EmbedPlatform, boolean> = {
 };
 
 export function IPTypeDisplay({ attributes }: IPTypeDisplayProps) {
+  const t = useT();
   const attrs = attributes ?? [];
 
   const ipType = attrs.find(
@@ -139,7 +141,7 @@ export function IPTypeDisplay({ attributes }: IPTypeDisplayProps) {
       {docUri && (
         <div className="space-y-1.5">
           <p className="text-xs font-medium text-muted-foreground">
-            Document
+            {t("Document")}
           </p>
           <a
             href={docUri.startsWith("ipfs://") ? ipfsToHttp(docUri) : docUri}
@@ -150,11 +152,11 @@ export function IPTypeDisplay({ attributes }: IPTypeDisplayProps) {
             <FileText className="h-5 w-5 text-primary shrink-0" />
             <div className="min-w-0 flex-1">
               <p className="text-sm font-semibold group-hover:text-primary transition-colors">
-                View document
+                {t("View document")}
               </p>
               <p className="text-xs text-muted-foreground flex items-center gap-1 mt-0.5">
                 <ShieldCheck className="h-3 w-3 shrink-0" />
-                Stored on IPFS — immutable, timestamped copy of the original
+                {t("Stored on IPFS — immutable, timestamped copy of the original")}
               </p>
             </div>
             <ExternalLink className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
@@ -167,7 +169,7 @@ export function IPTypeDisplay({ attributes }: IPTypeDisplayProps) {
           return (
             <div key={platform} className="space-y-1.5">
               <p className="text-xs font-medium text-muted-foreground">
-                {meta.label}
+                {t(meta.label)}
               </p>
               {COMPACT[platform] ? (
                 <iframe
@@ -176,7 +178,7 @@ export function IPTypeDisplay({ attributes }: IPTypeDisplayProps) {
                   height={166}
                   allow="autoplay"
                   loading="lazy"
-                  title={meta.label}
+                  title={t(meta.label)}
                 />
               ) : (
                 <div className="relative w-full aspect-video rounded-xl overflow-hidden bg-muted/20">
@@ -186,7 +188,7 @@ export function IPTypeDisplay({ attributes }: IPTypeDisplayProps) {
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowFullScreen
                     loading="lazy"
-                    title={meta.label}
+                    title={t(meta.label)}
                   />
                 </div>
               )}
@@ -197,7 +199,7 @@ export function IPTypeDisplay({ attributes }: IPTypeDisplayProps) {
         return (
           <div key={platform}>
             <p className="text-xs font-medium text-muted-foreground mb-1">
-              {meta.label}
+              {t(meta.label)}
             </p>
             <a
               href={value}
@@ -206,7 +208,7 @@ export function IPTypeDisplay({ attributes }: IPTypeDisplayProps) {
               className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline"
             >
               <ExternalLink className="h-3.5 w-3.5" />
-              Open link
+              {t("Open link")}
             </a>
           </div>
         );
@@ -215,7 +217,7 @@ export function IPTypeDisplay({ attributes }: IPTypeDisplayProps) {
       {socials.length > 0 && (
         <div className="space-y-1.5">
           <p className="text-xs font-medium text-muted-foreground">
-            Links
+            {t("Links")}
           </p>
           <div className="flex flex-wrap gap-2">
             {socials.map(({ platform, meta, value }) => {
@@ -229,7 +231,7 @@ export function IPTypeDisplay({ attributes }: IPTypeDisplayProps) {
                   className="inline-flex items-center gap-1.5 rounded-full border border-border bg-muted/30 px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:border-primary/40 hover:text-foreground"
                 >
                   <SIcon className="h-3.5 w-3.5" />
-                  {meta.label}
+                  {t(meta.label)}
                 </a>
               );
             })}

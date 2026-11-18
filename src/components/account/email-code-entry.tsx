@@ -6,6 +6,7 @@ import { Alert, AlertDescription } from "../alert.js";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "./input-otp.js";
 import { canResendCode, canVerifyCode } from "../../utils/email-code.js";
 import type { EmailCode } from "../../utils/use-email-code.js";
+import { useT } from "../../i18n/provider.js";
 
 export interface EmailCodeEntryProps {
   emailCode: EmailCode;
@@ -13,6 +14,7 @@ export interface EmailCodeEntryProps {
 }
 
 export function EmailCodeEntry({ emailCode, onVerify }: EmailCodeEntryProps) {
+  const t = useT();
   const { state, setCode, send } = emailCode;
   const verifying = state.status === "verifying";
 
@@ -27,7 +29,7 @@ export function EmailCodeEntry({ emailCode, onVerify }: EmailCodeEntryProps) {
       {state.status === "sending" ? (
         <div className="flex items-center gap-2 py-2.5 text-sm text-muted-foreground">
           <Loader2 className="h-4 w-4 animate-spin" />
-          Sending code…
+          {t("Sending code…")}
         </div>
       ) : (
         <>
@@ -47,12 +49,12 @@ export function EmailCodeEntry({ emailCode, onVerify }: EmailCodeEntryProps) {
           </InputOTP>
           <Button size="lg" className="w-full gap-2" onClick={() => onVerify()} disabled={!canVerifyCode(state)}>
             {verifying ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
-            Verify
+            {t("Verify")}
           </Button>
           <p className="text-center text-xs leading-relaxed text-muted-foreground">
-            Didn&apos;t receive it? Check your spam, or{" "}
+            {t("Didn't receive it? Check your spam, or")}{" "}
             {state.cooldown > 0 ? (
-              <span>resend in {state.cooldown}s</span>
+              <span>{t("resend in {cooldown}s", { cooldown: state.cooldown })}</span>
             ) : (
               <button
                 type="button"
@@ -60,7 +62,7 @@ export function EmailCodeEntry({ emailCode, onVerify }: EmailCodeEntryProps) {
                 disabled={!canResendCode(state)}
                 className="underline underline-offset-2 hover:text-foreground disabled:opacity-50"
               >
-                resend the code
+                {t("resend the code")}
               </button>
             )}
             .

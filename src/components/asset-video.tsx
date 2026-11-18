@@ -6,6 +6,7 @@ import { ArrowRight } from "lucide-react";
 import { ExpandableText } from "./expandable-text.js";
 import { getEmbedSrc } from "./ip-type-display.js";
 import { EMBED_PLATFORM_META, type EmbedPlatform } from "../data/ip-templates.js";
+import { useT } from "../i18n/provider.js";
 
 interface Attr {
   trait_type?: string;
@@ -77,11 +78,12 @@ export interface AssetRelatedItem {
 }
 
 export function AssetRelatedList({ title, titleHref, items, shape = "video" }: { title: string; titleHref: string; items: AssetRelatedItem[]; shape?: "video" | "square" }) {
+  const t = useT();
   if (items.length === 0) return null;
   return (
     <section className="space-y-3">
       <Link href={titleHref} className="flex items-center justify-between gap-2 text-sm font-semibold hover:text-primary transition-colors">
-        <span className="truncate">More from {title}</span>
+        <span className="truncate">{t("More from {title}", { title })}</span>
         <ArrowRight className="h-4 w-4 shrink-0" />
       </Link>
       <ul className="space-y-3">

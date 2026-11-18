@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { LevelBadge } from "./level-badge.js";
 import { cn } from "../../utils/cn.js";
+import { useT } from "../../i18n/provider.js";
 
 export interface LevelUpCelebrationProps {
   level: number;
@@ -15,6 +16,7 @@ export interface LevelUpCelebrationProps {
 const PARTICLE_COUNT = 14;
 
 export function LevelUpCelebration({ level, name, badgeColor, onDismiss, className }: LevelUpCelebrationProps) {
+  const t = useT();
   useEffect(() => {
     const timer = setTimeout(onDismiss, 3000);
     return () => clearTimeout(timer);
@@ -47,7 +49,7 @@ export function LevelUpCelebration({ level, name, badgeColor, onDismiss, classNa
             );
           })}
         </div>
-        <p className="text-sm font-bold uppercase tracking-widest text-muted-foreground">Level up</p>
+        <p className="text-sm font-bold uppercase tracking-widest text-muted-foreground">{t("Level up")}</p>
         <LevelBadge level={level} name={name} badgeColor={badgeColor} size="lg" />
       </div>
     </div>

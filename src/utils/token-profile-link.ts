@@ -1,4 +1,5 @@
 import { profileHref } from "@medialane/sdk";
+import { msg } from "../i18n/translate.js";
 
 type ProfileLinkToken = {
   owner?: string | null;
@@ -8,8 +9,8 @@ type ProfileLinkToken = {
 
 export function tokenProfileLink(token: ProfileLinkToken): { href: string; label: string } | null {
   const owner = token.balances?.[0]?.owner ?? token.owner ?? null;
-  if (owner) return { href: profileHref({ address: owner }), label: "View owner" };
+  if (owner) return { href: profileHref({ address: owner }), label: msg("View owner") };
   const attributes = Array.isArray(token.metadata?.attributes) ? (token.metadata.attributes as { trait_type?: string; value?: unknown }[]) : [];
   const creator = attributes.find((a) => a.trait_type === "Creator")?.value;
-  return typeof creator === "string" && creator ? { href: profileHref({ address: creator }), label: "View creator" } : null;
+  return typeof creator === "string" && creator ? { href: profileHref({ address: creator }), label: msg("View creator") } : null;
 }

@@ -25,17 +25,19 @@ import { FadeIn } from "../motion-primitives.js";
 import { ExternalLinkField } from "../external-link-field.js";
 import { cn } from "../../utils/cn.js";
 import type { PopCreateValues } from "./pop-create-schema.js";
+import { useT } from "../../i18n/provider.js";
+import { msg } from "../../i18n/translate.js";
 
 export type PopEventType = "Conference" | "Bootcamp" | "Workshop" | "Hackathon" | "Meetup" | "Course" | "Other";
 
 export const EVENT_TYPES: { value: PopEventType; label: string; icon: ElementType; description: string }[] = [
-  { value: "Conference", label: "Conference", icon: Mic2, description: "Talks & panels" },
-  { value: "Bootcamp", label: "Bootcamp", icon: Code2, description: "Intensive training" },
-  { value: "Workshop", label: "Workshop", icon: Wrench, description: "Hands-on learning" },
-  { value: "Hackathon", label: "Hackathon", icon: Zap, description: "Build & compete" },
-  { value: "Meetup", label: "Meetup", icon: Users, description: "Community gathering" },
-  { value: "Course", label: "Course", icon: BookOpen, description: "Structured learning" },
-  { value: "Other", label: "Other", icon: Star, description: "Something unique" },
+  { value: "Conference", label: msg("Conference"), icon: Mic2, description: msg("Talks & panels") },
+  { value: "Bootcamp", label: msg("Bootcamp"), icon: Code2, description: msg("Intensive training") },
+  { value: "Workshop", label: msg("Workshop"), icon: Wrench, description: msg("Hands-on learning") },
+  { value: "Hackathon", label: msg("Hackathon"), icon: Zap, description: msg("Build & compete") },
+  { value: "Meetup", label: msg("Meetup"), icon: Users, description: msg("Community gathering") },
+  { value: "Course", label: msg("Course"), icon: BookOpen, description: msg("Structured learning") },
+  { value: "Other", label: msg("Other"), icon: Star, description: msg("Something unique") },
 ];
 
 interface PopCreateFieldsProps {
@@ -69,11 +71,12 @@ export function PopCreateFields({
   onImageSelect,
   onClearImage,
 }: PopCreateFieldsProps) {
+  const t = useT();
   return (
     <div className="space-y-5">
       <FadeIn delay={0.06}>
         <div className="space-y-3">
-          <p className="text-sm font-medium">What kind of event is this?</p>
+          <p className="text-sm font-medium">{t("What kind of event is this?")}</p>
           <div className="grid grid-cols-4 gap-2">
             {EVENT_TYPES.map(({ value, label, icon: Icon }) => {
               const selected = eventType === value;
@@ -96,10 +99,10 @@ export function PopCreateFields({
             })}
           </div>
           <p className="text-xs text-muted-foreground">
-            {EVENT_TYPES.find((event) => event.value === eventType)?.description}
+            {t(EVENT_TYPES.find((event) => event.value === eventType)?.description ?? "")}
           </p>
           <p className="text-xs text-muted-foreground">
-            This helps label the certificate collection and makes the event easier to understand at a glance.
+            {t("This helps label the certificate collection and makes the event easier to understand at a glance.")}
           </p>
         </div>
       </FadeIn>
@@ -107,7 +110,7 @@ export function PopCreateFields({
       <FadeIn delay={0.1}>
         <div className="space-y-2">
           <p className="text-sm font-medium">
-            Certificate image <span className="text-muted-foreground font-normal">(optional)</span>
+            {t("Certificate image")} <span className="text-muted-foreground font-normal">{t("(optional)")}</span>
           </p>
           <div className="flex items-center gap-4">
             <div
@@ -123,7 +126,7 @@ export function PopCreateFields({
               className="relative h-20 w-20 rounded-2xl border-2 border-dashed border-border bg-muted flex items-center justify-center overflow-hidden shrink-0 cursor-pointer hover:border-green-500/50 transition-colors"
             >
               {imagePreview ? (
-                <Image src={imagePreview} alt="Certificate" fill unoptimized className="object-cover" />
+                <Image src={imagePreview} alt={t("Certificate")} fill unoptimized className="object-cover" />
               ) : (
                 <ImagePlus className="h-6 w-6 text-muted-foreground" />
               )}
@@ -154,12 +157,12 @@ export function PopCreateFields({
                 {imageUploading ? (
                   <>
                     <Loader2 className="h-3.5 w-3.5 mr-1.5 animate-spin" />
-                    Uploading…
+                    {t("Uploading…")}
                   </>
                 ) : imagePreview ? (
-                  "Change"
+                  t("Change")
                 ) : (
-                  "Upload certificate art"
+                  t("Upload certificate art")
                 )}
               </Button>
               {imagePreview ? (
@@ -168,11 +171,11 @@ export function PopCreateFields({
                   onClick={onClearImage}
                   className="flex items-center gap-1 text-xs text-muted-foreground hover:text-destructive transition-colors"
                 >
-                  <X className="h-3 w-3" /> Remove
+                  <X className="h-3 w-3" /> {t("Remove")}
                 </button>
               ) : null}
               <p className="text-xs text-muted-foreground">
-                {imageUri ? <span className="text-green-500">✓ Uploaded</span> : "JPG, PNG, SVG or WebP"}
+                {imageUri ? <span className="text-green-500">{t("✓ Uploaded")}</span> : t("JPG, PNG, SVG or WebP")}
               </p>
             </div>
           </div>
@@ -185,11 +188,11 @@ export function PopCreateFields({
           name="name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Event name *</FormLabel>
+              <FormLabel>{t("Event name *")}</FormLabel>
               <FormControl>
-                <Input placeholder="Starknet Hackathon 2026" {...field} />
+                <Input placeholder={t("Starknet Hackathon 2026")} {...field} />
               </FormControl>
-              <FormDescription>The event or program name participants will recognize immediately.</FormDescription>
+              <FormDescription>{t("The event or program name participants will recognize immediately.")}</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -202,16 +205,16 @@ export function PopCreateFields({
           name="symbol"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Symbol *</FormLabel>
+              <FormLabel>{t("Symbol *")}</FormLabel>
               <FormControl>
                 <Input
-                  placeholder="SKHACK"
+                  placeholder={t("SKHACK")}
                   {...field}
                   onChange={(event) => field.onChange(event.target.value.toUpperCase())}
                   className="max-w-[160px]"
                 />
               </FormControl>
-              <FormDescription>Short ticker shown in wallets. We suggest one from the event name.</FormDescription>
+              <FormDescription>{t("Short ticker shown in wallets. We suggest one from the event name.")}</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -224,9 +227,9 @@ export function PopCreateFields({
           name="description"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Description <span className="text-muted-foreground font-normal">(optional)</span></FormLabel>
+              <FormLabel>{t("Description")} <span className="text-muted-foreground font-normal">{t("(optional)")}</span></FormLabel>
               <FormControl>
-                <Textarea placeholder="What this certificate recognizes" rows={3} {...field} />
+                <Textarea placeholder={t("What this certificate recognizes")} rows={3} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -240,7 +243,7 @@ export function PopCreateFields({
 
       <FadeIn delay={0.16}>
         <div className="space-y-1.5">
-          <p className="text-sm font-medium">Claim window closes *</p>
+          <p className="text-sm font-medium">{t("Claim window closes *")}</p>
           <div className="flex gap-2 items-center">
             <FormField
               control={form.control}
@@ -267,7 +270,7 @@ export function PopCreateFields({
             />
           </div>
           <p className="text-xs text-muted-foreground">
-            Participants can claim certificates until this time. After it closes, the collection remains as the onchain record.
+            {t("Participants can claim certificates until this time. After it closes, the collection remains as the onchain record.")}
           </p>
         </div>
       </FadeIn>
@@ -275,9 +278,9 @@ export function PopCreateFields({
       <FadeIn delay={0.18}>
         <div className="flex items-center justify-between p-4 rounded-xl border border-border bg-muted/20">
           <div className="space-y-0.5">
-            <p className="text-sm font-medium">Event visibility</p>
+            <p className="text-sm font-medium">{t("Event visibility")}</p>
             <p className="text-xs text-muted-foreground">
-              {isPublic ? "Listed publicly on the POP launchpad" : "Only accessible via direct link"}
+              {isPublic ? t("Listed publicly on the POP launchpad") : t("Only accessible via direct link")}
             </p>
           </div>
           <button
@@ -299,7 +302,7 @@ export function PopCreateFields({
           </button>
         </div>
         <p className="text-xs text-muted-foreground">
-          Private events remain claimable by link, but won’t appear in the public POP directory.
+          {t("Private events remain claimable by link, but won’t appear in the public POP directory.")}
         </p>
       </FadeIn>
 
@@ -313,17 +316,17 @@ export function PopCreateFields({
           {isSubmitting ? (
             <>
               <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-              Creating event…
+              {t("Creating event…")}
             </>
           ) : (
             <>
               <Award className="h-4 w-4 mr-2" />
-              Create Event
+              {t("Create Event")}
             </>
           )}
         </Button>
         <p className="text-xs text-center text-muted-foreground mt-2">
-          Free to publish — protocol fee is zero.
+          {t("Free to publish — protocol fee is zero.")}
         </p>
       </FadeIn>
     </div>

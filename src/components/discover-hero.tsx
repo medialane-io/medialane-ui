@@ -4,6 +4,8 @@ import { motion } from "framer-motion";
 import { KineticWords, EASE_OUT } from "./motion-primitives.js";
 import { ActivityTicker } from "./activity-ticker.js";
 import type { ApiOrder } from "@medialane/sdk";
+import { useT } from "../i18n/provider.js";
+import { useFormat } from "../i18n/use-format.js";
 
 export interface DiscoverHeroProps {
   stats: { collections: number; tokens: number; sales: number } | null;
@@ -20,6 +22,8 @@ export function DiscoverHero({
   headlineText = "Create, share & explore",
   getTickerHref,
 }: DiscoverHeroProps) {
+  const intl = useFormat();
+  const t = useT();
   return (
     <div className="space-y-6 pt-2">
       {badgeText ? (
@@ -52,14 +56,14 @@ export function DiscoverHero({
           transition={{ duration: 0.4, delay: 0.35, ease: EASE_OUT }}
         >
           {[
-            { label: "Collections", value: stats.collections },
-            { label: "Assets", value: stats.tokens },
+            { label: t("Collections"), value: stats.collections },
+            { label: t("Assets"), value: stats.tokens },
           ].map(({ label, value }) => (
             <div
               key={label}
               className="flex items-center gap-1.5 rounded-full border border-border bg-card px-3.5 py-1.5 text-sm"
             >
-              <span className="font-bold tabular-nums">{value?.toLocaleString() ?? "—"}</span>
+              <span className="font-bold tabular-nums">{intl.number(value) ?? "—"}</span>
               <span className="text-muted-foreground">{label}</span>
             </div>
           ))}

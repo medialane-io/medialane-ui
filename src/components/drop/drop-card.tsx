@@ -7,6 +7,7 @@ import { DropStatusBadge } from "./drop-status.js";
 import { dropPhase } from "../../utils/drop/view.js";
 import { priceLabel, supplyLabel } from "../../utils/drop/sale.js";
 import { useImageUrl } from "../../utils/use-image-url.js";
+import { useT } from "../../i18n/provider.js";
 
 export interface DropCardProps {
   drop: ApiDrop;
@@ -16,6 +17,7 @@ export interface DropCardProps {
 }
 
 export function DropCard({ drop, now, manage }: DropCardProps) {
+  const t = useT();
   const image = useImageUrl()(drop.image);
   const phase = dropPhase(drop.terms, BigInt(drop.maxSupply), BigInt(drop.minted), now);
   return (
@@ -25,17 +27,17 @@ export function DropCard({ drop, now, manage }: DropCardProps) {
     >
       <div className="relative aspect-square bg-muted">
         {image && (
-          <Image src={image} alt={drop.name ?? "Drop"} fill unoptimized className="object-cover card-media" />
+          <Image src={image} alt={drop.name ?? t("Drop")} fill unoptimized className="object-cover card-media" />
         )}
         <div className="absolute left-3 top-3"><DropStatusBadge phase={phase} /></div>
       </div>
       <div className="space-y-1 p-4">
-        <p className="truncate font-semibold">{drop.name ?? "Untitled drop"}</p>
+        <p className="truncate font-semibold">{drop.name ?? t("Untitled drop")}</p>
         <div className="flex justify-between gap-2 text-xs text-muted-foreground">
           <span>{priceLabel(drop.terms.price, drop.terms.paymentToken)}</span>
           <span>{supplyLabel(drop.minted, drop.maxSupply)}</span>
         </div>
-        {manage && <p className="pt-1 text-xs font-semibold text-primary">Manage</p>}
+        {manage && <p className="pt-1 text-xs font-semibold text-primary">{t("Manage")}</p>}
       </div>
     </Link>
   );

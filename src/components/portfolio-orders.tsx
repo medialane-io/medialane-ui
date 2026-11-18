@@ -17,6 +17,8 @@ import { isSameAddress } from "../utils/same-address.js";
 import { getSeenOffers } from "../utils/seen-offers.js";
 import { useImageUrl } from "../utils/use-image-url.js";
 import { useCounterOffers, useReceivedOffers, useUserOrders } from "../utils/use-orders.js";
+import { useT } from "../i18n/provider.js";
+import { msg } from "../i18n/translate.js";
 
 export type PortfolioOrdersView = "listings" | "offers" | "received" | "counter-offers";
 
@@ -34,7 +36,7 @@ const VIEWS = {
   listings: {
     emptyTitle: "No active listings",
     emptyDescription: "Sell an asset to get started.",
-    emptyCta: { label: "Browse assets", href: "/portfolio/assets" },
+    emptyCta: { label: msg("Browse assets"), href: "/portfolio/assets" },
     emptyIcon: Tag,
     priceLabel: "Price",
     count: (n: number) => `${n} active listing${n === 1 ? "" : "s"}`,
@@ -42,7 +44,7 @@ const VIEWS = {
   offers: {
     emptyTitle: "No offers sent yet",
     emptyDescription: "Browse the marketplace to make offers on assets.",
-    emptyCta: { label: "Browse marketplace", href: "/marketplace" },
+    emptyCta: { label: msg("Browse marketplace"), href: "/marketplace" },
     emptyIcon: HandCoins,
     priceLabel: "Offer price",
     count: (n: number) => `${n} active offer${n === 1 ? "" : "s"}`,
@@ -103,6 +105,7 @@ function OrderRow({ order, subtitle, from, priceCell, actions, isNew }: {
   actions: ReactNode;
   isNew?: boolean;
 }) {
+  const t = useT();
   const resolveImage = useImageUrl();
   const name = order.token?.name || `#${order.nftTokenId}`;
   const image = resolveImage(order.token?.image, { width: 96 });
@@ -127,11 +130,11 @@ function OrderRow({ order, subtitle, from, priceCell, actions, isNew }: {
       )}
       <div className="hidden shrink-0 text-right sm:block">{priceCell}</div>
       <div className="hidden shrink-0 md:block">
-        <p className={cn("text-sm", expiry.expired && "text-muted-foreground", expiry.urgent && "font-medium text-destructive")}>{expiry.label}</p>
+        <p className={cn("text-sm", expiry.expired && "text-muted-foreground", expiry.urgent && "font-medium text-destructive")}>{t(expiry.label)}</p>
       </div>
       <div className="flex shrink-0 items-center gap-2">
         {order.txHash?.created && (
-          <a href={`${EXPLORER_URL}/tx/${order.txHash.created}`} target="_blank" rel="noopener noreferrer" aria-label="View on explorer" className="inline-flex h-7 w-7 items-center justify-center rounded-md transition-colors hover:bg-muted">
+          <a href={`${EXPLORER_URL}/tx/${order.txHash.created}`} target="_blank" rel="noopener noreferrer" aria-label={t("View on explorer")} className="inline-flex h-7 w-7 items-center justify-center rounded-md transition-colors hover:bg-muted">
             <ExternalLink className="h-3.5 w-3.5 text-muted-foreground" />
           </a>
         )}
@@ -150,6 +153,7 @@ function PriceText({ order }: { order: ApiOrder }) {
 }
 
 function CounterOfferRow({ bid, actions }: { bid: ApiOrder; actions: PortfolioOrderActions }) {
+  const t = useT();
   const { counterOffers } = useCounterOffers({ originalOrderHash: bid.orderHash });
   const counter = counterOffers[0];
   if (!counter) return null;
@@ -160,7 +164,7 @@ function CounterOfferRow({ bid, actions }: { bid: ApiOrder; actions: PortfolioOr
       subtitle={
         <Badge variant="secondary" className="mt-0.5 h-4 px-1.5 text-2xs">
           <ArrowLeftRight className="mr-1 h-2.5 w-2.5" />
-          Counter-offer
+          {t("Counter-offer")}
         </Badge>
       }
       priceCell={
@@ -171,10 +175,10 @@ function CounterOfferRow({ bid, actions }: { bid: ApiOrder; actions: PortfolioOr
       }
       actions={
         closed ? (
-          <span className="text-xs text-muted-foreground">{counter.status !== "ACTIVE" ? counter.status.toLowerCase() : "Expired"}</span>
+          <span className="text-xs text-muted-foreground">{counter.status !== "ACTIVE" ? counter.status.toLowerCase() : t("Expired")}</span>
         ) : (
           <Button size="sm" className="h-8 text-xs" disabled={actions.isProcessing} onClick={() => actions.accept?.(counter, bid)}>
-            Accept
+            {t("Accept")}
           </Button>
         )
       }
@@ -187,6 +191,7 @@ export function PortfolioOrders({ view, address, useActions }: {
   address: string;
   useActions: UsePortfolioOrderActions;
 }) {
+  const t = useT();
   const mine = useUserOrders(view === "received" ? null : address);
   const received = useReceivedOffers(view === "received" ? address : null);
   const source = view === "received" ? received : mine;
@@ -220,11 +225,11 @@ export function PortfolioOrders({ view, address, useActions }: {
           <div className="overflow-hidden rounded-lg border border-border">
             <div className="flex items-center gap-4 border-b border-border bg-muted/30 px-4 py-2 text-xs uppercase tracking-wide text-muted-foreground">
               <div className="w-12 shrink-0" />
-              <div className="flex-1">Asset</div>
-              {view === "received" && <div className="hidden w-28 sm:block">From</div>}
+              <div className="flex-1">{t("Asset")}</div>
+              {view === "received" && <div className="hidden w-28 sm:block">{t("From")}</div>}
               <div className={cn("hidden text-right sm:block", view === "counter-offers" ? "w-40" : "w-24")}>{config.priceLabel}</div>
-              <div className="hidden w-28 md:block">Expires</div>
-              <div className="w-24 text-right">Actions</div>
+              <div className="hidden w-28 md:block">{t("Expires")}</div>
+              <div className="w-24 text-right">{t("Actions")}</div>
             </div>
             {view === "counter-offers"
               ? orders.map((bid) => <CounterOfferRow key={bid.orderHash} bid={bid} actions={actions} />)
@@ -234,16 +239,16 @@ export function PortfolioOrders({ view, address, useActions }: {
                     order={order}
                     isNew={seen ? !seen.has(order.orderHash) : false}
                     from={view === "received" ? order.offerer : undefined}
-                    subtitle={<span className="text-xs text-muted-foreground">{view === "received" ? "Received offer" : view === "offers" ? "Offer" : "Active"}</span>}
+                    subtitle={<span className="text-xs text-muted-foreground">{view === "received" ? t("Received offer") : view === "offers" ? t("Offer") : t("Active")}</span>}
                     priceCell={<PriceText order={order} />}
                     actions={
                       view === "received" ? (
                         <>
-                          <Button size="sm" variant="outline" className="h-8 text-xs" disabled={actions.isProcessing} onClick={() => actions.counter?.(order)}>Counter</Button>
-                          <Button size="sm" className="h-8 text-xs" disabled={actions.isProcessing} onClick={() => actions.accept?.(order)}>Accept</Button>
+                          <Button size="sm" variant="outline" className="h-8 text-xs" disabled={actions.isProcessing} onClick={() => actions.counter?.(order)}>{t("Counter")}</Button>
+                          <Button size="sm" className="h-8 text-xs" disabled={actions.isProcessing} onClick={() => actions.accept?.(order)}>{t("Accept")}</Button>
                         </>
                       ) : (
-                        <Button size="sm" variant="outline" className="h-8 text-xs text-destructive hover:text-destructive" disabled={actions.isProcessing} onClick={() => actions.cancel?.(order)}>Cancel</Button>
+                        <Button size="sm" variant="outline" className="h-8 text-xs text-destructive hover:text-destructive" disabled={actions.isProcessing} onClick={() => actions.cancel?.(order)}>{t("Cancel")}</Button>
                       )
                     }
                   />

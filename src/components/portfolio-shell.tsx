@@ -14,6 +14,8 @@ import { markOffersAsSeen } from "../utils/seen-offers.js";
 import { useReceivedOffers, useUserOrders } from "../utils/use-orders.js";
 import { useRewards } from "../utils/use-rewards.js";
 import { useMySponsorshipDealCounts } from "../utils/use-sponsorship.js";
+import { useT } from "../i18n/provider.js";
+import { msg } from "../i18n/translate.js";
 
 export interface PortfolioTab {
   key: string;
@@ -23,26 +25,27 @@ export interface PortfolioTab {
 }
 
 export const PORTFOLIO_TABS: PortfolioTab[] = [
-  { key: "assets", label: "Assets", href: "/portfolio/assets" },
-  { key: "collections", label: "Collections", href: "/portfolio/collections" },
-  { key: "listings", label: "Listings", href: "/portfolio/listings", hideWhenEmpty: true },
-  { key: "received", label: "Offers received", href: "/portfolio/received", hideWhenEmpty: true },
-  { key: "offers", label: "Offers sent", href: "/portfolio/offers", hideWhenEmpty: true },
-  { key: "counter", label: "Counter-offers", href: "/portfolio/counter-offers", hideWhenEmpty: true },
-  { key: "licensing", label: "Licensing", href: "/portfolio/licensing", hideWhenEmpty: true },
-  { key: "sponsorship", label: "Sponsorships", href: "/portfolio/sponsorships", hideWhenEmpty: true },
-  { key: "activity", label: "Activity", href: "/portfolio/activity" },
+  { key: "assets", label: msg("Assets"), href: "/portfolio/assets" },
+  { key: "collections", label: msg("Collections"), href: "/portfolio/collections" },
+  { key: "listings", label: msg("Listings"), href: "/portfolio/listings", hideWhenEmpty: true },
+  { key: "received", label: msg("Offers received"), href: "/portfolio/received", hideWhenEmpty: true },
+  { key: "offers", label: msg("Offers sent"), href: "/portfolio/offers", hideWhenEmpty: true },
+  { key: "counter", label: msg("Counter-offers"), href: "/portfolio/counter-offers", hideWhenEmpty: true },
+  { key: "licensing", label: msg("Licensing"), href: "/portfolio/licensing", hideWhenEmpty: true },
+  { key: "sponsorship", label: msg("Sponsorships"), href: "/portfolio/sponsorships", hideWhenEmpty: true },
+  { key: "activity", label: msg("Activity"), href: "/portfolio/activity" },
 ];
 
 function SignedOut() {
+  const t = useT();
   const { onRequireWallet, connectLabel } = useMedialaneApp();
   return (
     <div className="mx-auto max-w-lg space-y-4 px-4 pt-24 pb-8 text-center">
       <Wallet className="mx-auto h-10 w-10 text-muted-foreground" />
-      <h1 className="text-2xl font-bold">Your portfolio</h1>
-      <p className="text-muted-foreground">Sign in to see your assets, listings and offers.</p>
+      <h1 className="text-2xl font-bold">{t("Your portfolio")}</h1>
+      <p className="text-muted-foreground">{t("Sign in to see your assets, listings and offers.")}</p>
       <Button size="lg" className="rounded-full px-7" onClick={onRequireWallet}>
-        {connectLabel ?? "Sign in"}
+        {connectLabel ?? t("Sign in")}
       </Button>
     </div>
   );

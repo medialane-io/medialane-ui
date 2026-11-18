@@ -10,6 +10,7 @@ import { LeaderboardPanel } from "./rewards/leaderboard-panel.js";
 import { useActivities } from "../utils/use-activities.js";
 import { timeAgo } from "../utils/time.js";
 import { emptyMessages } from "../utils/empty-messages.js";
+import { useT } from "../i18n/provider.js";
 
 const ROWS = 5;
 
@@ -51,6 +52,7 @@ function CommunityCard({
 }
 
 export function DiscoverCommunitySection() {
+  const t = useT();
   const { activities, isLoading } = useActivities({ limit: ROWS });
   const { walletAddress: address } = useMedialaneApp();
   const [lastUpdated, setLastUpdated] = useState(() => new Date().toISOString());
@@ -63,12 +65,11 @@ export function DiscoverCommunitySection() {
     <section className="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:gap-8">
       <CommunityCard
         icon={<Activity />}
-        title="Activities"
+        title={t("Activities")}
         subtitle={
           !isLoading && (
             <>
-              <RefreshCw className="h-2.5 w-2.5" />
-              Updated {timeAgo(lastUpdated)}
+              <RefreshCw className="h-2.5 w-2.5" />{t("Updated {timeAgo}", { timeAgo: timeAgo(lastUpdated) })}
             </>
           )
         }
@@ -90,8 +91,8 @@ export function DiscoverCommunitySection() {
           </div>
         ) : activities.length === 0 ? (
           <div className="py-12 text-center">
-            <p className="text-sm font-medium">{emptyMessages.activity.title}</p>
-            <p className="text-sm text-muted-foreground">{emptyMessages.activity.description}</p>
+            <p className="text-sm font-medium">{t(emptyMessages.activity.title)}</p>
+            <p className="text-sm text-muted-foreground">{t(emptyMessages.activity.description)}</p>
           </div>
         ) : (
           <div className="divide-y divide-border/50">
@@ -109,8 +110,8 @@ export function DiscoverCommunitySection() {
 
       <CommunityCard
         icon={<Sparkles />}
-        title="Rewards"
-        subtitle="Earn XP. Share the Creator's Fund."
+        title={t("Rewards")}
+        subtitle={t("Earn XP. Share the Creator's Fund.")}
         href="/rewards"
         linkLabel="Scoreboard"
       >

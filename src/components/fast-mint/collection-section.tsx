@@ -10,6 +10,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "../popover.js";
 import { cn } from "../../utils/cn.js";
 import { useImageUrl } from "../../utils/use-image-url.js";
 import type { useNewCollectionDraft } from "./use-new-collection-draft.js";
+import { useT } from "../../i18n/provider.js";
 
 function collectionDisplayLabel(col: ApiCollection) {
   return col.name || col.symbol || `Collection #${col.collectionId}`;
@@ -39,6 +40,7 @@ export function CollectionPicker({
   onChange: (id: string) => void;
   valueOf: (c: ApiCollection) => string | null | undefined;
 }) {
+  const t = useT();
   const [open, setOpen] = useState(false);
   const selected = value
     ? collections.find((c) => valueOf(c) === value) ?? null
@@ -55,10 +57,10 @@ export function CollectionPicker({
           <CollectionThumb image={selected?.image} />
           <div className="min-w-0 flex-1">
             <p className="text-sm font-semibold truncate">
-              {selected ? collectionDisplayLabel(selected) : collections.length ? "Choose a collection" : "No collections yet"}
+              {selected ? collectionDisplayLabel(selected) : collections.length ? t("Choose a collection") : t("No collections yet")}
             </p>
             <p className="text-xs text-muted-foreground">
-              {selected ? `${selected.totalSupply ?? 0} work${selected.totalSupply === 1 ? "" : "s"}` : "Where this work will live"}
+              {selected ? `${selected.totalSupply ?? 0} work${selected.totalSupply === 1 ? "" : "s"}` : t("Where this work will live")}
             </p>
           </div>
           <ChevronDown className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
@@ -67,7 +69,7 @@ export function CollectionPicker({
       <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0" align="start">
         <div className="max-h-64 overflow-y-auto p-1">
           {collections.length === 0 ? (
-            <p className="px-3 py-4 text-center text-sm text-muted-foreground">No collections yet — create one instead.</p>
+            <p className="px-3 py-4 text-center text-sm text-muted-foreground">{t("No collections yet — create one instead.")}</p>
           ) : (
             collections.map((col) => {
               const id = valueOf(col);
@@ -83,7 +85,7 @@ export function CollectionPicker({
                   <CollectionThumb image={col.image} />
                   <div className="min-w-0 flex-1">
                     <p className="text-sm font-medium truncate">{collectionDisplayLabel(col)}</p>
-                    <p className="text-xs text-muted-foreground">{col.totalSupply ?? 0} work{col.totalSupply === 1 ? "" : "s"}</p>
+                    <p className="text-xs text-muted-foreground">{t.plural("{count} work", "{count} works", col.totalSupply ?? 0)}</p>
                   </div>
                   {isSelected && <Check className="h-4 w-4 text-brand-blue shrink-0" />}
                 </button>
@@ -112,6 +114,7 @@ export function CollectionSection({
   previewImage: string | null;
   noun?: string;
 }) {
+  const t = useT();
   return (
     <div className="space-y-2">
       <div className="flex items-center justify-between">
@@ -126,7 +129,7 @@ export function CollectionSection({
             className={cn("px-3 h-7 text-xs font-medium transition-colors",
               mode === "existing" ? "bg-primary text-primary-foreground" : "bg-background hover:bg-muted text-muted-foreground")}
           >
-            Existing
+            {t("Existing")}
           </button>
           <button
             type="button"
@@ -134,7 +137,7 @@ export function CollectionSection({
             className={cn("px-3 h-7 text-xs font-medium border-l border-border transition-colors flex items-center gap-1",
               mode === "new" ? "bg-primary text-primary-foreground" : "bg-background hover:bg-muted text-muted-foreground")}
           >
-            <Plus className="h-3 w-3" />New
+            <Plus className="h-3 w-3" />{t("New")}
           </button>
         </div>
       </div>
@@ -163,7 +166,7 @@ export function CollectionSection({
               <Input
                 value={draft.symbol}
                 onChange={(e) => draft.setSymbol(e.target.value.toUpperCase())}
-                placeholder="SYMBOL"
+                placeholder={t("SYMBOL")}
                 className="h-9 text-sm"
               />
             </div>
@@ -174,7 +177,7 @@ export function CollectionSection({
               rows={2}
               className="text-sm resize-none"
             />
-            <p className="text-2xs text-muted-foreground">Prefilled from the title and description — edit anything above.</p>
+            <p className="text-2xs text-muted-foreground">{t("Prefilled from the title and description — edit anything above.")}</p>
           </div>
         </div>
       )}

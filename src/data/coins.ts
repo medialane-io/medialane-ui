@@ -1,5 +1,7 @@
 import { getService, listServices, type ServiceDefinition } from "@medialane/sdk";
 import { formatSmallDecimal } from "../utils/format.js";
+import { formatNumber } from "../i18n/format.js";
+import { DEFAULT_LOCALE } from "../i18n/locales.js";
 
 export type CoinKind = "creator" | "unruggable" | "memecoin";
 
@@ -77,11 +79,11 @@ export function coinAccentToken(seed: string | null | undefined): string {
   return ACCENT_TOKENS[h % ACCENT_TOKENS.length];
 }
 
-function abbreviate(n: number): string {
-  if (n >= 1_000_000_000) return `${(n / 1_000_000_000).toLocaleString(undefined, { maximumFractionDigits: 1 })}B`;
-  if (n >= 1_000_000) return `${(n / 1_000_000).toLocaleString(undefined, { maximumFractionDigits: 1 })}M`;
-  if (n >= 1_000) return `${(n / 1_000).toLocaleString(undefined, { maximumFractionDigits: 1 })}K`;
-  return n.toLocaleString(undefined, { maximumFractionDigits: 2 });
+function abbreviate(n: number, locale: string = DEFAULT_LOCALE): string {
+  if (n >= 1_000_000_000) return `${formatNumber(n / 1_000_000_000, locale, { maximumFractionDigits: 1 })}B`;
+  if (n >= 1_000_000) return `${formatNumber(n / 1_000_000, locale, { maximumFractionDigits: 1 })}M`;
+  if (n >= 1_000) return `${formatNumber(n / 1_000, locale, { maximumFractionDigits: 1 })}K`;
+  return formatNumber(n, locale, { maximumFractionDigits: 2 });
 }
 
 export function coinSupply(collection: CoinCollectionLike): number | null {

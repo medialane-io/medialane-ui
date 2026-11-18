@@ -4,6 +4,7 @@ import type { CSSProperties } from "react";
 import Image from "./image.js";
 import { CommentsSection } from "./comments-section.js";
 import { Dialog, DialogContent, DialogTitle } from "./dialog.js";
+import { useT } from "../i18n/provider.js";
 
 export interface AssetCommentsDialogProps {
   open: boolean;
@@ -34,6 +35,7 @@ export function AssetCommentsDialog({
   accentLabelClassName,
   accentCountStyle,
 }: AssetCommentsDialogProps) {
+  const t = useT();
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="w-full max-w-md p-0 overflow-hidden gap-0 flex flex-col max-h-[85svh]">
@@ -46,7 +48,7 @@ export function AssetCommentsDialog({
           </div>
           <div className="min-w-0 flex-1">
             <DialogTitle asChild>
-              <p className={`text-2xs font-medium ${accentLabelClassName ?? ""}`}>Comments</p>
+              <p className={`text-2xs font-medium ${accentLabelClassName ?? ""}`}>{t("Comments")}</p>
             </DialogTitle>
             <p className="text-sm font-semibold truncate text-foreground">{name}</p>
           </div>

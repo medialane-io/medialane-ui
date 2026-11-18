@@ -44,6 +44,7 @@ import { isLivingRenderCollection } from "../data/living-render-collections.js";
 import { EXPLORER_URL } from "../utils/explorer-url.js";
 import { profileHref } from "@medialane/sdk";
 import { useImageUrl } from "../utils/use-image-url.js";
+import { useT } from "../i18n/provider.js";
 
 export type AssetKind = "standard" | "edition" | "ticket" | "membership" | "pop";
 
@@ -161,6 +162,7 @@ function AssetPageView({
   kind: AssetKind;
   useMarketActions: AssetPageProps["useMarketActions"];
 }) {
+  const t = useT();
   const resolveImage = useImageUrl();
   const config = KINDS[kind];
   const router = useRouter();
@@ -416,7 +418,7 @@ function AssetPageView({
               badges={kind === "pop" ? (
                 <span className="inline-flex items-center gap-1 text-2xs font-semibold px-2.5 py-1 rounded-full bg-brand-purple/15 text-brand-purple dark:bg-brand-purple/25">
                   <Award className="h-3 w-3" />
-                  POP
+                  {t("POP")}
                 </span>
               ) : null}
             />
@@ -430,9 +432,9 @@ function AssetPageView({
 
         <Tabs defaultValue="overview">
           <TabsList>
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            {config.market ? <TabsTrigger value="markets">Markets {marketCount > 0 && `(${marketCount})`}</TabsTrigger> : null}
-            <TabsTrigger value="provenance">Provenance {history.length > 0 && `(${history.length})`}</TabsTrigger>
+            <TabsTrigger value="overview">{t("Overview")}</TabsTrigger>
+            {config.market ? <TabsTrigger value="markets">{t("Markets")} {marketCount > 0 && `(${marketCount})`}</TabsTrigger> : null}
+            <TabsTrigger value="provenance">{t("Provenance")} {history.length > 0 && `(${history.length})`}</TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview">

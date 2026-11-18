@@ -1,12 +1,14 @@
+import { formatNumber } from "../i18n/format.js";
+import { DEFAULT_LOCALE } from "../i18n/locales.js";
 
 export function isStableCurrency(symbol: string | null | undefined): boolean {
   return symbol === "USDC" || symbol === "USDT";
 }
 
-export function formatUsd(n: number | null | undefined): string | null {
+export function formatUsd(n: number | null | undefined, locale: string = DEFAULT_LOCALE): string | null {
   if (n == null || !isFinite(n)) return null;
   if (n > 0 && n < 0.01) return "<$0.01";
-  return `$${n.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  return `$${formatNumber(n, locale, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 }
 
 const SUBSCRIPTS = "₀₁₂₃₄₅₆₇₈₉";
@@ -17,12 +19,12 @@ const toSubscript = (n: number) =>
     .map((d) => SUBSCRIPTS[Number(d)])
     .join("");
 
-export function formatSmallDecimal(n: number, significantDigits = 3): string {
+export function formatSmallDecimal(n: number, significantDigits = 3, locale: string = DEFAULT_LOCALE): string {
   if (!isFinite(n) || n === 0) return "0";
   const abs = Math.abs(n);
   const sign = n < 0 ? "-" : "";
 
-  if (abs >= 1) return sign + abs.toLocaleString(undefined, { maximumFractionDigits: 4 });
+  if (abs >= 1) return sign + formatNumber(abs, locale, { maximumFractionDigits: 4 });
   if (abs >= 0.0001) return sign + abs.toPrecision(significantDigits).replace(/(\.\d*?)0+$/, "$1").replace(/\.$/, "");
 
   const zeros = -Math.floor(Math.log10(abs)) - 1;
@@ -35,9 +37,9 @@ export function formatSmallDecimal(n: number, significantDigits = 3): string {
   return `${sign}0.0${toSubscript(zeros)}${digits || "0"}`;
 }
 
-export function formatUsdPrice(n: number | null | undefined): string | null {
+export function formatUsdPrice(n: number | null | undefined, locale: string = DEFAULT_LOCALE): string | null {
   if (n == null || !isFinite(n)) return null;
-  return `$${formatSmallDecimal(n)}`;
+  return `$${formatSmallDecimal(n, 3, locale)}`;
 }
 
 function adaptiveDecimals(num: number): number {
@@ -47,7 +49,7 @@ function adaptiveDecimals(num: number): number {
   return leadingZeros + 2;
 }
 
-export function formatDisplayPrice(price: string | number | null | undefined): string {
+export function formatDisplayPrice(price: string | number | null | undefined, locale: string = DEFAULT_LOCALE): string {
   if (price === null || price === undefined) return "";
   const priceStr = String(price);
   const parts = priceStr.split(" ");
@@ -57,25 +59,23 @@ export function formatDisplayPrice(price: string | number | null | undefined): s
   if (isNaN(num)) return priceStr;
 
   if (num !== 0 && Math.abs(num) < 0.0001) {
-    const compressed = formatSmallDecimal(num);
+    const compressed = formatSmallDecimal(num, 3, locale);
     return currencyPart ? `${compressed} ${currencyPart}` : compressed;
   }
 
   const maxDecimals = adaptiveDecimals(num);
-  const formatted = num.toLocaleString(undefined, {
+  const formatted = formatNumber(num, locale, {
     minimumFractionDigits: Math.min(2, maxDecimals),
     maximumFractionDigits: maxDecimals,
   });
   return currencyPart ? `${formatted} ${currencyPart}` : formatted;
 }
 
-const COMPACT_FORMAT = new Intl.NumberFormat("en-US", { notation: "compact", maximumFractionDigits: 1 });
-
-export function formatCompactPrice(price: string | number | null | undefined): string {
+export function formatCompactPrice(price: string | number | null | undefined, locale: string = DEFAULT_LOCALE): string {
   if (price === null || price === undefined) return "";
   const num = Number(String(price).split(" ")[0]);
-  if (!isFinite(num) || Math.abs(num) < 1000) return formatDisplayPrice(price);
-  return COMPACT_FORMAT.format(num);
+  if (!isFinite(num) || Math.abs(num) < 1000) return formatDisplayPrice(price, locale);
+  return formatNumber(num, locale, { notation: "compact", maximumFractionDigits: 1 });
 }
 
 export function parsePriceDisplay(raw: string | null | undefined): { numStr: string; symbol: string | null } {

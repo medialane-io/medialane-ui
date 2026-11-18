@@ -1,5 +1,8 @@
+"use client";
+
 import { ShieldCheck, type LucideIcon } from "lucide-react";
 import { cn } from "../utils/cn.js";
+import { useT } from "../i18n/provider.js";
 
 export interface ClaimRailProps {
 
@@ -27,11 +30,12 @@ export function ClaimRail({
   stepAccentClass = "bg-brand-purple/10 text-brand-purple",
   trustAccentClass = "text-brand-orange",
 }: ClaimRailProps) {
+  const t = useT();
   return (
     <div className="rounded-2xl bg-muted/50 dark:bg-card divide-y divide-border/60 overflow-hidden">
       {included && included.length > 0 && (
         <section className="p-5">
-          <p className="section-label">What&apos;s included</p>
+          <p className="section-label">{t("What's included")}</p>
           <ul className="mt-4 space-y-4">
             {included.map(({ icon: Icon, title, desc }) => (
               <li key={title} className="flex items-start gap-3">
@@ -49,7 +53,7 @@ export function ClaimRail({
       )}
 
       <section className="p-5">
-        <p className="section-label">How it works</p>
+        <p className="section-label">{t("How it works")}</p>
         <ol className="mt-4 space-y-3">
           {steps.map((label, i) => (
             <li key={label} className="flex items-center gap-3">

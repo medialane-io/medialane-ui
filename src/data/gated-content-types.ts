@@ -1,5 +1,6 @@
 import { Play, Music, Radio, FileText, Link2 } from "lucide-react";
 import type { ComponentType } from "react";
+import { msg } from "../i18n/translate.js";
 
 export interface ContentTypeConfig {
   icon: ComponentType<{ className?: string }>;
@@ -7,11 +8,11 @@ export interface ContentTypeConfig {
 }
 
 export const GATED_CONTENT_TYPES: Record<string, ContentTypeConfig> = {
-  VIDEO:    { icon: Play,     cta: "Watch now" },
-  AUDIO:    { icon: Music,    cta: "Listen now" },
-  STREAM:   { icon: Radio,    cta: "Watch live" },
-  DOCUMENT: { icon: FileText, cta: "Open document" },
-  LINK:     { icon: Link2,    cta: "Access content" },
+  VIDEO:    { icon: Play,     cta: msg("Watch now") },
+  AUDIO:    { icon: Music,    cta: msg("Listen now") },
+  STREAM:   { icon: Radio,    cta: msg("Watch live") },
+  DOCUMENT: { icon: FileText, cta: msg("Open document") },
+  LINK:     { icon: Link2,    cta: msg("Access content") },
 };
 
 export const GATED_CONTENT_TYPE_FALLBACK = GATED_CONTENT_TYPES.LINK;

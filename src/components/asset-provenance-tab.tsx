@@ -12,6 +12,9 @@ import {
   TrendingUp, Activity, ArrowRight, ExternalLink, Fingerprint, UserCheck,
 } from "lucide-react";
 import type { ApiActivity } from "@medialane/sdk";
+import { useT } from "../i18n/provider.js";
+import { msg } from "../i18n/translate.js";
+import { useFormat } from "../i18n/use-format.js";
 
 const PriceHistoryChart = dynamic(
   () => import("./price-history-chart.js").then((m) => m.PriceHistoryChart),
@@ -22,12 +25,12 @@ const PriceHistoryChart = dynamic(
 );
 
 const EVENT_STYLE: Record<string, { label: string; icon: React.ReactNode; badgeCls: string }> = {
-  sale:      { label: "Sale",      icon: <ShoppingCart className="h-3.5 w-3.5" />,   badgeCls: "bg-emerald-500/15 text-emerald-500 border-emerald-500/20" },
-  mint:      { label: "Minted",    icon: <CheckCircle className="h-3.5 w-3.5" />,    badgeCls: "bg-teal-500/15 text-teal-500 border-teal-500/20"          },
-  listing:   { label: "Listed",    icon: <Tag className="h-3.5 w-3.5" />,            badgeCls: "bg-brand-blue/15 text-brand-blue border-brand-blue/20"          },
-  offer:     { label: "Offer",     icon: <HandCoins className="h-3.5 w-3.5" />,      badgeCls: "bg-amber-500/15 text-amber-500 border-amber-500/20"       },
-  transfer:  { label: "Transfer",  icon: <ArrowRightLeft className="h-3.5 w-3.5" />, badgeCls: "bg-brand-purple/15 text-brand-purple border-brand-purple/20"    },
-  cancelled: { label: "Cancelled", icon: <X className="h-3.5 w-3.5" />,              badgeCls: "bg-red-500/15 text-red-400 border-red-500/20"             },
+  sale:      { label: msg("Sale"),      icon: <ShoppingCart className="h-3.5 w-3.5" />,   badgeCls: "bg-emerald-500/15 text-emerald-500 border-emerald-500/20" },
+  mint:      { label: msg("Minted"),    icon: <CheckCircle className="h-3.5 w-3.5" />,    badgeCls: "bg-teal-500/15 text-teal-500 border-teal-500/20"          },
+  listing:   { label: msg("Listed"),    icon: <Tag className="h-3.5 w-3.5" />,            badgeCls: "bg-brand-blue/15 text-brand-blue border-brand-blue/20"          },
+  offer:     { label: msg("Offer"),     icon: <HandCoins className="h-3.5 w-3.5" />,      badgeCls: "bg-amber-500/15 text-amber-500 border-amber-500/20"       },
+  transfer:  { label: msg("Transfer"),  icon: <ArrowRightLeft className="h-3.5 w-3.5" />, badgeCls: "bg-brand-purple/15 text-brand-purple border-brand-purple/20"    },
+  cancelled: { label: msg("Cancelled"), icon: <X className="h-3.5 w-3.5" />,              badgeCls: "bg-red-500/15 text-red-400 border-red-500/20"             },
 };
 
 interface AssetProvenanceTabProps {
@@ -47,6 +50,8 @@ export function AssetProvenanceTab({
   originalCreator,
   registeredAt,
 }: AssetProvenanceTabProps) {
+  const intl = useFormat();
+  const t = useT();
   const sales = history.filter((e) => e.type === "sale");
 
   const totalVolumeParts = sales.reduce<Record<string, { amount: number; currency: string }>>((acc, e) => {
@@ -71,8 +76,8 @@ export function AssetProvenanceTab({
       <div className="flex items-center gap-2 rounded-lg bg-primary/5 px-4 py-2.5">
         <Fingerprint className="h-4 w-4 text-primary shrink-0" />
         <div className="min-w-0">
-          <p className="text-xs font-semibold text-primary">Onchain Provenance</p>
-          <p className="text-xs text-muted-foreground">Every transfer and sale is immutably recorded on Starknet — this history cannot be altered.</p>
+          <p className="text-xs font-semibold text-primary">{t("Onchain Provenance")}</p>
+          <p className="text-xs text-muted-foreground">{t("Every transfer and sale is immutably recorded on Starknet — this history cannot be altered.")}</p>
         </div>
         <a
           href={`${EXPLORER_URL}/contract/${contract}`}
@@ -80,7 +85,7 @@ export function AssetProvenanceTab({
           rel="noopener noreferrer"
           className="shrink-0 flex items-center gap-1 text-2xs text-muted-foreground hover:text-foreground transition-colors ml-auto"
         >
-          Contract <ExternalLink className="h-3 w-3" />
+          {t("Contract")} <ExternalLink className="h-3 w-3" />
         </a>
       </div>
 
@@ -93,12 +98,12 @@ export function AssetProvenanceTab({
           <div className="rounded-xl bg-muted/20 p-3 text-center">
             <Activity className="h-4 w-4 text-muted-foreground mx-auto mb-1" />
             <p className="text-lg font-bold">{history.length}</p>
-            <p className="text-2xs text-muted-foreground">Events</p>
+            <p className="text-2xs text-muted-foreground">{t("Events")}</p>
           </div>
           <div className="rounded-xl bg-muted/20 p-3 text-center">
             <ShoppingCart className="h-4 w-4 text-muted-foreground mx-auto mb-1" />
             <p className="text-lg font-bold">{sales.length}</p>
-            <p className="text-2xs text-muted-foreground">Sales</p>
+            <p className="text-2xs text-muted-foreground">{t("Sales")}</p>
           </div>
           <div className="rounded-xl bg-muted/20 p-3 text-center">
             <TrendingUp className="h-4 w-4 text-muted-foreground mx-auto mb-1" />
@@ -113,19 +118,19 @@ export function AssetProvenanceTab({
             ) : (
               <p className="text-lg font-bold">—</p>
             )}
-            <p className="text-2xs text-muted-foreground">Volume</p>
+            <p className="text-2xs text-muted-foreground">{t("Volume")}</p>
           </div>
           <div className="rounded-xl bg-muted/20 p-3 text-center">
             <UserCheck className="h-4 w-4 text-muted-foreground mx-auto mb-1" />
             <p className="text-lg font-bold">{allActors.size}</p>
-            <p className="text-2xs text-muted-foreground">Participants</p>
+            <p className="text-2xs text-muted-foreground">{t("Participants")}</p>
           </div>
         </div>
       )}
 
       {remixCount > 0 && (
         <div className="space-y-2">
-          <p className="text-xs font-semibold text-muted-foreground">Remixes ({remixCount})</p>
+          <p className="text-xs font-semibold text-muted-foreground">{t("Remixes ({remixCount})", { remixCount })}</p>
           <RemixesTab contractAddress={contract} tokenId={tokenId} />
         </div>
       )}
@@ -134,10 +139,9 @@ export function AssetProvenanceTab({
 
       <div className="space-y-2">
         <p className="text-xs font-semibold text-muted-foreground">
-          History
+          {t("History")}
           {firstEvent && (
-            <span className="ml-2 font-normal normal-case">
-              · first activity {timeAgo(firstEvent.timestamp)}
+            <span className="ml-2 font-normal normal-case">{t("· first activity {timeAgo}", { timeAgo: timeAgo(firstEvent.timestamp) })}
             </span>
           )}
         </p>
@@ -145,7 +149,7 @@ export function AssetProvenanceTab({
         {history.length === 0 ? (
           <div className="rounded-xl bg-muted/10 py-12 flex flex-col items-center gap-3 text-center">
             <Activity className="h-8 w-8 text-muted-foreground/30" />
-            <p className="text-sm text-muted-foreground">No activity recorded yet.</p>
+            <p className="text-sm text-muted-foreground">{t("No activity recorded yet.")}</p>
           </div>
         ) : (
           <div className="relative">
@@ -186,7 +190,7 @@ export function AssetProvenanceTab({
                           <div className="flex items-center gap-2 flex-wrap">
                             <span className={`inline-flex items-center gap-1 text-xs font-semibold px-2 py-0.5 rounded-full border ${style.badgeCls}`}>
                               {style.icon}
-                              {style.label}
+                              {t(style.label)}
                             </span>
                             {actor && (
                               <span className="flex items-center gap-1 text-xs text-muted-foreground">
@@ -236,7 +240,7 @@ export function AssetProvenanceTab({
                           )}
                           <span
                             className="text-2xs text-muted-foreground/60 whitespace-nowrap"
-                            title={new Date(event.timestamp).toLocaleString()}
+                            title={intl.dateTime(new Date(event.timestamp))}
                           >
                             {timeAgo(event.timestamp)}
                           </span>
@@ -247,7 +251,7 @@ export function AssetProvenanceTab({
                               rel="noopener noreferrer"
                               onClick={(e) => e.stopPropagation()}
                               className="text-muted-foreground/40 hover:text-muted-foreground transition-colors"
-                              title="View transaction"
+                              title={t("View transaction")}
                             >
                               <ExternalLink className="h-3 w-3" />
                             </a>

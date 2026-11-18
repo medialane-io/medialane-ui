@@ -20,6 +20,7 @@ import { timeAgo } from "../utils/time.js";
 import { successMessages } from "../utils/success-messages.js";
 import { useComments } from "../utils/use-comments.js";
 import { useTransaction } from "../utils/use-transaction.js";
+import { useT } from "../i18n/provider.js";
 
 const MAX_LEN = 1000;
 
@@ -30,6 +31,7 @@ export interface CommentsSectionProps {
 }
 
 export function CommentsSection({ contract, tokenId, className }: CommentsSectionProps) {
+  const t = useT();
   const app = useMedialaneApp();
   const walletAddress = app.walletAddress;
   const hasWallet = !!walletAddress;
@@ -122,9 +124,9 @@ export function CommentsSection({ contract, tokenId, className }: CommentsSectio
               <MessageCircle className="h-7 w-7" style={{ color: "hsl(var(--brand-blue))" }} />
             </div>
             <div>
-              <p className="text-sm font-semibold">Nothing here yet</p>
+              <p className="text-sm font-semibold">{t("Nothing here yet")}</p>
               <p className="text-xs text-muted-foreground mt-1 leading-relaxed max-w-[220px]">
-                Your comment will be minted onchain — attached to this NFT forever.
+                {t("Your comment will be minted onchain — attached to this NFT forever.")}
               </p>
             </div>
             <Button
@@ -133,7 +135,7 @@ export function CommentsSection({ contract, tokenId, className }: CommentsSectio
               className="rounded-full text-white px-5"
               style={{ background: "linear-gradient(135deg, hsl(var(--brand-blue)), hsl(var(--brand-purple)))" }}
             >
-              Write the first comment
+              {t("Write the first comment")}
             </Button>
           </div>
         ) : (
@@ -167,7 +169,7 @@ export function CommentsSection({ contract, tokenId, className }: CommentsSectio
                         href={profileHref({ address: comment.author })}
                         className="text-xs font-semibold text-foreground hover:underline underline-offset-2"
                       >
-                        {own ? "You" : <AddressDisplay address={comment.author} chars={5} showCopy={false} />}
+                        {own ? t("You") : <AddressDisplay address={comment.author} chars={5} showCopy={false} />}
                       </Link>
                       <span className="text-2xs text-muted-foreground" title={comment.postedAt}>
                         {timeAgo(comment.postedAt)}
@@ -190,8 +192,8 @@ export function CommentsSection({ contract, tokenId, className }: CommentsSectio
                       {!own && hasWallet && (
                         <button
                           className="absolute -top-1 -right-5 opacity-0 group-hover:opacity-100 transition-opacity text-muted-foreground/40 hover:text-destructive/70"
-                          title="Report comment"
-                          aria-label="Report comment"
+                          title={t("Report comment")}
+                          aria-label={t("Report comment")}
                           onClick={() => setReportTarget({ type: "COMMENT", commentId: comment.id })}
                         >
                           <Flag className="h-3 w-3" />
@@ -210,7 +212,7 @@ export function CommentsSection({ contract, tokenId, className }: CommentsSectio
                         onMouseLeave={(e) => (e.currentTarget.style.color = "hsl(var(--brand-blue) / 0.55)")}
                       >
                         <span>⛓</span>
-                        <span>onchain proof</span>
+                        <span>{t("onchain proof")}</span>
                         <ExternalLink className="h-2.5 w-2.5" />
                       </a>
                     )}
@@ -227,7 +229,7 @@ export function CommentsSection({ contract, tokenId, className }: CommentsSectio
         {!hasWallet ? (
           <div className="flex items-center justify-center px-4 h-16">
             <button type="button" onClick={app.onRequireWallet} className="text-sm text-primary hover:underline">
-              {app.connectLabel ?? "Connect"} to comment
+              {app.connectLabel ?? t("Connect")} {t("to comment")}
             </button>
           </div>
         ) : (
@@ -236,7 +238,7 @@ export function CommentsSection({ contract, tokenId, className }: CommentsSectio
             <div className="flex items-center gap-1.5">
               <Zap className="h-3 w-3" style={{ color: "hsl(var(--brand-blue))" }} />
               <span className="text-2xs font-semibold" style={{ color: "hsl(var(--brand-blue))" }}>
-                Mint your message onchain
+                {t("Mint your message onchain")}
               </span>
             </div>
 
@@ -256,7 +258,7 @@ export function CommentsSection({ contract, tokenId, className }: CommentsSectio
             >
               <Textarea
                 ref={composeRef}
-                placeholder="Say something onchain… it's permanent."
+                placeholder={t("Say something onchain… it's permanent.")}
                 value={text}
                 onChange={handleTextInput}
                 onKeyDown={handleKeyDown}
@@ -266,7 +268,7 @@ export function CommentsSection({ contract, tokenId, className }: CommentsSectio
               />
               <div className="flex items-center justify-between px-3 pb-2.5">
                 <span className="text-2xs text-muted-foreground/40 flex items-center gap-1">
-                  Enter ↵ to post
+                  {t("Enter ↵ to post")}
                 </span>
                 <div className="flex items-center gap-2">
                   {byteLen > 800 && (
@@ -281,7 +283,7 @@ export function CommentsSection({ contract, tokenId, className }: CommentsSectio
                     style={{ background: "linear-gradient(135deg, hsl(var(--brand-blue)), hsl(var(--brand-purple)))" }}
                   >
                     {isProcessing ? <Loader2 className="h-3 w-3 animate-spin" /> : <Send className="h-3 w-3" />}
-                    Post onchain
+                    {t("Post onchain")}
                   </button>
                 </div>
               </div>
@@ -298,12 +300,12 @@ export function CommentsSection({ contract, tokenId, className }: CommentsSectio
         />
       )}
 
-      <TransactionDialog tx={tx} title="Comment" workingLabel="Posting your comment…" firstStepLabel="Prepare comment">
+      <TransactionDialog tx={tx} title={t("Comment")} workingLabel="Posting your comment…" firstStepLabel="Prepare comment">
         <TransactionSuccess
           name="Comment"
-          {...successMessages.commented()}
+          {...successMessages.commented(t)}
           txHash={tx.txHash}
-          actions={[{ label: "Done", onClick: tx.reset }]}
+          actions={[{ label: t("Done"), onClick: tx.reset }]}
         >
           <RewardEarned actionType="comment" />
         </TransactionSuccess>

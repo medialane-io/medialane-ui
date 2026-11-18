@@ -18,8 +18,12 @@ import {
   ExternalLink, Inbox,
 } from "lucide-react";
 import type { ApiCollection } from "@medialane/sdk";
+import { useT } from "../i18n/provider.js";
+import { useFormat } from "../i18n/use-format.js";
 
 function CollectionRow({ col }: { col: ApiCollection }) {
+  const intl = useFormat();
+  const t = useT();
   const [imgError, setImgError] = useState(false);
   const imageUrl = useImageUrl()(col.image, { width: 128 });
   const showImage = imageUrl && !imgError;
@@ -49,7 +53,7 @@ function CollectionRow({ col }: { col: ApiCollection }) {
           <div className="flex items-start justify-between gap-2">
             <div className="min-w-0">
               <p className="font-bold text-base leading-tight truncate">
-                {col.name ?? "Unnamed Collection"}
+                {col.name ?? t("Unnamed Collection")}
               </p>
               {col.symbol && (
                 <p className="text-xs tabular-nums text-muted-foreground mt-0.5">{col.symbol}</p>
@@ -58,7 +62,7 @@ function CollectionRow({ col }: { col: ApiCollection }) {
             <Link
               href={collectionHref("STARKNET", col.contractAddress)}
               className="shrink-0 text-muted-foreground/50 hover:text-muted-foreground transition-colors"
-              title="View collection page"
+              title={t("View collection page")}
             >
               <ExternalLink className="h-3.5 w-3.5" />
             </Link>
@@ -75,13 +79,13 @@ function CollectionRow({ col }: { col: ApiCollection }) {
               <Package className="h-3 w-3" />
               <span>
                 {col.totalSupply != null
-                  ? `${col.totalSupply.toLocaleString()} token${col.totalSupply !== 1 ? "s" : ""}`
-                  : "No tokens yet"}
+                  ? `${intl.number(col.totalSupply)} token${col.totalSupply !== 1 ? "s" : ""}`
+                  : t("No tokens yet")}
               </span>
             </div>
             {col.holderCount != null && col.holderCount > 0 && (
               <div className="text-xs text-muted-foreground">
-                {col.holderCount.toLocaleString()} holder{col.holderCount !== 1 ? "s" : ""}
+                {t.plural("{count} holder", "{count} holders", col.holderCount, { count: intl.number(col.holderCount) })}
               </div>
             )}
           </div>
@@ -93,11 +97,11 @@ function CollectionRow({ col }: { col: ApiCollection }) {
             className="flex items-center gap-2 h-9 px-4 rounded-xl text-sm font-semibold text-white bg-brand-purple hover:brightness-110 transition-colors"
           >
             <Sparkles className="h-3.5 w-3.5" />
-            Mint editions
+            {t("Mint editions")}
           </Link>
           <Button variant="outline" size="sm" asChild>
             <Link href={collectionHref("STARKNET", col.contractAddress)}>
-              View collection
+              {t("View collection")}
             </Link>
           </Button>
         </div>
@@ -124,6 +128,7 @@ function CollectionRowSkeleton() {
 }
 
 export function EditionsPage() {
+  const t = useT();
   const { walletAddress, walletLoading } = useMedialaneApp();
   const { collections, isLoading } = useCollectionsByOwner(walletAddress);
 
@@ -142,8 +147,8 @@ export function EditionsPage() {
             <ServiceHeader
               plain
               icon={<Layers className="h-4 w-4 text-white" />}
-              title="Limited Editions"
-              subtitle="Pick one of your editions collections and mint new pieces into it."
+              title={t("Limited Editions")}
+              subtitle={t("Pick one of your editions collections and mint new pieces into it.")}
             />
           </div>
         </FadeIn>
@@ -154,11 +159,11 @@ export function EditionsPage() {
               className="flex items-center gap-2 h-10 px-5 rounded-xl text-sm font-semibold text-white bg-brand-purple hover:brightness-110 transition-colors"
             >
               <Plus className="h-4 w-4" />
-              New collection
+              {t("New collection")}
             </Link>
             <Button variant="outline" size="sm" asChild>
               <a href="https://docs.medialane.io/learn/ip-collection-1155" target="_blank" rel="noopener noreferrer">
-                Learn more <ArrowRight className="h-3.5 w-3.5 ml-1" />
+                {t("Learn more")} <ArrowRight className="h-3.5 w-3.5 ml-1" />
               </a>
             </Button>
           </div>
@@ -167,7 +172,7 @@ export function EditionsPage() {
 
       <section className="px-4 pt-8 space-y-5 max-w-5xl mx-auto">
         {!walletAddress && !walletLoading ? (
-          <SignInPrompt icon={<Layers className="h-10 w-10 text-muted-foreground/30" />} title="Sign in to see your collections" />
+          <SignInPrompt icon={<Layers className="h-10 w-10 text-muted-foreground/30" />} title={t("Sign in to see your collections")} />
         ) : isLoading || walletLoading ? (
           <div className="space-y-3">
             {Array.from({ length: 3 }).map((_, i) => (
@@ -179,9 +184,9 @@ export function EditionsPage() {
             <div className="bento-cell p-10 flex flex-col items-center gap-4 text-center">
               <Inbox className="h-10 w-10 text-muted-foreground/30" />
               <div>
-                <p className="font-semibold">No editions collections yet</p>
+                <p className="font-semibold">{t("No editions collections yet")}</p>
                 <p className="text-sm text-muted-foreground mt-1 max-w-xs">
-                  Create your first editions collection to start minting.
+                  {t("Create your first editions collection to start minting.")}
                 </p>
               </div>
               <Link
@@ -189,7 +194,7 @@ export function EditionsPage() {
                 className="flex items-center gap-2 h-9 px-4 rounded-xl text-sm font-semibold text-white bg-brand-purple hover:brightness-110 transition-colors"
               >
                 <Plus className="h-4 w-4" />
-                Create your first collection
+                {t("Create your first collection")}
               </Link>
             </div>
           </FadeIn>
@@ -197,7 +202,7 @@ export function EditionsPage() {
           <>
             <div className="flex items-center justify-between">
               <p className="text-sm font-medium text-muted-foreground">
-                {erc1155.length} collection{erc1155.length !== 1 ? "s" : ""}
+                {t.plural("{count} collection", "{count} collections", erc1155.length)}
               </p>
             </div>
             <Stagger className="space-y-3">

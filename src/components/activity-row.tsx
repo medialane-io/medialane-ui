@@ -14,6 +14,8 @@ import type { ApiActivity } from "@medialane/sdk";
 import { assetHref, profileHref } from "@medialane/sdk";
 import { useImageUrl } from "../utils/use-image-url.js";
 import { Skeleton } from "./skeleton.js";
+import { useT } from "../i18n/provider.js";
+import { useFormat } from "../i18n/use-format.js";
 
 const ACTIVITY_MESSAGES: Record<string, string> = {
   mint: "Newly minted",
@@ -63,6 +65,8 @@ export function ActivityRow({
   compact = false,
   explorerUrl = EXPLORER_URL,
 }: ActivityRowProps) {
+  const intl = useFormat();
+  const t = useT();
   const resolveImage = useImageUrl();
   const config = ACTIVITY_TYPE_CONFIG[activity.type] ?? {
     label: activity.type,
@@ -106,8 +110,8 @@ export function ActivityRow({
           config.bgClass,
           compact ? "h-7 w-7" : "h-8 w-8"
         )}
-        title={config.label}
-        aria-label={config.label}
+        title={t(config.label)}
+        aria-label={t(config.label)}
       >
         <Icon
           className={cn("shrink-0", config.colorClass, compact ? "h-3.5 w-3.5" : "h-4 w-4")}
@@ -187,7 +191,7 @@ export function ActivityRow({
 
         <span
           className="text-2xs text-muted-foreground tabular-nums hidden sm:block w-12 text-right"
-          title={new Date(activity.timestamp).toLocaleString()}
+          title={intl.dateTime(new Date(activity.timestamp))}
         >
           {timeAgo(activity.timestamp)}
         </span>
@@ -198,8 +202,8 @@ export function ActivityRow({
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center h-6 w-6 rounded-md hover:bg-muted transition-colors opacity-50 sm:opacity-0 sm:group-hover:opacity-100 shrink-0"
-            aria-label="View transaction on Voyager"
-            title="View on Voyager"
+            aria-label={t("View transaction on Voyager")}
+            title={t("View on Voyager")}
           >
             <ExternalLink className="h-3 w-3 text-muted-foreground" aria-hidden />
           </a>

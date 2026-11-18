@@ -16,6 +16,9 @@ import { EXPLORER_URL } from "../utils/explorer-url.js";
 import { formatDisplayPrice } from "../utils/format.js";
 import { timeAgo } from "../utils/time.js";
 import { cn } from "../utils/cn.js";
+import { useT } from "../i18n/provider.js";
+import type { T } from "../i18n/make-t.js";
+import { useFormat, type Format } from "../i18n/use-format.js";
 
 const PAGE_SIZE = 30;
 
@@ -28,20 +31,20 @@ const EVENT_TITLE: Record<string, string> = {
   cancelled: "Listing cancelled",
 };
 
-function dayLabel(iso: string): string {
+function dayLabel(iso: string, t: T, intl: Format): string {
   const date = new Date(iso);
   const today = new Date();
   const yesterday = new Date();
   yesterday.setDate(today.getDate() - 1);
-  if (date.toDateString() === today.toDateString()) return "Today";
-  if (date.toDateString() === yesterday.toDateString()) return "Yesterday";
-  return date.toLocaleDateString(undefined, { day: "numeric", month: "long", year: "numeric" });
+  if (date.toDateString() === today.toDateString()) return t("Today");
+  if (date.toDateString() === yesterday.toDateString()) return t("Yesterday");
+  return intl.date(date, { day: "numeric", month: "long", year: "numeric" });
 }
 
-function groupByDay(events: ApiActivity[]) {
+function groupByDay(events: ApiActivity[], t: T, intl: Format) {
   const groups: { label: string; events: ApiActivity[] }[] = [];
   for (const event of events) {
-    const label = dayLabel(event.timestamp);
+    const label = dayLabel(event.timestamp, t, intl);
     const last = groups[groups.length - 1];
     if (last && last.label === label) last.events.push(event);
     else groups.push({ label, events: [event] });
@@ -50,6 +53,8 @@ function groupByDay(events: ApiActivity[]) {
 }
 
 function ProvenanceEvent({ event, showAsset }: { event: ApiActivity; showAsset: boolean }) {
+  const intl = useFormat();
+  const t = useT();
   const resolveImage = useImageUrl();
   const config = ACTIVITY_TYPE_CONFIG[event.type];
   const Icon = config?.icon ?? ExternalLink;
@@ -65,7 +70,7 @@ function ProvenanceEvent({ event, showAsset }: { event: ApiActivity; showAsset: 
 
   const actorLink = actor ? (
     <span className="text-sm font-normal text-muted-foreground">
-      by{" "}
+      {t("by")}{" "}
       <Link
         href={profileHref({ address: actor })}
         className="font-medium text-foreground/80 hover:text-primary transition-colors"
@@ -147,7 +152,7 @@ function ProvenanceEvent({ event, showAsset }: { event: ApiActivity; showAsset: 
           </span>
         ) : null}
         <span className="flex items-center gap-1 text-xs text-muted-foreground">
-          <time dateTime={event.timestamp} title={new Date(event.timestamp).toLocaleString()}>
+          <time dateTime={event.timestamp} title={intl.dateTime(new Date(event.timestamp))}>
             {timeAgo(event.timestamp)}
           </time>
           {event.txHash ? (
@@ -156,7 +161,7 @@ function ProvenanceEvent({ event, showAsset }: { event: ApiActivity; showAsset: 
               target="_blank"
               rel="noopener noreferrer"
               className="rounded-md p-1 hover:bg-muted hover:text-foreground transition-colors"
-              aria-label="View transaction"
+              aria-label={t("View transaction")}
             >
               <ExternalLink className="h-3.5 w-3.5" aria-hidden />
             </a>
@@ -189,6 +194,8 @@ export interface CollectionProvenanceTabProps {
 }
 
 export function CollectionProvenanceTab({ contract }: CollectionProvenanceTabProps) {
+  const t = useT();
+  const intl = useFormat();
   const [page, setPage] = useState(1);
   const [all, setAll] = useState<ApiActivity[]>([]);
   const { activities, meta, isLoading } = useActivities({ contract, page, limit: PAGE_SIZE });
@@ -198,7 +205,7 @@ export function CollectionProvenanceTab({ contract }: CollectionProvenanceTabPro
     setAll((prev) => (page === 1 ? activities : [...prev, ...activities]));
   }, [activities, page]);
 
-  const groups = useMemo(() => groupByDay(all), [all]);
+  const groups = useMemo(() => groupByDay(all, t, intl), [all, t, intl]);
   const showAsset = useMemo(
     () => new Set(all.map((e) => e.nftTokenId ?? e.tokenId ?? "")).size > 1,
     [all]
@@ -211,9 +218,9 @@ export function CollectionProvenanceTab({ contract }: CollectionProvenanceTabPro
     return (
       <div className="py-20 flex flex-col items-center gap-3 text-center">
         <Inbox className="h-10 w-10 text-muted-foreground/40" />
-        <p className="text-sm font-medium text-muted-foreground">No history yet</p>
+        <p className="text-sm font-medium text-muted-foreground">{t("No history yet")}</p>
         <p className="text-xs text-muted-foreground/70 max-w-xs">
-          Mints, transfers, listings and sales will appear here as they happen.
+          {t("Mints, transfers, listings and sales will appear here as they happen.")}
         </p>
       </div>
     );
@@ -223,7 +230,7 @@ export function CollectionProvenanceTab({ contract }: CollectionProvenanceTabPro
     <div className="space-y-8">
       {groups.map((group) => (
         <section key={group.label}>
-          <h3 className="mb-3 font-display text-lg font-bold">{group.label}</h3>
+          <h3 className="mb-3 font-display text-lg font-bold">{t(group.label)}</h3>
           <ol className="grid gap-2.5 lg:grid-cols-2">
             {group.events.map((event, i) => (
               <ProvenanceEvent

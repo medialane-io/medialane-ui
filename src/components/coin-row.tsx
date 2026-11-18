@@ -10,6 +10,7 @@ import {
 } from "../data/coins.js";
 import { formatUsdPrice } from "../utils/format.js";
 import { useImageUrl } from "../utils/use-image-url.js";
+import { useT } from "../i18n/provider.js";
 
 export type CoinMarketStatus = "live" | "pre-launch" | "unavailable";
 
@@ -55,14 +56,15 @@ export function CoinAvatar({ collection, size = 36 }: { collection: CoinCollecti
 }
 
 function PriceCell({ price, status, isLoading }: { price: CoinPriceLike | null; status?: CoinMarketStatus; isLoading: boolean }) {
+  const t = useT();
   if (isLoading) return <span className="ml-auto block h-4 w-16 animate-pulse rounded bg-muted-foreground/20" />;
   if (!price) {
     return status === "pre-launch" ? (
-      <span className="block text-right text-xs text-muted-foreground">Not trading yet</span>
+      <span className="block text-right text-xs text-muted-foreground">{t("Not trading yet")}</span>
     ) : (
       <span
         className="block text-right text-muted-foreground"
-        title="No liquidity route was found for this coin on any Starknet DEX yet."
+        title={t("No liquidity route was found for this coin on any Starknet DEX yet.")}
       >
         —
       </span>
@@ -85,6 +87,7 @@ function PriceCell({ price, status, isLoading }: { price: CoinPriceLike | null; 
 }
 
 export function CoinRow({ collection, usePrice, href, showKind = false }: CoinRowProps) {
+  const t = useT();
   const { price, status, isLoading } = usePrice(collection);
 
   return (
@@ -99,7 +102,7 @@ export function CoinRow({ collection, usePrice, href, showKind = false }: CoinRo
       <span className="flex min-w-0 items-center gap-3">
         <CoinAvatar collection={collection} />
         <span className="min-w-0">
-          <span className="block truncate font-semibold leading-tight">{collection.name ?? "Untitled coin"}</span>
+          <span className="block truncate font-semibold leading-tight">{collection.name ?? t("Untitled coin")}</span>
           <span className="block truncate text-xs text-muted-foreground">
             {collection.symbol ?? "—"}
             {showKind && <span className="text-muted-foreground/60"> · {coinKindLabel(coinKind(collection.service))}</span>}

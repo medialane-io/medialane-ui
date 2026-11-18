@@ -19,6 +19,8 @@ import { IpTypeSection } from "../ip-type-section.js";
 import { collectionKey, mintableCollections, type MintAssetType } from "../mintable-collections.js";
 import { createThenAdd } from "../create-then-add.js";
 import { defineFormat, type FormatFieldsProps, type FormatResult, type FormatRuntime, type FormatShared } from "./types.js";
+import { useT } from "../../../i18n/provider.js";
+import { msg } from "../../../i18n/translate.js";
 
 interface NftState {
   mode: CollectionMode;
@@ -36,10 +38,10 @@ function assetLinks(contract: string | null, tokenId: string | null): FormatResu
   if (!contract || !tokenId) return [];
   const asset = `/asset/STARKNET/${contract}/${tokenId}`;
   return [
-    { href: asset, label: "View asset", icon: Eye },
-    { href: `${asset}?action=list`, label: "Sell on marketplace", icon: Tag },
-    { href: `${asset}?action=transfer`, label: "Transfer", icon: ArrowRightLeft },
-    { href: `/create/remix/${contract}/${tokenId}`, label: "Create a remix", icon: GitBranch },
+    { href: asset, label: msg("View asset"), icon: Eye },
+    { href: `${asset}?action=list`, label: msg("Sell on marketplace"), icon: Tag },
+    { href: `${asset}?action=transfer`, label: msg("Transfer"), icon: ArrowRightLeft },
+    { href: `/create/remix/${contract}/${tokenId}`, label: msg("Create a remix"), icon: GitBranch },
   ];
 }
 
@@ -76,11 +78,12 @@ function makeNftFormat(kind: MintAssetType) {
   const copy = getMintFormatCopy(single ? "nfts" : "limited-editions");
 
   function Fields({ shared, state, update }: FormatFieldsProps<NftState>) {
+  const t = useT();
     return (
       <>
         {!single && (
           <div className="space-y-2">
-            <label className="text-sm font-medium" htmlFor="fast-mint-copies">Number of copies</label>
+            <label className="text-sm font-medium" htmlFor="fast-mint-copies">{t("Number of copies")}</label>
             <Input
               id="fast-mint-copies"
               type="number"
@@ -121,7 +124,7 @@ function makeNftFormat(kind: MintAssetType) {
     title: copy.name,
     hint: copy.hint,
     icon: single ? ImagePlus : Layers,
-    submitLabel: () => (single ? "Mint NFT" : "Mint Editions"),
+    submitLabel: () => (single ? msg("Mint NFT") : msg("Mint Editions")),
     initial: () => ({ mode: "existing", existingId: "", existingContract: "", editionCount: "10" }),
     Fields,
     isReady: (shared, state) => {

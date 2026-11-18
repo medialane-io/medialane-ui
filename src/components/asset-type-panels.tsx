@@ -5,6 +5,9 @@ import { CalendarX2, CheckCircle2, Clock, Infinity as InfinityIcon, Ticket, User
 import { useIsMemberOf, useMembershipOnchain, useTicketOnchain, type TierOnchain } from "../utils/use-tiers.js";
 import { useMedialaneApp } from "./medialane-app.js";
 import { cn } from "../utils/cn.js";
+import { useT } from "../i18n/provider.js";
+import type { T } from "../i18n/make-t.js";
+import { useFormat, type Format } from "../i18n/use-format.js";
 
 type TierStatus = "upcoming" | "active" | "ended" | "always";
 
@@ -19,12 +22,13 @@ function tierStatus(t: TierOnchain): TierStatus {
   return "active";
 }
 
-const fmtDate = (ts: number) => new Date(ts * 1000).toLocaleString(undefined, { dateStyle: "medium", timeStyle: "short" });
+const STYLED = { dateStyle: "medium", timeStyle: "short" } as const;
 
-function windowLabel(t: TierOnchain): string | null {
-  if (t.startTime != null && t.endTime != null) return `${fmtDate(t.startTime)} – ${fmtDate(t.endTime)}`;
-  if (t.startTime != null) return `From ${fmtDate(t.startTime)}`;
-  if (t.endTime != null) return `Until ${fmtDate(t.endTime)}`;
+function windowLabel(tier: TierOnchain, t: T, intl: Format): string | null {
+  const when = (ts: number) => intl.dateTime(ts * 1000, STYLED);
+  if (tier.startTime != null && tier.endTime != null) return t("{from} – {until}", { from: when(tier.startTime), until: when(tier.endTime) });
+  if (tier.startTime != null) return t("From {date}", { date: when(tier.startTime) });
+  if (tier.endTime != null) return t("Until {date}", { date: when(tier.endTime) });
   return null;
 }
 
@@ -45,8 +49,10 @@ function TierPanel({
   labels: Partial<Record<TierStatus, string>>;
   footer?: React.ReactNode;
 }) {
+  const t = useT();
+  const intl = useFormat();
   const status = tierStatus(tier);
-  const window = windowLabel(tier);
+  const window = windowLabel(tier, t, intl);
   const StatusIcon = STATUS_ICON[status];
   return (
     <div className="rounded-2xl bg-gradient-to-br from-muted/40 to-transparent p-4 space-y-3">
@@ -75,6 +81,7 @@ export interface AssetTypePanelProps {
 }
 
 export function TicketPanel({ contract, tokenId }: AssetTypePanelProps) {
+  const t = useT();
   const { ticket } = useTicketOnchain(contract, tokenId);
   if (!ticket) return null;
   return (
@@ -82,13 +89,14 @@ export function TicketPanel({ contract, tokenId }: AssetTypePanelProps) {
       tier={ticket}
       icon={Ticket}
       iconClassName="text-brand-blue"
-      title="Ticket"
+      title={t("Ticket")}
       labels={{ upcoming: "Upcoming", active: "Happening now", ended: "Ended" }}
     />
   );
 }
 
 export function MembershipPanel({ contract, tokenId, quantityOwned }: AssetTypePanelProps) {
+  const t = useT();
   const { walletAddress } = useMedialaneApp();
   const { membership } = useMembershipOnchain(contract, tokenId);
   const { isMember } = useIsMemberOf(contract, tokenId, walletAddress);
@@ -101,19 +109,19 @@ export function MembershipPanel({ contract, tokenId, quantityOwned }: AssetTypeP
       tier={membership}
       icon={Users}
       iconClassName="text-brand-purple"
-      title="Membership"
+      title={t("Membership")}
       labels={{ upcoming: "Upcoming", active: "Active", ended: "Ended", always: "Lifetime" }}
       footer={cards > 0 ? (
         <div className="flex items-center gap-2 border-t border-border/60 pt-3">
           {isMember ? (
             <>
               <CheckCircle2 className="h-4 w-4 text-teal-500" />
-              <p className="text-sm font-medium">Active member · {cardLabel}</p>
+              <p className="text-sm font-medium">{t("Active member · {cardLabel}", { cardLabel })}</p>
             </>
           ) : (
             <>
               <Clock className="h-4 w-4 text-muted-foreground" />
-              <p className="text-sm text-muted-foreground">{status === "upcoming" ? "Starts soon" : "Ended"} · {cardLabel}</p>
+              <p className="text-sm text-muted-foreground">{status === "upcoming" ? t("Starts soon") : t("Ended")} · {cardLabel}</p>
             </>
           )}
         </div>

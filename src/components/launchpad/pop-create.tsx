@@ -21,8 +21,10 @@ import { claimEndTimestamp, popEventAttributes, popEventIntent } from "../../uti
 import { uploadJsonToIpfs } from "../../utils/ipfs-upload.js";
 import { useTransaction } from "../../utils/use-transaction.js";
 import { useLaunchpadImageUpload } from "../../utils/use-launchpad-image-upload.js";
+import { useT } from "../../i18n/provider.js";
 
 export function PopCreate({ aside }: { aside?: ReactNode }) {
+  const t = useT();
   const app = useMedialaneApp();
   const walletAddress = app.walletAddress;
   const tx = useTransaction();
@@ -97,16 +99,16 @@ export function PopCreate({ aside }: { aside?: ReactNode }) {
     <WalletRequired
       icon={Award}
       iconClassName="text-green-500"
-      title="Secure an account to create a POP event"
-      description="A secured account is needed to deploy a certificate collection onchain."
+      title={t("Secure an account to create a POP event")}
+      description={t("A secured account is needed to deploy a certificate collection onchain.")}
     >
-      <TransactionDialog tx={tx} title="Create POP event" workingLabel="Creating the POP event…" firstStepLabel="Upload certificate metadata">
+      <TransactionDialog tx={tx} title={t("Create POP event")} workingLabel="Creating the POP event…" firstStepLabel="Upload certificate metadata">
         <TransactionSuccess
           name={eventName || "New event"}
           image={imagePreview}
-          title="Event created"
-          description="Immutable digital asset certificates, recorded onchain."
-          actions={[{ href: "/launchpad/pop", label: "Back to POP launchpad" }, { label: "Create another", onClick: handleAgain }]}
+          title={t("Event created")}
+          description={t("Immutable digital asset certificates, recorded onchain.")}
+          actions={[{ href: "/launchpad/pop", label: t("Back to POP launchpad") }, { label: t("Create another"), onClick: handleAgain }]}
         >
           <RewardEarned actionType="launch_launchpad" />
         </TransactionSuccess>
@@ -114,8 +116,8 @@ export function PopCreate({ aside }: { aside?: ReactNode }) {
 
       <ClaimRouteShell
         icon={<Award className="h-4 w-4 text-white" />}
-        title="Create a POP Event"
-        subtitle="Immutable digital asset certificates — free to publish."
+        title={t("Create a POP Event")}
+        subtitle={t("Immutable digital asset certificates — free to publish.")}
         aside={
           <>
             <MedialaneCollectionCard

@@ -14,6 +14,7 @@ import { cn } from "../utils/cn.js";
 import { HelpIcon } from "./help-icon.js";
 import { AssetAccessButtons, CompanionAppButton } from "./asset-access-cards.js";
 import { useMedialaneApp, type AssetRef } from "./medialane-app.js";
+import { useT } from "../i18n/provider.js";
 
 export interface ApiOrderLike {
   orderHash: string;
@@ -100,6 +101,7 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
   onOpenRemix,
   onProposeDeal,
 }: AssetMarketplacePanelProps<T>) {
+  const t = useT();
   const { walletAddress } = useMedialaneApp();
   const isSignedIn = !!walletAddress;
   const liveBids = activeBids.filter((bid) => !isExpired(bid.endTime));
@@ -130,19 +132,19 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
       onClick={onOpenRemix}
       helpContent="Create your own attributed derivative of this work."
     >
-      Remix
+      {t("Remix")}
     </ActionButton>
   ) : null;
 
   const offerButton = (
     <ActionButton action="offer" icon={<HandCoins className="h-4 w-4" />} onClick={onOpenOffer}>
-      Make offer
+      {t("Make offer")}
     </ActionButton>
   );
 
   const buyButton = liveCheapest && (!isOwner || canBuyMore) ? (
     <ActionButton action="buy" onClick={() => onOpenPurchase(liveCheapest)}>
-      Buy now
+      {t("Buy now")}
     </ActionButton>
   ) : null;
 
@@ -169,15 +171,15 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
                   tone="red"
                   helpContent={`Expires ${timeUntil(liveMyListing.endTime)}`}
                 >
-                  Cancel listing
+                  {t("Cancel listing")}
                 </ActionButton>
               ) : null}
               {!liveMyListing || (isERC1155 && canListMoreEditions !== false) ? (
                 <ActionButton tone="blue" icon={<Tag className="h-4 w-4" />} onClick={onOpenListing}>
-                  {liveMyListing ? "Sell more" : "Sell"}
+                  {liveMyListing ? t("Sell more") : t("Sell")}
                 </ActionButton>
               ) : null}
-              <ActionButton tone="orange" icon={<ArrowRightLeft className="h-4 w-4" />} onClick={onOpenTransfer}>Transfer</ActionButton>
+              <ActionButton tone="orange" icon={<ArrowRightLeft className="h-4 w-4" />} onClick={onOpenTransfer}>{t("Transfer")}</ActionButton>
               {remixButton}
               {showSponsorSolicitOption && onOpenSponsorSolicit ? (
                 <ActionButton
@@ -186,7 +188,7 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
                   onClick={onOpenSponsorSolicit}
                   helpContent="Let sponsors bid on a license for this asset."
                 >
-                  Open for sponsorship
+                  {t("Open for sponsorship")}
                 </ActionButton>
               ) : null}
             </ActionRow>
@@ -212,7 +214,7 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
                     onClick={onProposeDeal}
                     helpContent="Propose a license deal to the creator to use this work."
                   >
-                    License
+                    {t("License")}
                   </ActionButton>
                 ) : null}
                 {showSponsorOption && onOpenSponsorProposal ? (
@@ -222,7 +224,7 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
                     onClick={onOpenSponsorProposal}
                     helpContent="Propose to sponsor this creator's work — pay them directly for a license, no escrow."
                   >
-                    Sponsor
+                    {t("Sponsor")}
                   </ActionButton>
                 ) : null}
               </ActionRow>
@@ -237,7 +239,7 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
             <div className="min-w-0 flex items-center gap-2.5">
               <HandCoins className="h-4 w-4 text-amber-500 shrink-0" />
               <div className="min-w-0">
-                <p className="text-xs font-semibold text-amber-500">Your active offer</p>
+                <p className="text-xs font-semibold text-amber-500">{t("Your active offer")}</p>
                 <p className="text-xs text-muted-foreground flex items-center gap-1.5 mt-0.5">
                   <PriceDisplay amountFormatted={myBid.price.formatted} currency={myBid.price.currency} scale="row" />
                   <span>·</span>
@@ -251,16 +253,14 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
               onClick={() => onCancelClick(myBid)}
             >
               <X className="h-3.5 w-3.5" />
-              Cancel
+              {t("Cancel")}
             </button>
           </div>
         ) : null}
 
         {isOwner && liveBids.length > 0 ? (
           <div className="space-y-2">
-            <p className="text-xs font-semibold text-muted-foreground">
-              Incoming offers ({liveBids.length})
-            </p>
+            <p className="text-xs font-semibold text-muted-foreground">{t("Incoming offers ({count})", { count: liveBids.length })}</p>
             <div className="divide-y divide-border/40">
               {liveBids.map((bid) => (
                 <div key={bid.orderHash} className="flex items-center justify-between gap-3 py-2.5">
@@ -283,7 +283,7 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
                     className="inline-flex items-center gap-1.5 rounded-lg bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground disabled:opacity-50"
                   >
                     <CheckCircle className="h-3.5 w-3.5" />
-                    Accept
+                    {t("Accept")}
                   </button>
                 </div>
               ))}

@@ -3,6 +3,7 @@
 import { cn } from "../utils/cn.js";
 import { CurrencyIcon } from "./currency-icon.js";
 import { LICENSE_TYPES, AI_POLICIES } from "../data/ip.js";
+import { useT } from "../i18n/provider.js";
 
 export const DURATION_UNITS = ["Days", "Weeks", "Months", "Years"] as const;
 export type DurationUnit = (typeof DURATION_UNITS)[number];
@@ -141,6 +142,7 @@ function YesNoToggle({ label, help, checked, onChange, disabled }: { label: stri
 export function LicenseTermsBuilder({
   value, onChange, tokenOptions, amountLabel = "Amount", disabled, className,
 }: LicenseTermsBuilderProps) {
+  const t = useT();
   const set = <K extends keyof SponsorshipTerms>(key: K, v: SponsorshipTerms[K]) =>
     onChange({ ...value, [key]: v });
 
@@ -177,7 +179,7 @@ export function LicenseTermsBuilder({
       </div>
 
       <div className="space-y-1.5">
-        <label className={FIELD_LABEL}>Currency</label>
+        <label className={FIELD_LABEL}>{t("Currency")}</label>
         <div className="grid grid-cols-3 sm:grid-cols-5 gap-1.5">
           {tokenOptions.map((symbol) => (
             <button
@@ -209,13 +211,13 @@ export function LicenseTermsBuilder({
           className="mt-0.5 h-4 w-4 rounded border-border text-brand-purple focus:ring-brand-purple/40"
         />
         <span className="text-sm">
-          <span className="font-medium">Sponsor can resell this license</span>
-          <span className={cn(FIELD_HELP, "block")}>Off means it&apos;s meant to stay with the sponsor who accepts it — resale still isn&apos;t blocked on-chain, this is just the stated intent.</span>
+          <span className="font-medium">{t("Sponsor can resell this license")}</span>
+          <span className={cn(FIELD_HELP, "block")}>{t("Off means it's meant to stay with the sponsor who accepts it — resale still isn't blocked on-chain, this is just the stated intent.")}</span>
         </span>
       </label>
 
       <div className="space-y-1.5">
-        <label className={FIELD_LABEL}>License length</label>
+        <label className={FIELD_LABEL}>{t("License length")}</label>
         <div className="grid grid-cols-[1fr_auto] gap-2">
           <input
             type="number"
@@ -237,11 +239,11 @@ export function LicenseTermsBuilder({
             ))}
           </select>
         </div>
-        <p className={FIELD_HELP}>Counted from the moment the deal is accepted, not from today.</p>
+        <p className={FIELD_HELP}>{t("Counted from the moment the deal is accepted, not from today.")}</p>
       </div>
 
       <div className="space-y-1.5">
-        <label className={FIELD_LABEL}>License type</label>
+        <label className={FIELD_LABEL}>{t("License type")}</label>
         <select
           disabled={disabled}
           value={value.licenseType}
@@ -249,41 +251,41 @@ export function LicenseTermsBuilder({
           className={INPUT_BASE}
         >
           {LICENSE_TYPES.map((l) => (
-            <option key={l.value} value={l.value}>{l.label}</option>
+            <option key={l.value} value={l.value}>{t(l.label)}</option>
           ))}
         </select>
-        {selectedLicense ? <p className={FIELD_HELP}>{selectedLicense.description}</p> : null}
+        {selectedLicense ? <p className={FIELD_HELP}>{t(selectedLicense.description)}</p> : null}
       </div>
 
       <div className="space-y-1.5">
-        <label className={FIELD_LABEL}>Commercial use</label>
+        <label className={FIELD_LABEL}>{t("Commercial use")}</label>
         <ToggleGroup value={value.commercialUse} options={["Yes", "No"]} onChange={(v) => set("commercialUse", v as SponsorshipTerms["commercialUse"])} disabled={disabled} />
       </div>
 
       <div className="space-y-1.5">
-        <label className={FIELD_LABEL}>Derivatives</label>
+        <label className={FIELD_LABEL}>{t("Derivatives")}</label>
         <ToggleGroup value={value.derivatives} options={["Allowed", "Not Allowed", "Share-Alike"]} onChange={(v) => set("derivatives", v as SponsorshipTerms["derivatives"])} disabled={disabled} />
       </div>
 
       <div className="space-y-1.5">
-        <label className={FIELD_LABEL}>Attribution</label>
+        <label className={FIELD_LABEL}>{t("Attribution")}</label>
         <ToggleGroup value={value.attribution} options={["Required", "Not Required"]} onChange={(v) => set("attribution", v as SponsorshipTerms["attribution"])} disabled={disabled} />
       </div>
 
       <div className="space-y-1.5">
-        <label className={FIELD_LABEL}>Territory <span className="font-normal text-muted-foreground">(optional)</span></label>
+        <label className={FIELD_LABEL}>{t("Territory")} <span className="font-normal text-muted-foreground">{t("(optional)")}</span></label>
         <input
           type="text"
           disabled={disabled}
           value={value.territory}
           onChange={(e) => set("territory", e.target.value)}
-          placeholder="e.g. Worldwide, Brazil only, excluding China"
+          placeholder={t("e.g. Worldwide, Brazil only, excluding China")}
           className={INPUT_BASE}
         />
       </div>
 
       <div className="space-y-1.5">
-        <label className={FIELD_LABEL}>AI policy</label>
+        <label className={FIELD_LABEL}>{t("AI policy")}</label>
         <select
           disabled={disabled}
           value={value.aiPolicy}
@@ -294,35 +296,35 @@ export function LicenseTermsBuilder({
             <option key={p} value={p}>{p}</option>
           ))}
         </select>
-        <p className={FIELD_HELP}>Whether this work can be used to train AI models.</p>
+        <p className={FIELD_HELP}>{t("Whether this work can be used to train AI models.")}</p>
       </div>
 
       <div className="space-y-1.5">
-        <label className={FIELD_LABEL}>Scope <span className="font-normal text-muted-foreground">(optional)</span></label>
+        <label className={FIELD_LABEL}>{t("Scope")} <span className="font-normal text-muted-foreground">{t("(optional)")}</span></label>
         <input
           type="text"
           disabled={disabled}
           value={value.scope}
           onChange={(e) => set("scope", e.target.value)}
-          placeholder="e.g. Instagram + YouTube only"
+          placeholder={t("e.g. Instagram + YouTube only")}
           className={INPUT_BASE}
         />
       </div>
 
       <div className="space-y-1.5">
-        <label className={FIELD_LABEL}>Deliverables <span className="font-normal text-muted-foreground">(optional)</span></label>
+        <label className={FIELD_LABEL}>{t("Deliverables")} <span className="font-normal text-muted-foreground">{t("(optional)")}</span></label>
         <textarea
           disabled={disabled}
           value={value.deliverables}
           onChange={(e) => set("deliverables", e.target.value)}
-          placeholder="e.g. 3 posts, 1 video"
+          placeholder={t("e.g. 3 posts, 1 video")}
           rows={2}
           className={cn(INPUT_BASE, "h-auto py-2.5 resize-y")}
         />
       </div>
 
       <YesNoToggle
-        label="Exclusive to this sponsor"
+        label={t("Exclusive to this sponsor")}
         help="No other sponsors during the license term."
         checked={value.exclusive}
         onChange={(v) => set("exclusive", v)}
@@ -330,7 +332,7 @@ export function LicenseTermsBuilder({
       />
 
       <YesNoToggle
-        label="Content approval required"
+        label={t("Content approval required")}
         help="Sponsor reviews content before it's published."
         checked={value.approvalRequired}
         onChange={(v) => set("approvalRequired", v)}
@@ -338,7 +340,7 @@ export function LicenseTermsBuilder({
       />
 
       <div className="space-y-1.5">
-        <label className={FIELD_LABEL}>Media <span className="font-normal text-muted-foreground">(optional)</span></label>
+        <label className={FIELD_LABEL}>{t("Media")} <span className="font-normal text-muted-foreground">{t("(optional)")}</span></label>
         <div className="flex flex-wrap gap-1.5">
           {MEDIA_TYPES.map((m) => (
             <button
@@ -362,22 +364,22 @@ export function LicenseTermsBuilder({
           disabled={disabled}
           value={value.mediaOther}
           onChange={(e) => set("mediaOther", e.target.value)}
-          placeholder="Other media type"
+          placeholder={t("Other media type")}
           className={cn(INPUT_BASE, "mt-1.5")}
         />
       </div>
 
       <div className="space-y-1.5">
-        <label className={FIELD_LABEL}>Additional terms <span className="font-normal text-muted-foreground">(optional)</span></label>
+        <label className={FIELD_LABEL}>{t("Additional terms")} <span className="font-normal text-muted-foreground">{t("(optional)")}</span></label>
         <textarea
           disabled={disabled}
           value={value.licenseText}
           onChange={(e) => set("licenseText", e.target.value)}
-          placeholder="Anything else worth spelling out."
+          placeholder={t("Anything else worth spelling out.")}
           rows={3}
           className={cn(INPUT_BASE, "h-auto py-2.5 resize-y")}
         />
-        <p className={FIELD_HELP}>Saved permanently and shown to anyone who holds the license.</p>
+        <p className={FIELD_HELP}>{t("Saved permanently and shown to anyone who holds the license.")}</p>
       </div>
     </div>
   );

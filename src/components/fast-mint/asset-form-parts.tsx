@@ -9,6 +9,7 @@ import { acceptFor } from "../../utils/upload-limits.js";
 import { cn } from "../../utils/cn.js";
 import type { FormatDefinition, MintFormat } from "./formats/types.js";
 import type { MediaKind } from "./types.js";
+import { useT } from "../../i18n/provider.js";
 
 const MEDIA_KIND_ICON: Record<MediaKind, typeof ImagePlus> = {
   image: ImagePlus,
@@ -29,6 +30,7 @@ export function MediaRow({
   inputRef: RefObject<HTMLInputElement | null>;
   onSelect: (file: File) => void;
 }) {
+  const t = useT();
   const KindIcon = MEDIA_KIND_ICON[kind];
   const template = IP_TEMPLATES[ipType];
   const TemplateIcon = template.icon;
@@ -52,7 +54,7 @@ export function MediaRow({
         <p className="text-sm font-semibold truncate">{file.name}</p>
         <div className="flex items-center gap-2 flex-wrap">
           <p className="text-xs text-muted-foreground">
-            {uploading ? "Uploading…" : uri ? "Uploaded" : "Upload failed"}
+            {uploading ? t("Uploading…") : uri ? t("Uploaded") : t("Upload failed")}
           </p>
           {uri && (
             <span
@@ -62,7 +64,7 @@ export function MediaRow({
               )}
             >
               <TemplateIcon className="h-3 w-3" />
-              {template.label}
+              {t(template.label)}
             </span>
           )}
         </div>
@@ -72,7 +74,7 @@ export function MediaRow({
         onClick={() => inputRef.current?.click()}
         className="text-xs font-semibold text-brand-blue hover:underline shrink-0"
       >
-        Change
+        {t("Change")}
       </button>
       <input ref={inputRef} type="file" className="hidden" onChange={(e) => { const f = e.target.files?.[0]; if (f) onSelect(f); }} />
     </div>
@@ -87,9 +89,10 @@ export function CoverUpload({
   inputRef: RefObject<HTMLInputElement | null>;
   onSelect: (file: File) => void;
 }) {
+  const t = useT();
   return (
     <div className="space-y-2">
-      <label className="text-sm font-medium">Upload a cover image for your asset *</label>
+      <label className="text-sm font-medium">{t("Upload a cover image for your asset *")}</label>
       <div className="flex items-center gap-4">
         <div
           role="button"
@@ -110,7 +113,7 @@ export function CoverUpload({
           )}
           <input ref={inputRef} type="file" accept={acceptFor("image")} className="hidden" onChange={(e) => { const f = e.target.files?.[0]; if (f) onSelect(f); }} />
         </div>
-        <p className="text-xs text-muted-foreground">Cover art shown wherever the work is previewed. JPG, PNG, GIF, SVG or WebP.</p>
+        <p className="text-xs text-muted-foreground">{t("Cover art shown wherever the work is previewed. JPG, PNG, GIF, SVG or WebP.")}</p>
       </div>
     </div>
   );
@@ -123,9 +126,10 @@ export function FormatPicker({
   value: MintFormat;
   onChange: (format: MintFormat) => void;
 }) {
+  const t = useT();
   return (
     <div className="space-y-2">
-      <label className="text-sm font-medium" id="fast-mint-format">What do you want to make with it?</label>
+      <label className="text-sm font-medium" id="fast-mint-format">{t("What do you want to make with it?")}</label>
       <div role="radiogroup" aria-labelledby="fast-mint-format" className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         {formats.map(({ key, icon: Icon, title, hint }) => (
           <button
@@ -139,8 +143,8 @@ export function FormatPicker({
           >
             <Icon className={cn("h-5 w-5 shrink-0 mt-0.5", value === key ? "text-brand-blue" : "text-muted-foreground")} />
             <span>
-              <span className="block text-sm font-semibold">{title}</span>
-              <span className="block text-xs mt-0.5 text-muted-foreground">{hint}</span>
+              <span className="block text-sm font-semibold">{t(title)}</span>
+              <span className="block text-xs mt-0.5 text-muted-foreground">{t(hint)}</span>
             </span>
           </button>
         ))}

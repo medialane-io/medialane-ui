@@ -10,6 +10,7 @@ import { Input } from "./input.js";
 import { useMedialaneClient } from "../utils/use-medialane-client.js";
 import { useDebouncedValue } from "../utils/use-debounced-value.js";
 import { useImageUrl } from "../utils/use-image-url.js";
+import { useT } from "../i18n/provider.js";
 
 export function SearchInput({ value, onClear, ...props }: ComponentProps<typeof Input> & { value: string; onClear: () => void }) {
   return (
@@ -29,6 +30,7 @@ export function SearchInput({ value, onClear, ...props }: ComponentProps<typeof 
 }
 
 export function MarketplaceSearch() {
+  const t = useT();
   const resolveImage = useImageUrl();
   const client = useMedialaneClient();
   const router = useRouter();
@@ -72,7 +74,7 @@ export function MarketplaceSearch() {
   return (
     <div className="relative w-full sm:max-w-sm">
       <SearchInput
-        placeholder="Search creative works"
+        placeholder={t("Search creative works")}
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         onKeyDown={handleKeyDown}
@@ -89,7 +91,7 @@ export function MarketplaceSearch() {
           {(results.tokens?.length ?? 0) > 0 && (
             <div>
               <div className="px-3 py-1.5 text-2xs font-semibold text-muted-foreground bg-muted/30">
-                Tokens
+                {t("Tokens")}
               </div>
               {results.tokens!.map((t) => {
                 const img = resolveImage(t.image);
@@ -114,7 +116,7 @@ export function MarketplaceSearch() {
           {(results.collections?.length ?? 0) > 0 && (
             <div>
               <div className="px-3 py-1.5 text-2xs font-semibold text-muted-foreground bg-muted/30">
-                Collections
+                {t("Collections")}
               </div>
               {results.collections!.map((c) => {
                 const imgUrl = resolveImage(c.image);

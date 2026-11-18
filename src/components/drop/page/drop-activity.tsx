@@ -3,9 +3,11 @@
 import type { ApiDropMint } from "@medialane/sdk";
 import { AddressDisplay } from "../../address-display.js";
 import { timeAgo } from "../../../utils/time.js";
+import { useT } from "../../../i18n/provider.js";
 
 export function DropActivityList({ mints }: { mints: ApiDropMint[] }) {
-  if (mints.length === 0) return <p className="py-8 text-center text-sm text-muted-foreground">No mints yet.</p>;
+  const t = useT();
+  if (mints.length === 0) return <p className="py-8 text-center text-sm text-muted-foreground">{t("No mints yet.")}</p>;
   return (
     <ul className="divide-y divide-border/60">
       {mints.map((m) => (

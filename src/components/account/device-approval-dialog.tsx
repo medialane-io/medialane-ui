@@ -9,6 +9,7 @@ import { Alert, AlertDescription } from "../alert.js";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "../dialog.js";
 import { describeError } from "../../utils/describe-error.js";
 import type { DeviceWallet, LoadSealedOwner } from "./wallet-types.js";
+import { useT } from "../../i18n/provider.js";
 
 export interface DeviceApprovalDialogProps {
   open: boolean;
@@ -19,6 +20,7 @@ export interface DeviceApprovalDialogProps {
 }
 
 export function DeviceApprovalDialog({ open, onOpenChange, onApproved, wallet, loadSealed }: DeviceApprovalDialogProps) {
+  const t = useT();
   const [raw, setRaw] = useState("");
   const [pending, setPending] = useState<PairingPayload | null>(null);
   const [busy, setBusy] = useState(false);
@@ -66,10 +68,9 @@ export function DeviceApprovalDialog({ open, onOpenChange, onApproved, wallet, l
     >
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Add a device</DialogTitle>
+          <DialogTitle>{t("Add a device")}</DialogTitle>
           <DialogDescription>
-            On the new device, sign in and choose &ldquo;Add this device&rdquo;. Paste the code it
-            shows you here.
+            {t("On the new device, sign in and choose “Add this device”. Paste the code it shows you here.")}
           </DialogDescription>
         </DialogHeader>
 
@@ -78,15 +79,14 @@ export function DeviceApprovalDialog({ open, onOpenChange, onApproved, wallet, l
             <Alert>
               <TriangleAlert className="h-4 w-4" />
               <AlertDescription>
-                This gives the device full control of your account and everything in it. Only
-                continue if you are holding it yourself.
+                {t("This gives the device full control of your account and everything in it. Only continue if you are holding it yourself.")}
               </AlertDescription>
             </Alert>
 
             <div className="rounded-xl bg-muted/50 p-4 space-y-2">
               <div className="flex items-center gap-2">
                 <Smartphone className="h-4 w-4 text-muted-foreground" />
-                <span className="font-medium">{pending.label || "Unnamed device"}</span>
+                <span className="font-medium">{pending.label || t("Unnamed device")}</span>
               </div>
               <p className="break-all font-mono text-xs text-muted-foreground">
                 {pending.publicKey}
@@ -97,10 +97,10 @@ export function DeviceApprovalDialog({ open, onOpenChange, onApproved, wallet, l
 
             <div className="flex gap-2">
               <Button variant="outline" className="flex-1" onClick={reset} disabled={busy}>
-                Back
+                {t("Back")}
               </Button>
               <Button className="flex-1" onClick={approve} disabled={busy}>
-                {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : "Approve device"}
+                {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : t("Approve device")}
               </Button>
             </div>
           </div>
@@ -109,13 +109,13 @@ export function DeviceApprovalDialog({ open, onOpenChange, onApproved, wallet, l
             <Textarea
               value={raw}
               onChange={(e) => setRaw(e.target.value)}
-              placeholder="Paste the code from your other device"
+              placeholder={t("Paste the code from your other device")}
               rows={4}
               className="font-mono text-xs"
             />
             {error ? <p className="text-sm text-destructive">{error}</p> : null}
             <Button className="w-full" onClick={review} disabled={!raw.trim()}>
-              Review device
+              {t("Review device")}
             </Button>
           </div>
         )}

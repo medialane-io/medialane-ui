@@ -17,6 +17,7 @@ import { runIntentCalls } from "../utils/run-intent-calls.js";
 import { successMessages } from "../utils/success-messages.js";
 import { useCollection } from "../utils/use-collections.js";
 import { useTransaction } from "../utils/use-transaction.js";
+import { useT } from "../i18n/provider.js";
 
 function parseAddresses(raw: string): string[] {
   return raw
@@ -39,6 +40,7 @@ function IssueSection({
   onIssue: (address: string) => void;
   isSubmitting: boolean;
 }) {
+  const t = useT();
   const [raw, setRaw] = useState("");
   const address = raw.trim();
   const valid = /^0x[0-9a-fA-F]{1,64}$/.test(address);
@@ -47,11 +49,10 @@ function IssueSection({
     <div className="bento-cell p-5 space-y-3">
       <div className="flex items-center gap-2">
         <Award className="h-4 w-4 text-green-500" />
-        <span className="font-semibold text-sm">Issue directly</span>
+        <span className="font-semibold text-sm">{t("Issue directly")}</span>
       </div>
       <p className="text-xs text-muted-foreground">
-        Send the certificate straight to one wallet — for a late participant, without republishing the list or
-        changing anyone&apos;s claim link.
+        {t("Send the certificate straight to one wallet — for a late participant, without republishing the list or changing anyone's claim link.")}
       </p>
       <input
         type="text"
@@ -71,7 +72,7 @@ function IssueSection({
         }}
       >
         <Send className="h-3.5 w-3.5 mr-1.5" />
-        Issue certificate
+        {t("Issue certificate")}
       </Button>
     </div>
   );
@@ -86,6 +87,7 @@ function AllowlistSection({
   isSubmitting: boolean;
   links: PopClaimLink[] | null;
 }) {
+  const t = useT();
   const [raw, setRaw] = useState("");
   const parsed = parseAddresses(raw);
 
@@ -93,20 +95,18 @@ function AllowlistSection({
     <div className="bento-cell p-5 space-y-3">
       <div className="flex items-center gap-2">
         <Users className="h-4 w-4 text-green-500" />
-        <span className="font-semibold text-sm">Participants</span>
+        <span className="font-semibold text-sm">{t("Participants")}</span>
         {parsed.length > 0 && (
           <span className="ml-auto text-xs text-muted-foreground">
-            {parsed.length} address{parsed.length !== 1 ? "es" : ""}
+            {t.plural("{count} address", "{count} addresses", parsed.length)}
           </span>
         )}
       </div>
       <p className="text-xs text-muted-foreground">
-        Paste every participant&apos;s wallet address. Publishing replaces the previous list and every link
-        sent before it — send the new links to everyone who hasn&apos;t claimed yet. The list stays in this
-        browser: download the claim links and send each participant theirs.
+        {t("Paste every participant's wallet address. Publishing replaces the previous list and every link sent before it — send the new links to everyone who hasn't claimed yet. The list stays in this browser: download the claim links and send each participant theirs.")}
       </p>
       <Textarea
-        placeholder={"Paste Starknet addresses, one per line:\n0x04a...\n0x06b..."}
+        placeholder={t("Paste Starknet addresses, one per line:\n0x04a...\n0x06b...")}
         rows={8}
         value={raw}
         onChange={(e) => setRaw(e.target.value)}
@@ -121,12 +121,12 @@ function AllowlistSection({
         {isSubmitting ? (
           <>
             <Loader2 className="h-3.5 w-3.5 animate-spin mr-1.5" />
-            Publishing…
+            {t("Publishing…")}
           </>
         ) : (
           <>
             <CheckCircle2 className="h-3.5 w-3.5 mr-1.5" />
-            Publish {parsed.length > 0 ? `${parsed.length} participant${parsed.length !== 1 ? "s" : ""}` : "participants"}
+            {t("Publish")} {parsed.length > 0 ? `${parsed.length} participant${parsed.length !== 1 ? "s" : ""}` : t("participants")}
           </>
         )}
       </Button>
@@ -134,7 +134,7 @@ function AllowlistSection({
         <div className="space-y-2 pt-2">
           <Button variant="outline" size="sm" className="w-full" onClick={() => downloadCsv(links)}>
             <Download className="h-3.5 w-3.5 mr-1.5" />
-            Download claim links (CSV)
+            {t("Download claim links (CSV)")}
           </Button>
           <ul className="max-h-48 overflow-auto text-xs tabular-nums space-y-1 text-muted-foreground">
             {links.map((link) => (
@@ -148,6 +148,7 @@ function AllowlistSection({
 }
 
 export function PopManagePage({ contract }: { contract: string }) {
+  const t = useT();
   const app = useMedialaneApp();
   const walletAddress = app.walletAddress;
   const { collection, isLoading } = useCollection(contract);
@@ -162,7 +163,7 @@ export function PopManagePage({ contract }: { contract: string }) {
     normalizeAddress("STARKNET", walletAddress) === normalizeAddress("STARKNET", collection.owner);
 
   const issue = (recipient: string) => {
-    setDone(successMessages.certificateIssued());
+    setDone(successMessages.certificateIssued(t));
     void tx.run(async (signer) => {
       await runIntentCalls(signer, () => app.getClient().api.intents.create("pop-manage", { owner: signer.address, collection: contract, action: "issue", recipient }));
     });
@@ -171,7 +172,7 @@ export function PopManagePage({ contract }: { contract: string }) {
   const publish = (addresses: string[]) => {
     const list = buildPopAllowlist(addresses);
     const count = Object.keys(list.proofs).length;
-    setDone(successMessages.participantsPublished({ count }));
+    setDone(successMessages.participantsPublished({ count }, t));
     void tx
       .run(async (signer) => {
         await runIntentCalls(signer, () => app.getClient().api.intents.create("pop-manage", { owner: signer.address, collection: contract, action: "set_allowlist_root", root: list.root }));
@@ -182,7 +183,7 @@ export function PopManagePage({ contract }: { contract: string }) {
   };
 
   return (
-    <WalletRequired icon={Award} title="Connect your wallet" description="Connect to manage your event.">
+    <WalletRequired icon={Award} title={t("Connect your wallet")} description={t("Connect to manage your event.")}>
       {isLoading ? (
         <div className="max-w-xl mx-auto px-4 pt-10 pb-16 space-y-4">
           <Skeleton className="h-6 w-24" />
@@ -192,30 +193,30 @@ export function PopManagePage({ contract }: { contract: string }) {
       ) : !collection ? (
         <div className="max-w-xl mx-auto px-4 pt-24 pb-8 text-center space-y-4">
           <AlertCircle className="h-10 w-10 text-muted-foreground/20 mx-auto" />
-          <p className="text-muted-foreground">Collection not found.</p>
+          <p className="text-muted-foreground">{t("Collection not found.")}</p>
           <Button asChild variant="outline" size="sm">
-            <Link href="/launchpad/pop">← Back</Link>
+            <Link href="/launchpad/pop">{t("← Back")}</Link>
           </Button>
         </div>
       ) : !isOwner ? (
         <div className="max-w-xl mx-auto px-4 pt-24 pb-8 text-center space-y-4">
           <Award className="h-10 w-10 text-muted-foreground/20 mx-auto" />
-          <p className="text-muted-foreground">You are not the organizer of this event.</p>
+          <p className="text-muted-foreground">{t("You are not the organizer of this event.")}</p>
           <Button asChild variant="outline" size="sm">
-            <Link href="/launchpad/pop">← Back to events</Link>
+            <Link href="/launchpad/pop">{t("← Back to events")}</Link>
           </Button>
         </div>
       ) : (
         <div className="max-w-xl mx-auto px-4 pt-10 pb-16 space-y-6">
-          <TransactionDialog tx={tx} title="Manage event" workingLabel="Updating your event…" firstStepLabel="Prepare">
-            <TransactionSuccess name={collection.name ?? "Event"} title={done.title} description={done.description} txHash={tx.txHash} actions={[{ label: "Done", onClick: tx.reset }]} />
+          <TransactionDialog tx={tx} title={t("Manage event")} workingLabel="Updating your event…" firstStepLabel="Prepare">
+            <TransactionSuccess name={collection.name ?? "Event"} title={done.title} description={done.description} txHash={tx.txHash} actions={[{ label: t("Done"), onClick: tx.reset }]} />
           </TransactionDialog>
 
           <FadeIn>
             <Button asChild variant="ghost" size="sm" className="-ml-2">
               <Link href="/launchpad/pop">
                 <ArrowLeft className="h-3.5 w-3.5 mr-1.5" />
-                All events
+                {t("All events")}
               </Link>
             </Button>
           </FadeIn>
@@ -224,9 +225,9 @@ export function PopManagePage({ contract }: { contract: string }) {
             <div>
               <span className="pill-badge inline-flex gap-1.5 mb-2">
                 <Award className="h-3 w-3" />
-                Organizer
+                {t("Organizer")}
               </span>
-              <h1 className="text-2xl font-bold mt-1">Manage Event</h1>
+              <h1 className="text-2xl font-bold mt-1">{t("Manage Event")}</h1>
               <p className="text-sm text-muted-foreground">{collection.name ?? contract}</p>
             </div>
           </FadeIn>
@@ -234,10 +235,7 @@ export function PopManagePage({ contract }: { contract: string }) {
           <FadeIn delay={0.08}>
             <div className="bento-cell p-4 flex items-center gap-3">
               <Award className="h-4 w-4 text-green-500 shrink-0" />
-              <p className="text-xs text-muted-foreground">
-                Only participants on your <strong className="text-foreground">published list</strong> can claim,
-                with the link you send them.
-              </p>
+              <p className="text-xs text-muted-foreground">{t.rich("Only participants on your {strong} can claim, with the link you send them.", { strong: <strong className="text-foreground">{t("published list")}</strong> })}</p>
             </div>
           </FadeIn>
 

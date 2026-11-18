@@ -5,6 +5,8 @@ import { DropCountdown } from "../../drop-countdown.js";
 import { DropStatusBadge, DropSupplyProgress } from "../drop-status.js";
 import { GradientButton } from "../../gradient-button.js";
 import type { ActionBoxView } from "../../../utils/drop/view.js";
+import { useT } from "../../../i18n/provider.js";
+import { useFormat } from "../../../i18n/use-format.js";
 
 export interface DropActionBoxProps {
   view: ActionBoxView;
@@ -16,6 +18,8 @@ export interface DropActionBoxProps {
 }
 
 export function DropActionBox({ view, minted, maxSupply, quantity, onQuantity, onAction }: DropActionBoxProps) {
+  const intl = useFormat();
+  const t = useT();
   const canPick = view.button.action === "mint" && view.maxQuantity > 1n;
   return (
     <div className="space-y-5 rounded-2xl border border-border bg-card p-5">
@@ -23,18 +27,18 @@ export function DropActionBox({ view, minted, maxSupply, quantity, onQuantity, o
         <DropStatusBadge phase={view.phase} />
         <span className="text-xs text-muted-foreground">{view.statusText}</span>
       </div>
-      {view.countdown && <DropCountdown targetTs={view.countdown.target} label={view.countdown.label} />}
+      {view.countdown && <DropCountdown targetTs={view.countdown.target} label={t(view.countdown.label)} />}
       {maxSupply > 0n
         ? <DropSupplyProgress minted={Number(minted)} max={Number(maxSupply)} />
-        : <p className="text-sm text-muted-foreground">{Number(minted).toLocaleString("en-US")} minted</p>}
+        : <p className="text-sm text-muted-foreground">{t("{value} minted", { value: intl.number(Number(minted)) })}</p>}
       <div className="flex items-end justify-between gap-3">
         <div>
-          <p className="text-xs text-muted-foreground">Price</p>
+          <p className="text-xs text-muted-foreground">{t("Price")}</p>
           <p className="text-xl font-bold">{view.priceText}</p>
         </div>
         {canPick && (
-          <div className="flex items-center gap-2" aria-label="Quantity">
-            <span className="sr-only">Quantity</span>
+          <div className="flex items-center gap-2" aria-label={t("Quantity")}>
+            <span className="sr-only">{t("Quantity")}</span>
             <button type="button" className="rounded-md border border-border p-2" disabled={quantity <= 1n} onClick={() => onQuantity(quantity - 1n)}><Minus className="h-3.5 w-3.5" /></button>
             <span className="w-8 text-center font-semibold tabular-nums">{quantity.toString()}</span>
             <button type="button" className="rounded-md border border-border p-2" disabled={quantity >= view.maxQuantity} onClick={() => onQuantity(quantity + 1n)}><Plus className="h-3.5 w-3.5" /></button>
@@ -44,7 +48,7 @@ export function DropActionBox({ view, minted, maxSupply, quantity, onQuantity, o
       {view.totalText && <p className="text-sm text-muted-foreground">{view.totalText}</p>}
       {view.eligibility && <p className="text-sm">{view.eligibility}</p>}
       <GradientButton big disabled={view.button.action === "none"} onClick={onAction} className="disabled:opacity-50">
-        {view.button.label}
+        {t(view.button.label)}
       </GradientButton>
     </div>
   );

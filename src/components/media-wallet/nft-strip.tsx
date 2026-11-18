@@ -3,6 +3,7 @@
 import Link from "../link.js";
 import Image from "../image.js";
 import type { NftItem } from "../../utils/media-wallet/nft-items.js";
+import { useT } from "../../i18n/provider.js";
 
 export function NftStrip({
   items,
@@ -15,6 +16,7 @@ export function NftStrip({
   onNavigate?: () => void;
   resolveImage: (uri: string | null | undefined) => string | null;
 }) {
+  const t = useT();
   if (isLoading) {
     return (
       <div data-testid="nft-strip-skeleton" className="grid grid-cols-4 gap-2">
@@ -28,7 +30,7 @@ export function NftStrip({
   if (items.length === 0) {
     return (
       <p className="text-sm text-muted-foreground">
-        No NFTs yet — mint or collect your first one to see it here.
+        {t("No NFTs yet — mint or collect your first one to see it here.")}
       </p>
     );
   }

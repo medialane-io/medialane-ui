@@ -5,11 +5,13 @@ import { LayoutGrid } from "lucide-react";
 import { SectionHeading } from "./section-heading.js";
 import { IP_TYPE_CONFIG } from "./ip-type-badge.js";
 import { cn } from "../utils/cn.js";
+import { useT } from "../i18n/provider.js";
 
 export function IpTypeNav() {
+  const t = useT();
   return (
     <section className="space-y-4">
-      <SectionHeading icon={<LayoutGrid />} title="Browse by Type" href="/nft" linkLabel="View all" />
+      <SectionHeading icon={<LayoutGrid />} title={t("Browse by Type")} href="/nft" linkLabel="View all" />
 
       <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3">
         {IP_TYPE_CONFIG.map(({ slug, label, icon: Icon, colorClass, bgClass }) => (

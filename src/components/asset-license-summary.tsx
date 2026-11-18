@@ -3,10 +3,12 @@
 import type { ReactNode } from "react";
 import { Bot, DollarSign, GitBranch, Globe } from "lucide-react";
 import { licenseSummary } from "../utils/license-summary.js";
+import { useT } from "../i18n/provider.js";
 
 type AssetAttribute = { trait_type?: string; value?: string };
 
 export function AssetLicenseSummary({ attributes }: { attributes: AssetAttribute[] }) {
+  const t = useT();
   const summary = licenseSummary(attributes);
   if (!summary) return null;
 
@@ -43,7 +45,7 @@ export function AssetLicenseSummary({ attributes }: { attributes: AssetAttribute
 
   return (
     <div className="space-y-2.5">
-      <p className="text-2xs font-medium text-muted-foreground">License</p>
+      <p className="text-2xs font-medium text-muted-foreground">{t("License")}</p>
       <p className="text-base font-medium leading-relaxed text-foreground/90">{summary}</p>
       {pills.length > 0 ? (
         <div className="flex flex-wrap gap-2 pt-0.5">

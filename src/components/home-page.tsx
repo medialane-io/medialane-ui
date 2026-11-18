@@ -20,6 +20,7 @@ import { useCollections } from "../utils/use-collections.js";
 import { useUsdPrices } from "../utils/use-usd-prices.js";
 import { orderUsd } from "../utils/order-usd.js";
 import { isSameAddress } from "../utils/same-address.js";
+import { useT } from "../i18n/provider.js";
 
 const LAUNCHPAD_HREFS = {
   nfts: "/launchpad/single-editions",
@@ -72,16 +73,17 @@ function ListingsStrip({
 }
 
 function NewListings({ market }: { market: CollectionMarketActions }) {
+  const t = useT();
   return (
     <ListingsStrip
       market={market}
       icon={<Tag />}
-      title="Marketplace"
+      title={t("Marketplace")}
       query={{ status: "ACTIVE", limit: 10, page: 1 }}
       href="/marketplace"
       empty={
         <p className="py-4 text-sm text-muted-foreground">
-          <Link href="/launchpad/single-editions" className="text-primary hover:underline">Sell the first asset</Link>
+          <Link href="/launchpad/single-editions" className="text-primary hover:underline">{t("Sell the first asset")}</Link>
         </p>
       }
     />
@@ -89,12 +91,13 @@ function NewListings({ market }: { market: CollectionMarketActions }) {
 }
 
 export function FeaturedListings({ market, heading = true }: { market: CollectionMarketActions; heading?: boolean }) {
+  const t = useT();
   return (
     <ListingsStrip
       market={market}
       heading={heading}
       icon={<Sparkles />}
-      title="Featured"
+      title={t("Featured")}
       query={{ status: "ACTIVE", isFeatured: true, limit: 20, page: 1 }}
       href="/marketplace"
     />
@@ -102,11 +105,12 @@ export function FeaturedListings({ market, heading = true }: { market: Collectio
 }
 
 function CollectionsStrip() {
+  const t = useT();
   const { collections, isLoading } = useCollections(1, 10, undefined, "recent");
   return (
     <ScrollSection
       icon={<TrendingUp className="h-4 w-4" />}
-      title="Collections"
+      title={t("Collections")}
       href="/collections"
     >
       {isLoading

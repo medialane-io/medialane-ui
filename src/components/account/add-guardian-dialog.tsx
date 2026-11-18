@@ -8,6 +8,7 @@ import { Input } from "../input.js";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "../dialog.js";
 import { describeError } from "../../utils/describe-error.js";
 import type { GuardianWallet } from "./wallet-types.js";
+import { useT } from "../../i18n/provider.js";
 
 export interface AddGuardianDialogProps {
   open: boolean;
@@ -18,6 +19,7 @@ export interface AddGuardianDialogProps {
 }
 
 export function AddGuardianDialog({ open, onOpenChange, sealed, onAdded, wallet }: AddGuardianDialogProps) {
+  const t = useT();
   const [pubkey, setPubkey] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -47,12 +49,10 @@ export function AddGuardianDialog({ open, onOpenChange, sealed, onAdded, wallet 
       <DialogContent className="sm:max-w-sm">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <Shield className="h-4 w-4" /> Add a guardian
+            <Shield className="h-4 w-4" /> {t("Add a guardian")}
           </DialogTitle>
           <DialogDescription>
-            A guardian is a trusted backup that helps restore this wallet on a new device. It
-            can never move funds. Paste the public key of a wallet already in use, such as
-            another device&apos;s Media Wallet. A guardian is set once from here.
+            {t("A guardian is a trusted backup that helps restore this wallet on a new device. It can never move funds. Paste the public key of a wallet already in use, such as another device's Media Wallet. A guardian is set once from here.")}
           </DialogDescription>
         </DialogHeader>
         <div className="space-y-3">
@@ -67,7 +67,7 @@ export function AddGuardianDialog({ open, onOpenChange, sealed, onAdded, wallet 
           {error && <p className="text-sm text-destructive">{error}</p>}
           <Button onClick={handleAdd} disabled={busy || !pubkey.trim()} className="w-full">
             {busy ? <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" /> : null}
-            {busy ? "Confirm with passkey…" : "Add guardian"}
+            {busy ? t("Confirm with passkey…") : t("Add guardian")}
           </Button>
         </div>
       </DialogContent>

@@ -13,6 +13,7 @@ import { AssetCard } from "./asset-card.js";
 import { ResultThumbnail } from "./result-thumbnail.js";
 import { profileIdentity } from "../utils/profile-identity.js";
 import { useSearch } from "../utils/use-search.js";
+import { useT } from "../i18n/provider.js";
 
 const INPUT_DEBOUNCE_MS = 350;
 const RESULT_LIMIT = 50;
@@ -43,6 +44,7 @@ function Section({ title, count, children }: { title: string; count: number; chi
 }
 
 export function SearchPage() {
+  const t = useT();
   const router = useRouter();
   const q = useSearchParams()?.get("q") ?? "";
   const [inputValue, setInputValue] = useState(q);
@@ -77,13 +79,13 @@ export function SearchPage() {
   return (
     <PageContainer className="box-border max-w-full space-y-8 pt-14 pb-8">
       <div className="space-y-4">
-        <h1 className="text-3xl font-bold">Search</h1>
+        <h1 className="text-3xl font-bold">{t("Search")}</h1>
         <div className="relative max-w-xl">
           <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <Input
             autoFocus
             className="h-11 pl-9 pr-10 text-base"
-            placeholder="Search assets, collections, creators…"
+            placeholder={t("Search assets, collections, creators…")}
             value={inputValue}
             onChange={(e) => handleInputChange(e.target.value)}
           />
@@ -91,7 +93,7 @@ export function SearchPage() {
             <Button
               variant="ghost"
               size="icon"
-              aria-label="Clear"
+              aria-label={t("Clear")}
               className="absolute right-1 top-1/2 h-8 w-8 -translate-y-1/2 text-muted-foreground hover:text-foreground"
               onClick={handleClear}
             >
@@ -105,7 +107,7 @@ export function SearchPage() {
       </div>
 
       {!q.trim() && (
-        <p className="py-24 text-center text-muted-foreground">Type above to search assets, collections and creators.</p>
+        <p className="py-24 text-center text-muted-foreground">{t("Type above to search assets, collections and creators.")}</p>
       )}
 
       {isLoading && (
@@ -119,7 +121,7 @@ export function SearchPage() {
       {!isLoading && total > 0 && (
         <>
           {creators.length > 0 && (
-            <Section title="Creators" count={creators.length}>
+            <Section title={t("Creators")} count={creators.length}>
               <div className={ROWS}>
                 {creators.map((c) => {
                   const { identity, name } = profileIdentity(c);
@@ -137,7 +139,7 @@ export function SearchPage() {
             </Section>
           )}
           {collections.length > 0 && (
-            <Section title="Collections" count={collections.length}>
+            <Section title={t("Collections")} count={collections.length}>
               <div className={ROWS}>
                 {collections.map((col) => {
                   const label = col.name ?? "Untitled";
@@ -154,7 +156,7 @@ export function SearchPage() {
             </Section>
           )}
           {tokens.length > 0 && (
-            <Section title="Assets" count={tokens.length}>
+            <Section title={t("Assets")} count={tokens.length}>
               <div className={GRID}>
                 {tokens.map((t) => (
                   <AssetCard

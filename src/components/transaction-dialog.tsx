@@ -6,6 +6,7 @@ import { Dialog, DialogContent, DialogTitle } from "./dialog.js";
 import { Button } from "./button.js";
 import { useConfetti } from "../utils/use-confetti.js";
 import type { useTransaction } from "../utils/use-transaction.js";
+import { useT } from "../i18n/provider.js";
 
 export interface TransactionDialogProps {
   tx: Pick<ReturnType<typeof useTransaction>, "phase" | "error" | "reset"> & { retryable?: boolean };
@@ -18,6 +19,7 @@ export interface TransactionDialogProps {
 const ACTIVE_STEP = { preparing: 0, submitting: 1, confirming: 2 } as const;
 
 export function TransactionDialog({ tx, title, workingLabel, firstStepLabel = "Prepare", children }: TransactionDialogProps) {
+  const t = useT();
   const { phase, error, reset, retryable = true } = tx;
   const working = phase === "preparing" || phase === "submitting" || phase === "confirming";
   const success = phase === "success";
@@ -44,7 +46,7 @@ export function TransactionDialog({ tx, title, workingLabel, firstStepLabel = "P
             <div className="space-y-1 text-center">
               <p className="text-lg font-semibold">{workingLabel}</p>
               <p className="text-sm text-muted-foreground">
-                {phase === "confirming" ? "Waiting for block confirmation" : "Submitting transaction"}
+                {phase === "confirming" ? t("Waiting for block confirmation") : t("Submitting transaction")}
               </p>
             </div>
             <ol className="w-full space-y-2 rounded-xl border border-border/60 bg-muted/30 p-4">
@@ -67,7 +69,7 @@ export function TransactionDialog({ tx, title, workingLabel, firstStepLabel = "P
                 );
               })}
             </ol>
-            <p className="text-center text-xs text-muted-foreground">This usually takes 10–30 seconds.</p>
+            <p className="text-center text-xs text-muted-foreground">{t("This usually takes 10–30 seconds.")}</p>
           </div>
         )}
 
@@ -83,7 +85,7 @@ export function TransactionDialog({ tx, title, workingLabel, firstStepLabel = "P
               <p className="mx-auto max-w-xs text-sm text-muted-foreground">{error}</p>
             </div>
             <Button variant="outline" className="w-full" onClick={reset}>
-              {retryable ? "Try again" : "Close"}
+              {retryable ? t("Try again") : t("Close")}
             </Button>
           </div>
         )}

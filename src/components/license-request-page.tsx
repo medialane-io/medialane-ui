@@ -23,10 +23,12 @@ import { useMedialaneClient } from "../utils/use-medialane-client.js";
 import { useToken, useTokenBalance } from "../utils/use-tokens.js";
 import { useCollection } from "../utils/use-collections.js";
 import { ChevronLeft, ChevronDown, Shield, DollarSign, Percent, HandCoins, Loader2, Check } from "lucide-react";
+import { useT } from "../i18n/provider.js";
 
 const TOKENS = getListableTokens();
 
 export function LicenseRequestPage({ contract, tokenId }: { contract: string; tokenId: string }) {
+  const t = useT();
   const router = useRouter();
   const client = useMedialaneClient();
   const resolveImage = useImageUrl();
@@ -112,8 +114,8 @@ export function LicenseRequestPage({ contract, tokenId }: { contract: string; to
   if (!token) {
     return (
       <div className="max-w-2xl mx-auto px-4 py-24 text-center space-y-4">
-        <p className="text-2xl font-bold">Asset not found</p>
-        <Button asChild variant="outline"><Link href="/">Go home</Link></Button>
+        <p className="text-2xl font-bold">{t("Asset not found")}</p>
+        <Button asChild variant="outline"><Link href="/">{t("Go home")}</Link></Button>
       </div>
     );
   }
@@ -121,7 +123,7 @@ export function LicenseRequestPage({ contract, tokenId }: { contract: string; to
   if (!walletAddress) {
     return (
       <div className="max-w-2xl mx-auto px-4 py-24">
-        {walletLoading ? <Skeleton className="h-40 w-full rounded-xl" /> : <SignInPrompt icon={<HandCoins className="h-10 w-10 text-muted-foreground/30" />} title="Sign in to request a license" />}
+        {walletLoading ? <Skeleton className="h-40 w-full rounded-xl" /> : <SignInPrompt icon={<HandCoins className="h-10 w-10 text-muted-foreground/30" />} title={t("Sign in to request a license")} />}
       </div>
     );
   }
@@ -135,15 +137,15 @@ export function LicenseRequestPage({ contract, tokenId }: { contract: string; to
     <div className="max-w-2xl mx-auto px-4 pt-14 pb-12 space-y-6">
       <div className="space-y-3">
         <Link href={assetHref("STARKNET", contract, tokenId)} className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
-          <ChevronLeft className="h-4 w-4" /> Back to asset
+          <ChevronLeft className="h-4 w-4" /> {t("Back to asset")}
         </Link>
         <div className="flex items-center gap-2 text-primary">
           <HandCoins className="h-5 w-5" />
-          <span className="text-sm font-semibold">Request a license</span>
+          <span className="text-sm font-semibold">{t("Request a license")}</span>
         </div>
-        <h1 className="text-3xl font-bold">License this asset</h1>
+        <h1 className="text-3xl font-bold">{t("License this asset")}</h1>
         <p className="text-muted-foreground max-w-xl">
-          Propose license terms and a fee to the creator. If they accept, the licensed derivative is minted and listed for you.
+          {t("Propose license terms and a fee to the creator. If they accept, the licensed derivative is minted and listed for you.")}
         </p>
       </div>
 
@@ -162,15 +164,15 @@ export function LicenseRequestPage({ contract, tokenId }: { contract: string; to
           <div className="h-14 w-14 mx-auto rounded-full bg-primary/10 flex items-center justify-center">
             <Check className="h-7 w-7 text-primary" />
           </div>
-          <p className="text-lg font-semibold">License request sent</p>
-          <p className="text-sm text-muted-foreground">The creator will review it. Track it under Portfolio → Licensing.</p>
-          <Button asChild variant="outline"><Link href="/portfolio/licensing">View my requests</Link></Button>
+          <p className="text-lg font-semibold">{t("License request sent")}</p>
+          <p className="text-sm text-muted-foreground">{t("The creator will review it. Track it under Portfolio → Licensing.")}</p>
+          <Button asChild variant="outline"><Link href="/portfolio/licensing">{t("View my requests")}</Link></Button>
         </div>
       ) : (
         <>
-          <Section title="License Terms" icon={<Shield className="h-4 w-4" />}>
+          <Section title={t("License Terms")} icon={<Shield className="h-4 w-4" />}>
             <div className="space-y-1.5">
-              <Label>License Type</Label>
+              <Label>{t("License Type")}</Label>
               <Select value={licenseType} onValueChange={handleLicenseChange}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>
@@ -180,32 +182,32 @@ export function LicenseRequestPage({ contract, tokenId }: { contract: string; to
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-1.5">
-                <Label className="text-xs text-muted-foreground uppercase tracking-wide">Commercial Use</Label>
+                <Label className="text-xs text-muted-foreground uppercase tracking-wide">{t("Commercial Use")}</Label>
                 <ToggleGroup value={commercial ? "Yes" : "No"} options={["Yes", "No"]} onChange={(v) => setCommercial(v === "Yes")} />
               </div>
               <div className="space-y-1.5">
-                <Label className="text-xs text-muted-foreground uppercase tracking-wide">Derivatives</Label>
+                <Label className="text-xs text-muted-foreground uppercase tracking-wide">{t("Derivatives")}</Label>
                 <ToggleGroup value={derivatives ? "Allowed" : "Not Allowed"} options={["Allowed", "Not Allowed"]} onChange={(v) => setDerivatives(v === "Allowed")} />
               </div>
             </div>
             <Collapsible open={advancedOpen} onOpenChange={setAdvancedOpen}>
               <CollapsibleTrigger asChild>
                 <button type="button" className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors">
-                  <ChevronDown className={`h-3.5 w-3.5 transition-transform ${advancedOpen ? "rotate-180" : ""}`} /> Royalty &amp; advanced
+                  <ChevronDown className={`h-3.5 w-3.5 transition-transform ${advancedOpen ? "rotate-180" : ""}`} /> {t("Royalty & advanced")}
                 </button>
               </CollapsibleTrigger>
               <CollapsibleContent className="pt-3 space-y-3">
                 <div className="space-y-1.5">
-                  <Label className="flex items-center gap-1.5"><Percent className="h-3.5 w-3.5" /> Royalty %</Label>
+                  <Label className="flex items-center gap-1.5"><Percent className="h-3.5 w-3.5" /> {t("Royalty %")}</Label>
                   <Input type="number" min="0" max="50" step="1" placeholder="0" value={royalty} onChange={(e) => setRoyalty(e.target.value)} />
-                  <p className="text-xs text-muted-foreground">Percentage of future sales sent back to the creator (0–50%)</p>
+                  <p className="text-xs text-muted-foreground">{t("Percentage of future sales sent back to the creator (0–50%)")}</p>
                 </div>
               </CollapsibleContent>
             </Collapsible>
           </Section>
 
-          <Section title="License fee" icon={<DollarSign className="h-4 w-4" />}>
-            <p className="text-xs text-muted-foreground -mt-1">The amount you&apos;re offering to pay the creator for this license.</p>
+          <Section title={t("License fee")} icon={<DollarSign className="h-4 w-4" />}>
+            <p className="text-xs text-muted-foreground -mt-1">{t("The amount you're offering to pay the creator for this license.")}</p>
             <div className="flex gap-2">
               <Input type="number" min="0" step="any" placeholder="0.00" value={price} onChange={(e) => setPrice(e.target.value)} className="flex-1" />
               <Select value={currency} onValueChange={setCurrency}>
@@ -217,8 +219,8 @@ export function LicenseRequestPage({ contract, tokenId }: { contract: string; to
             </div>
           </Section>
 
-          <Section title="Message (optional)" icon={<HandCoins className="h-4 w-4" />}>
-            <Textarea placeholder="Add a note for the creator…" value={message} onChange={(e) => setMessage(e.target.value)} rows={3} />
+          <Section title={t("Message (optional)")} icon={<HandCoins className="h-4 w-4" />}>
+            <Textarea placeholder={t("Add a note for the creator…")} value={message} onChange={(e) => setMessage(e.target.value)} rows={3} />
           </Section>
 
           {error && <p className="text-sm text-destructive">{error}</p>}
@@ -229,7 +231,7 @@ export function LicenseRequestPage({ contract, tokenId }: { contract: string; to
             disabled={loading}
           >
             {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : <HandCoins className="h-5 w-5" />}
-            Send license request
+            {t("Send license request")}
           </button>
         </>
       )}

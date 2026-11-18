@@ -13,8 +13,10 @@ import { runIntentCalls } from "../utils/run-intent-calls.js";
 import { usePopClaimStatus } from "../utils/use-pop.js";
 import { successMessages } from "../utils/success-messages.js";
 import { useTransaction } from "../utils/use-transaction.js";
+import { useT } from "../i18n/provider.js";
 
 export function PopClaimButton({ collectionAddress }: { collectionAddress: string }) {
+  const t = useT();
   const app = useMedialaneApp();
   const { walletAddress } = app;
   const { hasClaimed, mutate } = usePopClaimStatus(collectionAddress, walletAddress);
@@ -59,15 +61,15 @@ export function PopClaimButton({ collectionAddress }: { collectionAddress: strin
       {(state === "ready" || busy) && (
         <Button size="sm" className="w-full gap-1.5" onClick={claim} disabled={busy}>
           {busy ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Award className="h-3.5 w-3.5" />}
-          {busy ? "Claiming…" : "Claim certificate"}
+          {busy ? t("Claiming…") : t("Claim certificate")}
         </Button>
       )}
-      <TransactionDialog tx={tx} title="Claim certificate" workingLabel="Claiming the certificate…" firstStepLabel="Prepare claim">
+      <TransactionDialog tx={tx} title={t("Claim certificate")} workingLabel="Claiming the certificate…" firstStepLabel="Prepare claim">
         <TransactionSuccess
           name="Certificate"
-          {...successMessages.claimed()}
+          {...successMessages.claimed(t)}
           txHash={tx.txHash}
-          actions={[{ label: "Done", onClick: tx.reset }]}
+          actions={[{ label: t("Done"), onClick: tx.reset }]}
         >
           <RewardEarned actionType="claim_pop" />
         </TransactionSuccess>

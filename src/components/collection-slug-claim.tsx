@@ -9,6 +9,7 @@ import Link from "./link.js";
 import { useMedialaneApp } from "./medialane-app.js";
 import { SectionCard, SectionHeader } from "./settings-section.js";
 import { describeError } from "../utils/describe-error.js";
+import { useT } from "../i18n/provider.js";
 
 export function CollectionSlugClaimSection({
   contract,
@@ -17,6 +18,7 @@ export function CollectionSlugClaimSection({
   contract: string;
   profile: { slug?: string | null } | null;
 }) {
+  const t = useT();
   const { getClient, ensureSignedIn, verifyEmailHref } = useMedialaneApp();
   const [slugInput, setSlugInput] = useState("");
   const [checkState, setCheckState] = useState<"idle" | "checking" | "available" | "taken" | "invalid">("idle");
@@ -77,19 +79,19 @@ export function CollectionSlugClaimSection({
       <SectionCard className="border-emerald-500/20 bg-emerald-500/[0.02]">
         <SectionHeader
           icon={Gem}
-          title="Collection URL"
+          title={t("Collection URL")}
           description={`medialane.io/collection/${profile.slug}`}
           iconClass="text-emerald-500"
           bgClass="bg-emerald-500/15"
           badge={
             <Badge variant="outline" className="text-2xs h-4 px-1.5 text-emerald-600 border-emerald-500/30">
-              Active
+              {t("Active")}
             </Badge>
           }
         />
         <div className="pt-1 border-t border-border">
           <p className="text-xs text-muted-foreground">
-            Your collection is accessible at{" "}
+            {t("Your collection is accessible at")}{" "}
             <span className="tabular-nums text-foreground">medialane.io/collection/{profile.slug}</span>
           </p>
         </div>
@@ -102,22 +104,18 @@ export function CollectionSlugClaimSection({
       <SectionCard className="border-primary/20 bg-primary/[0.02]">
         <SectionHeader
           icon={Gem}
-          title="Claim your collection URL"
+          title={t("Claim your collection URL")}
           description={`medialane.io/collection/${pendingSlug}`}
           iconClass="text-primary"
           bgClass="bg-primary/15"
           badge={
             <Badge variant="outline" className="text-2xs h-4 px-1.5 text-amber-600 border-amber-500/30">
-              Pending review
+              {t("Pending review")}
             </Badge>
           }
         />
         <div className="pt-1 border-t border-border">
-          <p className="text-xs text-muted-foreground">
-            Your claim for{" "}
-            <span className="tabular-nums text-foreground">medialane.io/collection/{pendingSlug}</span> is under
-            review. You&apos;ll be notified once it&apos;s approved.
-          </p>
+          <p className="text-xs text-muted-foreground">{t.rich("Your claim for {span} is under review. You'll be notified once it's approved.", { span: <span className="tabular-nums text-foreground">medialane.io/collection/{pendingSlug}</span> })}</p>
         </div>
       </SectionCard>
     );
@@ -127,8 +125,8 @@ export function CollectionSlugClaimSection({
     <SectionCard className="border-primary/20 bg-primary/[0.02]">
       <SectionHeader
         icon={Gem}
-        title="Claim your collection URL"
-        description="Reserve a unique URL — medialane.io/collection/your-name"
+        title={t("Claim your collection URL")}
+        description={t("Reserve a unique URL — medialane.io/collection/your-name")}
         iconClass="text-primary"
         bgClass="bg-primary/15"
       />
@@ -136,12 +134,12 @@ export function CollectionSlugClaimSection({
         <div className="flex items-center gap-2">
           <div className="flex-1 flex items-center rounded-lg border border-border bg-muted/40 px-3 py-2">
             <span className="text-xs text-muted-foreground whitespace-nowrap shrink-0">
-              medialane.io/collection/
+              {t("medialane.io/collection/")}
             </span>
             <input
               type="text"
               className="flex-1 bg-transparent text-xs text-foreground outline-none placeholder:text-muted-foreground/50 min-w-0"
-              placeholder="your-name"
+              placeholder={t("your-name")}
               value={slugInput}
               onChange={(e) => {
                 setSlugInput(e.target.value.toLowerCase().replace(/[^a-z0-9_-]/g, ""));
@@ -158,23 +156,23 @@ export function CollectionSlugClaimSection({
             disabled={!slugInput.trim() || checkState === "checking"}
             className="shrink-0"
           >
-            {checkState === "checking" ? "Checking…" : "Check"}
+            {checkState === "checking" ? t("Checking…") : t("Check")}
           </Button>
         </div>
 
         {checkState === "available" && (
           <div className="flex items-center justify-between gap-3">
             <p className="text-xs text-emerald-600 font-medium truncate">
-              ✓ Available — <span className="tabular-nums">medialane.io/collection/{slugInput}</span>
+              {t("✓ Available —")} <span className="tabular-nums">medialane.io/collection/{slugInput}</span>
             </p>
             <Button size="sm" onClick={handleSubmit} disabled={submitState === "submitting"} className="shrink-0">
-              {submitState === "submitting" ? "Claiming…" : "Claim this URL"}
+              {submitState === "submitting" ? t("Claiming…") : t("Claim this URL")}
             </Button>
           </div>
         )}
 
         {(checkState === "taken" || checkState === "invalid") && (
-          <p className="text-xs text-destructive">{checkReason ?? "That slug is not available."}</p>
+          <p className="text-xs text-destructive">{checkReason ?? t("That slug is not available.")}</p>
         )}
 
         {submitState === "error" && (
@@ -184,7 +182,7 @@ export function CollectionSlugClaimSection({
               <>
                 {" "}
                 <Link href={verifyEmailHref} className="underline font-medium hover:text-foreground">
-                  Verify email
+                  {t("Verify email")}
                 </Link>
               </>
             )}
@@ -192,8 +190,7 @@ export function CollectionSlugClaimSection({
         )}
 
         <p className="text-xs text-muted-foreground">
-          3–20 characters, lowercase letters, numbers, underscores or hyphens. Claims are reviewed before
-          going live.
+          {t("3–20 characters, lowercase letters, numbers, underscores or hyphens. Claims are reviewed before going live.")}
         </p>
       </div>
     </SectionCard>

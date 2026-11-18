@@ -1,4 +1,8 @@
+"use client";
+
 import { cn } from "../../utils/cn.js";
+import { useT } from "../../i18n/provider.js";
+import { useFormat } from "../../i18n/use-format.js";
 
 export interface LevelJourneyListLevel {
   level: number;
@@ -13,6 +17,8 @@ export interface LevelJourneyListProps {
 }
 
 export function LevelJourneyList({ levels, className }: LevelJourneyListProps) {
+  const intl = useFormat();
+  const t = useT();
   return (
     <ol className={cn("divide-y divide-foreground/[0.06]", className)}>
       {levels.map((l, i) => (
@@ -33,8 +39,7 @@ export function LevelJourneyList({ levels, className }: LevelJourneyListProps) {
             )}
           </div>
           <span className="text-sm font-black tabular-nums text-foreground/70 shrink-0">
-            {l.xpRequired.toLocaleString()} XP
-          </span>
+            {t("{xpRequired} XP", { xpRequired: intl.number(l.xpRequired) })}</span>
         </li>
       ))}
     </ol>

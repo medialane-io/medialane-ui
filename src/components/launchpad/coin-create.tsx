@@ -38,6 +38,8 @@ import { runIntentCalls } from "../../utils/run-intent-calls.js";
 import { useTransaction } from "../../utils/use-transaction.js";
 import { useLaunchpadImageUpload } from "../../utils/use-launchpad-image-upload.js";
 import { useTokenBalance } from "../../utils/media-wallet/use-erc20-balance.js";
+import { useT } from "../../i18n/provider.js";
+import { useFormat } from "../../i18n/use-format.js";
 
 const QUOTE_OPTIONS = SUPPORTED_TOKENS.map((t) => t.symbol);
 type Quote = (typeof QUOTE_OPTIONS)[number];
@@ -56,6 +58,8 @@ export interface CoinCreateProps {
 }
 
 export function CoinCreate({ aside, tradeHref }: CoinCreateProps) {
+  const intl = useFormat();
+  const t = useT();
   const app = useMedialaneApp();
   const walletAddress = app.walletAddress;
   const tx = useTransaction();
@@ -181,29 +185,29 @@ export function CoinCreate({ aside, tradeHref }: CoinCreateProps) {
     <WalletRequired
       icon={Coins}
       iconClassName="text-brand-orange"
-      title="Launch a Creator Coin"
-      description="Secure your account to design and launch your own coin with permanently-locked liquidity, in a few clicks."
+      title={t("Launch a Creator Coin")}
+      description={t("Secure your account to design and launch your own coin with permanently-locked liquidity, in a few clicks.")}
     >
-      <TransactionDialog tx={tx} title="Launch your coin" workingLabel="Launching your coin…" firstStepLabel="Deploy your coin">
+      <TransactionDialog tx={tx} title={t("Launch your coin")} workingLabel="Launching your coin…" firstStepLabel="Deploy your coin">
         <TransactionSuccess
           name={name || "Your coin"}
           image={imagePreview}
-          title="Coin launched"
-          description="The supply is fixed and the liquidity is locked."
+          title={t("Coin launched")}
+          description={t("The supply is fixed and the liquidity is locked.")}
           actions={[
-            ...(coinAddress ? [{ href: tradeHref(coinAddress), label: "View & trade your coin" }] : []),
-            { href: "/launchpad", label: "Back to Launchpad" },
-            { label: "Launch another coin", onClick: handleReset },
+            ...(coinAddress ? [{ href: tradeHref(coinAddress), label: t("View & trade your coin") }] : []),
+            { href: "/launchpad", label: t("Back to Launchpad") },
+            { label: t("Launch another coin"), onClick: handleReset },
           ]}
         >
           {profileStatus === "saving" && (
             <p className="text-xs text-muted-foreground flex items-center justify-center gap-1.5">
-              <Loader2 className="h-3 w-3 animate-spin" /> Saving your coin&apos;s image &amp; description…
+              <Loader2 className="h-3 w-3 animate-spin" /> {t("Saving your coin's image & description…")}
             </p>
           )}
           {profileStatus === "failed" && (
             <p className="text-xs text-muted-foreground text-center">
-              Couldn&apos;t save the image &amp; description right now. Add them anytime from your collection settings.
+              {t("Couldn't save the image & description right now. Add them anytime from your collection settings.")}
             </p>
           )}
           <RewardEarned actionType="launch_coin" />
@@ -212,8 +216,8 @@ export function CoinCreate({ aside, tradeHref }: CoinCreateProps) {
 
       <ClaimRouteShell
         icon={<Coins className="h-4 w-4 text-white" />}
-        title="Design your Creator Coin"
-        subtitle="A few steps to design and launch your coin."
+        title={t("Design your Creator Coin")}
+        subtitle={t("A few steps to design and launch your coin.")}
         aside={
           <>
             <CoinLaunchPreview data={previewData} />
@@ -225,11 +229,11 @@ export function CoinCreate({ aside, tradeHref }: CoinCreateProps) {
 
           <section className="space-y-4">
             <div>
-              <h3 className="text-lg font-bold">Give it a face</h3>
+              <h3 className="text-lg font-bold">{t("Give it a face")}</h3>
             </div>
 
               <div className="space-y-1.5">
-                <Label>Coin image</Label>
+                <Label>{t("Coin image")}</Label>
                 <div className="flex items-center gap-4">
                   <button
                     type="button"
@@ -238,7 +242,7 @@ export function CoinCreate({ aside, tradeHref }: CoinCreateProps) {
                   >
                     {imagePreview ? (
 
-                      <Image src={imagePreview} alt="Coin" fill unoptimized className="object-cover" />
+                      <Image src={imagePreview} alt={t("Coin")} fill unoptimized className="object-cover" />
                     ) : (
                       <ImagePlus className="h-6 w-6 text-muted-foreground" />
                     )}
@@ -249,10 +253,10 @@ export function CoinCreate({ aside, tradeHref }: CoinCreateProps) {
                     )}
                   </button>
                   <div className="space-y-1 text-xs text-muted-foreground">
-                    <p>JPG, PNG, GIF, SVG or WebP</p>
+                    <p>{t("JPG, PNG, GIF, SVG or WebP")}</p>
                     {imagePreview && (
                       <button type="button" onClick={clearImage} className="inline-flex items-center gap-1 text-muted-foreground active:text-foreground">
-                        <X className="h-3 w-3" /> Remove
+                        <X className="h-3 w-3" /> {t("Remove")}
                       </button>
                     )}
                     {uploadError && <p className="text-destructive">{uploadError}</p>}
@@ -270,24 +274,24 @@ export function CoinCreate({ aside, tradeHref }: CoinCreateProps) {
 
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="space-y-1.5">
-                  <Label htmlFor="name">Name</Label>
-                  <Input id="name" value={name} onChange={(e) => handleNameChange(e.target.value)} placeholder="My Coin" />
+                  <Label htmlFor="name">{t("Name")}</Label>
+                  <Input id="name" value={name} onChange={(e) => handleNameChange(e.target.value)} placeholder={t("My Coin")} />
                   {nameErr && <p className="text-xs text-destructive">{nameErr}</p>}
                 </div>
                 <div className="space-y-1.5">
-                  <Label htmlFor="symbol">Symbol</Label>
-                  <Input id="symbol" value={symbol} onChange={(e) => setSymbol(e.target.value.toUpperCase())} placeholder="COIN" />
+                  <Label htmlFor="symbol">{t("Symbol")}</Label>
+                  <Input id="symbol" value={symbol} onChange={(e) => setSymbol(e.target.value.toUpperCase())} placeholder={t("COIN")} />
                   {symErr && <p className="text-xs text-destructive">{symErr}</p>}
                 </div>
               </div>
 
               <div className="space-y-1.5">
-                <Label htmlFor="description">Description</Label>
+                <Label htmlFor="description">{t("Description")}</Label>
                 <Textarea
                   id="description"
                   value={description}
                   onChange={(e) => setDescription(e.target.value.slice(0, 500))}
-                  placeholder="Tell your community what this coin is about…"
+                  placeholder={t("Tell your community what this coin is about…")}
                   rows={3}
                 />
               </div>
@@ -298,10 +302,10 @@ export function CoinCreate({ aside, tradeHref }: CoinCreateProps) {
 
           <section className="space-y-4">
             <div>
-              <h3 className="text-lg font-bold">Set the numbers</h3>
+              <h3 className="text-lg font-bold">{t("Set the numbers")}</h3>
             </div>
               <div className="space-y-1.5">
-                <Label htmlFor="supply">Total supply</Label>
+                <Label htmlFor="supply">{t("Total supply")}</Label>
                 <div className="flex gap-2 mb-1">
                   {SUPPLY_PRESETS.map((p) => (
                     <button
@@ -320,20 +324,20 @@ export function CoinCreate({ aside, tradeHref }: CoinCreateProps) {
                 <div className="relative">
                   <Input
                     id="supply" inputMode="numeric"
-                    value={supply ? Number(supply).toLocaleString() : ""}
+                    value={supply ? intl.number(Number(supply)) : ""}
                     onChange={(e) => setSupply(e.target.value.replace(/[^\d]/g, ""))}
                     placeholder="1,000,000"
                     className="pr-16 text-lg font-semibold tabular-nums"
                   />
                   <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-sm font-medium text-muted-foreground">
-                    coins
+                    {t("coins")}
                   </span>
                 </div>
                 {supplyErr && <p className="text-xs text-destructive">{supplyErr}</p>}
               </div>
 
               <div className="space-y-1.5">
-                <Label>Pair</Label>
+                <Label>{t("Pair")}</Label>
                 <div className="flex gap-2 flex-wrap">
                   {QUOTE_OPTIONS.map((q) => (
                     <button
@@ -353,7 +357,7 @@ export function CoinCreate({ aside, tradeHref }: CoinCreateProps) {
               </div>
 
               <div className="space-y-1.5">
-                <Label htmlFor="price">Price ({quote} per coin)</Label>
+                <Label htmlFor="price">{t("Price ({quote} per coin)", { quote })}</Label>
                 <div className="relative">
                   <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2">
                     <CurrencyIcon symbol={quote} size={16} />
@@ -370,15 +374,15 @@ export function CoinCreate({ aside, tradeHref }: CoinCreateProps) {
 
               {preview && (
                 <div className="rounded-xl bg-muted/50 dark:bg-muted/30 p-4">
-                  <p className="text-2xs uppercase tracking-wide text-muted-foreground">Starting market cap</p>
+                  <p className="text-2xs uppercase tracking-wide text-muted-foreground">{t("Starting market cap")}</p>
                   <p className="text-2xl font-bold tabular-nums text-brand-maeve">
-                    <CurrencyAmount amount={preview.fdv.toLocaleString()} symbol={quote} iconSize={18} />
+                    <CurrencyAmount amount={intl.number(preview.fdv)} symbol={quote} iconSize={18} />
                   </p>
                 </div>
               )}
 
               <div className="space-y-1.5">
-                <Label htmlFor="alloc">Your allocation: {teamPct}%</Label>
+                <Label htmlFor="alloc">{t("Your allocation: {teamPct}%", { teamPct })}</Label>
                 <input
                   id="alloc" type="range" min={1} max={10} step={1}
                   value={teamPct} onChange={(e) => setTeamPct(Number(e.target.value))}
@@ -386,13 +390,11 @@ export function CoinCreate({ aside, tradeHref }: CoinCreateProps) {
                 />
                 {preview && (
                   <p className={cn("text-sm font-semibold", insufficient ? "text-destructive" : "text-foreground")}>
-                    <CurrencyAmount amount={preview.buybackHuman} symbol={quote} iconSize={14} /> required
+                    <CurrencyAmount amount={preview.buybackHuman} symbol={quote} iconSize={14} /> {t("required")}
                   </p>
                 )}
                 {insufficient && (
-                  <p className="text-xs text-destructive">
-                    Your wallet doesn&apos;t have enough {quote}. Add funds, or adjust the numbers above.
-                  </p>
+                  <p className="text-xs text-destructive">{t("Your wallet doesn't have enough {quote}. Add funds, or adjust the numbers above.", { quote })}</p>
                 )}
               </div>
 
@@ -407,11 +409,11 @@ export function CoinCreate({ aside, tradeHref }: CoinCreateProps) {
                 disabled={!canLaunch || tx.phase !== "idle"}
                 className={!canLaunch || tx.phase !== "idle" ? "opacity-40 pointer-events-none" : ""}
               >
-                {tx.phase !== "idle" ? <><Loader2 className="h-4 w-4 mr-1.5 animate-spin" /> Launching…</> : <>Launch your coin <ArrowRight className="h-4 w-4 ml-1.5" /></>}
+                {tx.phase !== "idle" ? <><Loader2 className="h-4 w-4 mr-1.5 animate-spin" /> {t("Launching…")}</> : <>{t("Launch your coin")} <ArrowRight className="h-4 w-4 ml-1.5" /></>}
               </GradientButton>
               <p className="text-xs text-muted-foreground text-center">
                 <Link href="/claim/memecoin" className="underline active:text-foreground">
-                  Already launched a coin? Claim it instead.
+                  {t("Already launched a coin? Claim it instead.")}
                 </Link>
               </p>
           </section>

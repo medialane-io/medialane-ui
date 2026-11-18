@@ -27,8 +27,10 @@ import { isWebLink } from "../../utils/launchpad-rules.js";
 import { useIpfsUpload } from "./use-ipfs-upload.js";
 import { useNewCollectionDraft } from "./use-new-collection-draft.js";
 import type { FastMintProps, MediaKind } from "./types.js";
+import { useT } from "../../i18n/provider.js";
 
 export function FastMint(props: FastMintProps) {
+  const t = useT();
   const {
     presentation = "inline", open = true, onClose, mediaKindLock, onMinted,
     collections, refetchCollections,
@@ -180,8 +182,8 @@ export function FastMint(props: FastMintProps) {
     return (
       <Dialog open={open} onOpenChange={(next) => { if (!next) onClose?.(); }}>
         <DialogContent className="gap-0 p-6 sm:max-w-2xl sm:p-8">
-          <DialogTitle className="sr-only">Create</DialogTitle>
-          <DialogDescription className="sr-only">Add media, describe it and publish it as an asset.</DialogDescription>
+          <DialogTitle className="sr-only">{t("Create")}</DialogTitle>
+          <DialogDescription className="sr-only">{t("Add media, describe it and publish it as an asset.")}</DialogDescription>
           {node}
         </DialogContent>
       </Dialog>
@@ -210,7 +212,7 @@ export function FastMint(props: FastMintProps) {
   const submitBlocked = !ready || busy || !hasWallet;
   const buttonLabel = busy
     ? `${step?.label ?? "Working"}…${step && step.total > 1 ? ` (${step.index} of ${step.total})` : ""}`
-    : format.submitLabel(formatState);
+    : t(format.submitLabel(formatState));
 
   return wrap(
     <section className="space-y-6">
@@ -231,30 +233,30 @@ export function FastMint(props: FastMintProps) {
             <FormatPicker formats={FORMATS} value={formatKey} onChange={setFormatKey} />
 
             <div className="space-y-2">
-              <label className="text-sm font-medium">Title *</label>
+              <label className="text-sm font-medium">{t("Title *")}</label>
               <Input
                 value={name}
                 onChange={(e) => form.setValue("name", e.target.value)}
-                placeholder="My Creative Work"
+                placeholder={t("My Creative Work")}
               />
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-medium">Description</label>
+              <label className="text-sm font-medium">{t("Description")}</label>
               <Textarea
                 value={description}
                 onChange={(e) => form.setValue("description", e.target.value)}
-                placeholder="Describe your work, its story, and any context for buyers…"
+                placeholder={t("Describe your work, its story, and any context for buyers…")}
                 rows={3}
               />
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-medium">External link <span className="text-muted-foreground font-normal">(optional)</span></label>
+              <label className="text-sm font-medium">{t("External link")} <span className="text-muted-foreground font-normal">{t("(optional)")}</span></label>
               <Input
                 value={form.watch("external_url")}
                 onChange={(e) => form.setValue("external_url", e.target.value)}
-                placeholder="https://yourwebsite.com"
+                placeholder={t("https://yourwebsite.com")}
               />
             </div>
 
@@ -284,7 +286,7 @@ export function FastMint(props: FastMintProps) {
               {buttonLabel}
             </button>
             <p className="text-xs text-center text-muted-foreground">
-              Zero platform fees to mint.
+              {t("Zero platform fees to mint.")}
             </p>
           </div>
 

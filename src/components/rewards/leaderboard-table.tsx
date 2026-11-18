@@ -1,7 +1,11 @@
+"use client";
+
 import type { ReactNode } from "react";
 import { cn } from "../../utils/cn.js";
 import { shortenAddress } from "../../utils/address.js";
 import { LevelBadge } from "./level-badge.js";
+import { useT } from "../../i18n/provider.js";
+import { useFormat } from "../../i18n/use-format.js";
 
 export interface LeaderboardEntryLike {
 
@@ -25,6 +29,8 @@ export interface LeaderboardTableProps {
 }
 
 export function LeaderboardTable({ entries, highlightAddress, renderAddress, compact, className }: LeaderboardTableProps) {
+  const intl = useFormat();
+  const t = useT();
   if (compact) {
     return (
       <div className={cn("divide-y divide-border/40", className)}>
@@ -35,12 +41,12 @@ export function LeaderboardTable({ entries, highlightAddress, renderAddress, com
               <span className="w-4 shrink-0 text-xs font-medium tabular-nums text-muted-foreground">{e.rank}</span>
               <span className="min-w-0 flex-1 truncate text-sm font-semibold">
                 {renderAddress ? renderAddress(e.address) : shortenAddress(e.address)}
-                {isViewer && <span className="ml-1.5 text-xs font-medium text-foreground/50">(you)</span>}
+                {isViewer && <span className="ml-1.5 text-xs font-medium text-foreground/50">{t("(you)")}</span>}
               </span>
               <LevelBadge level={e.currentLevel} name={e.currentLevelName} badgeColor={e.badgeColor} size="sm" className="hidden sm:inline-flex" />
               <span className="shrink-0 text-sm font-bold tabular-nums">
-                {e.totalXp.toLocaleString()}
-                <span className="ml-1 text-xs font-medium text-foreground/40">XP</span>
+                {intl.number(e.totalXp)}
+                <span className="ml-1 text-xs font-medium text-foreground/40">{t("XP")}</span>
               </span>
             </div>
           );
@@ -62,12 +68,12 @@ export function LeaderboardTable({ entries, highlightAddress, renderAddress, com
           >
             <span className="min-w-0 flex-1 truncate text-base font-bold">
               {renderAddress ? renderAddress(e.address) : shortenAddress(e.address)}
-              {isViewer && <span className="ml-1.5 text-xs font-medium text-foreground/50">(you)</span>}
+              {isViewer && <span className="ml-1.5 text-xs font-medium text-foreground/50">{t("(you)")}</span>}
             </span>
             <LevelBadge level={e.currentLevel} name={e.currentLevelName} badgeColor={e.badgeColor} size="sm" className="hidden sm:inline-flex" />
             <span className="shrink-0 text-lg font-black tabular-nums">
-              {e.totalXp.toLocaleString()}
-              <span className="ml-1 text-xs font-bold text-foreground/40">XP</span>
+              {intl.number(e.totalXp)}
+              <span className="ml-1 text-xs font-bold text-foreground/40">{t("XP")}</span>
             </span>
           </div>
         );
@@ -86,6 +92,7 @@ export interface LeaderboardWidgetProps {
 }
 
 export function LeaderboardWidget({ entries, title = "Community Rewards", href, renderAddress, className }: LeaderboardWidgetProps) {
+  const t = useT();
   if (entries.length === 0) return null;
   return (
     <section className={cn("rounded-2xl bg-foreground/[0.04] p-5", className)}>
@@ -93,7 +100,7 @@ export function LeaderboardWidget({ entries, title = "Community Rewards", href, 
         <h2 className="text-lg font-black">{title}</h2>
         {href && (
           <a href={href} className="text-xs font-bold text-foreground/50 hover:text-foreground active:opacity-70">
-            View scoreboard →
+            {t("View scoreboard →")}
           </a>
         )}
       </div>

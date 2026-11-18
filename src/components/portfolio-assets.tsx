@@ -10,6 +10,7 @@ import { ReportDialog } from "./report-dialog.js";
 import { orderUsd } from "../utils/order-usd.js";
 import { useUsdPrices } from "../utils/use-usd-prices.js";
 import { useTokensByOwner } from "../utils/use-tokens.js";
+import { useT } from "../i18n/provider.js";
 
 export interface PortfolioAssetActions {
   list: (token: ApiToken) => void;
@@ -30,6 +31,7 @@ function usdFor(token: ApiToken, prices: ReturnType<typeof useUsdPrices>): strin
 }
 
 export function PortfolioAssets({ address, useActions }: { address: string; useActions: UsePortfolioAssetActions }) {
+  const t = useT();
   const [page, setPage] = useState(1);
   const [all, setAll] = useState<ApiToken[]>([]);
   const [reportToken, setReportToken] = useState<ApiToken | null>(null);
@@ -50,9 +52,9 @@ export function PortfolioAssets({ address, useActions }: { address: string; useA
         error={error}
         isEmpty={shown.length === 0 && !isLoading}
         onRetry={() => void mutate()}
-        emptyTitle="No assets yet"
-        emptyDescription="Create your first asset to get started."
-        emptyCta={{ label: "Create your first asset", href: "/launchpad/single-editions" }}
+        emptyTitle={t("No assets yet")}
+        emptyDescription={t("Create your first asset to get started.")}
+        emptyCta={{ label: t("Create your first asset"), href: "/launchpad/single-editions" }}
         emptyIcon={<ImageIcon className="h-7 w-7 text-muted-foreground" />}
         skeletonNode={
           <div className={GRID}>

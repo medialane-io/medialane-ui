@@ -20,6 +20,7 @@ import { useUsdPrices, usdPriceFor } from "../../utils/use-usd-prices.js";
 import { fmt, fmtUsd, rawToNumber } from "../../utils/media-wallet/wallet-format.js";
 import { successMessages } from "../../utils/success-messages.js";
 import { useMediaWalletApp, type MediaWalletView } from "./types.js";
+import { useT } from "../../i18n/provider.js";
 
 export function MediaWalletHome({
   onNavigate,
@@ -30,6 +31,7 @@ export function MediaWalletHome({
   onClose: () => void;
   autoOpenReceive?: boolean;
 }) {
+  const t = useT();
   const { useWalletSession, useEmailStatus, resolveImage, emailBanner } = useMediaWalletApp();
   const { address, isDeployed } = useWalletSession();
   const emailStatus = useEmailStatus();
@@ -111,10 +113,10 @@ export function MediaWalletHome({
 
       {funded ? (
         <div className="grid grid-cols-4 gap-2">
-          <QuickAction label="Send" action="buy" disabled={!canSend} onClick={() => onNavigate({ name: "send" })} icon={<ArrowUp />} />
-          <QuickAction label="Receive" action="offer" onClick={() => setPanel(panel === "receive" ? null : "receive")} icon={<ArrowDown />} />
-          <QuickAction label="Launch" action="remix" onClick={goLaunch} icon={<RocketIcon />} />
-          <QuickAction label="Activity" action="submit" onClick={() => onNavigate({ name: "activity" })} icon={<ActivityIcon />} />
+          <QuickAction label={t("Send")} action="buy" disabled={!canSend} onClick={() => onNavigate({ name: "send" })} icon={<ArrowUp />} />
+          <QuickAction label={t("Receive")} action="offer" onClick={() => setPanel(panel === "receive" ? null : "receive")} icon={<ArrowDown />} />
+          <QuickAction label={t("Launch")} action="remix" onClick={goLaunch} icon={<RocketIcon />} />
+          <QuickAction label={t("Activity")} action="submit" onClick={() => onNavigate({ name: "activity" })} icon={<ActivityIcon />} />
         </div>
       ) : isDeployed === null ? (
         <div className="flex flex-col gap-3">
@@ -129,7 +131,7 @@ export function MediaWalletHome({
         isDeployed === true && (
           <div className="flex flex-col gap-3">
             <div className="flex flex-col items-center gap-3 py-2">
-              <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Balance</span>
+              <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t("Balance")}</span>
               <span className="font-[family-name:var(--font-display)] text-5xl font-extrabold tracking-tight tabular-nums">
                 {hideBalances ? "••••" : usdPrices === null ? "…" : fmtUsd(totalUsd)}
               </span>
@@ -137,7 +139,7 @@ export function MediaWalletHome({
                 onClick={() => setPanel(panel === "receive" ? null : "receive")}
                 className="h-10 rounded-xl bg-foreground/[0.06] px-6 text-sm font-semibold text-foreground transition-colors hover:bg-foreground/[0.1] active:scale-[0.99]"
               >
-                Fund your account
+                {t("Fund your account")}
               </button>
             </div>
           </div>
@@ -157,7 +159,7 @@ export function MediaWalletHome({
             <MailIcon />
           </div>
           <div className="min-w-0 flex-1">
-            <div className="text-sm font-semibold">Verify your email</div>
+            <div className="text-sm font-semibold">{t("Verify your email")}</div>
             <div className="text-xs text-muted-foreground">{emailBanner.text(emailStatus?.deadline)}</div>
           </div>
         </Link>
@@ -171,7 +173,7 @@ export function MediaWalletHome({
 
       {heldTokens.length > 0 && (
         <section>
-          <SectionHeader title="Tokens" />
+          <SectionHeader title={t("Tokens")} />
           <div className="mt-2 flex flex-col gap-2">
             {heldTokens.map((t) => {
               const { rawBalance, decimals } = balances[t.symbol];
@@ -203,7 +205,7 @@ export function MediaWalletHome({
 
       {nftItems.length > 0 && (
         <section>
-          <SectionHeader title="NFTs" />
+          <SectionHeader title={t("NFTs")} />
           <div className="mt-2">
             <NftStrip items={nftItems} isLoading={loadingNfts} onNavigate={onClose} resolveImage={resolveImage} />
           </div>
@@ -218,15 +220,15 @@ export function MediaWalletHome({
           <div className="grid h-11 w-11 place-items-center rounded-full bg-foreground/[0.06]">
             <RocketIcon />
           </div>
-          <span className="text-[15px] font-semibold text-foreground">Creator Launchpad</span>
-          <span className="text-xs text-muted-foreground">Protect and monetize your work</span>
+          <span className="text-[15px] font-semibold text-foreground">{t("Creator Launchpad")}</span>
+          <span className="text-xs text-muted-foreground">{t("Protect and monetize your work")}</span>
         </button>
       )}
 
       {activated && (
         <SuccessDialog
-          title={successMessages.walletActivated().title}
-          message={successMessages.walletActivated().description}
+          title={successMessages.walletActivated(t).title}
+          message={successMessages.walletActivated(t).description}
           onClose={() => setActivated(false)}
         />
       )}

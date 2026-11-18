@@ -8,15 +8,17 @@ import { DropGrid, DropGridSkeleton } from "./drop-card.js";
 import { useMyDrops } from "../../utils/use-drops.js";
 import { useNow } from "../../utils/drop/use-now.js";
 import { useMedialaneApp } from "../medialane-app.js";
+import { useT } from "../../i18n/provider.js";
 
 export function MyDrops({ createHref = "/launchpad/drop/create" }: { createHref?: string }) {
+  const t = useT();
   const { walletAddress, onRequireWallet, connectLabel = "Sign in" } = useMedialaneApp();
   const { drops, isLoading } = useMyDrops(walletAddress);
   const now = useNow(60_000);
   if (!walletAddress) {
     return (
       <div className="space-y-4 py-16 text-center">
-        <p className="text-sm text-muted-foreground">Sign in to see the drops you launched.</p>
+        <p className="text-sm text-muted-foreground">{t("Sign in to see the drops you launched.")}</p>
         <Button onClick={onRequireWallet}>{connectLabel}</Button>
       </div>
     );
@@ -25,8 +27,8 @@ export function MyDrops({ createHref = "/launchpad/drop/create" }: { createHref?
   if (drops.length === 0) {
     return (
       <div className="space-y-4">
-        <TabEmptyState icon={Package} heading="No drops yet" body="Launch an edition or a collection and it will show here." />
-        <div className="text-center"><Link href={createHref} className="text-sm font-semibold text-primary">Create a drop</Link></div>
+        <TabEmptyState icon={Package} heading={t("No drops yet")} body={t("Launch an edition or a collection and it will show here.")} />
+        <div className="text-center"><Link href={createHref} className="text-sm font-semibold text-primary">{t("Create a drop")}</Link></div>
       </div>
     );
   }

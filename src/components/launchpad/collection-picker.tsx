@@ -10,6 +10,9 @@ import { Skeleton } from "../skeleton.js";
 import { Popover, PopoverContent, PopoverTrigger } from "../popover.js";
 import { cn } from "../../utils/cn.js";
 import { useImageUrl } from "../../utils/use-image-url.js";
+import { useT } from "../../i18n/provider.js";
+import type { T } from "../../i18n/make-t.js";
+import { useFormat, type Format } from "../../i18n/use-format.js";
 
 export interface CollectionPickerProps {
   collections: ApiCollection[];
@@ -23,8 +26,8 @@ function label(col: ApiCollection) {
   return col.name || col.symbol || `Collection #${col.collectionId}`;
 }
 
-function works(col: ApiCollection) {
-  return col.totalSupply != null ? `${col.totalSupply.toLocaleString()} work${col.totalSupply !== 1 ? "s" : ""}` : "Empty";
+function works(col: ApiCollection, t: T, intl: Format) {
+  return col.totalSupply != null ? t.plural("{count} work", "{count} works", col.totalSupply, { count: intl.number(col.totalSupply) }) : t("Empty");
 }
 
 function Thumb({ image, size }: { image: string | null | undefined; size: "sm" | "md" }) {
@@ -43,6 +46,8 @@ function Thumb({ image, size }: { image: string | null | undefined; size: "sm" |
 }
 
 export function CollectionPicker({ collections, loading, value, onChange, newCollectionHref }: CollectionPickerProps) {
+  const t = useT();
+  const intl = useFormat();
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
 
@@ -51,13 +56,13 @@ export function CollectionPicker({ collections, loading, value, onChange, newCol
   if (collections.length === 0) {
     return (
       <div className="rounded-xl border border-dashed border-border p-5 text-center space-y-3">
-        <p className="text-sm text-muted-foreground">No collection found. It may take a minute to display recently created collections.</p>
+        <p className="text-sm text-muted-foreground">{t("No collection found. It may take a minute to display recently created collections.")}</p>
         <Link
           href={newCollectionHref}
           className="inline-flex items-center gap-1.5 h-9 px-4 rounded-xl text-sm font-semibold text-white bg-brand-blue hover:brightness-110 transition-all"
         >
           <Plus className="h-3.5 w-3.5" />
-          Create your first collection
+          {t("Create your first collection")}
         </Link>
       </div>
     );
@@ -82,11 +87,11 @@ export function CollectionPicker({ collections, loading, value, onChange, newCol
         >
           <Thumb image={selected?.image} size="md" />
           <div className="min-w-0 flex-1">
-            <p className="text-sm font-semibold truncate">{selected ? label(selected) : "Choose a collection"}</p>
-            <p className="text-xs text-muted-foreground">{selected ? works(selected) : "Where this work will live"}</p>
+            <p className="text-sm font-semibold truncate">{selected ? label(selected) : t("Choose a collection")}</p>
+            <p className="text-xs text-muted-foreground">{selected ? works(selected, t, intl) : t("Where this work will live")}</p>
           </div>
           <span className="flex items-center gap-1 text-xs font-medium text-muted-foreground shrink-0">
-            Change
+            {t("Change")}
             <ChevronDown className="h-3.5 w-3.5" />
           </span>
         </button>
@@ -94,12 +99,12 @@ export function CollectionPicker({ collections, loading, value, onChange, newCol
       <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0" align="start">
         {collections.length > 5 && (
           <div className="border-b border-border p-2">
-            <Input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search collections…" className="h-8" />
+            <Input value={query} onChange={(e) => setQuery(e.target.value)} placeholder={t("Search collections…")} className="h-8" />
           </div>
         )}
         <div className="max-h-64 overflow-y-auto p-1">
           {filtered.length === 0 ? (
-            <p className="px-3 py-4 text-center text-sm text-muted-foreground">No collection found.</p>
+            <p className="px-3 py-4 text-center text-sm text-muted-foreground">{t("No collection found.")}</p>
           ) : (
             filtered.map((col) => (
               <button
@@ -114,7 +119,7 @@ export function CollectionPicker({ collections, loading, value, onChange, newCol
                 <Thumb image={col.image} size="sm" />
                 <div className="min-w-0 flex-1">
                   <p className="text-sm font-medium truncate">{label(col)}</p>
-                  <p className="text-xs text-muted-foreground">{works(col)}</p>
+                  <p className="text-xs text-muted-foreground">{works(col, t, intl)}</p>
                 </div>
                 {value === col.collectionId && <Check className="h-4 w-4 text-brand-blue shrink-0" />}
               </button>
@@ -127,7 +132,7 @@ export function CollectionPicker({ collections, loading, value, onChange, newCol
             className="flex items-center gap-2 rounded-lg px-2 py-2 text-sm font-medium text-muted-foreground hover:bg-muted/60 hover:text-foreground transition-colors"
           >
             <Plus className="h-4 w-4" />
-            New collection
+            {t("New collection")}
           </Link>
         </div>
       </PopoverContent>

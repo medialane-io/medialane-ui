@@ -12,6 +12,7 @@ import { profileIdentity } from "../../utils/profile-identity.js";
 import { useCreatorProfile } from "../../utils/use-profiles.js";
 import { useImageUrl } from "../../utils/use-image-url.js";
 import { useLeaderboard } from "../../utils/use-rewards.js";
+import { useT } from "../../i18n/provider.js";
 
 export interface LeaderboardPanelProps {
   myAddress?: string | null;
@@ -59,6 +60,7 @@ export function LeaderboardPanel({
   compact,
   className,
 }: LeaderboardPanelProps) {
+  const t = useT();
   const { data, isLoading } = useLeaderboard(1, limit);
   const rows = data?.data ?? [];
 
@@ -71,7 +73,7 @@ export function LeaderboardPanel({
           <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-brand-rose to-brand-orange text-white shrink-0">
             <Sparkles className="h-3.5 w-3.5" />
           </div>
-          <h2 className="text-sm font-black">Community Rewards</h2>
+          <h2 className="text-sm font-black">{t("Community Rewards")}</h2>
         </div>
       )}
 
@@ -83,7 +85,7 @@ export function LeaderboardPanel({
         </div>
       ) : rows.length === 0 ? (
         <p className={cn("text-sm text-muted-foreground py-4", compact && "px-4")}>
-          Nobody&apos;s earned points yet — be the first.
+          {t("Nobody's earned points yet — be the first.")}
         </p>
       ) : (
         <LeaderboardTable
@@ -103,7 +105,7 @@ export function LeaderboardPanel({
           href={viewAllHref}
           className="inline-flex items-center gap-1 text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors pt-1"
         >
-          View scoreboard →
+          {t("View scoreboard →")}
         </Link>
       )}
     </div>

@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { Button } from "./button.js";
 import { AlertTriangle, RefreshCw } from "lucide-react";
+import { useT } from "../i18n/provider.js";
 
 function isStaleChunkError(error: Error): boolean {
   return /ChunkLoadError|Loading chunk .* failed|dynamically imported module|Importing a module script failed/i.test(
@@ -11,6 +12,7 @@ function isStaleChunkError(error: Error): boolean {
 }
 
 export function RouteError({ error }: { error: Error & { digest?: string } }) {
+  const t = useT();
   useEffect(() => {
     console.error(error);
 
@@ -26,16 +28,15 @@ export function RouteError({ error }: { error: Error & { digest?: string } }) {
         <AlertTriangle className="h-7 w-7 text-destructive" />
       </div>
       <div className="space-y-2">
-        <h1 className="text-2xl font-bold">Reload to continue</h1>
+        <h1 className="text-2xl font-bold">{t("Reload to continue")}</h1>
         {error.digest && (
-          <p className="text-2xs text-muted-foreground/60 tabular-nums">
-            Error ID: {error.digest}
+          <p className="text-2xs text-muted-foreground/60 tabular-nums">{t("Error ID: {digest}", { digest: error.digest })}
           </p>
         )}
       </div>
       <Button onClick={() => window.location.reload()}>
         <RefreshCw className="h-4 w-4 mr-2" />
-        Reload
+        {t("Reload")}
       </Button>
     </div>
   );

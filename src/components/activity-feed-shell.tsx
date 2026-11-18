@@ -4,6 +4,7 @@ import Link from "./link.js";
 import { ArrowRight, Activity, RefreshCw } from "lucide-react";
 import { timeAgo } from "../utils/time.js";
 import { emptyMessages } from "../utils/empty-messages.js";
+import { useT } from "../i18n/provider.js";
 
 export interface ActivityFeedShellProps {
   title: string;
@@ -33,6 +34,7 @@ function SkeletonRow() {
 }
 
 export function ActivityFeedShell({ title, href, hrefLabel = "Activities", lastUpdated, isLoading, children }: ActivityFeedShellProps) {
+  const t = useT();
   return (
     <section className="space-y-5">
       <div className="flex items-center justify-between">
@@ -47,8 +49,7 @@ export function ActivityFeedShell({ title, href, hrefLabel = "Activities", lastU
           <div>
             <h2 className="text-xl sm:text-2xl font-black leading-none">{title}</h2>
             <p className="text-2xs text-muted-foreground mt-0.5 flex items-center gap-1">
-              <RefreshCw className="h-2.5 w-2.5" />
-              Updated {timeAgo(lastUpdated)}
+              <RefreshCw className="h-2.5 w-2.5" />{t("Updated {timeAgo}", { timeAgo: timeAgo(lastUpdated) })}
             </p>
           </div>
         </div>
@@ -63,8 +64,8 @@ export function ActivityFeedShell({ title, href, hrefLabel = "Activities", lastU
         ) : !children || (Array.isArray(children) && children.length === 0) ? (
           <div className="flex flex-col items-center gap-2 py-10 text-center">
             <Activity className="h-8 w-8 text-muted-foreground/30" />
-            <p className="text-sm font-medium">{emptyMessages.activity.title}</p>
-            <p className="text-sm text-muted-foreground">{emptyMessages.activity.description}</p>
+            <p className="text-sm font-medium">{t(emptyMessages.activity.title)}</p>
+            <p className="text-sm text-muted-foreground">{t(emptyMessages.activity.description)}</p>
           </div>
         ) : (
           children

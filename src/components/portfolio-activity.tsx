@@ -8,12 +8,14 @@ import { ACTIVITY_TYPE_CONFIG, TYPE_FILTERS } from "../data/activity.js";
 import { ActivityListSkeleton, ActivityRow } from "./activity-row.js";
 import { cn } from "../utils/cn.js";
 import { EXPLORER_URL } from "../utils/explorer-url.js";
+import { useT } from "../i18n/provider.js";
 
 export interface PortfolioActivityProps {
   address: string | null;
 }
 
 export function PortfolioActivity({ address }: PortfolioActivityProps) {
+  const t = useT();
   const { activities, isLoading, error, mutate } = useActivitiesByAddress(address);
   const [typeFilter, setTypeFilter] = useState("");
 
@@ -57,7 +59,7 @@ export function PortfolioActivity({ address }: PortfolioActivityProps) {
                   )}
                 />
               )}
-              {f.label}
+              {t(f.label)}
               {!isLoading && count != null && count > 0 && (
                 <span
                   className={cn(
@@ -80,9 +82,9 @@ export function PortfolioActivity({ address }: PortfolioActivityProps) {
         error={error}
         isEmpty={displayed.length === 0}
         onRetry={mutate}
-        emptyTitle={typeFilter ? `No ${typeFilter} events yet` : "No activity yet"}
-        emptyDescription="Start by listing or buying an asset on the marketplace."
-        emptyCta={{ label: "Browse marketplace", href: "/marketplace" }}
+        emptyTitle={typeFilter ? `No ${typeFilter} events yet` : t("No activity yet")}
+        emptyDescription={t("Start by listing or buying an asset on the marketplace.")}
+        emptyCta={{ label: t("Browse marketplace"), href: "/marketplace" }}
         emptyIcon={<Activity className="h-7 w-7 text-muted-foreground" />}
         skeletonNode={<ActivityListSkeleton count={8} />}
       >

@@ -8,15 +8,17 @@ import { timeAgo } from "../utils/time.js";
 import { formatDisplayPrice } from "../utils/format.js";
 import { assetHref, type ApiActivity } from "@medialane/sdk";
 import { cn } from "../utils/cn.js";
+import { useT } from "../i18n/provider.js";
+import { msg } from "../i18n/translate.js";
 
 
 const ACTIVITY_META: Record<string, { label: string; textColor: string; bg: string }> = {
-  mint:      { label: "Minted",    textColor: "text-yellow-400",  bg: "bg-yellow-500/8 border-yellow-500/15" },
-  listing:   { label: "Listed",    textColor: "text-violet-400",  bg: "bg-violet-500/8 border-violet-500/15" },
-  sale:      { label: "Sold",      textColor: "text-emerald-400", bg: "bg-emerald-500/8 border-emerald-500/15" },
-  offer:     { label: "Offer",     textColor: "text-amber-400",   bg: "bg-amber-500/8 border-amber-500/15" },
-  transfer:  { label: "Transfer",  textColor: "text-blue-400",    bg: "bg-blue-500/8 border-blue-500/15" },
-  cancelled: { label: "Cancelled", textColor: "text-muted-foreground", bg: "bg-muted/30 border-border" },
+  mint:      { label: msg("Minted"),    textColor: "text-yellow-400",  bg: "bg-yellow-500/8 border-yellow-500/15" },
+  listing:   { label: msg("Listed"),    textColor: "text-violet-400",  bg: "bg-violet-500/8 border-violet-500/15" },
+  sale:      { label: msg("Sold"),      textColor: "text-emerald-400", bg: "bg-emerald-500/8 border-emerald-500/15" },
+  offer:     { label: msg("Offer"),     textColor: "text-amber-400",   bg: "bg-amber-500/8 border-amber-500/15" },
+  transfer:  { label: msg("Transfer"),  textColor: "text-blue-400",    bg: "bg-blue-500/8 border-blue-500/15" },
+  cancelled: { label: msg("Cancelled"), textColor: "text-muted-foreground", bg: "bg-muted/30 border-border" },
 };
 
 const ACTIVITY_ICONS: Record<string, React.ElementType> = {
@@ -37,6 +39,7 @@ export function ActivityTimelineRow({
   event,
   isLast,
 }: ActivityTimelineRowProps) {
+  const t = useT();
   const meta = ACTIVITY_META[event.type] ?? ACTIVITY_META.transfer;
   const Icon = ACTIVITY_ICONS[event.type] ?? ArrowRightLeft;
   const tokenId = event.nftTokenId ?? event.tokenId;
@@ -55,11 +58,11 @@ export function ActivityTimelineRow({
           <div className="min-w-0">
             <div className="flex items-center gap-2 flex-wrap">
               <span className={cn("text-2xs font-bold", meta.textColor)}>
-                {meta.label}
+                {t(meta.label)}
               </span>
               {contract && tokenId && (
                 <Link href={assetHref(event.chain ?? "STARKNET", contract, tokenId)} className="text-xs text-muted-foreground hover:text-foreground transition-colors">
-                  View asset
+                  {t("View asset")}
                 </Link>
               )}
             </div>

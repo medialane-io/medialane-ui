@@ -8,6 +8,7 @@ import { formatCompactPrice } from "../utils/format.js";
 import { IpTypeBadge } from "./ip-type-badge.js";
 import { AnimatedTokenMedia } from "./animated-token-media.js";
 import { useImageUrl } from "../utils/use-image-url.js";
+import { useT } from "../i18n/provider.js";
 
 export interface AssetCardPrice {
   formatted?: string | null;
@@ -62,6 +63,7 @@ export function AssetCard({
   ipTypeBaseUrl = "",
   className,
 }: AssetCardProps) {
+  const t = useT();
   const resolveImage = useImageUrl();
   const resolved = resolveImage(image, { width: 480 });
   const hasPrice = !!price?.formatted && !indexing;
@@ -106,7 +108,7 @@ export function AssetCard({
           {indexing && (
             <span className="flex items-center gap-1 rounded-full px-3 py-1 text-xs text-white bg-black/30 backdrop-blur-md">
               <Loader2 className="h-3 w-3 animate-spin" />
-              Indexing…
+              {t("Indexing…")}
             </span>
           )}
 
@@ -115,13 +117,13 @@ export function AssetCard({
               {soulbound && (
                 <span className="inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-medium text-white bg-black/30 backdrop-blur-md">
                   <Fingerprint className="h-3 w-3" aria-hidden />
-                  Soulbound
+                  {t("Soulbound")}
                 </span>
               )}
               {archived && (
                 <span className="inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-medium text-white bg-black/30 backdrop-blur-md">
                   <Archive className="h-3 w-3" aria-hidden />
-                  Archived
+                  {t("Archived")}
                 </span>
               )}
               {hasPrice && (

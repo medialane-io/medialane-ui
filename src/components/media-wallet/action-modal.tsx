@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
+import { useT } from "../../i18n/provider.js";
 
 export const MEDIA_WALLET_PORTAL_ID = "media-wallet-canvas";
 
@@ -26,6 +27,7 @@ export function ActionModal({
   onClose: () => void;
   children: React.ReactNode;
 }) {
+  const t = useT();
   return (
     <CanvasPortal>
       <div className="absolute inset-0 z-50 flex items-center justify-center p-5">
@@ -37,7 +39,7 @@ export function ActionModal({
             )}
             <button
               onClick={onClose}
-              aria-label="Close"
+              aria-label={t("Close")}
               className="grid h-8 w-8 place-items-center rounded-full text-muted-foreground transition-colors hover:bg-foreground/5"
             >
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">

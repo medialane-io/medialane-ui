@@ -4,21 +4,24 @@ import { Fingerprint } from "lucide-react";
 import { profileHref, type ApiActivity } from "@medialane/sdk";
 import Link from "./link.js";
 import { shortenAddress } from "../utils/address.js";
+import { useLocale, useT } from "../i18n/provider.js";
+import { formatDate } from "../i18n/format.js";
 
-export function issuedAt(history: readonly ApiActivity[]): string | null {
+export function issuedAt(history: readonly ApiActivity[], locale?: string): string | null {
   const times = history
     .filter((event) => event.type === "mint")
     .map((event) => new Date(event.timestamp).getTime())
     .filter((time) => Number.isFinite(time));
   if (times.length === 0) return null;
-  return new Date(Math.min(...times)).toLocaleDateString("en-US", { day: "numeric", month: "short", year: "numeric" });
+  return formatDate(Math.min(...times), locale, { day: "numeric", month: "short", year: "numeric" });
 }
 
 export function SoulboundBadge() {
+  const t = useT();
   return (
     <span className="inline-flex items-center gap-1 text-xs font-semibold text-brand-purple">
       <Fingerprint className="h-3.5 w-3.5" aria-hidden />
-      Soulbound
+      {t("Soulbound")}
     </span>
   );
 }
@@ -29,28 +32,30 @@ export interface SoulboundCardProps {
 }
 
 export function SoulboundCard({ history = [], ownerAddress }: SoulboundCardProps) {
-  const issued = issuedAt(history);
+  const t = useT();
+  const locale = useLocale();
+  const issued = issuedAt(history, locale);
   return (
-    <section aria-label="Soulbound asset" className="flex items-center gap-4 overflow-hidden rounded-2xl bg-gradient-to-br from-muted/40 to-transparent p-4">
+    <section aria-label={t("Soulbound asset")} className="flex items-center gap-4 overflow-hidden rounded-2xl bg-gradient-to-br from-muted/40 to-transparent p-4">
       <Fingerprint className="h-7 w-7 shrink-0 text-brand-purple" strokeWidth={1.5} aria-hidden />
       <div className="min-w-0 flex-1">
-        <h3 className="font-display text-base font-bold leading-tight text-foreground">Soulbound</h3>
+        <h3 className="font-display text-base font-bold leading-tight text-foreground">{t("Soulbound")}</h3>
         <p className="mt-0.5 truncate text-xs text-muted-foreground">
           {ownerAddress ? (
             <>
-              Permanently bound to{" "}
+              {t("Permanently bound to")}{" "}
               <Link href={profileHref({ address: ownerAddress })} title={ownerAddress} className="font-mono font-medium text-foreground transition-colors hover:text-primary">
                 {shortenAddress(ownerAddress)}
               </Link>
             </>
           ) : (
-            "Permanently bound to the wallet it was issued to."
+            t("Permanently bound to the wallet it was issued to.")
           )}
         </p>
       </div>
       {issued ? (
         <div className="shrink-0 text-right">
-          <p className="text-xs text-muted-foreground">Issued</p>
+          <p className="text-xs text-muted-foreground">{t("Issued")}</p>
           <p className="mt-0.5 text-sm font-semibold tabular-nums text-foreground">{issued}</p>
         </div>
       ) : null}

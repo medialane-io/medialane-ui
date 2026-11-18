@@ -5,6 +5,7 @@ import { Loader2, Search } from "lucide-react";
 import { cn } from "../utils/cn.js";
 import type { OwnedAsset } from "./asset-picker.js";
 import { AssetPickerCell, isSameAsset } from "./asset-picker-cell.js";
+import { useT } from "../i18n/provider.js";
 
 export interface AssetSearchPickerProps {
 
@@ -18,6 +19,7 @@ export interface AssetSearchPickerProps {
 export function AssetSearchPicker({
   search, selected, onSelect, placeholder = "Search for an asset or creator", className,
 }: AssetSearchPickerProps) {
+  const t = useT();
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<OwnedAsset[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -67,7 +69,7 @@ export function AssetSearchPicker({
       </div>
 
       {query.trim().length > 0 && query.trim().length < 2 ? (
-        <p className="text-xs text-muted-foreground text-center py-2">Keep typing — 2+ characters to search.</p>
+        <p className="text-xs text-muted-foreground text-center py-2">{t("Keep typing — 2+ characters to search.")}</p>
       ) : null}
 
       {results.length > 0 ? (
@@ -82,7 +84,7 @@ export function AssetSearchPicker({
           ))}
         </div>
       ) : hasSearched && !isLoading ? (
-        <p className="text-xs text-muted-foreground text-center py-4">No assets match &quot;{query.trim()}&quot;.</p>
+        <p className="text-xs text-muted-foreground text-center py-4">{t("No assets match \"{query}\".", { query: query.trim() })}</p>
       ) : null}
     </div>
   );

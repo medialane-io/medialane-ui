@@ -17,8 +17,11 @@ import { collectorPriceLine } from "../../../utils/drop/sale.js";
 import { previewUrl } from "../../../utils/drop/preview.js";
 import { useMedialaneApp } from "../../medialane-app.js";
 import { useDropFee } from "../../../utils/use-drops.js";
+import { useT } from "../../../i18n/provider.js";
+import { useFormat } from "../../../i18n/use-format.js";
 
 export function DropCreate() {
+  const t = useT();
   const app = useMedialaneApp();
   const feeBps = useDropFee();
   const [draft, setDraftState] = useState<DropDraft>(EMPTY_DRAFT);
@@ -44,15 +47,15 @@ export function DropCreate() {
         open={draft.gated.enabled}
         onOpenChange={(enabled) => setDraft({ gated: { ...draft.gated, enabled } })}
         icon={<Lock className="h-4 w-4 text-primary" />}
-        label="Exclusive content"
-        hint="Optional · a private link only holders can open"
+        label={t("Exclusive content")}
+        hint={t("Optional · a private link only holders can open")}
       >
         <ExclusiveFields value={draft.gated} onChange={(v) => setDraft({ gated: { ...draft.gated, ...v } })} />
         <FieldError message={errors.gated} />
       </CollapsibleSection>
-      {tried && Object.keys(errors).length > 0 && <p className="text-sm font-medium text-destructive">Check the highlighted fields.</p>}
+      {tried && Object.keys(errors).length > 0 && <p className="text-sm font-medium text-destructive">{t("Check the highlighted fields.")}</p>}
       <GradientButton big onClick={launch}>
-        {app.walletAddress ? "Review and launch" : app.connectLabel ?? "Sign in to launch"}
+        {app.walletAddress ? t("Review and launch") : app.connectLabel ?? t("Sign in to launch")}
       </GradientButton>
       {launching && <LaunchDialog open onClose={() => setLaunching(false)} draft={draft} />}
     </div>
@@ -65,22 +68,24 @@ export function DropCreate() {
 
 /** The drop as collectors will see it, updated as the form changes. */
 export function DraftSummary({ draft, feeBps }: { draft: DropDraft; feeBps: number | null }) {
+  const intl = useFormat();
+  const t = useT();
   const art = draft.cover ?? (draft.kind === "edition" ? draft.edition : draft.items[0]?.file ?? null);
   const preview = art ? previewUrl(art) : null;
   const supply = draftSupply(draft);
   return (
     <div className="overflow-hidden rounded-2xl border border-border bg-card">
       <div className="relative aspect-square bg-muted">
-        {preview && <Image src={preview} alt={draft.name || "Drop"} fill unoptimized className="object-cover" />}
+        {preview && <Image src={preview} alt={draft.name || t("Drop")} fill unoptimized className="object-cover" />}
       </div>
       <div className="space-y-1 p-4">
-        <p className="truncate font-semibold">{draft.name || "Untitled drop"}</p>
+        <p className="truncate font-semibold">{draft.name || t("Untitled drop")}</p>
         <p className="text-xs text-muted-foreground">
-          {draft.sale.paid ? (feeBps === null ? "…" : collectorPriceLine(draft.sale, feeBps) ?? "Set a price") : "Free"}
+          {draft.sale.paid ? (feeBps === null ? "…" : collectorPriceLine(draft.sale, feeBps) ?? t("Set a price")) : t("Free")}
         </p>
         <p className="text-xs text-muted-foreground">
-          {Number.isFinite(supply) && supply > 0 ? `${supply.toLocaleString("en-US")} ${draft.kind === "edition" ? (supply === 1 ? "copy" : "copies") : supply === 1 ? "item" : "items"}` : "Supply not set"}
-          {" · "}{draft.listOnly ? "List only" : "Open to everyone"}
+          {Number.isFinite(supply) && supply > 0 ? `${intl.number(supply)} ${draft.kind === "edition" ? (supply === 1 ? "copy" : "copies") : supply === 1 ? "item" : "items"}` : t("Supply not set")}
+          {" · "}{draft.listOnly ? t("List only") : t("Open to everyone")}
         </p>
       </div>
     </div>

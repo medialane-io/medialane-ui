@@ -2,13 +2,16 @@
 
 import { cn } from "../../utils/cn.js";
 import type { DropPhase } from "../../utils/drop/view.js";
+import { useT } from "../../i18n/provider.js";
+import { useFormat } from "../../i18n/use-format.js";
 
 export function DropStatusBadge({ phase }: { phase: DropPhase }) {
+  const t = useT();
   const map = {
-    live:       { label: "Live",     cls: "text-green-400 bg-green-500/10" },
-    upcoming:   { label: "Upcoming", cls: "text-brand-blue bg-brand-blue/10" },
-    ended:      { label: "Ended",    cls: "text-muted-foreground bg-muted" },
-    "sold-out": { label: "Sold out", cls: "text-brand-orange bg-brand-orange/10" },
+    live:       { label: t("Live"),     cls: "text-green-400 bg-green-500/10" },
+    upcoming:   { label: t("Upcoming"), cls: "text-brand-blue bg-brand-blue/10" },
+    ended:      { label: t("Ended"),    cls: "text-muted-foreground bg-muted" },
+    "sold-out": { label: t("Sold out"), cls: "text-brand-orange bg-brand-orange/10" },
   } as const;
   const { label, cls } = map[phase];
   return (
@@ -20,12 +23,14 @@ export function DropStatusBadge({ phase }: { phase: DropPhase }) {
 }
 
 export function DropSupplyProgress({ minted, max }: { minted: number; max: number }) {
+  const intl = useFormat();
+  const t = useT();
   const pct = max > 0 ? Math.min(100, (minted / max) * 100) : 0;
   return (
     <div className="space-y-1.5">
       <div className="flex justify-between text-xs text-muted-foreground">
-        <span>{minted.toLocaleString()} minted</span>
-        <span>of {max.toLocaleString()}</span>
+        <span>{t("{minted} minted", { minted: intl.number(minted) })}</span>
+        <span>{t("of {max}", { max: intl.number(max) })}</span>
       </div>
       <div className="h-2 rounded-full bg-muted overflow-hidden">
         <div
@@ -33,7 +38,7 @@ export function DropSupplyProgress({ minted, max }: { minted: number; max: numbe
           style={{ width: `${pct}%` }}
         />
       </div>
-      <p className="text-xs text-muted-foreground">{pct.toFixed(1)}% claimed</p>
+      <p className="text-xs text-muted-foreground">{t("{pct}% claimed", { pct: pct.toFixed(1) })}</p>
     </div>
   );
 }

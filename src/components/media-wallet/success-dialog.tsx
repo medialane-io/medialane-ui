@@ -7,6 +7,7 @@ import { fireConfetti } from "../../utils/media-wallet/confetti.js";
 import { explorerTxUrl } from "../../utils/media-wallet/wallet-format.js";
 import { BRAND_GRADIENT } from "../../data/brand.js";
 import { useMediaWalletApp } from "./types.js";
+import { useT } from "../../i18n/provider.js";
 
 export function SuccessDialog({
   title,
@@ -21,6 +22,7 @@ export function SuccessDialog({
   txHash?: string;
   onClose: () => void;
 }) {
+  const t = useT();
   const { explorerUrl } = useMediaWalletApp();
   useEffect(() => {
     fireConfetti();
@@ -41,7 +43,7 @@ export function SuccessDialog({
               rel="noopener noreferrer"
               className="mt-3 inline-block text-xs text-brand-blue hover:underline"
             >
-              View transaction ↗
+              {t("View transaction ↗")}
             </a>
           )}
           <ActionButton big onClick={onClose} className="mt-5 w-full" style={{ "--ml-grad": BRAND_GRADIENT } as React.CSSProperties}>

@@ -4,8 +4,10 @@ import { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
 import { Sun, Moon } from "lucide-react";
 import { cn } from "../utils/cn.js";
+import { useT } from "../i18n/provider.js";
 
 export function NavThemeToggle() {
+  const t = useT();
   const { resolvedTheme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
@@ -16,12 +18,12 @@ export function NavThemeToggle() {
   return (
     <div
       role="group"
-      aria-label="Theme"
+      aria-label={t("Theme")}
       className="flex items-center gap-0.5 rounded-lg bg-muted/40 p-0.5"
     >
       {[
-        { key: "light", label: "Light theme", Icon: Sun, active: !isDark },
-        { key: "dark", label: "Dark theme", Icon: Moon, active: isDark },
+        { key: "light", label: t("Light theme"), Icon: Sun, active: !isDark },
+        { key: "dark", label: t("Dark theme"), Icon: Moon, active: isDark },
       ].map(({ key, label, Icon, active }) => (
         <button
           key={key}

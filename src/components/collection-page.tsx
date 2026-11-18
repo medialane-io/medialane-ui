@@ -30,6 +30,8 @@ import { useUsdPrices, usdPriceFor } from "../utils/use-usd-prices.js";
 import { formatUsd } from "../utils/format.js";
 import { isSameAddress } from "../utils/same-address.js";
 import { isLivingRenderCollection } from "../data/living-render-collections.js";
+import { useT } from "../i18n/provider.js";
+import { useFormat } from "../i18n/use-format.js";
 
 export interface CollectionMarketActions {
   buy: (order: ApiOrder) => void;
@@ -108,6 +110,7 @@ function useCollectionItems(contract: string) {
 type CollectionItemsState = ReturnType<typeof useCollectionItems>;
 
 function CollectionItems({ items, activeListings, mintHref, soulbound }: { items: CollectionItemsState; activeListings: ApiOrder[]; mintHref: string | null; soulbound: boolean }) {
+  const t = useT();
   const { meta, isLoading, setPage, sort, handleSortChange, allTokens, selectedFilters, setSelectedFilters } = items;
   const usdPrices = useUsdPrices();
 
@@ -128,9 +131,9 @@ function CollectionItems({ items, activeListings, mintHref, soulbound }: { items
 
   if (allTokens.length === 0) {
     return mintHref ? (
-      <EmptyState title="Ready for your first work" body="Mint into this collection and it appears here." action={{ href: mintHref, label: "Mint your first work" }} />
+      <EmptyState title={t("Ready for your first work")} body={t("Mint into this collection and it appears here.")} action={{ href: mintHref, label: t("Mint your first work") }} />
     ) : (
-      <EmptyState title="No items yet" body="Tokens in this collection will appear here once indexed." />
+      <EmptyState title={t("No items yet")} body={t("Tokens in this collection will appear here once indexed.")} />
     );
   }
 
@@ -138,7 +141,7 @@ function CollectionItems({ items, activeListings, mintHref, soulbound }: { items
     <div className="space-y-3">
       <CollectionActiveFilters tokens={allTokens} selected={selectedFilters} onChange={setSelectedFilters} sort={sort} onSortChange={handleSortChange} />
       {visibleTokens.length === 0 ? (
-        <EmptyState title="No items match these filters" body="Try removing some filters to see more results." />
+        <EmptyState title={t("No items match these filters")} body={t("Try removing some filters to see more results.")} />
       ) : (
         <div className={GRID}>
           {visibleTokens.map((t) => {
@@ -169,13 +172,14 @@ function CollectionItems({ items, activeListings, mintHref, soulbound }: { items
 }
 
 function OwnerActions({ collection }: { collection: ApiCollection }) {
+  const t = useT();
   const service = getService(collection.service)?.id;
   const contract = collection.contractAddress;
   if (service === "ip-tickets") {
     return (
       <Link href={`/launchpad/tickets/${contract}/mint`} className="flex w-fit items-center gap-1.5 h-8 px-3 rounded-lg text-xs font-semibold text-white bg-brand-blue hover:brightness-110 active:scale-[0.98] transition">
         <Ticket className="h-3.5 w-3.5" />
-        Mint tickets
+        {t("Mint tickets")}
       </Link>
     );
   }
@@ -189,6 +193,8 @@ export interface CollectionPageProps {
 }
 
 export function CollectionPage({ contract, slots }: CollectionPageProps) {
+  const intl = useFormat();
+  const t = useT();
   const { walletAddress } = useMedialaneApp();
   const { collection, isLoading: collectionLoading } = useCollection(contract);
   const { profile } = useCollectionProfile(contract);
@@ -242,16 +248,16 @@ export function CollectionPage({ contract, slots }: CollectionPageProps) {
           <div className="sticky top-0 z-10 flex items-center gap-2 pt-3 pb-1">
             <TabsList className="min-w-0 flex-1 justify-start overflow-x-auto sm:flex-none">
               <TabsTrigger value="assets" className="flex-1 sm:flex-none">
-                Assets{collection?.totalSupply ? ` (${collection.totalSupply.toLocaleString()})` : ""}
+                {t("Assets")}{collection?.totalSupply ? ` (${intl.number(collection.totalSupply)})` : ""}
               </TabsTrigger>
               <TabsTrigger value="market" className="flex-1 sm:flex-none">
-                Market{!ordersLoading && activeListings.length + activeBids.length > 0 && ` (${activeListings.length + activeBids.length})`}
+                {t("Market")}{!ordersLoading && activeListings.length + activeBids.length > 0 && ` (${activeListings.length + activeBids.length})`}
               </TabsTrigger>
-              <TabsTrigger value="provenance" className="flex-1 sm:flex-none">Provenance</TabsTrigger>
+              <TabsTrigger value="provenance" className="flex-1 sm:flex-none">{t("Provenance")}</TabsTrigger>
               {profile?.hasGatedContent ? (
                 <TabsTrigger value="exclusive" className="flex-1 sm:flex-none gap-1.5">
                   <Lock className="h-3.5 w-3.5" />
-                  Exclusive
+                  {t("Exclusive")}
                 </TabsTrigger>
               ) : null}
             </TabsList>
@@ -278,16 +284,16 @@ export function CollectionPage({ contract, slots }: CollectionPageProps) {
             <Tabs value={marketTab} onValueChange={(v) => setMarketTab(v as "listings" | "offers")}>
               <TabsList className="h-9">
                 <TabsTrigger value="listings" className="text-xs px-3 py-1">
-                  Listings{!ordersLoading && activeListings.length > 0 && ` (${activeListings.length})`}
+                  {t("Listings")}{!ordersLoading && activeListings.length > 0 && ` (${activeListings.length})`}
                 </TabsTrigger>
                 <TabsTrigger value="offers" className="text-xs px-3 py-1">
-                  Offers{!ordersLoading && activeBids.length > 0 && ` (${activeBids.length})`}
+                  {t("Offers")}{!ordersLoading && activeBids.length > 0 && ` (${activeBids.length})`}
                 </TabsTrigger>
               </TabsList>
 
               <TabsContent value="listings" className="mt-4">
                 {ordersLoading ? loadingGrid : activeListings.length === 0 ? (
-                  <EmptyState title="No active listings" body="When items in this collection are listed for sale, they'll appear here." />
+                  <EmptyState title={t("No active listings")} body={t("When items in this collection are listed for sale, they'll appear here.")} />
                 ) : (
                   <div className="space-y-3">
                     <div className="flex justify-end">
@@ -304,7 +310,7 @@ export function CollectionPage({ contract, slots }: CollectionPageProps) {
                   <MakeOfferPicker contract={contract} onPick={market.offer} />
                 </div>
                 {ordersLoading ? loadingGrid : activeBids.length === 0 ? (
-                  <EmptyState title="No active offers" body="Make the first offer, or check back when collectors start bidding." />
+                  <EmptyState title={t("No active offers")} body={t("Make the first offer, or check back when collectors start bidding.")} />
                 ) : (
                   listingGrid(activeBids, offersSort, false)
                 )}
