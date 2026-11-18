@@ -14,10 +14,10 @@ import { useT } from "../i18n/provider.js";
 import { msg } from "../i18n/translate.js";
 
 const CATEGORIES = [
-  { value: "COPYRIGHT_PIRACY", label: msg("Copyright / Piracy") },
+  { value: "COPYRIGHT_PIRACY", label: msg("Copyright / piracy") },
   { value: "VIOLENCE_GRAPHIC", label: msg("Violence / Graphic content") },
   { value: "HATE_SPEECH", label: msg("Hate speech") },
-  { value: "SCAM_FRAUD", label: msg("Scam / Fraud") },
+  { value: "SCAM_FRAUD", label: msg("Scam / fraud") },
   { value: "SPAM", label: msg("Spam") },
   { value: "NSFW", label: msg("NSFW / Adult content") },
   { value: "OTHER", label: msg("Other") },
@@ -179,7 +179,7 @@ export function ReportDialog({ target, open, onOpenChange }: ReportDialogProps) 
                 onClick={handleSubmit}
                 disabled={categories.length === 0 || submitStep === "submitting"}
               >
-                {submitStep === "submitting" ? <><Loader2 className="h-4 w-4 mr-2 animate-spin" />{t("Submitting…")}</> : t("Submit Report")}
+                {submitStep === "submitting" ? <><Loader2 className="h-4 w-4 mr-2 animate-spin" />{t("Submitting…")}</> : t("Submit report")}
               </Button>
             </DialogFooter>
           </>

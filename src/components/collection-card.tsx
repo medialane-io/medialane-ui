@@ -79,7 +79,7 @@ export function CollectionCard({ collection, href, settingsHref, className }: Co
               </span>
             ) : (
               <p className="max-w-full truncate rounded-full px-3 py-1 text-sm font-bold leading-tight text-white bg-black/30 backdrop-blur-md">
-                {collection.name ?? t("Unnamed Collection")}
+                {collection.name ?? t("Unnamed collection")}
               </p>
             )}
 

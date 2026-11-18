@@ -288,7 +288,7 @@ export function SingleEditionMint({ aside }: { aside?: ReactNode }) {
             <FormField control={form.control} name="name" render={({ field }) => (
               <FormItem>
                 <FormLabel>{t("Name *")}</FormLabel>
-                <FormControl><Input placeholder={t("My Creative Work")} {...field} /></FormControl>
+                <FormControl><Input placeholder={t("My creative work")} {...field} /></FormControl>
                 <FormMessage />
               </FormItem>
             )} />
@@ -313,7 +313,7 @@ export function SingleEditionMint({ aside }: { aside?: ReactNode }) {
               open={licensingOpen}
               onOpenChange={setLicensingOpen}
               icon={<ShieldCheck className="h-4 w-4 text-primary" />}
-              label={t("Licensing Terms")}
+              label={t("License terms")}
               hint={t("Optional · Berne Convention")}
             >
               <p className="text-xs text-muted-foreground">{t("Set how others can use your work. These terms are saved permanently with it as proof of authorship.")}</p>
@@ -371,13 +371,13 @@ export function SingleEditionMint({ aside }: { aside?: ReactNode }) {
               open={ipTypeOpen}
               onOpenChange={setIpTypeOpen}
               icon={<Layers className="h-4 w-4 text-primary" />}
-              label={t("IP Type & Metadata")}
+              label={t("IP type & metadata")}
               hint={t("Optional")}
             >
               <p className="text-xs text-muted-foreground">{t("Choose a content type, fill suggested metadata, or add your own trait pairs.")}</p>
               <FormField control={form.control} name="ipType" render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t("IP Type")}</FormLabel>
+                  <FormLabel>{t("IP type")}</FormLabel>
                   <Select onValueChange={field.onChange} value={field.value}>
                     <FormControl><SelectTrigger><SelectValue /></SelectTrigger></FormControl>
                     <SelectContent>{IP_TYPES.map((t) => <SelectItem key={t} value={t}>{t}</SelectItem>)}</SelectContent>

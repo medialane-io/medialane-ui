@@ -42,7 +42,7 @@ function LevelsSection() {
   return (
     <section className="py-14 space-y-6">
       <div>
-        <h2 className="text-2xl font-black tracking-tight">{t("The Level Ladder")}</h2>
+        <h2 className="text-2xl font-black tracking-tight">{t("The level ladder")}</h2>
         <p className="text-base text-foreground/60 mt-1.5 font-medium">{t("50 levels, from Starter to Genesis.")}</p>
       </div>
       {isLoading || !config ? (

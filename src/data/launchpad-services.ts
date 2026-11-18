@@ -129,7 +129,7 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     key: "create-collection",
     cta: msg("Create"),
     blurb: msg("Deploy a collection to mint single-edition works into."),
-    title: msg("NFT Collection"),
+    title: msg("NFT collection"),
     subtitle: msg("An ERC-721 collection, ready to mint into"),
     description:
       msg("Deploy an owned and controlled collection with its own name, symbol, and page. Mint single-edition works into it at any time."),
@@ -143,7 +143,7 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     key: "remix-asset",
     cta: msg("Browse"),
     blurb: msg("Create from another work. Credit and royalties are handled automatically."),
-    title: msg("Remix Asset"),
+    title: msg("Remix asset"),
     subtitle: msg("Derivative works with on-chain attribution"),
     description:
       msg("Create a licensed derivative of another work. Attribution and provenance flow back to the original creator."),
@@ -188,7 +188,7 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     key: "collection-drop",
     cta: msg("Launch"),
     blurb: msg("Release a limited run at a set price and time window."),
-    title: msg("Collection Drop"),
+    title: msg("Collection drop"),
     subtitle: msg("Timed NFT releases with mint windows"),
     description:
       msg("Set a price, a supply, and a start and end time. Collectors mint directly from the drop page."),
@@ -252,7 +252,7 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     key: "creator-coins",
     cta: msg("Launch"),
     blurb: msg("Launch a coin in a few clicks and stay in control of it."),
-    title: msg("Creator Coin"),
+    title: msg("Creator coin"),
     subtitle: msg("A coin and its liquidity, under creator control"),
     description:
       msg("Launch a coin with a public trading pool. The creator sets the supply and allocation and stays in control of the liquidity."),
@@ -267,7 +267,7 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     key: "claim-memecoin",
     cta: msg("Claim"),
     blurb: msg("Add an already launched coin to a profile."),
-    title: msg("Claim Memecoin"),
+    title: msg("Claim memecoin"),
     subtitle: msg("Bring an already launched coin"),
     description:
       msg("Claim an already launched coin to list it on the Coins page and a profile. Claims are reviewed before going live."),
@@ -281,7 +281,7 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     key: "claim-username",
     cta: msg("Claim"),
     blurb: msg("Reserve a name and get a creator page of its own."),
-    title: msg("Claim Username"),
+    title: msg("Claim username"),
     subtitle: msg("Reserve a creator page URL"),
     description:
       msg("Claim a username to get a shareable creator page, a public portfolio at a clean, memorable URL."),
@@ -295,7 +295,7 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     key: "claim-collection",
     cta: msg("Claim"),
     blurb: msg("Made a collection somewhere else? Bring it to a profile."),
-    title: msg("Claim Collection"),
+    title: msg("Claim collection"),
     subtitle: msg("Bring an already made collection"),
     description:
       msg("Claim a collection made elsewhere to link it to a profile and give it a branded collection page."),
@@ -311,7 +311,7 @@ export const COLLECTION_NAME_CLAIM: ServiceDefinition = {
   key: "claim-collection-name",
   cta: msg("Claim"),
   blurb: msg("Give a collection a clean, memorable web address of its own."),
-  title: msg("Claim Collection Name"),
+  title: msg("Claim collection name"),
   subtitle: msg("Reserve a collection page URL"),
   description:
     msg("Claim a custom name for a collection page and get a clean, shareable URL instead of a long technical address."),

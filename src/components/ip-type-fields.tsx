@@ -152,7 +152,7 @@ export function IPTypeFields({ ipType, onChange, uploadDocument, existingDocumen
     <div className="space-y-5">
       <div className="flex items-center gap-2">
         <Icon className={`h-4 w-4 ${template.color.text}`} />
-        <p className="text-sm font-semibold">{t("{label} Details", { label: template.label })}</p>
+        <p className="text-sm font-semibold">{t("{label} details", { label: template.label })}</p>
       </div>
 
       {docUpload && (uploadDocument || existingDocument) && (

@@ -216,7 +216,7 @@ export function CoinCreate({ aside, tradeHref }: CoinCreateProps) {
 
       <ClaimRouteShell
         icon={<Coins className="h-4 w-4 text-white" />}
-        title={t("Design your Creator Coin")}
+        title={t("Design your creator coin")}
         subtitle={t("A few steps to design and launch your coin.")}
         aside={
           <>
@@ -275,7 +275,7 @@ export function CoinCreate({ aside, tradeHref }: CoinCreateProps) {
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="space-y-1.5">
                   <Label htmlFor="name">{t("Name")}</Label>
-                  <Input id="name" value={name} onChange={(e) => handleNameChange(e.target.value)} placeholder={t("My Coin")} />
+                  <Input id="name" value={name} onChange={(e) => handleNameChange(e.target.value)} placeholder={t("My coin")} />
                   {nameErr && <p className="text-xs text-destructive">{nameErr}</p>}
                 </div>
                 <div className="space-y-1.5">

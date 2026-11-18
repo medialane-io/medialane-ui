@@ -244,7 +244,7 @@ export function FiltersDialog({ filters }: { filters: MarketplaceFilters }) {
 
           <div className="space-y-2 pt-1 border-t border-border/60">
             <p className="flex items-center gap-1 text-2xs font-semibold text-muted-foreground">
-              {t("IP Type")}
+              {t("IP type")}
               <HelpIcon content="Filter by intellectual property category — Art, Audio, Video, and more" side="right" />
             </p>
             <div className="flex flex-wrap gap-1.5">

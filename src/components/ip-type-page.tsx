@@ -277,7 +277,7 @@ export function IpTypePage({ slug, useMarketActions }: IpTypePageProps) {
               </div>
 
               <div className="space-y-2 pt-1 border-t border-border/60">
-                <p className="text-2xs font-semibold text-muted-foreground">{t("IP Type")}</p>
+                <p className="text-2xs font-semibold text-muted-foreground">{t("IP type")}</p>
                 <div className="flex flex-wrap gap-1.5">
                   {IP_TYPE_CONFIG.map((tab) => (
                     <Link
@@ -331,7 +331,7 @@ export function IpTypePage({ slug, useMarketActions }: IpTypePageProps) {
             </p>
           </div>
           <Button asChild variant="outline">
-            <Link href="/launchpad/single-editions">{t("Create Asset")}</Link>
+            <Link href="/launchpad/single-editions">{t("Create asset")}</Link>
           </Button>
         </div>
       ) : (

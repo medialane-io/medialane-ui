@@ -106,7 +106,7 @@ export function ApproveMintDialog({ offer, open, onOpenChange, collections, foot
             )}
 
             <div className="space-y-1.5">
-              <Label htmlFor="remix-name">{t("Remix Name")}</Label>
+              <Label htmlFor="remix-name">{t("Remix name")}</Label>
               <Input id="remix-name" placeholder={effectiveName} value={remixName} onChange={(e) => setRemixName(e.target.value)} />
             </div>
 

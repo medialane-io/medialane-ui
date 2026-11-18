@@ -32,7 +32,7 @@ function MyEventCard({ collection }: { collection: ApiCollection }) {
         )}
       </div>
       <div className="flex-1 min-w-0 space-y-0.5">
-        <p className="font-bold text-sm truncate">{collection.name ?? t("Unnamed Event")}</p>
+        <p className="font-bold text-sm truncate">{collection.name ?? t("Unnamed event")}</p>
         {collection.symbol && (
           <p className="text-xs text-muted-foreground">{collection.symbol}</p>
         )}
@@ -76,7 +76,7 @@ export function PopMyEventsPage() {
               <Award className="h-3 w-3" />
               {t("POP Protocol")}
             </span>
-            <h1 className="text-2xl font-bold mt-1">{t("My Events")}</h1>
+            <h1 className="text-2xl font-bold mt-1">{t("My events")}</h1>
             <p className="text-sm text-muted-foreground">{t("Events you've created")}</p>
           </div>
           <Button asChild size="sm" className="bg-green-600 hover:bg-green-700 text-white gap-1.5">
