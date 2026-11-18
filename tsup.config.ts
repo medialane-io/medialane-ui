@@ -3,7 +3,7 @@ import { copyFileSync } from "fs";
 
 export default defineConfig([
   {
-    entry: ["src/index.ts", "src/components/**/*.tsx", "src/components/**/*.ts", "src/utils/**/*.ts", "src/data/*.ts", "src/preset/*.ts", "!src/**/*.test.ts", "!src/**/*.test.tsx"],
+    entry: ["src/index.ts", "src/components/**/*.tsx", "src/components/**/*.ts", "src/utils/**/*.ts", "src/data/*.ts", "src/preset/*.ts", "src/i18n/**/*.ts", "src/i18n/**/*.tsx", "!src/**/*.test.ts", "!src/**/*.test.tsx"],
     format: ["esm", "cjs"],
     dts: true,
     sourcemap: true,
