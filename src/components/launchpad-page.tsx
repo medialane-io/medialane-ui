@@ -26,13 +26,13 @@ export function LaunchpadPage({ fastMint, hideGroups = [], excludeKeys }: Launch
     const nftCount = collections.filter((c) => getService(c.service)?.id === "mip-erc721").length;
     const editionsCount = collections.filter((c) => c.standard === "ERC1155").length;
     const withMeta = (key: string, count: number): ServiceOverrides =>
-      count > 0 ? { [key]: { ...LAUNCHPAD_ROUTE_OVERRIDES[key], meta: `${count} collection${count === 1 ? "" : "s"}` } } : {};
+      count > 0 ? { [key]: { ...LAUNCHPAD_ROUTE_OVERRIDES[key], meta: t.plural("{count} collection", "{count} collections", count) } } : {};
     return { ...LAUNCHPAD_ROUTE_OVERRIDES, ...withMeta("nfts", nftCount), ...withMeta("limited-editions", editionsCount) };
-  }, [collections]);
+  }, [collections, t]);
 
   const defs = useMemo(
-    () => selectLaunchpadServices({ query: filter.query, hideGroups, excludeKeys }),
-    [filter.query, hideGroups, excludeKeys],
+    () => selectLaunchpadServices({ query: filter.query, hideGroups, excludeKeys, translate: t }),
+    [filter.query, hideGroups, excludeKeys, t],
   );
 
   const sections = LAUNCHPAD_SERVICE_GROUPS

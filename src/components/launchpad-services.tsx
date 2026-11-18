@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "./link.js";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Lock, ArrowRight, Check } from "lucide-react";
@@ -8,6 +8,8 @@ import { cn } from "../utils/cn.js";
 import {
   LAUNCHPAD_SERVICE_DEFINITIONS,
   LAUNCHPAD_SERVICE_GROUPS,
+  localizeGroup,
+  localizeService,
   type ServiceDefinition,
   type ServiceGroup,
   type ServiceGroupDefinition,
@@ -105,11 +107,12 @@ export interface LaunchpadServiceCardProps {
   index?: number;
 }
 
-export function LaunchpadServiceCard({ def, override = {}, index = 0 }: LaunchpadServiceCardProps) {
+export function LaunchpadServiceCard({ def: source, override = {}, index = 0 }: LaunchpadServiceCardProps) {
   const t = useT();
+  const def = useMemo(() => localizeService(t, source), [t, source]);
   const { icon: Icon, title, group, features, cta } = def;
   const status = override.status ?? def.status;
-  const blurb = override.blurb ?? def.blurb;
+  const blurb = override.blurb === undefined ? def.blurb : t(override.blurb);
   const { href } = override;
   const reduceMotion = useReducedMotion();
 
@@ -195,15 +198,17 @@ export function LaunchpadServiceCard({ def, override = {}, index = 0 }: Launchpa
 }
 
 function ComingSoonStrip({ group, defs }: { group: ServiceGroupDefinition; defs: ServiceDefinition[] }) {
+  const t = useT();
+  const { title: groupTitle, tagline } = localizeGroup(t, group);
   return (
     <div className="rounded-2xl border border-border/40 p-5">
-      <p className="font-semibold text-sm">{group.title}</p>
-      <p className="text-sm text-muted-foreground mt-0.5">{group.tagline}</p>
+      <p className="font-semibold text-sm">{groupTitle}</p>
+      <p className="text-sm text-muted-foreground mt-0.5">{tagline}</p>
       <div className="flex flex-wrap gap-2 mt-4">
         {defs.map(({ key, icon: Icon, title }) => (
           <div key={key} className="flex items-center gap-2 px-3 py-2 rounded-full bg-muted/30 border border-border/25">
             <Icon className="h-3.5 w-3.5 text-muted-foreground/60" />
-            <span className="text-xs font-medium text-muted-foreground">{title}</span>
+            <span className="text-xs font-medium text-muted-foreground">{t(title)}</span>
           </div>
         ))}
       </div>
@@ -211,9 +216,11 @@ function ComingSoonStrip({ group, defs }: { group: ServiceGroupDefinition; defs:
   );
 }
 
-export function serviceMatchesQuery(def: ServiceDefinition, query: string): boolean {
+export function serviceMatchesQuery(def: ServiceDefinition, query: string, translate: (text: string) => string = (text) => text): boolean {
   if (query.trim() === "") return true;
-  const haystack = `${def.title} ${def.blurb} ${def.subtitle} ${GROUP_TITLE_BY_KEY[def.group] ?? ""}`.toLowerCase();
+  const local = localizeService(translate, def);
+  const groupTitle = GROUP_TITLE_BY_KEY[def.group] ?? "";
+  const haystack = `${def.title} ${def.blurb} ${def.subtitle} ${groupTitle} ${local.title} ${local.blurb} ${local.subtitle} ${translate(groupTitle)}`.toLowerCase();
   return haystack.includes(query.trim().toLowerCase());
 }
 
@@ -248,15 +255,16 @@ export interface LaunchpadServiceSelection {
   query: string;
   hideGroups?: string[];
   excludeKeys?: string[];
+  translate?: (text: string) => string;
 }
 
-export function selectLaunchpadServices({ query, hideGroups = [], excludeKeys = [] }: LaunchpadServiceSelection): ServiceDefinition[] {
+export function selectLaunchpadServices({ query, hideGroups = [], excludeKeys = [], translate }: LaunchpadServiceSelection): ServiceDefinition[] {
   return LAUNCHPAD_SERVICE_DEFINITIONS.filter(
     (d) =>
       !excludeKeys.includes(d.key) &&
       !hideGroups.includes(d.group) &&
       (d.group === "coming-soon" || d.status === "live") &&
-      serviceMatchesQuery(d, query),
+      serviceMatchesQuery(d, query, translate),
   );
 }
 
@@ -278,7 +286,7 @@ export function LaunchpadGroupedSections({ overrides, defs, onClearFilters, clas
   const t = useT();
   const sections = LAUNCHPAD_SERVICE_GROUPS
     .filter((g) => g.key !== "coming-soon")
-    .map((group) => ({ group, defs: defs.filter((d) => d.group === group.key) }))
+    .map((group) => ({ group: localizeGroup(t, group), source: group, defs: defs.filter((d) => d.group === group.key) }))
     .filter((s) => s.defs.length > 0);
 
   const comingSoonGroup = LAUNCHPAD_SERVICE_GROUPS.find((g) => g.key === "coming-soon");

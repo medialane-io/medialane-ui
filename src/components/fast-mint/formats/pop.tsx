@@ -13,6 +13,7 @@ import { claimEndTimestamp, popEventAttributes, popEventIntent } from "../../../
 import { EVENT_TYPES, type PopEventType } from "../../launchpad/pop-create-fields.js";
 import { defineFormat, type FormatFieldsProps } from "./types.js";
 import { useT } from "../../../i18n/provider.js";
+import { msg } from "../../../i18n/translate.js";
 
 interface PopState {
   eventType: PopEventType;
@@ -105,7 +106,7 @@ export const POP_FORMAT = defineFormat<PopState>({
   title: getMintFormatCopy("pop-protocol").name,
   hint: getMintFormatCopy("pop-protocol").hint,
   icon: Award,
-  submitLabel: () => "Create certificate",
+  submitLabel: () => msg("Create certificate"),
   initial: () => ({ eventType: "Conference", isPublic: false, ...getDefaultClaimWindow() }),
   Fields: PopFields,
   isReady: (shared, state) =>

@@ -143,8 +143,8 @@ export function FormatPicker({
           >
             <Icon className={cn("h-5 w-5 shrink-0 mt-0.5", value === key ? "text-brand-blue" : "text-muted-foreground")} />
             <span>
-              <span className="block text-sm font-semibold">{title}</span>
-              <span className="block text-xs mt-0.5 text-muted-foreground">{hint}</span>
+              <span className="block text-sm font-semibold">{t(title)}</span>
+              <span className="block text-xs mt-0.5 text-muted-foreground">{t(hint)}</span>
             </span>
           </button>
         ))}

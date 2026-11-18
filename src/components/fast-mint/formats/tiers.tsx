@@ -14,6 +14,7 @@ import { LicensingSection } from "../licensing-section.js";
 import { createThenAdd } from "../create-then-add.js";
 import { defineFormat, type FormatFieldsProps, type FormatShared } from "./types.js";
 import { useT } from "../../../i18n/provider.js";
+import { msg } from "../../../i18n/translate.js";
 
 interface TierState {
   mode: CollectionMode;
@@ -189,7 +190,7 @@ export const TICKETS_FORMAT = makeTierFormat({
   icon: Ticket,
   noun: "ticket collection",
   supplyLabel: "Number of tickets",
-  submitLabel: "Create tickets",
+  submitLabel: msg("Create tickets"),
   addLabel: "Minting tickets",
 });
 
@@ -200,6 +201,6 @@ export const CLUB_FORMAT = makeTierFormat({
   icon: Users,
   noun: "club",
   supplyLabel: "Number of memberships",
-  submitLabel: "Create membership",
+  submitLabel: msg("Create membership"),
   addLabel: "Minting memberships",
 });

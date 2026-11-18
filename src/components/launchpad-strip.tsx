@@ -5,7 +5,7 @@ import { ShoppingBag, ArrowRight, Rocket } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { ScrollSection } from "./scroll-section.js";
 import { SERVICE_HUES } from "./launchpad-services.js";
-import { LAUNCHPAD_SERVICE_DEFINITIONS } from "../data/launchpad-services.js";
+import { LAUNCHPAD_SERVICE_DEFINITIONS, localizeService } from "../data/launchpad-services.js";
 import { cn } from "../utils/cn.js";
 import { useT } from "../i18n/provider.js";
 
@@ -96,9 +96,10 @@ export function LaunchpadStrip({
   const t = useT();
   const cards: StripCard[] = [
     ...STRIP_ORDER.flatMap((key) => {
-      const def = DEF_BY_KEY[key];
+      const source = DEF_BY_KEY[key];
       const href = hrefs[key];
-      if (!def || !href) return [];
+      if (!source || !href) return [];
+      const def = localizeService(t, source);
       return [{
         key,
         href,

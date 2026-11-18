@@ -212,7 +212,7 @@ export function FastMint(props: FastMintProps) {
   const submitBlocked = !ready || busy || !hasWallet;
   const buttonLabel = busy
     ? `${step?.label ?? "Working"}…${step && step.total > 1 ? ` (${step.index} of ${step.total})` : ""}`
-    : format.submitLabel(formatState);
+    : t(format.submitLabel(formatState));
 
   return wrap(
     <section className="space-y-6">

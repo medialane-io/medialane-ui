@@ -20,6 +20,7 @@ import { collectionKey, mintableCollections, type MintAssetType } from "../minta
 import { createThenAdd } from "../create-then-add.js";
 import { defineFormat, type FormatFieldsProps, type FormatResult, type FormatRuntime, type FormatShared } from "./types.js";
 import { useT } from "../../../i18n/provider.js";
+import { msg } from "../../../i18n/translate.js";
 
 interface NftState {
   mode: CollectionMode;
@@ -123,7 +124,7 @@ function makeNftFormat(kind: MintAssetType) {
     title: copy.name,
     hint: copy.hint,
     icon: single ? ImagePlus : Layers,
-    submitLabel: () => (single ? "Mint NFT" : "Mint Editions"),
+    submitLabel: () => (single ? msg("Mint NFT") : msg("Mint Editions")),
     initial: () => ({ mode: "existing", existingId: "", existingContract: "", editionCount: "10" }),
     Fields,
     isReady: (shared, state) => {

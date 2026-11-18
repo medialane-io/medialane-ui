@@ -78,16 +78,16 @@ export function relevanceFilter(value: string, search: string, keywords?: string
   return score >= RELEVANCE_FLOOR ? score : 0;
 }
 
-function commandValue(item: NavCommand) {
-  return [item.label, ...(item.keywords ?? [])].join(" ");
+function commandValue(item: NavCommand, translate: (text: string) => string) {
+  return [translate(item.label), item.label, ...(item.keywords ?? [])].join(" ");
 }
 
-export function matchCommands(commands: NavCommandGroup[], query: string): NavCommand[] {
+export function matchCommands(commands: NavCommandGroup[], query: string, translate: (text: string) => string = (text) => text): NavCommand[] {
   const q = query.trim();
   if (!q) return [];
   return commands
     .flatMap((group) => group.items)
-    .map((item) => ({ item, score: relevanceFilter(commandValue(item), q) }))
+    .map((item) => ({ item, score: relevanceFilter(commandValue(item, translate), q) }))
     .filter(({ score }) => score > 0)
     .sort((a, b) => b.score - a.score)
     .map(({ item }) => item);
@@ -227,9 +227,10 @@ function SearchResults({ query, debouncedQuery, onNavigate }: {
 }
 
 function CommandRow({ item, primary, onSelect }: { item: NavCommand; primary: boolean; onSelect: () => void }) {
+  const t = useT();
   return (
     <Command.Item
-      value={commandValue(item)}
+      value={commandValue(item, t)}
       onSelect={onSelect}
       className={cn(
         "group/item flex cursor-pointer items-center gap-3 rounded-xl",
@@ -266,11 +267,11 @@ function CommandRow({ item, primary, onSelect }: { item: NavCommand; primary: bo
             primary ? "text-base font-medium" : "text-sm"
           )}
         >
-          {item.label}
+          {t(item.label)}
         </span>
         {item.description && (
           <span className="mt-0.5 block truncate text-[11.5px] leading-tight text-muted-foreground">
-            {item.description}
+            {t(item.description)}
           </span>
         )}
       </span>
@@ -305,7 +306,7 @@ export function NavCommandMenu({
   const debouncedQuery = useDebouncedQuery(query);
   const searching = query.trim().length > 0;
   const searchingContent = search && query.trim().length >= SEARCH_MIN_LENGTH;
-  const matches = React.useMemo(() => matchCommands(commands, query), [commands, query]);
+  const matches = React.useMemo(() => matchCommands(commands, query, t), [commands, query, t]);
   const router = useRouter();
   const inputRef = React.useRef<HTMLInputElement>(null);
 
@@ -451,7 +452,7 @@ export function NavCommandMenu({
                           {i > 0 && (
                             <Command.Separator className="my-1.5 h-px bg-border/40" />
                           )}
-                          <Command.Group heading={group.heading} className={GROUP_HEADING_CLASSES}>
+                          <Command.Group heading={group.heading && t(group.heading)} className={GROUP_HEADING_CLASSES}>
                             {group.items.map((item) => (
                               <CommandRow
                                 key={item.id}

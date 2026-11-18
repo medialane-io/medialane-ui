@@ -69,7 +69,7 @@ export function LaunchpadFilterBar({ query, onQueryChange, sections }: Launchpad
             onClick={() => jumpTo(group.key)}
             className="h-8 shrink-0 px-3.5 rounded-full text-xs font-semibold transition-colors border inline-flex items-center gap-1.5 bg-card text-muted-foreground border-border active:bg-muted/60 sm:hover:bg-muted/40 sm:hover:text-foreground"
           >
-            {group.title}
+            {t(group.title)}
             <span className="tabular-nums text-muted-foreground/60">{count}</span>
           </button>
         ))}

@@ -120,3 +120,9 @@ test("an entry with an image shows it in place of its icon; the rest keep their 
   expect(row("Search").firstElementChild?.querySelector("svg")).toBeTruthy();
   view.unmount();
 });
+
+test("matchCommands matches the translated label as well as the English one", () => {
+  const translate = (text: string) => (text === "Search" ? "Pesquisar" : text);
+  expect(matchCommands(commands, "pesq", translate).map((c) => c.id)).toEqual(["search"]);
+  expect(matchCommands(commands, "search", translate).map((c) => c.id)).toEqual(["search"]);
+});
