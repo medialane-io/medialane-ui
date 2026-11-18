@@ -1,12 +1,9 @@
 "use client";
 
 import { useRouter as useNextRouter, usePathname as useNextPathname } from "next/navigation";
-import { DEFAULT_LOCALE, LOCALES, type LocaleInfo } from "../i18n/locales.js";
+import { chooseLanguage } from "../i18n/language-choice.js";
+import { LOCALES, type LocaleInfo } from "../i18n/locales.js";
 import { useLocale, useT } from "../i18n/provider.js";
-import { LOCALE_COOKIE } from "../i18n/resolve-locale.js";
-import { stripLocale, withLocale } from "../i18n/with-locale.js";
-
-const ONE_YEAR = 60 * 60 * 24 * 365;
 
 export function NavLanguageSwitch({ locales = LOCALES }: { locales?: readonly LocaleInfo[] }) {
   const t = useT();
@@ -16,10 +13,9 @@ export function NavLanguageSwitch({ locales = LOCALES }: { locales?: readonly Lo
   if (locales.length < 2) return null;
 
   const choose = (code: string) => {
-    document.cookie = `${LOCALE_COOKIE}=${code}; Path=/; Max-Age=${ONE_YEAR}; SameSite=Lax`;
-    const base = stripLocale(pathname || "/", locale);
-    const target = code === DEFAULT_LOCALE ? base : withLocale(base, code);
-    router.push(`${target}${window.location.search}${window.location.hash}`);
+    const { cookie, href } = chooseLanguage({ code, pathname: pathname || "/", locale, search: window.location.search, hash: window.location.hash });
+    document.cookie = cookie;
+    router.push(href);
   };
 
   return (
