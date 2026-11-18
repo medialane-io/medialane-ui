@@ -185,7 +185,7 @@ export function CoinCreate({ aside, tradeHref }: CoinCreateProps) {
     <WalletRequired
       icon={Coins}
       iconClassName="text-brand-orange"
-      title={t("Launch a Creator Coin")}
+      title={t("Launch a creator coin")}
       description={t("Secure your account to design and launch your own coin with permanently-locked liquidity, in a few clicks.")}
     >
       <TransactionDialog tx={tx} title={t("Launch your coin")} workingLabel="Launching your coin…" firstStepLabel="Deploy your coin">

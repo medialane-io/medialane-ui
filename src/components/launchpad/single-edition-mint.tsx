@@ -329,7 +329,7 @@ export function SingleEditionMint({ aside }: { aside?: ReactNode }) {
                 </FormItem>
               )} />
               <FormField control={form.control} name="commercialUse" render={({ field }) => (
-                <FormItem><FormLabel>{t("Commercial Use")}</FormLabel><ToggleGroup value={field.value} options={["Yes", "No"]} onChange={field.onChange} /></FormItem>
+                <FormItem><FormLabel>{t("Commercial use")}</FormLabel><ToggleGroup value={field.value} options={["Yes", "No"]} onChange={field.onChange} /></FormItem>
               )} />
               <FormField control={form.control} name="derivatives" render={({ field }) => (
                 <FormItem><FormLabel>{t("Derivatives")}</FormLabel><ToggleGroup value={field.value} options={DERIVATIVES_OPTIONS} onChange={field.onChange} /></FormItem>
@@ -352,7 +352,7 @@ export function SingleEditionMint({ aside }: { aside?: ReactNode }) {
                     </FormItem>
                   )} />
                   <FormField control={form.control} name="aiPolicy" render={({ field }) => (
-                    <FormItem><FormLabel>{t("AI & Data Mining")}</FormLabel><ToggleGroup value={field.value} options={AI_POLICIES} onChange={field.onChange} /></FormItem>
+                    <FormItem><FormLabel>{t("AI & data mining")}</FormLabel><ToggleGroup value={field.value} options={AI_POLICIES} onChange={field.onChange} /></FormItem>
                   )} />
                   <FormField control={form.control} name="royalty" render={({ field }) => (
                     <FormItem>

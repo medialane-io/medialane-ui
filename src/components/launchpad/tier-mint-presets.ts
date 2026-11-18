@@ -51,7 +51,7 @@ export const CLUB_TIER_PRESET: TierMintPreset = {
   dialog: { title: msg("Create membership"), workingLabel: msg("Creating your membership…"), firstStepLabel: msg("Upload membership metadata") },
   success: { title: msg("Membership created"), description: msg("The supply is minted to your wallet and ready to sell."), againLabel: msg("Create another membership") },
   shell: {
-    title: msg("Create Membership"),
+    title: msg("Create membership"),
     subtitle: (name, t) => t("Add a new membership tier to {name} and mint its supply to your wallet, ready to sell.", { name: name ?? t("your club") }),
   },
   cardFallbackSymbol: "Club",
@@ -64,7 +64,7 @@ export const CLUB_TIER_PRESET: TierMintPreset = {
     namePlaceholder: msg("Kalamaha Fan Club — 2026 Season Pass"),
     descriptionPlaceholder: msg("What does this membership unlock?"),
     validUntilHint: msg("Blank = lifetime membership."),
-    submit: msg("Create Membership"),
+    submit: msg("Create membership"),
   },
 };
 
@@ -84,7 +84,7 @@ export const TICKETS_TIER_PRESET: TierMintPreset = {
   dialog: { title: msg("Mint tickets"), workingLabel: msg("Minting your tickets…"), firstStepLabel: msg("Upload ticket metadata") },
   success: { title: msg("Tickets minted"), description: msg("Each ticket is recorded onchain under your wallet."), againLabel: msg("Mint another ticket") },
   shell: {
-    title: msg("Mint Tickets"),
+    title: msg("Mint tickets"),
     subtitle: (name, t) => t("Add a new ticket type to {name} and mint its supply to your wallet, ready to sell.", { name: name ?? t("your collection") }),
   },
   cardFallbackSymbol: "Tickets",
@@ -97,6 +97,6 @@ export const TICKETS_TIER_PRESET: TierMintPreset = {
     namePlaceholder: msg("Summer Concert 2026 — General Admission"),
     descriptionPlaceholder: msg("What does this ticket admit or unlock?"),
     validUntilHint: msg("Blank = always valid."),
-    submit: msg("Mint Tickets"),
+    submit: msg("Mint tickets"),
   },
 };

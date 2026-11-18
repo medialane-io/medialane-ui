@@ -60,7 +60,7 @@ function Slide({ collection, href }: { collection: ApiCollection; href: string }
           href={href}
           className="inline-flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-lg bg-white/15 hover:bg-white/25 text-white border border-white/20 backdrop-blur-sm transition-colors"
         >
-          {t("View Collection")} <ArrowRight className="h-3.5 w-3.5" />
+          {t("View collection")} <ArrowRight className="h-3.5 w-3.5" />
         </a>
       </div>
     </div>
@@ -72,7 +72,7 @@ export function FeaturedCarouselSkeleton() {
   return (
     <FadeIn>
       <section className="space-y-4">
-        <SectionHeading icon={<Sparkles />} title={t("Featured Collections")} href="/collections" linkLabel="View all" />
+        <SectionHeading icon={<Sparkles />} title={t("Featured collections")} href="/collections" linkLabel="View all" />
         <div className="-mx-4 sm:-mx-6 lg:-mx-8 aspect-[16/7] sm:aspect-[21/9] bg-muted animate-pulse" />
       </section>
     </FadeIn>
@@ -107,7 +107,7 @@ export function FeaturedCarousel({
   return (
     <FadeIn>
       <section className="space-y-4">
-        <SectionHeading icon={<Sparkles />} title={t("Featured Collections")} href={allCollectionsHref} linkLabel="View all" />
+        <SectionHeading icon={<Sparkles />} title={t("Featured collections")} href={allCollectionsHref} linkLabel="View all" />
 
         <div
           className="-mx-4 sm:-mx-6 lg:-mx-8 relative overflow-hidden aspect-[16/7] sm:aspect-[21/9] bg-muted"

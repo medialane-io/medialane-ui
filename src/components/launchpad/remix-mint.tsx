@@ -267,7 +267,7 @@ export function RemixMint({ contract, tokenId }: { contract: string; tokenId: st
             <GitBranch className="h-5 w-5" />
             <span className="text-sm font-semibold">{t("Create Remix")}</span>
           </div>
-          <h1 className="text-3xl font-bold">{t("Mint a Remix")}</h1>
+          <h1 className="text-3xl font-bold">{t("Mint a remix")}</h1>
           <p className="text-muted-foreground max-w-xl">{t("Mint a derivative work based on this asset. The parent attribution is embedded in the IPFS metadata.")}</p>
         </div>
 
@@ -350,7 +350,7 @@ export function RemixMint({ contract, tokenId }: { contract: string; tokenId: st
 
             <Section title={t("License Terms")} icon={<Shield className="h-4 w-4" />}>
               <div className="space-y-1.5">
-                <Label>{t("License Type")}</Label>
+                <Label>{t("License type")}</Label>
                 <Select value={licenseType} onValueChange={handleLicenseChange}>
                   <SelectTrigger><SelectValue /></SelectTrigger>
                   <SelectContent>{LICENSE_TYPES.map((l) => <SelectItem key={l.value} value={l.value}>{l.value}</SelectItem>)}</SelectContent>
@@ -358,7 +358,7 @@ export function RemixMint({ contract, tokenId }: { contract: string; tokenId: st
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-1.5">
-                  <Label className="text-xs text-muted-foreground uppercase tracking-wide">{t("Commercial Use")}</Label>
+                  <Label className="text-xs text-muted-foreground uppercase tracking-wide">{t("Commercial use")}</Label>
                   <ToggleGroup value={commercial ? "Yes" : "No"} options={["Yes", "No"]} onChange={(v) => setCommercial(v === "Yes")} />
                 </div>
                 <div className="space-y-1.5">

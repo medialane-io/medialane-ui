@@ -124,7 +124,7 @@ function makeNftFormat(kind: MintAssetType) {
     title: copy.name,
     hint: copy.hint,
     icon: single ? ImagePlus : Layers,
-    submitLabel: () => (single ? msg("Mint NFT") : msg("Mint Editions")),
+    submitLabel: () => (single ? msg("Mint NFT") : msg("Mint editions")),
     initial: () => ({ mode: "existing", existingId: "", existingContract: "", editionCount: "10" }),
     Fields,
     isReady: (shared, state) => {

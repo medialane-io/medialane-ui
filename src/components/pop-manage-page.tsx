@@ -227,7 +227,7 @@ export function PopManagePage({ contract }: { contract: string }) {
                 <Award className="h-3 w-3" />
                 {t("Organizer")}
               </span>
-              <h1 className="text-2xl font-bold mt-1">{t("Manage Event")}</h1>
+              <h1 className="text-2xl font-bold mt-1">{t("Manage event")}</h1>
               <p className="text-sm text-muted-foreground">{collection.name ?? contract}</p>
             </div>
           </FadeIn>

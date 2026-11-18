@@ -51,7 +51,7 @@ test("only the organizer manages an event", async () => {
 
 test("the organizer publishes participants and gets their claim links", async () => {
   const { view, intents } = setup(ME);
-  await waitFor(() => expect(view.getByText("Manage Event")).toBeTruthy());
+  await waitFor(() => expect(view.getByText("Manage event")).toBeTruthy());
   fireEvent.change(view.getByPlaceholderText(/Paste Starknet addresses/), { target: { value: `${ME}\n${OTHER}` } });
   fireEvent.click(view.getByText("Publish 2 participants"));
   await waitFor(() => expect(view.getByText("Participants published")).toBeTruthy());
