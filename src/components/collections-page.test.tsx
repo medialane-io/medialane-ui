@@ -36,7 +36,7 @@ function setup() {
 test("lists the collections with their count", async () => {
   const { view } = setup();
   await waitFor(() => expect(view.getAllByText("Rio Drummers").length).toBeGreaterThan(0));
-  expect(view.getByText("Onchain Collections")).toBeTruthy();
+  expect(view.getByText("Onchain collections")).toBeTruthy();
 });
 
 test("shows the total collections and how many are multi editions", async () => {

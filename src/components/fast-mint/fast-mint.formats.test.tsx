@@ -119,15 +119,15 @@ test("every format keeps the title, description and link, with nothing dropped w
 
 test("each format shows its own part of the form", async () => {
   const { view } = await withFile();
-  expect(view.getByText("Licensing Terms")).toBeTruthy();
+  expect(view.getByText("License terms")).toBeTruthy();
   pick(view, /Limited Editions/);
   expect(view.getByText("Number of copies")).toBeTruthy();
   pick(view, /Immutable certificate/);
   expect(view.getByText("What kind of event is this?")).toBeTruthy();
-  expect(view.queryByText("Licensing Terms")).toBeNull();
+  expect(view.queryByText("License terms")).toBeNull();
   pick(view, /IP Ticket/);
   expect(view.getByText("Number of tickets *")).toBeTruthy();
-  expect(view.getByText("Licensing Terms")).toBeTruthy();
+  expect(view.getByText("License terms")).toBeTruthy();
   pick(view, /IP Club/);
   expect(view.getByText("Number of memberships *")).toBeTruthy();
 });

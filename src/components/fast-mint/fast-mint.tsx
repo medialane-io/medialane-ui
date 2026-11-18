@@ -237,7 +237,7 @@ export function FastMint(props: FastMintProps) {
               <Input
                 value={name}
                 onChange={(e) => form.setValue("name", e.target.value)}
-                placeholder={t("My creative work")}
+                placeholder={t("My Creative Work")}
               />
             </div>
 

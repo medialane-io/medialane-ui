@@ -288,7 +288,7 @@ export function SingleEditionMint({ aside }: { aside?: ReactNode }) {
             <FormField control={form.control} name="name" render={({ field }) => (
               <FormItem>
                 <FormLabel>{t("Name *")}</FormLabel>
-                <FormControl><Input placeholder={t("My creative work")} {...field} /></FormControl>
+                <FormControl><Input placeholder={t("My Creative Work")} {...field} /></FormControl>
                 <FormMessage />
               </FormItem>
             )} />

@@ -53,7 +53,7 @@ export const CLUB_PRESET: CollectionCreatePreset = {
   copy: {
     imageHeading: msg("Club image"),
     nameLabel: msg("Club name *"),
-    namePlaceholder: msg("My club"),
+    namePlaceholder: msg("My Club"),
     nameHint: msg("Shown in wallets, explorers, and on every membership card."),
     symbolPlaceholder: msg("CLUB"),
     symbolHint: msg("Short ticker — 2 to 10 uppercase letters."),
@@ -106,7 +106,7 @@ export const EDITIONS_PRESET: CollectionCreatePreset = {
     imageHeading: msg("Collection image"),
     imageHelp: msg("This becomes the cover for your collection."),
     nameLabel: msg("Collection name *"),
-    namePlaceholder: msg("My creative works"),
+    namePlaceholder: msg("My Creative Works"),
     nameHint: msg("The main title collectors see across the collection page, wallets, and future listings."),
     symbolPlaceholder: msg("MCW"),
     symbolHint: msg("Short ticker (2–10 uppercase letters). We suggest one from the collection name."),
@@ -139,7 +139,7 @@ export const SINGLE_PRESET: CollectionCreatePreset = {
   copy: {
     imageHeading: msg("Collection image"),
     nameLabel: msg("Collection name *"),
-    namePlaceholder: msg("My creative works"),
+    namePlaceholder: msg("My Creative Works"),
     nameHint: msg("The display name for your collection."),
     symbolPlaceholder: msg("MCW"),
     symbolHint: msg("Short ticker (2–10 uppercase letters). Shown in wallets and marketplaces."),

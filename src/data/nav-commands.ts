@@ -28,7 +28,7 @@ export const NAV_ITEMS = {
   "sponsorship-create": { id: "sponsorship-create", label: msg("Create IP Sponsorship"), icon: Handshake, href: "/launchpad/sponsorship/create", keywords: ["sponsorship", "sponsor", "license", "offer", "deal"] },
   "launch-coin": { id: "launch-coin", label: msg("Launch a creator coin"), icon: Coins, href: "/launchpad/coin/create", keywords: ["coin", "creator coin", "erc20", "token", "ekubo", "liquidity", "launch"] },
   remix: { id: "remix", label: msg("Remix an asset"), icon: Repeat2, href: "/marketplace", keywords: ["remix", "derivative", "attribution", "fork"] },
-  "portfolio-collections": { id: "portfolio-collections",label: msg("My collections"), icon: LayoutGrid, href: "/portfolio/collections", keywords: ["deployed", "created", "my contracts", "claim", "import"] },
+  "portfolio-collections": { id: "portfolio-collections",label: msg("My Collections"), icon: LayoutGrid, href: "/portfolio/collections", keywords: ["deployed", "created", "my contracts", "claim", "import"] },
   "portfolio-assets": { id: "portfolio-assets", label: msg("My assets"), icon: Gem, href: "/portfolio/assets", keywords: ["owned", "nfts", "tokens", "collected"] },
   "portfolio-listings": { id: "portfolio-listings", label: msg("My listings"), icon: Tag, href: "/portfolio/listings", keywords: ["sell", "listed", "active listings"] },
   "portfolio-offers": { id: "portfolio-offers", label: msg("My offers"), icon: List, href: "/portfolio/offers", keywords: ["bids", "made", "sent offers"] },

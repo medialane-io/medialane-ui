@@ -30,7 +30,7 @@ test("discover shows the app's hero, the sections, and buys through the app", as
   const useMarketActions = () => ({ buy: (o: ApiOrder) => bought.push(o.orderHash), offer: () => {}, dialogs: <div>app dialogs</div> });
   const view = render(<SWRConfig value={{ provider: () => new Map() }}><MedialaneAppProvider value={app}><DiscoverPage useMarketActions={useMarketActions} heroHeadline="Explore, share & trade" /></MedialaneAppProvider></SWRConfig>);
   await waitFor(() => expect(view.getAllByText("Piece 1").length).toBeGreaterThan(0));
-  expect(view.getByText("Browse by Type")).toBeTruthy();
+  expect(view.getByText("Browse by type")).toBeTruthy();
   expect(view.getByText("app dialogs")).toBeTruthy();
   const buys = view.getAllByRole("button").filter((b) => (b.textContent ?? "").trim() === "Buy");
   expect(buys.length).toBe(1);

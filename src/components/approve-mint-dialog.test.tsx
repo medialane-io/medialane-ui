@@ -39,7 +39,7 @@ test("shows the offer and mints into the collection the offer came from by defau
 
 test("sends the typed remix name", () => {
   const { view, approved } = show();
-  fireEvent.change(view.getByLabelText("Remix Name"), { target: { value: "My remix" } });
+  fireEvent.change(view.getByLabelText("Remix name"), { target: { value: "My remix" } });
   fireEvent.click(view.getByRole("button", { name: /Grant license/ }));
   expect(approved[0]![1]).toBe("My remix");
 });

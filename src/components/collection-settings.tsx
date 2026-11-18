@@ -101,7 +101,7 @@ export function CollectionSettings({ contract }: { contract: string }) {
             <Label htmlFor="displayName">{t("Display name")}</Label>
             <Input
               id="displayName"
-              placeholder={collection?.name ?? t("My collection")}
+              placeholder={collection?.name ?? t("My Collection")}
               value={form.displayName}
               onChange={set("displayName")}
               disabled={isLoading}

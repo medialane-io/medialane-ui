@@ -275,7 +275,7 @@ export function CoinCreate({ aside, tradeHref }: CoinCreateProps) {
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="space-y-1.5">
                   <Label htmlFor="name">{t("Name")}</Label>
-                  <Input id="name" value={name} onChange={(e) => handleNameChange(e.target.value)} placeholder={t("My coin")} />
+                  <Input id="name" value={name} onChange={(e) => handleNameChange(e.target.value)} placeholder={t("My Coin")} />
                   {nameErr && <p className="text-xs text-destructive">{nameErr}</p>}
                 </div>
                 <div className="space-y-1.5">
