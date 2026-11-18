@@ -21,12 +21,13 @@ import { useToken } from "../utils/use-tokens.js";
 import { useTransaction } from "../utils/use-transaction.js";
 import { successMessages } from "../utils/success-messages.js";
 import { useT } from "../i18n/provider.js";
+import { msg } from "../i18n/translate.js";
 
 type Action = "bid" | "accept";
 
 const COPY = {
-  bid: { title: "Place bid", working: "Placing your bid…", message: successMessages.bidPlaced() },
-  accept: { title: "Accept bid", working: "Accepting the bid…", message: successMessages.bidAccepted() },
+  bid: { title: msg("Place bid"), working: msg("Placing your bid…"), message: successMessages.bidPlaced },
+  accept: { title: msg("Accept bid"), working: msg("Accepting the bid…"), message: successMessages.bidAccepted },
 } as const;
 
 export function SponsorshipOfferPage({ offerId }: { offerId: string }) {
@@ -91,10 +92,10 @@ export function SponsorshipOfferPage({ offerId }: { offerId: string }) {
 
   return (
     <div className="pb-16">
-      <TransactionDialog tx={tx} title={copy.title} workingLabel={copy.working} firstStepLabel="Prepare">
+      <TransactionDialog tx={tx} title={t(copy.title)} workingLabel={t(copy.working)} firstStepLabel={t("Prepare")}>
         <TransactionSuccess
           name={name}
-          {...copy.message}
+          {...copy.message(t)}
           txHash={tx.txHash}
           actions={[{ label: "Done", onClick: tx.reset }]}
         >

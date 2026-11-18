@@ -135,8 +135,8 @@ export function DiscoverFeedSection({
             : activities.length === 0
             ? (
                 <div className="py-4">
-                  <p className="text-sm font-medium">{emptyMessages.activity.title}</p>
-                  <p className="text-sm text-muted-foreground">{emptyMessages.activity.description}</p>
+                  <p className="text-sm font-medium">{t(emptyMessages.activity.title)}</p>
+                  <p className="text-sm text-muted-foreground">{t(emptyMessages.activity.description)}</p>
                 </div>
               )
             : activities.map((act, i) => {

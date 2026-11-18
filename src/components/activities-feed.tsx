@@ -117,8 +117,8 @@ export function ActivitiesFeed() {
             <p className="text-muted-foreground">{`No ${typeFilter} events yet.`}</p>
           ) : (
             <div>
-              <p className="font-medium">{emptyMessages.activity.title}</p>
-              <p className="text-sm text-muted-foreground">{emptyMessages.activity.description}</p>
+              <p className="font-medium">{t(emptyMessages.activity.title)}</p>
+              <p className="text-sm text-muted-foreground">{t(emptyMessages.activity.description)}</p>
             </div>
           )}
         </div>

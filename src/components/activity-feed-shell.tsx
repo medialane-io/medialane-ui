@@ -64,8 +64,8 @@ export function ActivityFeedShell({ title, href, hrefLabel = "Activities", lastU
         ) : !children || (Array.isArray(children) && children.length === 0) ? (
           <div className="flex flex-col items-center gap-2 py-10 text-center">
             <Activity className="h-8 w-8 text-muted-foreground/30" />
-            <p className="text-sm font-medium">{emptyMessages.activity.title}</p>
-            <p className="text-sm text-muted-foreground">{emptyMessages.activity.description}</p>
+            <p className="text-sm font-medium">{t(emptyMessages.activity.title)}</p>
+            <p className="text-sm text-muted-foreground">{t(emptyMessages.activity.description)}</p>
           </div>
         ) : (
           children

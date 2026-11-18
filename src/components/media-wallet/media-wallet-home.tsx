@@ -227,8 +227,8 @@ export function MediaWalletHome({
 
       {activated && (
         <SuccessDialog
-          title={successMessages.walletActivated().title}
-          message={successMessages.walletActivated().description}
+          title={successMessages.walletActivated(t).title}
+          message={successMessages.walletActivated(t).description}
           onClose={() => setActivated(false)}
         />
       )}

@@ -1,18 +1,13 @@
 "use client";
 
-import { createContext, Fragment, useContext, useMemo } from "react";
+import { createContext, useContext, useMemo } from "react";
 import { DEFAULT_LOCALE } from "./locales.js";
-import { lookup, translate, translatePlural, type Catalog, type Vars } from "./translate.js";
+import { makeT, type T } from "./make-t.js";
+import type { Catalog } from "./translate.js";
 
 interface I18nValue {
   locale: string;
   messages: Catalog;
-}
-
-export interface T {
-  (text: string, vars?: Vars): string;
-  plural(one: string, other: string, count: number, vars?: Vars): string;
-  rich(text: string, values: Record<string, React.ReactNode>): React.ReactNode;
 }
 
 const NO_MESSAGES: Catalog = {};
@@ -36,16 +31,5 @@ export function useLocale(): string {
 
 export function useT(): T {
   const { locale, messages } = useContext(I18nContext);
-  return useMemo(() => {
-    const t = ((text: string, vars?: Vars) => translate({ messages, text, vars })) as T;
-    t.plural = (one, other, count, vars) => translatePlural({ locale, messages, one, other, count, vars });
-    t.rich = (text, values) =>
-      lookup(messages, text)
-        .split(/(\{\w+\})/)
-        .map((part, index) => {
-          const name = /^\{(\w+)\}$/.exec(part)?.[1];
-          return name !== undefined && name in values ? <Fragment key={index}>{values[name]}</Fragment> : part;
-        });
-    return t;
-  }, [locale, messages]);
+  return useMemo(() => makeT(locale, messages), [locale, messages]);
 }

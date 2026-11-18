@@ -77,7 +77,7 @@ export function MediaWalletSend({
   const [feeError, setFeeError] = useState<string | null>(null);
 
   const recipientValid = isValidStarknetAddress(to);
-  const sentMessage = successMessages.sent({ amount: amount.trim(), symbol: currency.symbol, to: shortenAddress(to.trim()) });
+  const sentMessage = successMessages.sent({ amount: amount.trim(), symbol: currency.symbol, to: shortenAddress(to.trim()) }, t);
   let amountRaw: bigint | null;
   try {
     amountRaw = amount.trim() ? BigInt(parseAmount(amount.trim(), currency.decimals)) : null;

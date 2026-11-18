@@ -1,90 +1,99 @@
+import { plainT, type T } from "../i18n/make-t.js";
+
 export interface SuccessMessage {
   title: string;
   description: string;
 }
 
+type Named = { name: string };
+type Priced = Named & { price: string };
+
 export const successMessages = {
-  listed: ({ name, price }: { name: string; price: string }): SuccessMessage => ({
-    title: "Listing created",
-    description: `${name} is listed for ${price}. The order is recorded onchain.`,
+  listed: ({ name, price }: Priced, t: T = plainT): SuccessMessage => ({
+    title: t("Listing created"),
+    description: t("{name} is listed for {price}. The order is recorded onchain.", { name, price }),
   }),
-  offered: ({ name, price }: { name: string; price: string }): SuccessMessage => ({
-    title: "Offer created",
-    description: `Your offer of ${price} on ${name} is recorded onchain.`,
+  offered: ({ name, price }: Priced, t: T = plainT): SuccessMessage => ({
+    title: t("Offer created"),
+    description: t("Your offer of {price} on {name} is recorded onchain.", { name, price }),
   }),
-  accepted: ({ name, price }: { name: string; price: string }): SuccessMessage => ({
-    title: "Sale completed",
-    description: `${name} sold for ${price}. Ownership is recorded onchain with the buyer's wallet.`,
+  accepted: ({ name, price }: Priced, t: T = plainT): SuccessMessage => ({
+    title: t("Sale completed"),
+    description: t("{name} sold for {price}. Ownership is recorded onchain with the buyer's wallet.", { name, price }),
   }),
-  countered: ({ name, price }: { name: string; price: string }): SuccessMessage => ({
-    title: "Counter-offer created",
-    description: `Your counter of ${price} on ${name} is recorded onchain.`,
+  countered: ({ name, price }: Priced, t: T = plainT): SuccessMessage => ({
+    title: t("Counter-offer created"),
+    description: t("Your counter of {price} on {name} is recorded onchain.", { name, price }),
   }),
-  archived: ({ name }: { name: string }): SuccessMessage => ({
-    title: "Asset archived",
-    description: `${name} is permanently archived onchain.`,
+  archived: ({ name }: Named, t: T = plainT): SuccessMessage => ({
+    title: t("Asset archived"),
+    description: t("{name} is permanently archived onchain.", { name }),
   }),
-  transferred: ({ name, to }: { name: string; to: string }): SuccessMessage => ({
-    title: "Transfer completed",
-    description: `${name} is owned by ${to}.`,
+  transferred: ({ name, to }: Named & { to: string }, t: T = plainT): SuccessMessage => ({
+    title: t("Transfer completed"),
+    description: t("{name} is owned by {to}.", { name, to }),
   }),
-  purchased: ({ name, quantity }: { name: string; quantity: number }): SuccessMessage => ({
-    title: "Purchase completed",
+  purchased: ({ name, quantity }: Named & { quantity: number }, t: T = plainT): SuccessMessage => ({
+    title: t("Purchase completed"),
     description:
       quantity > 1
-        ? `${quantity} editions of ${name} are owned by your wallet. The sale is recorded onchain.`
-        : `${name} is owned by your wallet. The sale is recorded onchain.`,
+        ? t("{quantity} editions of {name} are owned by your wallet. The sale is recorded onchain.", { quantity, name })
+        : t("{name} is owned by your wallet. The sale is recorded onchain.", { name }),
   }),
-  commented: (): SuccessMessage => ({
-    title: "Comment published",
-    description: "Your comment is recorded onchain and appears here within about 30 seconds.",
+  commented: (t: T = plainT): SuccessMessage => ({
+    title: t("Comment published"),
+    description: t("Your comment is recorded onchain and appears here within about 30 seconds."),
   }),
-  claimed: (): SuccessMessage => ({
-    title: "Certificate claimed",
-    description: "The certificate is recorded onchain in the wallet that claimed it.",
+  claimed: (t: T = plainT): SuccessMessage => ({
+    title: t("Certificate claimed"),
+    description: t("The certificate is recorded onchain in the wallet that claimed it."),
   }),
-  bidPlaced: (): SuccessMessage => ({
-    title: "Bid placed",
-    description: "Your bid is recorded onchain.",
+  bidPlaced: (t: T = plainT): SuccessMessage => ({
+    title: t("Bid placed"),
+    description: t("Your bid is recorded onchain."),
   }),
-  bidAccepted: (): SuccessMessage => ({
-    title: "Bid accepted",
-    description: "The license is minted to the sponsor's wallet.",
+  bidAccepted: (t: T = plainT): SuccessMessage => ({
+    title: t("Bid accepted"),
+    description: t("The license is minted to the sponsor's wallet."),
   }),
-  responseSent: (): SuccessMessage => ({
-    title: "Response sent",
-    description: "Your response is recorded onchain.",
+  responseSent: (t: T = plainT): SuccessMessage => ({
+    title: t("Response sent"),
+    description: t("Your response is recorded onchain."),
   }),
-  proposalWithdrawn: (): SuccessMessage => ({
-    title: "Proposal withdrawn",
-    description: "The proposal is closed onchain.",
+  proposalWithdrawn: (t: T = plainT): SuccessMessage => ({
+    title: t("Proposal withdrawn"),
+    description: t("The proposal is closed onchain."),
   }),
-  ownershipTransferred: ({ name, to }: { name: string; to: string }): SuccessMessage => ({
-    title: "Ownership transferred",
-    description: `${to} is the owner of ${name}.`,
+  ownershipTransferred: ({ name, to }: Named & { to: string }, t: T = plainT): SuccessMessage => ({
+    title: t("Ownership transferred"),
+    description: t("{to} is the owner of {name}.", { to, name }),
   }),
-  certificateIssued: (): SuccessMessage => ({
-    title: "Certificate issued",
-    description: "The certificate is recorded onchain in the participant's wallet.",
+  certificateIssued: (t: T = plainT): SuccessMessage => ({
+    title: t("Certificate issued"),
+    description: t("The certificate is recorded onchain in the participant's wallet."),
   }),
-  participantsPublished: ({ count }: { count: number }): SuccessMessage => ({
-    title: "Participants published",
-    description: `The list of ${count} participant${count !== 1 ? "s" : ""} is recorded onchain. Each one claims with their own link.`,
+  participantsPublished: ({ count }: { count: number }, t: T = plainT): SuccessMessage => ({
+    title: t("Participants published"),
+    description: t.plural(
+      "The list of {count} participant is recorded onchain. Each one claims with their own link.",
+      "The list of {count} participants is recorded onchain. Each one claims with their own link.",
+      count,
+    ),
   }),
-  walletActivated: (): SuccessMessage => ({
-    title: "Wallet activated",
-    description: "Your wallet is recorded onchain and can receive and send assets.",
+  walletActivated: (t: T = plainT): SuccessMessage => ({
+    title: t("Wallet activated"),
+    description: t("Your wallet is recorded onchain and can receive and send assets."),
   }),
-  sent: ({ amount, symbol, to }: { amount: string; symbol: string; to: string }): SuccessMessage => ({
-    title: "Transfer completed",
-    description: `${amount} ${symbol} sent to ${to}. The transfer is recorded onchain.`,
+  sent: ({ amount, symbol, to }: { amount: string; symbol: string; to: string }, t: T = plainT): SuccessMessage => ({
+    title: t("Transfer completed"),
+    description: t("{amount} {symbol} sent to {to}. The transfer is recorded onchain.", { amount, symbol, to }),
   }),
-  licenseGranted: ({ price }: { price: string }): SuccessMessage => ({
-    title: "License granted",
-    description: `The remix is minted and listed for ${price}. The buyer completes the purchase from their portfolio.`,
+  licenseGranted: ({ price }: { price: string }, t: T = plainT): SuccessMessage => ({
+    title: t("License granted"),
+    description: t("The remix is minted and listed for {price}. The buyer completes the purchase from their portfolio.", { price }),
   }),
-  cancelled: ({ kind }: { kind: string }): SuccessMessage => ({
-    title: `${kind.charAt(0).toUpperCase()}${kind.slice(1)} cancelled`,
-    description: "The order is cancelled onchain.",
+  cancelled: ({ kind }: { kind: "listing" | "offer" }, t: T = plainT): SuccessMessage => ({
+    title: kind === "offer" ? t("Offer cancelled") : t("Listing cancelled"),
+    description: t("The order is cancelled onchain."),
   }),
 };

@@ -125,8 +125,8 @@ export function ListingsGrid({ sort = "recent", currency, orderType = "", minPri
     const empty = orderType === "offers" ? emptyMessages.offers : emptyMessages.listings;
     return (
       <div className="flex flex-col items-center justify-center py-24 gap-4 text-center">
-        <p className="text-2xl font-bold">{empty.title}</p>
-        <p className="text-muted-foreground max-w-sm">{empty.description}</p>
+        <p className="text-2xl font-bold">{t(empty.title)}</p>
+        <p className="text-muted-foreground max-w-sm">{t(empty.description)}</p>
         {orderType !== "offers" && (
           <Button variant="outline" asChild>
             <Link href="/create">{t("Create & Sell")}</Link>

@@ -72,8 +72,8 @@ export function MediaWalletActivity({ onNavigate }: { onNavigate: (view: MediaWa
       {loading && !items && !error && <ActivityLoading />}
       {items && items.length === 0 && (
         <div>
-          <p className="text-sm font-medium">{emptyMessages.walletActivity.title}</p>
-          <p className="text-sm text-muted-foreground">{emptyMessages.walletActivity.description}</p>
+          <p className="text-sm font-medium">{t(emptyMessages.walletActivity.title)}</p>
+          <p className="text-sm text-muted-foreground">{t(emptyMessages.walletActivity.description)}</p>
         </div>
       )}
 

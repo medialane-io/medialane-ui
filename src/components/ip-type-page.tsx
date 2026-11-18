@@ -320,12 +320,12 @@ export function IpTypePage({ slug, useMarketActions }: IpTypePageProps) {
           )}
           <div>
             <p className="font-semibold text-lg">
-              {listedOnly ? t("Listed assets appear here") : emptyMessages.assetsOfType.title}
+              {listedOnly ? t("Listed assets appear here") : t(emptyMessages.assetsOfType.title)}
             </p>
             <p className="text-muted-foreground text-sm mt-1">
               {listedOnly
                 ? t("Try removing the 'Listed only' filter to see all assets.")
-                : emptyMessages.assetsOfType.description}
+                : t(emptyMessages.assetsOfType.description)}
             </p>
           </div>
           <Button asChild variant="outline">

@@ -138,8 +138,8 @@ export function CoinsExplorer({ useCoins, usePrice, usePriceMap, coinHref, headi
               <p className="text-sm text-muted-foreground">{`No coins match "${query.trim()}".`}</p>
             ) : (
               <>
-                <p className="text-sm font-medium">{emptyMessages.coins.title}</p>
-                <p className="text-sm text-muted-foreground">{emptyMessages.coins.description}</p>
+                <p className="text-sm font-medium">{t(emptyMessages.coins.title)}</p>
+                <p className="text-sm text-muted-foreground">{t(emptyMessages.coins.description)}</p>
               </>
             )}
           </div>

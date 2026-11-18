@@ -80,7 +80,7 @@ export function ApproveMintDialog({ offer, open, onOpenChange, collections, foot
           statusMessage={t("Minting and listing…")}
           txHash={txHash}
           error={error}
-          success={successMessages.licenseGranted({ price: priceDisplay })}
+          success={successMessages.licenseGranted({ price: priceDisplay }, t)}
           successActions={[
             { label: "Done", onClick: close },
             ...(newAssetHref ? [{ label: "View new asset", href: newAssetHref }] : []),

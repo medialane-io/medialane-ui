@@ -133,7 +133,7 @@ export function TransferDialog({
           asset={{ name: displayName, image: tokenImage }}
           txHash={txHash}
           error={error}
-          success={successMessages.transferred({ name: displayName, to: recipientShort })}
+          success={successMessages.transferred({ name: displayName, to: recipientShort }, t)}
           successActions={[{ label: "Done", onClick: () => { close(); onSuccess?.(); } }]}
           errorTitle={t("Transfer failed")}
           errorDescription={t("The transaction was submitted, but the transfer could not be completed.")}

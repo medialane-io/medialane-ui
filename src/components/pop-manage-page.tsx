@@ -163,7 +163,7 @@ export function PopManagePage({ contract }: { contract: string }) {
     normalizeAddress("STARKNET", walletAddress) === normalizeAddress("STARKNET", collection.owner);
 
   const issue = (recipient: string) => {
-    setDone(successMessages.certificateIssued());
+    setDone(successMessages.certificateIssued(t));
     void tx.run(async (signer) => {
       await runIntentCalls(signer, () => app.getClient().api.intents.create("pop-manage", { owner: signer.address, collection: contract, action: "issue", recipient }));
     });
@@ -172,7 +172,7 @@ export function PopManagePage({ contract }: { contract: string }) {
   const publish = (addresses: string[]) => {
     const list = buildPopAllowlist(addresses);
     const count = Object.keys(list.proofs).length;
-    setDone(successMessages.participantsPublished({ count }));
+    setDone(successMessages.participantsPublished({ count }, t));
     void tx
       .run(async (signer) => {
         await runIntentCalls(signer, () => app.getClient().api.intents.create("pop-manage", { owner: signer.address, collection: contract, action: "set_allowlist_root", root: list.root }));

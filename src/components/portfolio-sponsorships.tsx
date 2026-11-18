@@ -16,10 +16,13 @@ import { emptyMessages, type EmptyMessage } from "../utils/empty-messages.js";
 import { successMessages, type SuccessMessage } from "../utils/success-messages.js";
 import { useTransaction } from "../utils/use-transaction.js";
 import { useT } from "../i18n/provider.js";
+import type { T } from "../i18n/make-t.js";
+import { msg } from "../i18n/translate.js";
 
 type Api = ReturnType<ReturnType<typeof useMedialaneApp>["getClient"]>["api"];
 
-function useRowAction(copy: { title: string; working: string; message: SuccessMessage }) {
+function useRowAction(copy: { title: string; working: string; message: (t: T) => SuccessMessage }) {
+  const t = useT();
   const app = useMedialaneApp();
   const tx = useTransaction();
   const [activeId, setActiveId] = useState<string | null>(null);
@@ -36,8 +39,8 @@ function useRowAction(copy: { title: string; working: string; message: SuccessMe
   };
 
   const dialog = (
-    <TransactionDialog tx={tx} title={copy.title} workingLabel={copy.working} firstStepLabel="Prepare">
-      <TransactionSuccess name={copy.title} {...copy.message} txHash={tx.txHash} actions={[{ label: "Done", onClick: tx.reset }]} />
+    <TransactionDialog tx={tx} title={t(copy.title)} workingLabel={t(copy.working)} firstStepLabel={t("Prepare")}>
+      <TransactionSuccess name={t(copy.title)} {...copy.message(t)} txHash={tx.txHash} actions={[{ label: t("Done"), onClick: tx.reset }]} />
     </TransactionDialog>
   );
 
@@ -52,7 +55,7 @@ function OfferBidsRow({ offer }: { offer: ApiSponsorshipOffer }) {
   const t = useT();
   const { walletAddress } = useMedialaneApp();
   const { bids, isLoading, mutate } = useSponsorshipBids(offer.offerId);
-  const action = useRowAction({ title: "Accept bid", working: "Accepting the bid…", message: successMessages.bidAccepted() });
+  const action = useRowAction({ title: msg("Accept bid"), working: msg("Accepting the bid…"), message: successMessages.bidAccepted });
 
   if (isLoading || bids.length === 0) return null;
 
@@ -89,7 +92,7 @@ function OfferBidsRow({ offer }: { offer: ApiSponsorshipOffer }) {
 function ReceivedProposals({ walletAddress }: { walletAddress: string }) {
   const t = useT();
   const { proposals, isLoading, mutate } = useSponsorshipProposals({ owner: walletAddress, open: true });
-  const action = useRowAction({ title: "Respond to proposal", working: "Sending your response…", message: successMessages.responseSent() });
+  const action = useRowAction({ title: msg("Respond to proposal"), working: msg("Sending your response…"), message: successMessages.responseSent });
 
   if (isLoading) return <Skeleton className="h-20 w-full rounded-xl" />;
   if (proposals.length === 0) return <p className="text-sm text-muted-foreground">{t("No proposals awaiting your decision.")}</p>;
@@ -134,7 +137,7 @@ function ReceivedProposals({ walletAddress }: { walletAddress: string }) {
 function SentProposals({ walletAddress }: { walletAddress: string }) {
   const t = useT();
   const { proposals, isLoading, mutate } = useSponsorshipProposals({ proposer: walletAddress, open: true });
-  const action = useRowAction({ title: "Withdraw proposal", working: "Withdrawing your proposal…", message: successMessages.proposalWithdrawn() });
+  const action = useRowAction({ title: msg("Withdraw proposal"), working: msg("Withdrawing your proposal…"), message: successMessages.proposalWithdrawn });
 
   if (isLoading) return <Skeleton className="h-20 w-full rounded-xl" />;
   if (proposals.length === 0) return <p className="text-sm text-muted-foreground">{t("No pending proposals sent.")}</p>;
@@ -168,12 +171,13 @@ function SentProposals({ walletAddress }: { walletAddress: string }) {
 }
 
 function LicenseList({ loading, empty, children }: { loading: boolean; empty: EmptyMessage; children: React.ReactNode[] }) {
+  const t = useT();
   if (loading) return <Skeleton className="h-16 w-full rounded-xl" />;
   if (children.length === 0) {
     return (
       <div>
-        <p className="text-sm font-medium">{empty.title}</p>
-        <p className="text-sm text-muted-foreground">{empty.description}</p>
+        <p className="text-sm font-medium">{t(empty.title)}</p>
+        <p className="text-sm text-muted-foreground">{t(empty.description)}</p>
       </div>
     );
   }
