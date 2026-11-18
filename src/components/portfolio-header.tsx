@@ -5,6 +5,7 @@ import Link from "./link.js";
 import { cn } from "../utils/cn.js";
 import { AddressDisplay } from "./address-display.js";
 import { useT } from "../i18n/provider.js";
+import { useFormat } from "../i18n/use-format.js";
 
 export interface PortfolioHeaderScore {
 
@@ -29,6 +30,7 @@ export function PortfolioHeader({
   trailing,
   className,
 }: PortfolioHeaderProps) {
+  const intl = useFormat();
   const t = useT();
   const scoreChip = score && (
     <div className="rounded-full bg-gradient-to-r from-brand-orange to-brand-maeve px-3.5 py-1.5 flex items-baseline gap-2 whitespace-nowrap text-white">
@@ -36,7 +38,7 @@ export function PortfolioHeader({
         {score.levelName}
       </span>
       <span className="text-xs font-medium text-white/80 tabular-nums">
-        {t("{totalXp} XP", { totalXp: score.totalXp.toLocaleString() })}</span>
+        {t("{totalXp} XP", { totalXp: intl.number(score.totalXp) })}</span>
     </div>
   );
 

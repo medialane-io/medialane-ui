@@ -3,6 +3,8 @@
 import { ExternalLink } from "lucide-react";
 import { cn } from "../utils/cn.js";
 import { useT } from "../i18n/provider.js";
+import { useFormat } from "../i18n/use-format.js";
+import { formatNumber } from "../i18n/format.js";
 
 export interface CoinGuaranteesData {
   isLaunched: boolean;
@@ -37,7 +39,7 @@ function whole(raw: string, decimals: number): number | null {
 }
 
 const compact = (n: number) =>
-  new Intl.NumberFormat(undefined, { notation: "compact", maximumFractionDigits: 2 }).format(n);
+  formatNumber(n, undefined, { notation: "compact", maximumFractionDigits: 2 });
 
 function Line({
   label,
@@ -87,6 +89,7 @@ export function CoinGuarantees({
   blockUrl,
   className,
 }: CoinGuaranteesProps) {
+  const intl = useFormat();
   const t = useT();
   if (isLoading) {
     return (
@@ -138,7 +141,7 @@ export function CoinGuarantees({
       {data.launchedAtBlock != null && (
         <Line
           label={t("Launched")}
-          value={`Block ${data.launchedAtBlock.toLocaleString()}`}
+          value={`Block ${intl.number(data.launchedAtBlock)}`}
           href={blockUrl}
         />
       )}

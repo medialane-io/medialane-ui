@@ -14,6 +14,7 @@ import {
 import type { ApiActivity } from "@medialane/sdk";
 import { useT } from "../i18n/provider.js";
 import { msg } from "../i18n/translate.js";
+import { useFormat } from "../i18n/use-format.js";
 
 const PriceHistoryChart = dynamic(
   () => import("./price-history-chart.js").then((m) => m.PriceHistoryChart),
@@ -49,6 +50,7 @@ export function AssetProvenanceTab({
   originalCreator,
   registeredAt,
 }: AssetProvenanceTabProps) {
+  const intl = useFormat();
   const t = useT();
   const sales = history.filter((e) => e.type === "sale");
 
@@ -238,7 +240,7 @@ export function AssetProvenanceTab({
                           )}
                           <span
                             className="text-2xs text-muted-foreground/60 whitespace-nowrap"
-                            title={new Date(event.timestamp).toLocaleString()}
+                            title={intl.dateTime(new Date(event.timestamp))}
                           >
                             {timeAgo(event.timestamp)}
                           </span>

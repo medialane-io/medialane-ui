@@ -40,6 +40,7 @@ import {
 } from "lucide-react";
 import { useT } from "../../i18n/provider.js";
 import { msg } from "../../i18n/translate.js";
+import { useFormat } from "../../i18n/use-format.js";
 
 export const REWARD_ACTION_LABELS: Record<string, string> = {
   complete_profile: "Complete profile",
@@ -144,6 +145,7 @@ function SignInButton() {
 }
 
 function StatusPanel({ address }: { address: string | null | undefined }) {
+  const intl = useFormat();
   const t = useT();
   const { data: rewards, isLoading } = useRewards(address);
   const { data: config } = useRewardsConfig();
@@ -169,7 +171,7 @@ function StatusPanel({ address }: { address: string | null | undefined }) {
   return (
     <div className="shrink-0 rounded-3xl bg-gradient-to-br from-brand-rose/10 via-brand-orange/[0.06] to-transparent p-6 sm:min-w-[300px]">
       <p className="text-6xl font-black tabular-nums leading-none tracking-tight">
-        {rewards.totalXp.toLocaleString()}
+        {intl.number(rewards.totalXp)}
       </p>
       <p className="text-xs font-bold uppercase tracking-widest text-foreground/40 mt-1.5">{t("XP earned")}</p>
 
@@ -188,7 +190,7 @@ function StatusPanel({ address }: { address: string | null | undefined }) {
             />
           </div>
           <p className="text-sm font-semibold text-foreground/60">
-            {t.rich("{value} XP to {name}", { value: (nextLevelXp! - rewards.totalXp).toLocaleString(), name: rewards.nextLevel.name })}
+            {t.rich("{value} XP to {name}", { value: intl.number((nextLevelXp! - rewards.totalXp)), name: rewards.nextLevel.name })}
           </p>
         </div>
       )}
@@ -197,6 +199,7 @@ function StatusPanel({ address }: { address: string | null | undefined }) {
 }
 
 function PersonalPanel({ address }: { address: string | null | undefined }) {
+  const intl = useFormat();
   const t = useT();
   const { data: rewards } = useRewards(address);
   const { data: events } = useRewardsEvents(address, 1, 6);
@@ -216,7 +219,7 @@ function PersonalPanel({ address }: { address: string | null | undefined }) {
           .map(([action, xp]) => (
             <div key={action} className="flex items-center justify-between py-3.5">
               <span className="text-base font-medium text-foreground/70">{actionLabel(action)}</span>
-              <span className="text-lg font-black tabular-nums">+{xp.toLocaleString()}</span>
+              <span className="text-lg font-black tabular-nums">+{intl.number(xp)}</span>
             </div>
           ))}
       </div>

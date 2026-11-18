@@ -16,6 +16,7 @@ import { useMedialaneApp } from "../medialane-app.js";
 import { BRAND_COLOR } from "../../data/brand.js";
 import { emptyMessages } from "../../utils/empty-messages.js";
 import { useT } from "../../i18n/provider.js";
+import { useFormat } from "../../i18n/use-format.js";
 
 const GRADS = ([["blue", "purple"], ["purple", "rose"], ["rose", "orange"], ["purple", "blue"]] as const).map(
   ([from, to]) => `linear-gradient(135deg, ${BRAND_COLOR[from]}, ${BRAND_COLOR[to]})`,
@@ -124,12 +125,13 @@ function WalletActivityRow({
 }
 
 function ActivityDetailModal({ a, onClose }: { a: ApiWalletActivity; onClose: () => void }) {
+  const intl = useFormat();
   const t = useT();
   const { explorerUrl } = useMediaWalletApp();
   const [copied, setCopied] = useState(false);
   const subtitle = walletActivitySubtitle(a);
   const amount = walletActivityAmount(a);
-  const fullDate = new Date(a.timestamp).toLocaleString(undefined, {
+  const fullDate = intl.dateTime(new Date(a.timestamp), {
     dateStyle: "medium",
     timeStyle: "short",
   });

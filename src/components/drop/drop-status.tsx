@@ -3,6 +3,7 @@
 import { cn } from "../../utils/cn.js";
 import type { DropPhase } from "../../utils/drop/view.js";
 import { useT } from "../../i18n/provider.js";
+import { useFormat } from "../../i18n/use-format.js";
 
 export function DropStatusBadge({ phase }: { phase: DropPhase }) {
   const t = useT();
@@ -22,13 +23,14 @@ export function DropStatusBadge({ phase }: { phase: DropPhase }) {
 }
 
 export function DropSupplyProgress({ minted, max }: { minted: number; max: number }) {
+  const intl = useFormat();
   const t = useT();
   const pct = max > 0 ? Math.min(100, (minted / max) * 100) : 0;
   return (
     <div className="space-y-1.5">
       <div className="flex justify-between text-xs text-muted-foreground">
-        <span>{t("{minted} minted", { minted: minted.toLocaleString() })}</span>
-        <span>{t("of {max}", { max: max.toLocaleString() })}</span>
+        <span>{t("{minted} minted", { minted: intl.number(minted) })}</span>
+        <span>{t("of {max}", { max: intl.number(max) })}</span>
       </div>
       <div className="h-2 rounded-full bg-muted overflow-hidden">
         <div

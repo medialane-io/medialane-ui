@@ -10,6 +10,7 @@ import { CurrencyAmount } from "./currency-icon.js";
 import { parsePriceDisplay } from "../utils/format.js";
 import { useImageUrl } from "../utils/use-image-url.js";
 import { useT } from "../i18n/provider.js";
+import { useFormat } from "../i18n/use-format.js";
 
 const CHIP = "text-2xs font-semibold px-2.5 py-1 rounded-full bg-muted text-muted-foreground";
 
@@ -30,6 +31,7 @@ function PriceStat({ label, raw }: { label: string; raw: string | null }) {
 }
 
 export function CollectionHeader({ collection, loading = false, children }: CollectionHeaderProps) {
+  const intl = useFormat();
   const t = useT();
   const resolveImage = useImageUrl();
   const image = resolveImage(collection?.image);
@@ -51,8 +53,8 @@ export function CollectionHeader({ collection, loading = false, children }: Coll
           />
 
           <HeaderStats>
-            {collection.totalSupply != null ? <HeaderStat label={t("Items")}>{collection.totalSupply.toLocaleString()}</HeaderStat> : null}
-            {collection.holderCount != null ? <HeaderStat label={t("Holders")}>{collection.holderCount.toLocaleString()}</HeaderStat> : null}
+            {collection.totalSupply != null ? <HeaderStat label={t("Items")}>{intl.number(collection.totalSupply)}</HeaderStat> : null}
+            {collection.holderCount != null ? <HeaderStat label={t("Holders")}>{intl.number(collection.holderCount)}</HeaderStat> : null}
             <PriceStat label={t("Floor")} raw={collection.floorPrice} />
             <PriceStat label={t("Volume")} raw={collection.totalVolume} />
           </HeaderStats>

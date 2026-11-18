@@ -18,6 +18,7 @@ import { uploadAll, type UploadTask } from "../../../utils/drop/upload.js";
 import { launchDrop, saveExclusiveContent } from "../../../utils/drop/actions.js";
 import { useMedialaneApp } from "../../medialane-app.js";
 import { useT } from "../../../i18n/provider.js";
+import { useFormat } from "../../../i18n/use-format.js";
 
 type Step =
   | { kind: "review" }
@@ -27,6 +28,7 @@ type Step =
   | { kind: "error"; message: string };
 
 export function LaunchDialog({ open, onClose, draft }: { open: boolean; onClose: () => void; draft: DropDraft }) {
+  const intl = useFormat();
   const t = useT();
   const app = useMedialaneApp();
   const [step, setStep] = useState<Step>({ kind: "review" });
@@ -117,9 +119,9 @@ export function LaunchDialog({ open, onClose, draft }: { open: boolean; onClose:
               <p className="font-semibold">{draft.name}</p>
               <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">{t("Fixed after launch")}</p>
               <Row label={t("Price")} value={priceLabel(terms.price, terms.paymentToken)} />
-              <Row label={t("Supply")} value={`${draftSupply(draft).toLocaleString("en-US")} ${draft.kind === "edition" ? (draftSupply(draft) === 1 ? "copy" : "copies") : draftSupply(draft) === 1 ? "item" : "items"}`} />
-              <Row label={t("Starts")} value={terms.startTime === 0 ? "At launch" : new Date(terms.startTime * 1000).toLocaleString()} />
-              <Row label={t("Ends")} value={terms.endTime === 0 ? "No end date" : new Date(terms.endTime * 1000).toLocaleString()} />
+              <Row label={t("Supply")} value={`${intl.number(draftSupply(draft))} ${draft.kind === "edition" ? (draftSupply(draft) === 1 ? "copy" : "copies") : draftSupply(draft) === 1 ? "item" : "items"}`} />
+              <Row label={t("Starts")} value={terms.startTime === 0 ? "At launch" : intl.dateTime(new Date(terms.startTime * 1000))} />
+              <Row label={t("Ends")} value={terms.endTime === 0 ? "No end date" : intl.dateTime(new Date(terms.endTime * 1000))} />
               <Row label={t("Per wallet")} value={terms.maxPerWallet === "0" ? "No limit" : terms.maxPerWallet} />
               <Row label={t("Who can mint")} value={list ? `${Object.keys(list.proofs).length} wallets on a list` : "Everyone"} />
               <p className="pt-1 text-xs text-muted-foreground">{t("The artwork and these terms can't be changed after launch. You can change the list later.")}</p>

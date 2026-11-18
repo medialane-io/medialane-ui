@@ -20,6 +20,7 @@ import { SEARCH_MIN_LENGTH, useSearch } from "../utils/use-search.js";
 import { collectionHref, type ApiCollection } from "@medialane/sdk";
 import { useT } from "../i18n/provider.js";
 import { msg } from "../i18n/translate.js";
+import { useFormat } from "../i18n/use-format.js";
 
 const PAGE_SIZE = 25;
 
@@ -122,6 +123,7 @@ function CollectionSearch() {
 }
 
 export function CollectionsPage() {
+  const intl = useFormat();
   const t = useT();
   const counts = useStandardCounts();
   const [sort, setSort]           = useState<CollectionSort>("recent");
@@ -193,13 +195,13 @@ export function CollectionsPage() {
         <div className="flex flex-wrap items-center gap-2 mt-1">
           {counts?.single != null && counts.multi != null && (
             <div className="flex items-center gap-1.5 rounded-full border border-border bg-card px-3.5 py-1.5 text-sm">
-              <span className="font-bold tabular-nums">{(counts.single + counts.multi).toLocaleString()}</span>
+              <span className="font-bold tabular-nums">{intl.number((counts.single + counts.multi))}</span>
               <span className="text-muted-foreground">{t("Collections")}</span>
             </div>
           )}
           {counts?.multi != null && (
             <div className="flex items-center gap-1.5 rounded-full border border-border bg-card px-3.5 py-1.5 text-sm">
-              <span className="font-bold tabular-nums">{counts.multi.toLocaleString()}</span>
+              <span className="font-bold tabular-nums">{intl.number(counts.multi)}</span>
               <span className="text-muted-foreground">{t("Multi editions")}</span>
             </div>
           )}

@@ -19,6 +19,7 @@ import { isSameAddress } from "../utils/same-address.js";
 import { useTokensByIpType } from "../utils/use-tokens-by-ip-type.js";
 import { emptyMessages } from "../utils/empty-messages.js";
 import { useT } from "../i18n/provider.js";
+import { useFormat } from "../i18n/use-format.js";
 
 const PAGE_SIZE = 24;
 
@@ -44,6 +45,7 @@ export interface IpTypePageProps {
 }
 
 export function IpTypePage({ slug, useMarketActions }: IpTypePageProps) {
+  const intl = useFormat();
   const t = useT();
   const { walletAddress } = useMedialaneApp();
   const market = useMarketActions();
@@ -157,7 +159,7 @@ export function IpTypePage({ slug, useMarketActions }: IpTypePageProps) {
             <h1 className="text-3xl font-semibold">{config?.label ?? slug}</h1>
             <p className="text-muted-foreground mt-0.5">
               {meta?.total != null ? (
-                <>{t("{total} assets · {listedCount} market", { total: meta.total.toLocaleString(), listedCount })}</>
+                <>{t("{total} assets · {listedCount} market", { total: intl.number(meta.total), listedCount })}</>
               ) : (
                 t("Browsing indexed digital assets on Medialane")
               )}

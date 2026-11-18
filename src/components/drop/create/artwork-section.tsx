@@ -11,6 +11,7 @@ import type { DropDraft, DropDraftErrors } from "../../../utils/drop/draft.js";
 import { previewUrl } from "../../../utils/drop/preview.js";
 import { acceptFor } from "../../../utils/upload-limits.js";
 import { useT } from "../../../i18n/provider.js";
+import { useFormat } from "../../../i18n/use-format.js";
 
 export interface SectionProps {
   draft: DropDraft;
@@ -37,6 +38,7 @@ export function ImagePick({ file, onPick, label }: { file: File | null; onPick: 
 }
 
 export function ArtworkSection({ draft, setDraft, errors }: SectionProps) {
+  const intl = useFormat();
   const t = useT();
   return (
     <Section title={t("Artwork")} icon={<Images className="h-4 w-4" />}>
@@ -56,7 +58,7 @@ export function ArtworkSection({ draft, setDraft, errors }: SectionProps) {
           <div className="space-y-1.5">
             <label className="text-sm font-medium" htmlFor="drop-supply">{t("Copies")}</label>
             <Input id="drop-supply" inputMode="numeric" value={draft.supply} onChange={(e) => setDraft({ supply: e.target.value.trim() })} className="max-w-[10rem]" />
-            <p className="text-xs text-muted-foreground">{t("Up to {MAX_DROP_SUPPLY}.", { MAX_DROP_SUPPLY: MAX_DROP_SUPPLY.toLocaleString("en-US") })}</p>
+            <p className="text-xs text-muted-foreground">{t("Up to {MAX_DROP_SUPPLY}.", { MAX_DROP_SUPPLY: intl.number(MAX_DROP_SUPPLY) })}</p>
             <FieldError message={errors.supply} />
           </div>
         </div>

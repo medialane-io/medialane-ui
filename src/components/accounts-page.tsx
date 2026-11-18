@@ -12,11 +12,13 @@ import { useAccounts } from "../utils/use-accounts.js";
 import { shortenAddress } from "../utils/address.js";
 import { cn } from "../utils/cn.js";
 import { useT } from "../i18n/provider.js";
+import { useFormat } from "../i18n/use-format.js";
 
 const GRID = "grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4";
 const CHIP = "shrink-0 rounded-full border px-3.5 py-1.5 text-sm font-medium transition-colors";
 
 export function AccountsPage() {
+  const intl = useFormat();
   const t = useT();
   const [search, setSearch] = useState("");
   const [query, setQuery] = useState("");
@@ -51,7 +53,7 @@ export function AccountsPage() {
           <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center">
             {!isLoading && total > 0 && (
               <div className="flex items-center gap-2 rounded-full border border-border bg-card/80 px-4 py-1.5 text-sm">
-                <span className="font-bold tabular-nums">{total.toLocaleString("en-US")}</span>
+                <span className="font-bold tabular-nums">{intl.number(total)}</span>
                 <span className="text-muted-foreground">{t("account")}{total === 1 ? "" : "s"}</span>
               </div>
             )}

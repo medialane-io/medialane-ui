@@ -12,8 +12,10 @@ import { useMedialaneApp } from "./medialane-app.js";
 import { useImageUrl } from "../utils/use-image-url.js";
 import { useMyPopEvents } from "../utils/use-pop.js";
 import { useT } from "../i18n/provider.js";
+import { useFormat } from "../i18n/use-format.js";
 
 function MyEventCard({ collection }: { collection: ApiCollection }) {
+  const intl = useFormat();
   const t = useT();
   const imageUrl = useImageUrl()(collection.image, { width: 128 });
   const initial = (collection.name ?? "E").charAt(0).toUpperCase();
@@ -35,7 +37,7 @@ function MyEventCard({ collection }: { collection: ApiCollection }) {
           <p className="text-xs text-muted-foreground">{collection.symbol}</p>
         )}
         <p className="text-xs text-muted-foreground">
-          {(collection.totalSupply ?? 0).toLocaleString()} {t("claimed")}
+          {intl.number((collection.totalSupply ?? 0))} {t("claimed")}
         </p>
       </div>
       <div className="flex items-center gap-2 shrink-0">

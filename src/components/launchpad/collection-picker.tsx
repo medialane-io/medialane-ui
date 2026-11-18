@@ -11,6 +11,8 @@ import { Popover, PopoverContent, PopoverTrigger } from "../popover.js";
 import { cn } from "../../utils/cn.js";
 import { useImageUrl } from "../../utils/use-image-url.js";
 import { useT } from "../../i18n/provider.js";
+import type { T } from "../../i18n/make-t.js";
+import { useFormat, type Format } from "../../i18n/use-format.js";
 
 export interface CollectionPickerProps {
   collections: ApiCollection[];
@@ -24,8 +26,8 @@ function label(col: ApiCollection) {
   return col.name || col.symbol || `Collection #${col.collectionId}`;
 }
 
-function works(col: ApiCollection) {
-  return col.totalSupply != null ? `${col.totalSupply.toLocaleString()} work${col.totalSupply !== 1 ? "s" : ""}` : "Empty";
+function works(col: ApiCollection, t: T, intl: Format) {
+  return col.totalSupply != null ? t.plural("{count} work", "{count} works", col.totalSupply, { count: intl.number(col.totalSupply) }) : t("Empty");
 }
 
 function Thumb({ image, size }: { image: string | null | undefined; size: "sm" | "md" }) {
@@ -45,6 +47,7 @@ function Thumb({ image, size }: { image: string | null | undefined; size: "sm" |
 
 export function CollectionPicker({ collections, loading, value, onChange, newCollectionHref }: CollectionPickerProps) {
   const t = useT();
+  const intl = useFormat();
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
 
@@ -85,7 +88,7 @@ export function CollectionPicker({ collections, loading, value, onChange, newCol
           <Thumb image={selected?.image} size="md" />
           <div className="min-w-0 flex-1">
             <p className="text-sm font-semibold truncate">{selected ? label(selected) : t("Choose a collection")}</p>
-            <p className="text-xs text-muted-foreground">{selected ? works(selected) : t("Where this work will live")}</p>
+            <p className="text-xs text-muted-foreground">{selected ? works(selected, t, intl) : t("Where this work will live")}</p>
           </div>
           <span className="flex items-center gap-1 text-xs font-medium text-muted-foreground shrink-0">
             {t("Change")}
@@ -116,7 +119,7 @@ export function CollectionPicker({ collections, loading, value, onChange, newCol
                 <Thumb image={col.image} size="sm" />
                 <div className="min-w-0 flex-1">
                   <p className="text-sm font-medium truncate">{label(col)}</p>
-                  <p className="text-xs text-muted-foreground">{works(col)}</p>
+                  <p className="text-xs text-muted-foreground">{works(col, t, intl)}</p>
                 </div>
                 {value === col.collectionId && <Check className="h-4 w-4 text-brand-blue shrink-0" />}
               </button>

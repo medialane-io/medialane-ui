@@ -39,6 +39,7 @@ import { useTransaction } from "../../utils/use-transaction.js";
 import { useLaunchpadImageUpload } from "../../utils/use-launchpad-image-upload.js";
 import { useTokenBalance } from "../../utils/media-wallet/use-erc20-balance.js";
 import { useT } from "../../i18n/provider.js";
+import { useFormat } from "../../i18n/use-format.js";
 
 const QUOTE_OPTIONS = SUPPORTED_TOKENS.map((t) => t.symbol);
 type Quote = (typeof QUOTE_OPTIONS)[number];
@@ -57,6 +58,7 @@ export interface CoinCreateProps {
 }
 
 export function CoinCreate({ aside, tradeHref }: CoinCreateProps) {
+  const intl = useFormat();
   const t = useT();
   const app = useMedialaneApp();
   const walletAddress = app.walletAddress;
@@ -322,7 +324,7 @@ export function CoinCreate({ aside, tradeHref }: CoinCreateProps) {
                 <div className="relative">
                   <Input
                     id="supply" inputMode="numeric"
-                    value={supply ? Number(supply).toLocaleString() : ""}
+                    value={supply ? intl.number(Number(supply)) : ""}
                     onChange={(e) => setSupply(e.target.value.replace(/[^\d]/g, ""))}
                     placeholder="1,000,000"
                     className="pr-16 text-lg font-semibold tabular-nums"
@@ -374,7 +376,7 @@ export function CoinCreate({ aside, tradeHref }: CoinCreateProps) {
                 <div className="rounded-xl bg-muted/50 dark:bg-muted/30 p-4">
                   <p className="text-2xs uppercase tracking-wide text-muted-foreground">{t("Starting market cap")}</p>
                   <p className="text-2xl font-bold tabular-nums text-brand-maeve">
-                    <CurrencyAmount amount={preview.fdv.toLocaleString()} symbol={quote} iconSize={18} />
+                    <CurrencyAmount amount={intl.number(preview.fdv)} symbol={quote} iconSize={18} />
                   </p>
                 </div>
               )}

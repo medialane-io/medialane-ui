@@ -5,6 +5,7 @@ import { cn } from "../../utils/cn.js";
 import { shortenAddress } from "../../utils/address.js";
 import { LevelBadge } from "./level-badge.js";
 import { useT } from "../../i18n/provider.js";
+import { useFormat } from "../../i18n/use-format.js";
 
 export interface LeaderboardEntryLike {
 
@@ -28,6 +29,7 @@ export interface LeaderboardTableProps {
 }
 
 export function LeaderboardTable({ entries, highlightAddress, renderAddress, compact, className }: LeaderboardTableProps) {
+  const intl = useFormat();
   const t = useT();
   if (compact) {
     return (
@@ -43,7 +45,7 @@ export function LeaderboardTable({ entries, highlightAddress, renderAddress, com
               </span>
               <LevelBadge level={e.currentLevel} name={e.currentLevelName} badgeColor={e.badgeColor} size="sm" className="hidden sm:inline-flex" />
               <span className="shrink-0 text-sm font-bold tabular-nums">
-                {e.totalXp.toLocaleString()}
+                {intl.number(e.totalXp)}
                 <span className="ml-1 text-xs font-medium text-foreground/40">{t("XP")}</span>
               </span>
             </div>
@@ -70,7 +72,7 @@ export function LeaderboardTable({ entries, highlightAddress, renderAddress, com
             </span>
             <LevelBadge level={e.currentLevel} name={e.currentLevelName} badgeColor={e.badgeColor} size="sm" className="hidden sm:inline-flex" />
             <span className="shrink-0 text-lg font-black tabular-nums">
-              {e.totalXp.toLocaleString()}
+              {intl.number(e.totalXp)}
               <span className="ml-1 text-xs font-bold text-foreground/40">{t("XP")}</span>
             </span>
           </div>

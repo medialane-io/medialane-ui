@@ -3,6 +3,7 @@ import { isPositiveInteger, isSymbol } from "../launchpad-rules.js";
 import { parseAllowlist } from "./allowlist.js";
 import { MAX_DROP_SUPPLY, type DropKind, type DropLicense } from "./metadata.js";
 import { EMPTY_SALE, validateSale, type SaleDraft, type SaleErrors } from "./sale.js";
+import { formatNumber } from "../../i18n/format.js";
 
 export interface DropDraft {
   kind: DropKind;
@@ -45,7 +46,7 @@ export function draftSupply(d: DropDraft): number {
   return d.kind === "edition" ? Number(d.supply) : d.items.length;
 }
 
-const thousands = MAX_DROP_SUPPLY.toLocaleString("en-US");
+const thousands = formatNumber(MAX_DROP_SUPPLY);
 
 export function validateDropDraft(d: DropDraft, now: number): DropDraftErrors {
   const e: DropDraftErrors = { ...validateSale(d.sale, now) };

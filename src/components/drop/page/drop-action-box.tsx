@@ -6,6 +6,7 @@ import { DropStatusBadge, DropSupplyProgress } from "../drop-status.js";
 import { GradientButton } from "../../gradient-button.js";
 import type { ActionBoxView } from "../../../utils/drop/view.js";
 import { useT } from "../../../i18n/provider.js";
+import { useFormat } from "../../../i18n/use-format.js";
 
 export interface DropActionBoxProps {
   view: ActionBoxView;
@@ -17,6 +18,7 @@ export interface DropActionBoxProps {
 }
 
 export function DropActionBox({ view, minted, maxSupply, quantity, onQuantity, onAction }: DropActionBoxProps) {
+  const intl = useFormat();
   const t = useT();
   const canPick = view.button.action === "mint" && view.maxQuantity > 1n;
   return (
@@ -28,7 +30,7 @@ export function DropActionBox({ view, minted, maxSupply, quantity, onQuantity, o
       {view.countdown && <DropCountdown targetTs={view.countdown.target} label={t(view.countdown.label)} />}
       {maxSupply > 0n
         ? <DropSupplyProgress minted={Number(minted)} max={Number(maxSupply)} />
-        : <p className="text-sm text-muted-foreground">{t("{value} minted", { value: Number(minted).toLocaleString("en-US") })}</p>}
+        : <p className="text-sm text-muted-foreground">{t("{value} minted", { value: intl.number(Number(minted)) })}</p>}
       <div className="flex items-end justify-between gap-3">
         <div>
           <p className="text-xs text-muted-foreground">{t("Price")}</p>

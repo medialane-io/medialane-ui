@@ -6,6 +6,7 @@ import type { ApiCreatorProfile } from "@medialane/sdk";
 import { AssetHeaderBlock } from "./asset-top-sections.js";
 import { MediaHeader, HeaderStats, HeaderStat } from "./media-header.js";
 import { profileIdentity } from "../utils/profile-identity.js";
+import { useFormat } from "../i18n/use-format.js";
 
 export interface CreatorHeaderStat {
   label: string;
@@ -28,6 +29,7 @@ const SOCIALS = [
 ] as const;
 
 export function CreatorHeader({ creator, image, stats, loading = false, children }: CreatorHeaderProps) {
+  const intl = useFormat();
   const { identity, name } = profileIdentity({
     username: creator?.username,
     name: creator?.name,
@@ -44,7 +46,7 @@ export function CreatorHeader({ creator, image, stats, loading = false, children
           {name ? <p className="text-sm tabular-nums text-muted-foreground">{identity}</p> : null}
 
           <HeaderStats>
-            {stats.map((s) => (s.value != null ? <HeaderStat key={s.label} label={s.label}>{s.value.toLocaleString()}</HeaderStat> : null))}
+            {stats.map((s) => (s.value != null ? <HeaderStat key={s.label} label={s.label}>{intl.number(s.value)}</HeaderStat> : null))}
           </HeaderStats>
 
           {socials.length > 0 ? (

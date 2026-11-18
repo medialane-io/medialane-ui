@@ -11,6 +11,7 @@ import { CurrencyIcon } from "./currency-icon.js";
 import type { ApiCollection } from "@medialane/sdk";
 import { useImageUrl } from "../utils/use-image-url.js";
 import { useT } from "../i18n/provider.js";
+import { useFormat } from "../i18n/use-format.js";
 
 function parseFloorPrice(floor: string | null | undefined): { amount: string; symbol: string } | null {
   if (!floor) return null;
@@ -32,6 +33,7 @@ export interface CollectionCardProps {
 }
 
 export function CollectionCard({ collection, href, settingsHref, className }: CollectionCardProps) {
+  const intl = useFormat();
   const t = useT();
   const resolveImage = useImageUrl();
   const [imgError, setImgError] = useState(false);
@@ -85,7 +87,7 @@ export function CollectionCard({ collection, href, settingsHref, className }: Co
               <div className="flex flex-wrap items-center gap-1">
                 {collection.totalSupply != null && (
                   <span className="rounded-full px-2.5 py-1 text-2xs font-medium text-white bg-black/30 backdrop-blur-md">
-                    {collection.totalSupply.toLocaleString()}
+                    {intl.number(collection.totalSupply)}
                   </span>
                 )}
                 {floor && (

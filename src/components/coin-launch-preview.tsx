@@ -5,6 +5,7 @@ import { TrendingUp } from "lucide-react";
 import { cn } from "../utils/cn.js";
 import { CurrencyIcon } from "./currency-icon.js";
 import { useT } from "../i18n/provider.js";
+import { useFormat } from "../i18n/use-format.js";
 
 export interface CoinPreviewData {
   name: string;
@@ -30,6 +31,7 @@ function StatValue({ children }: { children: React.ReactNode }) {
 }
 
 export function CoinLaunchPreview({ data, className }: { data: CoinPreviewData; className?: string }) {
+  const intl = useFormat();
   const t = useT();
   const { name, symbol, description, imageUrl, supplyHuman, price, quoteSymbol, teamPct } = data;
   const marketCap = supplyHuman != null ? supplyHuman * price : null;
@@ -72,7 +74,7 @@ export function CoinLaunchPreview({ data, className }: { data: CoinPreviewData; 
               {marketCap != null ? (
                 <StatValue>
                   <CurrencyIcon symbol={quoteSymbol} size={18} />
-                  {marketCap.toLocaleString()} {quoteSymbol}
+                  {intl.number(marketCap)} {quoteSymbol}
                 </StatValue>
               ) : (
                 <span className="text-muted-foreground">—</span>
@@ -90,7 +92,7 @@ export function CoinLaunchPreview({ data, className }: { data: CoinPreviewData; 
         <div className="space-y-1.5">
           <div className="flex items-center justify-between text-sm">
             <span className="font-medium text-brand-orange">
-              {t("You keep")} {teamPct}%{yourCoins != null ? ` · ${yourCoins.toLocaleString()} ${symbol || "coins"}` : ""}
+              {t("You keep")} {teamPct}%{yourCoins != null ? ` · ${intl.number(yourCoins)} ${symbol || "coins"}` : ""}
             </span>
             <span className="text-muted-foreground">{t("Community")} {100 - teamPct}%</span>
           </div>

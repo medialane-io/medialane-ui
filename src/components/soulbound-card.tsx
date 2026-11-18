@@ -4,15 +4,16 @@ import { Fingerprint } from "lucide-react";
 import { profileHref, type ApiActivity } from "@medialane/sdk";
 import Link from "./link.js";
 import { shortenAddress } from "../utils/address.js";
-import { useT } from "../i18n/provider.js";
+import { useLocale, useT } from "../i18n/provider.js";
+import { formatDate } from "../i18n/format.js";
 
-export function issuedAt(history: readonly ApiActivity[]): string | null {
+export function issuedAt(history: readonly ApiActivity[], locale?: string): string | null {
   const times = history
     .filter((event) => event.type === "mint")
     .map((event) => new Date(event.timestamp).getTime())
     .filter((time) => Number.isFinite(time));
   if (times.length === 0) return null;
-  return new Date(Math.min(...times)).toLocaleDateString("en-US", { day: "numeric", month: "short", year: "numeric" });
+  return formatDate(Math.min(...times), locale, { day: "numeric", month: "short", year: "numeric" });
 }
 
 export function SoulboundBadge() {
@@ -32,7 +33,8 @@ export interface SoulboundCardProps {
 
 export function SoulboundCard({ history = [], ownerAddress }: SoulboundCardProps) {
   const t = useT();
-  const issued = issuedAt(history);
+  const locale = useLocale();
+  const issued = issuedAt(history, locale);
   return (
     <section aria-label={t("Soulbound asset")} className="flex items-center gap-4 overflow-hidden rounded-2xl bg-gradient-to-br from-muted/40 to-transparent p-4">
       <Fingerprint className="h-7 w-7 shrink-0 text-brand-purple" strokeWidth={1.5} aria-hidden />

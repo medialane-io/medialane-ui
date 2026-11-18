@@ -6,6 +6,8 @@ import { useIsMemberOf, useMembershipOnchain, useTicketOnchain, type TierOnchain
 import { useMedialaneApp } from "./medialane-app.js";
 import { cn } from "../utils/cn.js";
 import { useT } from "../i18n/provider.js";
+import type { T } from "../i18n/make-t.js";
+import { useFormat, type Format } from "../i18n/use-format.js";
 
 type TierStatus = "upcoming" | "active" | "ended" | "always";
 
@@ -20,12 +22,13 @@ function tierStatus(t: TierOnchain): TierStatus {
   return "active";
 }
 
-const fmtDate = (ts: number) => new Date(ts * 1000).toLocaleString(undefined, { dateStyle: "medium", timeStyle: "short" });
+const STYLED = { dateStyle: "medium", timeStyle: "short" } as const;
 
-function windowLabel(t: TierOnchain): string | null {
-  if (t.startTime != null && t.endTime != null) return `${fmtDate(t.startTime)} – ${fmtDate(t.endTime)}`;
-  if (t.startTime != null) return `From ${fmtDate(t.startTime)}`;
-  if (t.endTime != null) return `Until ${fmtDate(t.endTime)}`;
+function windowLabel(tier: TierOnchain, t: T, intl: Format): string | null {
+  const when = (ts: number) => intl.dateTime(ts * 1000, STYLED);
+  if (tier.startTime != null && tier.endTime != null) return t("{from} – {until}", { from: when(tier.startTime), until: when(tier.endTime) });
+  if (tier.startTime != null) return t("From {date}", { date: when(tier.startTime) });
+  if (tier.endTime != null) return t("Until {date}", { date: when(tier.endTime) });
   return null;
 }
 
@@ -46,8 +49,10 @@ function TierPanel({
   labels: Partial<Record<TierStatus, string>>;
   footer?: React.ReactNode;
 }) {
+  const t = useT();
+  const intl = useFormat();
   const status = tierStatus(tier);
-  const window = windowLabel(tier);
+  const window = windowLabel(tier, t, intl);
   const StatusIcon = STATUS_ICON[status];
   return (
     <div className="rounded-2xl bg-gradient-to-br from-muted/40 to-transparent p-4 space-y-3">

@@ -6,6 +6,7 @@ import { ArrowUpRight, Gem, LayoutGrid, Tag, Trophy } from "lucide-react";
 import { LevelBadge } from "./rewards/level-badge.js";
 import { useRewards } from "../utils/use-rewards.js";
 import { useT } from "../i18n/provider.js";
+import { useFormat } from "../i18n/use-format.js";
 
 function SnapshotStat({ icon: Icon, value, label }: { icon: React.ElementType; value: number; label: string }) {
   return (
@@ -44,6 +45,7 @@ export function PortfolioSnapshot({ assets, listings, collections }: { assets: n
 }
 
 export function RewardsSnapshot({ address }: { address?: string | null }) {
+  const intl = useFormat();
   const t = useT();
   const { data: rewards } = useRewards(address);
   if (!rewards) return null;
@@ -60,7 +62,7 @@ export function RewardsSnapshot({ address }: { address?: string | null }) {
       <div className="border-t border-border/60 pt-4 space-y-2">
         <div className="flex items-center justify-between">
           <LevelBadge level={rewards.currentLevel} name={rewards.currentLevelName} badgeColor={rewards.badgeColor} />
-          <span className="text-xs tabular-nums text-muted-foreground">{t("{totalXp} XP", { totalXp: rewards.totalXp.toLocaleString() })}</span>
+          <span className="text-xs tabular-nums text-muted-foreground">{t("{totalXp} XP", { totalXp: intl.number(rewards.totalXp) })}</span>
         </div>
         <div className="h-2 rounded-full bg-muted-foreground/15 overflow-hidden">
           <div

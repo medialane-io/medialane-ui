@@ -12,6 +12,7 @@ import {
 } from "recharts";
 import type { ApiActivity } from "@medialane/sdk";
 import { useT } from "../i18n/provider.js";
+import { useFormat } from "../i18n/use-format.js";
 
 export interface PriceHistoryChartProps {
   history: ApiActivity[];
@@ -22,6 +23,7 @@ function parsePrice(formatted: string): number {
 }
 
 export function PriceHistoryChart({ history }: PriceHistoryChartProps) {
+  const intl = useFormat();
   const t = useT();
   const chartData = useMemo(() => {
     const sales = history.filter(
@@ -41,9 +43,9 @@ export function PriceHistoryChart({ history }: PriceHistoryChartProps) {
     const points = sales
       .filter((s) => (s.price!.currency ?? "STRK") === topCurrency)
       .map((s) => ({
-        date: new Date(
+        date: intl.date(new Date(
           typeof s.timestamp === "number" ? s.timestamp * 1000 : s.timestamp
-        ).toLocaleDateString("en-US", { month: "short", day: "numeric" }),
+        ), { month: "short", day: "numeric" }),
         price: parsePrice(s.price!.formatted ?? ""),
       }))
       .reverse();

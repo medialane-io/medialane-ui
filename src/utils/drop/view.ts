@@ -2,6 +2,8 @@ import { formatAmount, getTokenByAddress } from "@medialane/sdk";
 import { dropMintCost, type DropMintState, type DropOnchain } from "@medialane/sdk/starknet";
 import { priceLabel } from "./sale.js";
 import { msg } from "../../i18n/translate.js";
+import { formatDateTime } from "../../i18n/format.js";
+import { DEFAULT_LOCALE } from "../../i18n/locales.js";
 
 export type DropPhase = "upcoming" | "live" | "sold-out" | "ended";
 
@@ -23,7 +25,7 @@ export interface ActionBoxView {
   maxQuantity: bigint;
 }
 
-const when = (ts: number) => new Date(ts * 1000).toLocaleString(undefined, { weekday: "short", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
+const when = (ts: number, locale: string = DEFAULT_LOCALE) => formatDateTime(ts * 1000, locale, { weekday: "short", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
 
 /** Everything the mint box shows, decided from chain state before any transaction. */
 export function actionBoxView(input: {

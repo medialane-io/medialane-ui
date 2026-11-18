@@ -3,6 +3,7 @@
 import { cn } from "../../utils/cn.js";
 import { BadgeShelf, type BadgeShelfBadge } from "./badge-shelf.js";
 import { useT } from "../../i18n/provider.js";
+import { useFormat } from "../../i18n/use-format.js";
 
 export interface ScoreSummaryCardProps {
   level: number;
@@ -29,6 +30,7 @@ export function ScoreSummaryCard({
   href,
   className,
 }: ScoreSummaryCardProps) {
+  const intl = useFormat();
   const t = useT();
   const body = (
     <div className={cn("rounded-xl border border-border bg-card p-4 sm:p-5 space-y-4", className)}>
@@ -46,13 +48,13 @@ export function ScoreSummaryCard({
           </div>
         </div>
         <div className="text-right shrink-0">
-          <p className="text-2xl font-black text-foreground tabular-nums">{totalXp.toLocaleString()}</p>
+          <p className="text-2xl font-black text-foreground tabular-nums">{intl.number(totalXp)}</p>
           <p className="text-xs uppercase tracking-widest text-muted-foreground">{t("XP")}</p>
         </div>
       </div>
       {nextLevel && (
         <p className="text-xs text-muted-foreground border-t border-border/50 pt-3">
-          {t.rich("{value} XP to Level {level} · {name}", { value: (nextLevel.xpRequired - totalXp).toLocaleString(), level: nextLevel.level, name: nextLevel.name })}
+          {t.rich("{value} XP to Level {level} · {name}", { value: intl.number((nextLevel.xpRequired - totalXp)), level: nextLevel.level, name: nextLevel.name })}
         </p>
       )}
       {topBadges && topBadges.length > 0 && (

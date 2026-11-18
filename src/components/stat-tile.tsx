@@ -1,3 +1,6 @@
+"use client";
+
+import { useFormat } from "../i18n/use-format.js";
 
 
 export interface StatTileProps {
@@ -99,6 +102,7 @@ export function StatPillRow({
   onSelect?: (index: number) => void;
   activeIndex?: number;
 }) {
+  const intl = useFormat();
   const shown = items
     .map((item, index) => ({ item, index }))
     .filter(({ item }) => item.value !== undefined);
@@ -110,7 +114,7 @@ export function StatPillRow({
         <StatPill
           key={label}
           label={label}
-          value={value == null ? "—" : typeof value === "number" ? value.toLocaleString() : value}
+          value={value == null ? "—" : typeof value === "number" ? intl.number(value) : value}
           active={onSelect ? activeIndex === index : undefined}
           onClick={onSelect ? () => onSelect(index) : undefined}
         />

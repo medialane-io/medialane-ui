@@ -12,6 +12,7 @@ import { cn } from "../utils/cn.js";
 import { assetHref, type ApiActivity, type Chain } from "@medialane/sdk";
 import { useImageUrl } from "../utils/use-image-url.js";
 import { useT } from "../i18n/provider.js";
+import { useFormat } from "../i18n/use-format.js";
 
 type ActivityWithEnrichment = ApiActivity & {
   chain?: Chain;
@@ -48,6 +49,7 @@ export interface ActivityCardProps {
 export function ActivityCard({
   activity: rawActivity,
 }: ActivityCardProps) {
+  const intl = useFormat();
   const resolveImage = useImageUrl();
   const activity = rawActivity as ActivityWithEnrichment;
   const t = useT();
@@ -113,7 +115,7 @@ export function ActivityCard({
         <p className="text-base font-semibold truncate">{tokenName}</p>
         <p
           className="text-xs text-muted-foreground truncate"
-          title={new Date(activity.timestamp).toLocaleString()}
+          title={intl.dateTime(new Date(activity.timestamp))}
         >
           {message} · {timeAgo(activity.timestamp)}
         </p>

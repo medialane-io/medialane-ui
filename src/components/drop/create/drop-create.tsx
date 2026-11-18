@@ -18,6 +18,7 @@ import { previewUrl } from "../../../utils/drop/preview.js";
 import { useMedialaneApp } from "../../medialane-app.js";
 import { useDropFee } from "../../../utils/use-drops.js";
 import { useT } from "../../../i18n/provider.js";
+import { useFormat } from "../../../i18n/use-format.js";
 
 export function DropCreate() {
   const t = useT();
@@ -67,6 +68,7 @@ export function DropCreate() {
 
 /** The drop as collectors will see it, updated as the form changes. */
 export function DraftSummary({ draft, feeBps }: { draft: DropDraft; feeBps: number | null }) {
+  const intl = useFormat();
   const t = useT();
   const art = draft.cover ?? (draft.kind === "edition" ? draft.edition : draft.items[0]?.file ?? null);
   const preview = art ? previewUrl(art) : null;
@@ -82,7 +84,7 @@ export function DraftSummary({ draft, feeBps }: { draft: DropDraft; feeBps: numb
           {draft.sale.paid ? (feeBps === null ? "…" : collectorPriceLine(draft.sale, feeBps) ?? t("Set a price")) : t("Free")}
         </p>
         <p className="text-xs text-muted-foreground">
-          {Number.isFinite(supply) && supply > 0 ? `${supply.toLocaleString("en-US")} ${draft.kind === "edition" ? (supply === 1 ? "copy" : "copies") : supply === 1 ? "item" : "items"}` : t("Supply not set")}
+          {Number.isFinite(supply) && supply > 0 ? `${intl.number(supply)} ${draft.kind === "edition" ? (supply === 1 ? "copy" : "copies") : supply === 1 ? "item" : "items"}` : t("Supply not set")}
           {" · "}{draft.listOnly ? t("List only") : t("Open to everyone")}
         </p>
       </div>

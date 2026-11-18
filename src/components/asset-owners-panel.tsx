@@ -3,6 +3,8 @@
 import Link from "./link.js";
 import { AddressDisplay } from "./address-display.js";
 import { profileHref } from "@medialane/sdk";
+import { useT } from "../i18n/provider.js";
+import { useFormat } from "../i18n/use-format.js";
 
 interface HolderLike {
   owner: string;
@@ -16,10 +18,6 @@ interface AssetOwnersPanelProps {
 }
 
 const MAX_VISIBLE = 5;
-
-function plural(count: number, word: string) {
-  return `${count.toLocaleString()} ${word}${count === 1 ? "" : "s"}`;
-}
 
 function OwnerRow({ owner, amount }: HolderLike) {
   return (
@@ -35,10 +33,12 @@ function OwnerRow({ owner, amount }: HolderLike) {
 }
 
 export function AssetOwnersPanel({ balances, total = balances.length, editions }: AssetOwnersPanelProps) {
+  const t = useT();
+  const intl = useFormat();
   if (balances.length === 0) return null;
 
-  const owners = plural(total, "owner");
-  const label = editions && editions !== total ? `${plural(editions, "edition")} · ${owners}` : owners;
+  const owners = t.plural("{count} owner", "{count} owners", total, { count: intl.number(total) });
+  const label = editions && editions !== total ? `${t.plural("{count} edition", "{count} editions", editions, { count: intl.number(editions) })} · ${owners}` : owners;
 
   return (
     <div className="rounded-xl border border-border px-4 py-3 space-y-2">
@@ -46,7 +46,7 @@ export function AssetOwnersPanel({ balances, total = balances.length, editions }
       <div className="flex flex-col gap-1.5">
         {balances.slice(0, MAX_VISIBLE).map((balance) => <OwnerRow key={balance.owner} {...balance} />)}
         {total > MAX_VISIBLE ? (
-          <p className="text-xs text-muted-foreground/60">+{plural(total - MAX_VISIBLE, "more owner")}</p>
+          <p className="text-xs text-muted-foreground/60">+{t.plural("{count} more owner", "{count} more owners", total - MAX_VISIBLE, { count: intl.number(total - MAX_VISIBLE) })}</p>
         ) : null}
       </div>
     </div>

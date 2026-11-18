@@ -15,6 +15,7 @@ import { assetHref, profileHref } from "@medialane/sdk";
 import { useImageUrl } from "../utils/use-image-url.js";
 import { Skeleton } from "./skeleton.js";
 import { useT } from "../i18n/provider.js";
+import { useFormat } from "../i18n/use-format.js";
 
 const ACTIVITY_MESSAGES: Record<string, string> = {
   mint: "Newly minted",
@@ -64,6 +65,7 @@ export function ActivityRow({
   compact = false,
   explorerUrl = EXPLORER_URL,
 }: ActivityRowProps) {
+  const intl = useFormat();
   const t = useT();
   const resolveImage = useImageUrl();
   const config = ACTIVITY_TYPE_CONFIG[activity.type] ?? {
@@ -189,7 +191,7 @@ export function ActivityRow({
 
         <span
           className="text-2xs text-muted-foreground tabular-nums hidden sm:block w-12 text-right"
-          title={new Date(activity.timestamp).toLocaleString()}
+          title={intl.dateTime(new Date(activity.timestamp))}
         >
           {timeAgo(activity.timestamp)}
         </span>

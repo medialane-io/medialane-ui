@@ -31,6 +31,7 @@ import { formatUsd } from "../utils/format.js";
 import { isSameAddress } from "../utils/same-address.js";
 import { isLivingRenderCollection } from "../data/living-render-collections.js";
 import { useT } from "../i18n/provider.js";
+import { useFormat } from "../i18n/use-format.js";
 
 export interface CollectionMarketActions {
   buy: (order: ApiOrder) => void;
@@ -192,6 +193,7 @@ export interface CollectionPageProps {
 }
 
 export function CollectionPage({ contract, slots }: CollectionPageProps) {
+  const intl = useFormat();
   const t = useT();
   const { walletAddress } = useMedialaneApp();
   const { collection, isLoading: collectionLoading } = useCollection(contract);
@@ -246,7 +248,7 @@ export function CollectionPage({ contract, slots }: CollectionPageProps) {
           <div className="sticky top-0 z-10 flex items-center gap-2 pt-3 pb-1">
             <TabsList className="min-w-0 flex-1 justify-start overflow-x-auto sm:flex-none">
               <TabsTrigger value="assets" className="flex-1 sm:flex-none">
-                {t("Assets")}{collection?.totalSupply ? ` (${collection.totalSupply.toLocaleString()})` : ""}
+                {t("Assets")}{collection?.totalSupply ? ` (${intl.number(collection.totalSupply)})` : ""}
               </TabsTrigger>
               <TabsTrigger value="market" className="flex-1 sm:flex-none">
                 {t("Market")}{!ordersLoading && activeListings.length + activeBids.length > 0 && ` (${activeListings.length + activeBids.length})`}

@@ -19,8 +19,10 @@ import {
 } from "lucide-react";
 import type { ApiCollection } from "@medialane/sdk";
 import { useT } from "../i18n/provider.js";
+import { useFormat } from "../i18n/use-format.js";
 
 function CollectionRow({ col }: { col: ApiCollection }) {
+  const intl = useFormat();
   const t = useT();
   const [imgError, setImgError] = useState(false);
   const imageUrl = useImageUrl()(col.image, { width: 128 });
@@ -77,13 +79,13 @@ function CollectionRow({ col }: { col: ApiCollection }) {
               <Package className="h-3 w-3" />
               <span>
                 {col.totalSupply != null
-                  ? `${col.totalSupply.toLocaleString()} token${col.totalSupply !== 1 ? "s" : ""}`
+                  ? `${intl.number(col.totalSupply)} token${col.totalSupply !== 1 ? "s" : ""}`
                   : t("No tokens yet")}
               </span>
             </div>
             {col.holderCount != null && col.holderCount > 0 && (
               <div className="text-xs text-muted-foreground">
-                {t.plural("{count} holder", "{count} holders", col.holderCount, { count: col.holderCount.toLocaleString() })}
+                {t.plural("{count} holder", "{count} holders", col.holderCount, { count: intl.number(col.holderCount) })}
               </div>
             )}
           </div>

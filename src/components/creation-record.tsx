@@ -6,6 +6,7 @@ import { normalizeAddress } from "@medialane/sdk";
 import { EXPLORER_URL } from "../utils/explorer-url.js";
 import { profileHref } from "@medialane/sdk";
 import { useT } from "../i18n/provider.js";
+import { useFormat } from "../i18n/use-format.js";
 
 export interface CreationRecordProps {
   originalCreator: string;
@@ -13,10 +14,11 @@ export interface CreationRecordProps {
 }
 
 export function CreationRecord({ originalCreator, registeredAt }: CreationRecordProps) {
+  const intl = useFormat();
   const t = useT();
   const creator = originalCreator ? normalizeAddress("STARKNET", originalCreator) : "";
   const date = new Date(registeredAt * 1000);
-  const formatted = date.toLocaleDateString(undefined, {
+  const formatted = intl.date(date, {
     year: "numeric",
     month: "long",
     day: "numeric",

@@ -16,6 +16,7 @@ import { describeError } from "../../utils/describe-error.js";
 import { AddGuardianDialog } from "./add-guardian-dialog.js";
 import type { GuardianWallet, LoadSealedOwner } from "./wallet-types.js";
 import { useT } from "../../i18n/provider.js";
+import { useFormat } from "../../i18n/use-format.js";
 
 const short = (a: string) => `${a.slice(0, 6)}…${a.slice(-4)}`;
 
@@ -34,6 +35,7 @@ export function GuardianRecoverySection({
   guardianRecoveryAvailable,
   recoverHref = "/recover",
 }: GuardianRecoverySectionProps) {
+  const intl = useFormat();
   const t = useT();
   const [guardians, setGuardians] = useState<GuardianInfo[] | null>(null);
   const [escape, setEscape] = useState<EscapeInfo | null>(null);
@@ -89,7 +91,7 @@ export function GuardianRecoverySection({
             <ShieldAlert className="h-4 w-4" />
             <AlertDescription>{t.rich("A guardian has started replacing this wallet's owner key. {value} The replacement can be stopped with the button below.{value2}{button}", { value: inProgress.status === "Ready"
                 ? "It can complete at any time."
-                : `It can complete on ${new Date(inProgress.readyAt * 1000).toLocaleString()}.`, value2: cancelError && <p className="mt-1 text-destructive">{cancelError}</p>, button: <Button
+                : `It can complete on ${intl.dateTime(new Date(inProgress.readyAt * 1000))}.`, value2: cancelError && <p className="mt-1 text-destructive">{cancelError}</p>, button: <Button
                 onClick={handleCancel}
                 disabled={cancelBusy}
                 variant="destructive"
