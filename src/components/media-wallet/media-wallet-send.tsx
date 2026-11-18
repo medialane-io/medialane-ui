@@ -199,7 +199,7 @@ export function MediaWalletSend({
           disabled={status === "processing" || !composeReady}
           className="mt-1 w-full disabled:pointer-events-none disabled:opacity-40"
         >
-          {t("Review Transfer")}
+          {t("Review transfer")}
         </ActionButton>
         <TrustNote>{t("Gas paid from your balance. Transfers are permanent and recorded onchain.")}</TrustNote>
       </div>
@@ -218,7 +218,7 @@ export function MediaWalletSend({
       )}
 
       {confirmOpen && (
-        <ActionModal title={t("Review Transfer")} onClose={() => setConfirmOpen(false)}>
+        <ActionModal title={t("Review transfer")} onClose={() => setConfirmOpen(false)}>
           <div className="flex flex-col gap-4">
             <div className="flex items-center gap-3">
               <div className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-foreground/[0.06]">

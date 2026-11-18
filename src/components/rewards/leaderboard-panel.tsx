@@ -73,7 +73,7 @@ export function LeaderboardPanel({
           <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-brand-rose to-brand-orange text-white shrink-0">
             <Sparkles className="h-3.5 w-3.5" />
           </div>
-          <h2 className="text-sm font-black">{t("Community Rewards")}</h2>
+          <h2 className="text-sm font-black">{t("Community rewards")}</h2>
         </div>
       )}
 

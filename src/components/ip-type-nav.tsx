@@ -11,7 +11,7 @@ export function IpTypeNav() {
   const t = useT();
   return (
     <section className="space-y-4">
-      <SectionHeading icon={<LayoutGrid />} title={t("Browse by Type")} href="/nft" linkLabel="View all" />
+      <SectionHeading icon={<LayoutGrid />} title={t("Browse by type")} href="/nft" linkLabel="View all" />
 
       <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3">
         {IP_TYPE_CONFIG.map(({ slug, label, icon: Icon, colorClass, bgClass }) => (

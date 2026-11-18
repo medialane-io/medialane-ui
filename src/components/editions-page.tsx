@@ -53,7 +53,7 @@ function CollectionRow({ col }: { col: ApiCollection }) {
           <div className="flex items-start justify-between gap-2">
             <div className="min-w-0">
               <p className="font-bold text-base leading-tight truncate">
-                {col.name ?? t("Unnamed Collection")}
+                {col.name ?? t("Unnamed collection")}
               </p>
               {col.symbol && (
                 <p className="text-xs tabular-nums text-muted-foreground mt-0.5">{col.symbol}</p>

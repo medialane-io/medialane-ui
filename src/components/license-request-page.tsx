@@ -170,7 +170,7 @@ export function LicenseRequestPage({ contract, tokenId }: { contract: string; to
         </div>
       ) : (
         <>
-          <Section title={t("License Terms")} icon={<Shield className="h-4 w-4" />}>
+          <Section title={t("License terms")} icon={<Shield className="h-4 w-4" />}>
             <div className="space-y-1.5">
               <Label>{t("License type")}</Label>
               <Select value={licenseType} onValueChange={handleLicenseChange}>

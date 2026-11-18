@@ -216,7 +216,7 @@ export function CoinCreate({ aside, tradeHref }: CoinCreateProps) {
 
       <ClaimRouteShell
         icon={<Coins className="h-4 w-4 text-white" />}
-        title={t("Design your Creator Coin")}
+        title={t("Design your creator coin")}
         subtitle={t("A few steps to design and launch your coin.")}
         aside={
           <>

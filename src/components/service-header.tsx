@@ -5,7 +5,7 @@ export interface ServiceHeaderProps {
 
   icon: ReactNode;
   title: string;
-  subtitle: string;
+  subtitle?: string;
 
   headerAccessory?: ReactNode;
   className?: string;
@@ -24,7 +24,7 @@ export function ServiceHeader({ icon, title, subtitle, headerAccessory, classNam
         </div>
         <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight">{title}</h1>
       </div>
-      <p className="mt-1.5 text-sm text-muted-foreground max-w-xl">{subtitle}</p>
+      {subtitle && <p className="mt-1.5 text-sm text-muted-foreground max-w-xl">{subtitle}</p>}
       {headerAccessory && <div className="mt-4">{headerAccessory}</div>}
     </>
   );

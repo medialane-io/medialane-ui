@@ -28,7 +28,7 @@ export function IpTypeSection({
           <button type="button" className="w-full flex items-center justify-between px-4 py-3.5 hover:bg-muted/30 transition-colors">
             <span className="flex items-center gap-2">
               <Layers className="h-4 w-4 text-primary" />
-              <span className="text-sm font-semibold">{t("IP Type & Metadata")}</span>
+              <span className="text-sm font-semibold">{t("IP type & metadata")}</span>
               <span className="text-xs text-muted-foreground font-normal">{t("Optional")}</span>
             </span>
             <ChevronDown className={cn("h-4 w-4 text-muted-foreground transition-transform", open && "rotate-180")} />
@@ -37,7 +37,7 @@ export function IpTypeSection({
         <CollapsibleContent>
           <div className="px-4 pb-4 space-y-4 border-t border-border/60 pt-4">
             <div className="space-y-1.5">
-              <label className="text-xs font-medium text-muted-foreground">{t("IP Type")}</label>
+              <label className="text-xs font-medium text-muted-foreground">{t("IP type")}</label>
               <Select value={ipType} onValueChange={(v) => onIpTypeChange(v as IPType)}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>

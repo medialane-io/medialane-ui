@@ -162,7 +162,7 @@ export const IP_TEMPLATES: Record<IPType, IPTemplate> = {
   },
   RWA: {
     type: "RWA",
-    label: msg("Real World Asset"),
+    label: msg("Real world asset"),
     description: msg("Tokenized physical assets: real estate, commodities, collectibles"),
     icon: Building2,
     color: { bg: "bg-emerald-500/10", text: "text-emerald-400", border: "border-emerald-500/20" },

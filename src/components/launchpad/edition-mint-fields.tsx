@@ -203,7 +203,7 @@ export function EditionMintFields({
           open={licensingOpen}
           onOpenChange={setLicensingOpen}
           icon={<ShieldCheck className="h-4 w-4 text-primary" />}
-          label={t("Licensing Terms")}
+          label={t("License terms")}
           hint={t("Optional · Berne Convention")}
         >
                 <p className="text-xs text-muted-foreground">
@@ -306,7 +306,7 @@ export function EditionMintFields({
           open={ipTypeOpen}
           onOpenChange={setIpTypeOpen}
           icon={<Layers className="h-4 w-4 text-primary" />}
-          label={t("IP Type & Metadata")}
+          label={t("IP type & metadata")}
           hint={t("Optional")}
         >
                 <p className="text-xs text-muted-foreground">
@@ -315,7 +315,7 @@ export function EditionMintFields({
 
                 <FormField control={form.control} name="ipType" render={({ field }) => (
                   <FormItem>
-                    <FormLabel>{t("IP Type")}</FormLabel>
+                    <FormLabel>{t("IP type")}</FormLabel>
                     <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
                         <SelectTrigger><SelectValue /></SelectTrigger>
@@ -346,7 +346,7 @@ export function EditionMintFields({
           disabled={mintDisabled}
         >
           <Sparkles className="h-4 w-4 mr-2" />
-          {t("Mint Edition")}
+          {t("Mint edition")}
         </Button>
         <p className="text-xs text-center text-muted-foreground mt-2">
           {t("Free to mint — protocol fee is zero.")}

@@ -224,7 +224,7 @@ export function SponsorshipCreate({ aside }: { aside?: ReactNode }) {
               className="w-full h-12 rounded-[15px] flex items-center justify-center gap-2 text-base font-semibold text-white bg-transparent transition-all hover:brightness-110 active:scale-[0.98] disabled:opacity-50"
             >
               <Handshake className="h-4 w-4" />
-              {mode === "offer" ? t("Create Offer") : t("Send proposal")}
+              {mode === "offer" ? t("Create offer") : t("Send proposal")}
             </button>
           </div>
         </div>

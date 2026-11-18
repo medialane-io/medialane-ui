@@ -69,5 +69,5 @@ test("someone else's comment can be reported", async () => {
   const { view } = setup(ME);
   await waitFor(() => expect(view.getByLabelText("Report comment")).toBeTruthy());
   fireEvent.click(view.getByLabelText("Report comment"));
-  await waitFor(() => expect(view.getByText("Submit Report")).toBeTruthy());
+  await waitFor(() => expect(view.getByText("Submit report")).toBeTruthy());
 });

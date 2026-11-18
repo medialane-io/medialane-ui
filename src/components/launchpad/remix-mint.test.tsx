@@ -60,10 +60,10 @@ function setup(parent: { owner: string; derivatives: string }) {
 
 test("the owner mints a remix and it is registered against its parent", async () => {
   const { view, intents, confirmed } = setup({ owner: ME, derivatives: "Not Allowed" });
-  await waitFor(() => expect(view.getByText("Mint Remix")).toBeTruthy());
+  await waitFor(() => expect(view.getByText("Mint remix")).toBeTruthy());
   await waitFor(() => expect((view.getByPlaceholderText("Remix of Original") as HTMLInputElement).value).toBe("Remix of Original"));
   await waitFor(() => expect(view.getAllByText("My art").length).toBeGreaterThan(0));
-  fireEvent.click(view.getByText("Mint Remix"));
+  fireEvent.click(view.getByText("Mint remix"));
   await waitFor(() => expect(view.getByText("View remix")).toBeTruthy());
   expect(intents[0]).toMatchObject({ owner: ME, collectionId: "3", recipient: ME, tokenUri: "ipfs://remix", royaltyBps: 0 });
   expect(confirmed[0]).toMatchObject({ originalContract: PARENT, originalTokenId: "1", remixContract: MINE, remixTokenId: "9", txHash: "0xabc" });

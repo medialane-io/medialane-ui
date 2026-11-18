@@ -106,7 +106,7 @@ export const LICENSE_TYPES: LicenseType[] = [
   },
   {
     value: "Custom",
-    label: msg("Custom License"),
+    label: msg("Custom license"),
     description: msg("Define your own terms in the description."),
     commercialUse: "No",
     derivatives: "Not Allowed",

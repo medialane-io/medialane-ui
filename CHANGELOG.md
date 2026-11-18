@@ -6,6 +6,14 @@
 
 - Navigation menu: "Create Limited Edition Contract" is now "Create Limited Edition Collection". The browse entries for drops, tickets, clubs and sponsorship, the collection drop entry and the four section-specific documentation entries are no longer shared items.
 
+## [0.373.4] — 2026-11-18
+
+### Changed
+
+- Ordinary labels and headings are in sentence case throughout (for example "Create offer", "Claim username", "Submit report", "My events"). Product and protocol names keep their capitals (Launchpad, POP, IP Club, Limited Editions), as do sample names shown in placeholders.
+- "Licensing Terms" and "License Terms" are one label, "License terms".
+- `ServiceHeader` and `ServiceFormShell`: `subtitle` is optional; a page whose first line below the heading would repeat the heading can leave it out.
+
 ## [0.373.2] — 2026-11-18
 
 ### Changed

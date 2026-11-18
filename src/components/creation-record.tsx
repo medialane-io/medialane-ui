@@ -28,7 +28,7 @@ export function CreationRecord({ originalCreator, registeredAt }: CreationRecord
     <div className="rounded-lg bg-amber-500/5 p-4">
       <div className="flex items-center gap-2 mb-3">
         <Award className="h-4 w-4 text-amber-500" />
-        <p className="text-sm font-semibold text-amber-500">{t("Creation Record")}</p>
+        <p className="text-sm font-semibold text-amber-500">{t("Creation record")}</p>
       </div>
       <p className="text-xs text-muted-foreground mb-3">
         {t("Immutable on-chain authorship record set at mint and stored permanently for legal evidence of creation (Berne Convention).")}
