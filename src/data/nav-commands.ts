@@ -5,11 +5,11 @@ import type { NavCommand, NavCommandGroup } from "../components/nav-command-menu
 import { msg } from "../i18n/translate.js";
 
 export const NAV_ITEMS = {
-  home: { id: "home", label: msg("Medialane"), icon: Home, iconSrc: "/icon.png", href: "/", keywords: ["home", "frontpage", "start", "homepage", "main"], description: msg("Start here") },
-  discover: { id: "discover", label: msg("Discover"), icon: Telescope, href: "/discover", keywords: ["feed", "explore", "trending"], description: msg("Feeds, collections & creators") },
-  marketplace: { id: "marketplace", label: msg("Marketplace"), icon: Store, href: "/marketplace", keywords: ["buy", "sell", "trade", "listings", "browse"], description: msg("Buy, sell & make offers") },
-  launchpad: { id: "launchpad", label: msg("Launchpad"), icon: Zap, href: "/launchpad", keywords: ["start", "launch", "creator", "mint", "create"], description: msg("Create, mint & launch") },
-  portfolio: { id: "portfolio", label: msg("Portfolio"), icon: Briefcase, href: "/portfolio", keywords: ["owned", "my nfts", "wallet", "account"], description: msg("Your assets & activity") },
+  home: { id: "home", label: msg("Medialane"), icon: Home, iconSrc: "/icon.png", href: "/", keywords: ["home", "frontpage", "start", "homepage", "main"] },
+  discover: { id: "discover", label: msg("Discover"), icon: Telescope, href: "/discover", keywords: ["feed", "explore", "trending"] },
+  marketplace: { id: "marketplace", label: msg("Marketplace"), icon: Store, href: "/marketplace", keywords: ["buy", "sell", "trade", "listings", "browse"] },
+  launchpad: { id: "launchpad", label: msg("Launchpad"), icon: Zap, href: "/launchpad", keywords: ["start", "launch", "creator", "mint", "create"] },
+  portfolio: { id: "portfolio", label: msg("Portfolio"), icon: Briefcase, href: "/portfolio", keywords: ["owned", "my nfts", "wallet", "account"] },
   collections: { id: "collections", label: msg("Collections"), icon: LayoutGrid, href: "/collections", keywords: ["nft", "drops", "browse"] },
   coins: { id: "coins", label: msg("Coins"), icon: Coins, href: "/coins", keywords: ["token", "creator coin", "memecoin", "discover", "trade", "swap"] },
   accounts: { id: "accounts", label: msg("Accounts"), icon: Users, href: "/accounts", keywords: ["creators", "artists", "addresses", "community"] },
@@ -40,7 +40,7 @@ export const NAV_ITEMS = {
   photography: { id: "photography", label: msg("Photography"), icon: Camera, href: "/photography", keywords: ["photo", "image", "picture", "shot"] },
   publications: { id: "publications", label: msg("Publications"), icon: BookOpen, href: "/publications", keywords: ["article", "articles", "blog", "news", "writing", "book", "journal"] },
   nft: { id: "nft", label: msg("NFT"), icon: Gem, href: "/nft", keywords: ["collectible", "token", "generative"] },
-  docs: { id: "docs", label: msg("Docs — Overview"), icon: BookOpen, action: () => window.open("https://docs.medialane.io", "_blank"), keywords: ["docs", "help", "guide", "documentation"] },
+  docs: { id: "docs", label: msg("Documentation"), icon: BookOpen, action: () => window.open("https://docs.medialane.io", "_blank"), keywords: ["docs", "help", "guide", "documentation"] },
   "docs-terms": { id: "docs-terms", label: msg("Terms of Service"), icon: FileText, action: () => window.open("https://docs.medialane.io/guidelines/terms", "_blank"), keywords: ["legal", "terms", "tos"] },
   "docs-privacy": { id: "docs-privacy", label: msg("Privacy Policy"), icon: ShieldCheck, action: () => window.open("https://docs.medialane.io/guidelines/privacy", "_blank"), keywords: ["privacy", "data", "gdpr"] },
 } satisfies Record<string, NavCommand>;

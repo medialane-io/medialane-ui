@@ -21,8 +21,6 @@ export interface NavCommand {
   action?: () => void;
 
   keywords?: string[];
-
-  description?: string;
 }
 
 export interface NavCommandGroup {
@@ -269,11 +267,6 @@ function CommandRow({ item, primary, onSelect }: { item: NavCommand; primary: bo
         >
           {t(item.label)}
         </span>
-        {item.description && (
-          <span className="mt-0.5 block truncate text-[11.5px] leading-tight text-muted-foreground">
-            {t(item.description)}
-          </span>
-        )}
       </span>
       <ArrowRight className="h-3.5 w-3.5 shrink-0 text-muted-foreground/30 transition-colors group-aria-selected/item:text-primary/70" />
     </Command.Item>
@@ -476,7 +469,7 @@ export function NavCommandMenu({
 
                   <div className="flex items-center justify-between gap-3 border-t border-border/40 bg-muted/20 px-3 py-2">
                     <div className="flex items-center gap-3">
-                      {footerSlot}
+                      {footerSlot && <div className="flex items-center gap-1">{footerSlot}</div>}
                       {showKeyboardHints && (
                         <span className="hidden items-center gap-3 text-[10.5px] text-muted-foreground/70 sm:flex">
                           <span className="flex items-center gap-1"><Kbd>↑</Kbd><Kbd>↓</Kbd> {t("Navigate")}</span>
