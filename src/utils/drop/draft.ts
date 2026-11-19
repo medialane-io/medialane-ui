@@ -1,3 +1,4 @@
+import type { T } from "../../i18n/make-t.js";
 import type { DraftItem } from "../../components/drop-item-list.js";
 import { isPositiveInteger, isSymbol } from "../launchpad-rules.js";
 import { parseAllowlist } from "./allowlist.js";
@@ -71,4 +72,10 @@ export function validateDropDraft(d: DropDraft, now: number): DropDraftErrors {
   }
   if (d.gated.enabled && !/^https:\/\//.test(d.gated.url)) e.gated = "Add a link starting with https://";
   return e;
+}
+
+export function supplyLabel(t: T, kind: DropKind, supply: number, formatted: string): string {
+  return kind === "edition"
+    ? t.plural("{count} copy", "{count} copies", supply, { count: formatted })
+    : t.plural("{count} item", "{count} items", supply, { count: formatted });
 }
