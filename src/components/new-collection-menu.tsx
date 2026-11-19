@@ -48,8 +48,8 @@ export function NewCollectionMenu() {
             <Link href={href} className="flex items-start gap-3 p-2">
               <Icon className="h-4 w-4 mt-0.5 text-muted-foreground" />
               <span className="flex flex-col">
-                <span className="text-sm font-medium">{label}</span>
-                <span className="text-xs text-muted-foreground">{description}</span>
+                <span className="text-sm font-medium">{t(label)}</span>
+                <span className="text-xs text-muted-foreground">{t(description)}</span>
               </span>
             </Link>
           </DropdownMenuItem>
@@ -60,6 +60,7 @@ export function NewCollectionMenu() {
 }
 
 export function CollectionTypeChoices() {
+  const t = useT();
   return (
     <div className="grid gap-3 sm:grid-cols-2 max-w-xl mx-auto text-left">
       {COLLECTION_TYPES.map(({ id, label, description, href, Icon }) => (
@@ -70,8 +71,8 @@ export function CollectionTypeChoices() {
         >
           <Icon className="h-5 w-5 mt-0.5 text-muted-foreground" />
           <span className="flex flex-col">
-            <span className="text-sm font-semibold">{label}</span>
-            <span className="text-xs text-muted-foreground">{description}</span>
+            <span className="text-sm font-semibold">{t(label)}</span>
+            <span className="text-xs text-muted-foreground">{t(description)}</span>
           </span>
         </Link>
       ))}

@@ -122,6 +122,7 @@ function ChipGroup({ title, options, value, onSelect }: {
 }
 
 function IpTypeChip({ href, label }: { href: string; label: string }) {
+  const t = useT();
   const pathname = usePathname();
   return (
     <Link
@@ -133,7 +134,7 @@ function IpTypeChip({ href, label }: { href: string; label: string }) {
           : "border-border text-muted-foreground hover:border-primary/50 hover:text-foreground"
       )}
     >
-      {label}
+      {t(label)}
     </Link>
   );
 }

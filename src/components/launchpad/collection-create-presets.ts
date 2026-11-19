@@ -115,7 +115,7 @@ export const EDITIONS_PRESET: CollectionCreatePreset = {
     submit: msg("Publish collection"),
     footnotes: [
       FREE,
-      "Next step: mint pieces into this collection — you set the number of copies for each piece when you mint it, and can add more copies later.",
+      msg("Next step: mint pieces into this collection — you set the number of copies for each piece when you mint it, and can add more copies later."),
     ],
   },
   suggestSymbol: true,

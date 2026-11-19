@@ -74,7 +74,7 @@ export function CoinCreate({ aside, tradeHref }: CoinCreateProps) {
   const [coinAddress, setCoinAddress] = useState<string | null>(null);
   const [profileStatus, setProfileStatus] = useState<ProfileStatus>("idle");
 
-  const upload = useLaunchpadImageUpload({ successMessage: "Image ready" });
+  const upload = useLaunchpadImageUpload({ successMessage: t("Image ready") });
   const { imagePreview, imageUri, imageUploading, uploadError, uploadSuccess, fileInputRef, handleImageSelect, clearImage } = upload;
 
   const quoteToken = getTokenBySymbol(quote)!;

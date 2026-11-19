@@ -20,15 +20,16 @@ import { useT } from "../i18n/provider.js";
 import type { T } from "../i18n/make-t.js";
 import { useFormat, type Format } from "../i18n/use-format.js";
 
+import { msg } from "../i18n/translate.js";
 const PAGE_SIZE = 30;
 
 const EVENT_TITLE: Record<string, string> = {
   mint: "Minted",
-  listing: "Listed for sale",
+  listing: msg("Listed for sale"),
   sale: "Purchased",
-  offer: "Offer made",
+  offer: msg("Offer made"),
   transfer: "Transferred",
-  cancelled: "Listing cancelled",
+  cancelled: msg("Listing cancelled"),
 };
 
 function dayLabel(iso: string, t: T, intl: Format): string {

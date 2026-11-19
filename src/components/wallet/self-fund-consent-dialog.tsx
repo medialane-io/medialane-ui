@@ -85,7 +85,7 @@ export function SelfFundConsentDialog({ consent }: { consent: SelfFundConsent })
             disabled={notEnough}
             className="px-4 py-2 rounded-lg text-sm font-medium bg-primary text-primary-foreground hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {label ? `Pay ${label}` : t("Pay from my wallet")}
+            {label ? t("Pay {label}", { label }) : t("Pay from my wallet")}
           </button>
         </div>
       </DialogContent>

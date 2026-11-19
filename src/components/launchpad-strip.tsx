@@ -9,6 +9,7 @@ import { LAUNCHPAD_SERVICE_DEFINITIONS, localizeService } from "../data/launchpa
 import { cn } from "../utils/cn.js";
 import { useT } from "../i18n/provider.js";
 
+import { msg } from "../i18n/translate.js";
 export interface LaunchpadStripProps {
 
   hrefs: Record<string, string>;
@@ -118,7 +119,7 @@ export function LaunchpadStrip({
           icon: ShoppingBag,
           title: t("Marketplace"),
           blurb: t("Discover and trade works from creators — gasless, instantly settled."),
-          example: "Buy an art print, make an offer on a music track",
+          example: t("Buy an art print, make an offer on a music track"),
           cta: t("Browse"),
           hue: MARKETPLACE_HUE,
         }]
@@ -130,7 +131,7 @@ export function LaunchpadStrip({
       icon={<Rocket className="h-4 w-4" />}
       title={t("Launchpad")}
       href={launchpadHref}
-      linkLabel="Explore"
+      linkLabel={msg("Explore")}
     >
       {cards.map((card) => (
         <div key={card.key} className="w-64 sm:w-72 snap-start shrink-0 flex">

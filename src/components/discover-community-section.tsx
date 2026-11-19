@@ -12,6 +12,7 @@ import { timeAgo } from "../utils/time.js";
 import { emptyMessages } from "../utils/empty-messages.js";
 import { useT } from "../i18n/provider.js";
 
+import { msg } from "../i18n/translate.js";
 const ROWS = 5;
 
 function CommunityCard({
@@ -29,6 +30,7 @@ function CommunityCard({
   linkLabel: string;
   children: ReactNode;
 }) {
+  const t = useT();
   return (
     <section className="overflow-hidden rounded-2xl border border-border/50 bg-card">
       <div className="flex items-center justify-between gap-3 border-b border-border/50 px-4 py-3">
@@ -43,7 +45,7 @@ function CommunityCard({
           href={href}
           className="inline-flex shrink-0 items-center gap-1 text-xs text-muted-foreground transition-colors hover:text-foreground"
         >
-          {linkLabel} <ArrowRight className="h-3 w-3" />
+          {t(linkLabel)} <ArrowRight className="h-3 w-3" />
         </Link>
       </div>
       <div className="min-h-[324px]">{children}</div>
@@ -74,7 +76,7 @@ export function DiscoverCommunitySection() {
           )
         }
         href="/activities"
-        linkLabel="View all"
+        linkLabel={msg("View all")}
       >
         {isLoading ? (
           <div className="divide-y divide-border/50">
@@ -113,7 +115,7 @@ export function DiscoverCommunitySection() {
         title={t("Rewards")}
         subtitle={t("Earn XP. Share the Creator's Fund.")}
         href="/rewards"
-        linkLabel="Scoreboard"
+        linkLabel={msg("Scoreboard")}
       >
         <LeaderboardPanel myAddress={address} limit={ROWS} showHeading={false} compact />
       </CommunityCard>

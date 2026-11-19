@@ -12,7 +12,7 @@ import { ListSection } from "./list-section.js";
 import { ExclusiveFields } from "./exclusive-fields.js";
 import { LaunchDialog } from "./launch-dialog.js";
 import { FieldError } from "./artwork-section.js";
-import { EMPTY_DRAFT, draftSupply, validateDropDraft, type DropDraft } from "../../../utils/drop/draft.js";
+import { EMPTY_DRAFT, draftSupply, validateDropDraft, type DropDraft, supplyLabel } from "../../../utils/drop/draft.js";
 import { collectorPriceLine } from "../../../utils/drop/sale.js";
 import { previewUrl } from "../../../utils/drop/preview.js";
 import { useMedialaneApp } from "../../medialane-app.js";
@@ -84,7 +84,7 @@ export function DraftSummary({ draft, feeBps }: { draft: DropDraft; feeBps: numb
           {draft.sale.paid ? (feeBps === null ? "…" : collectorPriceLine(draft.sale, feeBps) ?? t("Set a price")) : t("Free")}
         </p>
         <p className="text-xs text-muted-foreground">
-          {Number.isFinite(supply) && supply > 0 ? `${intl.number(supply)} ${draft.kind === "edition" ? (supply === 1 ? "copy" : "copies") : supply === 1 ? "item" : "items"}` : t("Supply not set")}
+          {Number.isFinite(supply) && supply > 0 ? supplyLabel(t, draft.kind, supply, intl.number(supply)) : t("Supply not set")}
           {" · "}{draft.listOnly ? t("List only") : t("Open to everyone")}
         </p>
       </div>

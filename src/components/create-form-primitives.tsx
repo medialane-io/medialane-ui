@@ -1,8 +1,28 @@
 import { cn } from "../utils/cn.js";
+import { useT } from "../i18n/provider.js";
+import { msg } from "../i18n/translate.js";
+
+const OPTION_LABELS: Record<string, string> = {
+  Allowed: msg("Allowed"),
+  "Not Allowed": msg("Not Allowed"),
+  "Share-Alike": msg("Share-Alike"),
+  "Training Only": msg("Training Only"),
+  Required: msg("Required"),
+  "Not Required": msg("Not Required"),
+  Yes: msg("Yes"),
+  No: msg("No"),
+  Free: msg("Free"),
+  Paid: msg("Paid"),
+  Everyone: msg("Everyone"),
+  "A list": msg("A list"),
+  Edition: msg("Edition"),
+  Collection: msg("Collection"),
+};
 
 export function ToggleGroup({
   value, options, onChange,
 }: { value: string; options: readonly string[]; onChange: (v: string) => void }) {
+  const t = useT();
   return (
     <div className="flex rounded-lg border border-border overflow-hidden w-full">
       {options.map((opt, i) => (
@@ -18,7 +38,7 @@ export function ToggleGroup({
               : "bg-background hover:bg-muted text-muted-foreground",
           )}
         >
-          {opt}
+          {t(OPTION_LABELS[opt] ?? opt)}
         </button>
       ))}
     </div>

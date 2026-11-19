@@ -10,6 +10,7 @@ import type { ApiCollection } from "@medialane/sdk";
 import { useImageUrl } from "../utils/use-image-url.js";
 import { useT } from "../i18n/provider.js";
 
+import { msg } from "../i18n/translate.js";
 export interface FeaturedCarouselProps {
   collections: ApiCollection[];
   isLoading: boolean;
@@ -72,7 +73,7 @@ export function FeaturedCarouselSkeleton() {
   return (
     <FadeIn>
       <section className="space-y-4">
-        <SectionHeading icon={<Sparkles />} title={t("Featured collections")} href="/collections" linkLabel="View all" />
+        <SectionHeading icon={<Sparkles />} title={t("Featured collections")} href="/collections" linkLabel={msg("View all")} />
         <div className="-mx-4 sm:-mx-6 lg:-mx-8 aspect-[16/7] sm:aspect-[21/9] bg-muted animate-pulse" />
       </section>
     </FadeIn>
@@ -107,7 +108,7 @@ export function FeaturedCarousel({
   return (
     <FadeIn>
       <section className="space-y-4">
-        <SectionHeading icon={<Sparkles />} title={t("Featured collections")} href={allCollectionsHref} linkLabel="View all" />
+        <SectionHeading icon={<Sparkles />} title={t("Featured collections")} href={allCollectionsHref} linkLabel={msg("View all")} />
 
         <div
           className="-mx-4 sm:-mx-6 lg:-mx-8 relative overflow-hidden aspect-[16/7] sm:aspect-[21/9] bg-muted"

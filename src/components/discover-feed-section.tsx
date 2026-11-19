@@ -10,6 +10,7 @@ import type { ApiOrder, ApiActivity } from "@medialane/sdk";
 import { emptyMessages } from "../utils/empty-messages.js";
 import { useT } from "../i18n/provider.js";
 
+import { msg } from "../i18n/translate.js";
 export interface DiscoverFeedSectionProps {
   orders: ApiOrder[];
   isLoading: boolean;
@@ -64,7 +65,7 @@ export function DiscoverActivityStrip({
         icon={<Tag className="h-4 w-4" />}
         title={t("Activity")}
         href={marketplaceHref}
-        linkLabel="View all"
+        linkLabel={msg("View all")}
       >
         {isLoading
           ? Array.from({ length: 8 }).map((_, i) => (
@@ -124,7 +125,7 @@ export function DiscoverFeedSection({
             </span>
           }
           href={activitiesHref}
-          linkLabel="Activities"
+          linkLabel={msg("Activities")}
         >
           {activitiesLoading
             ? Array.from({ length: 8 }).map((_, i) => (

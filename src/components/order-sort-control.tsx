@@ -6,12 +6,14 @@ import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "./select.js";
 
+import { useT } from "../i18n/provider.js";
+import { msg } from "../i18n/translate.js";
 export type OrderSort = "recent" | "price_asc" | "price_desc";
 
 const LABELS: Record<OrderSort, string> = {
-  recent: "Recently listed",
-  price_asc: "Price: low to high",
-  price_desc: "Price: high to low",
+  recent: msg("Recently listed"),
+  price_asc: msg("Price: low to high"),
+  price_desc: msg("Price: high to low"),
 };
 
 export function sortOrders(orders: ApiOrder[], sort: OrderSort): ApiOrder[] {
@@ -26,6 +28,7 @@ export function sortOrders(orders: ApiOrder[], sort: OrderSort): ApiOrder[] {
 }
 
 export function OrderSortControl({ value, onChange }: { value: OrderSort; onChange: (v: OrderSort) => void }) {
+  const t = useT();
   return (
     <Select value={value} onValueChange={(v) => onChange(v as OrderSort)}>
       <SelectTrigger className="w-[180px] h-9 text-xs gap-1.5">
@@ -34,7 +37,7 @@ export function OrderSortControl({ value, onChange }: { value: OrderSort; onChan
       </SelectTrigger>
       <SelectContent>
         {(Object.keys(LABELS) as OrderSort[]).map((k) => (
-          <SelectItem key={k} value={k} className="text-xs">{LABELS[k]}</SelectItem>
+          <SelectItem key={k} value={k} className="text-xs">{t(LABELS[k])}</SelectItem>
         ))}
       </SelectContent>
     </Select>

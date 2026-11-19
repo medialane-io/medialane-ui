@@ -156,7 +156,7 @@ export function IpTypePage({ slug, useMarketActions }: IpTypePageProps) {
             </div>
           )}
           <div>
-            <h1 className="text-3xl font-semibold">{config?.label ?? slug}</h1>
+            <h1 className="text-3xl font-semibold">{config?.label ? t(config.label) : slug}</h1>
             <p className="text-muted-foreground mt-0.5">
               {meta?.total != null ? (
                 <>{t("{total} assets · {listedCount} market", { total: intl.number(meta.total), listedCount })}</>
@@ -235,7 +235,7 @@ export function IpTypePage({ slug, useMarketActions }: IpTypePageProps) {
                   <FilterChip
                     active={listedOnly}
                     onClick={() => setListedOnly(true)}
-                    label={`Listed only${listedCount > 0 ? ` (${listedCount})` : ""}`}
+                    label={`${t("Listed only")}${listedCount > 0 ? ` (${listedCount})` : ""}`}
                   />
                 </div>
               </div>

@@ -64,8 +64,8 @@ export function DiscoverFeatures() {
               <Icon className={cn("h-6 w-6", hue.text)} />
             </span>
             <div className="flex flex-col gap-1.5">
-              <h3 className="text-lg font-black leading-snug tracking-tight">{title}</h3>
-              <p className="text-sm leading-relaxed text-muted-foreground">{description}</p>
+              <h3 className="text-lg font-black leading-snug tracking-tight">{t(title)}</h3>
+              <p className="text-sm leading-relaxed text-muted-foreground">{t(description)}</p>
             </div>
           </div>
         );

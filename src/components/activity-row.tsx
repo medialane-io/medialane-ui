@@ -17,13 +17,14 @@ import { Skeleton } from "./skeleton.js";
 import { useT } from "../i18n/provider.js";
 import { useFormat } from "../i18n/use-format.js";
 
+import { msg } from "../i18n/translate.js";
 const ACTIVITY_MESSAGES: Record<string, string> = {
-  mint: "Newly minted",
-  listing: "Listed for sale",
-  sale: "Purchased",
-  offer: "Offer placed",
-  transfer: "Transferred",
-  cancelled: "Listing cancelled",
+  mint: msg("Newly minted"),
+  listing: msg("Listed for sale"),
+  sale: msg("Purchased"),
+  offer: msg("Offer placed"),
+  transfer: msg("Transferred"),
+  cancelled: msg("Listing cancelled"),
 };
 
 export function ActivityListSkeleton({ count = 10 }: { count?: number }) {
@@ -94,7 +95,7 @@ export function ActivityRow({
     (activity.type === "mint" || activity.type === "transfer") && Number(activity.amount ?? "1") > 1;
   const amount = activity.amount && Number(activity.amount) > 1 ? activity.amount : null;
 
-  const message = ACTIVITY_MESSAGES[activity.type] ?? config.label;
+  const message = t(ACTIVITY_MESSAGES[activity.type] ?? config.label);
 
   return (
     <div

@@ -51,7 +51,7 @@ export function CollectionCreateForm({ preset, aside }: CollectionCreateFormProp
   const app = useMedialaneApp();
   const walletAddress = app.walletAddress;
   const tx = useTransaction();
-  const upload = useLaunchpadImageUpload({ successMessage: "Image uploaded" });
+  const upload = useLaunchpadImageUpload({ successMessage: t("Image uploaded") });
   const { imageFile, imagePreview, imageUri, imageUploading, uploadError, fileInputRef, handleImageSelect, clearImage } = upload;
   const [autoSymbol, setAutoSymbol] = useState("");
   const [viewHref, setViewHref] = useState<string | null>(null);

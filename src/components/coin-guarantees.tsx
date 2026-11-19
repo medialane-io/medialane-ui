@@ -130,12 +130,12 @@ export function CoinGuarantees({
       {data.isLaunched ? (
         <Line
           label={t("Liquidity")}
-          value="Locked permanently"
+          value={t("Locked permanently")}
           detail={data.liquidityPositionId ? `position #${data.liquidityPositionId}` : undefined}
           href={liquidityUrl}
         />
       ) : (
-        <Line label={t("Liquidity")} value="Not launched yet" />
+        <Line label={t("Liquidity")} value={t("Not launched yet")} />
       )}
 
       {data.launchedAtBlock != null && (

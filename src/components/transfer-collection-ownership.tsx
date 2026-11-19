@@ -68,7 +68,7 @@ export function TransferCollectionOwnership({ collectionId, currentOwner, collec
 
           {confirming ? (
             <MarketplaceConfirmStep
-              description={`Transfer ownership to ${shortenAddress(trimmed)}?`}
+              description={t("Transfer ownership to {address}?", { address: shortenAddress(trimmed) })}
               secondaryLabel={t("Back")}
               onSecondary={() => setConfirming(false)}
               primaryLabel={t("Transfer ownership")}

@@ -77,9 +77,9 @@ export function EmptyOrError({
             {emptyIcon}
           </div>
         )}
-        <p className="font-semibold text-lg">{emptyTitle}</p>
+        <p className="font-semibold text-lg">{t(emptyTitle)}</p>
         {emptyDescription && (
-          <p className="text-sm text-muted-foreground max-w-xs mx-auto">{emptyDescription}</p>
+          <p className="text-sm text-muted-foreground max-w-xs mx-auto">{t(emptyDescription)}</p>
         )}
         <div className="flex items-center justify-center gap-3">
           {onRetry && (

@@ -48,7 +48,7 @@ export function EditionMint({ contract: rawContract, aside }: { contract: string
   const walletAddress = app.walletAddress;
   const collectionAddress = normalizeAddress("STARKNET", rawContract);
   const tx = useTransaction();
-  const upload = useLaunchpadImageUpload({ successMessage: "Image uploaded to IPFS", failureMessage: "Image upload failed" });
+  const upload = useLaunchpadImageUpload({ successMessage: t("Image uploaded to IPFS"), failureMessage: t("Image upload failed") });
   const { imagePreview, imageUri, imageUploading, uploadError, uploadSuccess, fileInputRef, handleImageSelect, clearImage } = upload;
   const [ownerCheck, setOwnerCheck] = useState<"loading" | "ok" | "denied">("loading");
   const [formError, setFormError] = useState<string | null>(null);

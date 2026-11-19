@@ -93,7 +93,7 @@ export function DropManage({ contract, indexed, onchain, mints, run, saveExclusi
           {listed && (
             <Button variant="outline" onClick={() => setPending({
               title: t("Drop opened to everyone"),
-              body: "Anyone will be able to mint, with or without a claim link.",
+              body: t("Anyone will be able to mint, with or without a claim link."),
               act: () => run({ action: "set_allowlist_root", root: "0x0" }),
             })}>{t("Open to everyone")}</Button>
           )}
@@ -130,8 +130,8 @@ export function DropManage({ contract, indexed, onchain, mints, run, saveExclusi
         <h3 className="text-sm font-semibold">{t("Exclusive content")}</h3>
         <ExclusiveFields value={exclusive} onChange={setExclusive} />
         <div className="flex gap-2">
-          <Button disabled={!/^https:\/\//.test(exclusive.url)} onClick={() => setPending({ title: t("Exclusive content saved"), body: "Holders will see this link.", act: () => saveExclusive(exclusive) })}>{t("Save")}</Button>
-          <Button variant="outline" onClick={() => setPending({ title: t("Exclusive content removed"), body: "Holders will no longer see a link.", act: () => saveExclusive(null) })}>{t("Remove")}</Button>
+          <Button disabled={!/^https:\/\//.test(exclusive.url)} onClick={() => setPending({ title: t("Exclusive content saved"), body: t("Holders will see this link."), act: () => saveExclusive(exclusive) })}>{t("Save")}</Button>
+          <Button variant="outline" onClick={() => setPending({ title: t("Exclusive content removed"), body: t("Holders will no longer see a link."), act: () => saveExclusive(null) })}>{t("Remove")}</Button>
         </div>
       </section>
 

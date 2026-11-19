@@ -2,6 +2,8 @@
 
 import Link from "./link.js";
 import { ArrowRight } from "lucide-react";
+import { useT } from "../i18n/provider.js";
+import { msg } from "../i18n/translate.js";
 
 export interface SectionHeadingProps {
   icon: React.ReactNode;
@@ -11,7 +13,8 @@ export interface SectionHeadingProps {
   linkLabel?: string;
 }
 
-export function SectionHeading({ icon, title, subtitle, href, linkLabel = "View all" }: SectionHeadingProps) {
+export function SectionHeading({ icon, title, subtitle, href, linkLabel = msg("View all") }: SectionHeadingProps) {
+  const t = useT();
   return (
     <div className="flex items-center justify-between gap-3">
       <div className="flex min-w-0 items-center gap-2">
@@ -26,7 +29,7 @@ export function SectionHeading({ icon, title, subtitle, href, linkLabel = "View 
           href={href}
           className="inline-flex shrink-0 items-center gap-1 text-xs text-muted-foreground transition-colors hover:text-foreground"
         >
-          {linkLabel} <ArrowRight className="h-3 w-3" />
+          {t(linkLabel)} <ArrowRight className="h-3 w-3" />
         </Link>
       )}
     </div>

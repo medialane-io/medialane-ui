@@ -13,7 +13,7 @@ import { uploadDirectoryToIpfs, uploadFileToIpfs } from "../../../utils/ipfs-upl
 import { parseAllowlist } from "../../../utils/drop/allowlist.js";
 import { buildDropMetadataFiles, metadataBytes, MAX_DROP_METADATA_BYTES } from "../../../utils/drop/metadata.js";
 import { toDropTerms, priceLabel } from "../../../utils/drop/sale.js";
-import { draftSupply, type DropDraft } from "../../../utils/drop/draft.js";
+import { draftSupply, type DropDraft, supplyLabel } from "../../../utils/drop/draft.js";
 import { uploadAll, type UploadTask } from "../../../utils/drop/upload.js";
 import { launchDrop, saveExclusiveContent } from "../../../utils/drop/actions.js";
 import { useMedialaneApp } from "../../medialane-app.js";
@@ -119,7 +119,7 @@ export function LaunchDialog({ open, onClose, draft }: { open: boolean; onClose:
               <p className="font-semibold">{draft.name}</p>
               <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">{t("Fixed after launch")}</p>
               <Row label={t("Price")} value={priceLabel(terms.price, terms.paymentToken)} />
-              <Row label={t("Supply")} value={`${intl.number(draftSupply(draft))} ${draft.kind === "edition" ? (draftSupply(draft) === 1 ? "copy" : "copies") : draftSupply(draft) === 1 ? "item" : "items"}`} />
+              <Row label={t("Supply")} value={supplyLabel(t, draft.kind, draftSupply(draft), intl.number(draftSupply(draft)))} />
               <Row label={t("Starts")} value={terms.startTime === 0 ? "At launch" : intl.dateTime(new Date(terms.startTime * 1000))} />
               <Row label={t("Ends")} value={terms.endTime === 0 ? "No end date" : intl.dateTime(new Date(terms.endTime * 1000))} />
               <Row label={t("Per wallet")} value={terms.maxPerWallet === "0" ? "No limit" : terms.maxPerWallet} />

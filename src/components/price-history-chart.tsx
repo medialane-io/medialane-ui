@@ -94,7 +94,7 @@ export function PriceHistoryChart({ history }: PriceHistoryChartProps) {
             }}
             formatter={(value) => [
               `${value} ${chartData.currency}`,
-              "Sale price",
+              t("Sale price"),
             ]}
           />
           <Line
