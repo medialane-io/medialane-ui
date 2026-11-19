@@ -476,7 +476,7 @@ export function NavCommandMenu({
 
                   <div className="flex items-center justify-between gap-3 border-t border-border/40 bg-muted/20 px-3 py-2">
                     <div className="flex items-center gap-3">
-                      {footerSlot}
+                      {footerSlot && <div className="flex items-center gap-1">{footerSlot}</div>}
                       {showKeyboardHints && (
                         <span className="hidden items-center gap-3 text-[10.5px] text-muted-foreground/70 sm:flex">
                           <span className="flex items-center gap-1"><Kbd>↑</Kbd><Kbd>↓</Kbd> {t("Navigate")}</span>
