@@ -140,7 +140,7 @@ export function ReportDialog({ target, open, onOpenChange }: ReportDialogProps) 
                         htmlFor={value}
                         className="text-sm cursor-pointer leading-none"
                       >
-                        {label}
+                        {t(label)}
                       </label>
                     </div>
                   ))}

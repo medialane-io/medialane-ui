@@ -110,7 +110,7 @@ export function CoinsExplorer({ useCoins, usePrice, usePriceMap, coinHref, headi
           className="shrink-0 rounded-lg border border-border bg-background px-2.5 py-2 text-xs font-medium text-foreground outline-none focus:border-primary/50"
         >
           {SORT_OPTIONS.map(({ label, value }) => (
-            <option key={value} value={value}>{label}</option>
+            <option key={value} value={value}>{t(label)}</option>
           ))}
         </select>
       </div>

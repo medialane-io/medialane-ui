@@ -90,7 +90,7 @@ export function TicketPanel({ contract, tokenId }: AssetTypePanelProps) {
       icon={Ticket}
       iconClassName="text-brand-blue"
       title={t("Ticket")}
-      labels={{ upcoming: "Upcoming", active: "Happening now", ended: "Ended" }}
+      labels={{ upcoming: "Upcoming", active: t("Happening now"), ended: "Ended" }}
     />
   );
 }

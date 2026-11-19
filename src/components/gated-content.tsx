@@ -102,8 +102,8 @@ export function GatedContentPanel({ state, onBrowseListings }: { state: GatedCon
 
   if (state.status === "signed_out") {
     return (
-      <LockedNotice title={`${connectLabel} to unlock`} body={t("This collection has exclusive content for holders. Sign in so we can check your holdings.")}>
-        <button type="button" onClick={onRequireWallet} className={PRIMARY}>{connectLabel}</button>
+      <LockedNotice title={t("{label} to unlock", { label: t(connectLabel) })} body={t("This collection has exclusive content for holders. Sign in so we can check your holdings.")}>
+        <button type="button" onClick={onRequireWallet} className={PRIMARY}>{t(connectLabel)}</button>
       </LockedNotice>
     );
   }

@@ -13,9 +13,9 @@ import { useT } from "../../i18n/provider.js";
 import { msg } from "../../i18n/translate.js";
 
 const EMPTY: Record<ApiDropListStatus, { heading: string; body: string }> = {
-  live: { heading: msg("No live drops"), body: "Nothing is open for minting right now. Check Upcoming, or launch your own." },
-  upcoming: { heading: msg("No upcoming drops"), body: "Scheduled drops will show here before they open." },
-  ended: { heading: msg("No ended drops"), body: "Drops that sold out or closed will show here." },
+  live: { heading: msg("No live drops"), body: msg("Nothing is open for minting right now. Check Upcoming, or launch your own.") },
+  upcoming: { heading: msg("No upcoming drops"), body: msg("Scheduled drops will show here before they open.") },
+  ended: { heading: msg("No ended drops"), body: msg("Drops that sold out or closed will show here.") },
 };
 
 export function DropListing({

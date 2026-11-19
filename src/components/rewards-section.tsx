@@ -13,17 +13,17 @@ const pillars = [
   {
     icon: Zap,
     label: "XP",
-    detail: "Earned for every mint, trade, and connection you make.",
+    detail: msg("Earned for every mint, trade, and connection you make."),
   },
   {
     icon: Coins,
     label: msg("Creator's Fund"),
-    detail: "Your XP grows your share of the shared pool.",
+    detail: msg("Your XP grows your share of the shared pool."),
   },
   {
     icon: Gift,
     label: msg("Airdrop"),
-    detail: "Claim your share on-chain, every round.",
+    detail: msg("Claim your share on-chain, every round."),
   },
 ];
 
@@ -57,8 +57,8 @@ export function RewardsSection({ rewardsHref }: RewardsSectionProps) {
                   <Icon className="h-4 w-4" />
                 </div>
                 <div className="min-w-0">
-                  <p className="text-sm font-semibold text-foreground">{label}</p>
-                  <p className="text-xs text-muted-foreground leading-relaxed">{detail}</p>
+                  <p className="text-sm font-semibold text-foreground">{t(label)}</p>
+                  <p className="text-xs text-muted-foreground leading-relaxed">{t(detail)}</p>
                 </div>
               </div>
             ))}

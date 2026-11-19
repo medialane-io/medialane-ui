@@ -45,7 +45,7 @@ function PopFields({ shared, state, update }: FormatFieldsProps<PopState>) {
                 )}
               >
                 <Icon className="h-5 w-5" />
-                <span className="text-2xs font-semibold leading-tight">{label}</span>
+                <span className="text-2xs font-semibold leading-tight">{t(label)}</span>
               </button>
             );
           })}
@@ -141,8 +141,8 @@ export const POP_FORMAT = defineFormat<PopState>({
     await executeIntent(signer, client, intent);
 
     return {
-      headline: "Certificate created",
-      detail: "It is recorded onchain with your wallet as owner.",
+      headline: msg("Certificate created"),
+      detail: msg("It is recorded onchain with your wallet as owner."),
       name: values.name,
       links: [{ href: "/launchpad/pop", label: msg("Open POP"), icon: Award }],
       reward: "launch_launchpad",

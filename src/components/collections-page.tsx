@@ -291,7 +291,7 @@ export function CollectionsPage() {
                         : "border-border text-muted-foreground hover:border-primary/50"
                     )}
                   >
-                    {label}
+                    {t(label)}
                   </button>
                 ))}
               </div>
@@ -313,7 +313,7 @@ export function CollectionsPage() {
                   >
                     {value === "pop-protocol" && <Award className="h-3 w-3" />}
                     {value === "drop-collection" && <Package className="h-3 w-3" />}
-                    {label}
+                    {t(label)}
                   </button>
                 ))}
               </div>

@@ -6,6 +6,13 @@
 
 - Navigation menu: "Create Limited Edition Contract" is now "Create Limited Edition Collection". The browse entries for drops, tickets, clubs and sponsorship, the collection drop entry and the four section-specific documentation entries are no longer shared items.
 
+## [0.374.1] — 2026-11-18
+
+### Fixed
+
+- Portuguese: text that still showed in English now goes through the translation function — marked tables (discover features, rewards, drop features, new-collection menu, filters and sort labels, empty states, section links, license option buttons) and their render sites, plus about 90 labels that had never been marked. `EmptyOrError`, `SectionHeading`, `ClaimRouteShell` and the option toggles translate the English text they are given. `ToggleGroup` now has a single implementation.
+- Order counts and the connect prompts use plural and placeholder sentences instead of English string building.
+
 ## [0.374.0] — 2026-11-18
 
 ### Added

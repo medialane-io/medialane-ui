@@ -19,6 +19,7 @@ import { useImageUrl } from "../utils/use-image-url.js";
 import { useCounterOffers, useReceivedOffers, useUserOrders } from "../utils/use-orders.js";
 import { useT } from "../i18n/provider.js";
 import { msg } from "../i18n/translate.js";
+import type { T } from "../i18n/make-t.js";
 
 export type PortfolioOrdersView = "listings" | "offers" | "received" | "counter-offers";
 
@@ -34,35 +35,35 @@ export type UsePortfolioOrderActions = (context: { view: PortfolioOrdersView; re
 
 const VIEWS = {
   listings: {
-    emptyTitle: "No active listings",
-    emptyDescription: "Sell an asset to get started.",
+    emptyTitle: msg("No active listings"),
+    emptyDescription: msg("Sell an asset to get started."),
     emptyCta: { label: msg("Browse assets"), href: "/portfolio/assets" },
     emptyIcon: Tag,
-    priceLabel: "Price",
-    count: (n: number) => `${n} active listing${n === 1 ? "" : "s"}`,
+    priceLabel: msg("Price"),
+    count: (n: number, t: T) => t.plural("{count} active listing", "{count} active listings", n),
   },
   offers: {
-    emptyTitle: "No offers sent yet",
-    emptyDescription: "Browse the marketplace to make offers on assets.",
+    emptyTitle: msg("No offers sent yet"),
+    emptyDescription: msg("Browse the marketplace to make offers on assets."),
     emptyCta: { label: msg("Browse marketplace"), href: "/marketplace" },
     emptyIcon: HandCoins,
-    priceLabel: "Offer price",
-    count: (n: number) => `${n} active offer${n === 1 ? "" : "s"}`,
+    priceLabel: msg("Offer price"),
+    count: (n: number, t: T) => t.plural("{count} active offer", "{count} active offers", n),
   },
   received: {
-    emptyTitle: "No offers received yet",
-    emptyDescription: "When someone makes an offer on your asset, it will appear here.",
+    emptyTitle: msg("No offers received yet"),
+    emptyDescription: msg("When someone makes an offer on your asset, it will appear here."),
     emptyCta: undefined,
     emptyIcon: Inbox,
-    priceLabel: "Offer price",
+    priceLabel: msg("Offer price"),
     count: null,
   },
   "counter-offers": {
-    emptyTitle: "No counter-offers yet",
-    emptyDescription: "When a seller responds to your bid with a counter-offer, it will appear here.",
+    emptyTitle: msg("No counter-offers yet"),
+    emptyDescription: msg("When a seller responds to your bid with a counter-offer, it will appear here."),
     emptyCta: undefined,
     emptyIcon: Inbox,
-    priceLabel: "Their price / Your bid",
+    priceLabel: msg("Their price / Your bid"),
     count: null,
   },
 } as const;
@@ -221,13 +222,13 @@ export function PortfolioOrders({ view, address, useActions }: {
         skeletonNode={<OrderRowsSkeleton />}
       >
         <div className="space-y-1">
-          {config.count && orders.length > 0 && <p className="pb-2 text-sm text-muted-foreground">{config.count(orders.length)}</p>}
+          {config.count && orders.length > 0 && <p className="pb-2 text-sm text-muted-foreground">{config.count(orders.length, t)}</p>}
           <div className="overflow-hidden rounded-lg border border-border">
             <div className="flex items-center gap-4 border-b border-border bg-muted/30 px-4 py-2 text-xs uppercase tracking-wide text-muted-foreground">
               <div className="w-12 shrink-0" />
               <div className="flex-1">{t("Asset")}</div>
               {view === "received" && <div className="hidden w-28 sm:block">{t("From")}</div>}
-              <div className={cn("hidden text-right sm:block", view === "counter-offers" ? "w-40" : "w-24")}>{config.priceLabel}</div>
+              <div className={cn("hidden text-right sm:block", view === "counter-offers" ? "w-40" : "w-24")}>{t(config.priceLabel)}</div>
               <div className="hidden w-28 md:block">{t("Expires")}</div>
               <div className="w-24 text-right">{t("Actions")}</div>
             </div>

@@ -95,7 +95,7 @@ export function AccountsPage() {
                   : "border-border bg-card text-muted-foreground hover:text-foreground",
               )}
             >
-              {label}
+              {t(label)}
             </button>
           ))}
         </div>

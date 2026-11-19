@@ -243,7 +243,7 @@ export function CollectionSettings({ contract }: { contract: string }) {
                       <SelectItem key={value} value={value}>
                         <div className="flex items-center gap-2">
                           <Icon className="h-3.5 w-3.5 text-muted-foreground" />
-                          {label}
+                          {t(label)}
                         </div>
                       </SelectItem>
                     ))}
@@ -298,7 +298,7 @@ export function CollectionSettings({ contract }: { contract: string }) {
         />
         <div className="space-y-4 pt-1 border-t border-border">
           {([
-            { key: "websiteUrl" as const,  icon: Globe,          label: "Website",    placeholder: "https://myproject.xyz" },
+            { key: "websiteUrl" as const,  icon: Globe,          label: t("Website"),    placeholder: "https://myproject.xyz" },
             { key: "twitterUrl" as const,  icon: Twitter,        label: t("Twitter / X"), placeholder: "https://twitter.com/…" },
             { key: "discordUrl" as const,  icon: MessageCircle,  label: "Discord",    placeholder: "https://discord.gg/…" },
             { key: "telegramUrl" as const, icon: Send,           label: "Telegram",   placeholder: "https://t.me/…" },
@@ -306,7 +306,7 @@ export function CollectionSettings({ contract }: { contract: string }) {
             <FieldRow key={key}>
               <Label htmlFor={key} className="flex items-center gap-1.5">
                 <Icon className="h-3.5 w-3.5 text-muted-foreground" />
-                {label}
+                {t(label)}
               </Label>
               <Input
                 id={key}

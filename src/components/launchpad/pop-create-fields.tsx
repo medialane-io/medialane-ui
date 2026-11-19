@@ -93,7 +93,7 @@ export function PopCreateFields({
                   )}
                 >
                   <Icon className={cn("h-5 w-5", selected && "text-green-500")} />
-                  <span className="text-2xs font-semibold leading-tight">{label}</span>
+                  <span className="text-2xs font-semibold leading-tight">{t(label)}</span>
                 </button>
               );
             })}

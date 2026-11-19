@@ -28,7 +28,7 @@ export function PopCreate({ aside }: { aside?: ReactNode }) {
   const app = useMedialaneApp();
   const walletAddress = app.walletAddress;
   const tx = useTransaction();
-  const upload = useLaunchpadImageUpload({ successMessage: "Certificate image uploaded", failureMessage: "Image upload failed" });
+  const upload = useLaunchpadImageUpload({ successMessage: t("Certificate image uploaded"), failureMessage: t("Image upload failed") });
   const { imagePreview, imageUri, imageUploading, uploadError, uploadSuccess, fileInputRef, handleImageSelect, clearImage } = upload;
   const [eventType, setEventType] = useState<PopEventType>("Conference");
   const [isPublic, setIsPublic] = useState(false);

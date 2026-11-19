@@ -57,7 +57,7 @@ function makeTierFormat(config: {
         />
 
         <div className="space-y-2">
-          <label className="text-sm font-medium" htmlFor={`fast-mint-${config.key}-supply`}>{config.supplyLabel} *</label>
+          <label className="text-sm font-medium" htmlFor={`fast-mint-${config.key}-supply`}>{t(config.supplyLabel)} *</label>
           <Input
             id={`fast-mint-${config.key}-supply`}
             type="number"
@@ -189,9 +189,9 @@ export const TICKETS_FORMAT = makeTierFormat({
   service: "ip-tickets",
   icon: Ticket,
   noun: "ticket collection",
-  supplyLabel: "Number of tickets",
+  supplyLabel: msg("Number of tickets"),
   submitLabel: msg("Create tickets"),
-  addLabel: "Minting tickets",
+  addLabel: msg("Minting tickets"),
 });
 
 export const CLUB_FORMAT = makeTierFormat({
@@ -200,7 +200,7 @@ export const CLUB_FORMAT = makeTierFormat({
   service: "ip-club",
   icon: Users,
   noun: "club",
-  supplyLabel: "Number of memberships",
+  supplyLabel: msg("Number of memberships"),
   submitLabel: msg("Create membership"),
-  addLabel: "Minting memberships",
+  addLabel: msg("Minting memberships"),
 });

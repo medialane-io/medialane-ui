@@ -171,7 +171,7 @@ export function CollectionShowcase({ collections, isLoading, getHref }: Collecti
             <button
               key={collection.contractAddress}
               type="button"
-              aria-label={`Show ${collection.name ?? "collection"}`}
+              aria-label={t("Show {name}", { name: collection.name ?? t("collection") })}
               aria-current={index === current ? "true" : undefined}
               onClick={() => setCurrent(index)}
               className="flex h-8 items-center px-0.5"

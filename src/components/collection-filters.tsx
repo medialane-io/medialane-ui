@@ -206,7 +206,7 @@ export function CollectionFiltersBody({
                 className={cn(PILL_BASE, isSelected ? PILL_ON : PILL_OFF)}
               >
                 {isSelected && <Check className="h-3 w-3" />}
-                <span>{label}</span>
+                <span>{t(label)}</span>
               </button>
             );
           })}

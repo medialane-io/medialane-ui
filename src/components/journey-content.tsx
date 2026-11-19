@@ -113,7 +113,7 @@ function CtaSection({ startHint }: { startHint: string }) {
       >
         <div>
           <p className="font-black text-lg">{t("New here?")}</p>
-          <p className="text-sm font-medium text-white/80">{startHint}</p>
+          <p className="text-sm font-medium text-white/80">{t(startHint)}</p>
         </div>
         <ArrowRight className="h-5 w-5 shrink-0" />
       </button>

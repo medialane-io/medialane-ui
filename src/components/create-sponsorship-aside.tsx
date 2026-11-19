@@ -9,14 +9,14 @@ export function CreateSponsorshipAside() {
   return (
     <ClaimRail
       included={[
-        { icon: Handshake, title: t("Direct settlement"), desc: "Sponsor pays you directly — no escrow, no middleman." },
-        { icon: ShieldCheck, title: t("Owner-verified"), desc: "You must own the asset, checked on-chain when you create and when you accept." },
-        { icon: Coins, title: t("Open bidding"), desc: "Any sponsor can bid, or invite one specific sponsor." },
+        { icon: Handshake, title: t("Direct settlement"), desc: t("Sponsor pays you directly — no escrow, no middleman.") },
+        { icon: ShieldCheck, title: t("Owner-verified"), desc: t("You must own the asset, checked on-chain when you create and when you accept.") },
+        { icon: Coins, title: t("Open bidding"), desc: t("Any sponsor can bid, or invite one specific sponsor.") },
       ]}
       steps={[
-        "Choose your terms — an asset you own, or one you'd like to sponsor",
-        "The other side responds — bids come in, or a proposal is accepted",
-        "Settle instantly: they receive a license, you receive payment",
+        t("Choose your terms — an asset you own, or one you'd like to sponsor"),
+        t("The other side responds — bids come in, or a proposal is accepted"),
+        t("Settle instantly: they receive a license, you receive payment"),
       ]}
       trustIcon={Gift}
       trustLead={t("No escrow, ever.")}

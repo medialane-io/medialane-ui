@@ -1,5 +1,6 @@
 "use client";
 
+import { useT } from "../i18n/provider.js";
 import { assetHref, type Chain } from "@medialane/sdk";
 import { Wallet } from "lucide-react";
 import { useMedialaneApp, type AssetRef } from "./medialane-app.js";
@@ -37,11 +38,12 @@ export function CompanionAppButton({ asset, variant = "button" }: { asset: Asset
 }
 
 export function AssetAccessButtons({ asset, stacked = false }: { asset: AssetRef; stacked?: boolean }) {
+  const t = useT();
   const { onRequireWallet, connectLabel = "Sign in" } = useMedialaneApp();
   return (
     <div className={cn("grid grid-cols-1 gap-2", !stacked && "sm:flex sm:flex-wrap")}>
       <ActionButton action="buy" icon={<Wallet className="h-4 w-4" />} onClick={onRequireWallet} className={cn("w-full", !stacked && "sm:w-auto sm:min-w-36")}>
-        {connectLabel}
+        {t(connectLabel)}
       </ActionButton>
       <CompanionAppButton asset={asset} />
     </div>

@@ -19,7 +19,7 @@ export function MyDrops({ createHref = "/launchpad/drop/create" }: { createHref?
     return (
       <div className="space-y-4 py-16 text-center">
         <p className="text-sm text-muted-foreground">{t("Sign in to see the drops you launched.")}</p>
-        <Button onClick={onRequireWallet}>{connectLabel}</Button>
+        <Button onClick={onRequireWallet}>{t(connectLabel)}</Button>
       </div>
     );
   }

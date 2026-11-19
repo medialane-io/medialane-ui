@@ -10,29 +10,7 @@ import { LICENSE_TYPES, GEOGRAPHIC_SCOPES, AI_POLICIES, DERIVATIVES_OPTIONS } fr
 import { cn } from "../../utils/cn.js";
 import type { FormValues } from "./form.js";
 import { useT } from "../../i18n/provider.js";
-
-export function ToggleGroup({
-  value, options, onChange,
-}: { value: string; options: readonly string[]; onChange: (v: string) => void }) {
-  return (
-    <div className="flex rounded-lg border border-border overflow-hidden w-full">
-      {options.map((opt, i) => (
-        <button
-          key={opt}
-          type="button"
-          onClick={() => onChange(opt)}
-          className={cn(
-            "flex-1 px-3 py-2 text-sm transition-colors",
-            i > 0 && "border-l border-border",
-            value === opt ? "bg-primary text-primary-foreground font-medium" : "bg-background hover:bg-muted text-muted-foreground"
-          )}
-        >
-          {opt}
-        </button>
-      ))}
-    </div>
-  );
-}
+import { ToggleGroup } from "../create-form-primitives.js";
 
 export function LicensingSection({ form }: { form: UseFormReturn<FormValues> }) {
   const t = useT();

@@ -5,6 +5,7 @@ import {
   FileText, BookOpen, File, Building, Layers,
 } from "lucide-react";
 import { cn } from "../utils/cn.js";
+import { useT } from "../i18n/provider.js";
 import { IP_TYPE_DATA, IP_TYPE_DATA_MAP } from "../data/ip-types.js";
 import type { IpTypeData } from "../data/ip-types.js";
 
@@ -54,6 +55,7 @@ export interface IpTypeBadgeProps {
 }
 
 export function IpTypeBadge({ ipType, size = "sm", showLabel = false, className, baseUrl = "" }: IpTypeBadgeProps) {
+  const t = useT();
   const config = IP_TYPE_CONFIG.find(
     (c) => c.label === ipType || c.apiValue === ipType
   );
@@ -63,7 +65,7 @@ export function IpTypeBadge({ ipType, size = "sm", showLabel = false, className,
   return (
     <a
       href={`${baseUrl}/${slug}`}
-      title={label}
+      title={t(label)}
       className={cn(
         "inline-flex items-center justify-center rounded-full",
         "transition-opacity hover:opacity-80",
@@ -74,7 +76,7 @@ export function IpTypeBadge({ ipType, size = "sm", showLabel = false, className,
       onClick={(e) => e.stopPropagation()}
     >
       <Icon className={cn(colorClass, icon)} />
-      {showLabel ? <span className={cn("text-xs font-semibold", colorClass)}>{label}</span> : null}
+      {showLabel ? <span className={cn("text-xs font-semibold", colorClass)}>{t(label)}</span> : null}
     </a>
   );
 }

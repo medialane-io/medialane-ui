@@ -24,7 +24,7 @@ export function TransactionDialog({ tx, title, workingLabel, firstStepLabel = "P
   const working = phase === "preparing" || phase === "submitting" || phase === "confirming";
   const success = phase === "success";
   const failed = phase === "error";
-  const steps = [firstStepLabel, "Submit transaction", "Confirm transaction"];
+  const steps = [firstStepLabel, t("Submit transaction"), t("Confirm transaction")];
 
   useConfetti(success);
 

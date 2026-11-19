@@ -140,7 +140,7 @@ function makeNftFormat(kind: MintAssetType) {
       const values = shared.form.getValues();
       const tokenUri = await pinTokenUri(shared, runtime);
       const royaltyBps = Math.round(values.royalty * 100);
-      const labels = { create: "Creating the collection", add: single ? "Minting" : "Minting editions" };
+      const labels = { create: msg("Creating the collection"), add: single ? "Minting" : "Minting editions" };
 
       if (single) {
         const picked = state.mode === "existing" ? selected(shared, state) : undefined;
@@ -227,8 +227,8 @@ function makeNftFormat(kind: MintAssetType) {
 
 function nftResult(shared: FormatShared, name: string, contract: string | null, tokenId: string | null): FormatResult {
   return {
-    headline: "Asset published",
-    detail: "It is recorded onchain with your wallet as owner.",
+    headline: msg("Asset published"),
+    detail: msg("It is recorded onchain with your wallet as owner."),
     name,
     links: assetLinks(contract, tokenId),
     reward: "mint_asset",

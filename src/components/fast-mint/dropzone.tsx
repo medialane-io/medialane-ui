@@ -37,7 +37,7 @@ export function Dropzone({
     <section
       role="button"
       tabIndex={0}
-      aria-label={hasWallet ? t("Upload media") : `${connectLabel} to upload media`}
+      aria-label={hasWallet ? t("Upload media") : t("{label} to upload media", { label: t(connectLabel) })}
       onClick={openMediaPicker}
       onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openMediaPicker(); } }}
       onDragOver={(e) => e.preventDefault()}
@@ -72,7 +72,7 @@ export function Dropzone({
         ) : (
           <>
             <LogIn className="h-3.5 w-3.5 mr-1.5" />
-            {connectLabel}
+            {t(connectLabel)}
           </>
         )}
       </Button>

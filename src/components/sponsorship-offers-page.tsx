@@ -13,10 +13,11 @@ import { useSponsorshipOffers } from "../utils/use-sponsorship.js";
 import { useToken } from "../utils/use-tokens.js";
 import { useT } from "../i18n/provider.js";
 
+import { msg } from "../i18n/translate.js";
 const FEATURES = [
-  "No escrow — direct settlement",
-  "Owner-verified on-chain",
-  "Open bidding or one invited sponsor",
+  msg("No escrow — direct settlement"),
+  msg("Owner-verified on-chain"),
+  msg("Open bidding or one invited sponsor"),
 ];
 
 function OfferCard({ offer }: { offer: ApiSponsorshipOffer }) {
@@ -64,7 +65,7 @@ export function SponsorshipOffersPage() {
             {FEATURES.map((f) => (
               <span key={f} className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-muted/40 border border-border/30 text-xs font-medium text-muted-foreground">
                 <Check className="h-3 w-3 text-brand-rose shrink-0" />
-                {f}
+                {t(f)}
               </span>
             ))}
           </div>

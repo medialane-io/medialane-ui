@@ -43,29 +43,29 @@ import { msg } from "../../i18n/translate.js";
 import { useFormat } from "../../i18n/use-format.js";
 
 export const REWARD_ACTION_LABELS: Record<string, string> = {
-  complete_profile: "Complete profile",
-  mint_asset: "Mint assets",
-  create_collection: "Create collections",
-  launch_launchpad: "Launch drops / POPs",
-  create_remix: "Create remixes",
-  list_asset: "Sell assets",
-  buy_asset: "Buy assets",
-  make_offer: "Make offers",
-  counter_offer: "Counter offers",
-  offer_accepted_seller: "Offers accepted (sold)",
-  offer_accepted_buyer: "Offers accepted (bought)",
-  claim_pop: "POP claims",
-  claim_drop: "Drop claims",
-  comment: "On-chain comments",
-  create_ticket_collection: "Ticketed events created",
-  buy_ticket: "Tickets received",
-  create_club: "Clubs started",
-  join_club: "Clubs joined",
-  create_sponsorship_offer: "Sponsorships opened",
-  place_sponsorship_bid: "Sponsorship bids",
-  sponsorship_licensed_sponsor: "Sponsorships secured (sponsor)",
-  sponsorship_licensed_author: "Sponsorships secured (creator)",
-  launch_coin: "Creator coins launched",
+  complete_profile: msg("Complete profile"),
+  mint_asset: msg("Mint assets"),
+  create_collection: msg("Create collections"),
+  launch_launchpad: msg("Launch drops / POPs"),
+  create_remix: msg("Create remixes"),
+  list_asset: msg("Sell assets"),
+  buy_asset: msg("Buy assets"),
+  make_offer: msg("Make offers"),
+  counter_offer: msg("Counter offers"),
+  offer_accepted_seller: msg("Offers accepted (sold)"),
+  offer_accepted_buyer: msg("Offers accepted (bought)"),
+  claim_pop: msg("POP claims"),
+  claim_drop: msg("Drop claims"),
+  comment: msg("On-chain comments"),
+  create_ticket_collection: msg("Ticketed events created"),
+  buy_ticket: msg("Tickets received"),
+  create_club: msg("Clubs started"),
+  join_club: msg("Clubs joined"),
+  create_sponsorship_offer: msg("Sponsorships opened"),
+  place_sponsorship_bid: msg("Sponsorship bids"),
+  sponsorship_licensed_sponsor: msg("Sponsorships secured (sponsor)"),
+  sponsorship_licensed_author: msg("Sponsorships secured (creator)"),
+  launch_coin: msg("Creator coins launched"),
 };
 
 const BADGE_ICONS: Record<string, LucideIcon> = {
@@ -268,7 +268,7 @@ function EarnMorePanel() {
                 <span className={`flex h-10 w-10 items-center justify-center rounded-xl text-white shrink-0 ${group.tileClass}`}>
                   <Icon className="h-5 w-5" />
                 </span>
-                <span className="text-sm font-bold leading-snug text-foreground">{label}</span>
+                <span className="text-sm font-bold leading-snug text-foreground">{t(label)}</span>
               </Link>
             ))}
           </div>

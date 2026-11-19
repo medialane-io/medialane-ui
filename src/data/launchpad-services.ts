@@ -208,7 +208,7 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     subtitle: msg("Verifiable tickets, held in the wallet"),
     description:
       msg("Create tickets with their own supply and validity window, then mint them to attendees. Every ticket is verifiable on-chain."),
-    features: ["Verifiable at the door", "Supply and validity set at creation", TICKETS_TRANSFERABLE_FEATURE],
+    features: [msg("Verifiable at the door"), msg("Supply and validity set at creation"), TICKETS_TRANSFERABLE_FEATURE],
     icon: Ticket,
     browseLinkLabel: msg("Browse tickets"),
 
