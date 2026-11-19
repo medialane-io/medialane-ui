@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.375.0] — 2026-11-19
+
+### Changed
+
+- Asset page rights: fact tiles, the license card and the copyright strip use low-opacity brand tints with a matching ring and backdrop blur instead of solid fills. Text uses foreground and muted colours in light and dark themes; fact values are one size smaller. Detail cells get a thin ring.
+
 ## [0.373.3] — 2026-11-18
 
 ### Changed
