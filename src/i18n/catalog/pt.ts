@@ -1347,7 +1347,6 @@ const pt: Catalog = {
   "The transaction was submitted, but the remix could not be completed.": "A transação foi enviada, mas o remix não pôde ser concluído.",
   "The transaction was submitted, but the transfer could not be completed.": "A transação foi enviada, mas a transferência não pôde ser concluída.",
   "Their price / Your bid": "Preço deles / Seu lance",
-  "Theme": "Tema",
   "There was a problem reaching the server. Check your connection and try again.": "Houve um problema ao acessar o servidor. Verifique sua conexão e tente novamente.",
   "They are listed as they are minted.": "São listados conforme são emitidos.",
   "This account's activity appears here as it happens.": "A atividade desta conta aparece aqui conforme acontece.",
