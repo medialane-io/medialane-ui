@@ -21,8 +21,6 @@ export interface NavCommand {
   action?: () => void;
 
   keywords?: string[];
-
-  description?: string;
 }
 
 export interface NavCommandGroup {
@@ -269,11 +267,6 @@ function CommandRow({ item, primary, onSelect }: { item: NavCommand; primary: bo
         >
           {t(item.label)}
         </span>
-        {item.description && (
-          <span className="mt-0.5 block truncate text-[11.5px] leading-tight text-muted-foreground">
-            {t(item.description)}
-          </span>
-        )}
       </span>
       <ArrowRight className="h-3.5 w-3.5 shrink-0 text-muted-foreground/30 transition-colors group-aria-selected/item:text-primary/70" />
     </Command.Item>

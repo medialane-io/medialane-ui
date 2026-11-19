@@ -11,6 +11,7 @@
 ### Changed
 
 - Command menu footer: one quiet row. `NavLanguageSwitch` is a ghost control (globe, language name) over a native select that keeps its accessible name and keyboard behaviour, and `NavThemeToggle` is a single button that offers the other theme instead of a two-button group. The footer controls sit together on the left.
+- Command menu rows are one line: `NavCommand.description` and the descriptions of the five primary entries are removed. "Docs — Overview" is now "Documentation".
 
 ## [0.374.1] — 2026-11-18
 
