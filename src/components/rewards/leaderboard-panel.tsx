@@ -70,7 +70,7 @@ export function LeaderboardPanel({
     <div className={cn(compact ? "" : "space-y-3", className)}>
       {showHeading && (
         <div className="flex items-center gap-2">
-          <div className="flex h-7 w-7 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-rose to-brand-orange text-white shrink-0">
+          <div className="flex h-7 w-7 items-center justify-center rounded-2xl bg-brand-orange text-white shrink-0">
             <Sparkles className="h-3.5 w-3.5" />
           </div>
           <h2 className="text-sm font-black">{t("Community rewards")}</h2>

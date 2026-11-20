@@ -4,28 +4,22 @@ import { BRAND } from "../data/brand.js";
 
 export type PanelColor = keyof typeof BRAND;
 
-/** "neutral", one brand colour, or a pair blended from the first into the second. */
-export type PanelTone = "neutral" | PanelColor | readonly [PanelColor, PanelColor];
-
-const stop = (color: PanelColor, alpha: number) => `hsl(var(--brand-${color}) / ${alpha})`;
-
-/** Background for a brand-coloured panel: one brand colour, or a pair blended from the first into the second. */
-export function panelBackground(tone: Exclude<PanelTone, "neutral">): string {
-  if (typeof tone === "string") return `linear-gradient(to bottom right, ${stop(tone, 0.32)}, transparent)`;
-  const [from, to] = tone;
-  return `linear-gradient(to bottom right, ${stop(from, 0.32)}, ${stop(to, 0.16)}, transparent)`;
+/** A panel filled with one translucent brand colour. */
+export function panelTint(color: PanelColor): React.CSSProperties {
+  return { background: `hsl(var(--brand-${color}) / 0.12)` };
 }
 
 export interface PanelProps extends React.HTMLAttributes<HTMLDivElement> {
-  tone?: PanelTone;
+  /** One brand colour; the neutral panel when omitted. */
+  tone?: PanelColor;
 }
 
 export const Panel = React.forwardRef<HTMLDivElement, PanelProps>(
-  ({ tone = "neutral", className, style, ...props }, ref) => (
+  ({ tone, className, style, ...props }, ref) => (
     <div
       ref={ref}
       className={cn("panel", className)}
-      style={tone === "neutral" ? style : { backgroundImage: panelBackground(tone), ...style }}
+      style={tone ? { ...panelTint(tone), ...style } : style}
       {...props}
     />
   ),

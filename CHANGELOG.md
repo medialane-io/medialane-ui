@@ -4,13 +4,20 @@
 
 ### Changed
 
-- Brand colours only: every non-brand Tailwind colour in the package maps to its nearest brand colour (emerald, green, teal, sky and blue to brand blue; violet, purple and indigo to brand purple; amber, yellow and orange to brand orange; red to `destructive`; zinc to muted), keeping opacity. The coin launch preview gradient uses brand orange and maeve.
+- Brand colours only: every non-brand Tailwind colour in the package maps to its nearest brand colour (emerald, green, teal, sky and blue to brand blue; violet, purple and indigo to brand purple; amber, yellow and orange to brand orange; red to `destructive`; zinc to muted), keeping opacity.
+- Flat surfaces. Gradients remain only on the neutral `.panel` fade, the ring button, the wallet avatar ring, image scrims and loading shimmer. Image placeholders, icon tiles, badges, progress bars, chips, comment avatars and headline text use one flat colour.
+- `ActionButton` has three flat looks: `solid` (brand blue), `ring` (a plain button inside a moving brand-colour border, the `.btn-ring` class) and the default grey. The icon takes the label colour. `small` is 40px high with 14px text. Buy uses `ring` on the token card, listing card, asset page and markets tab.
+- `Panel` `tone` takes one brand colour and fills the panel with it at 12% opacity; `panelTint(color)` returns that style.
+- The token card is a solid card like the listing card; View, Sell, Offer, cart and the overflow button are `ActionButton`s.
+- `ASSET_ACCENTS` use flat brand blue or purple.
 - Three radii: `rounded-2xl` for panels and large media, `rounded-xl` for elements inside panels (buttons, inputs, tiles, menu items), `rounded-full` for pills, avatars and skeleton text. Sizes are preserved where the preset allows (`rounded-lg` was already 16px). Checkboxes and the chat bubble tail keep their small radius.
 - `ActivityTimelineRow` uses the shared `ACTIVITY_TYPE_CONFIG` colours instead of its own table.
 
 ### Removed
 
 - The unused `rounded-brand` radius from the Tailwind preset.
+- `actionFill`, `panelBackground`, `PanelTone`, `BRAND_GRADIENT`, `ACTION_PAIRS`, `ACTION_FOREGROUNDS`, `brandTint`, the `ActionKey`/`ToneKey` types, the `from`/`to` entries of `BRAND`, the `.gradient-text` class and the `Button` `premium` variant.
+- `ActionButton` `action`, `tone` and `ghost` props, and the `QuickAction` `action` prop.
 
 ## [0.380.0] — 2026-11-20
 

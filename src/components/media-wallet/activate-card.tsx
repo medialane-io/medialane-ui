@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { ActionButton } from "../action-button.js";
 import { describeError } from "../../utils/describe-error.js";
-import { BRAND_GRADIENT } from "../../data/brand.js";
 import { useMediaWalletApp } from "./types.js";
 import { useT } from "../../i18n/provider.js";
 
@@ -30,12 +29,10 @@ export function ActivateCard({ onActivated }: { onActivated: (txHash?: string) =
     <div className="panel overflow-hidden p-5">
       <div className="flex flex-col items-center gap-3 text-center">
         <ActionButton
-          action="buy"
           big
           onClick={activate}
           disabled={busy}
           className="w-full disabled:opacity-40 disabled:pointer-events-none"
-          style={{ "--ml-grad": BRAND_GRADIENT } as React.CSSProperties}
         >
           {busy && <span className="h-4 w-4 animate-spin rounded-full border-2 border-foreground/25 border-t-foreground" />}
           {t("Activate my wallet")}

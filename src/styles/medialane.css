@@ -59,13 +59,6 @@ h1 {
   font-family: var(--font-display, inherit);
 }
 
-.gradient-text {
-  background: linear-gradient(135deg, hsl(var(--brand-purple)) 0%, hsl(var(--brand-blue)) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
 .price-value {
   color: hsl(var(--price));
   font-weight: 700;
@@ -104,6 +97,24 @@ h1 {
   font-size: 0.75rem;
   line-height: 1rem;
   font-weight: 500;
+}
+/* The ring button: a plain button inside a moving brand-colour border. */
+.btn-ring {
+  --ring-fill: hsl(var(--background));
+  border: 1.5px solid transparent;
+  background:
+    linear-gradient(var(--ring-fill), var(--ring-fill)) padding-box,
+    linear-gradient(270deg, hsl(var(--brand-blue)), hsl(var(--brand-purple)), hsl(var(--brand-rose)), hsl(var(--brand-orange)), hsl(var(--brand-blue))) border-box;
+  background-size: 100% 100%, 300% 300%;
+  animation: ring-flow 5s ease infinite;
+}
+.btn-ring:hover { --ring-fill: hsl(var(--muted)); }
+@keyframes ring-flow {
+  0%, 100% { background-position: 0 0, 0% 50%; }
+  50%      { background-position: 0 0, 100% 50%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .btn-ring { animation: none; }
 }
 
 .snap-x-mandatory { scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }

@@ -1,7 +1,7 @@
 import { expect, test, afterEach } from "bun:test";
 import { cleanup, render } from "@testing-library/react";
 
-const { Panel, Pill, panelBackground } = await import("./panel.js");
+const { Panel, Pill, panelTint } = await import("./panel.js");
 
 afterEach(() => cleanup());
 
@@ -12,11 +12,8 @@ test("a neutral panel uses the shared panel class without an inline background",
   expect(panel.getAttribute("style") ?? "").not.toContain("gradient");
 });
 
-test("a brand panel fades one brand colour, or blends a pair, to transparent", () => {
-  expect(panelBackground("rose")).toBe("linear-gradient(to bottom right, hsl(var(--brand-rose) / 0.32), transparent)");
-  expect(panelBackground(["orange", "maeve"])).toBe(
-    "linear-gradient(to bottom right, hsl(var(--brand-orange) / 0.32), hsl(var(--brand-maeve) / 0.16), transparent)",
-  );
+test("a brand panel is one flat, translucent brand colour", () => {
+  expect(panelTint("rose")).toEqual({ background: "hsl(var(--brand-rose) / 0.12)" });
 });
 
 test("a panel is borderless and keeps the caller's classes and styles", () => {

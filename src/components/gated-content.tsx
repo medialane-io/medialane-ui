@@ -2,11 +2,10 @@
 
 import { Loader2, Lock, ShoppingBag, Sparkles, Unlock } from "lucide-react";
 import type { ApiCollectionProfile } from "@medialane/sdk";
-import { BRAND_COLOR } from "../data/brand.js";
 import { GATED_CONTENT_TYPES, GATED_CONTENT_TYPE_FALLBACK } from "../data/gated-content-types.js";
 import { useMedialaneApp } from "./medialane-app.js";
 import { useT } from "../i18n/provider.js";
-import { panelBackground } from "./panel.js";
+import { panelTint } from "./panel.js";
 import { ActionButton } from "./action-button.js";
 
 export interface GatedContent {
@@ -43,7 +42,7 @@ export function GatedContentHero({
       <button
         onClick={onViewExclusive}
         className="panel w-full flex items-center gap-4 hover:bg-background/40 px-5 py-4 transition-colors text-left"
-        style={{ backgroundImage: panelBackground("blue") }}
+        style={panelTint("blue")}
       >
         <div className="h-11 w-11 rounded-xl bg-brand-blue/15 flex items-center justify-center shrink-0 text-brand-blue">
           <Icon className="h-5 w-5" />
@@ -61,15 +60,14 @@ export function GatedContentHero({
     <button
       onClick={onViewExclusive}
       className="w-full flex items-center gap-4 rounded-2xl hover:bg-background/40 px-5 py-4 transition-colors text-left group"
-      style={{ backgroundImage: panelBackground(["blue", "purple"]) }}
+      style={panelTint("blue")}
     >
       <div className="h-11 w-11 rounded-xl bg-muted flex items-center justify-center shrink-0">
         <Lock className="h-5 w-5 text-muted-foreground" />
       </div>
       <div className="flex-1 min-w-0">
         <p
-          className="text-2xs font-bold leading-none mb-1"
-          style={{ background: `linear-gradient(90deg, ${BRAND_COLOR.blue}, ${BRAND_COLOR.purple}, ${BRAND_COLOR.rose})`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}
+          className="text-2xs font-bold leading-none mb-1 text-brand-blue"
         >
           {t("Holder exclusive")}
         </p>

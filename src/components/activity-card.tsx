@@ -97,7 +97,7 @@ export function ActivityCard({
           sizes="256px"
           className="object-cover"
           fallback={
-            <div className="absolute inset-0 bg-gradient-to-br from-muted-foreground/10 to-muted-foreground/5" aria-hidden />
+            <div className="absolute inset-0 bg-muted" aria-hidden />
           }
         />
 

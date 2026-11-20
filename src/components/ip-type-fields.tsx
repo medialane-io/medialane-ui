@@ -21,7 +21,7 @@ import {
 } from "./select.js";
 import { Check, FileText, FileUp, Loader2, Plus, Trash2, X } from "lucide-react";
 import { useT } from "../i18n/provider.js";
-import { panelBackground } from "./panel.js";
+import { panelTint } from "./panel.js";
 
 export type MetadataField = {
   traitType: string;
@@ -162,7 +162,7 @@ export function IPTypeFields({ ipType, onChange, uploadDocument, existingDocumen
             {t("Document")}
           </p>
           {existingDocument ? (
-            <div className="panel flex items-center gap-3 px-4 py-3" style={{ backgroundImage: panelBackground("blue") }}>
+            <div className="panel flex items-center gap-3 px-4 py-3" style={panelTint("blue")}>
               <FileText className="h-5 w-5 text-brand-blue shrink-0" />
               <div className="min-w-0 flex-1">
                 <p className="text-sm font-medium truncate">{effectiveDocName}</p>
@@ -170,7 +170,7 @@ export function IPTypeFields({ ipType, onChange, uploadDocument, existingDocumen
               </div>
             </div>
           ) : docUri ? (
-            <div className="panel flex items-center gap-3 px-4 py-3" style={{ backgroundImage: panelBackground("blue") }}>
+            <div className="panel flex items-center gap-3 px-4 py-3" style={panelTint("blue")}>
               <FileText className="h-5 w-5 text-brand-blue shrink-0" />
               <div className="min-w-0 flex-1">
                 <p className="text-sm font-medium truncate">{docName}</p>

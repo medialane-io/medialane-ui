@@ -113,10 +113,10 @@ export function MediaWalletHome({
 
       {funded ? (
         <div className="grid grid-cols-4 gap-2">
-          <QuickAction label={t("Send")} action="buy" disabled={!canSend} onClick={() => onNavigate({ name: "send" })} icon={<ArrowUp />} />
-          <QuickAction label={t("Receive")} action="offer" onClick={() => setPanel(panel === "receive" ? null : "receive")} icon={<ArrowDown />} />
-          <QuickAction label={t("Launch")} action="remix" onClick={goLaunch} icon={<RocketIcon />} />
-          <QuickAction label={t("Activity")} action="submit" onClick={() => onNavigate({ name: "activity" })} icon={<ActivityIcon />} />
+          <QuickAction label={t("Send")} disabled={!canSend} onClick={() => onNavigate({ name: "send" })} icon={<ArrowUp />} />
+          <QuickAction label={t("Receive")} onClick={() => setPanel(panel === "receive" ? null : "receive")} icon={<ArrowDown />} />
+          <QuickAction label={t("Launch")} onClick={goLaunch} icon={<RocketIcon />} />
+          <QuickAction label={t("Activity")} onClick={() => onNavigate({ name: "activity" })} icon={<ActivityIcon />} />
         </div>
       ) : isDeployed === null ? (
         <div className="flex flex-col gap-3">
@@ -153,7 +153,7 @@ export function MediaWalletHome({
           href={emailBanner.href}
           onClick={onClose}
           className="flex items-center gap-3 rounded-2xl px-4 py-3 transition-opacity hover:opacity-90"
-          style={{ background: "linear-gradient(115deg, hsl(var(--brand-orange) / 0.12), hsl(var(--brand-maeve, 327 64% 67%) / 0.12))" }}
+          style={{ background: "hsl(var(--brand-orange) / 0.12)" }}
         >
           <div className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-brand-orange/15">
             <MailIcon />

@@ -65,7 +65,7 @@ function PendingProposalsPanel({ nftContract }: { nftContract: string }) {
               {busy && activeId === p.proposalId ? <Loader2 className="h-3 w-3 animate-spin" /> : <X className="h-3 w-3" />}
               {t("Decline")}
             </Button>
-            <ActionButton small action="offer" disabled={busy} onClick={() => respond(p.proposalId, "accept")}>
+            <ActionButton small disabled={busy} onClick={() => respond(p.proposalId, "accept")}>
               {busy && activeId === p.proposalId ? <Loader2 className="h-3 w-3 animate-spin" /> : <CheckCircle2 className="h-3 w-3" />}
               {t("Accept")}
             </ActionButton>
@@ -176,7 +176,7 @@ export function SponsorshipCreate({ aside }: { aside?: ReactNode }) {
                 onClick={() => setMode(m)}
                 className={
                   mode === m
-                    ? "px-4 py-1.5 rounded-full text-sm font-semibold bg-gradient-to-r from-brand-purple to-brand-blue text-white"
+                    ? "px-4 py-1.5 rounded-full text-sm font-semibold bg-primary text-primary-foreground"
                     : "px-4 py-1.5 rounded-full text-sm font-semibold text-muted-foreground"
                 }
               >

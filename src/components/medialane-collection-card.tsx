@@ -3,7 +3,7 @@
 import { ImageIcon } from "lucide-react";
 import { cn } from "../utils/cn.js";
 import { useT } from "../i18n/provider.js";
-import { panelBackground } from "./panel.js";
+import { panelTint } from "./panel.js";
 
 export interface MedialaneCollectionCardProps {
 
@@ -38,7 +38,7 @@ export function MedialaneCollectionCard({
       <div className="rounded-2xl">
         <div
           className="panel relative overflow-hidden text-foreground"
-          style={{ backgroundImage: panelBackground(["blue", "orange"]) }}
+          style={panelTint("blue")}
         >
 
           <div className="p-2.5 pb-0">

@@ -128,7 +128,6 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
 
   const remixButton = remixEnabled && onOpenRemix ? (
     <ActionButton
-      action="remix"
       icon={<GitBranch className="h-4 w-4" />}
       onClick={onOpenRemix}
       helpContent="Create your own attributed derivative of this work."
@@ -138,13 +137,13 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
   ) : null;
 
   const offerButton = (
-    <ActionButton action="offer" icon={<HandCoins className="h-4 w-4" />} onClick={onOpenOffer}>
+    <ActionButton icon={<HandCoins className="h-4 w-4" />} onClick={onOpenOffer}>
       {t("Make offer")}
     </ActionButton>
   );
 
   const buyButton = liveCheapest && (!isOwner || canBuyMore) ? (
-    <ActionButton solid action="buy" onClick={() => onOpenPurchase(liveCheapest)}>
+    <ActionButton ring onClick={() => onOpenPurchase(liveCheapest)}>
       {t("Buy now")}
     </ActionButton>
   ) : null;
@@ -169,22 +168,20 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
                   icon={isProcessing ? <Loader2 className="h-4 w-4 animate-spin" /> : <X className="h-4 w-4" />}
                   onClick={() => onCancelClick(liveMyListing)}
                   disabled={isProcessing}
-                  tone="red"
                   helpContent={`Expires ${timeUntil(liveMyListing.endTime)}`}
                 >
                   {t("Cancel listing")}
                 </ActionButton>
               ) : null}
               {!liveMyListing || (isERC1155 && canListMoreEditions !== false) ? (
-                <ActionButton tone="blue" icon={<Tag className="h-4 w-4" />} onClick={onOpenListing}>
+                <ActionButton icon={<Tag className="h-4 w-4" />} onClick={onOpenListing}>
                   {liveMyListing ? t("Sell more") : t("Sell")}
                 </ActionButton>
               ) : null}
-              <ActionButton tone="orange" icon={<ArrowRightLeft className="h-4 w-4" />} onClick={onOpenTransfer}>{t("Transfer")}</ActionButton>
+              <ActionButton icon={<ArrowRightLeft className="h-4 w-4" />} onClick={onOpenTransfer}>{t("Transfer")}</ActionButton>
               {remixButton}
               {showSponsorSolicitOption && onOpenSponsorSolicit ? (
                 <ActionButton
-                  tone="blue"
                   icon={<Handshake className="h-4 w-4" />}
                   onClick={onOpenSponsorSolicit}
                   helpContent="Let sponsors bid on a license for this asset."
@@ -210,7 +207,6 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
                 {remixButton}
                 {showDealOption && onProposeDeal ? (
                   <ActionButton
-                    action="license"
                     icon={<HandCoins className="h-4 w-4" />}
                     onClick={onProposeDeal}
                     helpContent="Propose a license deal to the creator to use this work."
@@ -220,7 +216,6 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
                 ) : null}
                 {showSponsorOption && onOpenSponsorProposal ? (
                   <ActionButton
-                    tone="blue"
                     icon={<Handshake className="h-4 w-4" />}
                     onClick={onOpenSponsorProposal}
                     helpContent="Propose to sponsor this creator's work — pay them directly for a license, no escrow."
@@ -236,7 +231,7 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
         )}
 
         {myBid ? (
-          <Panel tone={["orange", "rose"]} className="px-4 py-3 flex items-center justify-between gap-3">
+          <Panel tone="orange" className="px-4 py-3 flex items-center justify-between gap-3">
             <div className="min-w-0 flex items-center gap-2.5">
               <HandCoins className="h-4 w-4 text-brand-orange shrink-0" />
               <div className="min-w-0">
@@ -278,7 +273,7 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
                       </div>
                     </div>
                   </div>
-                  <ActionButton small action="buy" icon={<CheckCircle className="h-3.5 w-3.5" />} disabled={isProcessing} onClick={() => onAcceptBid(bid)}>
+                  <ActionButton small icon={<CheckCircle className="h-3.5 w-3.5" />} disabled={isProcessing} onClick={() => onAcceptBid(bid)}>
                     {t("Accept")}
                   </ActionButton>
                 </div>

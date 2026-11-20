@@ -95,7 +95,7 @@ function ProvenanceEvent({ event, showAsset }: { event: ApiActivity; showAsset: 
 
   const thumb = (
     <span className="relative block h-14 w-14 shrink-0">
-      <span className="block h-full w-full overflow-hidden rounded-xl bg-gradient-to-br from-brand-blue/25 via-brand-purple/25 to-brand-rose/25">
+      <span className="block h-full w-full overflow-hidden rounded-xl bg-muted">
         {image ? (
           <Image src={image} alt="" width={56} height={56} className="h-full w-full object-cover" unoptimized />
         ) : null}

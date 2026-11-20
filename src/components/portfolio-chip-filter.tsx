@@ -24,7 +24,7 @@ export interface PortfolioChipFilterProps {
 const CHIP_CLASS =
   "shrink-0 rounded-full px-3.5 py-1.5 text-sm whitespace-nowrap transition-colors bg-background/40";
 const INACTIVE_CLASS = "bg-muted text-muted-foreground hover:text-foreground";
-const ACTIVE_CLASS = "bg-gradient-to-r from-brand-purple to-brand-orange text-white font-bold";
+const ACTIVE_CLASS = "bg-primary text-primary-foreground font-bold";
 
 export function PortfolioChipFilter({
   options,

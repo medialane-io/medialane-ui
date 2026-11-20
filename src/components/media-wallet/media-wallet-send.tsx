@@ -193,7 +193,6 @@ export function MediaWalletSend({
         </div>
 
         <ActionButton
-          action="offer"
           big
           onClick={openReview}
           disabled={status === "processing" || !composeReady}
@@ -274,7 +273,7 @@ export function MediaWalletSend({
               >
                 {t("Reject")}
               </button>
-              <ActionButton action="offer" big onClick={send} className="flex-1">
+              <ActionButton big onClick={send} className="flex-1">
                 {t("Confirm")}
               </ActionButton>
             </div>

@@ -13,7 +13,6 @@ import { assetHref as buildAssetHref, type ApiOrder, type Chain } from "@mediala
 import { useImageUrl } from "../utils/use-image-url.js";
 import { useT } from "../i18n/provider.js";
 import { ActionButton } from "./action-button.js";
-import { PANEL_INSET } from "./panel.js";
 
 type OrderWithAnimation = ApiOrder & { token: (ApiOrder["token"] & { animationUrl?: string | null }) | null };
 
@@ -74,7 +73,7 @@ export function ListingCard({ order: rawOrder, inCart = false, onBuy, onCart, ov
               imgError={imgError}
               onImageError={() => setImgError(true)}
               fallback={
-                <div className="absolute inset-0 bg-gradient-to-br from-brand-purple/15 to-brand-blue/15" />
+                <div className="absolute inset-0 bg-muted" />
               }
             />
           </div>
@@ -103,7 +102,7 @@ export function ListingCard({ order: rawOrder, inCart = false, onBuy, onCart, ov
             imgError={imgError}
             onImageError={() => setImgError(true)}
             fallback={
-              <div className="absolute inset-0 bg-gradient-to-br from-brand-purple/15 to-brand-blue/15" />
+              <div className="absolute inset-0 bg-muted" />
             }
           />
         </div>
@@ -120,39 +119,33 @@ export function ListingCard({ order: rawOrder, inCart = false, onBuy, onCart, ov
                 primaryAction ? (
                   primaryAction
                 ) : onBuy ? (
-                  <ActionButton small action="buy" icon={<Zap className="h-3.5 w-3.5 shrink-0" />} className="flex-1" onClick={(e) => { e.preventDefault(); onBuy(order); }}>
+                  <ActionButton ring small icon={<Zap className="h-4 w-4" />} className="flex-1" onClick={(e) => { e.preventDefault(); onBuy(order); }}>
                     {t("Buy")}
                   </ActionButton>
                 ) : (
-                  <Link
-                    href={assetHref}
-                    className={cn("flex-1 h-9 inline-flex items-center justify-center gap-1.5 rounded-xl text-xs font-semibold text-foreground", PANEL_INSET)}
-                  >
-                    <ArrowUpRight className="h-3.5 w-3.5 shrink-0" /> {t("View")}
+                  <ActionButton small asChild className="flex-1">
+                  <Link href={assetHref}>
+                    <ArrowUpRight className="h-4 w-4" /> {t("View")}
                   </Link>
+                </ActionButton>
                 )
               ) : (
-                <Link
-                  href={assetHref}
-                  className={cn("flex-1 h-9 inline-flex items-center justify-center gap-1.5 rounded-xl text-xs font-semibold text-foreground", PANEL_INSET)}
-                >
-                  <ArrowUpRight className="h-3.5 w-3.5 shrink-0" /> {t("View asset")}
-                </Link>
+                <ActionButton small asChild className="flex-1">
+                  <Link href={assetHref}>
+                    <ArrowUpRight className="h-4 w-4" /> {t("View asset")}
+                  </Link>
+                </ActionButton>
               )}
               {onCart && (
-                <button
-                  className={cn(
-                    "min-h-11 min-w-11 shrink-0 rounded-xl flex items-center justify-center transition-colors bg-background/40 hover:bg-background/70",
-                    inCart
-                      ? "border-brand-orange/50 bg-brand-orange/10 text-brand-orange"
-                      : "border-border bg-background hover:bg-muted text-foreground"
-                  )}
+                <ActionButton
+                  small
+                  className={cn("w-10 px-0 shrink-0", inCart && "text-brand-orange")}
                   onClick={(e) => { e.preventDefault(); if (!inCart) onCart(order); }}
                   disabled={inCart}
                   aria-label={inCart ? t("Added to cart") : t("Add to cart")}
                 >
-                  {inCart ? <Check className="h-3.5 w-3.5" /> : <ShoppingCart className="h-3.5 w-3.5" />}
-                </button>
+                  {inCart ? <Check className="h-4 w-4" /> : <ShoppingCart className="h-4 w-4" />}
+                </ActionButton>
               )}
               {overflowMenu}
             </div>
@@ -172,7 +165,7 @@ export function ListingCardSkeleton() {
           <div className="h-4 w-3/4 bg-muted animate-pulse rounded-full" />
           <div className="h-5 w-1/2 bg-muted animate-pulse rounded-full" />
         </div>
-        <div className="h-9 w-full bg-muted animate-pulse rounded-xl" />
+        <div className="h-10 w-full bg-muted animate-pulse rounded-xl" />
       </div>
     </div>
   );

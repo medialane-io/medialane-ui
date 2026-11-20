@@ -28,7 +28,7 @@ export function LevelJourneyList({ levels, className }: LevelJourneyListProps) {
             {(i + 1) % 10 === 0 && (
               <span
                 aria-hidden
-                className="h-1.5 w-1.5 rounded-full bg-gradient-to-r from-brand-orange to-brand-maeve"
+                className="h-1.5 w-1.5 rounded-full bg-brand-orange"
               />
             )}
           </span>

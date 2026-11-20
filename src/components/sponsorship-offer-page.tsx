@@ -161,7 +161,7 @@ export function SponsorshipOfferPage({ offerId }: { offerId: string }) {
                         <p className="text-sm font-medium">{shortenAddress(bid.sponsor)}</p>
                         <p className="text-xs text-muted-foreground">{format(bid.amount)}</p>
                       </div>
-                      <ActionButton small action="offer" disabled={busy} onClick={() => acceptBid(bid.sponsor)}>
+                      <ActionButton small disabled={busy} onClick={() => acceptBid(bid.sponsor)}>
                         {busy && activeSponsor === bid.sponsor ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : t("Accept")}
                       </ActionButton>
                     </div>

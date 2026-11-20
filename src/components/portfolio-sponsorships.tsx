@@ -71,7 +71,6 @@ function OfferBidsRow({ offer }: { offer: ApiSponsorshipOffer }) {
           <AddressDisplay address={bid.sponsor} chars={4} showCopy={false} className="text-muted-foreground" />
           <ActionButton
             small
-            action="offer"
             className="h-7 px-2.5"
             aria-label={t("Accept bid")}
             disabled={action.busy || !walletAddress}
@@ -126,7 +125,7 @@ function ReceivedProposals({ walletAddress }: { walletAddress: string }) {
             <Button size="sm" variant="soft" aria-label={t("Decline proposal")} disabled={action.busy} onClick={() => respond(p.proposalId, "reject")}>
               <Spinner active={action.busy && action.activeId === p.proposalId} idle={<X className="h-3 w-3" />} />
             </Button>
-            <ActionButton small action="offer" aria-label={t("Accept proposal")} disabled={action.busy} onClick={() => respond(p.proposalId, "accept")}>
+            <ActionButton small aria-label={t("Accept proposal")} disabled={action.busy} onClick={() => respond(p.proposalId, "accept")}>
               <Spinner active={action.busy && action.activeId === p.proposalId} idle={<CheckCircle2 className="h-3 w-3" />} />
             </ActionButton>
           </div>

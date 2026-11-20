@@ -34,7 +34,7 @@ import { useTransaction } from "../../utils/use-transaction.js";
 import { invalidatePortfolioCache } from "../../utils/portfolio-cache.js";
 import { useT } from "../../i18n/provider.js";
 import { ActionButton } from "../action-button.js";
-import { panelBackground } from "../panel.js";
+import { panelTint } from "../panel.js";
 
 export function RemixMint({ contract, tokenId }: { contract: string; tokenId: string }) {
   const t = useT();
@@ -416,7 +416,7 @@ export function RemixMint({ contract, tokenId }: { contract: string; tokenId: st
                 )}
               </div>
             </div>
-            <div className="panel p-4 space-y-3 text-sm" style={{ backgroundImage: panelBackground("blue") }}>
+            <div className="panel p-4 space-y-3 text-sm" style={panelTint("blue")}>
               <p className="font-semibold flex items-center gap-2"><Info className="h-4 w-4 text-primary" />{t("What happens next")}</p>
               <ol className="space-y-2 text-muted-foreground text-xs list-decimal list-inside">
                 <li>{t("Your artwork and metadata are uploaded to IPFS")}</li>

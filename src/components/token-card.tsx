@@ -9,7 +9,6 @@ import {
   DropdownMenu, DropdownMenuContent, DropdownMenuItem,
   DropdownMenuSeparator, DropdownMenuTrigger,
 } from "./dropdown-menu.js";
-import { cn } from "../utils/cn.js";
 import { formatDisplayPrice } from "../utils/format.js";
 import { CurrencyIcon } from "./currency-icon.js";
 import { PriceDisplay } from "./price-display.js";
@@ -22,10 +21,8 @@ import { tokenProfileLink } from "../utils/token-profile-link.js";
 import { useImageUrl } from "../utils/use-image-url.js";
 import { useT } from "../i18n/provider.js";
 import { ActionButton } from "./action-button.js";
-import { PANEL_INSET } from "./panel.js";
 
 
-const BTN_SOFT = cn("h-9 rounded-xl flex items-center justify-center gap-1.5 text-xs font-semibold text-foreground", PANEL_INSET);
 
 export interface TokenCardProps {
   token: ApiToken;
@@ -79,7 +76,7 @@ export function TokenCard({ token, isOwner = false, onReport, usdValue, ...handl
   };
 
   return (
-    <div className="panel overflow-hidden group relative flex flex-col w-full">
+    <div className="rounded-2xl bg-card overflow-hidden group relative flex flex-col w-full">
       {ipType && (
         <div className="absolute top-2 right-2 z-10">
           <IpTypeBadge ipType={ipType as any} size="sm" />
@@ -98,7 +95,7 @@ export function TokenCard({ token, isOwner = false, onReport, usdValue, ...handl
             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 22vw"
             className="object-cover"
             fallback={
-              <div className="absolute inset-0 bg-gradient-to-br from-brand-purple/15 to-brand-blue/15" />
+              <div className="absolute inset-0 bg-muted" />
             }
           />
 
@@ -134,35 +131,34 @@ export function TokenCard({ token, isOwner = false, onReport, usdValue, ...handl
 
       <div className="px-3 pb-3 flex items-center gap-1.5">
 
-        <Link href={assetHref} className={cn(BTN_SOFT, "px-2.5", hasPrimaryAction ? "shrink-0" : "flex-1")}>
-          <ArrowUpRight className="h-3.5 w-3.5" />
-          {t("View")}
-        </Link>
+        <ActionButton small asChild className={hasPrimaryAction ? "shrink-0" : "flex-1"}>
+          <Link href={assetHref}>
+            <ArrowUpRight className="h-4 w-4" />
+            {t("View")}
+          </Link>
+        </ActionButton>
 
         {isOwner ? (
           !listingOrder && onList ? (
-            <ActionButton small tone="purple" icon={<Tag className="h-3.5 w-3.5" />} className="flex-1" onClick={(e) => { e.preventDefault(); e.stopPropagation(); onList(token); }}>
+            <ActionButton small icon={<Tag className="h-4 w-4" />} className="flex-1" onClick={(e) => { e.preventDefault(); e.stopPropagation(); onList(token); }}>
               {t("Sell")}
             </ActionButton>
           ) : null
         ) : listingOrder && onBuy ? (
-          <ActionButton small action="buy" icon={<Zap className="h-3.5 w-3.5 shrink-0" />} className="flex-1" onClick={handleBuy}>
+          <ActionButton ring small icon={<Zap className="h-4 w-4" />} className="flex-1" onClick={handleBuy}>
             {t("Buy")}
           </ActionButton>
         ) : !listingOrder && onOffer ? (
-          <ActionButton small action="offer" icon={<HandCoins className="h-3.5 w-3.5" />} className="flex-1" onClick={handleOffer}>
+          <ActionButton small icon={<HandCoins className="h-4 w-4" />} className="flex-1" onClick={handleOffer}>
             {t("Offer")}
           </ActionButton>
         ) : null}
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <button
-              className={cn(BTN_SOFT, "w-9 p-0 shrink-0")}
-              aria-label={t("More actions")}
-            >
-              <MoreHorizontal className="h-3.5 w-3.5" />
-            </button>
+            <ActionButton small className="w-10 px-0 shrink-0" aria-label={t("More actions")}>
+              <MoreHorizontal className="h-4 w-4" />
+            </ActionButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-52">
 
@@ -288,7 +284,7 @@ export function TokenCard({ token, isOwner = false, onReport, usdValue, ...handl
 
 export function TokenCardSkeleton() {
   return (
-    <div className="panel overflow-hidden flex flex-col w-full">
+    <div className="rounded-2xl bg-card overflow-hidden flex flex-col w-full">
       <div className="aspect-square w-full animate-pulse bg-foreground/[0.04]" />
       <div className="px-3 pt-2.5 pb-4 space-y-1">
         <div className="h-5 w-3/4 rounded-xl animate-pulse bg-muted" />
@@ -297,9 +293,9 @@ export function TokenCardSkeleton() {
         </div>
       </div>
       <div className="px-3 pb-3 flex items-center gap-1.5">
-        <div className="h-8 w-[72px] rounded-xl animate-pulse bg-muted shrink-0" />
-        <div className="h-8 flex-1 rounded-xl animate-pulse bg-muted" />
-        <div className="h-8 w-8 rounded-xl animate-pulse bg-muted shrink-0" />
+        <div className="h-10 w-[76px] rounded-xl animate-pulse bg-muted shrink-0" />
+        <div className="h-10 flex-1 rounded-xl animate-pulse bg-muted" />
+        <div className="h-10 w-10 rounded-xl animate-pulse bg-muted shrink-0" />
       </div>
     </div>
   );

@@ -44,7 +44,7 @@ export function AssetCollectionBar({
     <Panel className="overflow-hidden p-4 space-y-3">
 
       <Link href={collectionHref} className="flex items-center gap-3 group min-w-0">
-        <div className="relative h-11 w-11 rounded-xl overflow-hidden shrink-0 bg-gradient-to-br from-brand-blue/20 to-brand-purple/20">
+        <div className="relative h-11 w-11 rounded-xl overflow-hidden shrink-0 bg-muted">
           {collectionImage ? (
             <Image src={collectionImage} alt="" fill className="object-cover" unoptimized />
           ) : null}
