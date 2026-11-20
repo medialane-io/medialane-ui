@@ -60,7 +60,7 @@ export function IpTypeBadge({ ipType, size = "sm", showLabel = false, className,
     (c) => c.label === ipType || c.apiValue === ipType
   );
   if (!config) return null;
-  const { icon: Icon, colorClass, bgClass, slug, label } = config;
+  const { icon: Icon, colorClass, slug, label } = config;
   const { container, icon } = SIZE[size];
   return (
     <a
@@ -68,8 +68,7 @@ export function IpTypeBadge({ ipType, size = "sm", showLabel = false, className,
       title={t(label)}
       className={cn(
         "inline-flex items-center justify-center rounded-full",
-        "transition-opacity hover:opacity-80",
-        bgClass,
+        "bg-background/40 transition-opacity hover:opacity-80",
         showLabel ? PILL[size] : container,
         className
       )}

@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.377.0] — 2026-11-20
+
+### Added
+
+- `ActionButton` `solid`: full-strength brand gradient with white text for the one primary action on a surface. The asset page "Buy now" uses it.
+
+### Changed
+
+- Brand panels are stronger (first colour at 32%, second at 16%) so they keep their colour over the artwork background.
+- `IpTypeBadge` sits on the shared pill surface (`bg-background/40`) with brand-coloured text and icon.
+
 ## [0.376.0] — 2026-11-20
 
 ### Added

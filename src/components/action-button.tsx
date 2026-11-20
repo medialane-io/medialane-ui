@@ -19,6 +19,9 @@ export interface ActionButtonProps extends React.ButtonHTMLAttributes<HTMLButton
   /** Compact size for actions inside list rows. */
   small?: boolean;
 
+  /** Full-strength gradient for the one primary action on a surface. */
+  solid?: boolean;
+
   ghost?: boolean;
 
   helpContent?: string;
@@ -30,6 +33,7 @@ export function ActionButton({
   icon,
   big,
   small,
+  solid,
   ghost,
   helpContent,
   disabled,
@@ -79,13 +83,14 @@ export function ActionButton({
       disabled={disabled}
       className={cn(
         "inline-flex items-center justify-center gap-2 font-semibold cursor-pointer whitespace-nowrap",
-        "text-foreground border-none transition-[filter] hover:brightness-125 disabled:opacity-40 disabled:pointer-events-none",
+        solid ? "text-white" : "text-foreground",
+        "border-none transition-[filter] hover:brightness-110 disabled:opacity-40 disabled:pointer-events-none",
         sizeClass,
         className,
       )}
-      style={{ backgroundImage: `linear-gradient(115deg, ${brandTint(from, 0.28)}, ${brandTint(to, 0.16)})`, ...style }}
+      style={{ backgroundImage: `linear-gradient(115deg, ${brandTint(from, solid ? 1 : 0.28)}, ${brandTint(to, solid ? 1 : 0.16)})`, ...style }}
     >
-      {icon && <span className="inline-flex" style={{ color: fg }}>{icon}</span>}
+      {icon && <span className="inline-flex" style={solid ? undefined : { color: fg }}>{icon}</span>}
       {children}
       {helpContent ? <HelpIcon content={helpContent} /> : null}
     </button>
