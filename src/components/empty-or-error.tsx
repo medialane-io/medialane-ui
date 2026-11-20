@@ -7,6 +7,7 @@ import { RefreshCw, AlertCircle } from "lucide-react";
 import { ReactNode } from "react";
 import { describeError } from "../utils/describe-error.js";
 import { useT } from "../i18n/provider.js";
+import { IconTile } from "./icon-tile.js";
 
 interface EmptyOrErrorProps {
   isLoading: boolean;
@@ -53,9 +54,9 @@ export function EmptyOrError({
   if (error) {
     return (
       <div className="py-16 text-center space-y-4">
-        <div className="h-14 w-14 rounded-xl bg-destructive/10 flex items-center justify-center mx-auto">
-          <AlertCircle className="h-7 w-7 text-destructive" />
-        </div>
+        <IconTile size="lg" destructive className="mx-auto">
+          <AlertCircle />
+        </IconTile>
         <p className="text-sm text-muted-foreground max-w-xs mx-auto">
           {describeError(error).message}
         </p>
@@ -73,9 +74,9 @@ export function EmptyOrError({
     return (
       <div className="py-16 text-center space-y-4">
         {emptyIcon && (
-          <div className="h-14 w-14 rounded-xl bg-muted flex items-center justify-center mx-auto">
+          <IconTile size="lg" className="mx-auto">
             {emptyIcon}
-          </div>
+          </IconTile>
         )}
         <p className="font-semibold text-lg">{t(emptyTitle)}</p>
         {emptyDescription && (

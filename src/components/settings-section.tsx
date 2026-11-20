@@ -2,6 +2,7 @@
 
 import type { ElementType, ReactNode } from "react";
 import { cn } from "../utils/cn.js";
+import { IconTile } from "./icon-tile.js";
 
 export function SectionCard({ children, className, id }: { children: ReactNode; className?: string; id?: string }) {
   return (
@@ -16,21 +17,17 @@ export function SectionHeader({
   title,
   description,
   badge,
-  iconClass = "text-muted-foreground",
-  bgClass = "bg-muted",
 }: {
   icon: ElementType;
   title: string;
   description?: string;
   badge?: ReactNode;
-  iconClass?: string;
-  bgClass?: string;
 }) {
   return (
     <div className="flex items-start gap-3 pb-1">
-      <div className={cn("h-8 w-8 rounded-2xl flex items-center justify-center shrink-0 mt-0.5", bgClass)}>
-        <Icon className={cn("h-4 w-4", iconClass)} />
-      </div>
+      <IconTile size="sm" className="mt-0.5">
+        <Icon />
+      </IconTile>
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2 flex-wrap">
           <h3 className="text-sm font-semibold text-foreground">{title}</h3>

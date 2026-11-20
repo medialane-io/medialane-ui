@@ -15,6 +15,7 @@ import { useT } from "../i18n/provider.js";
 import { msg } from "../i18n/translate.js";
 import { ActionButton } from "./action-button.js";
 import { panelTint } from "./panel.js";
+import { IconTile } from "./icon-tile.js";
 const FEATURES = [
   msg("No escrow — direct settlement"),
   msg("Owner-verified on-chain"),
@@ -108,9 +109,9 @@ export function SponsorshipOffersPage() {
           <FadeIn>
             <div className="panel relative overflow-hidden p-12 text-center space-y-4">
               <div className="flex justify-center">
-                <div className="h-16 w-16 rounded-2xl bg-brand-rose/8 flex items-center justify-center">
-                  <Handshake className="h-8 w-8 text-brand-rose/30" />
-                </div>
+                <IconTile size="lg">
+                  <Handshake />
+                </IconTile>
               </div>
               <div className="space-y-1">
                 <p className="font-semibold text-sm">{t("No open sponsorship offers yet")}</p>

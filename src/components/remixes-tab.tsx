@@ -6,6 +6,7 @@ import { GitBranch } from "lucide-react";
 import { useTokenRemixes } from "../utils/use-remix-offers.js";
 import { Skeleton } from "./skeleton.js";
 import { useT } from "../i18n/provider.js";
+import { IconTile } from "./icon-tile.js";
 
 export interface RemixesTabProps {
   contractAddress: string;
@@ -29,9 +30,9 @@ export function RemixesTab({ contractAddress, tokenId }: RemixesTabProps) {
   if (remixes.length === 0) {
     return (
       <div className="flex flex-col items-center gap-3 py-12 text-center">
-        <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
-          <GitBranch className="h-5 w-5 text-primary" />
-        </div>
+        <IconTile>
+          <GitBranch />
+        </IconTile>
         <p className="text-sm font-medium">{t("No remixes yet")}</p>
         <p className="text-xs text-muted-foreground">{t("Remix this asset to create the first derivative work.")}</p>
       </div>

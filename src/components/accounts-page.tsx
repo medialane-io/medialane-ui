@@ -13,6 +13,7 @@ import { shortenAddress } from "../utils/address.js";
 import { cn } from "../utils/cn.js";
 import { useT } from "../i18n/provider.js";
 import { useFormat } from "../i18n/use-format.js";
+import { IconTile } from "./icon-tile.js";
 
 const GRID = "grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4";
 const CHIP = "shrink-0 rounded-full px-3.5 py-1.5 text-sm font-medium transition-colors bg-background/40";
@@ -125,9 +126,9 @@ export function AccountsPage() {
           </>
         ) : (
           <div className="space-y-4 py-24 text-center">
-            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-muted">
-              <Users className="h-8 w-8 text-muted-foreground/40" />
-            </div>
+            <IconTile size="lg" className="mx-auto">
+              <Users />
+            </IconTile>
             <p className="text-lg font-semibold">{query ? `No accounts found for "${query}"` : t("No accounts found")}</p>
           </div>
         )}

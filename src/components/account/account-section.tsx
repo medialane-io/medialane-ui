@@ -1,31 +1,30 @@
 "use client";
 
 import type { ElementType, ReactNode } from "react";
-import { cn } from "../../utils/cn.js";
+import { IconTile } from "../icon-tile.js";
 
 export interface AccountSectionProps {
   icon: ElementType;
-  iconColor?: string;
-  iconBg?: string;
   title: string;
   description: string;
+  /** Red icon tile for irreversible actions. */
+  destructive?: boolean;
   children: ReactNode;
 }
 
 export function AccountSection({
   icon: Icon,
-  iconColor = "text-primary",
-  iconBg = "bg-primary/10",
   title,
   description,
+  destructive,
   children,
 }: AccountSectionProps) {
   return (
     <div className="panel p-5 sm:p-6 space-y-5">
       <div className="flex items-start gap-3">
-        <div className={cn("h-10 w-10 shrink-0 rounded-full flex items-center justify-center", iconBg)}>
-          <Icon className={cn("h-5 w-5", iconColor)} />
-        </div>
+        <IconTile destructive={destructive}>
+          <Icon />
+        </IconTile>
         <div>
           <h3 className="text-base font-bold text-foreground">{title}</h3>
           <p className="text-sm text-muted-foreground mt-0.5">{description}</p>

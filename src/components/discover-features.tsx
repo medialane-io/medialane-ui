@@ -21,13 +21,14 @@ import { ScrollSection } from "./scroll-section.js";
 import { cn } from "../utils/cn.js";
 import { useT } from "../i18n/provider.js";
 import { msg } from "../i18n/translate.js";
+import { IconTile } from "./icon-tile.js";
 
 const HUES = [
-  { text: "text-brand-blue", border: "border-brand-blue/30", tint: "bg-brand-blue/10" },
-  { text: "text-brand-maeve", border: "border-brand-maeve/30", tint: "bg-brand-maeve/10" },
-  { text: "text-brand-orange", border: "border-brand-orange/30", tint: "bg-brand-orange/10" },
-  { text: "text-brand-purple", border: "border-brand-purple/30", tint: "bg-brand-purple/10" },
-  { text: "text-brand-rose", border: "border-brand-rose/30", tint: "bg-brand-rose/10" },
+  { border: "border-brand-blue/30" },
+  { border: "border-brand-maeve/30" },
+  { border: "border-brand-orange/30" },
+  { border: "border-brand-purple/30" },
+  { border: "border-brand-rose/30" },
 ];
 
 const FEATURES: ReadonlyArray<{ icon: LucideIcon; title: string; description: string }> = [
@@ -60,9 +61,9 @@ export function DiscoverFeatures() {
               hue.border,
             )}
           >
-            <span className={cn("flex h-11 w-11 items-center justify-center rounded-xl", hue.tint)}>
-              <Icon className={cn("h-6 w-6", hue.text)} />
-            </span>
+            <IconTile>
+              <Icon />
+            </IconTile>
             <div className="flex flex-col gap-1.5">
               <h3 className="text-lg font-black leading-snug tracking-tight">{t(title)}</h3>
               <p className="text-sm leading-relaxed text-muted-foreground">{t(description)}</p>

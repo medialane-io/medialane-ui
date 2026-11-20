@@ -41,6 +41,7 @@ import {
 import { useT } from "../../i18n/provider.js";
 import { msg } from "../../i18n/translate.js";
 import { useFormat } from "../../i18n/use-format.js";
+import { IconTile } from "../icon-tile.js";
 
 export const REWARD_ACTION_LABELS: Record<string, string> = {
   complete_profile: msg("Complete profile"),
@@ -77,13 +78,11 @@ const BADGE_ICONS: Record<string, LucideIcon> = {
 const EARN_GROUPS: {
   title: string;
   textClass: string;
-  tileClass: string;
   items: { label: string; href: string; Icon: LucideIcon }[];
 }[] = [
   {
     title: msg("Create"),
     textClass: "text-brand-purple",
-    tileClass: "bg-brand-purple",
     items: [
       { label: msg("Create a collection"), href: "/launchpad/single-editions/collection", Icon: Layers },
       { label: msg("Mint an asset"), href: "/launchpad/single-editions", Icon: Palette },
@@ -95,7 +94,6 @@ const EARN_GROUPS: {
   {
     title: msg("Collect"),
     textClass: "text-brand-blue",
-    tileClass: "bg-brand-blue",
     items: [
       { label: msg("Collect an asset"), href: "/marketplace", Icon: ShoppingBag },
       { label: msg("Make an offer"), href: "/marketplace", Icon: Handshake },
@@ -106,7 +104,6 @@ const EARN_GROUPS: {
   {
     title: msg("Connect"),
     textClass: "text-brand-rose",
-    tileClass: "bg-brand-rose",
     items: [
       { label: msg("Start or join a club"), href: "/launchpad", Icon: UserRoundCheck },
       { label: msg("Open a sponsorship"), href: "/launchpad", Icon: Handshake },
@@ -265,9 +262,9 @@ function EarnMorePanel() {
                 href={href}
                 className="group flex flex-col gap-3 rounded-2xl bg-foreground/[0.04] hover:bg-foreground/[0.07] p-4 transition-colors"
               >
-                <span className={`flex h-10 w-10 items-center justify-center rounded-xl text-white shrink-0 ${group.tileClass}`}>
-                  <Icon className="h-5 w-5" />
-                </span>
+                <IconTile>
+                  <Icon />
+                </IconTile>
                 <span className="text-sm font-bold leading-snug text-foreground">{t(label)}</span>
               </Link>
             ))}

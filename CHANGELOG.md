@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.383.0] — 2026-11-20
+
+### Added
+
+- `IconTile`: an icon in the logo's shape, a white line icon on solid brand blue (`size` `sm` 32px, `md` 44px, `lg` 64px; `destructive` for errors and irreversible actions).
+- `AccountSection` `destructive` prop.
+
+### Changed
+
+- Every icon tile in the package uses `IconTile`: the command menu, launchpad service cards and strip, claim rails (included items and step numbers), settings and account sections, empty and error states, IP type pages, rewards, mint landing, gated content, comments, activity timeline and Media Wallet activity. Inline icons in buttons, menus and labels stay plain.
+
+### Removed
+
+- `ClaimRail` `includedAccentClass`, `stepAccentClass` and `trustAccentClass`; `AccountSection` `iconColor` and `iconBg`; `SectionHeader` `iconClass` and `bgClass`; the `text` and `tint` fields of `SERVICE_HUES`.
+
 ## [0.382.0] — 2026-11-20
 
 ### Changed

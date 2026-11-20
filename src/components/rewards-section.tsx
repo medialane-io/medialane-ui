@@ -4,6 +4,7 @@ import Link from "./link.js";
 import { ArrowRight, Zap, Coins, Gift } from "lucide-react";
 import { useT } from "../i18n/provider.js";
 import { msg } from "../i18n/translate.js";
+import { IconTile } from "./icon-tile.js";
 
 export interface RewardsSectionProps {
   rewardsHref: string;
@@ -52,9 +53,9 @@ export function RewardsSection({ rewardsHref }: RewardsSectionProps) {
         <div className="flex flex-col gap-4 lg:w-[300px] shrink-0 lg:border-l lg:border-border lg:pl-10">
           {pillars.map(({ icon: Icon, label, detail }) => (
             <div key={label} className="flex items-start gap-3.5">
-              <div className="flex h-9 w-9 items-center justify-center rounded-2xl bg-brand-orange/15 text-brand-orange shrink-0">
-                <Icon className="h-4 w-4" />
-              </div>
+              <IconTile size="sm">
+                <Icon />
+              </IconTile>
               <div className="min-w-0">
                 <p className="text-sm font-semibold text-foreground">{t(label)}</p>
                 <p className="text-xs text-muted-foreground leading-relaxed">{t(detail)}</p>

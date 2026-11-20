@@ -7,6 +7,7 @@ import { Button } from "./button.js";
 import { useConfetti } from "../utils/use-confetti.js";
 import type { useTransaction } from "../utils/use-transaction.js";
 import { useT } from "../i18n/provider.js";
+import { IconTile } from "./icon-tile.js";
 
 export interface TransactionDialogProps {
   tx: Pick<ReturnType<typeof useTransaction>, "phase" | "error" | "reset"> & { retryable?: boolean };
@@ -77,9 +78,9 @@ export function TransactionDialog({ tx, title, workingLabel, firstStepLabel = "P
 
         {failed && (
           <div className="flex flex-col items-center gap-5 py-2">
-            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-destructive/10">
-              <XCircle className="h-9 w-9 text-destructive" />
-            </div>
+            <IconTile size="lg" destructive>
+              <XCircle />
+            </IconTile>
             <div className="space-y-1 text-center">
               <p className="text-xl font-bold">{title}</p>
               <p className="mx-auto max-w-xs text-sm text-muted-foreground">{error}</p>

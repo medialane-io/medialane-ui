@@ -15,6 +15,7 @@ import { getLaunchpadService } from "../data/launchpad-services.js";
 import { useMyClubCollections, useMyTicketCollections } from "../utils/use-tiers.js";
 import { useT } from "../i18n/provider.js";
 import { msg } from "../i18n/translate.js";
+import { IconTile } from "./icon-tile.js";
 
 const KINDS = {
   tickets: {
@@ -63,9 +64,9 @@ export function ServiceCollectionsPage({ kind }: { kind: keyof typeof KINDS }) {
     </Button>
   );
   const iconTile = (
-    <div className={`flex h-16 w-16 items-center justify-center rounded-2xl ${config.tint}`}>
-      <Icon className="h-8 w-8" />
-    </div>
+    <IconTile size="lg">
+      <Icon />
+    </IconTile>
   );
 
   return (

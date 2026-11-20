@@ -11,6 +11,7 @@ import { cn } from "../utils/cn.js";
 import { emptyMessages } from "../utils/empty-messages.js";
 import { useT } from "../i18n/provider.js";
 import { useFormat } from "../i18n/use-format.js";
+import { IconTile } from "./icon-tile.js";
 
 const PAGE_SIZE = 30;
 
@@ -112,9 +113,9 @@ export function ActivitiesFeed() {
         <ActivityListSkeleton />
       ) : allActivities.length === 0 ? (
         <div className="py-20 flex flex-col items-center gap-3 text-center">
-          <div className="h-12 w-12 rounded-full bg-muted flex items-center justify-center">
-            <Zap className="h-5 w-5 text-muted-foreground" />
-          </div>
+          <IconTile>
+            <Zap />
+          </IconTile>
           {typeFilter ? (
             <p className="text-muted-foreground">{`No ${typeFilter} events yet.`}</p>
           ) : (

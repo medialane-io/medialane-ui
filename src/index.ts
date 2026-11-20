@@ -437,6 +437,7 @@ export { Skeleton } from "./components/skeleton.js";
 export { Badge, badgeVariants } from "./components/badge.js";
 export type { BadgeProps } from "./components/badge.js";
 export { Panel, Pill, panelTint, PANEL_INSET } from "./components/panel.js";
+export { IconTile, type IconTileProps } from "./components/icon-tile.js";
 export type { PanelProps, PanelColor, PillProps } from "./components/panel.js";
 export { Label } from "./components/label.js";
 export { Input } from "./components/input.js";

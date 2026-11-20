@@ -1,5 +1,6 @@
 import { cn } from "../../utils/cn.js";
 import { BadgeIcon } from "./badge-shelf.js";
+import { IconTile } from "../icon-tile.js";
 
 export interface BadgeCatalogBadge {
   key: string;
@@ -36,9 +37,9 @@ export function BadgeCatalog({ badges, className }: BadgeCatalogProps) {
               .filter((b) => b.category === cat)
               .map((badge) => (
                 <div key={badge.key} className="flex items-center gap-3 rounded-2xl bg-foreground/[0.04] p-4">
-                  <span className="flex h-10 w-10 items-center justify-center rounded-xl shrink-0 bg-brand-orange">
-                    <BadgeIcon name={badge.icon} color="#ffffff" className="h-5 w-5" />
-                  </span>
+                  <IconTile>
+                    <BadgeIcon name={badge.icon} color="#ffffff" />
+                  </IconTile>
                   <div className="min-w-0">
                     <p className="text-sm font-bold">{badge.name}</p>
                     <p className="text-xs text-foreground/60 truncate">{badge.description}</p>

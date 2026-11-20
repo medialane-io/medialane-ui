@@ -6,6 +6,7 @@ import { cn } from "../utils/cn.js";
 import { AssetPickerCell, isSameAsset } from "./asset-picker-cell.js";
 import { useT } from "../i18n/provider.js";
 import { ActionButton } from "./action-button.js";
+import { IconTile } from "./icon-tile.js";
 
 export interface OwnedAsset {
   contractAddress: string;
@@ -31,9 +32,9 @@ function MintPromoCard({ onMintClick }: { onMintClick: () => void }) {
   const t = useT();
   return (
     <div className="panel p-5 flex flex-col sm:flex-row sm:items-center gap-4">
-      <div className="h-11 w-11 rounded-xl bg-brand-purple flex items-center justify-center shrink-0">
-        <Sparkles className="h-5 w-5 text-white" />
-      </div>
+      <IconTile>
+        <Sparkles />
+      </IconTile>
       <div className="flex-1 min-w-0">
         <p className="text-sm font-bold text-foreground">{t("Mint your first asset")}</p>
         <p className="text-xs text-muted-foreground mt-0.5">{t("It becomes your avatar and app theme — ready in seconds.")}</p>
