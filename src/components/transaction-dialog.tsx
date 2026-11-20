@@ -84,7 +84,7 @@ export function TransactionDialog({ tx, title, workingLabel, firstStepLabel = "P
               <p className="text-xl font-bold">{title}</p>
               <p className="mx-auto max-w-xs text-sm text-muted-foreground">{error}</p>
             </div>
-            <Button variant="outline" className="w-full" onClick={reset}>
+            <Button variant="soft" className="w-full" onClick={reset}>
               {retryable ? t("Try again") : t("Close")}
             </Button>
           </div>

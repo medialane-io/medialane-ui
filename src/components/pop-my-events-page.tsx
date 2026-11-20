@@ -41,7 +41,7 @@ function MyEventCard({ collection }: { collection: ApiCollection }) {
         </p>
       </div>
       <div className="flex items-center gap-2 shrink-0">
-        <Button asChild variant="outline" size="sm">
+        <Button asChild variant="soft" size="sm">
           <Link href={`/launchpad/pop/${collection.contractAddress}/manage`}>
             <Settings className="h-3.5 w-3.5 mr-1" />
             {t("Manage")}

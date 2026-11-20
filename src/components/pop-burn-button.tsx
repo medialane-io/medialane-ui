@@ -50,7 +50,7 @@ export function PopBurnButton({ collectionAddress, tokenId, onBurned }: PopBurnB
       </p>
       {tx.phase === "error" && <p className="text-xs text-destructive">{tx.error}</p>}
       <div className="flex gap-2">
-        <Button variant="outline" size="sm" className="flex-1" disabled={busy} onClick={() => setConfirming(false)}>
+        <Button variant="soft" size="sm" className="flex-1" disabled={busy} onClick={() => setConfirming(false)}>
           {t("Keep it")}
         </Button>
         <Button variant="destructive" size="sm" className="flex-1" disabled={busy} onClick={remove}>

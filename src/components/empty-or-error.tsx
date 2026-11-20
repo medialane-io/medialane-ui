@@ -60,7 +60,7 @@ export function EmptyOrError({
           {describeError(error).message}
         </p>
         {onRetry && (
-          <Button variant="outline" size="sm" onClick={onRetry}>
+          <Button variant="soft" size="sm" onClick={onRetry}>
             <RefreshCw className="h-3.5 w-3.5 mr-1.5" />
             {t("Try again")}
           </Button>
@@ -83,7 +83,7 @@ export function EmptyOrError({
         )}
         <div className="flex items-center justify-center gap-3">
           {onRetry && (
-            <Button variant="outline" size="sm" onClick={onRetry}>
+            <Button variant="soft" size="sm" onClick={onRetry}>
               <RefreshCw className="h-3.5 w-3.5 mr-1.5" />
               {t("Refresh")}
             </Button>

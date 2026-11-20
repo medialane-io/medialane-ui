@@ -85,7 +85,7 @@ export { useConfetti } from "./utils/use-confetti.js";
 export { useOnOpen } from "./utils/use-on-open.js";
 export { useCoinGuarantees } from "./utils/use-coin-guarantees.js";
 export { useCoinSupply } from "./utils/use-coin-supply.js";
-export { BRAND, BRAND_COLOR, BRAND_GRADIENT, ACTION_GRADIENTS, ACTION_FOREGROUNDS } from "./data/brand.js";
+export { BRAND, BRAND_COLOR, BRAND_GRADIENT, ACTION_PAIRS, ACTION_FOREGROUNDS, brandTint } from "./data/brand.js";
 export { LIVING_RENDER_COLLECTIONS, isLivingRenderCollection } from "./data/living-render-collections.js";
 
 export { CurrencyIcon, CurrencyAmount } from "./components/currency-icon.js";
@@ -361,10 +361,8 @@ export type { LoadMoreSentinelProps } from "./components/load-more-sentinel.js";
 export { RewardsSection } from "./components/rewards-section.js";
 export type { RewardsSectionProps } from "./components/rewards-section.js";
 
-export { ActionButton } from "./components/action-button.js";
+export { ActionButton, actionFill } from "./components/action-button.js";
 export type { ActionButtonProps, ActionKey, ToneKey } from "./components/action-button.js";
-export { GradientButton } from "./components/gradient-button.js";
-export type { GradientButtonProps } from "./components/gradient-button.js";
 
 export { CoinLaunchPreview } from "./components/coin-launch-preview.js";
 export type { CoinPreviewData } from "./components/coin-launch-preview.js";

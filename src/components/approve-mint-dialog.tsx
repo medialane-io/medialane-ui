@@ -13,6 +13,7 @@ import { isBusyPhase, type TransactionPhase } from "../utils/use-transaction.js"
 import { formatDisplayPrice } from "../utils/format.js";
 import { successMessages } from "../utils/success-messages.js";
 import { useT } from "../i18n/provider.js";
+import { ActionButton } from "./action-button.js";
 
 export interface ApproveMintDialogProps {
   offer: ApiRemixOffer | null;
@@ -135,14 +136,10 @@ export function ApproveMintDialog({ offer, open, onOpenChange, collections, foot
           </div>
 
           <div className="px-5 pt-3 pb-5 border-t border-border/60 space-y-3">
-            <button
-              className="w-full h-11 rounded-[11px] bg-brand-purple text-white text-sm font-semibold flex items-center justify-center gap-2 hover:brightness-110 active:scale-[0.98] transition-all disabled:opacity-50"
-              onClick={() => { if (selected) onApprove(selected, effectiveName); }}
-              disabled={busy || !selected}
-            >
+            <ActionButton solid onClick={() => { if (selected) onApprove(selected, effectiveName); }} disabled={busy || !selected} className="w-full">
               {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <GitBranch className="h-4 w-4" />}
               {t("Grant license & mint")}
-            </button>
+            </ActionButton>
             <p className="text-2xs text-center text-muted-foreground">{footerNote}</p>
           </div>
         </TransactionDialogStates>

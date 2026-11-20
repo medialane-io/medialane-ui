@@ -5,7 +5,7 @@ import { CheckCircle2, Loader2, RotateCcw, XCircle } from "lucide-react";
 import { dropHref } from "@medialane/sdk";
 import { buildPopAllowlist, dropClaimLinks, popClaimLinksCsv, type PopClaimLink } from "@medialane/sdk/starknet";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "../../dialog.js";
-import { GradientButton } from "../../gradient-button.js";
+import { ActionButton } from "../../action-button.js";
 import { Button } from "../../button.js";
 import { ShareButton } from "../../share-button.js";
 import { describeError } from "../../../utils/describe-error.js";
@@ -126,7 +126,7 @@ export function LaunchDialog({ open, onClose, draft }: { open: boolean; onClose:
               <Row label={t("Who can mint")} value={list ? `${Object.keys(list.proofs).length} wallets on a list` : "Everyone"} />
               <p className="pt-1 text-xs text-muted-foreground">{t("The artwork and these terms can't be changed after launch. You can change the list later.")}</p>
             </div>
-            <GradientButton big onClick={() => void run()}>{t("Launch drop")}</GradientButton>
+            <ActionButton solid big onClick={() => void run()} className="w-full">{t("Launch drop")}</ActionButton>
           </>
         )}
         {step.kind === "uploading" && (
@@ -155,10 +155,10 @@ export function LaunchDialog({ open, onClose, draft }: { open: boolean; onClose:
             <DialogTitle className="flex items-center gap-2 text-lg font-semibold"><CheckCircle2 className="h-5 w-5 text-green-500" />{t("Your drop is live")}</DialogTitle>
             {step.warning && <p className="text-sm text-brand-orange">{step.warning}</p>}
             <div className="flex flex-wrap gap-2">
-              <ShareButton title={draft.name} url={`${window.location.origin}${dropHref(step.collection)}`} variant="outline" />
-              <Button asChild variant="outline"><a href={dropHref(step.collection)}>{t("View drop")}</a></Button>
+              <ShareButton title={draft.name} url={`${window.location.origin}${dropHref(step.collection)}`} variant="soft" />
+              <Button asChild variant="soft"><a href={dropHref(step.collection)}>{t("View drop")}</a></Button>
               {step.links.length > 0 && (
-                <Button variant="outline" onClick={() => downloadCsv(popClaimLinksCsv(step.links), "claim-links.csv")}>{t("Download claim links")}</Button>
+                <Button variant="soft" onClick={() => downloadCsv(popClaimLinksCsv(step.links), "claim-links.csv")}>{t("Download claim links")}</Button>
               )}
             </div>
             {step.links.length > 0 && <p className="text-xs text-muted-foreground">{t("Send each wallet its link — the link is what lets it mint.")}</p>}

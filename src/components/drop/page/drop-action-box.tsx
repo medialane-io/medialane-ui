@@ -3,7 +3,7 @@
 import { Minus, Plus } from "lucide-react";
 import { DropCountdown } from "../../drop-countdown.js";
 import { DropStatusBadge, DropSupplyProgress } from "../drop-status.js";
-import { GradientButton } from "../../gradient-button.js";
+import { ActionButton } from "../../action-button.js";
 import type { ActionBoxView } from "../../../utils/drop/view.js";
 import { useT } from "../../../i18n/provider.js";
 import { useFormat } from "../../../i18n/use-format.js";
@@ -47,9 +47,9 @@ export function DropActionBox({ view, minted, maxSupply, quantity, onQuantity, o
       </div>
       {view.totalText && <p className="text-sm text-muted-foreground">{view.totalText}</p>}
       {view.eligibility && <p className="text-sm">{view.eligibility}</p>}
-      <GradientButton big disabled={view.button.action === "none"} onClick={onAction} className="disabled:opacity-50">
+      <ActionButton solid big disabled={view.button.action === "none"} onClick={onAction} className="w-full">
         {t(view.button.label)}
-      </GradientButton>
+      </ActionButton>
     </div>
   );
 }

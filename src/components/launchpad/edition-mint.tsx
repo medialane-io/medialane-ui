@@ -151,7 +151,7 @@ export function EditionMint({ contract: rawContract, aside }: { contract: string
           <Sparkles className="h-10 w-10 text-muted-foreground mx-auto" />
           <h1 className="text-2xl font-bold">{t("Not the owner")}</h1>
           <p className="text-muted-foreground">{t("Only the collection owner can mint tokens. Connect the wallet that deployed this collection.")}</p>
-          <Button asChild variant="outline">
+          <Button asChild variant="soft">
             <Link href="/launchpad">{t("Back to Launchpad")}</Link>
           </Button>
         </div>

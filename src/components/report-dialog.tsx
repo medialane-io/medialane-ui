@@ -113,8 +113,8 @@ export function ReportDialog({ target, open, onOpenChange }: ReportDialogProps) 
             <AlertCircle className="h-10 w-10 text-destructive" />
             <p className="text-sm text-muted-foreground">{submitError}</p>
             <div className="flex gap-2 w-full">
-              <Button variant="outline" className="flex-1" onClick={() => { setSubmitStep("idle"); setSubmitError(null); }}>{t("Try again")}</Button>
-              <Button variant="outline" className="flex-1" onClick={close}>{t("Dismiss")}</Button>
+              <Button variant="soft" className="flex-1" onClick={() => { setSubmitStep("idle"); setSubmitError(null); }}>{t("Try again")}</Button>
+              <Button variant="soft" className="flex-1" onClick={close}>{t("Dismiss")}</Button>
             </div>
           </div>
         ) : (

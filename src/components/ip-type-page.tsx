@@ -330,7 +330,7 @@ export function IpTypePage({ slug, useMarketActions }: IpTypePageProps) {
                 : t(emptyMessages.assetsOfType.description)}
             </p>
           </div>
-          <Button asChild variant="outline">
+          <Button asChild variant="soft">
             <Link href="/launchpad/single-editions">{t("Create asset")}</Link>
           </Button>
         </div>

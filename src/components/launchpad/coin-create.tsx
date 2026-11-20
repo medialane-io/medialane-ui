@@ -25,7 +25,7 @@ import { Label } from "../label.js";
 import { Textarea } from "../textarea.js";
 import { CoinLaunchPreview, type CoinPreviewData } from "../coin-launch-preview.js";
 import { CurrencyAmount, CurrencyIcon } from "../currency-icon.js";
-import { GradientButton } from "../gradient-button.js";
+import { ActionButton } from "../action-button.js";
 import { ClaimRouteShell } from "../claim-route-shell.js";
 import { TransactionSuccess } from "../transaction-success.js";
 import { TransactionDialog } from "../transaction-dialog.js";
@@ -403,14 +403,15 @@ export function CoinCreate({ aside, tradeHref }: CoinCreateProps) {
           <div className="h-px bg-border/60" />
 
           <section className="space-y-4">
-              <GradientButton
+              <ActionButton
+                solid
                 big
                 onClick={handleLaunchClick}
                 disabled={!canLaunch || tx.phase !== "idle"}
-                className={!canLaunch || tx.phase !== "idle" ? "opacity-40 pointer-events-none" : ""}
+                className="w-full"
               >
                 {tx.phase !== "idle" ? <><Loader2 className="h-4 w-4 mr-1.5 animate-spin" /> {t("Launching…")}</> : <>{t("Launch your coin")} <ArrowRight className="h-4 w-4 ml-1.5" /></>}
-              </GradientButton>
+              </ActionButton>
               <p className="text-xs text-muted-foreground text-center">
                 <Link href="/claim/memecoin" className="underline active:text-foreground">
                   {t("Already launched a coin? Claim it instead.")}

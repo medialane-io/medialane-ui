@@ -46,7 +46,7 @@ export function DropItemList({ items, collectionName, onAddFiles, onRemove, onEd
             e.target.value = "";
           }}
         />
-        <Button type="button" variant="outline" size="sm" onClick={() => inputRef.current?.click()}>
+        <Button type="button" variant="soft" size="sm" onClick={() => inputRef.current?.click()}>
           <ImagePlus className="h-3.5 w-3.5 mr-1.5" /> {t("Add images")}
         </Button>
       </div>

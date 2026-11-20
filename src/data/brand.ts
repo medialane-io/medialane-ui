@@ -78,13 +78,6 @@ export const TONE_PAIRS = {
   rose: ["rose", "orange"],
 } as const satisfies Record<string, Pair>;
 
-const loop = ([a, b]: Pair): [string, string, string] => [BRAND_COLOR[a], BRAND_COLOR[b], BRAND_COLOR[a]];
-const mapPairs = <K extends string>(pairs: Record<K, Pair>, fn: (pair: Pair) => [string, string, string] | string) =>
-  Object.fromEntries(Object.entries<Pair>(pairs).map(([key, pair]) => [key, fn(pair)]));
-
-export const ACTION_GRADIENTS = mapPairs(ACTION_PAIRS, loop) as Record<keyof typeof ACTION_PAIRS, [string, string, string]>;
-export const TONE_GRADIENTS = mapPairs(TONE_PAIRS, loop) as Record<keyof typeof TONE_PAIRS, [string, string, string]>;
-
 export const ACTION_FOREGROUNDS: Record<keyof typeof ACTION_PAIRS, string> = {
   buy: BRAND_COLOR.blue,
   submit: BRAND_COLOR.purple,

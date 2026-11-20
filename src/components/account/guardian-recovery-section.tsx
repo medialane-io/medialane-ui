@@ -120,12 +120,12 @@ export function GuardianRecoverySection({
             )}
           </div>
           {status?.kind === "none" && sealed && (
-            <Button onClick={() => setAddOpen(true)} variant="outline" size="sm" disabled={!guardianRecoveryAvailable}>
+            <Button onClick={() => setAddOpen(true)} variant="soft" size="sm" disabled={!guardianRecoveryAvailable}>
               {t("Add guardian")}
             </Button>
           )}
           {status?.kind === "active" && (
-            <Badge variant="outline" className="border-emerald-500/40 text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 text-2xs">
+            <Badge variant="soft" className="border-emerald-500/40 text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 text-2xs">
               {t("Configured")}
             </Badge>
           )}

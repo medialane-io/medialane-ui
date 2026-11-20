@@ -11,7 +11,6 @@ export interface CollectionCreatePreset {
   service: "ip-club" | "ip-tickets" | "mip-erc1155" | null;
   icon: ElementType;
   iconClass: string;
-  buttonClass: string;
   signedOut: { title: string; description: string };
   shell: { title: string; subtitle: string };
   dialog: { title: string; workingLabel: string; firstStepLabel: string };
@@ -44,7 +43,6 @@ export const CLUB_PRESET: CollectionCreatePreset = {
   service: "ip-club",
   icon: Users,
   iconClass: "text-brand-purple",
-  buttonClass: "bg-brand-purple",
   signedOut: { title: msg("Secure your account to create a club"), description: msg("Create a club, then mint membership cards for your community.") },
   shell: { title: msg("Create club"), subtitle: msg("One club — create membership tiers and mint cards to your community.") },
   dialog: { title: msg("Create club"), workingLabel: msg("Creating your club…"), firstStepLabel: msg("Prepare metadata") },
@@ -70,7 +68,6 @@ export const TICKETS_PRESET: CollectionCreatePreset = {
   service: "ip-tickets",
   icon: Ticket,
   iconClass: "text-teal-500",
-  buttonClass: "bg-teal-600",
   signedOut: { title: msg("Secure your account to create tickets"), description: msg("Create a tickets collection, then mint tickets to your audience.") },
   shell: { title: msg("Create ticket collection"), subtitle: msg("One collection — create tickets and mint them to your audience.") },
   dialog: { title: msg("Create tickets collection"), workingLabel: msg("Creating your collection…"), firstStepLabel: msg("Prepare metadata") },
@@ -96,7 +93,6 @@ export const EDITIONS_PRESET: CollectionCreatePreset = {
   service: "mip-erc1155",
   icon: Layers,
   iconClass: "text-brand-purple",
-  buttonClass: "bg-brand-purple",
   signedOut: { title: msg("Secure your account to create a collection"), description: msg("Create a collection where each piece can have multiple editions.") },
   shell: { title: msg("Create an edition collection"), subtitle: msg("Create a collection where each piece can have multiple editions — free to publish, and it's yours.") },
   dialog: { title: msg("Create collection"), workingLabel: msg("Creating your collection…"), firstStepLabel: msg("Prepare metadata") },
@@ -130,7 +126,6 @@ export const SINGLE_PRESET: CollectionCreatePreset = {
   service: null,
   icon: Layers,
   iconClass: "text-brand-blue",
-  buttonClass: "bg-brand-blue",
   signedOut: { title: msg("Secure your account to create a collection"), description: msg("Set up a collection to mint your work into.") },
   shell: { title: msg("Create a collection"), subtitle: msg("Set up a collection to mint your work into — free to publish, and it's yours.") },
   dialog: { title: msg("Create collection"), workingLabel: msg("Creating your collection…"), firstStepLabel: msg("Prepare metadata") },

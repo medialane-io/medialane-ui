@@ -33,6 +33,7 @@ import { useImageUrl } from "../../utils/use-image-url.js";
 import { useTransaction } from "../../utils/use-transaction.js";
 import { invalidatePortfolioCache } from "../../utils/portfolio-cache.js";
 import { useT } from "../../i18n/provider.js";
+import { ActionButton } from "../action-button.js";
 
 export function RemixMint({ contract, tokenId }: { contract: string; tokenId: string }) {
   const t = useT();
@@ -234,7 +235,7 @@ export function RemixMint({ contract, tokenId }: { contract: string; tokenId: st
     return (
       <div className="max-w-5xl mx-auto px-4 py-24 text-center space-y-4">
         <p className="text-2xl font-bold">{t("Asset not found")}</p>
-        <Button asChild variant="outline"><Link href="/">{t("Go home")}</Link></Button>
+        <Button asChild variant="soft"><Link href="/">{t("Go home")}</Link></Button>
       </div>
     );
   }
@@ -320,7 +321,7 @@ export function RemixMint({ contract, tokenId }: { contract: string; tokenId: st
               ) : eligibleCollections.length === 0 ? (
                 <div className="rounded-lg border border-dashed border-border p-4 text-center space-y-2">
                   <p className="text-sm text-muted-foreground">{t("No eligible collections. Create one first.")}</p>
-                  <Button size="sm" variant="outline" asChild>
+                  <Button size="sm" variant="soft" asChild>
                     <Link href="/launchpad/single-editions/collection"><Plus className="h-3.5 w-3.5 mr-1.5" />{t("Create collection")}</Link>
                   </Button>
                 </div>
@@ -385,17 +386,9 @@ export function RemixMint({ contract, tokenId }: { contract: string; tokenId: st
 
             {formError && <p role="alert" className="text-sm text-destructive">{formError}</p>}
 
-            <div className="btn-border-animated p-[1px] rounded-xl">
-              <button
-                type="button"
-                disabled={tx.phase !== "idle"}
-                onClick={handleSubmit}
-                className="w-full h-12 rounded-[11px] flex items-center justify-center gap-2 text-base font-semibold text-white transition-all hover:brightness-110 active:scale-[0.98] bg-brand-rose disabled:opacity-50"
-              >
-                <GitBranch className="h-5 w-5" />
-                {t("Mint remix")}
-              </button>
-            </div>
+            <ActionButton solid big type="button" disabled={tx.phase !== "idle"} onClick={handleSubmit} icon={<GitBranch className="h-5 w-5" />} className="w-full">
+              {t("Mint remix")}
+            </ActionButton>
             <p className="text-xs text-center text-muted-foreground">{t("Two operations: IPFS metadata upload + on-chain mint. Gas is free.")}</p>
           </div>
 

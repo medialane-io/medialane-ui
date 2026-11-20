@@ -24,6 +24,7 @@ import { useToken, useTokenBalance } from "../utils/use-tokens.js";
 import { useCollection } from "../utils/use-collections.js";
 import { ChevronLeft, ChevronDown, Shield, DollarSign, Percent, HandCoins, Loader2, Check } from "lucide-react";
 import { useT } from "../i18n/provider.js";
+import { ActionButton } from "./action-button.js";
 
 const TOKENS = getListableTokens();
 
@@ -115,7 +116,7 @@ export function LicenseRequestPage({ contract, tokenId }: { contract: string; to
     return (
       <div className="max-w-2xl mx-auto px-4 py-24 text-center space-y-4">
         <p className="text-2xl font-bold">{t("Asset not found")}</p>
-        <Button asChild variant="outline"><Link href="/">{t("Go home")}</Link></Button>
+        <Button asChild variant="soft"><Link href="/">{t("Go home")}</Link></Button>
       </div>
     );
   }
@@ -166,7 +167,7 @@ export function LicenseRequestPage({ contract, tokenId }: { contract: string; to
           </div>
           <p className="text-lg font-semibold">{t("License request sent")}</p>
           <p className="text-sm text-muted-foreground">{t("The creator will review it. Track it under Portfolio → Licensing.")}</p>
-          <Button asChild variant="outline"><Link href="/portfolio/licensing">{t("View my requests")}</Link></Button>
+          <Button asChild variant="soft"><Link href="/portfolio/licensing">{t("View my requests")}</Link></Button>
         </div>
       ) : (
         <>
@@ -225,14 +226,10 @@ export function LicenseRequestPage({ contract, tokenId }: { contract: string; to
 
           {error && <p className="text-sm text-destructive">{error}</p>}
 
-          <button
-            className="w-full h-12 rounded-[11px] bg-brand-purple text-white text-sm font-semibold flex items-center justify-center gap-2 hover:brightness-110 active:scale-[0.98] transition-all disabled:opacity-50"
-            onClick={handleSubmit}
-            disabled={loading}
-          >
+          <ActionButton solid big onClick={handleSubmit} disabled={loading} className="w-full">
             {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : <HandCoins className="h-5 w-5" />}
             {t("Send license request")}
-          </button>
+          </ActionButton>
         </>
       )}
     </div>

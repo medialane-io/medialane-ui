@@ -11,7 +11,6 @@ export interface TierMintPreset {
   traitType: string;
   icon: ElementType;
   iconClass: string;
-  buttonClass: string;
   hoverBorderClass: string;
   uploadedClass: string;
   suggestExternalLink: boolean;
@@ -41,7 +40,6 @@ export const CLUB_TIER_PRESET: TierMintPreset = {
   traitType: "IP Club Membership",
   icon: Users,
   iconClass: "text-brand-purple",
-  buttonClass: "bg-brand-purple",
   hoverBorderClass: "hover:border-brand-purple/50",
   uploadedClass: "text-brand-purple",
   suggestExternalLink: false,
@@ -74,7 +72,6 @@ export const TICKETS_TIER_PRESET: TierMintPreset = {
   traitType: "IP Ticket",
   icon: Ticket,
   iconClass: "text-teal-500",
-  buttonClass: "bg-teal-600",
   hoverBorderClass: "hover:border-teal-500/50",
   uploadedClass: "text-teal-500",
   suggestExternalLink: true,

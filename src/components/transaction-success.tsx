@@ -47,7 +47,7 @@ export function TransactionSuccess({ name, image, title, description, txHash, ac
 
       <div className="flex w-full flex-col gap-2">
         {shown.map((action, i) => (
-          <Button key={action.label} asChild={!!action.href} variant={i === 0 ? "default" : "outline"} className="w-full" onClick={action.onClick}>
+          <Button key={action.label} asChild={!!action.href} variant={i === 0 ? "default" : "soft"} className="w-full" onClick={action.onClick}>
             {action.href ? <Link href={action.href}>{action.label}</Link> : action.label}
           </Button>
         ))}

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { CheckCircle2, Loader2, XCircle } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "../../dialog.js";
-import { GradientButton } from "../../gradient-button.js";
+import { ActionButton } from "../../action-button.js";
 import { Button } from "../../button.js";
 import { describeError } from "../../../utils/describe-error.js";
 import { useT } from "../../../i18n/provider.js";
@@ -44,7 +44,7 @@ export function DropMintDialog({
           <>
             <DialogTitle className="text-lg font-semibold">{t("Mint {quantity} from {name}", { quantity: quantity.toString(), name })}</DialogTitle>
             {totalText && <p className="text-sm text-muted-foreground">{totalText}</p>}
-            <GradientButton big onClick={() => void mint()}>{t("Confirm mint")}</GradientButton>
+            <ActionButton solid big onClick={() => void mint()} className="w-full">{t("Confirm mint")}</ActionButton>
           </>
         )}
         {step.kind === "minting" && <DialogTitle className="flex items-center gap-2 text-lg font-semibold"><Loader2 className="h-4 w-4 animate-spin" />{t("Minting…")}</DialogTitle>}

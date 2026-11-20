@@ -81,7 +81,7 @@ export function DropManage({ contract, indexed, onchain, mints, run, saveExclusi
         {parsed.invalid.length > 0 && <p className="text-xs text-destructive">{t("{count} line(s) aren't wallet addresses: {value}", { count: parsed.invalid.length, value: parsed.invalid.slice(0, 3).join(", ") })}</p>}
         <div className="flex flex-wrap gap-2">
           {list && sameList && (
-            <Button variant="outline" onClick={() => setLinks(dropClaimLinks(window.location.origin, contract, list))}>{t("This is your current list — get its claim links")}</Button>
+            <Button variant="soft" onClick={() => setLinks(dropClaimLinks(window.location.origin, contract, list))}>{t("This is your current list — get its claim links")}</Button>
           )}
           {list && !sameList && parsed.invalid.length === 0 && (
             <Button onClick={() => setPending({
@@ -91,13 +91,13 @@ export function DropManage({ contract, indexed, onchain, mints, run, saveExclusi
             })}>{t("Publish this list")}</Button>
           )}
           {listed && (
-            <Button variant="outline" onClick={() => setPending({
+            <Button variant="soft" onClick={() => setPending({
               title: t("Drop opened to everyone"),
               body: t("Anyone will be able to mint, with or without a claim link."),
               act: () => run({ action: "set_allowlist_root", root: "0x0" }),
             })}>{t("Open to everyone")}</Button>
           )}
-          {links.length > 0 && <Button variant="outline" onClick={() => downloadCsv(popClaimLinksCsv(links), "claim-links.csv")}>{t("Download claim links")}</Button>}
+          {links.length > 0 && <Button variant="soft" onClick={() => downloadCsv(popClaimLinksCsv(links), "claim-links.csv")}>{t("Download claim links")}</Button>}
         </div>
       </section>
 
@@ -122,7 +122,7 @@ export function DropManage({ contract, indexed, onchain, mints, run, saveExclusi
         <h3 className="text-sm font-semibold">{t("Share")}</h3>
         <div className="flex gap-2">
           <Input readOnly value={shareUrl} />
-          <ShareButton title={indexed?.name ?? t("Drop")} url={shareUrl} variant="outline" />
+          <ShareButton title={indexed?.name ?? t("Drop")} url={shareUrl} variant="soft" />
         </div>
       </section>
 
@@ -131,7 +131,7 @@ export function DropManage({ contract, indexed, onchain, mints, run, saveExclusi
         <ExclusiveFields value={exclusive} onChange={setExclusive} />
         <div className="flex gap-2">
           <Button disabled={!/^https:\/\//.test(exclusive.url)} onClick={() => setPending({ title: t("Exclusive content saved"), body: t("Holders will see this link."), act: () => saveExclusive(exclusive) })}>{t("Save")}</Button>
-          <Button variant="outline" onClick={() => setPending({ title: t("Exclusive content removed"), body: t("Holders will no longer see a link."), act: () => saveExclusive(null) })}>{t("Remove")}</Button>
+          <Button variant="soft" onClick={() => setPending({ title: t("Exclusive content removed"), body: t("Holders will no longer see a link."), act: () => saveExclusive(null) })}>{t("Remove")}</Button>
         </div>
       </section>
 
@@ -140,7 +140,7 @@ export function DropManage({ contract, indexed, onchain, mints, run, saveExclusi
           <DialogTitle className="sr-only">{t("Confirm")}</DialogTitle>
           <DialogDescription className="text-sm text-foreground">{pending?.body}</DialogDescription>
           <div className="flex justify-end gap-2">
-            <Button variant="outline" disabled={busy} onClick={() => setPending(null)}>{t("Cancel")}</Button>
+            <Button variant="soft" disabled={busy} onClick={() => setPending(null)}>{t("Cancel")}</Button>
             <Button disabled={busy} onClick={() => void confirm()}>{busy ? t("Working…") : t("Confirm")}</Button>
           </div>
         </DialogContent>

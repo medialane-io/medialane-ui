@@ -14,7 +14,7 @@ import { DropActionBox } from "./drop-action-box.js";
 import { DropActivityList } from "./drop-activity.js";
 import { DropManage } from "./drop-manage.js";
 import { DropMintDialog } from "./drop-mint-dialog.js";
-import { GradientButton } from "../../gradient-button.js";
+import { ActionButton } from "../../action-button.js";
 import { useCollectionTokens } from "../../../utils/use-collections.js";
 import { useDrop, useDropChain, useDropFee, useDropFile, useDropMints } from "../../../utils/use-drops.js";
 import { useNow } from "../../../utils/drop/use-now.js";
@@ -89,7 +89,7 @@ export function DropPage(props: { contract: string; initialTab?: string; portfol
               <h1 className="text-3xl font-semibold">{name}</h1>
               {onchain && <CreatorChip address={onchain.organizer} />}
             </div>
-            <ShareButton title={name} variant="outline" size="sm" />
+            <ShareButton title={name} variant="soft" size="sm" />
           </div>
           {view && onchain && (
             <div className="hidden lg:block">
@@ -103,7 +103,7 @@ export function DropPage(props: { contract: string; initialTab?: string; portfol
         <div className="lg:hidden">
           <DropActionBox view={view} minted={onchain.totalMinted} maxSupply={onchain.maxSupply} quantity={quantity} onQuantity={setQuantity} onAction={onAction} />
           <div className="fixed inset-x-0 bottom-0 z-30 border-t border-border bg-background/95 p-3 backdrop-blur">
-            <GradientButton disabled={view.button.action === "none"} onClick={onAction}>{t(view.button.label)}</GradientButton>
+            <ActionButton solid disabled={view.button.action === "none"} onClick={onAction} className="w-full">{t(view.button.label)}</ActionButton>
           </div>
         </div>
       )}

@@ -18,6 +18,7 @@ import { useTransaction } from "../utils/use-transaction.js";
 import { useT } from "../i18n/provider.js";
 import type { T } from "../i18n/make-t.js";
 import { msg } from "../i18n/translate.js";
+import { ActionButton } from "./action-button.js";
 
 type Api = ReturnType<ReturnType<typeof useMedialaneApp>["getClient"]>["api"];
 
@@ -68,9 +69,10 @@ function OfferBidsRow({ offer }: { offer: ApiSponsorshipOffer }) {
       {bids.map((bid) => (
         <div key={bid.id} className="flex items-center justify-between gap-2 text-xs">
           <AddressDisplay address={bid.sponsor} chars={4} showCopy={false} className="text-muted-foreground" />
-          <Button
-            size="sm"
-            className="bg-brand-rose hover:brightness-110 text-white h-7 px-2.5"
+          <ActionButton
+            small
+            action="offer"
+            className="h-7 px-2.5"
             aria-label={t("Accept bid")}
             disabled={action.busy || !walletAddress}
             onClick={() =>
@@ -82,7 +84,7 @@ function OfferBidsRow({ offer }: { offer: ApiSponsorshipOffer }) {
             }
           >
             <Spinner active={action.busy && action.activeId === bid.id} idle={<CheckCircle2 className="h-3 w-3" />} />
-          </Button>
+          </ActionButton>
         </div>
       ))}
     </div>
@@ -121,12 +123,12 @@ function ReceivedProposals({ walletAddress }: { walletAddress: string }) {
             </p>
           </div>
           <div className="flex gap-1.5 shrink-0">
-            <Button size="sm" variant="outline" aria-label={t("Decline proposal")} disabled={action.busy} onClick={() => respond(p.proposalId, "reject")}>
+            <Button size="sm" variant="soft" aria-label={t("Decline proposal")} disabled={action.busy} onClick={() => respond(p.proposalId, "reject")}>
               <Spinner active={action.busy && action.activeId === p.proposalId} idle={<X className="h-3 w-3" />} />
             </Button>
-            <Button size="sm" className="bg-brand-rose hover:brightness-110 text-white" aria-label={t("Accept proposal")} disabled={action.busy} onClick={() => respond(p.proposalId, "accept")}>
+            <ActionButton small action="offer" aria-label={t("Accept proposal")} disabled={action.busy} onClick={() => respond(p.proposalId, "accept")}>
               <Spinner active={action.busy && action.activeId === p.proposalId} idle={<CheckCircle2 className="h-3 w-3" />} />
-            </Button>
+            </ActionButton>
           </div>
         </div>
       ))}
@@ -155,7 +157,7 @@ function SentProposals({ walletAddress }: { walletAddress: string }) {
           </div>
           <Button
             size="sm"
-            variant="outline"
+            variant="soft"
             disabled={action.busy}
             onClick={() =>
               action.run(p.proposalId, (api) => api.intents.create("sponsorship-proposal-withdraw", { proposer: walletAddress, proposalId: p.proposalId }), () => mutate())

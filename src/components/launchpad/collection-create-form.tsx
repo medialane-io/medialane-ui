@@ -11,6 +11,7 @@ import { FIELD_LIMITS } from "../../utils/field-limits.js";
 import { createdCollectionAddress, createdCollectionFromReceipt, deployedCollectionFromReceipt } from "@medialane/sdk/starknet";
 import Image from "../image.js";
 import { Button } from "../button.js";
+import { ActionButton } from "../action-button.js";
 import { Input } from "../input.js";
 import { Textarea } from "../textarea.js";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "../form.js";
@@ -210,7 +211,7 @@ export function CollectionCreateForm({ preset, aside }: CollectionCreateFormProp
                       if (f) void handleImageSelect(f);
                     }}
                   />
-                  <Button type="button" variant="outline" size="sm" disabled={imageUploading} onClick={() => fileInputRef.current?.click()}>
+                  <Button type="button" variant="soft" size="sm" disabled={imageUploading} onClick={() => fileInputRef.current?.click()}>
                     {imageUploading ? (
                       <>
                         <Loader2 className="h-3.5 w-3.5 mr-1.5 animate-spin" />
@@ -277,14 +278,7 @@ export function CollectionCreateForm({ preset, aside }: CollectionCreateFormProp
 
             <ExternalLinkField form={form} address={walletAddress} />
 
-            <button
-              type="submit"
-              disabled={busy}
-              className={`w-full h-12 text-base font-semibold text-white rounded-xl flex items-center justify-center gap-2 transition-all hover:brightness-110 active:scale-[0.98] ${preset.buttonClass} ${busy ? "opacity-40 pointer-events-none" : ""}`}
-            >
-              <Icon className="h-4 w-4" />
-              {copy.submit}
-            </button>
+            <ActionButton solid big type="submit" disabled={busy} icon={<Icon className="h-4 w-4" />} className="w-full">              {copy.submit}            </ActionButton>
             {copy.footnotes.map((note) => (
               <p key={note} className="text-xs text-center text-muted-foreground">{note}</p>
             ))}

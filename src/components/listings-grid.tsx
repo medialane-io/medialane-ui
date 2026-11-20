@@ -128,7 +128,7 @@ export function ListingsGrid({ sort = "recent", currency, orderType = "", minPri
         <p className="text-2xl font-bold">{t(empty.title)}</p>
         <p className="text-muted-foreground max-w-sm">{t(empty.description)}</p>
         {orderType !== "offers" && (
-          <Button variant="outline" asChild>
+          <Button variant="soft" asChild>
             <Link href="/create">{t("Create & sell")}</Link>
           </Button>
         )}

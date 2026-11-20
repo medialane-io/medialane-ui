@@ -11,6 +11,7 @@ import { useDrops } from "../../utils/use-drops.js";
 import { useNow } from "../../utils/drop/use-now.js";
 import { useT } from "../../i18n/provider.js";
 import { msg } from "../../i18n/translate.js";
+import { Button } from "../button.js";
 
 const EMPTY: Record<ApiDropListStatus, { heading: string; body: string }> = {
   live: { heading: msg("No live drops"), body: msg("Nothing is open for minting right now. Check Upcoming, or launch your own.") },
@@ -40,7 +41,7 @@ export function DropListing({
           </TabsList>
         </Tabs>
         <div className="flex items-center gap-2">
-          <Link href={myDropsHref} className="inline-flex h-9 items-center rounded-md border border-border px-3 text-sm hover:bg-muted/60">{t("My drops")}</Link>
+          <Button variant="soft" size="sm" asChild><Link href={myDropsHref}>{t("My drops")}</Link></Button>
           <Link href={createHref} className="inline-flex h-9 items-center gap-1.5 rounded-md bg-primary px-3 text-sm font-semibold text-primary-foreground hover:brightness-110">
             <Plus className="h-3.5 w-3.5" />
             {t("Create a drop")}

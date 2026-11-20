@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { Handshake, ImageIcon, Loader2 } from "lucide-react";
 import { formatAmount, getTokenByAddress, normalizeAddress } from "@medialane/sdk";
 import { BackButton } from "./back-button.js";
-import { Button } from "./button.js";
 import Image from "./image.js";
 import { Input } from "./input.js";
 import { useMedialaneApp } from "./medialane-app.js";
@@ -22,6 +21,7 @@ import { useTransaction } from "../utils/use-transaction.js";
 import { successMessages } from "../utils/success-messages.js";
 import { useT } from "../i18n/provider.js";
 import { msg } from "../i18n/translate.js";
+import { ActionButton } from "./action-button.js";
 
 type Action = "bid" | "accept";
 
@@ -161,9 +161,9 @@ export function SponsorshipOfferPage({ offerId }: { offerId: string }) {
                         <p className="text-sm font-medium">{shortenAddress(bid.sponsor)}</p>
                         <p className="text-xs text-muted-foreground">{format(bid.amount)}</p>
                       </div>
-                      <Button size="sm" className="bg-brand-rose hover:brightness-110 text-white" disabled={busy} onClick={() => acceptBid(bid.sponsor)}>
+                      <ActionButton small action="offer" disabled={busy} onClick={() => acceptBid(bid.sponsor)}>
                         {busy && activeSponsor === bid.sponsor ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : t("Accept")}
-                      </Button>
+                      </ActionButton>
                     </div>
                   ))}
                 </div>
@@ -176,9 +176,9 @@ export function SponsorshipOfferPage({ offerId }: { offerId: string }) {
               <p className="text-sm font-semibold">{t("Place a bid")}</p>
               <div className="flex gap-2">
                 <Input type="number" min={0} step="0.01" placeholder={t("Your bid")} value={amount} onChange={(e) => setAmount(e.target.value)} disabled={busy} />
-                <Button className="bg-brand-rose hover:brightness-110 text-white shrink-0" disabled={busy || !walletAddress || !paymentToken || !amount || Number(amount) <= 0} onClick={placeBid}>
+                <ActionButton solid className="shrink-0" disabled={busy || !walletAddress || !paymentToken || !amount || Number(amount) <= 0} onClick={placeBid}>
                   {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : t("Place bid")}
-                </Button>
+                </ActionButton>
               </div>
               {!walletAddress && (
                 <button type="button" className="text-xs text-muted-foreground underline" onClick={app.onRequireWallet}>

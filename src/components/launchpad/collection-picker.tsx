@@ -13,6 +13,7 @@ import { useImageUrl } from "../../utils/use-image-url.js";
 import { useT } from "../../i18n/provider.js";
 import type { T } from "../../i18n/make-t.js";
 import { useFormat, type Format } from "../../i18n/use-format.js";
+import { ActionButton } from "../action-button.js";
 
 export interface CollectionPickerProps {
   collections: ApiCollection[];
@@ -57,13 +58,12 @@ export function CollectionPicker({ collections, loading, value, onChange, newCol
     return (
       <div className="rounded-xl border border-dashed border-border p-5 text-center space-y-3">
         <p className="text-sm text-muted-foreground">{t("No collection found. It may take a minute to display recently created collections.")}</p>
-        <Link
-          href={newCollectionHref}
-          className="inline-flex items-center gap-1.5 h-9 px-4 rounded-xl text-sm font-semibold text-white bg-brand-blue hover:brightness-110 transition-all"
-        >
-          <Plus className="h-3.5 w-3.5" />
-          {t("Create your first collection")}
-        </Link>
+        <ActionButton solid small asChild>
+          <Link href={newCollectionHref}>
+            <Plus className="h-3.5 w-3.5" />
+            {t("Create your first collection")}
+          </Link>
+        </ActionButton>
       </div>
     );
   }

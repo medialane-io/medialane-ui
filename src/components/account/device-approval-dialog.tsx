@@ -96,7 +96,7 @@ export function DeviceApprovalDialog({ open, onOpenChange, onApproved, wallet, l
             {error ? <p className="text-sm text-destructive">{error}</p> : null}
 
             <div className="flex gap-2">
-              <Button variant="outline" className="flex-1" onClick={reset} disabled={busy}>
+              <Button variant="soft" className="flex-1" onClick={reset} disabled={busy}>
                 {t("Back")}
               </Button>
               <Button className="flex-1" onClick={approve} disabled={busy}>

@@ -126,7 +126,7 @@ export function RemixBrowsePage() {
           <div className="bento-cell p-10 flex flex-col items-center gap-3 text-center">
             <p className="font-semibold">{t("Could not load works")}</p>
             <p className="text-sm text-muted-foreground">{t("Check your connection and try again.")}</p>
-            <Button variant="outline" size="sm" onClick={() => location.reload()}>{t("Retry")}</Button>
+            <Button variant="soft" size="sm" onClick={() => location.reload()}>{t("Retry")}</Button>
           </div>
         ) : tokens.length === 0 ? (
           <FadeIn>
@@ -151,7 +151,7 @@ export function RemixBrowsePage() {
             </Stagger>
             {hasMore && (
               <div className="flex justify-center">
-                <Button variant="outline" onClick={loadMore} disabled={isLoading}>
+                <Button variant="soft" onClick={loadMore} disabled={isLoading}>
                   {isLoading ? t("Loading…") : t("Load more")}
                 </Button>
               </div>

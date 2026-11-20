@@ -63,7 +63,7 @@ function IssueSection({
       />
       <Button
         size="sm"
-        variant="outline"
+        variant="soft"
         className="w-full"
         disabled={!valid || isSubmitting}
         onClick={() => {
@@ -132,7 +132,7 @@ function AllowlistSection({
       </Button>
       {links && (
         <div className="space-y-2 pt-2">
-          <Button variant="outline" size="sm" className="w-full" onClick={() => downloadCsv(links)}>
+          <Button variant="soft" size="sm" className="w-full" onClick={() => downloadCsv(links)}>
             <Download className="h-3.5 w-3.5 mr-1.5" />
             {t("Download claim links (CSV)")}
           </Button>
@@ -194,7 +194,7 @@ export function PopManagePage({ contract }: { contract: string }) {
         <div className="max-w-xl mx-auto px-4 pt-24 pb-8 text-center space-y-4">
           <AlertCircle className="h-10 w-10 text-muted-foreground/20 mx-auto" />
           <p className="text-muted-foreground">{t("Collection not found.")}</p>
-          <Button asChild variant="outline" size="sm">
+          <Button asChild variant="soft" size="sm">
             <Link href="/launchpad/pop">{t("← Back")}</Link>
           </Button>
         </div>
@@ -202,7 +202,7 @@ export function PopManagePage({ contract }: { contract: string }) {
         <div className="max-w-xl mx-auto px-4 pt-24 pb-8 text-center space-y-4">
           <Award className="h-10 w-10 text-muted-foreground/20 mx-auto" />
           <p className="text-muted-foreground">{t("You are not the organizer of this event.")}</p>
-          <Button asChild variant="outline" size="sm">
+          <Button asChild variant="soft" size="sm">
             <Link href="/launchpad/pop">{t("← Back to events")}</Link>
           </Button>
         </div>

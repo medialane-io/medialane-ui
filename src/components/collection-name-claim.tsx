@@ -58,7 +58,7 @@ export function CollectionNameClaim() {
               )}
             </div>
 
-            <Button variant={slug ? "outline" : "default"} size="sm" asChild className="shrink-0">
+            <Button variant={slug ? "soft" : "default"} size="sm" asChild className="shrink-0">
               <Link href={settingsHref}>
                 {slug ? t("Edit name") : t("Set name")}
                 <ArrowRight className="h-3.5 w-3.5 ml-1" />

@@ -27,7 +27,7 @@ export function MakeOfferPicker({ contract, onPick }: { contract: string; onPick
 
   return (
     <>
-      <Button variant="outline" size="sm" className="gap-1.5" onClick={() => setOpen(true)}>
+      <Button variant="soft" size="sm" className="gap-1.5" onClick={() => setOpen(true)}>
         <Gavel className="h-3.5 w-3.5" />
         {t("Make an offer")}
       </Button>
