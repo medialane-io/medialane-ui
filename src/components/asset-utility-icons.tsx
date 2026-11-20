@@ -23,7 +23,7 @@ export function AssetUtilityIcons({
         target="_blank"
         rel="noopener noreferrer"
         title={t("View contract")}
-        className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg hover:bg-muted/50 hover:text-foreground transition-colors"
+        className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-2xl hover:bg-muted/50 hover:text-foreground transition-colors"
       >
         <ExternalLink className="h-4 w-4" />
       </a>
@@ -32,7 +32,7 @@ export function AssetUtilityIcons({
         type="button"
         title={t("Report this asset")}
         onClick={onReportClick}
-        className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg hover:bg-muted/50 hover:text-foreground transition-colors"
+        className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-2xl hover:bg-muted/50 hover:text-foreground transition-colors"
       >
         <Flag className="h-4 w-4" />
       </button>

@@ -82,8 +82,8 @@ export function DiscoverCommunitySection() {
           <div className="divide-y divide-border/50">
             {Array.from({ length: ROWS }).map((_, i) => (
               <div key={i} className="flex h-16 items-center gap-3 px-4">
-                <Skeleton className="h-8 w-8 shrink-0 rounded-lg" />
-                <Skeleton className="h-9 w-9 shrink-0 rounded-md" />
+                <Skeleton className="h-8 w-8 shrink-0 rounded-2xl" />
+                <Skeleton className="h-9 w-9 shrink-0 rounded-xl" />
                 <div className="flex-1 space-y-2">
                   <Skeleton className="h-3.5 w-40" />
                   <Skeleton className="h-2.5 w-24" />

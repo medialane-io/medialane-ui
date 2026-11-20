@@ -92,7 +92,7 @@ export function PopCreateFields({
                       : "bg-background/40 text-muted-foreground"
                   )}
                 >
-                  <Icon className={cn("h-5 w-5", selected && "text-green-500")} />
+                  <Icon className={cn("h-5 w-5", selected && "text-brand-blue")} />
                   <span className="text-2xs font-semibold leading-tight">{t(label)}</span>
                 </button>
               );
@@ -123,7 +123,7 @@ export function PopCreateFields({
                   if (!imageUploading) fileInputRef.current?.click();
                 }
               }}
-              className="relative h-20 w-20 rounded-2xl border-2 border-dashed border-border bg-muted flex items-center justify-center overflow-hidden shrink-0 cursor-pointer hover:border-green-500/50 transition-colors"
+              className="relative h-20 w-20 rounded-2xl border-2 border-dashed border-border bg-muted flex items-center justify-center overflow-hidden shrink-0 cursor-pointer hover:border-brand-blue/50 transition-colors"
             >
               {imagePreview ? (
                 <Image src={imagePreview} alt={t("Certificate")} fill unoptimized className="object-cover" />
@@ -175,7 +175,7 @@ export function PopCreateFields({
                 </button>
               ) : null}
               <p className="text-xs text-muted-foreground">
-                {imageUri ? <span className="text-green-500">{t("✓ Uploaded")}</span> : t("JPG, PNG, SVG or WebP")}
+                {imageUri ? <span className="text-brand-blue">{t("✓ Uploaded")}</span> : t("JPG, PNG, SVG or WebP")}
               </p>
             </div>
           </div>
@@ -290,7 +290,7 @@ export function PopCreateFields({
             onClick={() => onSetPublic(!isPublic)}
             className={cn(
               "relative inline-flex h-6 w-11 shrink-0 rounded-full border-2 border-transparent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-              isPublic ? "bg-green-500" : "bg-muted-foreground/30"
+              isPublic ? "bg-brand-blue" : "bg-muted-foreground/30"
             )}
           >
             <span

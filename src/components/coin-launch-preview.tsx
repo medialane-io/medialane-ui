@@ -20,7 +20,7 @@ export interface CoinPreviewData {
   teamPct: number;
 }
 
-const COIN_GRADIENT = "linear-gradient(135deg, #d5520b, #e175b0)";
+const COIN_GRADIENT = "linear-gradient(135deg, hsl(var(--brand-orange)), hsl(var(--brand-maeve)))";
 
 function StatValue({ children }: { children: React.ReactNode }) {
   return (

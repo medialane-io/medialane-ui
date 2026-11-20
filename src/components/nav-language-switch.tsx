@@ -22,7 +22,7 @@ export function NavLanguageSwitch({ locales = LOCALES }: { locales?: readonly Lo
   const current = locales.find((info) => info.code === locale)?.name ?? locale;
 
   return (
-    <span className="relative inline-flex h-8 items-center gap-1.5 rounded-lg px-2 text-xs text-muted-foreground transition-colors hover:bg-muted/60 hover:text-foreground focus-within:bg-muted/60 focus-within:text-foreground">
+    <span className="relative inline-flex h-8 items-center gap-1.5 rounded-2xl px-2 text-xs text-muted-foreground transition-colors hover:bg-muted/60 hover:text-foreground focus-within:bg-muted/60 focus-within:text-foreground">
       <Globe className="h-3.5 w-3.5" aria-hidden />
       <span aria-hidden>{current}</span>
       <select

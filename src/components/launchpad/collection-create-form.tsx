@@ -234,7 +234,7 @@ export function CollectionCreateForm({ preset, aside }: CollectionCreateFormProp
                   )}
                   <p className="text-xs text-muted-foreground">
                     {t("JPG, PNG, GIF, SVG or WebP")}
-                    {imageUri && <span className="ml-2 text-emerald-500 font-medium">{t("✓ Uploaded")}</span>}
+                    {imageUri && <span className="ml-2 text-brand-blue font-medium">{t("✓ Uploaded")}</span>}
                   </p>
                   {copy.imageHelp && <p className="text-xs text-muted-foreground">{copy.imageHelp}</p>}
                   {uploadError && <p className="text-xs text-destructive">{uploadError}</p>}

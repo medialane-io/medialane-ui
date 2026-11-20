@@ -34,7 +34,7 @@ function works(col: ApiCollection, t: T, intl: Format) {
 function Thumb({ image, size }: { image: string | null | undefined; size: "sm" | "md" }) {
   const url = useImageUrl()(image);
   return (
-    <div className={cn("relative rounded-lg overflow-hidden bg-muted shrink-0", size === "md" ? "h-10 w-10" : "h-8 w-8")}>
+    <div className={cn("relative rounded-2xl overflow-hidden bg-muted shrink-0", size === "md" ? "h-10 w-10" : "h-8 w-8")}>
       {url ? (
         <Image src={url} alt="" fill unoptimized className="object-cover" />
       ) : (
@@ -114,7 +114,7 @@ export function CollectionPicker({ collections, loading, value, onChange, newCol
                   onChange(col.collectionId!);
                   setOpen(false);
                 }}
-                className="flex w-full items-center gap-2.5 rounded-lg px-2 py-2 text-left transition-colors hover:bg-muted/60"
+                className="flex w-full items-center gap-2.5 rounded-2xl px-2 py-2 text-left transition-colors hover:bg-muted/60"
               >
                 <Thumb image={col.image} size="sm" />
                 <div className="min-w-0 flex-1">
@@ -129,7 +129,7 @@ export function CollectionPicker({ collections, loading, value, onChange, newCol
         <div className="border-t border-border p-1">
           <Link
             href={newCollectionHref}
-            className="flex items-center gap-2 rounded-lg px-2 py-2 text-sm font-medium text-muted-foreground hover:bg-muted/60 hover:text-foreground transition-colors"
+            className="flex items-center gap-2 rounded-2xl px-2 py-2 text-sm font-medium text-muted-foreground hover:bg-muted/60 hover:text-foreground transition-colors"
           >
             <Plus className="h-4 w-4" />
             {t("New collection")}

@@ -152,7 +152,7 @@ export function LicenseRequestPage({ contract, tokenId }: { contract: string; to
 
       <div className="panel flex items-center gap-3 p-4">
         {originalImage && (
-          <Image src={originalImage} alt={originalName} width={48} height={48} className="rounded-lg object-cover" unoptimized />
+          <Image src={originalImage} alt={originalName} width={48} height={48} className="rounded-2xl object-cover" unoptimized />
         )}
         <div className="min-w-0">
           <p className="text-sm font-semibold truncate">{originalName}</p>

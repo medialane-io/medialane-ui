@@ -111,7 +111,7 @@ export function AssetPageSkeleton() {
   return (
     <PageContainer className="pt-20 pb-8">
       <div className="grid grid-cols-1 lg:grid-cols-2 lg:gap-10 gap-6 items-start">
-        <Skeleton className="aspect-square w-full rounded-3xl" />
+        <Skeleton className="aspect-square w-full rounded-2xl" />
         <div className="space-y-6">
           <div className="space-y-3">
             <Skeleton className="h-5 w-24 rounded-full" />
@@ -121,7 +121,7 @@ export function AssetPageSkeleton() {
           </div>
           <Skeleton className="h-[54px] w-full rounded-2xl" />
           <div className="flex gap-2">
-            {Array.from({ length: 3 }).map((_, i) => <Skeleton key={i} className="h-[46px] flex-1 rounded-[13px]" />)}
+            {Array.from({ length: 3 }).map((_, i) => <Skeleton key={i} className="h-[46px] flex-1 rounded-xl" />)}
           </div>
           <Skeleton className="h-16 w-full rounded-2xl" />
         </div>

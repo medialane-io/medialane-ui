@@ -152,7 +152,7 @@ function StatusPanel({ address }: { address: string | null | undefined }) {
 
   if (!address) {
     return (
-      <div className="shrink-0 rounded-3xl bg-gradient-to-br from-brand-rose/10 via-brand-orange/[0.06] to-transparent p-6 space-y-3 sm:max-w-xs">
+      <div className="shrink-0 rounded-2xl bg-gradient-to-br from-brand-rose/10 via-brand-orange/[0.06] to-transparent p-6 space-y-3 sm:max-w-xs">
         <p className="text-sm text-foreground/70 font-medium">{t("Sign in to see your score.")}</p>
         <SignInButton />
       </div>
@@ -160,7 +160,7 @@ function StatusPanel({ address }: { address: string | null | undefined }) {
   }
 
   if (isLoading || !rewards || !config) {
-    return <Skeleton className="h-40 w-full sm:w-80 rounded-3xl shrink-0" />;
+    return <Skeleton className="h-40 w-full sm:w-80 rounded-2xl shrink-0" />;
   }
 
   const levelXp = config.levels.find((l) => l.level === rewards.currentLevel)?.xpRequired ?? 0;
@@ -169,7 +169,7 @@ function StatusPanel({ address }: { address: string | null | undefined }) {
   const pct = nextLevelXp ? Math.min(100, Math.round(((rewards.totalXp - levelXp) / (nextLevelXp - levelXp)) * 100)) : 100;
 
   return (
-    <div className="shrink-0 rounded-3xl bg-gradient-to-br from-brand-rose/10 via-brand-orange/[0.06] to-transparent p-6 sm:min-w-[300px]">
+    <div className="shrink-0 rounded-2xl bg-gradient-to-br from-brand-rose/10 via-brand-orange/[0.06] to-transparent p-6 sm:min-w-[300px]">
       <p className="text-6xl font-black tabular-nums leading-none tracking-tight">
         {intl.number(rewards.totalXp)}
       </p>
@@ -281,7 +281,7 @@ function EarnMorePanel() {
 function CreatorsFundCard() {
   const t = useT();
   return (
-    <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-brand-rose to-brand-orange p-8 text-white">
+    <section className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-brand-rose to-brand-orange p-8 text-white">
       <div className="pointer-events-none absolute -top-16 -right-16 h-56 w-56 rounded-full bg-white/10 blur-3xl" />
       <div className="pointer-events-none absolute -bottom-20 -left-10 h-56 w-56 rounded-full bg-black/10 blur-3xl" />
 

@@ -19,7 +19,7 @@ export function ListingCardMenu({ order }: { order: ApiOrder }) {
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button size="sm" variant="soft" className="h-9 w-9 p-0 shrink-0 rounded-[9px]" onClick={(e) => e.preventDefault()} aria-label={t("More actions")}>
+          <Button size="sm" variant="soft" className="h-9 w-9 p-0 shrink-0 rounded-xl" onClick={(e) => e.preventDefault()} aria-label={t("More actions")}>
             <MoreHorizontal className="h-3.5 w-3.5" />
           </Button>
         </DropdownMenuTrigger>

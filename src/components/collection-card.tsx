@@ -42,7 +42,7 @@ export function CollectionCard({ collection, href, settingsHref, className }: Co
   const floor = parseFloorPrice(collection.floorPrice);
 
   return (
-    <MotionCard className={cn("group relative overflow-hidden rounded-[calc(var(--radius)*1.25)]", className)}>
+    <MotionCard className={cn("group relative overflow-hidden rounded-2xl", className)}>
       {settingsHref && (
         <Link
           href={settingsHref}
@@ -107,7 +107,7 @@ export function CollectionCard({ collection, href, settingsHref, className }: Co
 
 export function CollectionCardSkeleton() {
   return (
-    <div className="overflow-hidden rounded-[calc(var(--radius)*1.25)]">
+    <div className="overflow-hidden rounded-2xl">
       <div className="relative aspect-square w-full overflow-hidden bg-foreground/[0.04]">
         <div className="absolute inset-0 animate-pulse bg-foreground/[0.04]" />
         <div className="absolute inset-x-2 bottom-2 flex flex-col items-start gap-1">

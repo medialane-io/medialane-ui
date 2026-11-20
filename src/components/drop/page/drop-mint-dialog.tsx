@@ -50,7 +50,7 @@ export function DropMintDialog({
         {step.kind === "minting" && <DialogTitle className="flex items-center gap-2 text-lg font-semibold"><Loader2 className="h-4 w-4 animate-spin" />{t("Minting…")}</DialogTitle>}
         {step.kind === "done" && (
           <>
-            <DialogTitle className="flex items-center gap-2 text-lg font-semibold"><CheckCircle2 className="h-5 w-5 text-green-500" />{t("Minted")}</DialogTitle>
+            <DialogTitle className="flex items-center gap-2 text-lg font-semibold"><CheckCircle2 className="h-5 w-5 text-brand-blue" />{t("Minted")}</DialogTitle>
             <Button asChild><a href={portfolioHref}>{t("View in portfolio")}</a></Button>
           </>
         )}

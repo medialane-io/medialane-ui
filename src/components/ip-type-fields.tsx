@@ -163,7 +163,7 @@ export function IPTypeFields({ ipType, onChange, uploadDocument, existingDocumen
           </p>
           {existingDocument ? (
             <div className="panel flex items-center gap-3 px-4 py-3" style={{ backgroundImage: panelBackground("blue") }}>
-              <FileText className="h-5 w-5 text-emerald-500 shrink-0" />
+              <FileText className="h-5 w-5 text-brand-blue shrink-0" />
               <div className="min-w-0 flex-1">
                 <p className="text-sm font-medium truncate">{effectiveDocName}</p>
                 <p className="text-xs text-muted-foreground">{t("Already attached as your uploaded file")}</p>
@@ -171,7 +171,7 @@ export function IPTypeFields({ ipType, onChange, uploadDocument, existingDocumen
             </div>
           ) : docUri ? (
             <div className="panel flex items-center gap-3 px-4 py-3" style={{ backgroundImage: panelBackground("blue") }}>
-              <FileText className="h-5 w-5 text-emerald-500 shrink-0" />
+              <FileText className="h-5 w-5 text-brand-blue shrink-0" />
               <div className="min-w-0 flex-1">
                 <p className="text-sm font-medium truncate">{docName}</p>
                 <p className="text-xs text-muted-foreground truncate">{docUri}</p>
@@ -238,7 +238,7 @@ export function IPTypeFields({ ipType, onChange, uploadDocument, existingDocumen
                   <PIcon className="h-3.5 w-3.5" />
                   {t(meta.label)}
                   {looksLikeUrl(value) && (
-                    <span className="ml-1 inline-flex items-center gap-0.5 text-2xs font-medium text-emerald-400">
+                    <span className="ml-1 inline-flex items-center gap-0.5 text-2xs font-medium text-brand-blue">
                       <Check className="h-3 w-3" /> {t("connected")}
                     </span>
                   )}

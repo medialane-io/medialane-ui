@@ -34,8 +34,8 @@ export function ActivityCardSkeleton() {
     <div className="panel overflow-hidden">
       <div className="aspect-square w-full bg-foreground/[0.04] animate-pulse" />
       <div className="p-4 space-y-2">
-        <div className="h-4 w-32 bg-muted animate-pulse rounded" />
-        <div className="h-3 w-24 bg-muted animate-pulse rounded" />
+        <div className="h-4 w-32 bg-muted animate-pulse rounded-full" />
+        <div className="h-3 w-24 bg-muted animate-pulse rounded-full" />
       </div>
     </div>
   );
@@ -106,7 +106,7 @@ export function ActivityCard({
           <span className={config.colorClass}>{t(config.label)}</span>
         </span>
         {amount && (
-          <span className="absolute bottom-2.5 right-2.5 px-2 py-0.5 rounded-full text-2xs font-bold bg-violet-500 text-white">
+          <span className="absolute bottom-2.5 right-2.5 px-2 py-0.5 rounded-full text-2xs font-bold bg-brand-purple text-white">
             ×{amount}
           </span>
         )}

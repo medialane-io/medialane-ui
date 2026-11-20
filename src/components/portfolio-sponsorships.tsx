@@ -61,7 +61,7 @@ function OfferBidsRow({ offer }: { offer: ApiSponsorshipOffer }) {
   if (isLoading || bids.length === 0) return null;
 
   return (
-    <div className="space-y-1.5 rounded-lg bg-muted/30 p-3">
+    <div className="space-y-1.5 rounded-2xl bg-muted/30 p-3">
       {action.dialog}
       <p className="text-xs font-semibold text-muted-foreground">
         {t("Bids on")} <Link href={assetHref("STARKNET", offer.nftContract, offer.tokenId)} className="underline underline-offset-2">{t("View asset")}</Link>

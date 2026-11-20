@@ -27,7 +27,7 @@ export function WalletRequired({ icon: Icon, iconClassName = "text-muted-foregro
         <Skeleton className="h-10 w-10 rounded-full mx-auto" />
         <Skeleton className="h-7 w-56 mx-auto" />
         <Skeleton className="h-4 w-72 mx-auto" />
-        <Skeleton className="h-10 w-44 mx-auto rounded-md" />
+        <Skeleton className="h-10 w-44 mx-auto rounded-xl" />
       </div>
     );
   }

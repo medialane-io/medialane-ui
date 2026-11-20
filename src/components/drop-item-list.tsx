@@ -59,7 +59,7 @@ export function DropItemList({ items, collectionName, onAddFiles, onRemove, onEd
         <div className="space-y-2">
           {items.map((it, i) => (
             <div key={it.id} className="flex gap-3 items-start panel relative overflow-hidden p-3">
-              <div className="relative h-16 w-16 rounded-lg overflow-hidden bg-muted shrink-0">
+              <div className="relative h-16 w-16 rounded-2xl overflow-hidden bg-muted shrink-0">
                 <Image src={it.previewUrl} alt={it.name || t("Item {n}", { n: i + 1 })} fill className="object-cover" unoptimized />
                 <span className="absolute bottom-0 left-0 text-2xs font-bold bg-black/60 text-white px-1">#{i + 1}</span>
               </div>

@@ -28,7 +28,7 @@ export function SectionHeader({
 }) {
   return (
     <div className="flex items-start gap-3 pb-1">
-      <div className={cn("h-8 w-8 rounded-lg flex items-center justify-center shrink-0 mt-0.5", bgClass)}>
+      <div className={cn("h-8 w-8 rounded-2xl flex items-center justify-center shrink-0 mt-0.5", bgClass)}>
         <Icon className={cn("h-4 w-4", iconClass)} />
       </div>
       <div className="flex-1 min-w-0">

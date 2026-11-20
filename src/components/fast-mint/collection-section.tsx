@@ -20,7 +20,7 @@ function CollectionThumb({ image }: { image: string | null | undefined }) {
   const resolveImage = useImageUrl();
   const imageUrl = resolveImage(image);
   return (
-    <div className="relative h-10 w-10 rounded-lg overflow-hidden bg-muted shrink-0">
+    <div className="relative h-10 w-10 rounded-2xl overflow-hidden bg-muted shrink-0">
       {imageUrl ? (
         <Image src={imageUrl} alt="" fill className="object-cover" unoptimized />
       ) : (
@@ -80,7 +80,7 @@ export function CollectionPicker({
                   type="button"
                   disabled={!id}
                   onClick={() => { if (!id) return; onChange(id); setOpen(false); }}
-                  className="flex w-full items-center gap-2.5 rounded-lg px-2 py-2 text-left transition-colors hover:bg-muted/60"
+                  className="flex w-full items-center gap-2.5 rounded-2xl px-2 py-2 text-left transition-colors hover:bg-muted/60"
                 >
                   <CollectionThumb image={col.image} />
                   <div className="min-w-0 flex-1">
@@ -122,7 +122,7 @@ export function CollectionSection({
           <Boxes className="h-4 w-4" />
           {noun.charAt(0).toUpperCase() + noun.slice(1)} *
         </label>
-        <div className="flex rounded-lg overflow-hidden bg-muted/40">
+        <div className="flex rounded-2xl overflow-hidden bg-muted/40">
           <button
             type="button"
             onClick={() => onModeChange("existing")}
@@ -146,7 +146,7 @@ export function CollectionSection({
         <CollectionPicker collections={collections} value={value} onChange={onValue} valueOf={valueOf} />
       ) : (
         <div className="panel flex gap-3 p-3">
-          <div className="relative h-16 w-16 rounded-lg overflow-hidden bg-muted shrink-0">
+          <div className="relative h-16 w-16 rounded-2xl overflow-hidden bg-muted shrink-0">
             {previewImage ? (
               <Image src={previewImage} alt="" fill className="object-cover" unoptimized />
             ) : (

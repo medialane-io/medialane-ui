@@ -14,7 +14,7 @@ export function ResultThumbnail({ src, label, round }: { src: string | null; lab
       className={cn(
         "relative flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden bg-muted/50",
         "text-xs font-semibold text-muted-foreground",
-        round ? "rounded-full" : "rounded-lg"
+        round ? "rounded-full" : "rounded-2xl"
       )}
     >
       {url ? (

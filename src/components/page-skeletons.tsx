@@ -145,7 +145,7 @@ export function CollectionLoading() {
       </div>
       <div className="px-4 sm:px-6 pb-12 space-y-4">
         <div className="flex items-center gap-2 pt-3">
-          <Skeleton className="h-10 w-72 max-w-full rounded-lg" />
+          <Skeleton className="h-10 w-72 max-w-full rounded-2xl" />
           <Skeleton className="ml-auto h-9 w-9 rounded-full" />
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4">

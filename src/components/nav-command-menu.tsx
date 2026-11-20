@@ -59,7 +59,7 @@ function Kbd({ children, className }: { children: React.ReactNode; className?: s
   return (
     <kbd
       className={cn(
-        "inline-flex min-w-[18px] items-center justify-center rounded-md bg-muted/60 px-1.5 py-0.5",
+        "inline-flex min-w-[18px] items-center justify-center rounded-xl bg-muted/60 px-1.5 py-0.5",
         "font-sans text-2xs leading-none text-muted-foreground",
         className
       )}
@@ -213,7 +213,7 @@ function SearchResults({ query, debouncedQuery, onNavigate }: {
           value="search:all"
           label={`All results for "${q}"`}
           leading={
-            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-muted/50 group-aria-selected/item:bg-primary/15">
+            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-2xl bg-muted/50 group-aria-selected/item:bg-primary/15">
               <Search className="h-4 w-4 text-foreground/80 transition-colors group-aria-selected/item:text-primary" />
             </span>
           }
@@ -240,12 +240,12 @@ function CommandRow({ item, primary, onSelect }: { item: NavCommand; primary: bo
         <img
           src={item.iconSrc}
           alt=""
-          className={cn("shrink-0 rounded-lg", primary ? "h-9 w-9" : "h-8 w-8")}
+          className={cn("shrink-0 rounded-2xl", primary ? "h-9 w-9" : "h-8 w-8")}
         />
       ) : (
         <span
           className={cn(
-            "flex shrink-0 items-center justify-center rounded-lg transition-colors",
+            "flex shrink-0 items-center justify-center rounded-2xl transition-colors",
             "bg-muted/50 group-aria-selected/item:bg-primary/15",
             primary ? "h-9 w-9" : "h-8 w-8"
           )}
@@ -375,7 +375,7 @@ export function NavCommandMenu({
             >
               <div
                 className={cn(
-                  "flex w-full max-h-[85dvh] flex-col overflow-hidden rounded-[20px] sm:max-h-[min(680px,88dvh)] sm:max-w-[620px]",
+                  "flex w-full max-h-[85dvh] flex-col overflow-hidden rounded-2xl sm:max-h-[min(680px,88dvh)] sm:max-w-[620px]",
                   "bg-background/90 backdrop-blur-2xl backdrop-saturate-150"
                 )}
                 onClick={(e) => e.stopPropagation()}
@@ -407,7 +407,7 @@ export function NavCommandMenu({
                     <Kbd className="hidden sm:inline-flex">{t("esc")}</Kbd>
                     <button
                       onClick={() => setOpen(false)}
-                      className="rounded-md p-1 transition-colors hover:bg-muted/50 sm:hidden"
+                      className="rounded-xl p-1 transition-colors hover:bg-muted/50 sm:hidden"
                       aria-label={t("Close")}
                     >
                       <X className="h-4 w-4 text-muted-foreground" />

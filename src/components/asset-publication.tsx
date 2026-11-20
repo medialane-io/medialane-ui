@@ -30,7 +30,7 @@ export function AssetPublication({ name, text, content, image, imgError, onImage
       </header>
 
       {image && !imgError ? (
-        <div className="w-full overflow-hidden rounded-3xl">
+        <div className="w-full overflow-hidden rounded-2xl">
           <img src={image} alt={name} onError={onImageError} className="w-full h-auto max-h-[80vh] object-contain" />
         </div>
       ) : null}

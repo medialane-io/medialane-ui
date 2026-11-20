@@ -85,12 +85,12 @@ export function CollectionSettings({ contract }: { contract: string }) {
           description={t("Your collection's public name and description. A complete profile builds trust with collectors.")}
           badge={
             profile?.displayName ? (
-              <Badge variant="soft" className="text-2xs h-4 px-1.5 gap-1 text-emerald-500 border-emerald-500/30">
+              <Badge variant="soft" className="text-2xs h-4 px-1.5 gap-1 text-brand-blue border-brand-blue/30">
                 <CheckCircle2 className="h-2.5 w-2.5" />
                 {t("Named")}
               </Badge>
             ) : (
-              <Badge variant="soft" className="text-2xs h-4 px-1.5 gap-1 text-amber-500 border-amber-500/30">
+              <Badge variant="soft" className="text-2xs h-4 px-1.5 gap-1 text-brand-orange border-brand-orange/30">
                 <Info className="h-2.5 w-2.5" />
                 {t("Add a name")}
               </Badge>
@@ -164,16 +164,16 @@ export function CollectionSettings({ contract }: { contract: string }) {
         </div>
       </SectionCard>
 
-      <SectionCard id="exclusive" className={form.gatedEnabled ? "border-emerald-500/30 bg-emerald-500/[0.03]" : ""}>
+      <SectionCard id="exclusive" className={form.gatedEnabled ? "border-brand-blue/30 bg-brand-blue/[0.03]" : ""}>
         <SectionHeader
           icon={Lock}
           title={t("Exclusive content")}
           description={t("Reward your holders with exclusive content — only wallets that own a token from this collection can access it.")}
-          iconClass={form.gatedEnabled ? "text-emerald-500" : "text-muted-foreground"}
-          bgClass={form.gatedEnabled ? "bg-emerald-500/15" : "bg-muted"}
+          iconClass={form.gatedEnabled ? "text-brand-blue" : "text-muted-foreground"}
+          bgClass={form.gatedEnabled ? "bg-brand-blue/15" : "bg-muted"}
           badge={
             form.gatedEnabled ? (
-              <Badge variant="soft" className="text-2xs h-4 px-1.5 gap-1 text-emerald-500 border-emerald-500/30">
+              <Badge variant="soft" className="text-2xs h-4 px-1.5 gap-1 text-brand-blue border-brand-blue/30">
                 <Unlock className="h-2.5 w-2.5" />
                 {t("Active")}
               </Badge>
@@ -257,7 +257,7 @@ export function CollectionSettings({ contract }: { contract: string }) {
 
               {form.gatedContentTitle && (
                 <div className="panel p-4 space-y-1.5" style={{ backgroundImage: panelBackground("blue") }}>
-                  <p className="text-2xs font-semibold text-emerald-500 uppercase tracking-widest">
+                  <p className="text-2xs font-semibold text-brand-blue uppercase tracking-widest">
                     {t("Preview — what holders see")}
                   </p>
                   <p className="text-sm font-semibold">{form.gatedContentTitle || "—"}</p>
@@ -274,15 +274,15 @@ export function CollectionSettings({ contract }: { contract: string }) {
               <p className="text-xs font-semibold text-foreground">{t("How it works")}</p>
               <ul className="text-xs text-muted-foreground space-y-1.5">
                 <li className="flex items-start gap-2">
-                  <Sparkles className="h-3 w-3 text-emerald-500 mt-0.5 shrink-0" />
+                  <Sparkles className="h-3 w-3 text-brand-blue mt-0.5 shrink-0" />
                   {t("Set a URL — a private video, Discord invite, audio file, or any link.")}
                 </li>
                 <li className="flex items-start gap-2">
-                  <ShieldCheck className="h-3 w-3 text-emerald-500 mt-0.5 shrink-0" />
+                  <ShieldCheck className="h-3 w-3 text-brand-blue mt-0.5 shrink-0" />
                   {t("Medialane verifies on-chain ownership before granting access. No spoofing.")}
                 </li>
                 <li className="flex items-start gap-2">
-                  <Lock className="h-3 w-3 text-emerald-500 mt-0.5 shrink-0" />
+                  <Lock className="h-3 w-3 text-brand-blue mt-0.5 shrink-0" />
                   {t("The content URL is never exposed publicly — only verified holders receive it.")}
                 </li>
               </ul>
@@ -332,7 +332,7 @@ export function CollectionSettings({ contract }: { contract: string }) {
           {saving ? t("Saving…") : t("Save changes")}
         </Button>
         {saveStatus === "saved" && (
-          <span className="flex items-center gap-1.5 text-sm text-emerald-500">
+          <span className="flex items-center gap-1.5 text-sm text-brand-blue">
             <CheckCircle2 className="h-4 w-4" /> {t("Saved")}
           </span>
         )}

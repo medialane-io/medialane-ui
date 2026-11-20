@@ -39,7 +39,7 @@ export function ServiceHeader({ icon, title, subtitle, headerAccessory, classNam
 
   return (
     <div className={cn("rounded-2xl p-[1.5px] bg-gradient-to-br from-brand-blue via-brand-purple to-brand-rose", className)}>
-      <div className="rounded-[15px] bg-card p-6 sm:p-7">{body}</div>
+      <div className="rounded-2xl bg-card p-6 sm:p-7">{body}</div>
     </div>
   );
 }

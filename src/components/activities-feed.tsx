@@ -63,7 +63,7 @@ export function ActivitiesFeed() {
       {total != null && (
         <div className="flex items-center gap-2 text-sm text-muted-foreground">
           <span className="flex items-center gap-1.5">
-            <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+            <span className="h-1.5 w-1.5 rounded-full bg-brand-blue animate-pulse" />
             <span className="font-semibold text-foreground tabular-nums">
               {intl.number(total)}
             </span>

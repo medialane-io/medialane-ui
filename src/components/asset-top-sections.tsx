@@ -58,7 +58,7 @@ export function AssetMediaColumn({
   return (
     <div ref={ref} className="w-full lg:sticky lg:top-16">
       {showLive ? (
-        <div className="w-full overflow-hidden rounded-3xl aspect-square">
+        <div className="w-full overflow-hidden rounded-2xl aspect-square">
           <iframe
             src={animationUrl!}
             title={imageAlt}
@@ -68,9 +68,9 @@ export function AssetMediaColumn({
           />
         </div>
       ) : !image || imgError ? (
-        <div className="w-full overflow-hidden rounded-3xl">{fallback}</div>
+        <div className="w-full overflow-hidden rounded-2xl">{fallback}</div>
       ) : (
-        <div className={cn("relative block w-full overflow-hidden rounded-3xl", !loaded && "aspect-square")}>
+        <div className={cn("relative block w-full overflow-hidden rounded-2xl", !loaded && "aspect-square")}>
           {shimmer}
           <img
             ref={(el) => {

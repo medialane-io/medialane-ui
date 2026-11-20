@@ -55,17 +55,17 @@ export interface MintLandingCopy {
 
 const DOCS = "https://docs.medialane.io";
 const FUND_STYLES = [
-  { icon: FileCheck, color: "text-blue-400", bg: "bg-blue-500/10" },
-  { icon: Coins, color: "text-yellow-500", bg: "bg-yellow-500/10" },
-  { icon: Users, color: "text-purple-400", bg: "bg-purple-500/10" },
+  { icon: FileCheck, color: "text-brand-blue", bg: "bg-brand-blue/10" },
+  { icon: Coins, color: "text-brand-orange", bg: "bg-brand-orange/10" },
+  { icon: Users, color: "text-brand-purple", bg: "bg-brand-purple/10" },
 ];
 
 function EventCard({ image }: { image: MintLandingCopy["image"] }) {
   const [errored, setErrored] = useState(false);
   return (
-    <div className="relative rounded-3xl overflow-hidden shadow-2xl shadow-black/20 aspect-square w-full">
+    <div className="relative rounded-2xl overflow-hidden shadow-2xl shadow-black/20 aspect-square w-full">
       {errored ? (
-        <div className="w-full h-full bg-gradient-to-br from-yellow-500/10 via-orange-500/10 to-purple-500/10 flex flex-col items-center justify-center gap-3">
+        <div className="w-full h-full bg-gradient-to-br from-brand-orange/10 via-brand-orange/10 to-brand-purple/10 flex flex-col items-center justify-center gap-3">
           <div className="h-16 w-16 rounded-2xl bg-primary/10 flex items-center justify-center">
             <ImageIcon className="h-8 w-8 text-primary/40" />
           </div>
@@ -115,7 +115,7 @@ export function MintLanding({ copy, mint }: { copy: MintLandingCopy; mint: React
                 )}
                 <h1 className="text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight leading-[1.05]">
                   {copy.headline.lead}{" "}
-                  <span className="bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent">
+                  <span className="bg-gradient-to-r from-brand-orange to-brand-orange bg-clip-text text-transparent">
                     {copy.headline.highlight}
                   </span>
                 </h1>
@@ -123,7 +123,7 @@ export function MintLanding({ copy, mint }: { copy: MintLandingCopy; mint: React
                 <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5">
                   {copy.chips.map((t) => (
                     <div key={t} className="flex items-center gap-1.5 text-xs text-muted-foreground/80">
-                      <CheckCircle2 className="h-3 w-3 text-emerald-500/70" />
+                      <CheckCircle2 className="h-3 w-3 text-brand-blue/70" />
                       {t}
                     </div>
                   ))}
@@ -177,13 +177,13 @@ export function MintLanding({ copy, mint }: { copy: MintLandingCopy; mint: React
 
                 <div className="panel p-6" style={{ backgroundImage: panelBackground("blue") }}>
                   <div className="flex items-start gap-4">
-                    <div className="h-12 w-12 rounded-xl bg-emerald-500/15 flex items-center justify-center shrink-0">
-                      <UserCheck className="h-6 w-6 text-emerald-500" />
+                    <div className="h-12 w-12 rounded-xl bg-brand-blue/15 flex items-center justify-center shrink-0">
+                      <UserCheck className="h-6 w-6 text-brand-blue" />
                     </div>
                     <div className="flex-1">
                       <div className="flex items-center gap-2 flex-wrap">
                         <p className="font-black text-lg">{how.account.title}</p>
-                        <span className="text-xs font-bold bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 px-2.5 py-0.5 rounded-full">{how.account.tag}</span>
+                        <span className="text-xs font-bold bg-brand-blue/15 text-brand-blue px-2.5 py-0.5 rounded-full">{how.account.tag}</span>
                       </div>
                       <p className="text-sm text-muted-foreground mt-1 leading-relaxed">
                         {how.account.body}
@@ -195,10 +195,10 @@ export function MintLanding({ copy, mint }: { copy: MintLandingCopy; mint: React
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="panel p-5 space-y-3">
                     <div className="flex items-center justify-between gap-3">
-                      <div className="h-10 w-10 rounded-xl bg-purple-500/10 flex items-center justify-center">
-                        <PenLine className="h-5 w-5 text-purple-400" />
+                      <div className="h-10 w-10 rounded-xl bg-brand-purple/10 flex items-center justify-center">
+                        <PenLine className="h-5 w-5 text-brand-purple" />
                       </div>
-                      <span className="text-xs font-semibold text-purple-400 bg-purple-500/10 px-2.5 py-1 rounded-full">{how.create.tag}</span>
+                      <span className="text-xs font-semibold text-brand-purple bg-brand-purple/10 px-2.5 py-1 rounded-full">{how.create.tag}</span>
                     </div>
                     <div>
                       <p className="font-bold">{how.create.title}</p>
@@ -209,10 +209,10 @@ export function MintLanding({ copy, mint }: { copy: MintLandingCopy; mint: React
                   </div>
                   <div className="panel p-5 space-y-3">
                     <div className="flex items-center justify-between gap-3">
-                      <div className="h-10 w-10 rounded-xl bg-orange-500/10 flex items-center justify-center">
-                        <ShoppingCart className="h-5 w-5 text-orange-400" />
+                      <div className="h-10 w-10 rounded-xl bg-brand-orange/10 flex items-center justify-center">
+                        <ShoppingCart className="h-5 w-5 text-brand-orange" />
                       </div>
-                      <span className="text-xs font-semibold text-orange-400 bg-orange-500/10 px-2.5 py-1 rounded-full">{how.trade.tag}</span>
+                      <span className="text-xs font-semibold text-brand-orange bg-brand-orange/10 px-2.5 py-1 rounded-full">{how.trade.tag}</span>
                     </div>
                     <div>
                       <p className="font-bold">{how.trade.title}</p>
@@ -233,7 +233,7 @@ export function MintLanding({ copy, mint }: { copy: MintLandingCopy; mint: React
                   <div className="panel p-5 space-y-3" style={{ backgroundImage: panelBackground("blue") }}>
                     <div className="flex items-center justify-between gap-3">
                       <p className="font-bold text-lg">{phases.first.title}</p>
-                      <span className="text-xs font-semibold bg-blue-500/10 text-blue-400 px-2.5 py-1 rounded-full">{phases.first.tag}</span>
+                      <span className="text-xs font-semibold bg-brand-blue/10 text-brand-blue px-2.5 py-1 rounded-full">{phases.first.tag}</span>
                     </div>
                     <p className="text-sm text-muted-foreground leading-relaxed">
                       {phases.first.body}
@@ -242,7 +242,7 @@ export function MintLanding({ copy, mint }: { copy: MintLandingCopy; mint: React
                   <div className="panel p-5 space-y-3" style={{ backgroundImage: panelBackground("purple") }}>
                     <div className="flex items-center justify-between gap-3">
                       <p className="font-bold text-lg">{phases.second.title}</p>
-                      <span className="text-xs font-semibold bg-purple-500/10 text-purple-400 px-2.5 py-1 rounded-full">{phases.second.tag}</span>
+                      <span className="text-xs font-semibold bg-brand-purple/10 text-brand-purple px-2.5 py-1 rounded-full">{phases.second.tag}</span>
                     </div>
                     <p className="text-sm text-muted-foreground leading-relaxed">
                       {phases.second.body}
@@ -267,9 +267,9 @@ export function MintLanding({ copy, mint }: { copy: MintLandingCopy; mint: React
                     <div className="space-y-2.5 text-sm">
                       {eligibility.items.map(({ ok, text }) => (
                         <div key={text} className="flex items-start gap-3">
-                          <div className={`h-5 w-5 rounded-full flex items-center justify-center shrink-0 mt-0.5 ${ok ? "bg-emerald-500/10" : "bg-destructive/10"}`}>
+                          <div className={`h-5 w-5 rounded-full flex items-center justify-center shrink-0 mt-0.5 ${ok ? "bg-brand-blue/10" : "bg-destructive/10"}`}>
                             {ok
-                              ? <CheckCircle2 className="h-3 w-3 text-emerald-500" />
+                              ? <CheckCircle2 className="h-3 w-3 text-brand-blue" />
                               : <XCircle className="h-3 w-3 text-destructive" />}
                           </div>
                           <span className="text-muted-foreground leading-relaxed">{text}</span>

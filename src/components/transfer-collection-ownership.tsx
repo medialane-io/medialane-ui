@@ -95,8 +95,8 @@ export function TransferCollectionOwnership({ collectionId, currentOwner, collec
                   spellCheck={false}
                   autoComplete="off"
                 />
-                {trimmed && !isValid && <p className="text-xs text-red-500">{t("Not a valid Starknet address.")}</p>}
-                {wouldNoop && <p className="text-xs text-amber-500">{t("This is already the current owner.")}</p>}
+                {trimmed && !isValid && <p className="text-xs text-destructive">{t("Not a valid Starknet address.")}</p>}
+                {wouldNoop && <p className="text-xs text-brand-orange">{t("This is already the current owner.")}</p>}
               </div>
               <div className="flex gap-2 pt-2">
                 <Button variant="ghost" className="flex-1" onClick={close}>

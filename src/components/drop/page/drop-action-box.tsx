@@ -39,9 +39,9 @@ export function DropActionBox({ view, minted, maxSupply, quantity, onQuantity, o
         {canPick && (
           <div className="flex items-center gap-2" aria-label={t("Quantity")}>
             <span className="sr-only">{t("Quantity")}</span>
-            <button type="button" className="rounded-md p-2 bg-background/40" disabled={quantity <= 1n} onClick={() => onQuantity(quantity - 1n)}><Minus className="h-3.5 w-3.5" /></button>
+            <button type="button" className="rounded-xl p-2 bg-background/40" disabled={quantity <= 1n} onClick={() => onQuantity(quantity - 1n)}><Minus className="h-3.5 w-3.5" /></button>
             <span className="w-8 text-center font-semibold tabular-nums">{quantity.toString()}</span>
-            <button type="button" className="rounded-md p-2 bg-background/40" disabled={quantity >= view.maxQuantity} onClick={() => onQuantity(quantity + 1n)}><Plus className="h-3.5 w-3.5" /></button>
+            <button type="button" className="rounded-xl p-2 bg-background/40" disabled={quantity >= view.maxQuantity} onClick={() => onQuantity(quantity + 1n)}><Plus className="h-3.5 w-3.5" /></button>
           </div>
         )}
       </div>

@@ -54,7 +54,7 @@ export function ActionButton({
         "inline-flex items-center justify-center gap-2 font-semibold cursor-pointer whitespace-nowrap border-none",
         "transition-[filter] hover:brightness-110 disabled:opacity-40 disabled:pointer-events-none",
         ghost ? "bg-muted text-foreground" : solid ? "text-white" : "text-foreground",
-        big ? "h-[54px] px-5 rounded-[13px] text-base" : small ? "h-9 px-3 rounded-xl text-xs" : "h-[46px] px-5 rounded-[13px] text-sm",
+        big ? "h-[54px] px-5 rounded-xl text-base" : small ? "h-9 px-3 rounded-xl text-xs" : "h-[46px] px-5 rounded-xl text-sm",
         className,
       )}
       style={ghost ? style : { backgroundImage: actionFill(pair, solid), ...style }}

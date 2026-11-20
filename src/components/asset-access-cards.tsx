@@ -29,7 +29,7 @@ export function CompanionAppButton({ asset, variant = "button" }: { asset: Asset
     );
   }
   return (
-    <Button asChild variant="ghost" className={cn("h-[46px] w-full rounded-[13px] font-semibold sm:w-auto sm:min-w-36", PANEL_INSET)}>
+    <Button asChild variant="ghost" className={cn("h-[46px] w-full rounded-xl font-semibold sm:w-auto sm:min-w-36", PANEL_INSET)}>
       <a href={href} target="_blank" rel="noopener noreferrer" title={companion.description}>
         <Icon className="h-4 w-4" />
         {companion.title}

@@ -95,7 +95,7 @@ export function CoinGuarantees({
     return (
       <div className={cn("space-y-2.5", className)}>
         {Array.from({ length: 4 }).map((_, i) => (
-          <div key={i} className="h-9 animate-pulse rounded bg-muted-foreground/10" />
+          <div key={i} className="h-9 animate-pulse rounded-xl bg-muted-foreground/10" />
         ))}
       </div>
     );

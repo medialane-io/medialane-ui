@@ -35,14 +35,14 @@ export function MedialaneCollectionCard({
 
   return (
     <div className={cn(className)}>
-      <div className="rounded-[24px]">
+      <div className="rounded-2xl">
         <div
           className="panel relative overflow-hidden text-foreground"
           style={{ backgroundImage: panelBackground(["blue", "orange"]) }}
         >
 
           <div className="p-2.5 pb-0">
-            <div className="relative aspect-square w-full overflow-hidden rounded-[16px] bg-foreground/[0.04]">
+            <div className="relative aspect-square w-full overflow-hidden rounded-2xl bg-foreground/[0.04]">
               {image ? (
 
                 <img src={image} alt={displayName} loading="lazy" decoding="async" className="h-full w-full object-cover" />

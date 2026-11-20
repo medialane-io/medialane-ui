@@ -39,7 +39,7 @@ export function ClaimRail({
           <ul className="mt-4 space-y-4">
             {included.map(({ icon: Icon, title, desc }) => (
               <li key={title} className="flex items-start gap-3">
-                <div className={cn("h-8 w-8 rounded-lg flex items-center justify-center shrink-0", includedAccentClass)}>
+                <div className={cn("h-8 w-8 rounded-2xl flex items-center justify-center shrink-0", includedAccentClass)}>
                   <Icon className="h-4 w-4" />
                 </div>
                 <div className="min-w-0">
@@ -57,7 +57,7 @@ export function ClaimRail({
         <ol className="mt-4 space-y-3">
           {steps.map((label, i) => (
             <li key={label} className="flex items-center gap-3">
-              <span className={cn("h-8 w-8 rounded-lg flex items-center justify-center shrink-0 text-sm font-bold tabular-nums", stepAccentClass)}>
+              <span className={cn("h-8 w-8 rounded-2xl flex items-center justify-center shrink-0 text-sm font-bold tabular-nums", stepAccentClass)}>
                 {i + 1}
               </span>
               <span className="text-sm text-foreground/90">{label}</span>

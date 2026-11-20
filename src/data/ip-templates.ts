@@ -71,7 +71,7 @@ export const IP_TEMPLATES: Record<IPType, IPTemplate> = {
     label: msg("Audio"),
     description: msg("Music, podcasts, sound effects, audio art"),
     icon: Music,
-    color: { bg: "bg-blue-500/10", text: "text-blue-400", border: "border-blue-500/20" },
+    color: { bg: "bg-brand-blue/10", text: "text-brand-blue", border: "border-brand-blue/20" },
     embeds: ["spotify", "soundcloud"],
     traitSuggestions: [
       { key: "Artist" }, { key: "Genre", placeholder: msg("Soundtrack") }, { key: "Mood" }, { key: "Label" },
@@ -82,7 +82,7 @@ export const IP_TEMPLATES: Record<IPType, IPTemplate> = {
     label: msg("Video"),
     description: msg("Films, animations, short-form video content"),
     icon: Clapperboard,
-    color: { bg: "bg-red-500/10", text: "text-red-400", border: "border-red-500/20" },
+    color: { bg: "bg-destructive/10", text: "text-destructive", border: "border-destructive/20" },
     embeds: ["youtube", "tiktok", "vimeo"],
     traitSuggestions: [
       { key: "Director" }, { key: "Genre" }, { key: "Cast" }, { key: "Studio" },
@@ -93,7 +93,7 @@ export const IP_TEMPLATES: Record<IPType, IPTemplate> = {
     label: msg("Art"),
     description: msg("Digital and physical artwork, illustrations, generative art"),
     icon: Palette,
-    color: { bg: "bg-purple-500/10", text: "text-purple-400", border: "border-purple-500/20" },
+    color: { bg: "bg-brand-purple/10", text: "text-brand-purple", border: "border-brand-purple/20" },
     traitSuggestions: [
       { key: "Medium", placeholder: msg("Oil on canvas") },
       { key: "Style", placeholder: msg("Impressionism") },
@@ -106,7 +106,7 @@ export const IP_TEMPLATES: Record<IPType, IPTemplate> = {
     label: msg("Photography"),
     description: msg("Photography, photo essays, visual documentation"),
     icon: Camera,
-    color: { bg: "bg-orange-500/10", text: "text-orange-400", border: "border-orange-500/20" },
+    color: { bg: "bg-brand-orange/10", text: "text-brand-orange", border: "border-brand-orange/20" },
     traitSuggestions: [
       { key: "Camera", placeholder: msg("Sony A7 IV") },
       { key: "Location" },
@@ -119,7 +119,7 @@ export const IP_TEMPLATES: Record<IPType, IPTemplate> = {
     label: msg("Posts"),
     description: msg("Articles, blog posts, social media content, essays"),
     icon: MessageSquare,
-    color: { bg: "bg-sky-500/10", text: "text-sky-400", border: "border-sky-500/20" },
+    color: { bg: "bg-brand-blue/10", text: "text-brand-blue", border: "border-brand-blue/20" },
     socials: ["x", "instagram", "facebook", "tiktok", "website"],
     traitSuggestions: [
       { key: "Author" }, { key: "Topic" }, { key: "Category" },
@@ -130,7 +130,7 @@ export const IP_TEMPLATES: Record<IPType, IPTemplate> = {
     label: msg("Publications"),
     description: msg("Books, journals, magazines, academic papers"),
     icon: BookOpen,
-    color: { bg: "bg-indigo-500/10", text: "text-indigo-400", border: "border-indigo-500/20" },
+    color: { bg: "bg-brand-purple/10", text: "text-brand-purple", border: "border-brand-purple/20" },
     docUpload: DOC_UPLOAD,
     socials: ["x", "instagram", "website"],
     traitSuggestions: [
@@ -142,7 +142,7 @@ export const IP_TEMPLATES: Record<IPType, IPTemplate> = {
     label: msg("Documents"),
     description: msg("Contracts, reports, whitepapers, legal documents"),
     icon: FileText,
-    color: { bg: "bg-zinc-500/10", text: "text-zinc-400", border: "border-zinc-500/20" },
+    color: { bg: "bg-muted/10", text: "text-muted-foreground", border: "border-muted/20" },
     docUpload: DOC_UPLOAD,
     traitSuggestions: [
       { key: "Author" }, { key: "Category" }, { key: "Language", placeholder: msg("English") },
@@ -153,7 +153,7 @@ export const IP_TEMPLATES: Record<IPType, IPTemplate> = {
     label: msg("NFT"),
     description: msg("Blockchain-native digital assets and collectibles"),
     icon: Hexagon,
-    color: { bg: "bg-teal-500/10", text: "text-teal-400", border: "border-teal-500/20" },
+    color: { bg: "bg-brand-blue/10", text: "text-brand-blue", border: "border-brand-blue/20" },
     traitSuggestions: [
       { key: "Collection" },
       { key: "Edition" },
@@ -165,7 +165,7 @@ export const IP_TEMPLATES: Record<IPType, IPTemplate> = {
     label: msg("Real world asset"),
     description: msg("Tokenized physical assets: real estate, commodities, collectibles"),
     icon: Building2,
-    color: { bg: "bg-emerald-500/10", text: "text-emerald-400", border: "border-emerald-500/20" },
+    color: { bg: "bg-brand-blue/10", text: "text-brand-blue", border: "border-brand-blue/20" },
     traitSuggestions: [
       { key: "Asset Type" }, { key: "Location" }, { key: "Category" },
     ],

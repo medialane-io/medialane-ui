@@ -155,7 +155,7 @@ export function FiltersButton({ filters }: { filters: MarketplaceFilters }) {
       onClick={() => filters.setOpen(true)}
       aria-label={t("Filters")}
       className={cn(
-        "relative flex items-center gap-1.5 h-9 px-3 rounded-lg text-xs font-medium transition-colors shrink-0",
+        "relative flex items-center gap-1.5 h-9 px-3 rounded-2xl text-xs font-medium transition-colors shrink-0",
         filters.count > 0
           ? "bg-primary/15 text-primary"
           : "text-muted-foreground hover:text-foreground bg-background/40"

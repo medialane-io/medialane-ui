@@ -152,7 +152,7 @@ export function LaunchDialog({ open, onClose, draft }: { open: boolean; onClose:
         )}
         {step.kind === "done" && (
           <>
-            <DialogTitle className="flex items-center gap-2 text-lg font-semibold"><CheckCircle2 className="h-5 w-5 text-green-500" />{t("Your drop is live")}</DialogTitle>
+            <DialogTitle className="flex items-center gap-2 text-lg font-semibold"><CheckCircle2 className="h-5 w-5 text-brand-blue" />{t("Your drop is live")}</DialogTitle>
             {step.warning && <p className="text-sm text-brand-orange">{step.warning}</p>}
             <div className="flex flex-wrap gap-2">
               <ShareButton title={draft.name} url={`${window.location.origin}${dropHref(step.collection)}`} variant="soft" />

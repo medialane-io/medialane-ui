@@ -48,7 +48,7 @@ function IssueSection({
   return (
     <div className="panel relative overflow-hidden p-5 space-y-3">
       <div className="flex items-center gap-2">
-        <Award className="h-4 w-4 text-green-500" />
+        <Award className="h-4 w-4 text-brand-blue" />
         <span className="font-semibold text-sm">{t("Issue directly")}</span>
       </div>
       <p className="text-xs text-muted-foreground">
@@ -59,7 +59,7 @@ function IssueSection({
         placeholder="0x..."
         value={raw}
         onChange={(e) => setRaw(e.target.value)}
-        className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm tabular-nums placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring"
+        className="w-full rounded-2xl border border-border bg-background px-3 py-2 text-sm tabular-nums placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring"
       />
       <Button
         size="sm"
@@ -94,7 +94,7 @@ function AllowlistSection({
   return (
     <div className="panel relative overflow-hidden p-5 space-y-3">
       <div className="flex items-center gap-2">
-        <Users className="h-4 w-4 text-green-500" />
+        <Users className="h-4 w-4 text-brand-blue" />
         <span className="font-semibold text-sm">{t("Participants")}</span>
         {parsed.length > 0 && (
           <span className="ml-auto text-xs text-muted-foreground">
@@ -114,7 +114,7 @@ function AllowlistSection({
       />
       <Button
         size="sm"
-        className="w-full bg-green-600 hover:bg-green-700 text-white"
+        className="w-full bg-brand-blue hover:bg-brand-blue text-white"
         disabled={parsed.length === 0 || isSubmitting}
         onClick={() => onPublish(parsed)}
       >
@@ -234,7 +234,7 @@ export function PopManagePage({ contract }: { contract: string }) {
 
           <FadeIn delay={0.08}>
             <div className="panel relative overflow-hidden p-4 flex items-center gap-3">
-              <Award className="h-4 w-4 text-green-500 shrink-0" />
+              <Award className="h-4 w-4 text-brand-blue shrink-0" />
               <p className="text-xs text-muted-foreground">{t.rich("Only participants on your {strong} can claim, with the link you send them.", { strong: <strong className="text-foreground">{t("published list")}</strong> })}</p>
             </div>
           </FadeIn>

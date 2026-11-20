@@ -32,8 +32,8 @@ export function ActivityListSkeleton({ count = 10 }: { count?: number }) {
     <div className="panel divide-y divide-border/50 overflow-hidden">
       {Array.from({ length: count }).map((_, i) => (
         <div key={i} className="flex items-center gap-3 px-4 py-3.5 bg-card">
-          <Skeleton className="h-8 w-8 rounded-lg shrink-0" />
-          <Skeleton className="h-9 w-9 rounded-md shrink-0" />
+          <Skeleton className="h-8 w-8 rounded-2xl shrink-0" />
+          <Skeleton className="h-9 w-9 rounded-xl shrink-0" />
           <div className="flex-1 space-y-2">
             <Skeleton className="h-3.5 w-40" />
             <Skeleton className="h-2.5 w-24" />
@@ -107,7 +107,7 @@ export function ActivityRow({
 
       <div
         className={cn(
-          "rounded-lg flex items-center justify-center shrink-0",
+          "rounded-2xl flex items-center justify-center shrink-0",
           config.bgClass,
           compact ? "h-7 w-7" : "h-8 w-8"
         )}
@@ -122,7 +122,7 @@ export function ActivityRow({
 
       <div
         className={cn(
-          "rounded-md overflow-hidden shrink-0 bg-muted relative",
+          "rounded-xl overflow-hidden shrink-0 bg-muted relative",
           compact ? "h-7 w-7" : "h-9 w-9"
         )}
       >
@@ -140,7 +140,7 @@ export function ActivityRow({
         )}
 
         {is1155 && (
-          <span className="absolute -bottom-1 -right-1 text-[8px] font-bold bg-brand-purple text-white rounded px-0.5 leading-tight">
+          <span className="absolute -bottom-1 -right-1 text-[8px] font-bold bg-brand-purple text-white rounded-full px-0.5 leading-tight">
             1155
           </span>
         )}
@@ -202,7 +202,7 @@ export function ActivityRow({
             href={txLink}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center justify-center h-6 w-6 rounded-md hover:bg-muted transition-colors opacity-50 sm:opacity-0 sm:group-hover:opacity-100 shrink-0"
+            className="inline-flex items-center justify-center h-6 w-6 rounded-xl hover:bg-muted transition-colors opacity-50 sm:opacity-0 sm:group-hover:opacity-100 shrink-0"
             aria-label={t("View transaction on Voyager")}
             title={t("View on Voyager")}
           >
