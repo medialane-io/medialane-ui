@@ -48,14 +48,14 @@ export function MakeOfferPicker({ contract, onPick }: { contract: string; onPick
           </SheetHeader>
           <div className="flex-1 overflow-y-auto p-4 grid grid-cols-3 gap-2.5">
             {isLoading && tokens.length === 0
-              ? Array.from({ length: 9 }).map((_, i) => <div key={i} className="aspect-square rounded-lg bg-muted animate-pulse" />)
+              ? Array.from({ length: 9 }).map((_, i) => <div key={i} className="aspect-square rounded-2xl bg-muted animate-pulse" />)
               : filtered.map((t) => {
                   const image = resolveImage(t.metadata?.image);
                   return (
                     <button
                       key={`${t.contractAddress}-${t.tokenId}`}
                       onClick={() => { setOpen(false); onPick(t); }}
-                      className="aspect-square rounded-lg overflow-hidden bg-muted relative group"
+                      className="aspect-square rounded-2xl overflow-hidden bg-muted relative group"
                     >
                       {image && (
                         <Image

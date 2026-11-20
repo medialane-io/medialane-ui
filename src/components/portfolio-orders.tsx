@@ -85,13 +85,13 @@ function OrderRowsSkeleton() {
     <div className="panel divide-y divide-border overflow-hidden">
       {Array.from({ length: 3 }).map((_, i) => (
         <div key={i} className="flex items-center gap-4 px-4 py-3">
-          <Skeleton className="h-12 w-12 shrink-0 rounded-lg" />
+          <Skeleton className="h-12 w-12 shrink-0 rounded-2xl" />
           <div className="flex-1 space-y-2">
             <Skeleton className="h-4 w-40" />
             <Skeleton className="h-3 w-20" />
           </div>
           <Skeleton className="hidden h-4 w-20 sm:block" />
-          <Skeleton className="h-8 w-20 rounded-md" />
+          <Skeleton className="h-8 w-20 rounded-xl" />
         </div>
       ))}
     </div>
@@ -113,7 +113,7 @@ function OrderRow({ order, subtitle, from, priceCell, actions, isNew }: {
   const expiry = expiryOf(order);
   return (
     <div data-new={isNew ? "true" : undefined} className={cn("flex items-center gap-4 px-4 py-3 transition-colors hover:bg-muted/40", isNew && "border-l-2 border-primary")}>
-      <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-lg bg-muted">
+      <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-2xl bg-muted">
         {image && <Image src={image} alt={name} fill sizes="48px" unoptimized className="object-cover" />}
       </div>
       <div className="min-w-0 flex-1">
@@ -135,7 +135,7 @@ function OrderRow({ order, subtitle, from, priceCell, actions, isNew }: {
       </div>
       <div className="flex shrink-0 items-center gap-2">
         {order.txHash?.created && (
-          <a href={`${EXPLORER_URL}/tx/${order.txHash.created}`} target="_blank" rel="noopener noreferrer" aria-label={t("View on explorer")} className="inline-flex h-7 w-7 items-center justify-center rounded-md transition-colors hover:bg-muted">
+          <a href={`${EXPLORER_URL}/tx/${order.txHash.created}`} target="_blank" rel="noopener noreferrer" aria-label={t("View on explorer")} className="inline-flex h-7 w-7 items-center justify-center rounded-xl transition-colors hover:bg-muted">
             <ExternalLink className="h-3.5 w-3.5 text-muted-foreground" />
           </a>
         )}

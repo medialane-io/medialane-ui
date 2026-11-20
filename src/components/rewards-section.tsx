@@ -31,7 +31,7 @@ export function RewardsSection({ rewardsHref }: RewardsSectionProps) {
   const t = useT();
   return (
     <div className="rounded-2xl p-[1.5px] bg-gradient-to-r from-brand-orange to-brand-maeve">
-      <section className="rounded-[15px] bg-background px-7 py-8 sm:px-9">
+      <section className="rounded-2xl bg-background px-7 py-8 sm:px-9">
         <div className="flex flex-col lg:flex-row lg:items-center gap-8 lg:gap-14">
           <div className="flex-1 min-w-0">
             <h2 className="text-2xl sm:text-3xl font-bold tracking-tight leading-tight text-foreground">
@@ -53,7 +53,7 @@ export function RewardsSection({ rewardsHref }: RewardsSectionProps) {
           <div className="flex flex-col gap-4 lg:w-[300px] shrink-0 lg:border-l lg:border-border lg:pl-10">
             {pillars.map(({ icon: Icon, label, detail }) => (
               <div key={label} className="flex items-start gap-3.5">
-                <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-brand-orange/15 to-brand-maeve/15 text-brand-maeve shrink-0">
+                <div className="flex h-9 w-9 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-orange/15 to-brand-maeve/15 text-brand-maeve shrink-0">
                   <Icon className="h-4 w-4" />
                 </div>
                 <div className="min-w-0">

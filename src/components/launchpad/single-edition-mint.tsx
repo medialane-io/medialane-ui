@@ -250,7 +250,7 @@ export function SingleEditionMint({ aside }: { aside?: ReactNode }) {
                 onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); imageInputRef.current?.click(); } }}
               >
                 {imagePreview ? (
-                  <div className="relative mx-auto h-48 w-48 overflow-hidden rounded-lg">
+                  <div className="relative mx-auto h-48 w-48 overflow-hidden rounded-2xl">
                     <Image src={imagePreview} alt={t("Preview")} fill unoptimized className="object-cover" />
                   </div>
                 ) : (

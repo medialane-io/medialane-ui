@@ -232,7 +232,7 @@ export function AssetProvenanceTab({
 
                         <div className="flex items-center gap-2 shrink-0">
                           {amount && BigInt(amount) > 1n && (
-                            <span className="text-2xs text-muted-foreground tabular-nums bg-muted/60 px-1.5 py-0.5 rounded">
+                            <span className="text-2xs text-muted-foreground tabular-nums bg-muted/60 px-1.5 py-0.5 rounded-full">
                               ×{amount}
                             </span>
                           )}

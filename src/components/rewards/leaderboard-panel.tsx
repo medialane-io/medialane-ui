@@ -70,7 +70,7 @@ export function LeaderboardPanel({
     <div className={cn(compact ? "" : "space-y-3", className)}>
       {showHeading && (
         <div className="flex items-center gap-2">
-          <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-brand-rose to-brand-orange text-white shrink-0">
+          <div className="flex h-7 w-7 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-rose to-brand-orange text-white shrink-0">
             <Sparkles className="h-3.5 w-3.5" />
           </div>
           <h2 className="text-sm font-black">{t("Community rewards")}</h2>
@@ -80,7 +80,7 @@ export function LeaderboardPanel({
       {isLoading ? (
         <div className={compact ? "divide-y divide-border/40" : "space-y-1.5"}>
           {Array.from({ length: Math.min(limit, 6) }).map((_, i) => (
-            <Skeleton key={i} className={compact ? "h-16 w-full rounded-none" : "h-10 w-full rounded-lg"} />
+            <Skeleton key={i} className={compact ? "h-16 w-full rounded-none" : "h-10 w-full rounded-2xl"} />
           ))}
         </div>
       ) : rows.length === 0 ? (

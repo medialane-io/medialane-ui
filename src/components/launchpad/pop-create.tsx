@@ -98,7 +98,7 @@ export function PopCreate({ aside }: { aside?: ReactNode }) {
   return (
     <WalletRequired
       icon={Award}
-      iconClassName="text-green-500"
+      iconClassName="text-brand-blue"
       title={t("Secure an account to create a POP event")}
       description={t("A secured account is needed to deploy a certificate collection onchain.")}
     >
@@ -149,7 +149,7 @@ export function PopCreate({ aside }: { aside?: ReactNode }) {
               onClearImage={clearImage}
             />
             {uploadError && <p className="text-xs text-destructive mt-1">{uploadError}</p>}
-            {uploadSuccess && <p className="text-xs text-emerald-500 mt-1">✓ {uploadSuccess}</p>}
+            {uploadSuccess && <p className="text-xs text-brand-blue mt-1">✓ {uploadSuccess}</p>}
           </form>
         </Form>
       </ClaimRouteShell>

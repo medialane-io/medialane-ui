@@ -226,7 +226,7 @@ export function CollectionsPage() {
               onClick={() => setFiltersOpen(true)}
               aria-label={t("Filters")}
               className={cn(
-                "relative flex items-center gap-1.5 h-9 px-3 rounded-lg text-xs font-medium transition-colors",
+                "relative flex items-center gap-1.5 h-9 px-3 rounded-2xl text-xs font-medium transition-colors",
                 activeFilters > 0 || service !== undefined
                   ? "bg-primary/15 text-primary"
                   : "text-muted-foreground hover:text-foreground bg-background/40"
@@ -326,7 +326,7 @@ export function CollectionsPage() {
                   <button
                     onClick={() => setHideEmpty((v) => !v)}
                     className={cn(
-                      "flex flex-1 items-center gap-2 text-sm px-3 py-2 rounded-lg transition-colors text-left",
+                      "flex flex-1 items-center gap-2 text-sm px-3 py-2 rounded-2xl transition-colors text-left",
                       !hideEmpty
                         ? "bg-primary/15 text-primary"
                         : "text-muted-foreground bg-background/40"

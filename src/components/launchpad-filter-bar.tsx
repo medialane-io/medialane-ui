@@ -55,7 +55,7 @@ export function LaunchpadFilterBar({ query, onQueryChange, sections }: Launchpad
             <X className="h-3.5 w-3.5" />
           </button>
         ) : (
-          <kbd className="absolute right-3 top-1/2 -translate-y-1/2 hidden sm:flex h-5 w-5 items-center justify-center rounded text-2xs font-medium text-muted-foreground pointer-events-none bg-background/40">
+          <kbd className="absolute right-3 top-1/2 -translate-y-1/2 hidden sm:flex h-5 w-5 items-center justify-center rounded-full text-2xs font-medium text-muted-foreground pointer-events-none bg-background/40">
             /
           </kbd>
         )}

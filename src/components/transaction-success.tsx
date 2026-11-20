@@ -28,7 +28,7 @@ export function TransactionSuccess({ name, image, title, description, txHash, ac
   const shown = actions.filter((a): a is TransactionSuccessAction => !!a);
   return (
     <div className="flex w-full flex-col items-center gap-6 py-2 text-center">
-      <div className="relative h-40 w-40 overflow-hidden rounded-3xl bg-muted shadow-lg">
+      <div className="relative h-40 w-40 overflow-hidden rounded-2xl bg-muted shadow-lg">
         {image ? (
           <Image src={image} alt={name} fill sizes="160px" unoptimized className="object-cover" />
         ) : (

@@ -14,7 +14,7 @@ export function MoreMenu({ explorerHref, shareTitle, settingsHref, onReport }: {
     <DropdownMenu>
       <DropdownMenuTrigger
         aria-label={t("More options")}
-        className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-md text-muted-foreground transition-colors hover:text-foreground bg-background/40 hover:bg-background/70"
+        className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-xl text-muted-foreground transition-colors hover:text-foreground bg-background/40 hover:bg-background/70"
       >
         <MoreHorizontal className="h-4 w-4" />
       </DropdownMenuTrigger>
@@ -43,7 +43,7 @@ export function MoreMenu({ explorerHref, shareTitle, settingsHref, onReport }: {
             });
           }}
         >
-          {copied ? <Check className="text-emerald-500" /> : <Share2 />}
+          {copied ? <Check className="text-brand-blue" /> : <Share2 />}
           {copied ? t("Link copied") : t("Share")}
         </DropdownMenuItem>
         <DropdownMenuItem onSelect={onReport}>

@@ -138,7 +138,7 @@ export function GatedContentPanel({ state, onBrowseListings }: { state: GatedCon
         <div className="h-20 w-20 rounded-2xl bg-brand-blue/15 flex items-center justify-center text-brand-blue">
           <Unlock className="h-10 w-10" />
         </div>
-        <div className="absolute -bottom-1 -right-1 h-6 w-6 rounded-full bg-emerald-500 flex items-center justify-center">
+        <div className="absolute -bottom-1 -right-1 h-6 w-6 rounded-full bg-brand-blue flex items-center justify-center">
           <Sparkles className="h-3 w-3 text-white" />
         </div>
       </div>

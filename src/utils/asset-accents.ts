@@ -15,10 +15,10 @@ export const ASSET_ACCENTS = {
     accentCountStyle: { background: "hsl(var(--brand-blue))" },
   },
   ticket: {
-    accentBorderClassName: "border-teal-500/20",
+    accentBorderClassName: "border-brand-blue/20",
     accentHeaderStyle: "linear-gradient(135deg, hsl(173 80% 40% / 0.10), hsl(var(--brand-blue) / 0.08))",
     accentAvatarStyle: "linear-gradient(135deg, hsl(173 80% 40% / 0.3), hsl(var(--brand-blue) / 0.3))",
-    accentLabelClassName: "text-teal-500",
+    accentLabelClassName: "text-brand-blue",
     accentCountStyle: { background: "rgb(13 148 136)" },
   },
   membership: {

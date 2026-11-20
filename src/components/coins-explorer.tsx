@@ -100,14 +100,14 @@ export function CoinsExplorer({ useCoins, usePrice, usePriceMap, coinHref, headi
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder={t("Search coins by name or symbol…")}
-            className="w-full rounded-lg border border-border bg-background py-2 pl-9 pr-3 text-sm outline-none focus:border-primary/50"
+            className="w-full rounded-2xl border border-border bg-background py-2 pl-9 pr-3 text-sm outline-none focus:border-primary/50"
           />
         </div>
         <select
           value={sort}
           onChange={(e) => setSort(e.target.value as CoinSort)}
           aria-label={t("Sort coins")}
-          className="shrink-0 rounded-lg border border-border bg-background px-2.5 py-2 text-xs font-medium text-foreground outline-none focus:border-primary/50"
+          className="shrink-0 rounded-2xl border border-border bg-background px-2.5 py-2 text-xs font-medium text-foreground outline-none focus:border-primary/50"
         >
           {SORT_OPTIONS.map(({ label, value }) => (
             <option key={value} value={value}>{t(label)}</option>

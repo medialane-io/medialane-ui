@@ -318,9 +318,9 @@ export function RemixMint({ contract, tokenId }: { contract: string; tokenId: st
 
             <Section title={t("Collection")} icon={<Boxes className="h-4 w-4" />}>
               {collectionsLoading ? (
-                <Skeleton className="h-10 w-full rounded-md" />
+                <Skeleton className="h-10 w-full rounded-xl" />
               ) : eligibleCollections.length === 0 ? (
-                <div className="rounded-lg border border-dashed border-border p-4 text-center space-y-2">
+                <div className="rounded-2xl border border-dashed border-border p-4 text-center space-y-2">
                   <p className="text-sm text-muted-foreground">{t("No eligible collections. Create one first.")}</p>
                   <Button size="sm" variant="soft" asChild>
                     <Link href="/launchpad/single-editions/collection"><Plus className="h-3.5 w-3.5 mr-1.5" />{t("Create collection")}</Link>
@@ -407,7 +407,7 @@ export function RemixMint({ contract, tokenId }: { contract: string; tokenId: st
                   {token.metadata?.description && <p className="text-xs text-muted-foreground line-clamp-2 mt-0.5">{token.metadata.description}</p>}
                 </div>
                 {(attr("License") || attr("Commercial Use") || attr("Derivatives")) && (
-                  <div className="rounded-lg bg-muted/40 p-3 space-y-1.5 text-xs">
+                  <div className="rounded-2xl bg-muted/40 p-3 space-y-1.5 text-xs">
                     <p className="text-2xs font-semibold text-muted-foreground">{t("Original license")}</p>
                     {attr("License") && <div className="flex justify-between"><span className="text-muted-foreground">{t("License")}</span><span className="font-medium">{attr("License")}</span></div>}
                     {attr("Commercial Use") && <div className="flex justify-between"><span className="text-muted-foreground">{t("Commercial")}</span><span className="font-medium">{attr("Commercial Use")}</span></div>}

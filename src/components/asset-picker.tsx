@@ -31,7 +31,7 @@ function MintPromoCard({ onMintClick }: { onMintClick: () => void }) {
   const t = useT();
   return (
     <div className="rounded-2xl p-[1.5px] bg-gradient-to-br from-brand-purple to-brand-orange">
-      <div className="rounded-[15px] bg-card p-5 flex flex-col sm:flex-row sm:items-center gap-4">
+      <div className="rounded-2xl bg-card p-5 flex flex-col sm:flex-row sm:items-center gap-4">
         <div className="h-11 w-11 rounded-xl bg-gradient-to-br from-brand-purple to-brand-orange flex items-center justify-center shrink-0">
           <Sparkles className="h-5 w-5 text-white" />
         </div>

@@ -23,7 +23,7 @@ export function QuickAction({
       className={`group flex flex-col items-center gap-1.5 ${disabled ? "pointer-events-none opacity-40" : ""}`}
     >
       <span
-        className="grid h-12 w-12 place-items-center rounded-[15px] transition-transform group-active:scale-95"
+        className="grid h-12 w-12 place-items-center rounded-2xl transition-transform group-active:scale-95"
         style={{ backgroundImage: actionFill(ACTION_PAIRS[action]), color: ACTION_FOREGROUNDS[action] }}
       >
         {icon}

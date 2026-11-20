@@ -87,7 +87,7 @@ export function useCollectionFilters(
   return { traitSections, activeEntries, totalActiveCount, sortIsDefault, toggleValue, clearAll, removeFilter };
 }
 
-const TRIGGER_BTN = "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-8 px-3 shrink-0 bg-background/40 hover:bg-background/70";
+const TRIGGER_BTN = "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl text-sm font-medium transition-colors h-8 px-3 shrink-0 bg-background/40 hover:bg-background/70";
 
 export interface CollectionFiltersTriggerProps {
   totalActiveCount: number;
@@ -134,7 +134,7 @@ export function CollectionFiltersTrigger({
       {!sortIsDefault && (
         <button
           onClick={onSortReset}
-          className="inline-flex items-center gap-1 h-8 px-2.5 rounded-md bg-primary/15 text-xs font-medium text-foreground hover:bg-primary/20 transition-colors"
+          className="inline-flex items-center gap-1 h-8 px-2.5 rounded-xl bg-primary/15 text-xs font-medium text-foreground hover:bg-primary/20 transition-colors"
         >
           <span className="text-muted-foreground text-2xs">{t("Sort:")}</span>
           <span>{t(SORT_OPTIONS.find((o) => o.value === sort)?.label ?? "")}</span>
@@ -147,7 +147,7 @@ export function CollectionFiltersTrigger({
           key={`${traitType}:${value}`}
           onClick={() => onRemoveFilter(traitType, value)}
           title={`${traitType}: ${value}`}
-          className="inline-flex max-w-full min-w-0 items-center gap-1 h-8 px-2.5 rounded-md bg-primary/15 text-xs font-medium text-foreground hover:bg-primary/20 transition-colors"
+          className="inline-flex max-w-full min-w-0 items-center gap-1 h-8 px-2.5 rounded-xl bg-primary/15 text-xs font-medium text-foreground hover:bg-primary/20 transition-colors"
         >
           <span className="text-muted-foreground text-2xs shrink-0">{traitType}:</span>
           <span className="truncate">{value}</span>

@@ -45,7 +45,6 @@ const medialanePreset: Partial<Config> = {
         "brand-navy":     "hsl(var(--brand-navy))",
       },
       borderRadius: {
-        brand: "11px",
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",

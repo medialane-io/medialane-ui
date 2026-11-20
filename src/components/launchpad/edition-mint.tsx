@@ -196,7 +196,7 @@ export function EditionMint({ contract: rawContract, aside }: { contract: string
                   uploadDocument={uploadDocument}
                 />
                 {uploadError && <p className="text-xs text-destructive mt-1">{uploadError}</p>}
-                {uploadSuccess && <p className="text-xs text-emerald-500 mt-1">✓ {uploadSuccess}</p>}
+                {uploadSuccess && <p className="text-xs text-brand-blue mt-1">✓ {uploadSuccess}</p>}
                 {formError && <p className="text-xs text-destructive mt-1">{formError}</p>}
               </form>
             </Form>

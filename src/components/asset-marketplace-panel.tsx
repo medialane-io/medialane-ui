@@ -120,7 +120,7 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
   if (isMarketLoading && !liveCheapest) {
     return (
       <div className="space-y-4">
-        <div className="h-9 w-32 rounded-md bg-muted animate-pulse" />
+        <div className="h-9 w-32 rounded-xl bg-muted animate-pulse" />
         <div className="h-12 w-full rounded-2xl bg-muted animate-pulse" />
       </div>
     );

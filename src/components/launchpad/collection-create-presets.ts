@@ -67,7 +67,7 @@ export const CLUB_PRESET: CollectionCreatePreset = {
 export const TICKETS_PRESET: CollectionCreatePreset = {
   service: "ip-tickets",
   icon: Ticket,
-  iconClass: "text-teal-500",
+  iconClass: "text-brand-blue",
   signedOut: { title: msg("Secure your account to create tickets"), description: msg("Create a tickets collection, then mint tickets to your audience.") },
   shell: { title: msg("Create ticket collection"), subtitle: msg("One collection — create tickets and mint them to your audience.") },
   dialog: { title: msg("Create tickets collection"), workingLabel: msg("Creating your collection…"), firstStepLabel: msg("Prepare metadata") },

@@ -76,15 +76,15 @@ export function CollectionSlugClaimSection({
 
   if (profile?.slug) {
     return (
-      <SectionCard className="border-emerald-500/20 bg-emerald-500/[0.02]">
+      <SectionCard className="border-brand-blue/20 bg-brand-blue/[0.02]">
         <SectionHeader
           icon={Gem}
           title={t("Collection URL")}
           description={`medialane.io/collection/${profile.slug}`}
-          iconClass="text-emerald-500"
-          bgClass="bg-emerald-500/15"
+          iconClass="text-brand-blue"
+          bgClass="bg-brand-blue/15"
           badge={
-            <Badge variant="soft" className="text-2xs h-4 px-1.5 text-emerald-600 border-emerald-500/30">
+            <Badge variant="soft" className="text-2xs h-4 px-1.5 text-brand-blue border-brand-blue/30">
               {t("Active")}
             </Badge>
           }
@@ -109,7 +109,7 @@ export function CollectionSlugClaimSection({
           iconClass="text-primary"
           bgClass="bg-primary/15"
           badge={
-            <Badge variant="soft" className="text-2xs h-4 px-1.5 text-amber-600 border-amber-500/30">
+            <Badge variant="soft" className="text-2xs h-4 px-1.5 text-brand-orange border-brand-orange/30">
               {t("Pending review")}
             </Badge>
           }
@@ -162,7 +162,7 @@ export function CollectionSlugClaimSection({
 
         {checkState === "available" && (
           <div className="flex items-center justify-between gap-3">
-            <p className="text-xs text-emerald-600 font-medium truncate">
+            <p className="text-xs text-brand-blue font-medium truncate">
               {t("✓ Available —")} <span className="tabular-nums">medialane.io/collection/{slugInput}</span>
             </p>
             <Button size="sm" onClick={handleSubmit} disabled={submitState === "submitting"} className="shrink-0">

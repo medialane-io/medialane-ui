@@ -71,7 +71,7 @@ export function MediaWalletOverlay(app: MediaWalletAppProps) {
             <div
               id={MEDIA_WALLET_PORTAL_ID}
               className={
-                "relative flex w-full max-w-[390px] flex-col overflow-hidden rounded-[32px] " +
+                "relative flex w-full max-w-[390px] flex-col overflow-hidden rounded-2xl " +
                 "aspect-[9/19.5] max-h-[85dvh] " +
                 "bg-background"
               }

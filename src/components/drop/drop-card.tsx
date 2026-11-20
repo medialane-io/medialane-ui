@@ -58,8 +58,8 @@ export function DropGridSkeleton() {
         <div key={i} className="panel overflow-hidden">
           <div className="aspect-square animate-pulse bg-muted" />
           <div className="space-y-2 p-4">
-            <div className="h-4 w-2/3 animate-pulse rounded-md bg-muted" />
-            <div className="h-3 w-1/2 animate-pulse rounded-md bg-muted" />
+            <div className="h-4 w-2/3 animate-pulse rounded-xl bg-muted" />
+            <div className="h-3 w-1/2 animate-pulse rounded-xl bg-muted" />
           </div>
         </div>
       ))}

@@ -26,7 +26,7 @@ function MyEventCard({ collection }: { collection: ApiCollection }) {
         {imageUrl ? (
           <Image src={imageUrl} alt={collection.name ?? t("Event")} fill className="object-cover" unoptimized />
         ) : (
-          <div className="absolute inset-0 bg-gradient-to-br from-green-500/40 to-green-900/50 flex items-center justify-center">
+          <div className="absolute inset-0 bg-gradient-to-br from-brand-blue/40 to-brand-blue/20 flex items-center justify-center">
             <span className="text-2xl font-black text-white/20">{initial}</span>
           </div>
         )}
@@ -79,7 +79,7 @@ export function PopMyEventsPage() {
             <h1 className="text-2xl font-bold mt-1">{t("My events")}</h1>
             <p className="text-sm text-muted-foreground">{t("Events you've created")}</p>
           </div>
-          <Button asChild size="sm" className="bg-green-600 hover:bg-green-700 text-white gap-1.5">
+          <Button asChild size="sm" className="bg-brand-blue hover:bg-brand-blue text-white gap-1.5">
             <Link href="/launchpad/pop/create">
               <Plus className="h-3.5 w-3.5" />
               {t("New event")}
@@ -99,7 +99,7 @@ export function PopMyEventsPage() {
           <div className="panel relative overflow-hidden p-16 text-center space-y-3">
             <Award className="h-10 w-10 text-muted-foreground/20 mx-auto" />
             <p className="text-sm text-muted-foreground">{t("No events yet")}</p>
-            <Button asChild size="sm" className="bg-green-600 hover:bg-green-700 text-white gap-1.5">
+            <Button asChild size="sm" className="bg-brand-blue hover:bg-brand-blue text-white gap-1.5">
               <Link href="/launchpad/pop/create">
                 <Plus className="h-3.5 w-3.5" />
                 {t("Create your first event")}

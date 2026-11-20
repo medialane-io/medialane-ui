@@ -107,7 +107,7 @@ const INPUT_BASE =
 
 function ToggleGroup({ value, options, onChange, disabled }: { value: string; options: readonly string[]; onChange: (v: string) => void; disabled?: boolean }) {
   return (
-    <div className="flex rounded-lg overflow-hidden w-full bg-muted/40">
+    <div className="flex rounded-2xl overflow-hidden w-full bg-muted/40">
       {options.map((opt, i) => (
         <button
           key={opt}

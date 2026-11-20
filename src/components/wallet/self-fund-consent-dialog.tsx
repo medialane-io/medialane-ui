@@ -56,7 +56,7 @@ export function SelfFundConsentDialog({ consent }: { consent: SelfFundConsent })
         <DialogDescription>
           {t("Sponsored transactions are unavailable. You can pay with your wallet balance.")}
         </DialogDescription>
-        <div className="rounded-lg bg-muted px-4 py-3 flex items-center justify-between">
+        <div className="rounded-2xl bg-muted px-4 py-3 flex items-center justify-between">
           <span className="text-sm text-muted-foreground">{t("Network fee")}</span>
           <span className="text-sm font-semibold">{label ? `≈ ${label}` : t("Estimating…")}</span>
         </div>
@@ -75,7 +75,7 @@ export function SelfFundConsentDialog({ consent }: { consent: SelfFundConsent })
           <button
             type="button"
             onClick={() => respond(false)}
-            className="px-4 py-2 rounded-lg text-sm font-medium text-muted-foreground hover:bg-muted transition-colors"
+            className="px-4 py-2 rounded-2xl text-sm font-medium text-muted-foreground hover:bg-muted transition-colors"
           >
             {t("Try again later")}
           </button>
@@ -83,7 +83,7 @@ export function SelfFundConsentDialog({ consent }: { consent: SelfFundConsent })
             type="button"
             onClick={() => respond(true)}
             disabled={notEnough}
-            className="px-4 py-2 rounded-lg text-sm font-medium bg-primary text-primary-foreground hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
+            className="px-4 py-2 rounded-2xl text-sm font-medium bg-primary text-primary-foreground hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {label ? t("Pay {label}", { label }) : t("Pay from my wallet")}
           </button>

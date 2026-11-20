@@ -24,7 +24,7 @@ export function SuccessView({ presentation = "inline", previewImage, result, onP
         <MedialaneCollectionCard image={previewImage} name={result.name} collection={result.collectionLabel} />
         <div className="space-y-5">
           <div className="space-y-1.5">
-            <div className="flex items-center gap-2 text-green-500">
+            <div className="flex items-center gap-2 text-brand-blue">
               <CheckCircle2 className="h-5 w-5" />
               <p className="text-sm font-semibold">{result.headline}</p>
             </div>

@@ -56,7 +56,7 @@ export function TransactionDialog({ tx, title, workingLabel, firstStepLabel = "P
                 return (
                   <li key={label} data-step aria-current={active ? "step" : undefined} className="flex items-center gap-3">
                     {done ? (
-                      <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-500" />
+                      <CheckCircle2 className="h-4 w-4 shrink-0 text-brand-blue" />
                     ) : active ? (
                       <Loader2 className="h-4 w-4 shrink-0 animate-spin text-primary" />
                     ) : (

@@ -260,7 +260,7 @@ export function CoinCreate({ aside, tradeHref }: CoinCreateProps) {
                       </button>
                     )}
                     {uploadError && <p className="text-destructive">{uploadError}</p>}
-                    {uploadSuccess && <p className="text-emerald-500">✓ {uploadSuccess}</p>}
+                    {uploadSuccess && <p className="text-brand-blue">✓ {uploadSuccess}</p>}
                   </div>
                   <input
                     ref={fileInputRef}
@@ -313,7 +313,7 @@ export function CoinCreate({ aside, tradeHref }: CoinCreateProps) {
                       type="button"
                       onClick={() => setSupply(p.value)}
                       className={cn(
-                        "rounded-lg px-3.5 py-1.5 text-sm font-medium",
+                        "rounded-2xl px-3.5 py-1.5 text-sm font-medium",
                         supply === p.value ? "bg-brand-orange/15 text-brand-orange" : "text-muted-foreground bg-background/40",
                       )}
                     >
@@ -345,7 +345,7 @@ export function CoinCreate({ aside, tradeHref }: CoinCreateProps) {
                       type="button"
                       onClick={() => setQuote(q)}
                       className={cn(
-                        "inline-flex items-center gap-1.5 rounded-lg px-3.5 py-1.5 text-sm font-medium",
+                        "inline-flex items-center gap-1.5 rounded-2xl px-3.5 py-1.5 text-sm font-medium",
                         quote === q ? "bg-brand-maeve/15 text-brand-maeve" : "text-muted-foreground bg-background/40",
                       )}
                     >

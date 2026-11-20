@@ -43,7 +43,7 @@ export function Dropzone({
       onDragOver={(e) => e.preventDefault()}
       onDrop={(e) => { e.preventDefault(); if (!hasWallet) { onRequireWallet(); return; } const f = e.dataTransfer.files?.[0]; if (f) onFileSelected(f); }}
       className={cn(
-        "relative flex flex-col items-center justify-center gap-4 cursor-pointer transition-colors text-center rounded-3xl border-[3px] border-dashed border-brand-blue/40 hover:border-brand-blue/70 hover:bg-brand-blue/[0.04] p-6",
+        "relative flex flex-col items-center justify-center gap-4 cursor-pointer transition-colors text-center rounded-2xl border-[3px] border-dashed border-brand-blue/40 hover:border-brand-blue/70 hover:bg-brand-blue/[0.04] p-6",
         presentation === "dialog" ? "min-h-[16rem] sm:min-h-[18rem]" : "min-h-[20rem] sm:min-h-[24rem]"
       )}
     >

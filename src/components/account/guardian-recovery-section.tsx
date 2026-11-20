@@ -74,8 +74,8 @@ export function GuardianRecoverySection({
   return (
     <div className="panel p-5 sm:p-6 space-y-5">
       <div className="flex items-start gap-3">
-        <div className="h-10 w-10 shrink-0 rounded-full bg-emerald-500/10 flex items-center justify-center">
-          <Shield className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
+        <div className="h-10 w-10 shrink-0 rounded-full bg-brand-blue/10 flex items-center justify-center">
+          <Shield className="h-5 w-5 text-brand-blue" />
         </div>
         <div>
           <h3 className="text-base font-bold text-foreground">{t("Security & recovery")}</h3>
@@ -125,7 +125,7 @@ export function GuardianRecoverySection({
             </Button>
           )}
           {status?.kind === "active" && (
-            <Badge variant="soft" className="border-emerald-500/40 text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 text-2xs">
+            <Badge variant="soft" className="border-brand-blue/40 text-brand-blue bg-brand-blue/10 text-2xs">
               {t("Configured")}
             </Badge>
           )}

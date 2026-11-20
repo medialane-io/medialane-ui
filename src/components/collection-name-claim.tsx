@@ -49,7 +49,7 @@ export function CollectionNameClaim() {
             <div className="min-w-0 flex-1">
               <p className="font-semibold truncate">{c.name ?? t("Untitled collection")}</p>
               {slug ? (
-                <p className="text-xs text-emerald-600 dark:text-emerald-400 flex items-center gap-1 mt-0.5">
+                <p className="text-xs text-brand-blue flex items-center gap-1 mt-0.5">
                   <CheckCircle2 className="h-3 w-3 shrink-0" />
                   <span className="tabular-nums truncate">medialane.io/collection/{slug}</span>
                 </p>

@@ -75,7 +75,7 @@ function EmptyState({ title, body, action }: { title: string; body: string; acti
       <p className="text-sm font-medium text-muted-foreground">{title}</p>
       <p className="text-xs text-muted-foreground/70 max-w-xs">{body}</p>
       {action ? (
-        <Link href={action.href} className="mt-2 inline-flex items-center gap-1.5 h-9 px-4 rounded-lg text-sm font-semibold bg-foreground text-background hover:opacity-90 transition">
+        <Link href={action.href} className="mt-2 inline-flex items-center gap-1.5 h-9 px-4 rounded-2xl text-sm font-semibold bg-foreground text-background hover:opacity-90 transition">
           <Sparkles className="h-3.5 w-3.5" />
           {action.label}
         </Link>

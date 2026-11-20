@@ -26,7 +26,7 @@ function ActivityPill({ listing, getHref }: { listing: ApiOrder; getHref: (order
       href={getHref(listing)}
       className="panel flex-shrink-0 flex items-center gap-2 px-3 py-2 hover:bg-muted/60 active:scale-[0.98] transition-all duration-150 group"
     >
-      <div className="h-8 w-8 rounded-lg overflow-hidden bg-muted shrink-0">
+      <div className="h-8 w-8 rounded-2xl overflow-hidden bg-muted shrink-0">
         {image ? (
           <img
             src={image}

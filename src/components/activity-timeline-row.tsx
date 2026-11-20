@@ -10,15 +10,16 @@ import { assetHref, type ApiActivity } from "@medialane/sdk";
 import { cn } from "../utils/cn.js";
 import { useT } from "../i18n/provider.js";
 import { msg } from "../i18n/translate.js";
+import { ACTIVITY_TYPE_CONFIG } from "../data/activity.js";
 
 
-const ACTIVITY_META: Record<string, { label: string; textColor: string; bg: string }> = {
-  mint:      { label: msg("Minted"),    textColor: "text-yellow-400",  bg: "bg-yellow-500/8 border-yellow-500/15" },
-  listing:   { label: msg("Listed"),    textColor: "text-violet-400",  bg: "bg-violet-500/8 border-violet-500/15" },
-  sale:      { label: msg("Sold"),      textColor: "text-emerald-400", bg: "bg-emerald-500/8 border-emerald-500/15" },
-  offer:     { label: msg("Offer"),     textColor: "text-amber-400",   bg: "bg-amber-500/8 border-amber-500/15" },
-  transfer:  { label: msg("Transfer"),  textColor: "text-blue-400",    bg: "bg-blue-500/8 border-blue-500/15" },
-  cancelled: { label: msg("Cancelled"), textColor: "text-muted-foreground", bg: "bg-muted/30 border-border" },
+const ACTIVITY_LABEL: Record<string, string> = {
+  mint: msg("Minted"),
+  listing: msg("Listed"),
+  sale: msg("Sold"),
+  offer: msg("Offer"),
+  transfer: msg("Transfer"),
+  cancelled: msg("Cancelled"),
 };
 
 const ACTIVITY_ICONS: Record<string, React.ElementType> = {
@@ -40,7 +41,8 @@ export function ActivityTimelineRow({
   isLast,
 }: ActivityTimelineRowProps) {
   const t = useT();
-  const meta = ACTIVITY_META[event.type] ?? ACTIVITY_META.transfer;
+  const colors = ACTIVITY_TYPE_CONFIG[event.type] ?? ACTIVITY_TYPE_CONFIG.transfer;
+  const label = ACTIVITY_LABEL[event.type] ?? ACTIVITY_LABEL.transfer;
   const Icon = ACTIVITY_ICONS[event.type] ?? ArrowRightLeft;
   const tokenId = event.nftTokenId ?? event.tokenId;
   const contract = event.nftContract ?? event.contractAddress;
@@ -48,8 +50,8 @@ export function ActivityTimelineRow({
   return (
     <div className="flex gap-4 group">
       <div className="flex flex-col items-center shrink-0 w-9">
-        <div className={cn("h-9 w-9 rounded-xl flex items-center justify-center shrink-0", meta.bg)}>
-          <Icon className={cn("h-3.5 w-3.5", meta.textColor)} />
+        <div className={cn("h-9 w-9 rounded-xl flex items-center justify-center shrink-0", colors.bgClass)}>
+          <Icon className={cn("h-3.5 w-3.5", colors.colorClass)} />
         </div>
         {!isLast && <div className="flex-1 w-px bg-border/50 mt-1.5 min-h-4" />}
       </div>
@@ -57,8 +59,8 @@ export function ActivityTimelineRow({
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
             <div className="flex items-center gap-2 flex-wrap">
-              <span className={cn("text-2xs font-bold", meta.textColor)}>
-                {t(meta.label)}
+              <span className={cn("text-2xs font-bold", colors.colorClass)}>
+                {t(label)}
               </span>
               {contract && tokenId && (
                 <Link href={assetHref(event.chain ?? "STARKNET", contract, tokenId)} className="text-xs text-muted-foreground hover:text-foreground transition-colors">

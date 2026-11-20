@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.381.0] — 2026-11-20
+
+### Changed
+
+- Brand colours only: every non-brand Tailwind colour in the package maps to its nearest brand colour (emerald, green, teal, sky and blue to brand blue; violet, purple and indigo to brand purple; amber, yellow and orange to brand orange; red to `destructive`; zinc to muted), keeping opacity. The coin launch preview gradient uses brand orange and maeve.
+- Three radii: `rounded-2xl` for panels and large media, `rounded-xl` for elements inside panels (buttons, inputs, tiles, menu items), `rounded-full` for pills, avatars and skeleton text. Sizes are preserved where the preset allows (`rounded-lg` was already 16px). Checkboxes and the chat bubble tail keep their small radius.
+- `ActivityTimelineRow` uses the shared `ACTIVITY_TYPE_CONFIG` colours instead of its own table.
+
+### Removed
+
+- The unused `rounded-brand` radius from the Tailwind preset.
+
 ## [0.380.0] — 2026-11-20
 
 ### Changed

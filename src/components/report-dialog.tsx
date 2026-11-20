@@ -101,7 +101,7 @@ export function ReportDialog({ target, open, onOpenChange }: ReportDialogProps) 
 
         {submitStep === "success" ? (
           <div className="flex flex-col items-center gap-4 py-4 text-center">
-            <CheckCircle className="h-10 w-10 text-emerald-500" />
+            <CheckCircle className="h-10 w-10 text-brand-blue" />
             <div className="space-y-1">
               <p className="font-semibold">{t("Report submitted")}</p>
               <p className="text-sm text-muted-foreground">{t("Our team will review it.")}</p>

@@ -43,7 +43,7 @@ export function AddressDisplay({
           aria-label={t("Copy address")}
         >
           {copied
-            ? <Check className="h-3 w-3 text-emerald-500" />
+            ? <Check className="h-3 w-3 text-brand-blue" />
             : <Copy className="h-3 w-3" />}
         </button>
       )}

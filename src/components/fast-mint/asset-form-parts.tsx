@@ -36,7 +36,7 @@ export function MediaRow({
   const TemplateIcon = template.icon;
   return (
     <div className="panel flex items-center gap-4 p-3">
-      <div className="relative h-14 w-14 rounded-lg bg-muted overflow-hidden shrink-0">
+      <div className="relative h-14 w-14 rounded-2xl bg-muted overflow-hidden shrink-0">
         {kind === "image" && preview ? (
           <Image src={preview} alt="" fill className="object-cover" unoptimized />
         ) : (

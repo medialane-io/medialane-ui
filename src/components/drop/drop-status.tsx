@@ -8,7 +8,7 @@ import { useFormat } from "../../i18n/use-format.js";
 export function DropStatusBadge({ phase }: { phase: DropPhase }) {
   const t = useT();
   const map = {
-    live:       { label: t("Live"),     cls: "text-green-400 bg-green-500/10" },
+    live:       { label: t("Live"),     cls: "text-brand-blue bg-brand-blue/10" },
     upcoming:   { label: t("Upcoming"), cls: "text-brand-blue bg-brand-blue/10" },
     ended:      { label: t("Ended"),    cls: "text-muted-foreground bg-muted" },
     "sold-out": { label: t("Sold out"), cls: "text-brand-orange bg-brand-orange/10" },
@@ -16,7 +16,7 @@ export function DropStatusBadge({ phase }: { phase: DropPhase }) {
   const { label, cls } = map[phase];
   return (
     <span className={cn("inline-flex items-center gap-1 text-xs font-bold uppercase tracking-widest rounded-full px-3 py-1", cls)}>
-      {phase === "live" && <span className="h-1.5 w-1.5 rounded-full bg-green-400 animate-pulse" />}
+      {phase === "live" && <span className="h-1.5 w-1.5 rounded-full bg-brand-blue animate-pulse" />}
       {label}
     </span>
   );

@@ -57,7 +57,7 @@ export function CoinAvatar({ collection, size = 36 }: { collection: CoinCollecti
 
 function PriceCell({ price, status, isLoading }: { price: CoinPriceLike | null; status?: CoinMarketStatus; isLoading: boolean }) {
   const t = useT();
-  if (isLoading) return <span className="ml-auto block h-4 w-16 animate-pulse rounded bg-muted-foreground/20" />;
+  if (isLoading) return <span className="ml-auto block h-4 w-16 animate-pulse rounded-full bg-muted-foreground/20" />;
   if (!price) {
     return status === "pre-launch" ? (
       <span className="block text-right text-xs text-muted-foreground">{t("Not trading yet")}</span>
@@ -121,11 +121,11 @@ export function CoinRowSkeleton() {
       <span className="flex items-center gap-3">
         <span className="h-9 w-9 shrink-0 animate-pulse rounded-full bg-muted-foreground/20" />
         <span className="space-y-1.5">
-          <span className="block h-4 w-28 animate-pulse rounded bg-muted-foreground/20" />
-          <span className="block h-3 w-14 animate-pulse rounded bg-muted-foreground/10" />
+          <span className="block h-4 w-28 animate-pulse rounded-full bg-muted-foreground/20" />
+          <span className="block h-3 w-14 animate-pulse rounded-full bg-muted-foreground/10" />
         </span>
       </span>
-      <span className="ml-auto block h-4 w-16 animate-pulse rounded bg-muted-foreground/20" />
+      <span className="ml-auto block h-4 w-16 animate-pulse rounded-full bg-muted-foreground/20" />
     </div>
   );
 }

@@ -26,7 +26,7 @@ test("the collections loading screen shows ten collection card skeletons", () =>
 test("the collection loading screen shows the header, the tab row and a grid of asset skeletons", () => {
   const { container } = render(<CollectionLoading />);
   expect(container.querySelectorAll(".aspect-square").length).toBeGreaterThanOrEqual(11);
-  expect(container.querySelector(".rounded-lg.h-10")).not.toBeNull();
+  expect(container.querySelector(".rounded-2xl.h-10")).not.toBeNull();
 });
 
 test("the IP type loading screen shows the title row and token card skeletons", () => {

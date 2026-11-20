@@ -62,7 +62,7 @@ export function DropManage({ contract, indexed, onchain, mints, run, saveExclusi
 
   return (
     <div className="space-y-8">
-      {message && <p className="rounded-lg bg-muted/50 px-3 py-2 text-sm">{message}</p>}
+      {message && <p className="rounded-2xl bg-muted/50 px-3 py-2 text-sm">{message}</p>}
 
       <section className="space-y-3">
         <h3 className="text-sm font-semibold">{t("Overview")}</h3>

@@ -161,7 +161,7 @@ function ProvenanceEvent({ event, showAsset }: { event: ApiActivity; showAsset: 
               href={`${EXPLORER_URL}/tx/${event.txHash}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="rounded-md p-1 hover:bg-muted hover:text-foreground transition-colors"
+              className="rounded-xl p-1 hover:bg-muted hover:text-foreground transition-colors"
               aria-label={t("View transaction")}
             >
               <ExternalLink className="h-3.5 w-3.5" aria-hidden />
@@ -180,10 +180,10 @@ function ProvenanceSkeleton() {
         <div key={i} className="panel flex items-center gap-4 p-4">
           <div className="h-11 w-11 shrink-0 rounded-xl bg-muted animate-pulse" />
           <div className="flex-1 space-y-2">
-            <div className="h-4 w-44 rounded bg-muted animate-pulse" />
-            <div className="h-3 w-24 rounded bg-muted animate-pulse" />
+            <div className="h-4 w-44 rounded-full bg-muted animate-pulse" />
+            <div className="h-3 w-24 rounded-full bg-muted animate-pulse" />
           </div>
-          <div className="h-4 w-16 rounded bg-muted animate-pulse" />
+          <div className="h-4 w-16 rounded-full bg-muted animate-pulse" />
         </div>
       ))}
     </div>

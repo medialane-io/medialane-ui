@@ -121,11 +121,11 @@ export function MediaWalletHome({
       ) : isDeployed === null ? (
         <div className="flex flex-col gap-3">
           <div className="flex flex-col items-center gap-3 py-2">
-            <div className="h-3 w-16 animate-pulse rounded bg-foreground/[0.06]" />
-            <div className="h-11 w-32 animate-pulse rounded bg-foreground/[0.06]" />
-            <div className="h-[48px] w-40 animate-pulse rounded-[13px] bg-foreground/[0.06]" />
+            <div className="h-3 w-16 animate-pulse rounded-full bg-foreground/[0.06]" />
+            <div className="h-11 w-32 animate-pulse rounded-full bg-foreground/[0.06]" />
+            <div className="h-[48px] w-40 animate-pulse rounded-xl bg-foreground/[0.06]" />
           </div>
-          <div className="h-[148px] animate-pulse rounded-[20px] bg-foreground/[0.04]" />
+          <div className="h-[148px] animate-pulse rounded-2xl bg-foreground/[0.04]" />
         </div>
       ) : (
         isDeployed === true && (
@@ -215,7 +215,7 @@ export function MediaWalletHome({
       {!funded && isDeployed === true && (
         <button
           onClick={goLaunch}
-          className="flex flex-col items-center gap-2 rounded-[20px] border-2 border-dashed border-border px-6 py-8 text-center transition-colors hover:border-primary/50 active:scale-[0.99]"
+          className="flex flex-col items-center gap-2 rounded-2xl border-2 border-dashed border-border px-6 py-8 text-center transition-colors hover:border-primary/50 active:scale-[0.99]"
         >
           <div className="grid h-11 w-11 place-items-center rounded-full bg-foreground/[0.06]">
             <RocketIcon />

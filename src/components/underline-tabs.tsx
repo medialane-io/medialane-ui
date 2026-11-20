@@ -28,7 +28,7 @@ export function UnderlineTabs({ tabs, value, onValueChange, trailing, children }
             <TabsPrimitive.Trigger
               key={id}
               value={id}
-              className="group relative flex shrink-0 items-center gap-2 whitespace-nowrap rounded-lg px-4 py-3 text-sm font-medium text-muted-foreground transition-colors duration-200 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 data-[state=active]:text-foreground after:absolute after:inset-x-0 after:bottom-0 after:h-0.5 after:rounded-full after:bg-primary after:opacity-0 data-[state=active]:after:opacity-100"
+              className="group relative flex shrink-0 items-center gap-2 whitespace-nowrap rounded-2xl px-4 py-3 text-sm font-medium text-muted-foreground transition-colors duration-200 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 data-[state=active]:text-foreground after:absolute after:inset-x-0 after:bottom-0 after:h-0.5 after:rounded-full after:bg-primary after:opacity-0 data-[state=active]:after:opacity-100"
             >
               <Icon className="h-3.5 w-3.5" />
               {label}
