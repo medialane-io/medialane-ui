@@ -14,7 +14,7 @@ export function MoreMenu({ explorerHref, shareTitle, settingsHref, onReport }: {
     <DropdownMenu>
       <DropdownMenuTrigger
         aria-label={t("More options")}
-        className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-md border border-input bg-background text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+        className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-md text-muted-foreground transition-colors hover:text-foreground bg-background/40 hover:bg-background/70"
       >
         <MoreHorizontal className="h-4 w-4" />
       </DropdownMenuTrigger>

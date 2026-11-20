@@ -27,7 +27,7 @@ interface StripCard {
   blurb: string;
   example?: string;
   cta: string;
-  hue: { text: string; solid: string; border: string; tint: string };
+  hue: { text: string; solid: string; tint: string };
 }
 
 const DEF_BY_KEY = Object.fromEntries(LAUNCHPAD_SERVICE_DEFINITIONS.map((d) => [d.key, d]));
@@ -44,7 +44,6 @@ const STRIP_ORDER = [
 const MARKETPLACE_HUE = {
   text: "text-brand-maeve",
   solid: "bg-brand-maeve",
-  border: "border-brand-maeve/30",
   tint: "bg-brand-maeve/10",
 };
 
@@ -53,11 +52,7 @@ function ServiceCard({ card }: { card: StripCard }) {
   return (
     <Link
       href={href}
-      className={cn(
-        "relative rounded-2xl border bg-card overflow-hidden flex flex-col h-full min-h-[280px]",
-        "transition-transform active:scale-[0.99]",
-        hue.border,
-      )}
+      className="panel relative overflow-hidden flex flex-col h-full min-h-[280px] transition-transform active:scale-[0.99]"
     >
       <div className="relative flex flex-col flex-1 p-6 gap-3.5">
         <span className={cn("flex h-11 w-11 items-center justify-center rounded-xl", hue.tint)}>

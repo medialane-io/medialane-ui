@@ -51,7 +51,7 @@ function RemixableCard({ token }: { token: ApiToken }) {
   return (
     <Link
       href={`/create/remix/${token.contractAddress}/${token.tokenId}`}
-      className="group flex flex-col rounded-2xl border border-border/60 bg-card overflow-hidden transition-colors sm:hover:border-brand-blue/50 active:scale-[0.99] motion-reduce:transform-none"
+      className="panel group flex flex-col overflow-hidden transition-colors sm:hover:border-brand-blue/50 active:scale-[0.99] motion-reduce:transform-none"
     >
       <div className="relative aspect-square bg-muted overflow-hidden">
         {showImage ? (
@@ -85,7 +85,7 @@ function RemixableCard({ token }: { token: ApiToken }) {
 
 function RemixableCardSkeleton() {
   return (
-    <div className="rounded-2xl border border-border/40 overflow-hidden">
+    <div className="panel overflow-hidden">
       <Skeleton className="aspect-square rounded-none" />
       <div className="p-4 space-y-2">
         <Skeleton className="h-4 w-32" />
@@ -123,14 +123,14 @@ export function RemixBrowsePage() {
             ))}
           </div>
         ) : error && tokens.length === 0 ? (
-          <div className="bento-cell p-10 flex flex-col items-center gap-3 text-center">
+          <div className="panel relative overflow-hidden p-10 flex flex-col items-center gap-3 text-center">
             <p className="font-semibold">{t("Could not load works")}</p>
             <p className="text-sm text-muted-foreground">{t("Check your connection and try again.")}</p>
             <Button variant="soft" size="sm" onClick={() => location.reload()}>{t("Retry")}</Button>
           </div>
         ) : tokens.length === 0 ? (
           <FadeIn>
-            <div className="bento-cell p-10 flex flex-col items-center gap-4 text-center">
+            <div className="panel relative overflow-hidden p-10 flex flex-col items-center gap-4 text-center">
               <Inbox className="h-10 w-10 text-muted-foreground/30" />
               <div>
                 <p className="font-semibold">{t("No works open to remixing yet")}</p>

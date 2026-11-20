@@ -31,7 +31,7 @@ export function SuccessDialog({
     <CanvasPortal>
       <div className="absolute inset-0 z-[70] grid place-items-center p-6" onClick={onClose}>
         <ActionBackdrop />
-        <div className="card-base relative z-10 w-full max-w-[320px] p-6 text-center" onClick={(e) => e.stopPropagation()}>
+        <div className="panel bg-card overflow-hidden relative z-10 w-full max-w-[320px] p-6 text-center" onClick={(e) => e.stopPropagation()}>
           <div role="status">
             <h2 className="font-[family-name:var(--font-display)] text-xl font-extrabold tracking-tight">{title}</h2>
             <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">{message}</p>

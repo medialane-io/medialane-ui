@@ -86,10 +86,10 @@ export function PopCreateFields({
                   type="button"
                   onClick={() => onSetEventType(value)}
                   className={cn(
-                    "flex flex-col items-center gap-1.5 p-3 rounded-xl border text-center transition-all",
+                    "flex flex-col items-center gap-1.5 p-3 rounded-xl text-center transition-all",
                     selected
-                      ? "border-green-500 bg-green-500/10 text-green-600 dark:text-green-400"
-                      : "border-border bg-muted/30 hover:border-green-500/40 hover:bg-green-500/5 text-muted-foreground"
+                      ? "bg-brand-blue/15 text-brand-blue"
+                      : "bg-background/40 text-muted-foreground"
                   )}
                 >
                   <Icon className={cn("h-5 w-5", selected && "text-green-500")} />
@@ -276,7 +276,7 @@ export function PopCreateFields({
       </FadeIn>
 
       <FadeIn delay={0.18}>
-        <div className="flex items-center justify-between p-4 rounded-xl border border-border bg-muted/20">
+        <div className="panel flex items-center justify-between p-4">
           <div className="space-y-0.5">
             <p className="text-sm font-medium">{t("Event visibility")}</p>
             <p className="text-xs text-muted-foreground">

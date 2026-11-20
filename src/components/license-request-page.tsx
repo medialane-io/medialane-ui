@@ -150,7 +150,7 @@ export function LicenseRequestPage({ contract, tokenId }: { contract: string; to
         </p>
       </div>
 
-      <div className="flex items-center gap-3 rounded-xl border border-border bg-card p-4">
+      <div className="panel flex items-center gap-3 p-4">
         {originalImage && (
           <Image src={originalImage} alt={originalName} width={48} height={48} className="rounded-lg object-cover" unoptimized />
         )}
@@ -161,7 +161,7 @@ export function LicenseRequestPage({ contract, tokenId }: { contract: string; to
       </div>
 
       {step === "success" ? (
-        <div className="rounded-xl border border-border p-8 text-center space-y-4">
+        <div className="panel p-8 text-center space-y-4">
           <div className="h-14 w-14 mx-auto rounded-full bg-primary/10 flex items-center justify-center">
             <Check className="h-7 w-7 text-primary" />
           </div>

@@ -88,7 +88,7 @@ export function PortfolioActivity({ address }: PortfolioActivityProps) {
         emptyIcon={<Activity className="h-7 w-7 text-muted-foreground" />}
         skeletonNode={<ActivityListSkeleton count={8} />}
       >
-        <div className="rounded-xl border border-border overflow-hidden divide-y divide-border/50">
+        <div className="panel overflow-hidden divide-y divide-border/50">
           {displayed.map((activity, i) => (
             <ActivityRow
               key={`${activity.txHash}-${activity.type}-${i}`}

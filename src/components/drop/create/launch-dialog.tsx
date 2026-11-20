@@ -115,7 +115,7 @@ export function LaunchDialog({ open, onClose, draft }: { open: boolean; onClose:
         {step.kind === "review" && (
           <>
             <DialogTitle className="text-lg font-semibold">{t("Review and launch")}</DialogTitle>
-            <div className="space-y-2 rounded-xl border border-border p-4 text-sm">
+            <div className="panel space-y-2 p-4 text-sm">
               <p className="font-semibold">{draft.name}</p>
               <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">{t("Fixed after launch")}</p>
               <Row label={t("Price")} value={priceLabel(terms.price, terms.paymentToken)} />

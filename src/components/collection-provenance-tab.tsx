@@ -114,7 +114,7 @@ function ProvenanceEvent({ event, showAsset }: { event: ApiActivity; showAsset: 
   );
 
   return (
-    <li className="flex items-center gap-4 rounded-2xl border border-border/50 bg-card/60 p-4 backdrop-blur-sm transition-colors hover:bg-card/90">
+    <li className="panel flex items-center gap-4 p-4 backdrop-blur-sm transition-colors hover:bg-card/90">
       {leadWithAsset ? (assetLink ? <Link href={assetLink} className="block shrink-0">{thumb}</Link> : thumb) : tile}
 
       <div className="min-w-0 flex-1">
@@ -177,7 +177,7 @@ function ProvenanceSkeleton() {
   return (
     <div className="grid gap-2.5 lg:grid-cols-2" aria-hidden>
       {Array.from({ length: 5 }).map((_, i) => (
-        <div key={i} className="flex items-center gap-4 rounded-2xl border border-border/50 bg-card/60 p-4">
+        <div key={i} className="panel flex items-center gap-4 p-4">
           <div className="h-11 w-11 shrink-0 rounded-xl bg-muted animate-pulse" />
           <div className="flex-1 space-y-2">
             <div className="h-4 w-44 rounded bg-muted animate-pulse" />

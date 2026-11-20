@@ -48,7 +48,7 @@ export function ActivityTimelineRow({
   return (
     <div className="flex gap-4 group">
       <div className="flex flex-col items-center shrink-0 w-9">
-        <div className={cn("h-9 w-9 rounded-xl border flex items-center justify-center shrink-0", meta.bg)}>
+        <div className={cn("h-9 w-9 rounded-xl flex items-center justify-center shrink-0", meta.bg)}>
           <Icon className={cn("h-3.5 w-3.5", meta.textColor)} />
         </div>
         {!isLast && <div className="flex-1 w-px bg-border/50 mt-1.5 min-h-4" />}

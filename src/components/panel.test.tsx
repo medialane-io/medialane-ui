@@ -5,8 +5,11 @@ const { Panel, Pill, panelBackground } = await import("./panel.js");
 
 afterEach(() => cleanup());
 
-test("a neutral panel fades the muted colour to transparent", () => {
-  expect(panelBackground()).toBe("linear-gradient(to bottom right, hsl(var(--muted) / 0.4), transparent)");
+test("a neutral panel uses the shared panel class without an inline background", () => {
+  const { getByText } = render(<Panel className="p-4">Neutral</Panel>);
+  const panel = getByText("Neutral");
+  expect(panel.className).toContain("panel");
+  expect(panel.getAttribute("style") ?? "").not.toContain("gradient");
 });
 
 test("a brand panel fades one brand colour, or blends a pair, to transparent", () => {
@@ -23,7 +26,7 @@ test("a panel is borderless and keeps the caller's classes and styles", () => {
     </Panel>,
   );
   const panel = getByText("Body");
-  expect(panel.className).toContain("rounded-2xl");
+  expect(panel.className).toContain("panel");
   expect(panel.className).toContain("p-4");
   expect(panel.className).not.toContain("border");
   expect(panel.className).not.toContain("ring");

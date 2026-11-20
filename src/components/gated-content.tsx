@@ -42,16 +42,17 @@ export function GatedContentHero({
     return (
       <button
         onClick={onViewExclusive}
-        className="w-full flex items-center gap-4 rounded-2xl border border-emerald-500/40 bg-emerald-500/10 hover:bg-emerald-500/15 px-5 py-4 transition-colors text-left"
+        className="panel w-full flex items-center gap-4 hover:bg-background/40 px-5 py-4 transition-colors text-left"
+        style={{ backgroundImage: panelBackground("blue") }}
       >
-        <div className="h-11 w-11 rounded-xl bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center shrink-0 text-emerald-500">
+        <div className="h-11 w-11 rounded-xl bg-brand-blue/15 flex items-center justify-center shrink-0 text-brand-blue">
           <Icon className="h-5 w-5" />
         </div>
         <div className="flex-1 min-w-0">
-          <p className="text-2xs font-bold text-emerald-500 leading-none">{t("✓ You're a holder — unlocked")}</p>
+          <p className="text-2xs font-bold text-brand-blue leading-none">{t("✓ You're a holder — unlocked")}</p>
           <p className="text-sm font-bold text-foreground leading-snug mt-1 truncate">{state.content.title ?? title}</p>
         </div>
-        <Unlock className="h-4 w-4 text-emerald-500 shrink-0" />
+        <Unlock className="h-4 w-4 text-brand-blue shrink-0" />
       </button>
     );
   }
@@ -134,7 +135,7 @@ export function GatedContentPanel({ state, onBrowseListings }: { state: GatedCon
   return (
     <div className="py-8 flex flex-col items-center gap-6 text-center max-w-md mx-auto">
       <div className="relative">
-        <div className="h-20 w-20 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-500">
+        <div className="h-20 w-20 rounded-2xl bg-brand-blue/15 flex items-center justify-center text-brand-blue">
           <Unlock className="h-10 w-10" />
         </div>
         <div className="absolute -bottom-1 -right-1 h-6 w-6 rounded-full bg-emerald-500 flex items-center justify-center">
@@ -142,7 +143,7 @@ export function GatedContentPanel({ state, onBrowseListings }: { state: GatedCon
         </div>
       </div>
       <div className="space-y-1.5">
-        <p className="text-2xs font-bold text-emerald-500">{t("✓ Verified holder")}</p>
+        <p className="text-2xs font-bold text-brand-blue">{t("✓ Verified holder")}</p>
         <h3 className="text-xl font-bold">{state.content.title ?? t("Exclusive content")}</h3>
         <p className="text-sm text-muted-foreground">{t("Your access is verified. Enjoy your exclusive content.")}</p>
       </div>

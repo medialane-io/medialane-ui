@@ -60,7 +60,7 @@ export function DevicesSection({ walletAddress, wallet, loadSealed }: DevicesSec
   };
 
   return (
-    <div className="rounded-2xl border border-border/60 bg-card p-5 sm:p-6 space-y-5">
+    <div className="panel p-5 sm:p-6 space-y-5">
       <div className="flex items-start justify-between gap-3">
         <div>
           <h3 className="text-base font-bold text-foreground">{t("Your devices")}</h3>

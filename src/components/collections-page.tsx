@@ -194,13 +194,13 @@ export function CollectionsPage() {
         <h1 className="text-3xl font-bold">{t("Onchain collections")}</h1>
         <div className="flex flex-wrap items-center gap-2 mt-1">
           {counts?.single != null && counts.multi != null && (
-            <div className="flex items-center gap-1.5 rounded-full border border-border bg-card px-3.5 py-1.5 text-sm">
+            <div className="flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-sm bg-background/40">
               <span className="font-bold tabular-nums">{intl.number((counts.single + counts.multi))}</span>
               <span className="text-muted-foreground">{t("Collections")}</span>
             </div>
           )}
           {counts?.multi != null && (
-            <div className="flex items-center gap-1.5 rounded-full border border-border bg-card px-3.5 py-1.5 text-sm">
+            <div className="flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-sm bg-background/40">
               <span className="font-bold tabular-nums">{intl.number(counts.multi)}</span>
               <span className="text-muted-foreground">{t("Multi editions")}</span>
             </div>
@@ -226,10 +226,10 @@ export function CollectionsPage() {
               onClick={() => setFiltersOpen(true)}
               aria-label={t("Filters")}
               className={cn(
-                "relative flex items-center gap-1.5 h-9 px-3 rounded-lg border text-xs font-medium transition-colors",
+                "relative flex items-center gap-1.5 h-9 px-3 rounded-lg text-xs font-medium transition-colors",
                 activeFilters > 0 || service !== undefined
-                  ? "border-primary bg-primary/10 text-primary"
-                  : "border-border text-muted-foreground hover:border-primary/50 hover:text-foreground"
+                  ? "bg-primary/15 text-primary"
+                  : "text-muted-foreground hover:text-foreground bg-background/40"
               )}
             >
               <SlidersHorizontal className="h-3.5 w-3.5" />
@@ -244,14 +244,14 @@ export function CollectionsPage() {
         {(service !== undefined || !hideEmpty) && (
           <div className="flex flex-wrap items-center gap-2">
             {service !== undefined && (
-              <span className="flex items-center gap-1 text-xs px-2.5 py-1 rounded-full border border-primary/40 bg-primary/10 text-primary">
+              <span className="flex items-center gap-1 text-xs px-2.5 py-1 rounded-full bg-primary/15 text-primary">
                 {service === "drop-collection" ? <Package className="h-3 w-3" /> : <Award className="h-3 w-3" />}
                 {t(SERVICE_TABS.find((tab) => tab.value === service)?.label ?? "")}
                 <button onClick={() => setService(undefined)} className="ml-0.5 hover:text-primary/60" aria-label={t("Remove source filter")}>×</button>
               </span>
             )}
             {!hideEmpty && (
-              <span className="flex items-center gap-1 text-xs px-2.5 py-1 rounded-full border border-primary/40 bg-primary/10 text-primary">
+              <span className="flex items-center gap-1 text-xs px-2.5 py-1 rounded-full bg-primary/15 text-primary">
                 {t("Show empty")}
                 <button onClick={() => setHideEmpty(true)} className="ml-0.5 hover:text-primary/60" aria-label={t("Remove show empty filter")}>×</button>
               </span>
@@ -285,10 +285,10 @@ export function CollectionsPage() {
                     key={value}
                     onClick={() => setSort(value)}
                     className={cn(
-                      "flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full border transition-colors whitespace-nowrap",
+                      "flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full transition-colors whitespace-nowrap",
                       sort === value
-                        ? "border-primary bg-primary/10 text-primary font-medium"
-                        : "border-border text-muted-foreground hover:border-primary/50"
+                        ? "bg-primary/15 text-primary font-medium"
+                        : "text-muted-foreground bg-background/40"
                     )}
                   >
                     {t(label)}
@@ -305,10 +305,10 @@ export function CollectionsPage() {
                     key={label}
                     onClick={() => handleServiceChange(value)}
                     className={cn(
-                      "flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full border transition-colors whitespace-nowrap",
+                      "flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full transition-colors whitespace-nowrap",
                       service === value
-                        ? "border-primary bg-primary/10 text-primary font-medium"
-                        : "border-border text-muted-foreground hover:border-primary/50"
+                        ? "bg-primary/15 text-primary font-medium"
+                        : "text-muted-foreground bg-background/40"
                     )}
                   >
                     {value === "pop-protocol" && <Award className="h-3 w-3" />}
@@ -326,10 +326,10 @@ export function CollectionsPage() {
                   <button
                     onClick={() => setHideEmpty((v) => !v)}
                     className={cn(
-                      "flex flex-1 items-center gap-2 text-sm px-3 py-2 rounded-lg border transition-colors text-left",
+                      "flex flex-1 items-center gap-2 text-sm px-3 py-2 rounded-lg transition-colors text-left",
                       !hideEmpty
-                        ? "border-primary bg-primary/10 text-primary"
-                        : "border-border text-muted-foreground hover:border-primary/50"
+                        ? "bg-primary/15 text-primary"
+                        : "text-muted-foreground bg-background/40"
                     )}
                   >
                     <Eye className="h-4 w-4 shrink-0" />

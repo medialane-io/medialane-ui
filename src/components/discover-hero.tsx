@@ -32,7 +32,7 @@ export function DiscoverHero({
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, ease: EASE_OUT }}
         >
-          <span className="pill-badge">{badgeText}</span>
+          <span className="pill">{badgeText}</span>
         </motion.div>
       ) : null}
 
@@ -61,7 +61,7 @@ export function DiscoverHero({
           ].map(({ label, value }) => (
             <div
               key={label}
-              className="flex items-center gap-1.5 rounded-full border border-border bg-card px-3.5 py-1.5 text-sm"
+              className="flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-sm bg-background/40"
             >
               <span className="font-bold tabular-nums">{intl.number(value) ?? "—"}</span>
               <span className="text-muted-foreground">{label}</span>

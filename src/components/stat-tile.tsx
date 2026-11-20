@@ -30,7 +30,7 @@ export function StatTile({
 }: StatTileProps) {
   return (
     <div
-      className={`bg-muted border border-border flex flex-col gap-1 min-w-0 ${className ?? ''}`}
+      className={`panel flex flex-col gap-1 min-w-0 ${className ?? ''}`}
       style={{ borderRadius: radius, padding: '12px 14px' }}
     >
       <span className="text-[10.5px] font-semibold tracking-[0.06em] uppercase text-muted-foreground">

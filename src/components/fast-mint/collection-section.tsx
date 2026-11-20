@@ -52,7 +52,7 @@ export function CollectionPicker({
         <button
           type="button"
           aria-expanded={open}
-          className="flex w-full items-center gap-3 rounded-xl border border-border p-3 text-left transition-colors hover:bg-muted/40"
+          className="panel flex w-full items-center gap-3 p-3 text-left transition-colors hover:bg-muted/40"
         >
           <CollectionThumb image={selected?.image} />
           <div className="min-w-0 flex-1">
@@ -122,7 +122,7 @@ export function CollectionSection({
           <Boxes className="h-4 w-4" />
           {noun.charAt(0).toUpperCase() + noun.slice(1)} *
         </label>
-        <div className="flex rounded-lg border border-border overflow-hidden">
+        <div className="flex rounded-lg overflow-hidden bg-muted/40">
           <button
             type="button"
             onClick={() => onModeChange("existing")}
@@ -145,7 +145,7 @@ export function CollectionSection({
       {mode === "existing" ? (
         <CollectionPicker collections={collections} value={value} onChange={onValue} valueOf={valueOf} />
       ) : (
-        <div className="flex gap-3 rounded-xl border border-border p-3">
+        <div className="panel flex gap-3 p-3">
           <div className="relative h-16 w-16 rounded-lg overflow-hidden bg-muted shrink-0">
             {previewImage ? (
               <Image src={previewImage} alt="" fill className="object-cover" unoptimized />

@@ -21,6 +21,7 @@ import {
 } from "./select.js";
 import { Check, FileText, FileUp, Loader2, Plus, Trash2, X } from "lucide-react";
 import { useT } from "../i18n/provider.js";
+import { panelBackground } from "./panel.js";
 
 export type MetadataField = {
   traitType: string;
@@ -161,7 +162,7 @@ export function IPTypeFields({ ipType, onChange, uploadDocument, existingDocumen
             {t("Document")}
           </p>
           {existingDocument ? (
-            <div className="flex items-center gap-3 rounded-xl border border-emerald-500/30 bg-emerald-500/5 px-4 py-3">
+            <div className="panel flex items-center gap-3 px-4 py-3" style={{ backgroundImage: panelBackground("blue") }}>
               <FileText className="h-5 w-5 text-emerald-500 shrink-0" />
               <div className="min-w-0 flex-1">
                 <p className="text-sm font-medium truncate">{effectiveDocName}</p>
@@ -169,7 +170,7 @@ export function IPTypeFields({ ipType, onChange, uploadDocument, existingDocumen
               </div>
             </div>
           ) : docUri ? (
-            <div className="flex items-center gap-3 rounded-xl border border-emerald-500/30 bg-emerald-500/5 px-4 py-3">
+            <div className="panel flex items-center gap-3 px-4 py-3" style={{ backgroundImage: panelBackground("blue") }}>
               <FileText className="h-5 w-5 text-emerald-500 shrink-0" />
               <div className="min-w-0 flex-1">
                 <p className="text-sm font-medium truncate">{docName}</p>
@@ -299,7 +300,7 @@ export function IPTypeFields({ ipType, onChange, uploadDocument, existingDocumen
                   key={s.key}
                   type="button"
                   onClick={() => addSuggestion(s)}
-                  className="inline-flex items-center gap-1 rounded-full border border-border bg-muted/40 px-3 py-1 text-xs font-medium text-muted-foreground transition-colors hover:border-primary/40 hover:text-foreground"
+                  className="inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground bg-background/40"
                 >
                   <Plus className="h-3 w-3" />
                   {s.key}

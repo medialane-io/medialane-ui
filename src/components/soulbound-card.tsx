@@ -3,7 +3,6 @@
 import { Fingerprint } from "lucide-react";
 import { profileHref, type ApiActivity } from "@medialane/sdk";
 import Link from "./link.js";
-import { panelBackground } from "./panel.js";
 import { shortenAddress } from "../utils/address.js";
 import { useLocale, useT } from "../i18n/provider.js";
 import { formatDate } from "../i18n/format.js";
@@ -37,7 +36,7 @@ export function SoulboundCard({ history = [], ownerAddress }: SoulboundCardProps
   const locale = useLocale();
   const issued = issuedAt(history, locale);
   return (
-    <section aria-label={t("Soulbound asset")} className="flex items-center gap-4 overflow-hidden rounded-2xl p-4" style={{ backgroundImage: panelBackground() }}>
+    <section aria-label={t("Soulbound asset")} className="panel flex items-center gap-4 overflow-hidden p-4">
       <Fingerprint className="h-7 w-7 shrink-0 text-brand-purple" strokeWidth={1.5} aria-hidden />
       <div className="min-w-0 flex-1">
         <h3 className="font-display text-base font-bold leading-tight text-foreground">{t("Soulbound")}</h3>

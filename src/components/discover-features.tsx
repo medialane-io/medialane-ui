@@ -56,7 +56,7 @@ export function DiscoverFeatures() {
           <div
             key={title}
             className={cn(
-              "flex min-h-[168px] w-56 shrink-0 snap-start flex-col gap-4 rounded-2xl border bg-card p-6 sm:w-64",
+              "panel flex min-h-[168px] w-56 shrink-0 snap-start flex-col gap-4 p-6 sm:w-64",
               hue.border,
             )}
           >

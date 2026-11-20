@@ -49,7 +49,7 @@ export function RemixesTab({ contractAddress, tokenId }: RemixesTabProps) {
               href={assetHref("STARKNET", remix.remixContract, remix.remixTokenId)}
               className="group relative block"
             >
-              <div className="card-base p-3 space-y-1 hover:border-primary/40 transition-colors">
+              <div className="panel overflow-hidden p-3 space-y-1 transition-colors hover:bg-background/40">
                 <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
                   <GitBranch className="h-3 w-3 text-primary" />
                   <span className="text-primary font-medium">{t("Remix")}</span>
@@ -57,10 +57,10 @@ export function RemixesTab({ contractAddress, tokenId }: RemixesTabProps) {
                 <p className="text-2xs text-muted-foreground">{remix.licenseType}</p>
                 <div className="flex gap-1 flex-wrap">
                   {remix.commercial && (
-                    <span className="text-2xs px-1.5 py-0.5 rounded-full bg-brand-blue/10 text-brand-blue border border-brand-blue/20">{t("Commercial")}</span>
+                    <span className="text-2xs px-1.5 py-0.5 rounded-full bg-brand-blue/15 text-brand-blue">{t("Commercial")}</span>
                   )}
                   {remix.derivatives && (
-                    <span className="text-2xs px-1.5 py-0.5 rounded-full bg-primary/10 text-primary border border-primary/20">{t("Derivatives")}</span>
+                    <span className="text-2xs px-1.5 py-0.5 rounded-full bg-primary/15 text-primary">{t("Derivatives")}</span>
                   )}
                 </div>
               </div>

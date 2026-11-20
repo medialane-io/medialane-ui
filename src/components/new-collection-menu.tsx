@@ -67,7 +67,7 @@ export function CollectionTypeChoices() {
         <Link
           key={id}
           href={href}
-          className="flex items-start gap-3 rounded-xl border border-border p-4 transition-colors hover:bg-muted"
+          className="panel flex items-start gap-3 p-4 transition-colors hover:bg-muted"
         >
           <Icon className="h-5 w-5 mt-0.5 text-muted-foreground" />
           <span className="flex flex-col">

@@ -5,7 +5,7 @@ import { cn } from "../utils/cn.js";
 
 export function SectionCard({ children, className, id }: { children: ReactNode; className?: string; id?: string }) {
   return (
-    <div id={id} className={cn("bg-card border border-border rounded-xl p-5 space-y-4", className)}>
+    <div id={id} className={cn("panel p-5 space-y-4", className)}>
       {children}
     </div>
   );

@@ -131,7 +131,7 @@ export function MediaWalletSend({
       </div>
 
       {error && (
-        <div className="rounded-2xl border border-destructive/40 bg-destructive/10 p-3 text-xs leading-relaxed">
+        <div className="rounded-2xl bg-destructive/10 p-3 text-xs leading-relaxed">
           {error}
         </div>
       )}
@@ -149,7 +149,7 @@ export function MediaWalletSend({
             {to.trim() === "" && (
               <button
                 onClick={pasteRecipient}
-                className="shrink-0 rounded-2xl border border-border bg-foreground/[0.05] px-3 py-3 text-xs font-semibold text-muted-foreground transition-colors hover:text-foreground"
+                className="shrink-0 rounded-2xl px-3 py-3 text-xs font-semibold text-muted-foreground transition-colors hover:text-foreground bg-background/40"
               >
                 {t("Paste")}
               </button>
@@ -259,7 +259,7 @@ export function MediaWalletSend({
               </div>
             </div>
 
-            <div className="flex items-center justify-between rounded-2xl border border-border px-4 py-3 text-sm">
+            <div className="panel flex items-center justify-between px-4 py-3 text-sm">
               <span className="text-muted-foreground">{t("Estimated fee")}</span>
               <span className="font-medium">
                 {feeError ? t("Unavailable") : fee ? `${fmt(fee.raw, 18, 6)} ${fee.unit === "FRI" ? "STRK" : "ETH"}` : t("Estimating…")}
@@ -270,7 +270,7 @@ export function MediaWalletSend({
             <div className="flex gap-3">
               <button
                 onClick={() => setConfirmOpen(false)}
-                className="flex-1 rounded-2xl border border-border py-3 text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground"
+                className="flex-1 rounded-2xl py-3 text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground bg-background/40"
               >
                 {t("Reject")}
               </button>

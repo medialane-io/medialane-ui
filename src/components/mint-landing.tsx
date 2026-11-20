@@ -19,6 +19,7 @@ import {
 import Image from "./image.js";
 import Link from "./link.js";
 import { MedialaneLogoFull as MedialaneLogo } from "./brand-logo.js";
+import { panelBackground } from "./panel.js";
 
 interface Card {
   title: string;
@@ -62,7 +63,7 @@ const FUND_STYLES = [
 function EventCard({ image }: { image: MintLandingCopy["image"] }) {
   const [errored, setErrored] = useState(false);
   return (
-    <div className="relative rounded-3xl overflow-hidden border border-border/40 shadow-2xl shadow-black/20 aspect-square w-full">
+    <div className="relative rounded-3xl overflow-hidden shadow-2xl shadow-black/20 aspect-square w-full">
       {errored ? (
         <div className="w-full h-full bg-gradient-to-br from-yellow-500/10 via-orange-500/10 to-purple-500/10 flex flex-col items-center justify-center gap-3">
           <div className="h-16 w-16 rounded-2xl bg-primary/10 flex items-center justify-center">
@@ -107,9 +108,9 @@ export function MintLanding({ copy, mint }: { copy: MintLandingCopy; mint: React
 
               <div className="space-y-5">
                 {copy.badge && (
-                  <div className="inline-flex items-center gap-2 rounded-full border border-yellow-500/30 bg-yellow-500/5 px-3 py-1">
-                    <Sparkles className="h-3.5 w-3.5 text-yellow-500" />
-                    <span className="text-xs font-semibold text-yellow-600 dark:text-yellow-400">{copy.badge}</span>
+                  <div className="inline-flex items-center gap-2 rounded-full bg-brand-orange/15 px-3 py-1">
+                    <Sparkles className="h-3.5 w-3.5 text-brand-orange" />
+                    <span className="text-xs font-semibold text-brand-orange">{copy.badge}</span>
                   </div>
                 )}
                 <h1 className="text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight leading-[1.05]">
@@ -154,7 +155,7 @@ export function MintLanding({ copy, mint }: { copy: MintLandingCopy; mint: React
                   {copy.fund.cards.map(({ title, body }, i) => {
                     const { icon: Icon, color, bg } = FUND_STYLES[i];
                     return (
-                      <div key={title} className="flex flex-col gap-4 p-5 rounded-2xl border border-border/40 bg-card/30">
+                      <div key={title} className="panel flex flex-col gap-4 p-5">
                         <div className={`h-11 w-11 rounded-xl ${bg} flex items-center justify-center shrink-0`}>
                           <Icon className={`h-5 w-5 ${color}`} />
                         </div>
@@ -174,7 +175,7 @@ export function MintLanding({ copy, mint }: { copy: MintLandingCopy; mint: React
                   <h2 className="text-2xl sm:text-3xl font-black">{how.title}</h2>
                 </div>
 
-                <div className="rounded-2xl border-2 border-emerald-500/30 bg-emerald-500/5 p-6">
+                <div className="panel p-6" style={{ backgroundImage: panelBackground("blue") }}>
                   <div className="flex items-start gap-4">
                     <div className="h-12 w-12 rounded-xl bg-emerald-500/15 flex items-center justify-center shrink-0">
                       <UserCheck className="h-6 w-6 text-emerald-500" />
@@ -192,7 +193,7 @@ export function MintLanding({ copy, mint }: { copy: MintLandingCopy; mint: React
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="rounded-2xl border border-border/40 bg-card/30 p-5 space-y-3">
+                  <div className="panel p-5 space-y-3">
                     <div className="flex items-center justify-between gap-3">
                       <div className="h-10 w-10 rounded-xl bg-purple-500/10 flex items-center justify-center">
                         <PenLine className="h-5 w-5 text-purple-400" />
@@ -206,7 +207,7 @@ export function MintLanding({ copy, mint }: { copy: MintLandingCopy; mint: React
                       </p>
                     </div>
                   </div>
-                  <div className="rounded-2xl border border-border/40 bg-card/30 p-5 space-y-3">
+                  <div className="panel p-5 space-y-3">
                     <div className="flex items-center justify-between gap-3">
                       <div className="h-10 w-10 rounded-xl bg-orange-500/10 flex items-center justify-center">
                         <ShoppingCart className="h-5 w-5 text-orange-400" />
@@ -229,7 +230,7 @@ export function MintLanding({ copy, mint }: { copy: MintLandingCopy; mint: React
                   <h2 className="text-2xl sm:text-3xl font-black">{phases.title}</h2>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="rounded-2xl border border-blue-500/30 bg-blue-500/5 p-5 space-y-3">
+                  <div className="panel p-5 space-y-3" style={{ backgroundImage: panelBackground("blue") }}>
                     <div className="flex items-center justify-between gap-3">
                       <p className="font-bold text-lg">{phases.first.title}</p>
                       <span className="text-xs font-semibold bg-blue-500/10 text-blue-400 px-2.5 py-1 rounded-full">{phases.first.tag}</span>
@@ -238,7 +239,7 @@ export function MintLanding({ copy, mint }: { copy: MintLandingCopy; mint: React
                       {phases.first.body}
                     </p>
                   </div>
-                  <div className="rounded-2xl border border-purple-500/30 bg-purple-500/5 p-5 space-y-3">
+                  <div className="panel p-5 space-y-3" style={{ backgroundImage: panelBackground("purple") }}>
                     <div className="flex items-center justify-between gap-3">
                       <p className="font-bold text-lg">{phases.second.title}</p>
                       <span className="text-xs font-semibold bg-purple-500/10 text-purple-400 px-2.5 py-1 rounded-full">{phases.second.tag}</span>
@@ -248,7 +249,7 @@ export function MintLanding({ copy, mint }: { copy: MintLandingCopy; mint: React
                     </p>
                   </div>
                 </div>
-                <div className="rounded-2xl border border-border/40 bg-muted/10 p-4 flex items-start gap-3">
+                <div className="panel p-4 flex items-start gap-3">
                   <Info className="h-4 w-4 text-muted-foreground shrink-0 mt-0.5" />
                   <p className="text-sm text-muted-foreground leading-relaxed">
                     {phases.note}

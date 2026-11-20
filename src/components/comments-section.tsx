@@ -185,7 +185,7 @@ export function CommentsSection({ contract, tokenId, className }: CommentsSectio
                           {comment.content}
                         </div>
                       ) : (
-                        <div className="px-3.5 py-2.5 text-sm leading-relaxed break-words bg-muted rounded-2xl rounded-tl-sm border border-border/50">
+                        <div className="px-3.5 py-2.5 text-sm leading-relaxed break-words bg-muted rounded-2xl rounded-tl-sm">
                           {comment.content}
                         </div>
                       )}

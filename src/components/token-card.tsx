@@ -79,7 +79,7 @@ export function TokenCard({ token, isOwner = false, onReport, usdValue, ...handl
   };
 
   return (
-    <div className="card-base group relative overflow-hidden flex flex-col w-full">
+    <div className="panel overflow-hidden group relative flex flex-col w-full">
       {ipType && (
         <div className="absolute top-2 right-2 z-10">
           <IpTypeBadge ipType={ipType as any} size="sm" />
@@ -288,7 +288,7 @@ export function TokenCard({ token, isOwner = false, onReport, usdValue, ...handl
 
 export function TokenCardSkeleton() {
   return (
-    <div className="card-base overflow-hidden flex flex-col w-full">
+    <div className="panel overflow-hidden flex flex-col w-full">
       <div className="aspect-square w-full animate-pulse bg-foreground/[0.04]" />
       <div className="px-3 pt-2.5 pb-4 space-y-1">
         <div className="h-5 w-3/4 rounded-md animate-pulse bg-muted" />

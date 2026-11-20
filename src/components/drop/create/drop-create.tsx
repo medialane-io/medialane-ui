@@ -74,7 +74,7 @@ export function DraftSummary({ draft, feeBps }: { draft: DropDraft; feeBps: numb
   const preview = art ? previewUrl(art) : null;
   const supply = draftSupply(draft);
   return (
-    <div className="overflow-hidden rounded-2xl border border-border bg-card">
+    <div className="panel overflow-hidden">
       <div className="relative aspect-square bg-muted">
         {preview && <Image src={preview} alt={draft.name || t("Drop")} fill unoptimized className="object-cover" />}
       </div>

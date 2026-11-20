@@ -3,6 +3,7 @@
 import { ImageIcon } from "lucide-react";
 import { cn } from "../utils/cn.js";
 import { useT } from "../i18n/provider.js";
+import { panelBackground } from "./panel.js";
 
 export interface MedialaneCollectionCardProps {
 
@@ -34,13 +35,14 @@ export function MedialaneCollectionCard({
 
   return (
     <div className={cn(className)}>
-      <div className="rounded-[24px] border border-border">
+      <div className="rounded-[24px]">
         <div
-          className="ml-card-material relative rounded-[23px] overflow-hidden text-brand-navy dark:text-white"
+          className="panel relative overflow-hidden text-foreground"
+          style={{ backgroundImage: panelBackground(["blue", "orange"]) }}
         >
 
           <div className="p-2.5 pb-0">
-            <div className="relative aspect-square w-full overflow-hidden rounded-[16px] ring-1 ring-black/10 dark:ring-white/10 bg-foreground/[0.04]">
+            <div className="relative aspect-square w-full overflow-hidden rounded-[16px] bg-foreground/[0.04]">
               {image ? (
 
                 <img src={image} alt={displayName} loading="lazy" decoding="async" className="h-full w-full object-cover" />

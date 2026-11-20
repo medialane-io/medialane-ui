@@ -62,11 +62,10 @@ export function BadgeShelf({ badges, earnedKeys, showLocked = false, className }
             key={badge.key}
             title={isLocked ? `${badge.description} — keep going to earn this` : badge.description}
             className={cn(
-              "flex h-7 select-none items-center gap-1.5 rounded-full border px-2.5",
+              "flex h-7 select-none items-center gap-1.5 rounded-full px-2.5",
               isLocked && "opacity-45 grayscale"
             )}
             style={{
-              borderColor: `${badge.color}60`,
               backgroundColor: `${badge.color}14`,
             }}
           >

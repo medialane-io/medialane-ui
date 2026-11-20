@@ -93,10 +93,10 @@ export type MarketplaceFilters = ReturnType<typeof useMarketplaceFilters>;
 
 const chipClass = (active: boolean) =>
   cn(
-    "inline-flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full border transition-colors whitespace-nowrap",
+    "inline-flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full transition-colors whitespace-nowrap",
     active
-      ? "border-primary bg-primary/10 text-primary font-medium"
-      : "border-border text-muted-foreground hover:border-primary/50"
+      ? "bg-primary/15 text-primary font-medium"
+      : "text-muted-foreground bg-background/40"
   );
 
 function ChipGroup({ title, options, value, onSelect }: {
@@ -128,10 +128,10 @@ function IpTypeChip({ href, label }: { href: string; label: string }) {
     <Link
       href={href}
       className={cn(
-        "text-xs px-3 py-1 rounded-full border transition-colors whitespace-nowrap",
+        "text-xs px-3 py-1 rounded-full transition-colors whitespace-nowrap",
         pathname === href
-          ? "border-primary bg-primary/10 text-primary font-medium"
-          : "border-border text-muted-foreground hover:border-primary/50 hover:text-foreground"
+          ? "bg-primary/15 text-primary font-medium"
+          : "text-muted-foreground hover:text-foreground bg-background/40"
       )}
     >
       {t(label)}
@@ -141,7 +141,7 @@ function IpTypeChip({ href, label }: { href: string; label: string }) {
 
 function ActiveChip({ children, onClear }: { children: ReactNode; onClear: () => void }) {
   return (
-    <span className="flex items-center gap-1 text-xs px-2.5 py-1 rounded-full border border-primary/40 bg-primary/10 text-primary">
+    <span className="flex items-center gap-1 text-xs px-2.5 py-1 rounded-full bg-primary/15 text-primary">
       {children}
       <button onClick={onClear} className="ml-0.5 hover:text-primary/60">×</button>
     </span>
@@ -155,10 +155,10 @@ export function FiltersButton({ filters }: { filters: MarketplaceFilters }) {
       onClick={() => filters.setOpen(true)}
       aria-label={t("Filters")}
       className={cn(
-        "relative flex items-center gap-1.5 h-9 px-3 rounded-lg border text-xs font-medium transition-colors shrink-0",
+        "relative flex items-center gap-1.5 h-9 px-3 rounded-lg text-xs font-medium transition-colors shrink-0",
         filters.count > 0
-          ? "border-primary bg-primary/10 text-primary"
-          : "border-border text-muted-foreground hover:border-primary/50 hover:text-foreground"
+          ? "bg-primary/15 text-primary"
+          : "text-muted-foreground hover:text-foreground bg-background/40"
       )}
     >
       <SlidersHorizontal className="h-3.5 w-3.5" />
