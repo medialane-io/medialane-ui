@@ -1,13 +1,15 @@
 "use client";
 
 import { useEffect } from "react";
-import { installIpfsGatewayFallback } from "../utils/ipfs-gateway-fallback.js";
+import { DEFAULT_GATEWAY } from "../utils/ipfs.js";
+import { gatewayChain, installIpfsGatewayFallback } from "../utils/ipfs-gateway-fallback.js";
 
 /**
- * Mount once per app: images from the `primary` IPFS gateway that fail to load are retried on
- * `fallback`. Renders nothing; does nothing when `primary` is not set.
+ * Mount once per app: IPFS images that fail to load on the app's gateway (`primary`, or the
+ * default gateway when none is set) are retried on each public gateway in turn. Renders nothing.
  */
-export function IpfsGatewayFallback({ primary, fallback }: { primary: string | null | undefined; fallback: string }) {
-  useEffect(() => (primary ? installIpfsGatewayFallback(primary, fallback) : undefined), [primary, fallback]);
+export function IpfsGatewayFallback({ primary }: { primary: string | null | undefined }) {
+  const gateway = primary ?? DEFAULT_GATEWAY;
+  useEffect(() => installIpfsGatewayFallback(gatewayChain(gateway)), [gateway]);
   return null;
 }

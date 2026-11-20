@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.382.0] — 2026-11-20
+
+### Changed
+
+- `IpfsGatewayFallback` retries a failed IPFS image on each of the SDK's public gateways (`IPFS_PUBLIC_GATEWAYS`) in turn, after the app's gateway. It takes only `primary`; with none set, images from the default gateway fall back too.
+- `installIpfsGatewayFallback(chain)` and `gatewayFallbackSrc(src, chain)` take the ordered list of gateways to try.
+- Requires `@medialane/sdk` 0.236.0 or later.
+
+### Added
+
+- `gatewayChain(primary)` and `PUBLIC_IMAGE_GATEWAYS`.
+
+### Removed
+
+- The `fallback` prop of `IpfsGatewayFallback`.
+
 ## [0.381.0] — 2026-11-20
 
 ### Changed
