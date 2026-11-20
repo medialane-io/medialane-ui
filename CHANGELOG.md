@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.376.0] — 2026-11-20
+
+### Added
+
+- `Panel`: borderless `rounded-2xl` surface with a gradient from the top-left corner to transparent; `tone` is `"neutral"`, one brand colour or a pair. `Pill` (borderless chip) and `PANEL_INSET` (surface for controls on a panel). `brandTint`, `ACTION_PAIRS` and `TONE_PAIRS` in the brand data.
+
+### Changed
+
+- Asset page: every surface uses `Panel` — rights (license card, facts, copyright note), details, collection card, owners, markets lists, provenance rows, type panels, soulbound card, notices, document link and active offer. Decorative shapes, outlines and non-brand colours are removed.
+- `ActionButton` is a borderless brand-gradient fill instead of an animated gradient border, with a `small` size for list rows; market Buy, Cancel and Accept use it. Outline buttons on the asset page use the panel inset.
+- Provenance badges use the shared activity colours; IP type colours come from the brand palette.
+
 ## [0.375.0] — 2026-11-19
 
 ### Changed
