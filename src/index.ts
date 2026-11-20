@@ -235,19 +235,13 @@ export { CollapsibleSection } from "./components/collapsible-section.js";
 export { useUsdPrices, usdPriceFor, usdValueFor } from "./utils/use-usd-prices.js";
 export type { UsdPrices } from "./utils/use-usd-prices.js";
 export type { ActivityRowProps } from "./components/activity-row.js";
-export { ActivityFeedShell } from "./components/activity-feed-shell.js";
-export type { ActivityFeedShellProps } from "./components/activity-feed-shell.js";
-export { CtaCardGrid } from "./components/cta-card-grid.js";
-export type { CtaCardGridProps, CtaCardItem } from "./components/cta-card-grid.js";
 
 export { DiscoverHero } from "./components/discover-hero.js";
 export type { DiscoverHeroProps } from "./components/discover-hero.js";
-export { FeaturedCarousel, FeaturedCarouselSkeleton } from "./components/featured-carousel.js";
-export type { FeaturedCarouselProps } from "./components/featured-carousel.js";
 export { DiscoverCollectionsStrip } from "./components/discover-collections-strip.js";
 export type { DiscoverCollectionsStripProps } from "./components/discover-collections-strip.js";
-export { DiscoverFeedSection, DiscoverActivityStrip } from "./components/discover-feed-section.js";
-export type { DiscoverFeedSectionProps, DiscoverActivityStripProps } from "./components/discover-feed-section.js";
+export { DiscoverActivityStrip } from "./components/discover-feed-section.js";
+export type { DiscoverActivityStripProps } from "./components/discover-feed-section.js";
 export { ActivityCard, ActivityCardSkeleton, ACTIVITY_MESSAGES } from "./components/activity-card.js";
 export type { ActivityCardProps } from "./components/activity-card.js";
 
@@ -256,8 +250,6 @@ export { LaunchpadFilterBar } from "./components/launchpad-filter-bar.js";
 export type { LaunchpadFilterBarProps } from "./components/launchpad-filter-bar.js";
 export { LaunchpadStrip } from "./components/launchpad-strip.js";
 export type { LaunchpadStripProps } from "./components/launchpad-strip.js";
-export { LaunchpadCtaBanner } from "./components/launchpad-cta-banner.js";
-export type { LaunchpadCtaBannerProps } from "./components/launchpad-cta-banner.js";
 export type { LaunchpadGroupedSectionsProps, LaunchpadServiceCardProps, ServiceOverride, ServiceOverrides } from "./components/launchpad-services.js";
 export { LAUNCHPAD_ROUTE_OVERRIDES } from "./components/launchpad-services.js";
 export { COLLECTION_NAME_CLAIM, LAUNCHPAD_SERVICE_DEFINITIONS, LAUNCHPAD_SERVICE_GROUPS, getLaunchpadService } from "./data/launchpad-services.js";
@@ -329,11 +321,6 @@ export type {
 } from "./components/portfolio-header.js";
 export { derivePortfolioCounts } from "./utils/portfolio-counts.js";
 export type { PortfolioCounts, CountableOrder } from "./utils/portfolio-counts.js";
-export { PortfolioSection } from "./components/portfolio-section.js";
-export type {
-  PortfolioSectionProps,
-  PortfolioSectionColor,
-} from "./components/portfolio-section.js";
 export { PortfolioChipFilter } from "./components/portfolio-chip-filter.js";
 export type {
   PortfolioChipFilterProps,
@@ -347,8 +334,6 @@ export type { ClaimRailProps } from "./components/claim-rail.js";
 
 export { ServiceFormShell } from "./components/service-form-shell.js";
 export type { ServiceFormShellProps } from "./components/service-form-shell.js";
-export { StepNav } from "./components/step-nav.js";
-export type { StepNavProps, StepNavStep } from "./components/step-nav.js";
 
 export { LevelBadge } from "./components/rewards/level-badge.js";
 export type { LevelBadgeProps } from "./components/rewards/level-badge.js";
@@ -356,8 +341,6 @@ export { XpProgress } from "./components/rewards/xp-progress.js";
 export type { XpProgressProps } from "./components/rewards/xp-progress.js";
 export { BadgeShelf } from "./components/rewards/badge-shelf.js";
 export type { BadgeShelfProps, BadgeShelfBadge } from "./components/rewards/badge-shelf.js";
-export { ScoreSummaryCard } from "./components/rewards/score-summary-card.js";
-export type { ScoreSummaryCardProps } from "./components/rewards/score-summary-card.js";
 export { LeaderboardTable, LeaderboardWidget } from "./components/rewards/leaderboard-table.js";
 export type { LeaderboardTableProps, LeaderboardWidgetProps, LeaderboardEntryLike } from "./components/rewards/leaderboard-table.js";
 export { LevelJourneyList } from "./components/rewards/level-journey-list.js";
@@ -439,8 +422,6 @@ export type { EmptyMessage } from "./utils/empty-messages.js";
 export type { SuccessMessage } from "./utils/success-messages.js";
 export { MedialaneCollectionCard } from "./components/medialane-collection-card.js";
 export type { MedialaneCollectionCardProps } from "./components/medialane-collection-card.js";
-export { TokenGlyph, TokenAmount } from "./components/token-glyph.js";
-export type { TokenGlyphProps, TokenAmountProps, TokenSymbol } from "./components/token-glyph.js";
 
 export { StatTile, StatPill, StatPillRow } from "./components/stat-tile.js";
 export type { StatTileProps, StatPillProps, StatPillRowItem } from "./components/stat-tile.js";
@@ -453,8 +434,6 @@ export { LevelUpCelebration } from "./components/rewards/level-up-celebration.js
 export type { LevelUpCelebrationProps } from "./components/rewards/level-up-celebration.js";
 export { BadgeUnlocked } from "./components/rewards/badge-unlocked.js";
 export type { BadgeUnlockedProps } from "./components/rewards/badge-unlocked.js";
-export { JourneyPath } from "./components/rewards/journey-path.js";
-export type { JourneyPathProps, JourneyStep } from "./components/rewards/journey-path.js";
 
 export { Skeleton } from "./components/skeleton.js";
 export { Badge, badgeVariants } from "./components/badge.js";

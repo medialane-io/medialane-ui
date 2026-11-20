@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.378.0] — 2026-11-20
+
+### Changed
+
+- Theme: `--primary` and `--accent` are brand blue (dark mode: the same blue one step lighter for text contrast); `--secondary` and `--ring` are brand purple. Theme tokens reference the brand tokens, which are declared once. Secondary `Button` and `Badge` variants are a soft purple tint.
+
+### Removed
+
+- Unused components: `CtaCardGrid`, `DiscoverFeedSection`, `FeaturedCarousel`, `LaunchpadCtaBanner`, `PortfolioSection`, `ScoreSummaryCard`, `StepNav`, `TokenGlyph`, `ActivityFeedShell`, `JourneyPath`.
+- Unused stylesheet classes (`animate-float`, `animate-pulse-glow`, `animate-sparkle`, `animate-spin-slow`, `bg-grid`, `glass-light`, `gradient-text-full`, `gradient-text-gold`, `gradient-text-warm`, `ml-collection-ring`, `pb-safe`, `pt-safe`), the `float`, `pulse-glow` and `digit-in` keyframes, and the `sidebar` theme tokens.
+
 ## [0.377.0] — 2026-11-20
 
 ### Added
