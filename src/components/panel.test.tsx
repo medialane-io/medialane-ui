@@ -10,9 +10,9 @@ test("a neutral panel fades the muted colour to transparent", () => {
 });
 
 test("a brand panel fades one brand colour, or blends a pair, to transparent", () => {
-  expect(panelBackground("rose")).toBe("linear-gradient(to bottom right, hsl(var(--brand-rose) / 0.2), transparent)");
+  expect(panelBackground("rose")).toBe("linear-gradient(to bottom right, hsl(var(--brand-rose) / 0.32), transparent)");
   expect(panelBackground(["orange", "maeve"])).toBe(
-    "linear-gradient(to bottom right, hsl(var(--brand-orange) / 0.2), hsl(var(--brand-maeve) / 0.1), transparent)",
+    "linear-gradient(to bottom right, hsl(var(--brand-orange) / 0.32), hsl(var(--brand-maeve) / 0.16), transparent)",
   );
 });
 

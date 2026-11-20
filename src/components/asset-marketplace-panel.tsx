@@ -144,7 +144,7 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
   );
 
   const buyButton = liveCheapest && (!isOwner || canBuyMore) ? (
-    <ActionButton action="buy" onClick={() => onOpenPurchase(liveCheapest)}>
+    <ActionButton solid action="buy" onClick={() => onOpenPurchase(liveCheapest)}>
       {t("Buy now")}
     </ActionButton>
   ) : null;

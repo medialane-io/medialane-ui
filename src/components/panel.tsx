@@ -12,9 +12,9 @@ const stop = (color: PanelColor, alpha: number) => `hsl(var(--brand-${color}) / 
 /** Borderless surface: a soft gradient from the top-left corner that fades to transparent. */
 export function panelBackground(tone: PanelTone = "neutral"): string {
   if (tone === "neutral") return "linear-gradient(to bottom right, hsl(var(--muted) / 0.4), transparent)";
-  if (typeof tone === "string") return `linear-gradient(to bottom right, ${stop(tone, 0.2)}, transparent)`;
+  if (typeof tone === "string") return `linear-gradient(to bottom right, ${stop(tone, 0.32)}, transparent)`;
   const [from, to] = tone;
-  return `linear-gradient(to bottom right, ${stop(from, 0.2)}, ${stop(to, 0.1)}, transparent)`;
+  return `linear-gradient(to bottom right, ${stop(from, 0.32)}, ${stop(to, 0.16)}, transparent)`;
 }
 
 export interface PanelProps extends React.HTMLAttributes<HTMLDivElement> {
