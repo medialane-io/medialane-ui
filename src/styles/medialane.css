@@ -117,6 +117,26 @@ h1 {
   .btn-ring { animation: none; }
 }
 
+/* Launchpad cards: brand-gradient border on hover. */
+.ml-grad-hover-border { position: relative; }
+.ml-grad-hover-border::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1.5px;
+  background: linear-gradient(120deg, hsl(var(--brand-blue)), hsl(var(--brand-purple)), hsl(var(--brand-rose)), hsl(var(--brand-orange)));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  pointer-events: none;
+}
+@media (hover: hover) {
+  .ml-grad-hover-border:hover::before { opacity: 1; }
+}
+
 .snap-x-mandatory { scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
 .snap-start { scroll-snap-align: start; }
 

@@ -10,7 +10,6 @@ import { cn } from "../utils/cn.js";
 import { useT } from "../i18n/provider.js";
 
 import { msg } from "../i18n/translate.js";
-import { IconTile } from "./icon-tile.js";
 export interface LaunchpadStripProps {
 
   hrefs: Record<string, string>;
@@ -28,7 +27,7 @@ interface StripCard {
   blurb: string;
   example?: string;
   cta: string;
-  hue: { solid: string };
+  hue: { text: string; solid: string; border: string; tint: string };
 }
 
 const DEF_BY_KEY = Object.fromEntries(LAUNCHPAD_SERVICE_DEFINITIONS.map((d) => [d.key, d]));
@@ -42,19 +41,28 @@ const STRIP_ORDER = [
   "creator-coins",
 ];
 
-const MARKETPLACE_HUE = { solid: "bg-brand-maeve" };
+const MARKETPLACE_HUE = {
+  text: "text-brand-maeve",
+  solid: "bg-brand-maeve",
+  border: "border-brand-maeve/30",
+  tint: "bg-brand-maeve/10",
+};
 
 function ServiceCard({ card }: { card: StripCard }) {
   const { icon: Icon, title, blurb, example, cta, hue, href } = card;
   return (
     <Link
       href={href}
-      className="panel relative overflow-hidden flex flex-col h-full min-h-[280px] transition-transform active:scale-[0.99]"
+      className={cn(
+        "relative rounded-2xl border bg-card overflow-hidden flex flex-col h-full min-h-[280px]",
+        "transition-transform active:scale-[0.99]",
+        hue.border,
+      )}
     >
       <div className="relative flex flex-col flex-1 p-6 gap-3.5">
-        <IconTile>
-          <Icon />
-        </IconTile>
+        <span className={cn("flex h-11 w-11 items-center justify-center rounded-xl", hue.tint)}>
+          <Icon className={cn("h-6 w-6", hue.text)} />
+        </span>
 
         <div className="space-y-1.5">
           <h3 className="text-xl font-black tracking-tight leading-snug">{title}</h3>
