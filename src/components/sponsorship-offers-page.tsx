@@ -14,7 +14,7 @@ import { useT } from "../i18n/provider.js";
 
 import { msg } from "../i18n/translate.js";
 import { ActionButton } from "./action-button.js";
-import { panelBackground } from "./panel.js";
+import { panelTint } from "./panel.js";
 const FEATURES = [
   msg("No escrow — direct settlement"),
   msg("Owner-verified on-chain"),
@@ -75,7 +75,7 @@ export function SponsorshipOffersPage() {
 
       <section className="px-4 max-w-5xl mx-auto">
         <FadeIn>
-          <div className="panel p-5 flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between" style={{ backgroundImage: panelBackground("rose") }}>
+          <div className="panel p-5 flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between" style={panelTint("rose")}>
             <div className="space-y-0.5">
               <p className="text-sm font-semibold">{t("Start a sponsorship deal")}</p>
               <p className="text-xs text-muted-foreground">

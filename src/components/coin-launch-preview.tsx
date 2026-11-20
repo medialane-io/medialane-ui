@@ -20,8 +20,6 @@ export interface CoinPreviewData {
   teamPct: number;
 }
 
-const COIN_GRADIENT = "linear-gradient(135deg, hsl(var(--brand-orange)), hsl(var(--brand-maeve)))";
-
 function StatValue({ children }: { children: React.ReactNode }) {
   return (
     <span className="inline-flex items-center gap-1 font-bold tabular-nums text-brand-maeve">
@@ -46,7 +44,7 @@ export function CoinLaunchPreview({ data, className }: { data: CoinPreviewData; 
       <div className="p-5 space-y-4">
 
         <div className="flex items-center gap-3">
-          <div className="shrink-0 rounded-full p-[2px]" style={{ background: COIN_GRADIENT }}>
+          <div className="shrink-0 rounded-full p-[2px]" style={{ background: "hsl(var(--brand-orange))" }}>
             <div className="relative h-14 w-14 rounded-full overflow-hidden bg-card flex items-center justify-center">
               {imageUrl ? (
                 <Image src={imageUrl} alt="" fill sizes="56px" className="object-cover" unoptimized />
@@ -97,7 +95,7 @@ export function CoinLaunchPreview({ data, className }: { data: CoinPreviewData; 
             <span className="text-muted-foreground">{t("Community")} {100 - teamPct}%</span>
           </div>
           <div className="flex h-2.5 rounded-full overflow-hidden bg-muted-foreground/15">
-            {teamPct > 0 && <div style={{ width: `${teamPct}%`, background: COIN_GRADIENT }} />}
+            {teamPct > 0 && <div style={{ width: `${teamPct}%`, background: "hsl(var(--brand-orange))" }} />}
             <div className="flex-1" />
           </div>
         </div>

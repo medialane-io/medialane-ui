@@ -6,35 +6,25 @@ export interface AssetAccent {
   accentCountStyle: { background: string };
 }
 
+// Class names are written out in full so Tailwind finds them.
+const CLASSES = {
+  blue: { border: "border-brand-blue/20", label: "text-brand-blue" },
+  purple: { border: "border-brand-purple/20", label: "text-brand-purple" },
+} as const;
+
+const accent = (color: keyof typeof CLASSES): AssetAccent => ({
+  accentBorderClassName: CLASSES[color].border,
+  accentHeaderStyle: `hsl(var(--brand-${color}) / 0.1)`,
+  accentAvatarStyle: `hsl(var(--brand-${color}) / 0.3)`,
+  accentLabelClassName: CLASSES[color].label,
+  accentCountStyle: { background: `hsl(var(--brand-${color}))` },
+});
+
 export const ASSET_ACCENTS = {
-  standard: {
-    accentBorderClassName: "border-brand-blue/20",
-    accentHeaderStyle: "linear-gradient(135deg, hsl(var(--brand-blue) / 0.10), hsl(var(--brand-purple) / 0.08))",
-    accentAvatarStyle: "linear-gradient(135deg, hsl(var(--brand-blue) / 0.3), hsl(var(--brand-purple) / 0.3))",
-    accentLabelClassName: "text-brand-blue",
-    accentCountStyle: { background: "hsl(var(--brand-blue))" },
-  },
-  ticket: {
-    accentBorderClassName: "border-brand-blue/20",
-    accentHeaderStyle: "linear-gradient(135deg, hsl(173 80% 40% / 0.10), hsl(var(--brand-blue) / 0.08))",
-    accentAvatarStyle: "linear-gradient(135deg, hsl(173 80% 40% / 0.3), hsl(var(--brand-blue) / 0.3))",
-    accentLabelClassName: "text-brand-blue",
-    accentCountStyle: { background: "rgb(13 148 136)" },
-  },
-  membership: {
-    accentBorderClassName: "border-brand-purple/20",
-    accentHeaderStyle: "linear-gradient(135deg, hsl(var(--brand-purple) / 0.10), hsl(var(--brand-blue) / 0.08))",
-    accentAvatarStyle: "linear-gradient(135deg, hsl(var(--brand-purple) / 0.3), hsl(var(--brand-blue) / 0.3))",
-    accentLabelClassName: "text-brand-purple",
-    accentCountStyle: { background: "hsl(var(--brand-purple))" },
-  },
-  edition: {
-    accentBorderClassName: "border-brand-purple/20",
-    accentHeaderStyle: "linear-gradient(135deg, hsl(var(--brand-purple) / 0.10), hsl(var(--brand-blue) / 0.08))",
-    accentAvatarStyle: "linear-gradient(135deg, hsl(266 80% 60% / 0.3), hsl(var(--brand-blue) / 0.3))",
-    accentLabelClassName: "text-brand-purple",
-    accentCountStyle: { background: "rgb(139 92 246)" },
-  },
+  standard: accent("blue"),
+  ticket: accent("blue"),
+  membership: accent("purple"),
+  edition: accent("purple"),
 } as const satisfies Record<string, AssetAccent>;
 
 export type AssetAccentName = keyof typeof ASSET_ACCENTS;

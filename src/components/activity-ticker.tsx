@@ -36,7 +36,7 @@ function ActivityPill({ listing, getHref }: { listing: ApiOrder; getHref: (order
             onError={() => setImgError(true)}
           />
         ) : (
-          <div className="w-full h-full bg-gradient-to-br from-brand-purple/20 to-brand-blue/20" />
+          <div className="w-full h-full bg-muted" />
         )}
       </div>
       <div className="min-w-0">

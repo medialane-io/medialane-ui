@@ -142,7 +142,7 @@ export function CollectionShowcase({ collections, isLoading, getHref }: Collecti
                 {image ? (
                   <Image src={image} alt="" fill sizes="(min-width: 1024px) 340px, 58vw" className="object-cover" priority={index === 0} unoptimized />
                 ) : (
-                  <div className="absolute inset-0 bg-gradient-to-br from-brand-purple/40 via-brand-blue/20 to-brand-navy/60" />
+                  <div className="absolute inset-0 bg-muted" />
                 )}
                 <span className={cn("absolute inset-0 bg-black/30 transition-opacity duration-500", offset === 0 ? "opacity-0" : "opacity-100")} />
                 <span className="absolute inset-x-3 bottom-3 flex flex-col items-start gap-1.5">

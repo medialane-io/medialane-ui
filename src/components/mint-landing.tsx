@@ -19,7 +19,7 @@ import {
 import Image from "./image.js";
 import Link from "./link.js";
 import { MedialaneLogoFull as MedialaneLogo } from "./brand-logo.js";
-import { panelBackground } from "./panel.js";
+import { panelTint } from "./panel.js";
 
 interface Card {
   title: string;
@@ -65,7 +65,7 @@ function EventCard({ image }: { image: MintLandingCopy["image"] }) {
   return (
     <div className="relative rounded-2xl overflow-hidden shadow-2xl shadow-black/20 aspect-square w-full">
       {errored ? (
-        <div className="w-full h-full bg-gradient-to-br from-brand-orange/10 via-brand-orange/10 to-brand-purple/10 flex flex-col items-center justify-center gap-3">
+        <div className="w-full h-full bg-muted flex flex-col items-center justify-center gap-3">
           <div className="h-16 w-16 rounded-2xl bg-primary/10 flex items-center justify-center">
             <ImageIcon className="h-8 w-8 text-primary/40" />
           </div>
@@ -115,7 +115,7 @@ export function MintLanding({ copy, mint }: { copy: MintLandingCopy; mint: React
                 )}
                 <h1 className="text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight leading-[1.05]">
                   {copy.headline.lead}{" "}
-                  <span className="bg-gradient-to-r from-brand-orange to-brand-orange bg-clip-text text-transparent">
+                  <span className="text-brand-orange">
                     {copy.headline.highlight}
                   </span>
                 </h1>
@@ -175,7 +175,7 @@ export function MintLanding({ copy, mint }: { copy: MintLandingCopy; mint: React
                   <h2 className="text-2xl sm:text-3xl font-black">{how.title}</h2>
                 </div>
 
-                <div className="panel p-6" style={{ backgroundImage: panelBackground("blue") }}>
+                <div className="panel p-6" style={panelTint("blue")}>
                   <div className="flex items-start gap-4">
                     <div className="h-12 w-12 rounded-xl bg-brand-blue/15 flex items-center justify-center shrink-0">
                       <UserCheck className="h-6 w-6 text-brand-blue" />
@@ -230,7 +230,7 @@ export function MintLanding({ copy, mint }: { copy: MintLandingCopy; mint: React
                   <h2 className="text-2xl sm:text-3xl font-black">{phases.title}</h2>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="panel p-5 space-y-3" style={{ backgroundImage: panelBackground("blue") }}>
+                  <div className="panel p-5 space-y-3" style={panelTint("blue")}>
                     <div className="flex items-center justify-between gap-3">
                       <p className="font-bold text-lg">{phases.first.title}</p>
                       <span className="text-xs font-semibold bg-brand-blue/10 text-brand-blue px-2.5 py-1 rounded-full">{phases.first.tag}</span>
@@ -239,7 +239,7 @@ export function MintLanding({ copy, mint }: { copy: MintLandingCopy; mint: React
                       {phases.first.body}
                     </p>
                   </div>
-                  <div className="panel p-5 space-y-3" style={{ backgroundImage: panelBackground("purple") }}>
+                  <div className="panel p-5 space-y-3" style={panelTint("purple")}>
                     <div className="flex items-center justify-between gap-3">
                       <p className="font-bold text-lg">{phases.second.title}</p>
                       <span className="text-xs font-semibold bg-brand-purple/10 text-brand-purple px-2.5 py-1 rounded-full">{phases.second.tag}</span>

@@ -26,7 +26,7 @@ function MyEventCard({ collection }: { collection: ApiCollection }) {
         {imageUrl ? (
           <Image src={imageUrl} alt={collection.name ?? t("Event")} fill className="object-cover" unoptimized />
         ) : (
-          <div className="absolute inset-0 bg-gradient-to-br from-brand-blue/40 to-brand-blue/20 flex items-center justify-center">
+          <div className="absolute inset-0 bg-brand-blue/30 flex items-center justify-center">
             <span className="text-2xl font-black text-white/20">{initial}</span>
           </div>
         )}

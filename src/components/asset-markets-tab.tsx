@@ -61,11 +61,11 @@ export function AssetMarketsTab({
                   <div className="flex items-center gap-2 shrink-0">
                     <AddressDisplay address={order.offerer} chars={4} showCopy={false} className="text-xs text-muted-foreground" />
                     {isMyOrder ? (
-                      <ActionButton small tone="red" disabled={isProcessing} onClick={() => onCancelClick(order)}>
+                      <ActionButton className="text-destructive" small disabled={isProcessing} onClick={() => onCancelClick(order)}>
                         {t("Cancel")}
                       </ActionButton>
                     ) : (
-                      <ActionButton small action="buy" onClick={() => onBuyClick(order)}>{t("Buy")}</ActionButton>
+                      <ActionButton ring small onClick={() => onBuyClick(order)}>{t("Buy")}</ActionButton>
                     )}
                   </div>
                 </div>
@@ -98,7 +98,7 @@ export function AssetMarketsTab({
                 <div className="flex items-center gap-2 shrink-0">
                   <AddressDisplay address={bid.offerer} chars={4} showCopy={false} className="text-xs text-muted-foreground" />
                   {isOwner && (
-                    <ActionButton small action="buy" disabled={isProcessing} onClick={() => onAcceptClick(bid)}>
+                    <ActionButton small disabled={isProcessing} onClick={() => onAcceptClick(bid)}>
                       <CheckCircle className="h-3.5 w-3.5 mr-1.5" />
                       {t("Accept")}
                     </ActionButton>

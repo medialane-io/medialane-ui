@@ -68,7 +68,7 @@ export function CollectionCard({ collection, href, settingsHref, className }: Co
               unoptimized
             />
           ) : (
-            <div className="absolute inset-0 bg-gradient-to-br from-brand-purple/30 via-brand-blue/20 to-brand-navy/40" />
+            <div className="absolute inset-0 bg-muted" />
           )}
 
           <div className="absolute inset-x-2 bottom-2 flex flex-col items-start gap-1">

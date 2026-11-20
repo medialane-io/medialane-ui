@@ -5,7 +5,6 @@ import { ActionButton } from "../action-button.js";
 import { ActionBackdrop, CanvasPortal } from "./action-modal.js";
 import { fireConfetti } from "../../utils/media-wallet/confetti.js";
 import { explorerTxUrl } from "../../utils/media-wallet/wallet-format.js";
-import { BRAND_GRADIENT } from "../../data/brand.js";
 import { useMediaWalletApp } from "./types.js";
 import { useT } from "../../i18n/provider.js";
 
@@ -46,7 +45,7 @@ export function SuccessDialog({
               {t("View transaction ↗")}
             </a>
           )}
-          <ActionButton big onClick={onClose} className="mt-5 w-full" style={{ "--ml-grad": BRAND_GRADIENT } as React.CSSProperties}>
+          <ActionButton big onClick={onClose} className="mt-5 w-full">
             {actionLabel}
           </ActionButton>
         </div>

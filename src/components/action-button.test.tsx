@@ -5,14 +5,18 @@ const { ActionButton } = await import("./action-button.js");
 
 afterEach(() => cleanup());
 
-test("a solid action button uses white text; a soft one uses the foreground colour", () => {
+test("an action button is flat: brand blue when solid, the ring for Buy, grey otherwise", () => {
   const { getByText } = render(
     <>
-      <ActionButton solid action="buy">Buy now</ActionButton>
-      <ActionButton action="offer">Make offer</ActionButton>
+      <ActionButton solid>Mint</ActionButton>
+      <ActionButton ring>Buy</ActionButton>
+      <ActionButton>View</ActionButton>
     </>,
   );
-  expect(getByText("Buy now").className).toContain("text-white");
-  expect(getByText("Make offer").className).toContain("text-foreground");
-  expect(getByText("Make offer").className).not.toContain("border ");
+  expect(getByText("Mint").className).toContain("bg-primary");
+  expect(getByText("Buy").className).toContain("btn-ring");
+  expect(getByText("View").className).toContain("bg-muted");
+  for (const label of ["Mint", "Buy", "View"]) {
+    expect(getByText(label).getAttribute("style") ?? "").not.toContain("gradient");
+  }
 });

@@ -22,7 +22,7 @@ export function LevelBadge({ level, name, size = "md", className }: LevelBadgePr
     <span
       title={t("Level {level}", { level })}
       className={cn(
-        "inline-flex items-center rounded-full font-bold tracking-tight whitespace-nowrap text-white bg-gradient-to-r from-brand-orange to-brand-maeve",
+        "inline-flex items-center rounded-full font-bold tracking-tight whitespace-nowrap text-white bg-brand-orange",
         sizeClasses[size],
         className
       )}

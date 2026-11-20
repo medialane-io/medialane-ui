@@ -41,7 +41,7 @@ export function AccountsPage() {
         </FadeIn>
         <FadeIn delay={0.08}>
           <h1 className="mb-3 text-3xl font-semibold leading-tight sm:text-4xl lg:text-5xl">
-            {t("Onchain")} <span className="gradient-text">{t("accounts")}</span>
+            {t("Onchain")} <span className="text-primary">{t("accounts")}</span>
           </h1>
         </FadeIn>
         <FadeIn delay={0.16}>

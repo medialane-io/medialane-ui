@@ -36,7 +36,7 @@ export function BadgeCatalog({ badges, className }: BadgeCatalogProps) {
               .filter((b) => b.category === cat)
               .map((badge) => (
                 <div key={badge.key} className="flex items-center gap-3 rounded-2xl bg-foreground/[0.04] p-4">
-                  <span className="flex h-10 w-10 items-center justify-center rounded-xl shrink-0 bg-gradient-to-br from-brand-orange to-brand-maeve">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-xl shrink-0 bg-brand-orange">
                     <BadgeIcon name={badge.icon} color="#ffffff" className="h-5 w-5" />
                   </span>
                   <div className="min-w-0">

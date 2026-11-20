@@ -19,12 +19,12 @@ function Hero() {
   return (
     <section className="py-14 space-y-5">
       <div className="flex items-center gap-3">
-        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-brand-orange to-brand-maeve text-white shrink-0">
+        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand-orange text-white shrink-0">
           <Sparkles className="h-5 w-5" />
         </div>
         <h1 className="text-5xl sm:text-6xl font-black tracking-tight leading-[1.02]">
           {t("Your")}{" "}
-          <span className="bg-gradient-to-r from-brand-orange to-brand-maeve bg-clip-text text-transparent">
+          <span className="text-brand-orange">
             {t("Journey")}
           </span>
         </h1>
@@ -109,7 +109,7 @@ function CtaSection({ startHint }: { startHint: string }) {
       <button
         type="button"
         onClick={onRequireWallet}
-        className="flex items-center justify-between rounded-2xl bg-gradient-to-br from-brand-orange to-brand-maeve p-6 text-left text-white"
+        className="flex items-center justify-between rounded-2xl bg-brand-orange p-6 text-left text-white"
       >
         <div>
           <p className="font-black text-lg">{t("New here?")}</p>

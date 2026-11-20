@@ -21,8 +21,10 @@ import { successMessages } from "../utils/success-messages.js";
 import { useComments } from "../utils/use-comments.js";
 import { useTransaction } from "../utils/use-transaction.js";
 import { useT } from "../i18n/provider.js";
+import { BRAND_COLOR } from "../data/brand.js";
 
 const MAX_LEN = 1000;
+const AVATAR_COLORS = (["blue", "purple", "rose", "orange", "maeve"] as const).map((color) => BRAND_COLOR[color]);
 
 export interface CommentsSectionProps {
   contract: string;
@@ -120,7 +122,7 @@ export function CommentsSection({ contract, tokenId, className }: CommentsSectio
           </div>
         ) : comments.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-full gap-4 text-center px-4">
-            <div className="flex h-16 w-16 items-center justify-center rounded-full" style={{ background: "linear-gradient(135deg, hsl(var(--brand-blue) / 0.15), hsl(var(--brand-purple) / 0.15))" }}>
+            <div className="flex h-16 w-16 items-center justify-center rounded-full" style={{ background: "hsl(var(--brand-blue) / 0.12)" }}>
               <MessageCircle className="h-7 w-7" style={{ color: "hsl(var(--brand-blue))" }} />
             </div>
             <div>
@@ -133,7 +135,7 @@ export function CommentsSection({ contract, tokenId, className }: CommentsSectio
               size="sm"
               onClick={handleStartConversation}
               className="rounded-full text-white px-5"
-              style={{ background: "linear-gradient(135deg, hsl(var(--brand-blue)), hsl(var(--brand-purple)))" }}
+              style={{ background: "hsl(var(--brand-blue))" }}
             >
               {t("Write the first comment")}
             </Button>
@@ -142,10 +144,10 @@ export function CommentsSection({ contract, tokenId, className }: CommentsSectio
           <div className="space-y-5">
             {comments.map((comment) => {
               const own = isOwn(comment.author);
-              const avatarSeed = parseInt(comment.author.slice(2, 8), 16) % 360;
+              const avatarSeed = parseInt(comment.author.slice(2, 8), 16);
               const avatarBg = own
-                ? "linear-gradient(135deg, hsl(var(--brand-blue)), hsl(var(--brand-purple)))"
-                : `linear-gradient(135deg, hsl(${avatarSeed}, 65%, 45%), hsl(${(avatarSeed + 60) % 360}, 65%, 55%))`;
+                ? "hsl(var(--brand-blue))"
+                : AVATAR_COLORS[avatarSeed % AVATAR_COLORS.length];
 
               return (
                 <div
@@ -180,7 +182,7 @@ export function CommentsSection({ contract, tokenId, className }: CommentsSectio
                       {own ? (
                         <div
                           className="px-3.5 py-2.5 text-sm leading-relaxed break-words rounded-2xl rounded-tr-sm text-white"
-                          style={{ background: "linear-gradient(135deg, hsl(var(--brand-blue)), hsl(var(--brand-purple)))" }}
+                          style={{ background: "hsl(var(--brand-blue))" }}
                         >
                           {comment.content}
                         </div>
@@ -280,7 +282,7 @@ export function CommentsSection({ contract, tokenId, className }: CommentsSectio
                     onClick={post}
                     disabled={!canSubmit || isProcessing}
                     className="flex items-center gap-1.5 h-7 px-3 text-xs font-semibold rounded-full text-white transition-all hover:opacity-90 active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed"
-                    style={{ background: "linear-gradient(135deg, hsl(var(--brand-blue)), hsl(var(--brand-purple)))" }}
+                    style={{ background: "hsl(var(--brand-blue))" }}
                   >
                     {isProcessing ? <Loader2 className="h-3 w-3 animate-spin" /> : <Send className="h-3 w-3" />}
                     {t("Post onchain")}

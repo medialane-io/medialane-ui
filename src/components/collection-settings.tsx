@@ -20,7 +20,7 @@ import { CollectionSlugClaimSection } from "./collection-slug-claim.js";
 import { useCollectionSettings } from "../utils/use-collection-settings.js";
 import { useT } from "../i18n/provider.js";
 import { msg } from "../i18n/translate.js";
-import { panelBackground } from "./panel.js";
+import { panelTint } from "./panel.js";
 
 const DESC_MAX = 500;
 
@@ -256,7 +256,7 @@ export function CollectionSettings({ contract }: { contract: string }) {
               </FieldRow>
 
               {form.gatedContentTitle && (
-                <div className="panel p-4 space-y-1.5" style={{ backgroundImage: panelBackground("blue") }}>
+                <div className="panel p-4 space-y-1.5" style={panelTint("blue")}>
                   <p className="text-2xs font-semibold text-brand-blue uppercase tracking-widest">
                     {t("Preview — what holders see")}
                   </p>

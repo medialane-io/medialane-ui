@@ -105,13 +105,13 @@ export function AssetOverviewContent({
 
   const licenseDescription = LICENSE_TYPES.find((license) => license.value === licenseType)?.description;
 
-  const factRows: { icon: typeof Bot; label: string; value?: string; tone: readonly [PanelColor, PanelColor] }[] = [
-    { icon: DollarSign, label: t("Commercial use"), value: commercialUse, tone: ["orange", "rose"] },
-    { icon: GitBranch, label: t("Derivatives"), value: derivatives, tone: ["rose", "maeve"] },
-    { icon: UserCheck, label: t("Attribution"), value: attribution, tone: ["maeve", "purple"] },
-    { icon: Globe, label: t("Territory"), value: territory, tone: ["blue", "purple"] },
-    { icon: Bot, label: t("AI & data mining"), value: aiPolicy, tone: ["purple", "rose"] },
-    { icon: Percent, label: t("Royalty"), value: royalty, tone: ["orange", "maeve"] },
+  const factRows: { icon: typeof Bot; label: string; value?: string; tone: PanelColor }[] = [
+    { icon: DollarSign, label: t("Commercial use"), value: commercialUse, tone: "orange" },
+    { icon: GitBranch, label: t("Derivatives"), value: derivatives, tone: "rose" },
+    { icon: UserCheck, label: t("Attribution"), value: attribution, tone: "maeve" },
+    { icon: Globe, label: t("Territory"), value: territory, tone: "blue" },
+    { icon: Bot, label: t("AI & data mining"), value: aiPolicy, tone: "purple" },
+    { icon: Percent, label: t("Royalty"), value: royalty, tone: "orange" },
   ];
   const facts = factRows.filter((row) => !!row.value);
 
@@ -143,7 +143,7 @@ export function AssetOverviewContent({
         <section className="space-y-3">
           <h3 className="text-sm font-semibold text-muted-foreground">{t("Rights")}</h3>
           <div className="grid grid-cols-2 lg:grid-cols-6 gap-3">
-            <Panel tone={["purple", "blue"]} className="col-span-2 lg:col-span-3 flex min-h-[15rem] flex-col justify-end gap-3 p-6 sm:p-8">
+            <Panel tone="blue" className="col-span-2 lg:col-span-3 flex min-h-[15rem] flex-col justify-end gap-3 p-6 sm:p-8">
               {licenseType ? (
                 <p className="text-3xl sm:text-4xl font-semibold tracking-tight leading-[1.05] text-foreground">
                   {licenseLabel(licenseType)}
@@ -164,7 +164,7 @@ export function AssetOverviewContent({
                   tone={tone}
                   className={`flex flex-col justify-between gap-4 p-5 ${SPAN_2[factSpans2[index]]} ${SPAN_LG_3[factSpansLg[index]]}`}
                 >
-                  <Pill color={tone[0]}>
+                  <Pill color={tone}>
                     <Icon className="h-3.5 w-3.5" />
                     {label}
                   </Pill>
@@ -173,7 +173,7 @@ export function AssetOverviewContent({
               ))}
             </div>
 
-            <Panel tone={["rose", "orange"]} className="col-span-2 lg:col-span-6 flex items-center gap-4 p-5 sm:p-6">
+            <Panel tone="rose" className="col-span-2 lg:col-span-6 flex items-center gap-4 p-5 sm:p-6">
               <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-background/40 text-brand-rose">
                 <Scale className="h-5 w-5" />
               </span>

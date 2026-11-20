@@ -33,7 +33,7 @@ export function PortfolioHeader({
   const intl = useFormat();
   const t = useT();
   const scoreChip = score && (
-    <div className="rounded-full bg-gradient-to-r from-brand-orange to-brand-maeve px-3.5 py-1.5 flex items-baseline gap-2 whitespace-nowrap text-white">
+    <div className="rounded-full bg-brand-orange px-3.5 py-1.5 flex items-baseline gap-2 whitespace-nowrap text-white">
       <span className="text-sm font-bold">
         {score.levelName}
       </span>

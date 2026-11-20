@@ -18,9 +18,7 @@ import { emptyMessages } from "../../utils/empty-messages.js";
 import { useT } from "../../i18n/provider.js";
 import { useFormat } from "../../i18n/use-format.js";
 
-const GRADS = ([["blue", "purple"], ["purple", "rose"], ["rose", "orange"], ["purple", "blue"]] as const).map(
-  ([from, to]) => `linear-gradient(135deg, ${BRAND_COLOR[from]}, ${BRAND_COLOR[to]})`,
-);
+const GRADS = (["blue", "purple", "rose", "orange"] as const).map((color) => BRAND_COLOR[color]);
 const gradFor = (seed: string) => {
   let h = 0;
   for (let i = 0; i < seed.length; i++) h = (h * 31 + seed.charCodeAt(i)) | 0;

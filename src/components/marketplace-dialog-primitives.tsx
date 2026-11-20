@@ -184,7 +184,7 @@ export function MarketplaceDialogHero({
         {tokenImage ? (
           <Image src={tokenImage} alt={name} fill sizes="128px" className="object-cover" unoptimized />
         ) : (
-          <div className="h-full w-full bg-gradient-to-br from-brand-blue/20 via-brand-purple/10 to-transparent flex items-center justify-center">
+          <div className="h-full w-full bg-muted flex items-center justify-center">
             {fallbackIcon}
           </div>
         )}
@@ -233,10 +233,10 @@ export function OrderSummaryHero({
           ) : (
             <div
               className={cn(
-                "h-full w-full bg-gradient-to-br to-transparent",
+                "h-full w-full",
                 tone === "destructive"
-                  ? "from-destructive/20 via-brand-rose/10"
-                  : "from-primary/20 via-brand-purple/10",
+                  ? "bg-destructive/10"
+                  : "bg-muted",
               )}
             />
           )}
@@ -349,7 +349,7 @@ export function ListingAssetSummary({ name, image, fallbackIcon, badge }: Listin
         {image ? (
           <Image src={image} alt={name} fill sizes="64px" className="object-cover" unoptimized />
         ) : (
-          <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-brand-blue/20 via-brand-purple/10 to-transparent">
+          <div className="flex h-full w-full items-center justify-center bg-muted">
             {fallbackIcon}
           </div>
         )}

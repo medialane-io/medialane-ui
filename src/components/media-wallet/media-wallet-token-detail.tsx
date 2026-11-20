@@ -64,13 +64,11 @@ export function MediaWalletTokenDetail({
       <div className="grid grid-cols-2 gap-2">
         <QuickAction
           label={t("Send")}
-          action="offer"
           onClick={() => onNavigate({ name: "send", token })}
           icon={<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round"><path d="M12 19V5M5 12l7-7 7 7" /></svg>}
         />
         <QuickAction
           label={t("Receive")}
-          action="buy"
           onClick={() => onNavigate({ name: "home" })}
           icon={<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round"><path d="M12 5v14M19 12l-7 7-7-7" /></svg>}
         />

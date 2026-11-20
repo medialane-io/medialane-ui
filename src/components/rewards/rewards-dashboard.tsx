@@ -121,7 +121,7 @@ function Hero() {
   return (
     <section className="space-y-5">
       <h1 className="text-5xl sm:text-6xl font-black tracking-tight leading-[1.02]">
-        {t("Community")} <span className="bg-gradient-to-r from-brand-rose to-brand-orange bg-clip-text text-transparent">{t("Rewards")}</span>
+        {t("Community")} <span className="text-brand-orange">{t("Rewards")}</span>
       </h1>
       <p className="text-lg text-foreground/70 max-w-xl leading-relaxed font-medium">
         {t("Every action earns XP, and active members receive allocations from the Creator's Fund based on how much they participate. Scores and badges are recalculated weekly.")}{" "}
@@ -152,7 +152,7 @@ function StatusPanel({ address }: { address: string | null | undefined }) {
 
   if (!address) {
     return (
-      <div className="shrink-0 rounded-2xl bg-gradient-to-br from-brand-rose/10 via-brand-orange/[0.06] to-transparent p-6 space-y-3 sm:max-w-xs">
+      <div className="shrink-0 rounded-2xl bg-brand-orange/10 p-6 space-y-3 sm:max-w-xs">
         <p className="text-sm text-foreground/70 font-medium">{t("Sign in to see your score.")}</p>
         <SignInButton />
       </div>
@@ -169,7 +169,7 @@ function StatusPanel({ address }: { address: string | null | undefined }) {
   const pct = nextLevelXp ? Math.min(100, Math.round(((rewards.totalXp - levelXp) / (nextLevelXp - levelXp)) * 100)) : 100;
 
   return (
-    <div className="shrink-0 rounded-2xl bg-gradient-to-br from-brand-rose/10 via-brand-orange/[0.06] to-transparent p-6 sm:min-w-[300px]">
+    <div className="shrink-0 rounded-2xl bg-brand-orange/10 p-6 sm:min-w-[300px]">
       <p className="text-6xl font-black tabular-nums leading-none tracking-tight">
         {intl.number(rewards.totalXp)}
       </p>
@@ -185,7 +185,7 @@ function StatusPanel({ address }: { address: string | null | undefined }) {
         <div className="mt-3 space-y-1.5">
           <div className="h-2 w-full rounded-full bg-foreground/[0.08] overflow-hidden">
             <div
-              className="h-full rounded-full bg-gradient-to-r from-brand-rose to-brand-orange transition-[width]"
+              className="h-full rounded-full bg-brand-orange transition-[width]"
               style={{ width: `${pct}%` }}
             />
           </div>
@@ -281,9 +281,7 @@ function EarnMorePanel() {
 function CreatorsFundCard() {
   const t = useT();
   return (
-    <section className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-brand-rose to-brand-orange p-8 text-white">
-      <div className="pointer-events-none absolute -top-16 -right-16 h-56 w-56 rounded-full bg-white/10 blur-3xl" />
-      <div className="pointer-events-none absolute -bottom-20 -left-10 h-56 w-56 rounded-full bg-black/10 blur-3xl" />
+    <section className="relative overflow-hidden rounded-2xl bg-brand-orange p-8 text-white">
 
       <div className="relative space-y-6">
         <h2 className="text-3xl font-black tracking-tight leading-none">
@@ -297,7 +295,7 @@ function CreatorsFundCard() {
         <div className="flex flex-wrap items-center gap-4 pt-2">
           <Link
             href="/airdrop"
-            className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-black text-brand-rose hover:bg-white/90 transition-colors"
+            className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-black text-brand-orange hover:bg-white/90 transition-colors"
           >
             <Gift className="h-4 w-4" />
             {t("How the fund works")}
