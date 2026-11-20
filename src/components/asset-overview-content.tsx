@@ -107,12 +107,12 @@ export function AssetOverviewContent({
   const licenseDescription = LICENSE_TYPES.find((license) => license.value === licenseType)?.description;
 
   const facts = [
-    { icon: DollarSign, label: t("Commercial use"), value: commercialUse, tile: "bg-brand-orange/10 ring-brand-orange/20", pill: "bg-brand-orange/15 text-brand-orange", mark: "text-brand-orange" },
-    { icon: GitBranch, label: t("Derivatives"), value: derivatives, tile: "bg-brand-rose/10 ring-brand-rose/20", pill: "bg-brand-rose/15 text-brand-rose", mark: "text-brand-rose" },
-    { icon: UserCheck, label: t("Attribution"), value: attribution, tile: "bg-foreground/5 ring-border/60", pill: "bg-foreground/10 text-muted-foreground", mark: "text-foreground" },
-    { icon: Globe, label: t("Territory"), value: territory, tile: "bg-brand-blue/10 ring-brand-blue/20", pill: "bg-brand-blue/15 text-brand-blue", mark: "text-brand-blue" },
-    { icon: Bot, label: t("AI & data mining"), value: aiPolicy, tile: "bg-brand-purple/10 ring-brand-purple/20", pill: "bg-brand-purple/15 text-brand-purple", mark: "text-brand-purple" },
-    { icon: Percent, label: t("Royalty"), value: royalty, tile: "bg-brand-orange/10 ring-brand-orange/20", pill: "bg-brand-orange/15 text-brand-orange", mark: "text-brand-orange" },
+    { icon: DollarSign, label: t("Commercial use"), value: commercialUse, tile: "bg-brand-orange/10 ring-brand-orange/20", pill: "bg-brand-orange/15 text-brand-orange" },
+    { icon: GitBranch, label: t("Derivatives"), value: derivatives, tile: "bg-brand-rose/10 ring-brand-rose/20", pill: "bg-brand-rose/15 text-brand-rose" },
+    { icon: UserCheck, label: t("Attribution"), value: attribution, tile: "bg-foreground/5 ring-border/60", pill: "bg-foreground/10 text-muted-foreground" },
+    { icon: Globe, label: t("Territory"), value: territory, tile: "bg-brand-blue/10 ring-brand-blue/20", pill: "bg-brand-blue/15 text-brand-blue" },
+    { icon: Bot, label: t("AI & data mining"), value: aiPolicy, tile: "bg-brand-purple/10 ring-brand-purple/20", pill: "bg-brand-purple/15 text-brand-purple" },
+    { icon: Percent, label: t("Royalty"), value: royalty, tile: "bg-brand-orange/10 ring-brand-orange/20", pill: "bg-brand-orange/15 text-brand-orange" },
   ].filter((row) => !!row.value);
 
   const factSpans2 = fillSpans(facts.map(() => 1), 2);
@@ -144,8 +144,6 @@ export function AssetOverviewContent({
           <h3 className="text-sm font-semibold text-muted-foreground">{t("Rights")}</h3>
           <div className="grid grid-cols-2 lg:grid-cols-6 gap-3">
             <div className="relative col-span-2 lg:col-span-3 flex min-h-[15rem] flex-col justify-end overflow-hidden rounded-[2rem] bg-gradient-to-br from-brand-purple/15 via-brand-blue/10 to-transparent p-6 text-foreground ring-1 ring-brand-blue/20 backdrop-blur-sm sm:p-8">
-              <span aria-hidden className="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full ring-[28px] ring-brand-blue/10" />
-              <span aria-hidden className="pointer-events-none absolute right-10 top-12 h-20 w-20 rounded-full bg-brand-rose/25 blur-xl" />
               <div className="relative space-y-3">
                 {licenseType ? (
                   <p className="text-3xl sm:text-4xl font-semibold tracking-tight leading-[1.05]">
@@ -164,12 +162,11 @@ export function AssetOverviewContent({
             </div>
 
             <div className="col-span-2 lg:col-span-3 grid grid-cols-2 lg:grid-cols-3 gap-3 auto-rows-[minmax(8.5rem,1fr)]">
-              {facts.map(({ icon: Icon, label, value, tile, pill, mark }, index) => (
+              {facts.map(({ icon: Icon, label, value, tile, pill }, index) => (
                 <div
                   key={label}
                   className={`relative flex flex-col justify-between gap-4 overflow-hidden rounded-[1.75rem] p-5 text-foreground ring-1 backdrop-blur-sm ${tile} ${SPAN_2[factSpans2[index]]} ${SPAN_LG_3[factSpansLg[index]]}`}
                 >
-                  <Icon aria-hidden className={`pointer-events-none absolute -right-3 -top-3 h-20 w-20 opacity-10 ${mark}`} />
                   <span className={`relative inline-flex w-fit items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium ${pill}`}>
                     <Icon className="h-3.5 w-3.5" />
                     {label}
@@ -180,11 +177,10 @@ export function AssetOverviewContent({
             </div>
 
             <div className="relative col-span-2 lg:col-span-6 flex items-center gap-4 overflow-hidden rounded-[2rem] bg-gradient-to-r from-brand-rose/10 to-brand-orange/10 p-5 ring-1 ring-brand-rose/20 backdrop-blur-sm sm:p-6">
-              <Scale aria-hidden className="pointer-events-none absolute -right-3 -top-4 h-24 w-24 -rotate-12 text-brand-rose/10" />
               <span className="relative flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-brand-rose/15 text-brand-rose">
                 <Scale className="h-5 w-5" />
               </span>
-              <p className="relative pr-16 text-sm leading-relaxed text-muted-foreground">
+              <p className="relative text-sm leading-relaxed text-muted-foreground">
                 {t("Creative work is protected with international copyright law. The Berne Convention for the Protection of Literary and Artistic Works is the foundational international copyright treaty, ratified by 181 signatory countries.")}
               </p>
             </div>
