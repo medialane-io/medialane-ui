@@ -87,7 +87,7 @@ export function useCollectionFilters(
   return { traitSections, activeEntries, totalActiveCount, sortIsDefault, toggleValue, clearAll, removeFilter };
 }
 
-const TRIGGER_BTN = "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md border border-input bg-background text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground h-8 px-3 shrink-0";
+const TRIGGER_BTN = "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-8 px-3 shrink-0 bg-background/40 hover:bg-background/70";
 
 export interface CollectionFiltersTriggerProps {
   totalActiveCount: number;
@@ -134,7 +134,7 @@ export function CollectionFiltersTrigger({
       {!sortIsDefault && (
         <button
           onClick={onSortReset}
-          className="inline-flex items-center gap-1 h-8 px-2.5 rounded-md border border-primary/40 bg-primary/10 text-xs font-medium text-foreground hover:bg-primary/20 transition-colors"
+          className="inline-flex items-center gap-1 h-8 px-2.5 rounded-md bg-primary/15 text-xs font-medium text-foreground hover:bg-primary/20 transition-colors"
         >
           <span className="text-muted-foreground text-2xs">{t("Sort:")}</span>
           <span>{t(SORT_OPTIONS.find((o) => o.value === sort)?.label ?? "")}</span>
@@ -147,7 +147,7 @@ export function CollectionFiltersTrigger({
           key={`${traitType}:${value}`}
           onClick={() => onRemoveFilter(traitType, value)}
           title={`${traitType}: ${value}`}
-          className="inline-flex max-w-full min-w-0 items-center gap-1 h-8 px-2.5 rounded-md border border-primary/40 bg-primary/10 text-xs font-medium text-foreground hover:bg-primary/20 transition-colors"
+          className="inline-flex max-w-full min-w-0 items-center gap-1 h-8 px-2.5 rounded-md bg-primary/15 text-xs font-medium text-foreground hover:bg-primary/20 transition-colors"
         >
           <span className="text-muted-foreground text-2xs shrink-0">{traitType}:</span>
           <span className="truncate">{value}</span>
@@ -177,9 +177,9 @@ export interface CollectionFiltersBodyProps {
   onToggleValue: (traitType: string, value: string) => void;
 }
 
-const PILL_BASE = "inline-flex max-w-full min-w-0 items-center gap-1 h-7 px-2.5 rounded-full border text-xs font-medium transition-colors";
-const PILL_ON = "border-primary bg-primary text-primary-foreground";
-const PILL_OFF = "border-border bg-transparent text-muted-foreground hover:text-foreground hover:border-foreground/30";
+const PILL_BASE = "inline-flex max-w-full min-w-0 items-center gap-1 h-7 px-2.5 rounded-full text-xs font-medium transition-colors bg-background/40";
+const PILL_ON = "bg-primary text-primary-foreground";
+const PILL_OFF = "bg-transparent text-muted-foreground hover:text-foreground";
 
 export function CollectionFiltersBody({
   sort,

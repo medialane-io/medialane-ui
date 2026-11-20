@@ -13,8 +13,8 @@ export function BadgeUnlocked({ badge }: BadgeUnlockedProps) {
   return (
     <div className="flex items-center gap-2.5">
       <span
-        className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border"
-        style={{ borderColor: `${badge.color}60`, backgroundColor: `${badge.color}18` }}
+        className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full"
+        style={{ backgroundColor: `${badge.color}18` }}
       >
         <BadgeIcon name={badge.icon} color={badge.color} className="h-4 w-4" />
       </span>

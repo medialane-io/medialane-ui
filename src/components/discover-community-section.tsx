@@ -32,7 +32,7 @@ function CommunityCard({
 }) {
   const t = useT();
   return (
-    <section className="overflow-hidden rounded-2xl border border-border/50 bg-card">
+    <section className="panel overflow-hidden">
       <div className="flex items-center justify-between gap-3 border-b border-border/50 px-4 py-3">
         <div className="flex min-w-0 items-center gap-2">
           <span className="shrink-0 text-muted-foreground [&>svg]:h-4 [&>svg]:w-4">{icon}</span>

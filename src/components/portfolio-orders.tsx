@@ -82,7 +82,7 @@ function price(o: ApiOrder) {
 
 function OrderRowsSkeleton() {
   return (
-    <div className="divide-y divide-border overflow-hidden rounded-lg border border-border">
+    <div className="panel divide-y divide-border overflow-hidden">
       {Array.from({ length: 3 }).map((_, i) => (
         <div key={i} className="flex items-center gap-4 px-4 py-3">
           <Skeleton className="h-12 w-12 shrink-0 rounded-lg" />
@@ -113,7 +113,7 @@ function OrderRow({ order, subtitle, from, priceCell, actions, isNew }: {
   const expiry = expiryOf(order);
   return (
     <div data-new={isNew ? "true" : undefined} className={cn("flex items-center gap-4 px-4 py-3 transition-colors hover:bg-muted/40", isNew && "border-l-2 border-primary")}>
-      <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-lg border border-border bg-muted">
+      <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-lg bg-muted">
         {image && <Image src={image} alt={name} fill sizes="48px" unoptimized className="object-cover" />}
       </div>
       <div className="min-w-0 flex-1">
@@ -223,7 +223,7 @@ export function PortfolioOrders({ view, address, useActions }: {
       >
         <div className="space-y-1">
           {config.count && orders.length > 0 && <p className="pb-2 text-sm text-muted-foreground">{config.count(orders.length, t)}</p>}
-          <div className="overflow-hidden rounded-lg border border-border">
+          <div className="panel overflow-hidden">
             <div className="flex items-center gap-4 border-b border-border bg-muted/30 px-4 py-2 text-xs uppercase tracking-wide text-muted-foreground">
               <div className="w-12 shrink-0" />
               <div className="flex-1">{t("Asset")}</div>

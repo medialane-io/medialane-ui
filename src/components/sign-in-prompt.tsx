@@ -9,7 +9,7 @@ export function SignInPrompt({ title, text, icon }: { title: string; text?: stri
   const t = useT();
   const { onRequireWallet, connectLabel } = useMedialaneApp();
   return (
-    <div className="bento-cell space-y-4 border-dashed p-10 text-center">
+    <div className="panel relative overflow-hidden space-y-4 p-10 text-center">
       {icon ? <div className="flex justify-center">{icon}</div> : null}
       <div className="space-y-1">
         <p className="text-sm font-semibold">{title}</p>

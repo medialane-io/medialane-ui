@@ -24,7 +24,7 @@ export function ToggleGroup({
 }: { value: string; options: readonly string[]; onChange: (v: string) => void }) {
   const t = useT();
   return (
-    <div className="flex rounded-lg border border-border overflow-hidden w-full">
+    <div className="flex rounded-lg overflow-hidden w-full bg-muted/40">
       {options.map((opt, i) => (
         <button
           key={opt}
@@ -49,7 +49,7 @@ export function Section({ title, icon, children }: {
   title: string; icon: React.ReactNode; children: React.ReactNode;
 }) {
   return (
-    <div className="rounded-xl border border-border bg-card p-5 space-y-4">
+    <div className="panel p-5 space-y-4">
       <div className="flex items-center gap-2 text-sm font-semibold">
         <span className="text-primary">{icon}</span>
         {title}

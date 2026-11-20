@@ -10,7 +10,7 @@ import {
 import { ipfsToHttp } from "../utils/ipfs.js";
 import { ExternalLink, FileText, ShieldCheck } from "lucide-react";
 import { useT } from "../i18n/provider.js";
-import { PANEL_INSET, panelBackground } from "./panel.js";
+import { PANEL_INSET } from "./panel.js";
 import { cn } from "../utils/cn.js";
 
 interface Attr {
@@ -149,8 +149,7 @@ export function IPTypeDisplay({ attributes }: IPTypeDisplayProps) {
             href={docUri.startsWith("ipfs://") ? ipfsToHttp(docUri) : docUri}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-3 rounded-2xl px-4 py-3 transition-colors hover:bg-background/40 group"
-            style={{ backgroundImage: panelBackground() }}
+            className="panel flex items-center gap-3 px-4 py-3 transition-colors hover:bg-background/40 group"
           >
             <FileText className="h-5 w-5 text-primary shrink-0" />
             <div className="min-w-0 flex-1">

@@ -72,7 +72,7 @@ export function GuardianRecoverySection({
   const sealed = loadSealed();
 
   return (
-    <div className="rounded-2xl border border-border/60 bg-card p-5 sm:p-6 space-y-5">
+    <div className="panel p-5 sm:p-6 space-y-5">
       <div className="flex items-start gap-3">
         <div className="h-10 w-10 shrink-0 rounded-full bg-emerald-500/10 flex items-center justify-center">
           <Shield className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
@@ -105,7 +105,7 @@ export function GuardianRecoverySection({
           </Alert>
         )}
 
-        <div className="flex items-center justify-between gap-3 rounded-xl border border-border/60 p-4 flex-wrap">
+        <div className="panel flex items-center justify-between gap-3 p-4 flex-wrap">
           <div>
             <p className="text-sm font-medium text-foreground">{t("Guardian recovery")}</p>
             {status === null ? (
@@ -133,7 +133,7 @@ export function GuardianRecoverySection({
 
         <Link
           href={recoverHref}
-          className="flex items-center justify-between gap-3 rounded-xl border border-border/60 p-4 transition-colors hover:bg-foreground/[0.03]"
+          className="panel flex items-center justify-between gap-3 p-4 transition-colors hover:bg-foreground/[0.03]"
         >
           <div>
             <p className="text-sm font-medium text-foreground">{t("Recover a wallet")}</p>

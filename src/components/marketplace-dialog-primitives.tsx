@@ -54,7 +54,7 @@ export function MarketplaceProcessingState({
   return (
     <div className="flex flex-col items-center gap-5 p-6 py-8">
       {imageUrl ? (
-        <div className="relative h-20 w-20 rounded-2xl overflow-hidden border border-border">
+        <div className="relative h-20 w-20 rounded-2xl overflow-hidden">
           <Image src={imageUrl} alt={imageAlt} fill sizes="80px" className="object-cover" unoptimized />
           <div className="absolute inset-0 bg-background/50 flex items-center justify-center">
             <Loader2 className="h-7 w-7 animate-spin text-primary" />

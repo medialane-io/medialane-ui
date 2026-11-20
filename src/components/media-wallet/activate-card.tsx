@@ -27,7 +27,7 @@ export function ActivateCard({ onActivated }: { onActivated: (txHash?: string) =
   };
 
   return (
-    <div className="card-base p-5">
+    <div className="panel overflow-hidden p-5">
       <div className="flex flex-col items-center gap-3 text-center">
         <ActionButton
           action="buy"

@@ -34,7 +34,7 @@ export function ServiceHeader({ icon, title, subtitle, headerAccessory, classNam
   }
 
   if (plain) {
-    return <div className={cn("rounded-2xl border border-border/60 bg-card p-6 sm:p-7", className)}>{body}</div>;
+    return <div className={cn("panel p-6 sm:p-7", className)}>{body}</div>;
   }
 
   return (

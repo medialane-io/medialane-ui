@@ -19,7 +19,7 @@ export interface SuccessViewProps {
 export function SuccessView({ presentation = "inline", previewImage, result, onPublishAnother }: SuccessViewProps) {
   const t = useT();
   return (
-    <section className={cn(presentation === "dialog" ? "" : "rounded-2xl border border-border p-6 sm:p-8")}>
+    <section className={cn(presentation === "dialog" ? "" : "panel p-6 sm:p-8")}>
       <div className="grid grid-cols-1 sm:grid-cols-[220px_1fr] gap-6 items-start">
         <MedialaneCollectionCard image={previewImage} name={result.name} collection={result.collectionLabel} />
         <div className="space-y-5">
@@ -37,7 +37,7 @@ export function SuccessView({ presentation = "inline", previewImage, result, onP
                 <Link
                   key={href}
                   href={href}
-                  className="flex items-center gap-2 rounded-xl border border-border px-4 py-3 text-sm font-semibold hover:bg-muted/40 transition-colors"
+                  className="flex items-center gap-2 rounded-xl px-4 py-3 text-sm font-semibold hover:bg-muted/40 transition-colors bg-background/40"
                 >
                   <Icon className="h-4 w-4 text-muted-foreground" />
                   {label}

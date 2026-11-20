@@ -162,7 +162,7 @@ export function EditionMint({ contract: rawContract, aside }: { contract: string
             title={t("Mint an edition")}
             subtitle={t("Add a new piece to your collection — its details and authorship are saved permanently. Free to mint, and it's yours.")}
             headerAccessory={
-              <div className="flex items-center gap-2 rounded-lg border border-border bg-background/60 px-3 py-2 max-w-full">
+              <div className="panel flex items-center gap-2 px-3 py-2 max-w-full">
                 <span className="tabular-nums text-xs text-foreground/80 truncate">{t("Collection: {collectionAddress}", { collectionAddress })}</span>
               </div>
             }

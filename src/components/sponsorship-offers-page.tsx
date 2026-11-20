@@ -14,6 +14,7 @@ import { useT } from "../i18n/provider.js";
 
 import { msg } from "../i18n/translate.js";
 import { ActionButton } from "./action-button.js";
+import { panelBackground } from "./panel.js";
 const FEATURES = [
   msg("No escrow — direct settlement"),
   msg("Owner-verified on-chain"),
@@ -63,7 +64,7 @@ export function SponsorshipOffersPage() {
         <FadeIn>
           <div className="flex flex-wrap gap-2">
             {FEATURES.map((f) => (
-              <span key={f} className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-muted/40 border border-border/30 text-xs font-medium text-muted-foreground">
+              <span key={f} className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium text-muted-foreground bg-background/40">
                 <Check className="h-3 w-3 text-brand-rose shrink-0" />
                 {t(f)}
               </span>
@@ -74,7 +75,7 @@ export function SponsorshipOffersPage() {
 
       <section className="px-4 max-w-5xl mx-auto">
         <FadeIn>
-          <div className="rounded-2xl border border-brand-rose/20 bg-brand-rose/5 p-5 flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
+          <div className="panel p-5 flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between" style={{ backgroundImage: panelBackground("rose") }}>
             <div className="space-y-0.5">
               <p className="text-sm font-semibold">{t("Start a sponsorship deal")}</p>
               <p className="text-xs text-muted-foreground">
@@ -105,7 +106,7 @@ export function SponsorshipOffersPage() {
           </div>
         ) : openOffers.length === 0 ? (
           <FadeIn>
-            <div className="bento-cell border-dashed p-12 text-center space-y-4">
+            <div className="panel relative overflow-hidden p-12 text-center space-y-4">
               <div className="flex justify-center">
                 <div className="h-16 w-16 rounded-2xl bg-brand-rose/8 flex items-center justify-center">
                   <Handshake className="h-8 w-8 text-brand-rose/30" />

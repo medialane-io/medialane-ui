@@ -28,10 +28,10 @@ function FilterChip({ active, onClick, label }: { active: boolean; onClick: () =
     <button
       onClick={onClick}
       className={cn(
-        "text-xs px-3 py-1.5 rounded-full border transition-colors whitespace-nowrap",
+        "text-xs px-3 py-1.5 rounded-full transition-colors whitespace-nowrap",
         active
-          ? "border-primary bg-primary/10 text-primary font-medium"
-          : "border-border text-muted-foreground hover:border-primary/50"
+          ? "bg-primary/15 text-primary font-medium"
+          : "text-muted-foreground bg-background/40"
       )}
     >
       {label}
@@ -172,10 +172,10 @@ export function IpTypePage({ slug, useMarketActions }: IpTypePageProps) {
             onClick={() => setFiltersOpen(true)}
             aria-label={t("Filters")}
             className={cn(
-              "inline-flex items-center gap-1.5 text-xs px-3.5 py-2 rounded-full border font-medium transition-colors",
+              "inline-flex items-center gap-1.5 text-xs px-3.5 py-2 rounded-full font-medium transition-colors",
               hasActiveFilters
-                ? "border-primary bg-primary/10 text-primary"
-                : "border-border text-muted-foreground"
+                ? "bg-primary/15 text-primary"
+                : "text-muted-foreground bg-background/40"
             )}
           >
             <SlidersHorizontal className="h-3.5 w-3.5" />
@@ -284,10 +284,10 @@ export function IpTypePage({ slug, useMarketActions }: IpTypePageProps) {
                       key={tab.slug}
                       href={`/${tab.slug}`}
                       className={cn(
-                        "inline-flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full border transition-colors whitespace-nowrap",
+                        "inline-flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full transition-colors whitespace-nowrap",
                         tab.slug === slug
-                          ? "border-primary bg-primary/10 text-primary font-medium"
-                          : "border-border text-muted-foreground hover:border-primary/50"
+                          ? "bg-primary/15 text-primary font-medium"
+                          : "text-muted-foreground bg-background/40"
                       )}
                     >
                       <tab.icon className={cn("h-3 w-3", tab.slug === slug ? tab.colorClass : "")} />

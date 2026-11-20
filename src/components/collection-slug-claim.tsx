@@ -132,7 +132,7 @@ export function CollectionSlugClaimSection({
       />
       <div className="pt-3 border-t border-border space-y-3">
         <div className="flex items-center gap-2">
-          <div className="flex-1 flex items-center rounded-lg border border-border bg-muted/40 px-3 py-2">
+          <div className="panel flex-1 flex items-center px-3 py-2">
             <span className="text-xs text-muted-foreground whitespace-nowrap shrink-0">
               {t("medialane.io/collection/")}
             </span>

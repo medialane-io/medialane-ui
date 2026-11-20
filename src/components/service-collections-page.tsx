@@ -92,7 +92,7 @@ export function ServiceCollectionsPage({ kind }: { kind: keyof typeof KINDS }) {
             {Array.from({ length: 4 }).map((_, i) => <Skeleton key={i} className="aspect-square rounded-2xl" />)}
           </div>
         ) : collections.length === 0 ? (
-          <div className="bento-cell space-y-4 border-dashed p-12 text-center">
+          <div className="panel relative overflow-hidden space-y-4 p-12 text-center">
             <div className="flex justify-center">{iconTile}</div>
             <div className="space-y-1">
               <p className="text-sm font-semibold">{t(config.empty)}</p>

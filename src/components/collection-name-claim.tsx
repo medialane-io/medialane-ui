@@ -36,7 +36,7 @@ export function CollectionNameClaim() {
         return (
           <div
             key={c.id}
-            className="flex items-center gap-4 rounded-2xl border border-border bg-card p-4"
+            className="panel flex items-center gap-4 p-4"
           >
             <div className="h-12 w-12 rounded-xl overflow-hidden bg-muted shrink-0 flex items-center justify-center">
               {img ? (

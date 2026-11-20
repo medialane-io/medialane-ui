@@ -23,7 +23,7 @@ function SnapshotStat({ icon: Icon, value, label }: { icon: React.ElementType; v
 export function PortfolioSnapshot({ assets, listings, collections }: { assets: number; listings: number; collections: number }) {
   const t = useT();
   return (
-    <div className="rounded-2xl border border-border/60 bg-card p-5 space-y-4">
+    <div className="panel p-5 space-y-4">
       <div>
         <p className="text-2xs font-semibold uppercase tracking-wide text-muted-foreground">{t("Portfolio")}</p>
         <p className="mt-0.5 text-xs text-muted-foreground/70">{t("What you own on Medialane")}</p>
@@ -51,7 +51,7 @@ export function RewardsSnapshot({ address }: { address?: string | null }) {
   if (!rewards) return null;
 
   return (
-    <div className="rounded-2xl border border-border/60 bg-card p-5 space-y-4">
+    <div className="panel p-5 space-y-4">
       <div className="flex items-center justify-between">
         <div>
           <p className="text-2xs font-semibold uppercase tracking-wide text-muted-foreground">{t("Rewards")}</p>

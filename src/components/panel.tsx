@@ -9,9 +9,8 @@ export type PanelTone = "neutral" | PanelColor | readonly [PanelColor, PanelColo
 
 const stop = (color: PanelColor, alpha: number) => `hsl(var(--brand-${color}) / ${alpha})`;
 
-/** Borderless surface: a soft gradient from the top-left corner that fades to transparent. */
-export function panelBackground(tone: PanelTone = "neutral"): string {
-  if (tone === "neutral") return "linear-gradient(to bottom right, hsl(var(--muted) / 0.4), transparent)";
+/** Background for a brand-coloured panel: one brand colour, or a pair blended from the first into the second. */
+export function panelBackground(tone: Exclude<PanelTone, "neutral">): string {
   if (typeof tone === "string") return `linear-gradient(to bottom right, ${stop(tone, 0.32)}, transparent)`;
   const [from, to] = tone;
   return `linear-gradient(to bottom right, ${stop(from, 0.32)}, ${stop(to, 0.16)}, transparent)`;
@@ -25,8 +24,8 @@ export const Panel = React.forwardRef<HTMLDivElement, PanelProps>(
   ({ tone = "neutral", className, style, ...props }, ref) => (
     <div
       ref={ref}
-      className={cn("rounded-2xl", className)}
-      style={{ backgroundImage: panelBackground(tone), ...style }}
+      className={cn("panel", className)}
+      style={tone === "neutral" ? style : { backgroundImage: panelBackground(tone), ...style }}
       {...props}
     />
   ),
@@ -45,7 +44,7 @@ export function Pill({ color, className, ...props }: PillProps) {
   return (
     <span
       className={cn(
-        "inline-flex w-fit items-center gap-1.5 rounded-full bg-background/40 px-3 py-1 text-xs font-medium",
+        "pill",
         color ? BRAND[color].text : "text-muted-foreground",
         className,
       )}

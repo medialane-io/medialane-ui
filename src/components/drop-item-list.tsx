@@ -52,13 +52,13 @@ export function DropItemList({ items, collectionName, onAddFiles, onRemove, onEd
       </div>
 
       {items.length === 0 ? (
-        <div className="bento-cell border-dashed p-10 text-center text-sm text-muted-foreground">
+        <div className="panel relative overflow-hidden p-10 text-center text-sm text-muted-foreground">
           {t("Drag in your artwork — each image becomes a unique, licensed token. Supply = number of items.")}
         </div>
       ) : (
         <div className="space-y-2">
           {items.map((it, i) => (
-            <div key={it.id} className="flex gap-3 items-start bento-cell p-3">
+            <div key={it.id} className="flex gap-3 items-start panel relative overflow-hidden p-3">
               <div className="relative h-16 w-16 rounded-lg overflow-hidden bg-muted shrink-0">
                 <Image src={it.previewUrl} alt={it.name || t("Item {n}", { n: i + 1 })} fill className="object-cover" unoptimized />
                 <span className="absolute bottom-0 left-0 text-2xs font-bold bg-black/60 text-white px-1">#{i + 1}</span>

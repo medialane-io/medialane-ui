@@ -217,7 +217,7 @@ function ActivityLoading() {
 function ActivityLoadError({ onRetry }: { onRetry: () => void }) {
   const t = useT();
   return (
-    <div className="card-base flex flex-col items-center gap-3 px-6 py-8 text-center">
+    <div className="panel overflow-hidden flex flex-col items-center gap-3 px-6 py-8 text-center">
       <div className="grid h-11 w-11 place-items-center rounded-2xl bg-destructive/10 text-destructive">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <path d="M10.3 3.9L2.3 18a2 2 0 001.7 3h16a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z" />
@@ -232,7 +232,7 @@ function ActivityLoadError({ onRetry }: { onRetry: () => void }) {
       </div>
       <button
         onClick={onRetry}
-        className="rounded-full border border-border px-4 py-2 text-xs font-semibold text-foreground transition-colors hover:bg-card"
+        className="rounded-full px-4 py-2 text-xs font-semibold text-foreground transition-colors hover:bg-card bg-background/40"
       >
         {t("Try again")}
       </button>

@@ -35,7 +35,7 @@ export function MediaRow({
   const template = IP_TEMPLATES[ipType];
   const TemplateIcon = template.icon;
   return (
-    <div className="flex items-center gap-4 rounded-xl border border-border p-3">
+    <div className="panel flex items-center gap-4 p-3">
       <div className="relative h-14 w-14 rounded-lg bg-muted overflow-hidden shrink-0">
         {kind === "image" && preview ? (
           <Image src={preview} alt="" fill className="object-cover" unoptimized />
@@ -59,7 +59,7 @@ export function MediaRow({
           {uri && (
             <span
               className={cn(
-                "inline-flex shrink-0 items-center gap-1 rounded-full border px-2 py-0.5 text-2xs font-medium",
+                "inline-flex shrink-0 items-center gap-1 rounded-full px-2 py-0.5 text-2xs font-medium bg-background/40",
                 template.color.bg, template.color.text, template.color.border
               )}
             >
@@ -138,8 +138,8 @@ export function FormatPicker({
             role="radio"
             aria-checked={value === key}
             onClick={() => onChange(key)}
-            className={cn("flex items-start gap-3 rounded-xl border p-4 text-left transition-colors",
-              value === key ? "border-brand-blue bg-brand-blue/5" : "border-border hover:bg-muted/40")}
+            className={cn("flex items-start gap-3 rounded-xl p-4 text-left transition-colors",
+              value === key ? "bg-brand-blue/15" : "hover:bg-muted/40 bg-background/40")}
           >
             <Icon className={cn("h-5 w-5 shrink-0 mt-0.5", value === key ? "text-brand-blue" : "text-muted-foreground")} />
             <span>

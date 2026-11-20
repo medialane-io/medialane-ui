@@ -313,8 +313,8 @@ export function CoinCreate({ aside, tradeHref }: CoinCreateProps) {
                       type="button"
                       onClick={() => setSupply(p.value)}
                       className={cn(
-                        "rounded-lg border px-3.5 py-1.5 text-sm font-medium",
-                        supply === p.value ? "border-brand-orange bg-brand-orange/10 text-brand-orange" : "border-border text-muted-foreground",
+                        "rounded-lg px-3.5 py-1.5 text-sm font-medium",
+                        supply === p.value ? "bg-brand-orange/15 text-brand-orange" : "text-muted-foreground bg-background/40",
                       )}
                     >
                       {p.label}
@@ -345,8 +345,8 @@ export function CoinCreate({ aside, tradeHref }: CoinCreateProps) {
                       type="button"
                       onClick={() => setQuote(q)}
                       className={cn(
-                        "inline-flex items-center gap-1.5 rounded-lg border px-3.5 py-1.5 text-sm font-medium",
-                        quote === q ? "border-brand-maeve bg-brand-maeve/10 text-brand-maeve" : "border-border text-muted-foreground",
+                        "inline-flex items-center gap-1.5 rounded-lg px-3.5 py-1.5 text-sm font-medium",
+                        quote === q ? "bg-brand-maeve/15 text-brand-maeve" : "text-muted-foreground bg-background/40",
                       )}
                     >
                       <CurrencyIcon symbol={q} size={16} />

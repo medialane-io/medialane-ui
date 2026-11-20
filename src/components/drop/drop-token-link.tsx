@@ -11,7 +11,7 @@ export function DropTokenLink({ contract, name }: { contract: string; name: stri
   return (
     <Link
       href={dropHref(contract)}
-      className="flex items-center justify-between gap-3 rounded-xl border border-border px-4 py-3 transition-colors hover:bg-muted/40"
+      className="panel flex items-center justify-between gap-3 px-4 py-3 transition-colors hover:bg-muted/40"
     >
       <span className="flex min-w-0 items-center gap-2 text-sm">
         <Package className="h-4 w-4 shrink-0 text-brand-orange" />

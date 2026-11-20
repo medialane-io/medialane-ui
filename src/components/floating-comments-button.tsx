@@ -32,7 +32,7 @@ export function FloatingCommentsButton({ onClick, commentTotal }: FloatingCommen
           aria-label={t("Open on-chain comments")}
           animate={{ width: expanded ? 192 : 56 }}
           transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
-          className="flex items-center justify-center gap-2 h-14 rounded-2xl border border-border bg-card/95 backdrop-blur-sm shadow-md hover:shadow-lg hover:bg-accent overflow-hidden active:scale-95"
+          className="flex items-center justify-center gap-2 h-14 rounded-2xl bg-card/95 backdrop-blur-sm shadow-md hover:shadow-lg hover:bg-accent overflow-hidden active:scale-95"
         >
           <MessageCircle className="h-5 w-5 text-foreground flex-shrink-0" />
           <AnimatePresence>

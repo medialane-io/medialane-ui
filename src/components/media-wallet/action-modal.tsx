@@ -59,7 +59,7 @@ export function BusyOverlay({ label }: { label: string }) {
     <CanvasPortal>
       <div className="absolute inset-0 z-[60] grid place-items-center">
         <ActionBackdrop />
-        <div className="glass relative z-10 flex items-center gap-3 rounded-2xl px-5 py-4 text-sm">
+        <div className="panel bg-background/70 backdrop-blur-xl relative z-10 flex items-center gap-3 px-5 py-4 text-sm">
           <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/25 border-t-white" />
           {label}
         </div>

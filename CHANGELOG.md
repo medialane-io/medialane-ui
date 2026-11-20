@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.380.0] — 2026-11-20
+
+### Changed
+
+- One surface. The neutral panel recipe is the `.panel` stylesheet class (borderless, `rounded-2xl`-equivalent radius, soft gradient from the top-left corner); `Panel` uses it and adds an inline gradient only for brand tones. `.pill` is the shared chip class and `Pill` uses it.
+- Every hand-written bordered box in the package is a panel; chips and small controls use the borderless inset (`bg-background/40`); segmented toggles use a `bg-muted/40` track; media frames lose their outline. Selection state on filter chips, toggles and option cards is a brand-tinted background instead of a border.
+- Coloured callouts are brand-tone panels; non-brand emerald, green, yellow and Tailwind blue/purple callouts use brand colours. `Card` renders as a panel; `Alert` is borderless (destructive keeps its tint).
+- Text inputs, popover menus, dashed upload zones, checkboxes, spinners and image selection rings keep their borders.
+
+### Removed
+
+- `.card-base`, `.bento-cell`, `.glass`, `.pill-badge`, `.ml-card-material` and `.ml-grad-hover-border` stylesheet classes; the unused `gradient-border` and `gradient-fill` `Button` variants. `panelBackground` takes a brand tone only (neutral panels use the `panel` class).
+
 ## [0.379.0] — 2026-11-20
 
 ### Changed

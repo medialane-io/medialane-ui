@@ -21,7 +21,7 @@ export function AccountSection({
   children,
 }: AccountSectionProps) {
   return (
-    <div className="rounded-2xl border border-border/60 bg-card p-5 sm:p-6 space-y-5">
+    <div className="panel p-5 sm:p-6 space-y-5">
       <div className="flex items-start gap-3">
         <div className={cn("h-10 w-10 shrink-0 rounded-full flex items-center justify-center", iconBg)}>
           <Icon className={cn("h-5 w-5", iconColor)} />

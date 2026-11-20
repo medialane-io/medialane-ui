@@ -49,7 +49,7 @@ export function TransactionDialog({ tx, title, workingLabel, firstStepLabel = "P
                 {phase === "confirming" ? t("Waiting for block confirmation") : t("Submitting transaction")}
               </p>
             </div>
-            <ol className="w-full space-y-2 rounded-xl border border-border/60 bg-muted/30 p-4">
+            <ol className="panel w-full space-y-2 p-4">
               {steps.map((label, i) => {
                 const active = i === ACTIVE_STEP[phase];
                 const done = i < ACTIVE_STEP[phase];

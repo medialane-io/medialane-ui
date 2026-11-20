@@ -21,7 +21,7 @@ function MyEventCard({ collection }: { collection: ApiCollection }) {
   const initial = (collection.name ?? "E").charAt(0).toUpperCase();
 
   return (
-    <div className="bento-cell overflow-hidden flex gap-4 p-4 items-center">
+    <div className="panel relative overflow-hidden flex gap-4 p-4 items-center">
       <div className="relative h-16 w-16 rounded-xl overflow-hidden bg-muted shrink-0">
         {imageUrl ? (
           <Image src={imageUrl} alt={collection.name ?? t("Event")} fill className="object-cover" unoptimized />
@@ -72,7 +72,7 @@ export function PopMyEventsPage() {
       <FadeIn>
         <div className="flex items-center justify-between">
           <div>
-            <span className="pill-badge inline-flex gap-1.5 mb-2">
+            <span className="pill inline-flex gap-1.5 mb-2">
               <Award className="h-3 w-3" />
               {t("POP Protocol")}
             </span>
@@ -96,7 +96,7 @@ export function PopMyEventsPage() {
         </div>
       ) : !collections || collections.length === 0 ? (
         <FadeIn>
-          <div className="bento-cell border-dashed p-16 text-center space-y-3">
+          <div className="panel relative overflow-hidden p-16 text-center space-y-3">
             <Award className="h-10 w-10 text-muted-foreground/20 mx-auto" />
             <p className="text-sm text-muted-foreground">{t("No events yet")}</p>
             <Button asChild size="sm" className="bg-green-600 hover:bg-green-700 text-white gap-1.5">

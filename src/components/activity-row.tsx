@@ -29,7 +29,7 @@ const ACTIVITY_MESSAGES: Record<string, string> = {
 
 export function ActivityListSkeleton({ count = 10 }: { count?: number }) {
   return (
-    <div className="divide-y divide-border/50 rounded-xl border border-border overflow-hidden">
+    <div className="panel divide-y divide-border/50 overflow-hidden">
       {Array.from({ length: count }).map((_, i) => (
         <div key={i} className="flex items-center gap-3 px-4 py-3.5 bg-card">
           <Skeleton className="h-8 w-8 rounded-lg shrink-0" />

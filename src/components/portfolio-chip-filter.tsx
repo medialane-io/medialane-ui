@@ -22,9 +22,9 @@ export interface PortfolioChipFilterProps {
 }
 
 const CHIP_CLASS =
-  "shrink-0 rounded-full px-3.5 py-1.5 text-sm whitespace-nowrap transition-colors border";
-const INACTIVE_CLASS = "bg-muted border-border/60 text-muted-foreground hover:text-foreground hover:border-border";
-const ACTIVE_CLASS = "bg-gradient-to-r from-brand-purple to-brand-orange border-transparent text-white font-bold";
+  "shrink-0 rounded-full px-3.5 py-1.5 text-sm whitespace-nowrap transition-colors bg-background/40";
+const INACTIVE_CLASS = "bg-muted text-muted-foreground hover:text-foreground";
+const ACTIVE_CLASS = "bg-gradient-to-r from-brand-purple to-brand-orange text-white font-bold";
 
 export function PortfolioChipFilter({
   options,

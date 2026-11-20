@@ -55,7 +55,7 @@ export function LaunchpadFilterBar({ query, onQueryChange, sections }: Launchpad
             <X className="h-3.5 w-3.5" />
           </button>
         ) : (
-          <kbd className="absolute right-3 top-1/2 -translate-y-1/2 hidden sm:flex h-5 w-5 items-center justify-center rounded border border-border bg-muted/40 text-2xs font-medium text-muted-foreground pointer-events-none">
+          <kbd className="absolute right-3 top-1/2 -translate-y-1/2 hidden sm:flex h-5 w-5 items-center justify-center rounded text-2xs font-medium text-muted-foreground pointer-events-none bg-background/40">
             /
           </kbd>
         )}
@@ -67,7 +67,7 @@ export function LaunchpadFilterBar({ query, onQueryChange, sections }: Launchpad
             key={group.key}
             type="button"
             onClick={() => jumpTo(group.key)}
-            className="h-8 shrink-0 px-3.5 rounded-full text-xs font-semibold transition-colors border inline-flex items-center gap-1.5 bg-card text-muted-foreground border-border active:bg-muted/60 sm:hover:bg-muted/40 sm:hover:text-foreground"
+            className="h-8 shrink-0 px-3.5 rounded-full text-xs font-semibold transition-colors inline-flex items-center gap-1.5 bg-background/40 text-muted-foreground active:bg-muted/60 sm:hover:bg-muted/40 sm:hover:text-foreground"
           >
             {t(group.title)}
             <span className="tabular-nums text-muted-foreground/60">{count}</span>

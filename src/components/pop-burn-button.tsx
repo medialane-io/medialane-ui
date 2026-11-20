@@ -44,7 +44,7 @@ export function PopBurnButton({ collectionAddress, tokenId, onBurned }: PopBurnB
     });
 
   return (
-    <div className="space-y-2 rounded-xl border border-border p-3">
+    <div className="panel space-y-2 p-3">
       <p className="text-xs text-muted-foreground">
         {t("Burning removes this certificate permanently.")}
       </p>

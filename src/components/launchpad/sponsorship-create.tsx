@@ -55,7 +55,7 @@ function PendingProposalsPanel({ nftContract }: { nftContract: string }) {
   if (isLoading || proposals.length === 0) return null;
 
   return (
-    <div className="rounded-xl border border-border bg-card p-4 space-y-3">
+    <div className="panel p-4 space-y-3">
       <p className="text-sm font-semibold">{t("Pending proposals")}</p>
       {proposals.map((p) => (
         <div key={p.proposalId} className="flex items-center justify-between gap-3 text-sm">
@@ -168,7 +168,7 @@ export function SponsorshipCreate({ aside }: { aside?: ReactNode }) {
         aside={aside}
       >
         <div className="space-y-6">
-          <div className="inline-flex rounded-full border border-border p-1 bg-card">
+          <div className="inline-flex rounded-full p-1 bg-background/40">
             {(["offer", "propose"] as const).map((m) => (
               <button
                 key={m}

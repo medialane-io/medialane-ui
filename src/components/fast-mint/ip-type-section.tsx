@@ -23,7 +23,7 @@ export function IpTypeSection({
 
   return (
     <Collapsible open={open} onOpenChange={setOpen}>
-      <div className="rounded-xl border border-border overflow-hidden">
+      <div className="panel overflow-hidden">
         <CollapsibleTrigger asChild>
           <button type="button" className="w-full flex items-center justify-between px-4 py-3.5 hover:bg-muted/30 transition-colors">
             <span className="flex items-center gap-2">

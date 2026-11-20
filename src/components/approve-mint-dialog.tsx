@@ -99,7 +99,7 @@ export function ApproveMintDialog({ offer, open, onOpenChange, collections, foot
               </Alert>
             )}
             {offer && (
-              <div className="rounded-xl border border-border bg-muted/30 p-3 text-sm space-y-1">
+              <div className="panel p-3 text-sm space-y-1">
                 <p><span className="text-muted-foreground">{t("License")}</span> {offer.licenseType}</p>
                 <p><span className="text-muted-foreground">{t("Price")}</span> {priceDisplay}</p>
                 {offer.message && <p className="text-muted-foreground italic">&quot;{offer.message}&quot;</p>}

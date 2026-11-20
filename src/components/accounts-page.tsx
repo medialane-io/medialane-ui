@@ -15,7 +15,7 @@ import { useT } from "../i18n/provider.js";
 import { useFormat } from "../i18n/use-format.js";
 
 const GRID = "grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4";
-const CHIP = "shrink-0 rounded-full border px-3.5 py-1.5 text-sm font-medium transition-colors";
+const CHIP = "shrink-0 rounded-full px-3.5 py-1.5 text-sm font-medium transition-colors bg-background/40";
 
 export function AccountsPage() {
   const intl = useFormat();
@@ -34,7 +34,7 @@ export function AccountsPage() {
     <div className="pb-16">
       <section className="border-b border-border/50 px-4 py-14 sm:px-6 sm:py-20 lg:px-8">
         <FadeIn>
-          <span className="pill-badge mb-5 inline-flex">
+          <span className="pill mb-5 inline-flex">
             <Users className="h-3 w-3" />
             {t("Accounts directory")}
           </span>
@@ -52,7 +52,7 @@ export function AccountsPage() {
         <FadeIn delay={0.22}>
           <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center">
             {!isLoading && total > 0 && (
-              <div className="flex items-center gap-2 rounded-full border border-border bg-card/80 px-4 py-1.5 text-sm">
+              <div className="flex items-center gap-2 rounded-full px-4 py-1.5 text-sm bg-background/40">
                 <span className="font-bold tabular-nums">{intl.number(total)}</span>
                 <span className="text-muted-foreground">{t("account")}{total === 1 ? "" : "s"}</span>
               </div>

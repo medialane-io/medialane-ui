@@ -3,6 +3,7 @@
 import Link from "./link.js";
 import { GitBranch, ExternalLink } from "lucide-react";
 import { useT } from "../i18n/provider.js";
+import { panelBackground } from "./panel.js";
 
 export interface ParentBannerProps {
   parentContract: string;
@@ -15,7 +16,8 @@ export function ParentAttributionBanner({ parentContract, parentTokenId, parentN
   return (
     <Link
       href={`/asset/${parentContract}/${parentTokenId}`}
-      className="flex items-center gap-2.5 px-3 py-2 rounded-xl border border-primary/25 bg-primary/5 text-sm hover:bg-primary/10 transition-colors group"
+      className="panel flex items-center gap-2.5 px-3 py-2 text-sm hover:bg-background/40 transition-colors group"
+      style={{ backgroundImage: panelBackground("blue") }}
     >
       <GitBranch className="h-4 w-4 text-primary shrink-0" />
       <span className="text-muted-foreground">{t("Remix of")}</span>

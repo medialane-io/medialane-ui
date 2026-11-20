@@ -38,10 +38,10 @@ function PopFields({ shared, state, update }: FormatFieldsProps<PopState>) {
                 aria-pressed={selected}
                 onClick={() => update({ eventType: value })}
                 className={cn(
-                  "flex flex-col items-center gap-1.5 p-3 rounded-xl border text-center transition-all",
+                  "flex flex-col items-center gap-1.5 p-3 rounded-xl text-center transition-all",
                   selected
-                    ? "border-brand-blue bg-brand-blue/5 text-brand-blue"
-                    : "border-border bg-muted/30 hover:bg-muted/50 text-muted-foreground",
+                    ? "bg-brand-blue/15 text-brand-blue"
+                    : "bg-background/40 text-muted-foreground",
                 )}
               >
                 <Icon className="h-5 w-5" />
@@ -71,7 +71,7 @@ function PopFields({ shared, state, update }: FormatFieldsProps<PopState>) {
         </div>
       </div>
 
-      <div className="flex items-center justify-between p-4 rounded-xl border border-border bg-muted/20">
+      <div className="panel flex items-center justify-between p-4">
         <div className="space-y-0.5">
           <p className="text-sm font-medium">{t("Event visibility")}</p>
           <p className="text-xs text-muted-foreground">

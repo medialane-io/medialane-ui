@@ -107,7 +107,7 @@ const INPUT_BASE =
 
 function ToggleGroup({ value, options, onChange, disabled }: { value: string; options: readonly string[]; onChange: (v: string) => void; disabled?: boolean }) {
   return (
-    <div className="flex rounded-lg border border-border overflow-hidden w-full">
+    <div className="flex rounded-lg overflow-hidden w-full bg-muted/40">
       {options.map((opt, i) => (
         <button
           key={opt}
@@ -189,10 +189,10 @@ export function LicenseTermsBuilder({
               onClick={() => set("paymentTokenSymbol", symbol)}
               aria-pressed={value.paymentTokenSymbol === symbol}
               className={cn(
-                "h-10 px-2 rounded-xl border text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors disabled:opacity-50",
+                "h-10 px-2 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors disabled:opacity-50",
                 value.paymentTokenSymbol === symbol
-                  ? "border-brand-purple bg-brand-purple/10 text-foreground"
-                  : "border-border bg-card text-muted-foreground hover:text-foreground",
+                  ? "bg-brand-purple/15 text-foreground"
+                  : "bg-background/40 text-muted-foreground hover:text-foreground",
               )}
             >
               <CurrencyIcon symbol={symbol} size={14} />
@@ -349,10 +349,10 @@ export function LicenseTermsBuilder({
               disabled={disabled}
               onClick={() => toggleMedia(m)}
               className={cn(
-                "h-8 px-2.5 rounded-full border text-xs font-medium transition-colors disabled:opacity-50",
+                "h-8 px-2.5 rounded-full text-xs font-medium transition-colors disabled:opacity-50",
                 value.media.includes(m)
-                  ? "border-brand-purple bg-brand-purple/10 text-foreground"
-                  : "border-border bg-card text-muted-foreground hover:text-foreground",
+                  ? "bg-brand-purple/15 text-foreground"
+                  : "bg-background/40 text-muted-foreground hover:text-foreground",
               )}
             >
               {m}

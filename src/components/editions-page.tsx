@@ -30,7 +30,7 @@ function CollectionRow({ col }: { col: ApiCollection }) {
   const showImage = imageUrl && !imgError;
 
   return (
-    <div className="group bento-cell overflow-hidden flex flex-col sm:flex-row items-stretch">
+    <div className="group panel relative overflow-hidden flex flex-col sm:flex-row items-stretch">
 
       <div className="relative w-full sm:w-32 aspect-square shrink-0 overflow-hidden bg-muted sm:self-start sm:m-5 sm:mr-0 sm:rounded-xl">
         {showImage ? (
@@ -112,7 +112,7 @@ function CollectionRow({ col }: { col: ApiCollection }) {
 
 function CollectionRowSkeleton() {
   return (
-    <div className="bento-cell overflow-hidden flex flex-col sm:flex-row">
+    <div className="panel relative overflow-hidden flex flex-col sm:flex-row">
       <Skeleton className="w-full sm:w-32 aspect-square shrink-0 rounded-none sm:self-start sm:m-5 sm:mr-0 sm:rounded-xl" />
       <div className="flex flex-col gap-3 p-5 flex-1">
         <Skeleton className="h-5 w-48" />
@@ -180,7 +180,7 @@ export function EditionsPage() {
           </div>
         ) : erc1155.length === 0 ? (
           <FadeIn>
-            <div className="bento-cell p-10 flex flex-col items-center gap-4 text-center">
+            <div className="panel relative overflow-hidden p-10 flex flex-col items-center gap-4 text-center">
               <Inbox className="h-10 w-10 text-muted-foreground/30" />
               <div>
                 <p className="font-semibold">{t("No editions collections yet")}</p>

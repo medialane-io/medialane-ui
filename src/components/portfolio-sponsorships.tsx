@@ -113,7 +113,7 @@ function ReceivedProposals({ walletAddress }: { walletAddress: string }) {
     <div className="space-y-2">
       {action.dialog}
       {proposals.map((p) => (
-        <div key={p.id} className="bento-cell p-4 flex items-center justify-between gap-3">
+        <div key={p.id} className="panel relative overflow-hidden p-4 flex items-center justify-between gap-3">
           <div className="min-w-0">
             <p className="text-sm font-semibold">
               <Link href={assetHref("STARKNET", p.nftContract, p.tokenId)} className="hover:underline">{t("View asset")}</Link>
@@ -148,7 +148,7 @@ function SentProposals({ walletAddress }: { walletAddress: string }) {
     <div className="space-y-2">
       {action.dialog}
       {proposals.map((p) => (
-        <div key={p.id} className="bento-cell p-4 flex items-center justify-between gap-3">
+        <div key={p.id} className="panel relative overflow-hidden p-4 flex items-center justify-between gap-3">
           <div className="min-w-0">
             <p className="text-sm font-semibold">
               <Link href={assetHref("STARKNET", p.nftContract, p.tokenId)} className="hover:underline">{t("View asset")}</Link>
@@ -220,7 +220,7 @@ export function PortfolioSponsorships() {
         <h2 className="text-sm font-bold">{t("Licenses you hold")}</h2>
         <LicenseList loading={heldLoading} empty={emptyMessages.heldLicenses}>
           {held.map((l) => (
-            <div key={l.id} className="bento-cell p-4">
+            <div key={l.id} className="panel relative overflow-hidden p-4">
               <p className="text-sm font-semibold">
                 <Link href={assetHref("STARKNET", l.assetContract, l.assetTokenId)} className="hover:underline">{t("License on this asset")}</Link>
               </p>
@@ -234,7 +234,7 @@ export function PortfolioSponsorships() {
         <h2 className="text-sm font-bold">{t("Licenses issued on your work")}</h2>
         <LicenseList loading={issuedLoading} empty={emptyMessages.issuedLicenses}>
           {issued.map((l) => (
-            <div key={l.id} className="bento-cell p-4">
+            <div key={l.id} className="panel relative overflow-hidden p-4">
               <p className="text-sm font-semibold">
                 <Link href={assetHref("STARKNET", l.assetContract, l.assetTokenId)} className="hover:underline">{t("License on this asset")}</Link>
               </p>

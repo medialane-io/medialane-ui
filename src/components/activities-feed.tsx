@@ -88,10 +88,10 @@ export function ActivitiesFeed() {
               key={f.value}
               onClick={() => setTypeFilter(f.value)}
               className={cn(
-                "flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full border transition-all font-medium",
+                "flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full transition-all font-medium",
                 isActive
-                  ? "border-primary bg-primary/10 text-primary shadow-sm"
-                  : "border-border text-muted-foreground hover:border-primary/40 hover:text-foreground hover:bg-muted/50"
+                  ? "bg-primary/15 text-primary shadow-sm"
+                  : "text-muted-foreground hover:text-foreground hover:bg-muted/50 bg-background/40"
               )}
             >
               {Icon && (
@@ -126,7 +126,7 @@ export function ActivitiesFeed() {
         </div>
       ) : (
         <div className="space-y-4">
-          <div className="divide-y divide-border/50 rounded-xl border border-border overflow-hidden">
+          <div className="panel divide-y divide-border/50 overflow-hidden">
             {allActivities.map((activity, i) => (
               <ActivityRow
                 key={`${activity.txHash}-${activity.type}-${activity.nftTokenId ?? i}`}

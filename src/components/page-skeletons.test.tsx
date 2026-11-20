@@ -6,7 +6,7 @@ afterEach(cleanup);
 
 test("the account loading screen follows the account page: text header, pill tabs and token cards", () => {
   const { container } = render(<AccountLoading />);
-  expect(container.querySelectorAll(".card-base")).toHaveLength(8);
+  expect(container.querySelectorAll(".panel")).toHaveLength(8);
   expect(container.querySelectorAll(".rounded-full.h-9")).toHaveLength(5);
   expect(container.querySelector(".h-48")).toBeNull();
   expect(container.querySelector(".h-\\[88px\\]")).toBeNull();
@@ -31,13 +31,13 @@ test("the collection loading screen shows the header, the tab row and a grid of 
 
 test("the IP type loading screen shows the title row and token card skeletons", () => {
   const { container } = render(<IpTypeLoading />);
-  expect(container.querySelectorAll(".card-base")).toHaveLength(10);
+  expect(container.querySelectorAll(".panel")).toHaveLength(10);
   expect(container.querySelector(".h-14.w-14")).not.toBeNull();
 });
 
 test("the creator loading screen follows the creator page: header block, tab row and token cards", () => {
   const { container } = render(<CreatorLoading />);
-  expect(container.querySelectorAll(".card-base")).toHaveLength(8);
+  expect(container.querySelectorAll(".panel")).toHaveLength(8);
   expect(container.querySelector(".h-48")).toBeNull();
   expect(container.querySelector(".h-\\[88px\\]")).toBeNull();
   expect(container.querySelectorAll(".px-4.py-3")).toHaveLength(4);
@@ -51,6 +51,6 @@ test("the activities loading screen shows the title, seven filter pills and ten 
 
 test("the portfolio loading screen fills only the content slot with token cards, under the shell header", () => {
   const { container } = render(<PortfolioLoading />);
-  expect(container.querySelectorAll(".card-base")).toHaveLength(10);
+  expect(container.querySelectorAll(".panel")).toHaveLength(10);
   expect(container.querySelector(".h-9.w-36")).toBeNull();
 });

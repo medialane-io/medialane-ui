@@ -83,7 +83,7 @@ export function CollectionPicker({ collections, loading, value, onChange, newCol
         <button
           type="button"
           aria-expanded={open}
-          className="flex w-full items-center gap-3 rounded-xl border border-border p-3 text-left transition-colors hover:bg-muted/40"
+          className="panel flex w-full items-center gap-3 p-3 text-left transition-colors hover:bg-muted/40"
         >
           <Thumb image={selected?.image} size="md" />
           <div className="min-w-0 flex-1">

@@ -46,7 +46,7 @@ function IssueSection({
   const valid = /^0x[0-9a-fA-F]{1,64}$/.test(address);
 
   return (
-    <div className="bento-cell p-5 space-y-3">
+    <div className="panel relative overflow-hidden p-5 space-y-3">
       <div className="flex items-center gap-2">
         <Award className="h-4 w-4 text-green-500" />
         <span className="font-semibold text-sm">{t("Issue directly")}</span>
@@ -92,7 +92,7 @@ function AllowlistSection({
   const parsed = parseAddresses(raw);
 
   return (
-    <div className="bento-cell p-5 space-y-3">
+    <div className="panel relative overflow-hidden p-5 space-y-3">
       <div className="flex items-center gap-2">
         <Users className="h-4 w-4 text-green-500" />
         <span className="font-semibold text-sm">{t("Participants")}</span>
@@ -223,7 +223,7 @@ export function PopManagePage({ contract }: { contract: string }) {
 
           <FadeIn delay={0.04}>
             <div>
-              <span className="pill-badge inline-flex gap-1.5 mb-2">
+              <span className="pill inline-flex gap-1.5 mb-2">
                 <Award className="h-3 w-3" />
                 {t("Organizer")}
               </span>
@@ -233,7 +233,7 @@ export function PopManagePage({ contract }: { contract: string }) {
           </FadeIn>
 
           <FadeIn delay={0.08}>
-            <div className="bento-cell p-4 flex items-center gap-3">
+            <div className="panel relative overflow-hidden p-4 flex items-center gap-3">
               <Award className="h-4 w-4 text-green-500 shrink-0" />
               <p className="text-xs text-muted-foreground">{t.rich("Only participants on your {strong} can claim, with the link you send them.", { strong: <strong className="text-foreground">{t("published list")}</strong> })}</p>
             </div>

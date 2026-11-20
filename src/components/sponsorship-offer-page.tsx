@@ -110,7 +110,7 @@ export function SponsorshipOfferPage({ offerId }: { offerId: string }) {
         </FadeIn>
 
         <FadeIn>
-          <div className="rounded-2xl border border-border/40 overflow-hidden">
+          <div className="panel overflow-hidden">
             <div className="relative aspect-square bg-muted/40">
               {imageUrl ? (
                 <Image src={imageUrl} alt={name} fill sizes="(min-width: 768px) 768px, 100vw" className="object-cover" unoptimized />
@@ -156,7 +156,7 @@ export function SponsorshipOfferPage({ offerId }: { offerId: string }) {
               ) : (
                 <div className="space-y-2">
                   {bids.map((bid) => (
-                    <div key={bid.id} className="flex items-center justify-between gap-3 rounded-xl border border-border/30 p-3">
+                    <div key={bid.id} className="panel flex items-center justify-between gap-3 p-3">
                       <div>
                         <p className="text-sm font-medium">{shortenAddress(bid.sponsor)}</p>
                         <p className="text-xs text-muted-foreground">{format(bid.amount)}</p>

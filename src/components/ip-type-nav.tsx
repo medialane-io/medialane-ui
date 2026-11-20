@@ -19,7 +19,7 @@ export function IpTypeNav() {
           <Link
             key={slug}
             href={`/${slug}`}
-            className="group flex flex-col items-center gap-2.5 p-4 rounded-xl border border-border bg-card hover:border-primary/40 hover:bg-card/80 transition-all hover:shadow-md hover:shadow-black/10"
+            className="panel group flex flex-col items-center gap-2.5 p-4 hover:bg-card/80 transition-all hover:shadow-md hover:shadow-black/10"
           >
             <div className={cn("h-10 w-10 rounded-xl flex items-center justify-center", bgClass)}>
               <Icon className={cn("h-5 w-5", colorClass)} />
