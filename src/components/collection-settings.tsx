@@ -49,7 +49,7 @@ export function CollectionSettings({ contract }: { contract: string }) {
         <p className="text-xs text-muted-foreground max-w-xs">
           {t("Only the collection owner can access settings. If you believe this is yours, visit your portfolio to claim it.")}
         </p>
-        <Button variant="outline" size="sm" asChild>
+        <Button variant="soft" size="sm" asChild>
           <Link href="/portfolio/collections">{t("Go to my collections")}</Link>
         </Button>
       </div>
@@ -84,12 +84,12 @@ export function CollectionSettings({ contract }: { contract: string }) {
           description={t("Your collection's public name and description. A complete profile builds trust with collectors.")}
           badge={
             profile?.displayName ? (
-              <Badge variant="outline" className="text-2xs h-4 px-1.5 gap-1 text-emerald-500 border-emerald-500/30">
+              <Badge variant="soft" className="text-2xs h-4 px-1.5 gap-1 text-emerald-500 border-emerald-500/30">
                 <CheckCircle2 className="h-2.5 w-2.5" />
                 {t("Named")}
               </Badge>
             ) : (
-              <Badge variant="outline" className="text-2xs h-4 px-1.5 gap-1 text-amber-500 border-amber-500/30">
+              <Badge variant="soft" className="text-2xs h-4 px-1.5 gap-1 text-amber-500 border-amber-500/30">
                 <Info className="h-2.5 w-2.5" />
                 {t("Add a name")}
               </Badge>
@@ -172,7 +172,7 @@ export function CollectionSettings({ contract }: { contract: string }) {
           bgClass={form.gatedEnabled ? "bg-emerald-500/15" : "bg-muted"}
           badge={
             form.gatedEnabled ? (
-              <Badge variant="outline" className="text-2xs h-4 px-1.5 gap-1 text-emerald-500 border-emerald-500/30">
+              <Badge variant="soft" className="text-2xs h-4 px-1.5 gap-1 text-emerald-500 border-emerald-500/30">
                 <Unlock className="h-2.5 w-2.5" />
                 {t("Active")}
               </Badge>

@@ -8,7 +8,6 @@ import { describeError } from "../../utils/describe-error.js";
 import { uploadError } from "../../utils/upload-limits.js";
 import { uploadFileToIpfs, type SignedUploadKind } from "../../utils/ipfs-upload.js";
 import { invalidatePortfolioCache } from "../../utils/portfolio-cache.js";
-import { cn } from "../../utils/cn.js";
 import type { IPType } from "../../data/ip.js";
 import { Input } from "../input.js";
 import { Textarea } from "../textarea.js";
@@ -28,6 +27,7 @@ import { useIpfsUpload } from "./use-ipfs-upload.js";
 import { useNewCollectionDraft } from "./use-new-collection-draft.js";
 import type { FastMintProps, MediaKind } from "./types.js";
 import { useT } from "../../i18n/provider.js";
+import { ActionButton } from "../action-button.js";
 
 export function FastMint(props: FastMintProps) {
   const t = useT();
@@ -273,18 +273,10 @@ export function FastMint(props: FastMintProps) {
 
             {status === "error" && errorMsg && <p className="text-xs text-destructive">{errorMsg}</p>}
 
-            <button
-              type="button"
-              disabled={submitBlocked}
-              onClick={() => void onSubmit()}
-              className={cn(
-                "w-full h-12 text-base font-semibold text-white rounded-xl flex items-center justify-center gap-2 transition-all hover:brightness-110 active:scale-[0.98] bg-brand-blue",
-                submitBlocked && "opacity-40 pointer-events-none"
-              )}
-            >
+            <ActionButton solid big type="button" disabled={submitBlocked} onClick={() => void onSubmit()} className="w-full">
               {busy && <Loader2 className="h-4 w-4 animate-spin" />}
               {buttonLabel}
-            </button>
+            </ActionButton>
             <p className="text-xs text-center text-muted-foreground">
               {t("Zero platform fees to mint.")}
             </p>

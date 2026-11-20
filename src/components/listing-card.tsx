@@ -12,6 +12,8 @@ import { isLivingRenderCollection } from "../data/living-render-collections.js";
 import { assetHref as buildAssetHref, type ApiOrder, type Chain } from "@medialane/sdk";
 import { useImageUrl } from "../utils/use-image-url.js";
 import { useT } from "../i18n/provider.js";
+import { ActionButton } from "./action-button.js";
+import { PANEL_INSET } from "./panel.js";
 
 type OrderWithAnimation = ApiOrder & { token: (ApiOrder["token"] & { animationUrl?: string | null }) | null };
 
@@ -118,18 +120,13 @@ export function ListingCard({ order: rawOrder, inCart = false, onBuy, onCart, ov
                 primaryAction ? (
                   primaryAction
                 ) : onBuy ? (
-                  <div className="btn-border-animated p-[1.5px] rounded-[10px] flex-1 h-9">
-                    <button
-                      className="w-full h-full rounded-[9px] bg-background flex items-center justify-center gap-1.5 text-xs font-semibold text-foreground hover:bg-muted/60 transition-all active:scale-[0.98]"
-                      onClick={(e) => { e.preventDefault(); onBuy(order); }}
-                    >
-                      <Zap className="h-3.5 w-3.5 shrink-0" /> {t("Buy")}
-                    </button>
-                  </div>
+                  <ActionButton small action="buy" icon={<Zap className="h-3.5 w-3.5 shrink-0" />} className="flex-1" onClick={(e) => { e.preventDefault(); onBuy(order); }}>
+                    {t("Buy")}
+                  </ActionButton>
                 ) : (
                   <Link
                     href={assetHref}
-                    className="flex-1 h-9 inline-flex items-center justify-center gap-1.5 rounded-[9px] border border-border bg-background text-xs font-semibold text-foreground hover:bg-muted/60 transition-all active:scale-[0.98]"
+                    className={cn("flex-1 h-9 inline-flex items-center justify-center gap-1.5 rounded-xl text-xs font-semibold text-foreground", PANEL_INSET)}
                   >
                     <ArrowUpRight className="h-3.5 w-3.5 shrink-0" /> {t("View")}
                   </Link>
@@ -137,7 +134,7 @@ export function ListingCard({ order: rawOrder, inCart = false, onBuy, onCart, ov
               ) : (
                 <Link
                   href={assetHref}
-                  className="flex-1 h-9 inline-flex items-center justify-center gap-1.5 rounded-[9px] border border-border bg-background text-xs font-semibold text-foreground hover:bg-muted/60 transition-all active:scale-[0.98]"
+                  className={cn("flex-1 h-9 inline-flex items-center justify-center gap-1.5 rounded-xl text-xs font-semibold text-foreground", PANEL_INSET)}
                 >
                   <ArrowUpRight className="h-3.5 w-3.5 shrink-0" /> {t("View asset")}
                 </Link>

@@ -68,7 +68,7 @@ export function DevicesSection({ walletAddress, wallet, loadSealed }: DevicesSec
             {t("Each device signs for itself. Add one to use this account somewhere else.")}
           </p>
         </div>
-        <Button size="sm" variant="outline" onClick={() => setAddOpen(true)}>
+        <Button size="sm" variant="soft" onClick={() => setAddOpen(true)}>
           <Plus className="h-4 w-4 mr-1" />
           {t("Add")}
         </Button>

@@ -1,6 +1,7 @@
 "use client";
 
-import { ACTION_GRADIENTS, ACTION_FOREGROUNDS } from "../../data/brand.js";
+import { ACTION_FOREGROUNDS, ACTION_PAIRS } from "../../data/brand.js";
+import { actionFill } from "../action-button.js";
 
 export function QuickAction({
   label,
@@ -11,11 +12,10 @@ export function QuickAction({
 }: {
   label: string;
   icon: React.ReactNode;
-  action: keyof typeof ACTION_GRADIENTS;
+  action: keyof typeof ACTION_PAIRS;
   onClick?: () => void;
   disabled?: boolean;
 }) {
-  const grad = `linear-gradient(115deg, ${ACTION_GRADIENTS[action].join(",")})`;
   return (
     <button
       onClick={onClick}
@@ -23,8 +23,8 @@ export function QuickAction({
       className={`group flex flex-col items-center gap-1.5 ${disabled ? "pointer-events-none opacity-40" : ""}`}
     >
       <span
-        className="ml-gbtn relative grid h-12 w-12 place-items-center rounded-[15px] bg-transparent transition-transform group-active:scale-95"
-        style={{ "--ml-grad": grad, color: ACTION_FOREGROUNDS[action] } as React.CSSProperties}
+        className="grid h-12 w-12 place-items-center rounded-[15px] transition-transform group-active:scale-95"
+        style={{ backgroundImage: actionFill(ACTION_PAIRS[action]), color: ACTION_FOREGROUNDS[action] }}
       >
         {icon}
       </span>

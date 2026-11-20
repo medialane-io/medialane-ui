@@ -60,7 +60,7 @@ export function Dropzone({
       </div>
       <Button
         type="button"
-        variant="outline"
+        variant="soft"
         className="rounded-full mt-1 bg-card"
         onClick={(e) => { e.stopPropagation(); openMediaPicker(); }}
       >

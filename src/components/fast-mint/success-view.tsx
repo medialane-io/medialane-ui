@@ -48,7 +48,7 @@ export function SuccessView({ presentation = "inline", previewImage, result, onP
 
           <RewardEarned actionType={result.reward} />
 
-          <Button variant="outline" onClick={onPublishAnother} className="w-full sm:w-auto">
+          <Button variant="soft" onClick={onPublishAnother} className="w-full sm:w-auto">
             {t("Publish another")}
           </Button>
         </div>

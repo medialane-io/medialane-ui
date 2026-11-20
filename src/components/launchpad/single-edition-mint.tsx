@@ -36,6 +36,7 @@ import { useTransaction } from "../../utils/use-transaction.js";
 import { invalidatePortfolioCache } from "../../utils/portfolio-cache.js";
 import type { MetadataField } from "../ip-type-fields.js";
 import { useT } from "../../i18n/provider.js";
+import { ActionButton } from "../action-button.js";
 
 const schema = z.object({
   collectionId: z.string().min(1, "Select a collection"),
@@ -392,13 +393,9 @@ export function SingleEditionMint({ aside }: { aside?: ReactNode }) {
               />
             </CollapsibleSection>
 
-            <button
-              type="submit"
-              disabled={busy}
-              className={`w-full h-12 text-base font-semibold text-white rounded-xl flex items-center justify-center gap-2 transition-all hover:brightness-110 active:scale-[0.98] bg-brand-blue ${busy ? "opacity-40 pointer-events-none" : ""}`}
-            >
+            <ActionButton solid big type="submit" disabled={busy} className="w-full">
               {t("Mint NFT")}
-            </button>
+            </ActionButton>
             <p className="text-xs text-center text-muted-foreground">{t("Free to mint — protocol fee is zero.")}</p>
           </form>
         </Form>

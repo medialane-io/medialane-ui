@@ -32,6 +32,7 @@ import { isSameAddress } from "../utils/same-address.js";
 import { isLivingRenderCollection } from "../data/living-render-collections.js";
 import { useT } from "../i18n/provider.js";
 import { useFormat } from "../i18n/use-format.js";
+import { ActionButton } from "./action-button.js";
 
 export interface CollectionMarketActions {
   buy: (order: ApiOrder) => void;
@@ -177,10 +178,12 @@ function OwnerActions({ collection }: { collection: ApiCollection }) {
   const contract = collection.contractAddress;
   if (service === "ip-tickets") {
     return (
-      <Link href={`/launchpad/tickets/${contract}/mint`} className="flex w-fit items-center gap-1.5 h-8 px-3 rounded-lg text-xs font-semibold text-white bg-brand-blue hover:brightness-110 active:scale-[0.98] transition">
-        <Ticket className="h-3.5 w-3.5" />
-        {t("Mint tickets")}
-      </Link>
+      <ActionButton solid small asChild className="w-fit">
+        <Link href={`/launchpad/tickets/${contract}/mint`}>
+          <Ticket className="h-3.5 w-3.5" />
+          {t("Mint tickets")}
+        </Link>
+      </ActionButton>
     );
   }
   if (service === "ip-club") return <ClubOwnerActions contractAddress={contract} isOwner />;

@@ -84,7 +84,7 @@ export function CollectionSlugClaimSection({
           iconClass="text-emerald-500"
           bgClass="bg-emerald-500/15"
           badge={
-            <Badge variant="outline" className="text-2xs h-4 px-1.5 text-emerald-600 border-emerald-500/30">
+            <Badge variant="soft" className="text-2xs h-4 px-1.5 text-emerald-600 border-emerald-500/30">
               {t("Active")}
             </Badge>
           }
@@ -109,7 +109,7 @@ export function CollectionSlugClaimSection({
           iconClass="text-primary"
           bgClass="bg-primary/15"
           badge={
-            <Badge variant="outline" className="text-2xs h-4 px-1.5 text-amber-600 border-amber-500/30">
+            <Badge variant="soft" className="text-2xs h-4 px-1.5 text-amber-600 border-amber-500/30">
               {t("Pending review")}
             </Badge>
           }
@@ -150,7 +150,7 @@ export function CollectionSlugClaimSection({
             />
           </div>
           <Button
-            variant="outline"
+            variant="soft"
             size="sm"
             onClick={handleCheck}
             disabled={!slugInput.trim() || checkState === "checking"}

@@ -4,7 +4,6 @@ import { ArrowRight, Check, Handshake } from "lucide-react";
 import { formatAmount, getTokenByAddress, type ApiSponsorshipOffer } from "@medialane/sdk";
 import { AssetCard, AssetCardSkeleton } from "./asset-card.js";
 import { BackButton } from "./back-button.js";
-import { Button } from "./button.js";
 import Link from "./link.js";
 import { FadeIn, Stagger, StaggerItem } from "./motion-primitives.js";
 import { ServiceHeader } from "./service-header.js";
@@ -14,6 +13,7 @@ import { useToken } from "../utils/use-tokens.js";
 import { useT } from "../i18n/provider.js";
 
 import { msg } from "../i18n/translate.js";
+import { ActionButton } from "./action-button.js";
 const FEATURES = [
   msg("No escrow — direct settlement"),
   msg("Owner-verified on-chain"),
@@ -81,12 +81,12 @@ export function SponsorshipOffersPage() {
                 {t("Offer one of your assets for sponsors to bid on, or propose terms directly on one you'd like to sponsor.")}
               </p>
             </div>
-            <Button asChild size="sm" className="shrink-0 bg-brand-rose hover:brightness-110 text-white gap-1.5">
+            <ActionButton solid small asChild className="shrink-0">
               <Link href="/launchpad/sponsorship/create">
                 {t("Get started")}
                 <ArrowRight className="h-3.5 w-3.5" />
               </Link>
-            </Button>
+            </ActionButton>
           </div>
         </FadeIn>
       </section>

@@ -9,6 +9,7 @@ import { CurrencyIcon } from "./currency-icon.js";
 import { cn } from "../utils/cn.js";
 import { formatDisplayPrice, isStableCurrency } from "../utils/format.js";
 import { useT } from "../i18n/provider.js";
+import { ActionButton } from "./action-button.js";
 
 interface MarketplaceTxLinkProps {
   txHash: string;
@@ -88,14 +89,9 @@ export function MarketplaceSignInGate({ title, description, href, ctaLabel = "Se
         <p className="font-semibold">{title}</p>
         <p className="text-sm text-muted-foreground mt-1">{description}</p>
       </div>
-      <div className="btn-border-animated w-full p-[1px] rounded-lg">
-        <Button
-          asChild
-          className="w-full bg-transparent text-white rounded-[7px] hover:bg-transparent hover:brightness-110 active:scale-[0.98] transition-all"
-        >
-          <a href={href}>{ctaLabel}</a>
-        </Button>
-      </div>
+      <ActionButton solid asChild className="w-full">
+        <a href={href}>{ctaLabel}</a>
+      </ActionButton>
     </div>
   );
 }
@@ -155,7 +151,7 @@ export function MarketplaceErrorState({
       {txHash && <MarketplaceTxLink txHash={txHash} explorerUrl={explorerUrl} />}
       <div className="flex w-full gap-2">
         {onRetry ? (
-          <Button variant="outline" className="flex-1 h-11" onClick={onRetry}>
+          <Button variant="soft" className="flex-1 h-11" onClick={onRetry}>
             {t("Try again")}
           </Button>
         ) : null}
@@ -298,7 +294,7 @@ export function CurrencyPicker({ currencies, value, onChange, disabled }: Curren
         <Button
           key={c}
           type="button"
-          variant={value === c ? "default" : "outline"}
+          variant={value === c ? "default" : "soft"}
           size="sm"
           onClick={() => onChange(c)}
           disabled={disabled}
@@ -326,7 +322,7 @@ export function DurationPicker({ options, value, onChange, disabled }: DurationP
         <Button
           key={opt.label}
           type="button"
-          variant={value === opt.seconds ? "default" : "outline"}
+          variant={value === opt.seconds ? "default" : "soft"}
           size="sm"
           onClick={() => onChange(opt.seconds)}
           disabled={disabled}
@@ -403,21 +399,9 @@ export function MarketplaceConfirmStep({
       {primaryLabel}
     </Button>
   ) : (
-    <div
-      className={cn(
-        "btn-border-animated p-[1px] rounded-xl flex-1",
-        primaryDisabled && "pointer-events-none"
-      )}
-    >
-      <button
-        className="w-full h-11 rounded-[11px] flex items-center justify-center gap-2 text-sm font-semibold text-white transition-all hover:brightness-110 active:scale-[0.98] bg-transparent"
-        disabled={primaryDisabled}
-        onClick={onPrimary}
-      >
-        {primaryIcon}
-        {primaryLabel}
-      </button>
-    </div>
+    <ActionButton solid disabled={primaryDisabled} onClick={onPrimary} icon={primaryIcon} className="flex-1">
+      {primaryLabel}
+    </ActionButton>
   );
 
   return (
@@ -432,7 +416,7 @@ export function MarketplaceConfirmStep({
       ) : null}
       <div className="flex gap-2 pt-1">
         <Button
-          variant="outline"
+          variant="soft"
           className="h-11 flex-1 gap-1.5"
           onClick={onSecondary}
         >

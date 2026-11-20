@@ -14,6 +14,7 @@ import { TransactionDialogStates } from "./transaction-dialog-states.js";
 import { isBusyPhase, type TransactionPhase } from "../utils/use-transaction.js";
 import { successMessages } from "../utils/success-messages.js";
 import { useT } from "../i18n/provider.js";
+import { ActionButton } from "./action-button.js";
 
 const schema = z.object({
   toAddress: z
@@ -209,16 +210,9 @@ export function TransferDialog({
                   )}
 
                   <div className="pt-1 space-y-2">
-                    <div className="btn-border-animated p-[1px] rounded-xl">
-                      <button
-                        type="submit"
-                        disabled={!canTransfer}
-                        className="w-full h-11 rounded-[11px] flex items-center justify-center gap-2 text-sm font-semibold text-white transition-all hover:brightness-110 active:scale-[0.98] bg-transparent"
-                      >
-                        <ArrowRightLeft className="h-4 w-4" />
-                        {canTransfer ? t("Transfer") : connectLabel}
-                      </button>
-                    </div>
+                    <ActionButton solid type="submit" disabled={!canTransfer} icon={<ArrowRightLeft className="h-4 w-4" />} className="w-full">
+                      {canTransfer ? t("Transfer") : connectLabel}
+                    </ActionButton>
                     {footer}
                   </div>
                 </form>

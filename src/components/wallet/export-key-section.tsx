@@ -71,7 +71,7 @@ export function ExportKeySection({ loadSealed, unlock, actions }: ExportKeySecti
             {recoveryKey}
           </code>
           <div className="flex flex-wrap items-center gap-2">
-            <Button onClick={copy} variant="outline" size="sm">
+            <Button onClick={copy} variant="soft" size="sm">
               {copied ? <Check className="mr-1.5 h-3.5 w-3.5" /> : <Copy className="mr-1.5 h-3.5 w-3.5" />}
               {copied ? t("Copied") : t("Copy key")}
             </Button>
@@ -86,7 +86,7 @@ export function ExportKeySection({ loadSealed, unlock, actions }: ExportKeySecti
         <>
           {error && <p className="text-sm text-destructive">{error}</p>}
           <div className="flex flex-wrap items-center gap-2">
-            <Button onClick={reveal} disabled={busy} variant="outline" size="sm">
+            <Button onClick={reveal} disabled={busy} variant="soft" size="sm">
               {busy ? <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" /> : <KeyRound className="mr-1.5 h-3.5 w-3.5" />}
               {t("Show recovery key")}
             </Button>

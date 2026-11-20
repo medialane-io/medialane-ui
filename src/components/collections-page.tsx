@@ -365,7 +365,7 @@ export function CollectionsPage() {
               : t("Deploy the first collection on Medialane.")}
           </p>
           {activeFilters > 0 && (
-            <Button variant="outline" size="sm" onClick={resetAll}>
+            <Button variant="soft" size="sm" onClick={resetAll}>
               {t("Clear filters")}
             </Button>
           )}

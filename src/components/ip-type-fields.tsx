@@ -200,7 +200,7 @@ export function IPTypeFields({ ipType, onChange, uploadDocument, existingDocumen
               />
               <Button
                 type="button"
-                variant="outline"
+                variant="soft"
                 size="sm"
                 disabled={docUploading}
                 onClick={() => docInputRef.current?.click()}
@@ -360,7 +360,7 @@ export function IPTypeFields({ ipType, onChange, uploadDocument, existingDocumen
           </div>
         )}
 
-        <Button type="button" variant="outline" size="sm" onClick={addCustomTrait}>
+        <Button type="button" variant="soft" size="sm" onClick={addCustomTrait}>
           <Plus className="mr-1.5 h-3.5 w-3.5" />
           {t("Add custom trait")}
         </Button>

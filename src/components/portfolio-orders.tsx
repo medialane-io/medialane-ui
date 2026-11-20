@@ -245,11 +245,11 @@ export function PortfolioOrders({ view, address, useActions }: {
                     actions={
                       view === "received" ? (
                         <>
-                          <Button size="sm" variant="outline" className="h-8 text-xs" disabled={actions.isProcessing} onClick={() => actions.counter?.(order)}>{t("Counter")}</Button>
+                          <Button size="sm" variant="soft" className="h-8 text-xs" disabled={actions.isProcessing} onClick={() => actions.counter?.(order)}>{t("Counter")}</Button>
                           <Button size="sm" className="h-8 text-xs" disabled={actions.isProcessing} onClick={() => actions.accept?.(order)}>{t("Accept")}</Button>
                         </>
                       ) : (
-                        <Button size="sm" variant="outline" className="h-8 text-xs text-destructive hover:text-destructive" disabled={actions.isProcessing} onClick={() => actions.cancel?.(order)}>{t("Cancel")}</Button>
+                        <Button size="sm" variant="soft" className="h-8 text-xs text-destructive hover:text-destructive" disabled={actions.isProcessing} onClick={() => actions.cancel?.(order)}>{t("Cancel")}</Button>
                       )
                     }
                   />

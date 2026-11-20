@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.379.0] — 2026-11-20
+
+### Changed
+
+- One button system. `ActionButton` is the action button: soft brand-pair fill, `solid` (blue-led gradient, white text) for the one primary action on a surface, `small`/`big` sizes and new `asChild` for links. Every primary action — launchpad and fast-mint submits, transfer, connect prompts, license request and approval, drop launch and mint, sponsorship, filters, tickets and memberships — uses `ActionButton solid`; repeated row actions use small soft `ActionButton`s.
+- Launchpad presets no longer set a button colour (`buttonClass` removed); each service keeps its brand colour on its icon.
+- `Button` and `Badge` variant `outline` is renamed `soft` and is borderless (`bg-background/40`). `ShareButton` uses `buttonVariants`. Card actions (view, sell, offer, more) are borderless and share the small size.
+- The media wallet quick action and the holder-exclusive card use brand fills instead of animated borders. New `actionFill` helper.
+
+### Removed
+
+- `GradientButton` (use `<ActionButton solid>`), the `.btn-border-animated`, `.ml-gbtn` and `.card-exclusive-wrapper` classes with their keyframes, and the `ACTION_GRADIENTS` and `TONE_GRADIENTS` tables (use `ACTION_PAIRS` with `actionFill`).
+
 ## [0.378.0] — 2026-11-20
 
 ### Changed

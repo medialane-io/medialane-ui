@@ -7,6 +7,7 @@ import { Dialog, DialogContent, DialogTitle } from "./dialog.js";
 import { useCollectionFilters, CollectionFiltersTrigger, CollectionFiltersBody } from "./collection-filters.js";
 import type { ApiToken, CollectionTokensSort } from "@medialane/sdk";
 import { useT } from "../i18n/provider.js";
+import { ActionButton } from "./action-button.js";
 
 export interface CollectionFiltersDialogProps {
   tokens: ApiToken[];
@@ -75,14 +76,11 @@ export function CollectionFiltersDialog({
           />
 
           <div className="px-5 pt-3 pb-5 border-t border-border/60 shrink-0">
-            <button
-              className="w-full h-11 rounded-[11px] bg-brand-purple text-white text-sm font-semibold flex items-center justify-center gap-2 hover:brightness-110 active:scale-[0.98] transition-all"
-              onClick={() => setOpen(false)}
-            >
+            <ActionButton solid onClick={() => setOpen(false)} className="w-full">
               {totalActiveCount > 0
                 ? `Show results (${totalActiveCount} filter${totalActiveCount > 1 ? "s" : ""})`
                 : t("Close")}
-            </button>
+            </ActionButton>
           </div>
 
         </DialogContent>

@@ -6,6 +6,8 @@ import { BRAND_COLOR } from "../data/brand.js";
 import { GATED_CONTENT_TYPES, GATED_CONTENT_TYPE_FALLBACK } from "../data/gated-content-types.js";
 import { useMedialaneApp } from "./medialane-app.js";
 import { useT } from "../i18n/provider.js";
+import { panelBackground } from "./panel.js";
+import { ActionButton } from "./action-button.js";
 
 export interface GatedContent {
   title: string | null;
@@ -55,27 +57,26 @@ export function GatedContentHero({
   }
 
   return (
-    <div className="card-exclusive-wrapper btn-border-animated">
-      <button
-        onClick={onViewExclusive}
-        className="w-full flex items-center gap-4 rounded-[calc(var(--radius)*1.25)] bg-card hover:bg-muted/60 px-5 py-4 transition-colors text-left group"
-      >
-        <div className="h-11 w-11 rounded-xl bg-muted flex items-center justify-center shrink-0">
-          <Lock className="h-5 w-5 text-muted-foreground" />
-        </div>
-        <div className="flex-1 min-w-0">
-          <p
-            className="text-2xs font-bold leading-none mb-1"
-            style={{ background: `linear-gradient(90deg, ${BRAND_COLOR.blue}, ${BRAND_COLOR.purple}, ${BRAND_COLOR.rose})`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}
-          >
-            {t("Holder exclusive")}
-          </p>
-          <p className="text-sm font-bold text-foreground leading-snug truncate">{title}</p>
-          <p className="text-xs text-muted-foreground mt-0.5">{t("Own a token from this collection to unlock")}</p>
-        </div>
-        <Sparkles className="h-4 w-4 text-muted-foreground/50 group-hover:text-primary transition-colors shrink-0" />
-      </button>
-    </div>
+    <button
+      onClick={onViewExclusive}
+      className="w-full flex items-center gap-4 rounded-2xl hover:bg-background/40 px-5 py-4 transition-colors text-left group"
+      style={{ backgroundImage: panelBackground(["blue", "purple"]) }}
+    >
+      <div className="h-11 w-11 rounded-xl bg-muted flex items-center justify-center shrink-0">
+        <Lock className="h-5 w-5 text-muted-foreground" />
+      </div>
+      <div className="flex-1 min-w-0">
+        <p
+          className="text-2xs font-bold leading-none mb-1"
+          style={{ background: `linear-gradient(90deg, ${BRAND_COLOR.blue}, ${BRAND_COLOR.purple}, ${BRAND_COLOR.rose})`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}
+        >
+          {t("Holder exclusive")}
+        </p>
+        <p className="text-sm font-bold text-foreground leading-snug truncate">{title}</p>
+        <p className="text-xs text-muted-foreground mt-0.5">{t("Own a token from this collection to unlock")}</p>
+      </div>
+      <Sparkles className="h-4 w-4 text-muted-foreground/50 group-hover:text-primary transition-colors shrink-0" />
+    </button>
   );
 }
 
@@ -145,15 +146,12 @@ export function GatedContentPanel({ state, onBrowseListings }: { state: GatedCon
         <h3 className="text-xl font-bold">{state.content.title ?? t("Exclusive content")}</h3>
         <p className="text-sm text-muted-foreground">{t("Your access is verified. Enjoy your exclusive content.")}</p>
       </div>
-      <a
-        href={state.content.url}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="inline-flex items-center gap-2.5 bg-emerald-500 hover:bg-emerald-600 active:scale-[0.98] text-white font-semibold px-6 py-3 rounded-xl transition-all text-sm shadow-lg shadow-emerald-500/20"
-      >
-        <Icon className="h-5 w-5" />
-        {cta}
-      </a>
+      <ActionButton solid asChild>
+        <a href={state.content.url} target="_blank" rel="noopener noreferrer">
+          <Icon className="h-5 w-5" />
+          {cta}
+        </a>
+      </ActionButton>
     </div>
   );
 }

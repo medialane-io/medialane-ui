@@ -56,7 +56,7 @@ export function TransferCollectionOwnership({ collectionId, currentOwner, collec
 
   return (
     <>
-      <Button variant="outline" size="sm" className="gap-2" onClick={() => { setNewOwner(""); setOpen(true); }}>
+      <Button variant="soft" size="sm" className="gap-2" onClick={() => { setNewOwner(""); setOpen(true); }}>
         <UserRoundCog className="h-4 w-4" />
         {t("Transfer ownership")}
       </Button>

@@ -21,6 +21,7 @@ import { usePendingProposalsForAsset } from "../../utils/use-sponsorship.js";
 import { useTransaction } from "../../utils/use-transaction.js";
 import { shortenAddress } from "../../utils/address.js";
 import { useT } from "../../i18n/provider.js";
+import { ActionButton } from "../action-button.js";
 
 type Mode = "offer" | "propose";
 
@@ -60,14 +61,14 @@ function PendingProposalsPanel({ nftContract }: { nftContract: string }) {
         <div key={p.proposalId} className="flex items-center justify-between gap-3 text-sm">
           <span className="truncate text-muted-foreground">{shortenAddress(p.proposer)} — {p.amount}</span>
           <div className="flex gap-2 shrink-0">
-            <Button size="sm" variant="outline" disabled={busy} onClick={() => respond(p.proposalId, "reject")}>
+            <Button size="sm" variant="soft" disabled={busy} onClick={() => respond(p.proposalId, "reject")}>
               {busy && activeId === p.proposalId ? <Loader2 className="h-3 w-3 animate-spin" /> : <X className="h-3 w-3" />}
               {t("Decline")}
             </Button>
-            <Button size="sm" className="bg-brand-rose hover:brightness-110 text-white" disabled={busy} onClick={() => respond(p.proposalId, "accept")}>
+            <ActionButton small action="offer" disabled={busy} onClick={() => respond(p.proposalId, "accept")}>
               {busy && activeId === p.proposalId ? <Loader2 className="h-3 w-3 animate-spin" /> : <CheckCircle2 className="h-3 w-3" />}
               {t("Accept")}
-            </Button>
+            </ActionButton>
           </div>
         </div>
       ))}
@@ -216,17 +217,9 @@ export function SponsorshipCreate({ aside }: { aside?: ReactNode }) {
 
           {formError && <p role="alert" className="text-sm text-destructive">{formError}</p>}
 
-          <div className="btn-border-animated p-[1px] rounded-2xl">
-            <button
-              type="button"
-              disabled={busy}
-              onClick={onSubmit}
-              className="w-full h-12 rounded-[15px] flex items-center justify-center gap-2 text-base font-semibold text-white bg-transparent transition-all hover:brightness-110 active:scale-[0.98] disabled:opacity-50"
-            >
-              <Handshake className="h-4 w-4" />
-              {mode === "offer" ? t("Create offer") : t("Send proposal")}
-            </button>
-          </div>
+          <ActionButton solid big type="button" disabled={busy} onClick={onSubmit} icon={<Handshake className="h-4 w-4" />} className="w-full">
+            {mode === "offer" ? t("Create offer") : t("Send proposal")}
+          </ActionButton>
         </div>
       </ClaimRouteShell>
 

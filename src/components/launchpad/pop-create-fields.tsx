@@ -149,7 +149,7 @@ export function PopCreateFields({
               />
               <Button
                 type="button"
-                variant="outline"
+                variant="soft"
                 size="sm"
                 disabled={imageUploading}
                 onClick={() => fileInputRef.current?.click()}

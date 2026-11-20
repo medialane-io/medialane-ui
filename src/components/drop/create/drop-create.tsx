@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Lock } from "lucide-react";
 import Image from "../../image.js";
-import { GradientButton } from "../../gradient-button.js";
+import { ActionButton } from "../../action-button.js";
 import { CollapsibleSection } from "../../collapsible-section.js";
 import { ArtworkSection } from "./artwork-section.js";
 import { DetailsSection } from "./details-section.js";
@@ -54,9 +54,9 @@ export function DropCreate() {
         <FieldError message={errors.gated} />
       </CollapsibleSection>
       {tried && Object.keys(errors).length > 0 && <p className="text-sm font-medium text-destructive">{t("Check the highlighted fields.")}</p>}
-      <GradientButton big onClick={launch}>
+      <ActionButton solid big onClick={launch} className="w-full">
         {app.walletAddress ? t("Review and launch") : app.connectLabel ?? t("Sign in to launch")}
-      </GradientButton>
+      </ActionButton>
       {launching && <LaunchDialog open onClose={() => setLaunching(false)} draft={draft} />}
     </div>
     <div className="order-1 lg:order-2">

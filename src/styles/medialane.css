@@ -135,42 +135,10 @@ h1 {
   0%   { transform: translateX(0); }
   100% { transform: translateX(-50%); }
 }
-@keyframes border-flow {
-  0%, 100% { background-position: 0% 50%; }
-  50%       { background-position: 100% 50%; }
-}
 
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
 input[type="number"] { -moz-appearance: textfield; }
-
-.card-exclusive-wrapper {
-  padding: 2px;
-  border-radius: calc(var(--radius) * 1.25 + 2px);
-}
-
-.btn-border-animated {
-  background: linear-gradient(270deg, hsl(var(--brand-blue)), hsl(var(--brand-purple)), hsl(var(--brand-rose)), hsl(var(--brand-orange)), hsl(var(--brand-blue)));
-  background-size: 300% 300%;
-  animation: border-flow 5s ease infinite;
-}
-
-.ml-gbtn { position: relative; }
-.ml-gbtn::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  padding: 1.5px;
-  background: var(--ml-grad);
-  background-size: 220% 220%;
-  animation: mlBorder 4s linear infinite;
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  pointer-events: none;
-}
-.ml-gbtn:hover::before { padding: 2px; animation-duration: 1.6s; }
 
 .ml-nav-wallet-ring {
   position: absolute;
@@ -206,10 +174,6 @@ input[type="number"] { -moz-appearance: textfield; }
 @media (hover: hover) {
   .ml-grad-hover-border:hover::before { opacity: 1; }
 }
-@keyframes mlBorder {
-  0%   { background-position: 0% 50%; }
-  100% { background-position: 220% 50%; }
-}
 
 .ml-card-material {
   background:
@@ -222,10 +186,6 @@ input[type="number"] { -moz-appearance: textfield; }
     radial-gradient(120% 90% at 0% 0%, hsl(var(--brand-blue) / 0.14), transparent 55%),
     radial-gradient(120% 90% at 100% 100%, hsl(var(--brand-orange) / 0.10), transparent 55%),
     hsl(var(--brand-navy));
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .ml-gbtn::before { animation: none; }
 }
 
 .card-media {

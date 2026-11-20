@@ -5,6 +5,7 @@ import { Search, Plus, Sparkles } from "lucide-react";
 import { cn } from "../utils/cn.js";
 import { AssetPickerCell, isSameAsset } from "./asset-picker-cell.js";
 import { useT } from "../i18n/provider.js";
+import { ActionButton } from "./action-button.js";
 
 export interface OwnedAsset {
   contractAddress: string;
@@ -38,15 +39,9 @@ function MintPromoCard({ onMintClick }: { onMintClick: () => void }) {
           <p className="text-sm font-bold text-foreground">{t("Mint your first asset")}</p>
           <p className="text-xs text-muted-foreground mt-0.5">{t("It becomes your avatar and app theme — ready in seconds.")}</p>
         </div>
-        <div className="btn-border-animated shrink-0 p-[1px] rounded-xl">
-          <button
-            type="button"
-            onClick={onMintClick}
-            className="h-10 px-4 rounded-[11px] bg-card text-sm font-semibold text-foreground hover:brightness-110 active:scale-[0.98] transition-all whitespace-nowrap"
-          >
-            {t("Mint an asset")}
-          </button>
-        </div>
+        <ActionButton type="button" onClick={onMintClick} className="shrink-0">
+          {t("Mint an asset")}
+        </ActionButton>
       </div>
     </div>
   );

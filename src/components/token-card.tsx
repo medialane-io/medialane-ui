@@ -21,10 +21,11 @@ import type { ApiToken, Chain } from "@medialane/sdk";
 import { tokenProfileLink } from "../utils/token-profile-link.js";
 import { useImageUrl } from "../utils/use-image-url.js";
 import { useT } from "../i18n/provider.js";
+import { ActionButton } from "./action-button.js";
+import { PANEL_INSET } from "./panel.js";
 
 
-const BTN_BASE = "h-8 rounded-[9px] flex items-center justify-center gap-1.5 text-xs font-semibold transition-all active:scale-[0.98] shadow-none border-0";
-const BTN_OUTLINE = cn(BTN_BASE, "border border-border/60 text-foreground hover:bg-muted/60");
+const BTN_SOFT = cn("h-9 rounded-xl flex items-center justify-center gap-1.5 text-xs font-semibold text-foreground", PANEL_INSET);
 
 export interface TokenCardProps {
   token: ApiToken;
@@ -133,45 +134,31 @@ export function TokenCard({ token, isOwner = false, onReport, usdValue, ...handl
 
       <div className="px-3 pb-3 flex items-center gap-1.5">
 
-        <Link href={assetHref} className={cn(BTN_OUTLINE, "px-2.5", hasPrimaryAction ? "shrink-0" : "flex-1")}>
+        <Link href={assetHref} className={cn(BTN_SOFT, "px-2.5", hasPrimaryAction ? "shrink-0" : "flex-1")}>
           <ArrowUpRight className="h-3.5 w-3.5" />
           {t("View")}
         </Link>
 
         {isOwner ? (
           !listingOrder && onList ? (
-            <button
-              className={cn(BTN_OUTLINE, "flex-1 text-brand-purple border-brand-purple/30 hover:bg-brand-purple/10 hover:text-brand-purple")}
-              onClick={(e) => { e.preventDefault(); e.stopPropagation(); onList(token); }}
-            >
-              <Tag className="h-3.5 w-3.5 mr-1.5" />
+            <ActionButton small tone="purple" icon={<Tag className="h-3.5 w-3.5" />} className="flex-1" onClick={(e) => { e.preventDefault(); e.stopPropagation(); onList(token); }}>
               {t("Sell")}
-            </button>
+            </ActionButton>
           ) : null
         ) : listingOrder && onBuy ? (
-          <div className="btn-border-animated p-[1.5px] rounded-[10px] flex-1 h-8">
-            <button
-              className="w-full h-full rounded-[9px] bg-background flex items-center justify-center gap-1.5 text-xs font-semibold text-foreground hover:bg-muted/60 transition-all active:scale-[0.98]"
-              onClick={handleBuy}
-            >
-              <Zap className="h-3.5 w-3.5 shrink-0" />
-              {t("Buy")}
-            </button>
-          </div>
+          <ActionButton small action="buy" icon={<Zap className="h-3.5 w-3.5 shrink-0" />} className="flex-1" onClick={handleBuy}>
+            {t("Buy")}
+          </ActionButton>
         ) : !listingOrder && onOffer ? (
-          <button
-            className={cn(BTN_OUTLINE, "flex-1 text-brand-orange border-brand-orange/30 hover:bg-brand-orange/10 hover:text-brand-orange")}
-            onClick={handleOffer}
-          >
-            <HandCoins className="h-3.5 w-3.5 mr-1.5" />
+          <ActionButton small action="offer" icon={<HandCoins className="h-3.5 w-3.5" />} className="flex-1" onClick={handleOffer}>
             {t("Offer")}
-          </button>
+          </ActionButton>
         ) : null}
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <button
-              className={cn(BTN_OUTLINE, "w-8 p-0 shrink-0")}
+              className={cn(BTN_SOFT, "w-9 p-0 shrink-0")}
               aria-label={t("More actions")}
             >
               <MoreHorizontal className="h-3.5 w-3.5" />

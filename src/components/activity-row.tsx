@@ -71,7 +71,7 @@ export function ActivityRow({
   const resolveImage = useImageUrl();
   const config = ACTIVITY_TYPE_CONFIG[activity.type] ?? {
     label: activity.type,
-    variant: "outline" as const,
+    variant: "soft" as const,
     icon: ExternalLink,
     colorClass: "text-muted-foreground",
     bgClass: "bg-muted",

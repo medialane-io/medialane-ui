@@ -20,6 +20,7 @@ import {
 import type { ApiCollection } from "@medialane/sdk";
 import { useT } from "../i18n/provider.js";
 import { useFormat } from "../i18n/use-format.js";
+import { ActionButton } from "./action-button.js";
 
 function CollectionRow({ col }: { col: ApiCollection }) {
   const intl = useFormat();
@@ -92,14 +93,13 @@ function CollectionRow({ col }: { col: ApiCollection }) {
         </div>
 
         <div className="flex items-center gap-2">
-          <Link
-            href={`/launchpad/nfteditions/${col.contractAddress}/mint`}
-            className="flex items-center gap-2 h-9 px-4 rounded-xl text-sm font-semibold text-white bg-brand-purple hover:brightness-110 transition-colors"
-          >
-            <Sparkles className="h-3.5 w-3.5" />
-            {t("Mint editions")}
-          </Link>
-          <Button variant="outline" size="sm" asChild>
+          <ActionButton solid small asChild>
+            <Link href={`/launchpad/nfteditions/${col.contractAddress}/mint`}>
+              <Sparkles className="h-3.5 w-3.5" />
+              {t("Mint editions")}
+            </Link>
+          </ActionButton>
+          <Button variant="soft" size="sm" asChild>
             <Link href={collectionHref("STARKNET", col.contractAddress)}>
               {t("View collection")}
             </Link>
@@ -154,14 +154,13 @@ export function EditionsPage() {
         </FadeIn>
         <FadeIn delay={0.08}>
           <div className="mt-6 flex items-center gap-3">
-            <Link
-              href="/launchpad/nfteditions/create"
-              className="flex items-center gap-2 h-10 px-5 rounded-xl text-sm font-semibold text-white bg-brand-purple hover:brightness-110 transition-colors"
-            >
-              <Plus className="h-4 w-4" />
-              {t("New collection")}
-            </Link>
-            <Button variant="outline" size="sm" asChild>
+            <ActionButton solid asChild>
+              <Link href="/launchpad/nfteditions/create">
+                <Plus className="h-4 w-4" />
+                {t("New collection")}
+              </Link>
+            </ActionButton>
+            <Button variant="soft" size="sm" asChild>
               <a href="https://docs.medialane.io/learn/ip-collection-1155" target="_blank" rel="noopener noreferrer">
                 {t("Learn more")} <ArrowRight className="h-3.5 w-3.5 ml-1" />
               </a>
@@ -189,13 +188,12 @@ export function EditionsPage() {
                   {t("Create your first editions collection to start minting.")}
                 </p>
               </div>
-              <Link
-                href="/launchpad/nfteditions/create"
-                className="flex items-center gap-2 h-9 px-4 rounded-xl text-sm font-semibold text-white bg-brand-purple hover:brightness-110 transition-colors"
-              >
-                <Plus className="h-4 w-4" />
-                {t("Create your first collection")}
-              </Link>
+              <ActionButton solid small asChild>
+                <Link href="/launchpad/nfteditions/create">
+                  <Plus className="h-4 w-4" />
+                  {t("Create your first collection")}
+                </Link>
+              </ActionButton>
             </div>
           </FadeIn>
         ) : (

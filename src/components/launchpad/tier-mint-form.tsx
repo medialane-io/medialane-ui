@@ -11,6 +11,7 @@ import { FIELD_LIMITS } from "../../utils/field-limits.js";
 import Image from "../image.js";
 import Link from "../link.js";
 import { Button } from "../button.js";
+import { ActionButton } from "../action-button.js";
 import { Input } from "../input.js";
 import { Textarea } from "../textarea.js";
 import { Skeleton } from "../skeleton.js";
@@ -163,7 +164,7 @@ export function TierMintForm({ contract: rawContract, preset, aside }: TierMintF
         <div className="max-w-xl mx-auto px-4 pt-24 pb-8 text-center space-y-4">
           <AlertCircle className="h-10 w-10 text-muted-foreground/20 mx-auto" />
           <p className="text-muted-foreground">{t("Collection not found.")}</p>
-          <Button asChild variant="outline" size="sm"><Link href={preset.back.href}>{t(preset.back.label)}</Link></Button>
+          <Button asChild variant="soft" size="sm"><Link href={preset.back.href}>{t(preset.back.label)}</Link></Button>
         </div>
       </WalletRequired>
     );
@@ -175,7 +176,7 @@ export function TierMintForm({ contract: rawContract, preset, aside }: TierMintF
         <div className="max-w-xl mx-auto px-4 pt-24 pb-8 text-center space-y-4">
           <Icon className="h-10 w-10 text-muted-foreground/20 mx-auto" />
           <p className="text-muted-foreground">{t(preset.notOwner.message)}</p>
-          <Button asChild variant="outline" size="sm"><Link href={preset.notOwner.back.href}>{t(preset.notOwner.back.label)}</Link></Button>
+          <Button asChild variant="soft" size="sm"><Link href={preset.notOwner.back.href}>{t(preset.notOwner.back.label)}</Link></Button>
         </div>
       </WalletRequired>
     );
@@ -229,7 +230,7 @@ export function TierMintForm({ contract: rawContract, preset, aside }: TierMintF
                 </div>
                 <div className="space-y-1.5">
                   <input id={inputId} ref={fileInputRef} type="file" accept={acceptFor("image")} className="hidden" onChange={(e) => { const f = e.target.files?.[0]; if (f) void handleImageSelect(f); }} />
-                  <Button type="button" variant="outline" size="sm" disabled={imageUploading} onClick={() => fileInputRef.current?.click()}>
+                  <Button type="button" variant="soft" size="sm" disabled={imageUploading} onClick={() => fileInputRef.current?.click()}>
                     {imageUploading ? <><Loader2 className="h-3.5 w-3.5 mr-1.5 animate-spin" />{t("Uploading…")}</> : imagePreview ? t("Change") : t("Upload image")}
                   </Button>
                   {imagePreview && (
@@ -374,14 +375,7 @@ export function TierMintForm({ contract: rawContract, preset, aside }: TierMintF
               )} />
             </div>
 
-            <button
-              type="submit"
-              disabled={busy}
-              className={`w-full h-12 text-base font-semibold text-white rounded-xl flex items-center justify-center gap-2 transition-all hover:brightness-110 active:scale-[0.98] ${preset.buttonClass} ${busy ? "opacity-40 pointer-events-none" : ""}`}
-            >
-              <Icon className="h-4 w-4 mr-2" />
-              {t(preset.copy.submit)}
-            </button>
+            <ActionButton solid big type="submit" disabled={busy} icon={<Icon className="h-4 w-4" />} className="w-full">              {t(preset.copy.submit)}            </ActionButton>
           </form>
         </Form>
       </ClaimRouteShell>
