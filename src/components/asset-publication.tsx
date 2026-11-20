@@ -5,6 +5,7 @@ import { Button } from "./button.js";
 import { externalLink } from "../utils/external-link.js";
 import { MarkdownText } from "./markdown-text.js";
 import { useT } from "../i18n/provider.js";
+import { PANEL_INSET } from "./panel.js";
 
 export interface AssetPublicationProps {
   name: string;
@@ -48,7 +49,7 @@ export function AssetPublication({ name, text, content, image, imgError, onImage
         <div className="flex flex-wrap items-center gap-4">
           {author ? <p className="min-w-0 break-words text-sm text-muted-foreground">{author}</p> : null}
           {link ? (
-            <Button asChild variant="outline">
+            <Button asChild variant="ghost" className={PANEL_INSET}>
               <a href={link} target="_blank" rel="noopener noreferrer">
                 {t("Read more")}
                 <ExternalLink />

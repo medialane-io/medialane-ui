@@ -15,6 +15,7 @@ import { HelpIcon } from "./help-icon.js";
 import { AssetAccessButtons, CompanionAppButton } from "./asset-access-cards.js";
 import { useMedialaneApp, type AssetRef } from "./medialane-app.js";
 import { useT } from "../i18n/provider.js";
+import { Panel } from "./panel.js";
 
 export interface ApiOrderLike {
   orderHash: string;
@@ -235,11 +236,11 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
         )}
 
         {myBid ? (
-          <div className="rounded-xl bg-amber-500/8 px-4 py-3 flex items-center justify-between gap-3">
+          <Panel tone={["orange", "rose"]} className="px-4 py-3 flex items-center justify-between gap-3">
             <div className="min-w-0 flex items-center gap-2.5">
-              <HandCoins className="h-4 w-4 text-amber-500 shrink-0" />
+              <HandCoins className="h-4 w-4 text-brand-orange shrink-0" />
               <div className="min-w-0">
-                <p className="text-xs font-semibold text-amber-500">{t("Your active offer")}</p>
+                <p className="text-xs font-semibold text-brand-orange">{t("Your active offer")}</p>
                 <p className="text-xs text-muted-foreground flex items-center gap-1.5 mt-0.5">
                   <PriceDisplay amountFormatted={myBid.price.formatted} currency={myBid.price.currency} scale="row" />
                   <span>·</span>
@@ -249,13 +250,13 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
               </div>
             </div>
             <button
-              className="shrink-0 text-xs font-semibold text-red-400 hover:text-red-300 transition-colors flex items-center gap-1"
+              className="shrink-0 text-xs font-semibold text-brand-rose hover:opacity-80 transition-opacity flex items-center gap-1"
               onClick={() => onCancelClick(myBid)}
             >
               <X className="h-3.5 w-3.5" />
               {t("Cancel")}
             </button>
-          </div>
+          </Panel>
         ) : null}
 
         {isOwner && liveBids.length > 0 ? (
@@ -277,14 +278,9 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
                       </div>
                     </div>
                   </div>
-                  <button
-                    disabled={isProcessing}
-                    onClick={() => onAcceptBid(bid)}
-                    className="inline-flex items-center gap-1.5 rounded-lg bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground disabled:opacity-50"
-                  >
-                    <CheckCircle className="h-3.5 w-3.5" />
+                  <ActionButton small action="buy" icon={<CheckCircle className="h-3.5 w-3.5" />} disabled={isProcessing} onClick={() => onAcceptBid(bid)}>
                     {t("Accept")}
-                  </button>
+                  </ActionButton>
                 </div>
               ))}
             </div>

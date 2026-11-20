@@ -6,6 +6,7 @@ import { ArrowRight } from "lucide-react";
 import { CurrencyAmount } from "./currency-icon.js";
 import { parsePriceDisplay } from "../utils/format.js";
 import { useT } from "../i18n/provider.js";
+import { Panel } from "./panel.js";
 export interface AssetCollectionBarSibling {
   tokenId: string;
 
@@ -40,10 +41,10 @@ export function AssetCollectionBar({
   const preview = others.slice(0, 4);
 
   return (
-    <div className="rounded-2xl bg-gradient-to-br from-muted/40 to-transparent overflow-hidden p-4 space-y-3">
+    <Panel className="overflow-hidden p-4 space-y-3">
 
       <Link href={collectionHref} className="flex items-center gap-3 group min-w-0">
-        <div className="relative h-11 w-11 rounded-xl overflow-hidden shrink-0 bg-gradient-to-br from-brand-blue/20 to-brand-purple/20 ring-1 ring-border/30 group-hover:ring-border/60 transition-all">
+        <div className="relative h-11 w-11 rounded-xl overflow-hidden shrink-0 bg-gradient-to-br from-brand-blue/20 to-brand-purple/20">
           {collectionImage ? (
             <Image src={collectionImage} alt="" fill className="object-cover" unoptimized />
           ) : null}
@@ -94,6 +95,6 @@ export function AssetCollectionBar({
           })}
         </div>
       )}
-    </div>
+    </Panel>
   );
 }

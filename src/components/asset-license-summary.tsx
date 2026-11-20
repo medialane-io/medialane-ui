@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import { Bot, DollarSign, GitBranch, Globe } from "lucide-react";
 import { licenseSummary } from "../utils/license-summary.js";
 import { useT } from "../i18n/provider.js";
+import { Pill } from "./panel.js";
 
 type AssetAttribute = { trait_type?: string; value?: string };
 
@@ -50,13 +51,10 @@ export function AssetLicenseSummary({ attributes }: { attributes: AssetAttribute
       {pills.length > 0 ? (
         <div className="flex flex-wrap gap-2 pt-0.5">
           {pills.map((pill) => (
-            <span
-              key={pill.label}
-              className="inline-flex items-center gap-1.5 rounded-full border border-border/60 bg-muted/30 px-3 py-1 text-xs font-medium text-foreground/80"
-            >
+            <Pill key={pill.label}>
               {pill.icon}
               {pill.label}
-            </span>
+            </Pill>
           ))}
         </div>
       ) : null}

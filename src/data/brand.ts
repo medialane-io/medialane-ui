@@ -41,31 +41,51 @@ export const BRAND = {
   },
 } as const;
 
-const token = (name: string) => `hsl(var(--${name}))`;
-
-export const BRAND_COLOR = {
-  blue: token("brand-blue"),
-  purple: token("brand-purple"),
-  rose: token("brand-rose"),
-  orange: token("brand-orange"),
-  maeve: token("brand-maeve"),
-  navy: token("brand-navy"),
-  red: token("destructive"),
+const TOKEN = {
+  blue: "brand-blue",
+  purple: "brand-purple",
+  rose: "brand-rose",
+  orange: "brand-orange",
+  maeve: "brand-maeve",
+  navy: "brand-navy",
+  red: "destructive",
 } as const;
 
-export type BrandColorName = keyof typeof BRAND_COLOR;
+export type BrandColorName = keyof typeof TOKEN;
 
-const loop = (a: BrandColorName, b: BrandColorName): [string, string, string] => [BRAND_COLOR[a], BRAND_COLOR[b], BRAND_COLOR[a]];
+export const BRAND_COLOR = Object.fromEntries(
+  Object.entries(TOKEN).map(([name, token]) => [name, `hsl(var(--${token}))`]),
+) as { readonly [K in BrandColorName]: string };
 
-export const ACTION_GRADIENTS: Record<string, [string, string, string]> = {
-  buy: loop("blue", "purple"),
-  submit: loop("maeve", "purple"),
-  offer: loop("rose", "orange"),
-  remix: loop("purple", "rose"),
-  license: loop("blue", "purple"),
-};
+/** A brand colour at the given opacity. */
+export const brandTint = (color: BrandColorName, alpha: number) => `hsl(var(--${TOKEN[color]}) / ${alpha})`;
 
-export const ACTION_FOREGROUNDS: Record<string, string> = {
+type Pair = readonly [BrandColorName, BrandColorName];
+
+export const ACTION_PAIRS = {
+  buy: ["blue", "purple"],
+  submit: ["maeve", "purple"],
+  offer: ["rose", "orange"],
+  remix: ["purple", "rose"],
+  license: ["blue", "purple"],
+} as const satisfies Record<string, Pair>;
+
+export const TONE_PAIRS = {
+  blue: ["blue", "purple"],
+  purple: ["purple", "rose"],
+  orange: ["orange", "rose"],
+  red: ["red", "rose"],
+  rose: ["rose", "orange"],
+} as const satisfies Record<string, Pair>;
+
+const loop = ([a, b]: Pair): [string, string, string] => [BRAND_COLOR[a], BRAND_COLOR[b], BRAND_COLOR[a]];
+const mapPairs = <K extends string>(pairs: Record<K, Pair>, fn: (pair: Pair) => [string, string, string] | string) =>
+  Object.fromEntries(Object.entries<Pair>(pairs).map(([key, pair]) => [key, fn(pair)]));
+
+export const ACTION_GRADIENTS = mapPairs(ACTION_PAIRS, loop) as Record<keyof typeof ACTION_PAIRS, [string, string, string]>;
+export const TONE_GRADIENTS = mapPairs(TONE_PAIRS, loop) as Record<keyof typeof TONE_PAIRS, [string, string, string]>;
+
+export const ACTION_FOREGROUNDS: Record<keyof typeof ACTION_PAIRS, string> = {
   buy: BRAND_COLOR.blue,
   submit: BRAND_COLOR.purple,
   offer: BRAND_COLOR.orange,
@@ -73,15 +93,7 @@ export const ACTION_FOREGROUNDS: Record<string, string> = {
   license: BRAND_COLOR.blue,
 };
 
-export const TONE_GRADIENTS: Record<string, [string, string, string]> = {
-  blue: loop("blue", "purple"),
-  purple: loop("purple", "rose"),
-  orange: loop("orange", "rose"),
-  red: loop("red", "rose"),
-  rose: loop("rose", "orange"),
-};
-
-export const TONE_FOREGROUNDS: Record<string, string> = {
+export const TONE_FOREGROUNDS: Record<keyof typeof TONE_PAIRS, string> = {
   blue: BRAND_COLOR.blue,
   purple: BRAND_COLOR.purple,
   orange: BRAND_COLOR.orange,

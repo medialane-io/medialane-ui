@@ -4,6 +4,7 @@ import Link from "./link.js";
 import { AddressDisplay } from "./address-display.js";
 import { profileHref } from "@medialane/sdk";
 import { useT } from "../i18n/provider.js";
+import { Panel } from "./panel.js";
 import { useFormat } from "../i18n/use-format.js";
 
 interface HolderLike {
@@ -41,7 +42,7 @@ export function AssetOwnersPanel({ balances, total = balances.length, editions }
   const label = editions && editions !== total ? `${t.plural("{count} edition", "{count} editions", editions, { count: intl.number(editions) })} · ${owners}` : owners;
 
   return (
-    <div className="rounded-xl border border-border px-4 py-3 space-y-2">
+    <Panel className="px-4 py-3 space-y-2">
       <p className="text-2xs font-semibold text-muted-foreground tabular-nums">{label}</p>
       <div className="flex flex-col gap-1.5">
         {balances.slice(0, MAX_VISIBLE).map((balance) => <OwnerRow key={balance.owner} {...balance} />)}
@@ -49,6 +50,6 @@ export function AssetOwnersPanel({ balances, total = balances.length, editions }
           <p className="text-xs text-muted-foreground/60">+{t.plural("{count} more owner", "{count} more owners", total - MAX_VISIBLE, { count: intl.number(total - MAX_VISIBLE) })}</p>
         ) : null}
       </div>
-    </div>
+    </Panel>
   );
 }

@@ -5,30 +5,11 @@ import { CurrencyIcon } from "./currency-icon.js";
 import { formatDisplayPrice } from "../utils/format.js";
 import { isExpired, timeUntil } from "../utils/time.js";
 import { isSameAddress } from "../utils/same-address.js";
-import { cn } from "../utils/cn.js";
 import { Clock, CheckCircle } from "lucide-react";
 import type { ApiOrder } from "@medialane/sdk";
 import { useT } from "../i18n/provider.js";
-
-function ActionButton({
-  variant = "default",
-  className,
-  ...props
-}: React.ButtonHTMLAttributes<HTMLButtonElement> & { variant?: "default" | "destructive" }) {
-  return (
-    <button
-      className={cn(
-        "inline-flex items-center justify-center h-9 rounded-md px-3 text-xs font-medium transition-colors",
-        "disabled:pointer-events-none disabled:opacity-50",
-        variant === "destructive"
-          ? "bg-destructive text-destructive-foreground hover:bg-destructive/90"
-          : "bg-primary text-primary-foreground hover:bg-primary/90",
-        className,
-      )}
-      {...props}
-    />
-  );
-}
+import { Panel } from "./panel.js";
+import { ActionButton } from "./action-button.js";
 
 interface AssetMarketsTabProps {
   activeListings: ApiOrder[];
@@ -62,7 +43,7 @@ export function AssetMarketsTab({
         {liveListings.length === 0 ? (
           <p className="text-sm text-muted-foreground py-4 text-center">{t("No active listings.")}</p>
         ) : (
-          <div className="rounded-xl border border-border divide-y divide-border">
+          <Panel className="divide-y divide-border/40">
             {liveListings.map((order) => {
               const isMyOrder = isSameAddress(order.offerer, walletAddress);
               return (
@@ -80,17 +61,17 @@ export function AssetMarketsTab({
                   <div className="flex items-center gap-2 shrink-0">
                     <AddressDisplay address={order.offerer} chars={4} showCopy={false} className="text-xs text-muted-foreground" />
                     {isMyOrder ? (
-                      <ActionButton variant="destructive" disabled={isProcessing} onClick={() => onCancelClick(order)}>
+                      <ActionButton small tone="red" disabled={isProcessing} onClick={() => onCancelClick(order)}>
                         {t("Cancel")}
                       </ActionButton>
                     ) : (
-                      <ActionButton onClick={() => onBuyClick(order)}>{t("Buy")}</ActionButton>
+                      <ActionButton small action="buy" onClick={() => onBuyClick(order)}>{t("Buy")}</ActionButton>
                     )}
                   </div>
                 </div>
               );
             })}
-          </div>
+          </Panel>
         )}
       </div>
 
@@ -99,7 +80,7 @@ export function AssetMarketsTab({
         {liveBids.length === 0 ? (
           <p className="text-sm text-muted-foreground py-4 text-center">{t("No active offers.")}</p>
         ) : (
-          <div className="rounded-xl border border-border divide-y divide-border">
+          <Panel className="divide-y divide-border/40">
             {liveBids.map((bid) => (
               <div key={bid.orderHash} className="flex items-center justify-between px-4 py-3 gap-4">
                 <div className="min-w-0">
@@ -117,7 +98,7 @@ export function AssetMarketsTab({
                 <div className="flex items-center gap-2 shrink-0">
                   <AddressDisplay address={bid.offerer} chars={4} showCopy={false} className="text-xs text-muted-foreground" />
                   {isOwner && (
-                    <ActionButton disabled={isProcessing} onClick={() => onAcceptClick(bid)}>
+                    <ActionButton small action="buy" disabled={isProcessing} onClick={() => onAcceptClick(bid)}>
                       <CheckCircle className="h-3.5 w-3.5 mr-1.5" />
                       {t("Accept")}
                     </ActionButton>
@@ -125,7 +106,7 @@ export function AssetMarketsTab({
                 </div>
               </div>
             ))}
-          </div>
+          </Panel>
         )}
       </div>
     </div>

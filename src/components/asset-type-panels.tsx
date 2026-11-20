@@ -6,13 +6,11 @@ import { useIsMemberOf, useMembershipOnchain, useTicketOnchain, type TierOnchain
 import { useMedialaneApp } from "./medialane-app.js";
 import { cn } from "../utils/cn.js";
 import { useT } from "../i18n/provider.js";
+import { Panel, Pill } from "./panel.js";
 import type { T } from "../i18n/make-t.js";
 import { useFormat, type Format } from "../i18n/use-format.js";
 
 type TierStatus = "upcoming" | "active" | "ended" | "always";
-
-const ON = "bg-teal-500/10 text-teal-600 dark:text-teal-400 border-teal-500/30";
-const OFF = "bg-muted text-muted-foreground border-border";
 
 function tierStatus(t: TierOnchain): TierStatus {
   if (t.startTime == null && t.endTime == null) return "always";
@@ -55,22 +53,22 @@ function TierPanel({
   const window = windowLabel(tier, t, intl);
   const StatusIcon = STATUS_ICON[status];
   return (
-    <div className="rounded-2xl bg-gradient-to-br from-muted/40 to-transparent p-4 space-y-3">
+    <Panel className="p-4 space-y-3">
       <div className="flex items-center justify-between gap-3 flex-wrap">
         <div className="flex items-center gap-2">
           <Icon className={cn("h-4 w-4", iconClassName)} />
           <span className="text-sm font-semibold">{title}</span>
         </div>
         {labels[status] ? (
-          <span className={cn("inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium border", status === "upcoming" || status === "ended" ? OFF : ON)}>
+          <Pill color={status === "upcoming" || status === "ended" ? undefined : "blue"}>
             <StatusIcon className="h-3.5 w-3.5" />
             {labels[status]}
-          </span>
+          </Pill>
         ) : null}
       </div>
       {window ? <p className="text-sm text-muted-foreground">{window}</p> : null}
       {footer}
-    </div>
+    </Panel>
   );
 }
 
@@ -115,7 +113,7 @@ export function MembershipPanel({ contract, tokenId, quantityOwned }: AssetTypeP
         <div className="flex items-center gap-2 border-t border-border/60 pt-3">
           {isMember ? (
             <>
-              <CheckCircle2 className="h-4 w-4 text-teal-500" />
+              <CheckCircle2 className="h-4 w-4 text-brand-blue" />
               <p className="text-sm font-medium">{t("Active member · {cardLabel}", { cardLabel })}</p>
             </>
           ) : (
