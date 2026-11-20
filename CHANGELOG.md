@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.384.0] — 2026-11-20
+
+### Changed
+
+- Launchpad service cards and the launchpad strip return to their earlier look: a card with a border in the service's brand colour, a tinted icon tile in that colour, and a brand-gradient border on hover (`.ml-grad-hover-border`).
+
 ## [0.383.0] — 2026-11-20
 
 ### Added

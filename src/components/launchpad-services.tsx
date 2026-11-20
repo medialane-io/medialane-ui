@@ -16,7 +16,6 @@ import {
   type ServiceStatus,
 } from "../data/launchpad-services.js";
 import { useT } from "../i18n/provider.js";
-import { IconTile } from "./icon-tile.js";
 
 export interface ServiceOverride {
 
@@ -52,39 +51,49 @@ export const LAUNCHPAD_ROUTE_OVERRIDES: ServiceOverrides = {
 };
 
 interface GroupSlice {
+
+  tint: string;
+
   text: string;
+
+  border: string;
 }
 
 const DEFAULT_SLICE: GroupSlice = {
+  tint: "bg-muted/60",
   text: "text-muted-foreground/60",
+  border: "border-border/60",
 };
 
 export const GROUP_SLICES: Record<ServiceGroup, GroupSlice> = {
-  "single-nfts": { text: "text-brand-blue" },
-  "limited-editions": { text: "text-brand-maeve" },
-  "coins": { text: "text-brand-purple" },
-  "membership": { text: "text-brand-rose" },
-  "licensing": { text: "text-brand-orange" },
-  "claims": { text: "text-brand-orange" },
+  "single-nfts": { tint: "bg-brand-blue/10", text: "text-brand-blue", border: "border-brand-blue/30" },
+  "limited-editions": { tint: "bg-brand-maeve/10", text: "text-brand-maeve", border: "border-brand-maeve/30" },
+  "coins": { tint: "bg-brand-purple/10", text: "text-brand-purple", border: "border-brand-purple/30" },
+  "membership": { tint: "bg-brand-rose/10", text: "text-brand-rose", border: "border-brand-rose/30" },
+  "licensing": { tint: "bg-brand-orange/10", text: "text-brand-orange", border: "border-brand-orange/30" },
+  "claims": { tint: "bg-brand-orange/10", text: "text-brand-orange", border: "border-brand-orange/30" },
   "coming-soon": DEFAULT_SLICE,
 };
 
 interface ServiceHue {
+  text: string;
   solid: string;
+  border: string;
+  tint: string;
 }
 
 export const SERVICE_HUES: Record<string, ServiceHue> = {
-  "nfts": { solid: "bg-brand-blue" },
-  "limited-editions": { solid: "bg-brand-maeve" },
-  "creator-coins": { solid: "bg-brand-maeve" },
-  "claim-memecoin": { solid: "bg-brand-orange" },
-  "collection-drop": { solid: "bg-brand-purple" },
-  "pop-protocol": { solid: "bg-brand-rose" },
-  "ip-tickets": { solid: "bg-brand-orange" },
-  "remix-asset": { solid: "bg-brand-maeve" },
-  "claim-username": { solid: "bg-brand-purple" },
-  "claim-collection": { solid: "bg-brand-blue" },
-  "claim-collection-name": { solid: "bg-brand-rose" },
+  "nfts": { text: "text-brand-blue", solid: "bg-brand-blue", border: "border-brand-blue/30", tint: "bg-brand-blue/10" },
+  "limited-editions": { text: "text-brand-maeve", solid: "bg-brand-maeve", border: "border-brand-maeve/30", tint: "bg-brand-maeve/10" },
+  "creator-coins": { text: "text-brand-maeve", solid: "bg-brand-maeve", border: "border-brand-maeve/30", tint: "bg-brand-maeve/10" },
+  "claim-memecoin": { text: "text-brand-orange", solid: "bg-brand-orange", border: "border-brand-orange/30", tint: "bg-brand-orange/10" },
+  "collection-drop": { text: "text-brand-purple", solid: "bg-brand-purple", border: "border-brand-purple/30", tint: "bg-brand-purple/10" },
+  "pop-protocol": { text: "text-brand-rose", solid: "bg-brand-rose", border: "border-brand-rose/30", tint: "bg-brand-rose/10" },
+  "ip-tickets": { text: "text-brand-orange", solid: "bg-brand-orange", border: "border-brand-orange/30", tint: "bg-brand-orange/10" },
+  "remix-asset": { text: "text-brand-maeve", solid: "bg-brand-maeve", border: "border-brand-maeve/30", tint: "bg-brand-maeve/10" },
+  "claim-username": { text: "text-brand-purple", solid: "bg-brand-purple", border: "border-brand-purple/30", tint: "bg-brand-purple/10" },
+  "claim-collection": { text: "text-brand-blue", solid: "bg-brand-blue", border: "border-brand-blue/30", tint: "bg-brand-blue/10" },
+  "claim-collection-name": { text: "text-brand-rose", solid: "bg-brand-rose", border: "border-brand-rose/30", tint: "bg-brand-rose/10" },
 };
 
 const GROUP_TITLE_BY_KEY = Object.fromEntries(
@@ -114,9 +123,9 @@ export function LaunchpadServiceCard({ def: source, override = {}, index = 0 }: 
     <>
 
       <div className="flex items-start justify-between gap-3">
-        <IconTile size="lg" className={live ? undefined : "opacity-40"}>
-          <Icon />
-        </IconTile>
+        <span className={cn("flex h-14 w-14 items-center justify-center rounded-2xl", live ? slice.tint : "bg-muted/40")}>
+          <Icon className={cn("h-7 w-7", live ? slice.text : "text-muted-foreground/50")} />
+        </span>
         {!live ? (
           <span className="flex items-center gap-1 text-2xs font-medium text-muted-foreground/60 pt-1">
             <Lock className="h-3 w-3" />
@@ -171,12 +180,16 @@ export function LaunchpadServiceCard({ def: source, override = {}, index = 0 }: 
       {live && href ? (
         <Link
           href={href}
-          className="panel group flex flex-1 flex-col p-6 sm:aspect-[4/5] transition-colors hover:bg-background/40"
+          className={cn(
+            "group flex flex-1 flex-col rounded-3xl border bg-card p-6 sm:aspect-[4/5]",
+            "ml-grad-hover-border",
+            slice.border,
+          )}
         >
           {body}
         </Link>
       ) : (
-        <div className="panel flex flex-1 flex-col p-6 sm:aspect-[4/5] opacity-75">
+        <div className="flex flex-1 flex-col rounded-3xl border border-border/30 bg-card p-6 sm:aspect-[4/5] opacity-75">
           {body}
         </div>
       )}
@@ -188,12 +201,12 @@ function ComingSoonStrip({ group, defs }: { group: ServiceGroupDefinition; defs:
   const t = useT();
   const { title: groupTitle, tagline } = localizeGroup(t, group);
   return (
-    <div className="panel p-5">
+    <div className="rounded-2xl border border-border/40 p-5">
       <p className="font-semibold text-sm">{groupTitle}</p>
       <p className="text-sm text-muted-foreground mt-0.5">{tagline}</p>
       <div className="flex flex-wrap gap-2 mt-4">
         {defs.map(({ key, icon: Icon, title }) => (
-          <div key={key} className="flex items-center gap-2 px-3 py-2 rounded-full bg-background/40">
+          <div key={key} className="flex items-center gap-2 px-3 py-2 rounded-full bg-muted/30 border border-border/25">
             <Icon className="h-3.5 w-3.5 text-muted-foreground/60" />
             <span className="text-xs font-medium text-muted-foreground">{t(title)}</span>
           </div>
