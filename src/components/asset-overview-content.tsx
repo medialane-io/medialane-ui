@@ -8,6 +8,7 @@ import { MarkdownText } from "./markdown-text.js";
 import { licenseSummary } from "../utils/license-summary.js";
 import { LICENSE_TYPES } from "../data/ip.js";
 import { useT } from "../i18n/provider.js";
+import { Panel, Pill, type PanelColor } from "./panel.js";
 
 interface AssetAttribute {
   trait_type?: string;
@@ -75,12 +76,10 @@ function detailSpans(count: number): number[] {
 
 function Cell({ label, value, className }: { label: string; value: ReactNode; className?: string }) {
   return (
-    <div
-      className={`flex flex-col justify-end gap-1.5 rounded-3xl bg-foreground/[0.06] ring-1 ring-border/40 px-5 py-4 min-h-[5.5rem] ${className ?? ""}`}
-    >
+    <Panel className={`flex flex-col justify-end gap-1.5 px-5 py-4 min-h-[5.5rem] ${className ?? ""}`}>
       <p className="truncate text-xs font-medium text-muted-foreground" title={label}>{label}</p>
       <div className="text-lg font-semibold leading-tight tracking-tight text-foreground break-words">{value}</div>
-    </div>
+    </Panel>
   );
 }
 
@@ -106,14 +105,15 @@ export function AssetOverviewContent({
 
   const licenseDescription = LICENSE_TYPES.find((license) => license.value === licenseType)?.description;
 
-  const facts = [
-    { icon: DollarSign, label: t("Commercial use"), value: commercialUse, tile: "bg-brand-orange/10 ring-brand-orange/20", pill: "bg-brand-orange/15 text-brand-orange" },
-    { icon: GitBranch, label: t("Derivatives"), value: derivatives, tile: "bg-brand-rose/10 ring-brand-rose/20", pill: "bg-brand-rose/15 text-brand-rose" },
-    { icon: UserCheck, label: t("Attribution"), value: attribution, tile: "bg-foreground/5 ring-border/60", pill: "bg-foreground/10 text-muted-foreground" },
-    { icon: Globe, label: t("Territory"), value: territory, tile: "bg-brand-blue/10 ring-brand-blue/20", pill: "bg-brand-blue/15 text-brand-blue" },
-    { icon: Bot, label: t("AI & data mining"), value: aiPolicy, tile: "bg-brand-purple/10 ring-brand-purple/20", pill: "bg-brand-purple/15 text-brand-purple" },
-    { icon: Percent, label: t("Royalty"), value: royalty, tile: "bg-brand-orange/10 ring-brand-orange/20", pill: "bg-brand-orange/15 text-brand-orange" },
-  ].filter((row) => !!row.value);
+  const factRows: { icon: typeof Bot; label: string; value?: string; tone: readonly [PanelColor, PanelColor] }[] = [
+    { icon: DollarSign, label: t("Commercial use"), value: commercialUse, tone: ["orange", "rose"] },
+    { icon: GitBranch, label: t("Derivatives"), value: derivatives, tone: ["rose", "maeve"] },
+    { icon: UserCheck, label: t("Attribution"), value: attribution, tone: ["maeve", "purple"] },
+    { icon: Globe, label: t("Territory"), value: territory, tone: ["blue", "purple"] },
+    { icon: Bot, label: t("AI & data mining"), value: aiPolicy, tone: ["purple", "rose"] },
+    { icon: Percent, label: t("Royalty"), value: royalty, tone: ["orange", "maeve"] },
+  ];
+  const facts = factRows.filter((row) => !!row.value);
 
   const factSpans2 = fillSpans(facts.map(() => 1), 2);
   const factSpansLg = bentoSpans(facts.length);
@@ -143,47 +143,44 @@ export function AssetOverviewContent({
         <section className="space-y-3">
           <h3 className="text-sm font-semibold text-muted-foreground">{t("Rights")}</h3>
           <div className="grid grid-cols-2 lg:grid-cols-6 gap-3">
-            <div className="relative col-span-2 lg:col-span-3 flex min-h-[15rem] flex-col justify-end overflow-hidden rounded-[2rem] bg-gradient-to-br from-brand-purple/15 via-brand-blue/10 to-transparent p-6 text-foreground ring-1 ring-brand-blue/20 backdrop-blur-sm sm:p-8">
-              <div className="relative space-y-3">
-                {licenseType ? (
-                  <p className="text-3xl sm:text-4xl font-semibold tracking-tight leading-[1.05]">
-                    {licenseLabel(licenseType)}
-                  </p>
-                ) : null}
-                {licenseDescription ? (
-                  <p className="max-w-md text-sm text-muted-foreground">{licenseDescription}</p>
-                ) : null}
-                {summary ? (
-                  <p className="inline-block rounded-full bg-foreground/5 px-4 py-2 text-sm font-medium leading-snug text-muted-foreground ring-1 ring-border/60">
-                    {summary}
-                  </p>
-                ) : null}
-              </div>
-            </div>
+            <Panel tone={["purple", "blue"]} className="col-span-2 lg:col-span-3 flex min-h-[15rem] flex-col justify-end gap-3 p-6 sm:p-8">
+              {licenseType ? (
+                <p className="text-3xl sm:text-4xl font-semibold tracking-tight leading-[1.05] text-foreground">
+                  {licenseLabel(licenseType)}
+                </p>
+              ) : null}
+              {licenseDescription ? (
+                <p className="max-w-md text-sm text-muted-foreground">{licenseDescription}</p>
+              ) : null}
+              {summary ? (
+                <p className="text-base font-semibold leading-snug text-foreground">{summary}</p>
+              ) : null}
+            </Panel>
 
             <div className="col-span-2 lg:col-span-3 grid grid-cols-2 lg:grid-cols-3 gap-3 auto-rows-[minmax(8.5rem,1fr)]">
-              {facts.map(({ icon: Icon, label, value, tile, pill }, index) => (
-                <div
+              {facts.map(({ icon: Icon, label, value, tone }, index) => (
+                <Panel
                   key={label}
-                  className={`relative flex flex-col justify-between gap-4 overflow-hidden rounded-[1.75rem] p-5 text-foreground ring-1 backdrop-blur-sm ${tile} ${SPAN_2[factSpans2[index]]} ${SPAN_LG_3[factSpansLg[index]]}`}
+                  tone={tone}
+                  className={`flex flex-col justify-between gap-4 p-5 ${SPAN_2[factSpans2[index]]} ${SPAN_LG_3[factSpansLg[index]]}`}
                 >
-                  <span className={`relative inline-flex w-fit items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium ${pill}`}>
+                  <Pill color={tone[0]}>
                     <Icon className="h-3.5 w-3.5" />
                     {label}
-                  </span>
-                  <p className="relative text-xl sm:text-2xl font-semibold leading-none tracking-tight break-words">{value}</p>
-                </div>
+                  </Pill>
+                  <p className="text-xl sm:text-2xl font-semibold leading-none tracking-tight break-words text-foreground">{value}</p>
+                </Panel>
               ))}
             </div>
 
-            <div className="relative col-span-2 lg:col-span-6 flex items-center gap-4 overflow-hidden rounded-[2rem] bg-gradient-to-r from-brand-rose/10 to-brand-orange/10 p-5 ring-1 ring-brand-rose/20 backdrop-blur-sm sm:p-6">
-              <span className="relative flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-brand-rose/15 text-brand-rose">
+            <Panel tone={["rose", "orange"]} className="col-span-2 lg:col-span-6 flex items-center gap-4 p-5 sm:p-6">
+              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-background/40 text-brand-rose">
                 <Scale className="h-5 w-5" />
               </span>
-              <p className="relative text-sm leading-relaxed text-muted-foreground">
+              <p className="text-sm leading-relaxed text-muted-foreground">
                 {t("Creative work is protected with international copyright law. The Berne Convention for the Protection of Literary and Artistic Works is the foundational international copyright treaty, ratified by 181 signatory countries.")}
               </p>
-            </div>
+            </Panel>
           </div>
         </section>
       ) : null}

@@ -13,6 +13,8 @@ import {
 } from "lucide-react";
 import type { ApiActivity } from "@medialane/sdk";
 import { useT } from "../i18n/provider.js";
+import { ACTIVITY_TYPE_CONFIG } from "../data/activity.js";
+import { Panel } from "./panel.js";
 import { msg } from "../i18n/translate.js";
 import { useFormat } from "../i18n/use-format.js";
 
@@ -24,13 +26,15 @@ const PriceHistoryChart = dynamic(
   },
 );
 
+const tint = (type: keyof typeof ACTIVITY_TYPE_CONFIG) => `${ACTIVITY_TYPE_CONFIG[type].bgClass} ${ACTIVITY_TYPE_CONFIG[type].colorClass}`;
+
 const EVENT_STYLE: Record<string, { label: string; icon: React.ReactNode; badgeCls: string }> = {
-  sale:      { label: msg("Sale"),      icon: <ShoppingCart className="h-3.5 w-3.5" />,   badgeCls: "bg-emerald-500/15 text-emerald-500 border-emerald-500/20" },
-  mint:      { label: msg("Minted"),    icon: <CheckCircle className="h-3.5 w-3.5" />,    badgeCls: "bg-teal-500/15 text-teal-500 border-teal-500/20"          },
-  listing:   { label: msg("Listed"),    icon: <Tag className="h-3.5 w-3.5" />,            badgeCls: "bg-brand-blue/15 text-brand-blue border-brand-blue/20"          },
-  offer:     { label: msg("Offer"),     icon: <HandCoins className="h-3.5 w-3.5" />,      badgeCls: "bg-amber-500/15 text-amber-500 border-amber-500/20"       },
-  transfer:  { label: msg("Transfer"),  icon: <ArrowRightLeft className="h-3.5 w-3.5" />, badgeCls: "bg-brand-purple/15 text-brand-purple border-brand-purple/20"    },
-  cancelled: { label: msg("Cancelled"), icon: <X className="h-3.5 w-3.5" />,              badgeCls: "bg-red-500/15 text-red-400 border-red-500/20"             },
+  sale:      { label: msg("Sale"),      icon: <ShoppingCart className="h-3.5 w-3.5" />,   badgeCls: tint("sale") },
+  mint:      { label: msg("Minted"),    icon: <CheckCircle className="h-3.5 w-3.5" />,    badgeCls: tint("mint") },
+  listing:   { label: msg("Listed"),    icon: <Tag className="h-3.5 w-3.5" />,            badgeCls: tint("listing") },
+  offer:     { label: msg("Offer"),     icon: <HandCoins className="h-3.5 w-3.5" />,      badgeCls: tint("offer") },
+  transfer:  { label: msg("Transfer"),  icon: <ArrowRightLeft className="h-3.5 w-3.5" />, badgeCls: tint("transfer") },
+  cancelled: { label: msg("Cancelled"), icon: <X className="h-3.5 w-3.5" />,              badgeCls: tint("cancelled") },
 };
 
 interface AssetProvenanceTabProps {
@@ -73,7 +77,7 @@ export function AssetProvenanceTab({
   return (
     <div className="mt-4 space-y-6">
 
-      <div className="flex items-center gap-2 rounded-lg bg-primary/5 px-4 py-2.5">
+      <Panel tone={["blue", "purple"]} className="flex items-center gap-2 px-4 py-2.5">
         <Fingerprint className="h-4 w-4 text-primary shrink-0" />
         <div className="min-w-0">
           <p className="text-xs font-semibold text-primary">{t("Onchain provenance")}</p>
@@ -87,7 +91,7 @@ export function AssetProvenanceTab({
         >
           {t("Contract")} <ExternalLink className="h-3 w-3" />
         </a>
-      </div>
+      </Panel>
 
       {originalCreator && registeredAt ? (
         <CreationRecord originalCreator={originalCreator} registeredAt={registeredAt} />
@@ -161,7 +165,7 @@ export function AssetProvenanceTab({
                 const style = EVENT_STYLE[event.type] ?? {
                   label: event.type,
                   icon: <Activity className="h-3.5 w-3.5" />,
-                  badgeCls: "bg-muted/60 text-muted-foreground border-border",
+                  badgeCls: "bg-muted/60 text-muted-foreground",
                 };
                 const actor = event.offerer ?? event.from ?? "";
                 const toAddr = event.to;
@@ -177,18 +181,18 @@ export function AssetProvenanceTab({
                 return (
                   <div key={i} className="relative flex gap-4 group">
 
-                    <div className={`relative z-10 h-10 w-10 rounded-full border flex items-center justify-center shrink-0 mt-1 transition-colors group-hover:border-primary/50 ${style.badgeCls}`}>
+                    <div className={`relative z-10 h-10 w-10 rounded-full flex items-center justify-center shrink-0 mt-1 ${style.badgeCls}`}>
                       {style.icon}
                     </div>
 
-                    <div
-                      className={`flex-1 min-w-0 rounded-xl bg-card/40 px-3 py-2.5 transition-colors group-hover:bg-card/60 ${txLink ? "cursor-pointer" : ""}`}
+                    <Panel
+                      className={`flex-1 min-w-0 px-3 py-2.5 transition-colors group-hover:bg-background/40 ${txLink ? "cursor-pointer" : ""}`}
                       onClick={() => txLink && window.open(txLink, "_blank", "noopener,noreferrer")}
                     >
                       <div className="flex items-start justify-between gap-3">
                         <div className="min-w-0 flex-1">
                           <div className="flex items-center gap-2 flex-wrap">
-                            <span className={`inline-flex items-center gap-1 text-xs font-semibold px-2 py-0.5 rounded-full border ${style.badgeCls}`}>
+                            <span className={`inline-flex items-center gap-1 text-xs font-semibold px-2 py-0.5 rounded-full ${style.badgeCls}`}>
                               {style.icon}
                               {t(style.label)}
                             </span>
@@ -258,7 +262,7 @@ export function AssetProvenanceTab({
                           )}
                         </div>
                       </div>
-                    </div>
+                    </Panel>
                   </div>
                 );
               })}

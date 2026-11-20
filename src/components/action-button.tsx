@@ -2,10 +2,10 @@
 
 import { cn } from "../utils/cn.js";
 import { HelpIcon } from "./help-icon.js";
-import { ACTION_FOREGROUNDS, ACTION_GRADIENTS, TONE_FOREGROUNDS, TONE_GRADIENTS } from "../data/brand.js";
+import { ACTION_FOREGROUNDS, ACTION_PAIRS, TONE_FOREGROUNDS, TONE_PAIRS, brandTint } from "../data/brand.js";
 
-export type ActionKey = keyof typeof ACTION_GRADIENTS;
-export type ToneKey = keyof typeof TONE_GRADIENTS;
+export type ActionKey = keyof typeof ACTION_PAIRS;
+export type ToneKey = keyof typeof TONE_PAIRS;
 
 export interface ActionButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 
@@ -15,6 +15,9 @@ export interface ActionButtonProps extends React.ButtonHTMLAttributes<HTMLButton
   icon?: React.ReactNode;
 
   big?: boolean;
+
+  /** Compact size for actions inside list rows. */
+  small?: boolean;
 
   ghost?: boolean;
 
@@ -26,6 +29,7 @@ export function ActionButton({
   tone,
   icon,
   big,
+  small,
   ghost,
   helpContent,
   disabled,
@@ -36,6 +40,8 @@ export function ActionButton({
 }: ActionButtonProps) {
   const sizeClass = big
     ? "h-[54px] px-5 rounded-[13px] text-base"
+    : small
+    ? "h-9 px-3 rounded-xl text-xs"
     : "h-[46px] px-5 rounded-[13px] text-sm";
 
   if (ghost) {
@@ -57,29 +63,27 @@ export function ActionButton({
     );
   }
 
-  const gradColors =
-    action ? ACTION_GRADIENTS[action] :
-    tone   ? TONE_GRADIENTS[tone] :
-    ACTION_GRADIENTS.buy;
+  const [from, to] =
+    action ? ACTION_PAIRS[action] :
+    tone   ? TONE_PAIRS[tone] :
+    ACTION_PAIRS.buy;
 
   const fg =
     action ? ACTION_FOREGROUNDS[action] :
     tone   ? TONE_FOREGROUNDS[tone] :
     ACTION_FOREGROUNDS.buy;
 
-  const grad = `linear-gradient(115deg, ${gradColors.join(',')})`;
-
   return (
     <button
       {...rest}
       disabled={disabled}
       className={cn(
-        "ml-gbtn inline-flex items-center justify-center gap-2 font-semibold cursor-pointer whitespace-nowrap",
-        "bg-transparent text-foreground border-none relative disabled:opacity-40 disabled:pointer-events-none",
+        "inline-flex items-center justify-center gap-2 font-semibold cursor-pointer whitespace-nowrap",
+        "text-foreground border-none transition-[filter] hover:brightness-125 disabled:opacity-40 disabled:pointer-events-none",
         sizeClass,
         className,
       )}
-      style={{ '--ml-grad': grad, ...style } as React.CSSProperties}
+      style={{ backgroundImage: `linear-gradient(115deg, ${brandTint(from, 0.28)}, ${brandTint(to, 0.16)})`, ...style }}
     >
       {icon && <span className="inline-flex" style={{ color: fg }}>{icon}</span>}
       {children}

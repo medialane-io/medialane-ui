@@ -10,6 +10,8 @@ import {
 import { ipfsToHttp } from "../utils/ipfs.js";
 import { ExternalLink, FileText, ShieldCheck } from "lucide-react";
 import { useT } from "../i18n/provider.js";
+import { PANEL_INSET, panelBackground } from "./panel.js";
+import { cn } from "../utils/cn.js";
 
 interface Attr {
   trait_type?: string | null;
@@ -147,7 +149,8 @@ export function IPTypeDisplay({ attributes }: IPTypeDisplayProps) {
             href={docUri.startsWith("ipfs://") ? ipfsToHttp(docUri) : docUri}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-3 rounded-xl border border-border bg-muted/20 px-4 py-3 transition-colors hover:border-primary/40 group"
+            className="flex items-center gap-3 rounded-2xl px-4 py-3 transition-colors hover:bg-background/40 group"
+            style={{ backgroundImage: panelBackground() }}
           >
             <FileText className="h-5 w-5 text-primary shrink-0" />
             <div className="min-w-0 flex-1">
@@ -228,7 +231,7 @@ export function IPTypeDisplay({ attributes }: IPTypeDisplayProps) {
                   href={value}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 rounded-full border border-border bg-muted/30 px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:border-primary/40 hover:text-foreground"
+                  className={cn("inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium text-muted-foreground hover:text-foreground", PANEL_INSET)}
                 >
                   <SIcon className="h-3.5 w-3.5" />
                   {t(meta.label)}

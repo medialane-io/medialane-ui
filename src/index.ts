@@ -459,6 +459,8 @@ export type { JourneyPathProps, JourneyStep } from "./components/rewards/journey
 export { Skeleton } from "./components/skeleton.js";
 export { Badge, badgeVariants } from "./components/badge.js";
 export type { BadgeProps } from "./components/badge.js";
+export { Panel, Pill, panelBackground, PANEL_INSET } from "./components/panel.js";
+export type { PanelProps, PanelTone, PanelColor, PillProps } from "./components/panel.js";
 export { Label } from "./components/label.js";
 export { Input } from "./components/input.js";
 export { Switch } from "./components/switch.js";
