@@ -17,6 +17,7 @@ import { AddGuardianDialog } from "./add-guardian-dialog.js";
 import type { GuardianWallet, LoadSealedOwner } from "./wallet-types.js";
 import { useT } from "../../i18n/provider.js";
 import { useFormat } from "../../i18n/use-format.js";
+import { IconTile } from "../icon-tile.js";
 
 const short = (a: string) => `${a.slice(0, 6)}…${a.slice(-4)}`;
 
@@ -74,9 +75,9 @@ export function GuardianRecoverySection({
   return (
     <div className="panel p-5 sm:p-6 space-y-5">
       <div className="flex items-start gap-3">
-        <div className="h-10 w-10 shrink-0 rounded-full bg-brand-blue/10 flex items-center justify-center">
-          <Shield className="h-5 w-5 text-brand-blue" />
-        </div>
+        <IconTile>
+          <Shield />
+        </IconTile>
         <div>
           <h3 className="text-base font-bold text-foreground">{t("Security & recovery")}</h3>
           <p className="text-sm text-muted-foreground mt-0.5">

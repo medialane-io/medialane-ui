@@ -11,6 +11,7 @@ import { profileIdentity } from "../utils/profile-identity.js";
 import { useSearch, SEARCH_MIN_LENGTH } from "../utils/use-search.js";
 import { ResultThumbnail } from "./result-thumbnail.js";
 import { useT } from "../i18n/provider.js";
+import { IconTile } from "./icon-tile.js";
 
 export interface NavCommand {
   id: string;
@@ -213,9 +214,9 @@ function SearchResults({ query, debouncedQuery, onNavigate }: {
           value="search:all"
           label={`All results for "${q}"`}
           leading={
-            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-2xl bg-muted/50 group-aria-selected/item:bg-primary/15">
-              <Search className="h-4 w-4 text-foreground/80 transition-colors group-aria-selected/item:text-primary" />
-            </span>
+            <IconTile size="sm">
+              <Search />
+            </IconTile>
           }
           onSelect={() => onNavigate(`/search?q=${encodeURIComponent(q)}`)}
         />

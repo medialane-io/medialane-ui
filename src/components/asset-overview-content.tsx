@@ -9,6 +9,7 @@ import { licenseSummary } from "../utils/license-summary.js";
 import { LICENSE_TYPES } from "../data/ip.js";
 import { useT } from "../i18n/provider.js";
 import { Panel, Pill, type PanelColor } from "./panel.js";
+import { IconTile } from "./icon-tile.js";
 
 interface AssetAttribute {
   trait_type?: string;
@@ -174,9 +175,9 @@ export function AssetOverviewContent({
             </div>
 
             <Panel tone="rose" className="col-span-2 lg:col-span-6 flex items-center gap-4 p-5 sm:p-6">
-              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-background/40 text-brand-rose">
-                <Scale className="h-5 w-5" />
-              </span>
+              <IconTile>
+                <Scale />
+              </IconTile>
               <p className="text-sm leading-relaxed text-muted-foreground">
                 {t("Creative work is protected with international copyright law. The Berne Convention for the Protection of Literary and Artistic Works is the foundational international copyright treaty, ratified by 181 signatory countries.")}
               </p>

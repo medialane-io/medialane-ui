@@ -22,6 +22,7 @@ import { useComments } from "../utils/use-comments.js";
 import { useTransaction } from "../utils/use-transaction.js";
 import { useT } from "../i18n/provider.js";
 import { BRAND_COLOR } from "../data/brand.js";
+import { IconTile } from "./icon-tile.js";
 
 const MAX_LEN = 1000;
 const AVATAR_COLORS = (["blue", "purple", "rose", "orange", "maeve"] as const).map((color) => BRAND_COLOR[color]);
@@ -122,9 +123,9 @@ export function CommentsSection({ contract, tokenId, className }: CommentsSectio
           </div>
         ) : comments.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-full gap-4 text-center px-4">
-            <div className="flex h-16 w-16 items-center justify-center rounded-full" style={{ background: "hsl(var(--brand-blue) / 0.12)" }}>
-              <MessageCircle className="h-7 w-7" style={{ color: "hsl(var(--brand-blue))" }} />
-            </div>
+            <IconTile size="lg">
+              <MessageCircle />
+            </IconTile>
             <div>
               <p className="text-sm font-semibold">{t("Nothing here yet")}</p>
               <p className="text-xs text-muted-foreground mt-1 leading-relaxed max-w-[220px]">

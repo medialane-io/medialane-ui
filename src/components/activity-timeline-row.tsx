@@ -11,6 +11,7 @@ import { cn } from "../utils/cn.js";
 import { useT } from "../i18n/provider.js";
 import { msg } from "../i18n/translate.js";
 import { ACTIVITY_TYPE_CONFIG } from "../data/activity.js";
+import { IconTile } from "./icon-tile.js";
 
 
 const ACTIVITY_LABEL: Record<string, string> = {
@@ -50,9 +51,9 @@ export function ActivityTimelineRow({
   return (
     <div className="flex gap-4 group">
       <div className="flex flex-col items-center shrink-0 w-9">
-        <div className={cn("h-9 w-9 rounded-xl flex items-center justify-center shrink-0", colors.bgClass)}>
-          <Icon className={cn("h-3.5 w-3.5", colors.colorClass)} />
-        </div>
+        <IconTile size="sm">
+          <Icon />
+        </IconTile>
         {!isLast && <div className="flex-1 w-px bg-border/50 mt-1.5 min-h-4" />}
       </div>
       <div className="flex-1 pb-5 min-w-0 pt-1">

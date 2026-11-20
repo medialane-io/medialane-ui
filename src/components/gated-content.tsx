@@ -7,6 +7,7 @@ import { useMedialaneApp } from "./medialane-app.js";
 import { useT } from "../i18n/provider.js";
 import { panelTint } from "./panel.js";
 import { ActionButton } from "./action-button.js";
+import { IconTile } from "./icon-tile.js";
 
 export interface GatedContent {
   title: string | null;
@@ -44,9 +45,9 @@ export function GatedContentHero({
         className="panel w-full flex items-center gap-4 hover:bg-background/40 px-5 py-4 transition-colors text-left"
         style={panelTint("blue")}
       >
-        <div className="h-11 w-11 rounded-xl bg-brand-blue/15 flex items-center justify-center shrink-0 text-brand-blue">
-          <Icon className="h-5 w-5" />
-        </div>
+        <IconTile>
+          <Icon />
+        </IconTile>
         <div className="flex-1 min-w-0">
           <p className="text-2xs font-bold text-brand-blue leading-none">{t("✓ You're a holder — unlocked")}</p>
           <p className="text-sm font-bold text-foreground leading-snug mt-1 truncate">{state.content.title ?? title}</p>
@@ -62,9 +63,9 @@ export function GatedContentHero({
       className="w-full flex items-center gap-4 rounded-2xl hover:bg-background/40 px-5 py-4 transition-colors text-left group"
       style={panelTint("blue")}
     >
-      <div className="h-11 w-11 rounded-xl bg-muted flex items-center justify-center shrink-0">
-        <Lock className="h-5 w-5 text-muted-foreground" />
-      </div>
+      <IconTile>
+        <Lock />
+      </IconTile>
       <div className="flex-1 min-w-0">
         <p
           className="text-2xs font-bold leading-none mb-1 text-brand-blue"
@@ -82,9 +83,9 @@ export function GatedContentHero({
 function LockedNotice({ title, body, children }: { title: string; body: string; children?: React.ReactNode }) {
   return (
     <div className="py-16 flex flex-col items-center gap-5 text-center max-w-sm mx-auto">
-      <div className="h-16 w-16 rounded-2xl bg-muted flex items-center justify-center">
-        <Lock className="h-8 w-8 text-muted-foreground/50" />
-      </div>
+      <IconTile size="lg">
+        <Lock />
+      </IconTile>
       <div>
         <p className="text-base font-semibold">{title}</p>
         <p className="text-sm text-muted-foreground mt-1">{body}</p>
@@ -133,9 +134,9 @@ export function GatedContentPanel({ state, onBrowseListings }: { state: GatedCon
   return (
     <div className="py-8 flex flex-col items-center gap-6 text-center max-w-md mx-auto">
       <div className="relative">
-        <div className="h-20 w-20 rounded-2xl bg-brand-blue/15 flex items-center justify-center text-brand-blue">
-          <Unlock className="h-10 w-10" />
-        </div>
+        <IconTile size="lg">
+          <Unlock />
+        </IconTile>
         <div className="absolute -bottom-1 -right-1 h-6 w-6 rounded-full bg-brand-blue flex items-center justify-center">
           <Sparkles className="h-3 w-3 text-white" />
         </div>

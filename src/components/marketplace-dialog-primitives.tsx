@@ -10,6 +10,7 @@ import { cn } from "../utils/cn.js";
 import { formatDisplayPrice, isStableCurrency } from "../utils/format.js";
 import { useT } from "../i18n/provider.js";
 import { ActionButton } from "./action-button.js";
+import { IconTile } from "./icon-tile.js";
 
 interface MarketplaceTxLinkProps {
   txHash: string;
@@ -134,9 +135,9 @@ export function MarketplaceErrorState({
           </div>
         </div>
       ) : (
-        <div className="h-16 w-16 rounded-full bg-destructive/15 flex items-center justify-center">
-          <AlertCircle className="h-9 w-9 text-destructive" />
-        </div>
+        <IconTile size="lg" destructive>
+          <AlertCircle />
+        </IconTile>
       )}
       <div className="text-center space-y-1 max-w-full">
         <p className="font-bold text-xl break-words">{title}</p>

@@ -20,6 +20,7 @@ import Image from "./image.js";
 import Link from "./link.js";
 import { MedialaneLogoFull as MedialaneLogo } from "./brand-logo.js";
 import { panelTint } from "./panel.js";
+import { IconTile } from "./icon-tile.js";
 
 interface Card {
   title: string;
@@ -54,11 +55,7 @@ export interface MintLandingCopy {
 }
 
 const DOCS = "https://docs.medialane.io";
-const FUND_STYLES = [
-  { icon: FileCheck, color: "text-brand-blue", bg: "bg-brand-blue/10" },
-  { icon: Coins, color: "text-brand-orange", bg: "bg-brand-orange/10" },
-  { icon: Users, color: "text-brand-purple", bg: "bg-brand-purple/10" },
-];
+const FUND_ICONS = [FileCheck, Coins, Users];
 
 function EventCard({ image }: { image: MintLandingCopy["image"] }) {
   const [errored, setErrored] = useState(false);
@@ -153,12 +150,12 @@ export function MintLanding({ copy, mint }: { copy: MintLandingCopy; mint: React
                 <h2 className="text-2xl sm:text-3xl font-black">{copy.fund.title}</h2>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   {copy.fund.cards.map(({ title, body }, i) => {
-                    const { icon: Icon, color, bg } = FUND_STYLES[i];
+                    const Icon = FUND_ICONS[i];
                     return (
                       <div key={title} className="panel flex flex-col gap-4 p-5">
-                        <div className={`h-11 w-11 rounded-xl ${bg} flex items-center justify-center shrink-0`}>
-                          <Icon className={`h-5 w-5 ${color}`} />
-                        </div>
+                        <IconTile>
+                          <Icon />
+                        </IconTile>
                         <div>
                           <p className="font-bold">{title}</p>
                           <p className="text-sm text-muted-foreground mt-1 leading-relaxed">{body}</p>
@@ -177,9 +174,9 @@ export function MintLanding({ copy, mint }: { copy: MintLandingCopy; mint: React
 
                 <div className="panel p-6" style={panelTint("blue")}>
                   <div className="flex items-start gap-4">
-                    <div className="h-12 w-12 rounded-xl bg-brand-blue/15 flex items-center justify-center shrink-0">
-                      <UserCheck className="h-6 w-6 text-brand-blue" />
-                    </div>
+                    <IconTile>
+                      <UserCheck />
+                    </IconTile>
                     <div className="flex-1">
                       <div className="flex items-center gap-2 flex-wrap">
                         <p className="font-black text-lg">{how.account.title}</p>
@@ -195,9 +192,9 @@ export function MintLanding({ copy, mint }: { copy: MintLandingCopy; mint: React
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="panel p-5 space-y-3">
                     <div className="flex items-center justify-between gap-3">
-                      <div className="h-10 w-10 rounded-xl bg-brand-purple/10 flex items-center justify-center">
-                        <PenLine className="h-5 w-5 text-brand-purple" />
-                      </div>
+                      <IconTile>
+                        <PenLine />
+                      </IconTile>
                       <span className="text-xs font-semibold text-brand-purple bg-brand-purple/10 px-2.5 py-1 rounded-full">{how.create.tag}</span>
                     </div>
                     <div>
@@ -209,9 +206,9 @@ export function MintLanding({ copy, mint }: { copy: MintLandingCopy; mint: React
                   </div>
                   <div className="panel p-5 space-y-3">
                     <div className="flex items-center justify-between gap-3">
-                      <div className="h-10 w-10 rounded-xl bg-brand-orange/10 flex items-center justify-center">
-                        <ShoppingCart className="h-5 w-5 text-brand-orange" />
-                      </div>
+                      <IconTile>
+                        <ShoppingCart />
+                      </IconTile>
                       <span className="text-xs font-semibold text-brand-orange bg-brand-orange/10 px-2.5 py-1 rounded-full">{how.trade.tag}</span>
                     </div>
                     <div>

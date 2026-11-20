@@ -20,6 +20,7 @@ import { useTokensByIpType } from "../utils/use-tokens-by-ip-type.js";
 import { emptyMessages } from "../utils/empty-messages.js";
 import { useT } from "../i18n/provider.js";
 import { useFormat } from "../i18n/use-format.js";
+import { IconTile } from "./icon-tile.js";
 
 const PAGE_SIZE = 24;
 
@@ -151,9 +152,9 @@ export function IpTypePage({ slug, useMarketActions }: IpTypePageProps) {
       <div className="space-y-4">
         <div className="flex items-center gap-4">
           {config && Icon && (
-            <div className={cn("h-14 w-14 rounded-2xl flex items-center justify-center shadow-lg", config.bgClass)}>
-              <Icon className={cn("h-7 w-7", config.colorClass)} />
-            </div>
+            <IconTile size="lg">
+              <Icon />
+            </IconTile>
           )}
           <div>
             <h1 className="text-3xl font-semibold">{config?.label ? t(config.label) : slug}</h1>
@@ -316,9 +317,9 @@ export function IpTypePage({ slug, useMarketActions }: IpTypePageProps) {
       ) : displayed.length === 0 ? (
         <div className="py-24 flex flex-col items-center gap-4 text-center">
           {config && Icon && (
-            <div className={cn("h-16 w-16 rounded-2xl flex items-center justify-center", config.bgClass)}>
-              <Icon className={cn("h-8 w-8", config.colorClass)} />
-            </div>
+            <IconTile size="lg">
+              <Icon />
+            </IconTile>
           )}
           <div>
             <p className="font-semibold text-lg">

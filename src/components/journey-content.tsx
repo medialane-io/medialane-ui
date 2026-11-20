@@ -8,6 +8,7 @@ import { BadgeCatalog } from "./rewards/badge-catalog.js";
 import { Skeleton } from "./skeleton.js";
 import { useRewardsConfig } from "../utils/use-rewards.js";
 import { useT } from "../i18n/provider.js";
+import { IconTile } from "./icon-tile.js";
 
 const EXAMPLE_ACTION_TYPES = [
   "mint_asset", "buy_asset", "create_collection", "comment",
@@ -19,9 +20,9 @@ function Hero() {
   return (
     <section className="py-14 space-y-5">
       <div className="flex items-center gap-3">
-        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand-orange text-white shrink-0">
-          <Sparkles className="h-5 w-5" />
-        </div>
+        <IconTile>
+          <Sparkles />
+        </IconTile>
         <h1 className="text-5xl sm:text-6xl font-black tracking-tight leading-[1.02]">
           {t("Your")}{" "}
           <span className="text-brand-orange">

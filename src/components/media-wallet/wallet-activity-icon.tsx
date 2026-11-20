@@ -1,5 +1,5 @@
 import { getTokenByAddress, type ApiWalletActivity } from "@medialane/sdk";
-import { BRAND_COLOR } from "../../data/brand.js";
+import { IconTile } from "../icon-tile.js";
 import { CurrencyIcon } from "../currency-icon.js";
 
 export function WalletActivityIcon({ a }: { a: ApiWalletActivity }) {
@@ -12,19 +12,11 @@ export function WalletActivityIcon({ a }: { a: ApiWalletActivity }) {
         </div>
       );
     }
-    return <ActionIcon hue={a.type === "RECEIVE" ? BRAND_COLOR.blue : BRAND_COLOR.rose}>{a.type === "RECEIVE" ? <ArrowDownIcon /> : <ArrowUpIcon />}</ActionIcon>;
+    return <IconTile>{a.type === "RECEIVE" ? <ArrowDownIcon /> : <ArrowUpIcon />}</IconTile>;
   }
-  if (a.type === "SWAP") return <ActionIcon hue={BRAND_COLOR.purple}><SwapIcon /></ActionIcon>;
-  if (a.type === "DEPLOY") return <ActionIcon hue={BRAND_COLOR.orange}><RocketIcon /></ActionIcon>;
-  return <ActionIcon hue={BRAND_COLOR.purple}><ShieldIcon /></ActionIcon>;
-}
-
-function ActionIcon({ hue, children }: { hue: string; children: React.ReactNode }) {
-  return (
-    <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-foreground/[0.06]" style={{ color: hue }}>
-      {children}
-    </span>
-  );
+  if (a.type === "SWAP") return <IconTile><SwapIcon /></IconTile>;
+  if (a.type === "DEPLOY") return <IconTile><RocketIcon /></IconTile>;
+  return <IconTile><ShieldIcon /></IconTile>;
 }
 
 const s = { fill: "none", stroke: "currentColor", strokeWidth: 1.9, strokeLinecap: "round", strokeLinejoin: "round" } as const;

@@ -81,8 +81,6 @@ export function CollectionSlugClaimSection({
           icon={Gem}
           title={t("Collection URL")}
           description={`medialane.io/collection/${profile.slug}`}
-          iconClass="text-brand-blue"
-          bgClass="bg-brand-blue/15"
           badge={
             <Badge variant="soft" className="text-2xs h-4 px-1.5 text-brand-blue border-brand-blue/30">
               {t("Active")}
@@ -106,8 +104,6 @@ export function CollectionSlugClaimSection({
           icon={Gem}
           title={t("Claim your collection URL")}
           description={`medialane.io/collection/${pendingSlug}`}
-          iconClass="text-primary"
-          bgClass="bg-primary/15"
           badge={
             <Badge variant="soft" className="text-2xs h-4 px-1.5 text-brand-orange border-brand-orange/30">
               {t("Pending review")}
@@ -127,8 +123,6 @@ export function CollectionSlugClaimSection({
         icon={Gem}
         title={t("Claim your collection URL")}
         description={t("Reserve a unique URL — medialane.io/collection/your-name")}
-        iconClass="text-primary"
-        bgClass="bg-primary/15"
       />
       <div className="pt-3 border-t border-border space-y-3">
         <div className="flex items-center gap-2">

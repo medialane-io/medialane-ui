@@ -21,6 +21,7 @@ import { useCollectionSettings } from "../utils/use-collection-settings.js";
 import { useT } from "../i18n/provider.js";
 import { msg } from "../i18n/translate.js";
 import { panelTint } from "./panel.js";
+import { IconTile } from "./icon-tile.js";
 
 const DESC_MAX = 500;
 
@@ -43,9 +44,9 @@ export function CollectionSettings({ contract }: { contract: string }) {
   if (!collectionLoading && collection && !isOwner) {
     return (
       <div className="py-12 flex flex-col items-center gap-3 text-center">
-        <div className="h-12 w-12 rounded-full bg-muted flex items-center justify-center">
-          <Lock className="h-5 w-5 text-muted-foreground" />
-        </div>
+        <IconTile>
+          <Lock />
+        </IconTile>
         <p className="text-sm font-medium">{t("Owner access only")}</p>
         <p className="text-xs text-muted-foreground max-w-xs">
           {t("Only the collection owner can access settings. If you believe this is yours, visit your portfolio to claim it.")}
@@ -169,8 +170,6 @@ export function CollectionSettings({ contract }: { contract: string }) {
           icon={Lock}
           title={t("Exclusive content")}
           description={t("Reward your holders with exclusive content — only wallets that own a token from this collection can access it.")}
-          iconClass={form.gatedEnabled ? "text-brand-blue" : "text-muted-foreground"}
-          bgClass={form.gatedEnabled ? "bg-brand-blue/15" : "bg-muted"}
           badge={
             form.gatedEnabled ? (
               <Badge variant="soft" className="text-2xs h-4 px-1.5 gap-1 text-brand-blue border-brand-blue/30">

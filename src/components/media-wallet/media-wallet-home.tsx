@@ -21,6 +21,7 @@ import { fmt, fmtUsd, rawToNumber } from "../../utils/media-wallet/wallet-format
 import { successMessages } from "../../utils/success-messages.js";
 import { useMediaWalletApp, type MediaWalletView } from "./types.js";
 import { useT } from "../../i18n/provider.js";
+import { IconTile } from "../icon-tile.js";
 
 export function MediaWalletHome({
   onNavigate,
@@ -155,9 +156,9 @@ export function MediaWalletHome({
           className="flex items-center gap-3 rounded-2xl px-4 py-3 transition-opacity hover:opacity-90"
           style={{ background: "hsl(var(--brand-orange) / 0.12)" }}
         >
-          <div className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-brand-orange/15">
+          <IconTile size="sm">
             <MailIcon />
-          </div>
+          </IconTile>
           <div className="min-w-0 flex-1">
             <div className="text-sm font-semibold">{t("Verify your email")}</div>
             <div className="text-xs text-muted-foreground">{emailBanner.text(emailStatus?.deadline)}</div>
@@ -217,9 +218,9 @@ export function MediaWalletHome({
           onClick={goLaunch}
           className="flex flex-col items-center gap-2 rounded-2xl border-2 border-dashed border-border px-6 py-8 text-center transition-colors hover:border-primary/50 active:scale-[0.99]"
         >
-          <div className="grid h-11 w-11 place-items-center rounded-full bg-foreground/[0.06]">
+          <IconTile>
             <RocketIcon />
-          </div>
+          </IconTile>
           <span className="text-[15px] font-semibold text-foreground">{t("Creator Launchpad")}</span>
           <span className="text-xs text-muted-foreground">{t("Protect and monetize your work")}</span>
         </button>

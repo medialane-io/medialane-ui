@@ -25,6 +25,7 @@ import { useCollection } from "../utils/use-collections.js";
 import { ChevronLeft, ChevronDown, Shield, DollarSign, Percent, HandCoins, Loader2, Check } from "lucide-react";
 import { useT } from "../i18n/provider.js";
 import { ActionButton } from "./action-button.js";
+import { IconTile } from "./icon-tile.js";
 
 const TOKENS = getListableTokens();
 
@@ -162,9 +163,9 @@ export function LicenseRequestPage({ contract, tokenId }: { contract: string; to
 
       {step === "success" ? (
         <div className="panel p-8 text-center space-y-4">
-          <div className="h-14 w-14 mx-auto rounded-full bg-primary/10 flex items-center justify-center">
-            <Check className="h-7 w-7 text-primary" />
-          </div>
+          <IconTile size="lg" className="mx-auto">
+            <Check />
+          </IconTile>
           <p className="text-lg font-semibold">{t("License request sent")}</p>
           <p className="text-sm text-muted-foreground">{t("The creator will review it. Track it under Portfolio → Licensing.")}</p>
           <Button asChild variant="soft"><Link href="/portfolio/licensing">{t("View my requests")}</Link></Button>

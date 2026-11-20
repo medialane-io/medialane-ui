@@ -1,8 +1,8 @@
 "use client";
 
 import { ShieldCheck, type LucideIcon } from "lucide-react";
-import { cn } from "../utils/cn.js";
 import { useT } from "../i18n/provider.js";
+import { IconTile } from "./icon-tile.js";
 
 export interface ClaimRailProps {
 
@@ -14,10 +14,6 @@ export interface ClaimRailProps {
   trust: string;
 
   trustIcon?: LucideIcon;
-
-  includedAccentClass?: string;
-  stepAccentClass?: string;
-  trustAccentClass?: string;
 }
 
 export function ClaimRail({
@@ -26,9 +22,6 @@ export function ClaimRail({
   trustLead,
   trust,
   trustIcon: TrustIcon = ShieldCheck,
-  includedAccentClass = "bg-brand-blue/10 text-brand-blue",
-  stepAccentClass = "bg-brand-purple/10 text-brand-purple",
-  trustAccentClass = "text-brand-orange",
 }: ClaimRailProps) {
   const t = useT();
   return (
@@ -39,9 +32,9 @@ export function ClaimRail({
           <ul className="mt-4 space-y-4">
             {included.map(({ icon: Icon, title, desc }) => (
               <li key={title} className="flex items-start gap-3">
-                <div className={cn("h-8 w-8 rounded-2xl flex items-center justify-center shrink-0", includedAccentClass)}>
-                  <Icon className="h-4 w-4" />
-                </div>
+                <IconTile size="sm">
+                  <Icon />
+                </IconTile>
                 <div className="min-w-0">
                   <p className="text-sm font-semibold text-foreground">{title}</p>
                   <p className="text-sm text-muted-foreground leading-relaxed mt-0.5">{desc}</p>
@@ -57,9 +50,9 @@ export function ClaimRail({
         <ol className="mt-4 space-y-3">
           {steps.map((label, i) => (
             <li key={label} className="flex items-center gap-3">
-              <span className={cn("h-8 w-8 rounded-2xl flex items-center justify-center shrink-0 text-sm font-bold tabular-nums", stepAccentClass)}>
+              <IconTile size="sm" className="tabular-nums">
                 {i + 1}
-              </span>
+              </IconTile>
               <span className="text-sm text-foreground/90">{label}</span>
             </li>
           ))}
@@ -67,7 +60,7 @@ export function ClaimRail({
       </section>
 
       <section className="p-5 bg-muted/40 flex items-start gap-3">
-        <TrustIcon className={cn("h-5 w-5 shrink-0 mt-0.5", trustAccentClass)} />
+        <TrustIcon className="h-5 w-5 shrink-0 mt-0.5 text-primary" />
         <p className="text-sm text-muted-foreground leading-relaxed">
           <span className="font-semibold text-foreground">{trustLead}</span> {trust}
         </p>
