@@ -24,7 +24,7 @@ test("an icon tile keeps the logo's rounded-square shape at every size", () => {
       <IconTile size="lg">L</IconTile>
     </>,
   );
-  expect(getByText("S").className).toContain("rounded-xl");
-  expect(getByText("L").className).toContain("rounded-2xl");
+  expect(getByText("S").className).toContain("rounded-[30%]");
+  expect(getByText("L").className).toContain("rounded-[30%]");
   expect(getByText("S").className).not.toContain("rounded-full");
 });

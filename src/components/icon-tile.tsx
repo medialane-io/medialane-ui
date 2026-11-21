@@ -2,10 +2,14 @@ import * as React from "react";
 import { cn } from "../utils/cn.js";
 
 const SIZES = {
-  sm: "h-8 w-8 rounded-xl text-sm [&_svg]:h-4 [&_svg]:w-4",
-  md: "h-11 w-11 rounded-xl text-base [&_svg]:h-5 [&_svg]:w-5",
-  lg: "h-16 w-16 rounded-2xl text-xl [&_svg]:h-7 [&_svg]:w-7",
+  xs: "h-7 w-7 text-xs [&_svg]:h-3.5 [&_svg]:w-3.5",
+  sm: "h-8 w-8 text-sm [&_svg]:h-4 [&_svg]:w-4",
+  md: "h-11 w-11 text-base [&_svg]:h-5 [&_svg]:w-5",
+  lg: "h-16 w-16 text-xl [&_svg]:h-7 [&_svg]:w-7",
 } as const;
+
+/** The logo's corner: a radius of 30% of the side, the same at every size. */
+const LOGO_CORNER = "rounded-[30%]";
 
 export interface IconTileProps extends React.HTMLAttributes<HTMLSpanElement> {
   size?: keyof typeof SIZES;
@@ -20,6 +24,7 @@ export function IconTile({ size = "md", destructive, className, ...props }: Icon
       className={cn(
         "inline-flex shrink-0 items-center justify-center font-bold text-white",
         destructive ? "bg-destructive" : "bg-primary",
+        LOGO_CORNER,
         SIZES[size],
         className,
       )}
