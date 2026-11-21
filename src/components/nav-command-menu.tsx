@@ -121,7 +121,7 @@ function SearchIcon({ query, active }: { query: string; active: boolean }) {
   );
 }
 
-const ROW_CLASSES = "group/item flex cursor-pointer items-center gap-3.5 rounded-xl px-2 py-1.5 transition-colors duration-150 aria-selected:bg-muted/70";
+const ROW_CLASSES = "group/item flex cursor-pointer items-center gap-3.5 rounded-xl px-2 py-3 transition-colors duration-150 aria-selected:bg-muted/70";
 
 /** Row icons: 36px tiles in the logo's shape. */
 const ROW_TILE = "h-9 w-9 [&_svg]:h-[18px] [&_svg]:w-[18px]";
@@ -352,7 +352,7 @@ export function NavCommandMenu({
                     <span className="h-1 w-9 rounded-full bg-muted-foreground/30" />
                   </div>
 
-                  <div className="flex items-center gap-3 border-b border-border/40 px-4 py-3.5">
+                  <div className="flex items-center gap-3 border-b border-border/40 px-5 py-4">
                     {search ? (
                       <SearchIcon query={debouncedQuery} active={Boolean(query)} />
                     ) : (
@@ -367,7 +367,7 @@ export function NavCommandMenu({
                       ref={inputRef}
                       value={query}
                       onValueChange={setQuery}
-                      placeholder={t("Search or run a command…")}
+                      placeholder={t("Navigate and search Medialane")}
                       className="flex-1 bg-transparent text-base outline-none placeholder:text-muted-foreground"
                     />
                     <Kbd className="hidden sm:inline-flex">{t("esc")}</Kbd>
@@ -380,7 +380,7 @@ export function NavCommandMenu({
                     </button>
                   </div>
 
-                  <Command.List className="min-h-0 flex-1 overflow-y-auto overscroll-contain p-2">
+                  <Command.List className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-3 py-2">
                     <Command.Empty className="py-8 text-center text-sm text-muted-foreground">
                       {t("No results found.")}
                     </Command.Empty>
@@ -425,12 +425,12 @@ export function NavCommandMenu({
                   </Command.List>
 
                   {accountSlot && (
-                    <div className="border-t border-border/40 bg-muted/20 px-3 py-3">
+                    <div className="border-t border-border/40 bg-muted/20 px-5 py-4">
                       {accountSlot}
                     </div>
                   )}
 
-                  <div className="flex items-center justify-between gap-3 border-t border-border/40 bg-muted/20 px-3 py-2">
+                  <div className="flex items-center justify-between gap-3 border-t border-border/40 bg-muted/20 px-5 py-4">
                     <div className="flex items-center gap-3">
                       {footerSlot && <div className="flex items-center gap-1">{footerSlot}</div>}
                       {showKeyboardHints && (

@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.388.0] — 2026-11-21
+
+### Changed
+
+- `NavCommandMenu`: taller rows (12px above and below each), more padding in the search bar, list and footer; the search placeholder reads "Navigate and search Medialane".
+
 ## [0.387.0] — 2026-11-21
 
 ### Changed

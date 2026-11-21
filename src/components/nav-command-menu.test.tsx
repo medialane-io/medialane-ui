@@ -64,7 +64,7 @@ async function openMenu(search: boolean, list: NavCommandGroup[] = commands) {
     </MedialaneAppProvider>
   );
   act(() => { fireEvent.click(view.getByText("open")); });
-  const input = await waitFor(() => view.getByPlaceholderText("Search or run a command…"));
+  const input = await waitFor(() => view.getByPlaceholderText("Navigate and search Medialane"));
   return { view, input };
 }
 
