@@ -2,17 +2,30 @@ import { afterEach, beforeEach, describe, expect, test } from "bun:test";
 import { useState } from "react";
 import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { SWRConfig } from "swr";
-import { getTokenBySymbol } from "@medialane/sdk";
-import type { MedialaneClient } from "@medialane/sdk/starknet";
+import { getTokenBySymbol, type ApiOrder } from "@medialane/sdk";
+import { MedialaneClient } from "@medialane/sdk/starknet";
 import { MedialaneAppProvider, type MedialaneApp } from "./medialane-app.js";
-import { PurchasePanel, amountText, type PurchasePanelProps } from "./purchase-panel.js";
+import { PurchasePanel, amountText, editionsAvailable, type PurchasePanelProps } from "./purchase-panel.js";
 
 globalThis.fetch = (async () => new Response(JSON.stringify({ data: { usd: {} } }))) as unknown as typeof fetch;
 
 let held: Record<string, bigint> = {};
 const symbols = ["USDC", "USDT", "ETH", "STRK", "WBTC"];
 
+const real = new MedialaneClient({ feeConfig: { enabled: true } });
+
+const listing = (itemType = "ERC1155") =>
+  ({
+    nftTokenId: "1",
+    remainingAmount: "1000",
+    offer: { itemType, token: "0x1", identifier: "1", startAmount: "1000", endAmount: "1000" },
+    consideration: { itemType: "ERC20", token: getTokenBySymbol("USDC")!.address, identifier: "0", startAmount: "10000", endAmount: "10000", recipient: "0x3" },
+    price: { formatted: "0.01", currency: "USDC", decimals: 6, raw: "10000" },
+    token: { name: "Himalayas Records" },
+  }) as unknown as ApiOrder;
+
 const client = {
+  purchaseCost: real.purchaseCost.bind(real),
   provider: {
     callContract: async ({ contractAddress }: { contractAddress: string }) => {
       const symbol = symbols.find((s) => BigInt(getTokenBySymbol(s)!.address) === BigInt(contractAddress))!;
@@ -31,12 +44,9 @@ function Harness({ onPick, ...props }: HarnessProps) {
     <SWRConfig value={{ provider: () => new Map() }}>
       <MedialaneAppProvider value={{ getClient: () => client, signedIn: true } as unknown as MedialaneApp}>
         <PurchasePanel
-          name="Himalayas Records"
-          price={{ formatted: "0.01", currency: "USDC" }}
+          order={listing("ERC721")}
           quantity={quantity}
           onQuantityChange={setQuantity}
-          amountRaw={10_100n * BigInt(quantity)}
-          feeBps={100}
           walletAddress="0xabc"
           payWith={payWith}
           onPayWithChange={(symbol) => { setPayWith(symbol); onPick?.(symbol); }}
@@ -82,7 +92,7 @@ describe("PurchasePanel", () => {
   });
 
   test("a typed quantity is kept within what is available", () => {
-    render(<Harness walletAddress={null} available={1000} />);
+    render(<Harness walletAddress={null} order={listing("ERC1155")} />);
     const input = screen.getByRole("textbox", { name: "Quantity" });
     fireEvent.change(input, { target: { value: "5000" } });
     fireEvent.blur(input);
@@ -103,6 +113,18 @@ describe("PurchasePanel", () => {
     render(<Harness onAddFunds={() => { asked++; }} />);
     fireEvent.click(await screen.findByRole("button", { name: "Add funds" }));
     expect(asked).toBe(1);
+  });
+});
+
+describe("editionsAvailable", () => {
+  test("is what is left of an ERC-1155 listing, and nothing for ERC-721", () => {
+    expect(editionsAvailable(listing("ERC1155"))).toBe(1000);
+    expect(editionsAvailable(listing("ERC721"))).toBeNull();
+  });
+
+  test("an ERC-721 purchase has no quantity field", () => {
+    render(<Harness walletAddress={null} />);
+    expect(screen.queryByRole("textbox", { name: "Quantity" })).toBeNull();
   });
 });
 

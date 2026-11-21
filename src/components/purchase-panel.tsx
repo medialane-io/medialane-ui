@@ -2,7 +2,7 @@
 
 import { useEffect, useState, type ReactNode } from "react";
 import { AlertCircle, Check, Loader2, Minus, Plus } from "lucide-react";
-import { formatAmount } from "@medialane/sdk";
+import { formatAmount, type ApiOrder } from "@medialane/sdk";
 import Image from "./image.js";
 import { Alert, AlertDescription } from "./alert.js";
 import { CurrencyIcon } from "./currency-icon.js";
@@ -22,18 +22,11 @@ export function amountText(raw: bigint, decimals: number): string {
 }
 
 export interface PurchasePanelProps {
-  name: string;
+  order: ApiOrder;
+  /** The asset image, resolved by the app. */
   image?: string | null;
-  /** Unit price as the order shows it. */
-  price: { formatted: string | null; currency: string | null } | null | undefined;
-  /** Editions left to buy; the quantity stepper shows when more than one is left. */
-  available?: number | null;
   quantity: number;
   onQuantityChange: (quantity: number) => void;
-  /** What the purchase spends in the order's coin, fee included. */
-  amountRaw: bigint;
-  /** Platform fee in basis points, as included in `amountRaw`. */
-  feeBps: number;
   /** The buyer's wallet; without one the coins are not listed. */
   walletAddress: string | null;
   payWith: string | null;
@@ -45,19 +38,22 @@ export interface PurchasePanelProps {
   children: ReactNode;
 }
 
+/** Editions left to buy from an ERC-1155 listing; null for ERC-721. */
+export function editionsAvailable(order: ApiOrder): number | null {
+  if (order.offer.itemType !== "ERC1155") return null;
+  return Math.max(1, parseInt(order.remainingAmount ?? order.offer.startAmount ?? "1", 10));
+}
+
 /**
- * The body of a purchase: what is bought, how many, which coin pays and the total. Each app passes
- * its own action in `children`; the panel does not buy anything itself.
+ * The body of a purchase: what is bought, how many, which coin pays and the total, with the cost
+ * the app's client builds the purchase with. Each app passes its own action in `children`; the
+ * panel does not buy anything itself.
  */
 export function PurchasePanel({
-  name,
+  order,
   image,
-  price,
-  available,
   quantity,
   onQuantityChange,
-  amountRaw,
-  feeBps,
   walletAddress,
   payWith,
   onPayWithChange,
@@ -65,8 +61,11 @@ export function PurchasePanel({
   error,
   children,
 }: PurchasePanelProps) {
+  const name = order.token?.name || `Token #${order.nftTokenId}`;
+  const price = order.price;
   const currency = price?.currency ?? null;
-  const { options, isLoading } = usePaymentOptions({ currency: currency ?? "", amountRaw, walletAddress });
+  const available = editionsAvailable(order);
+  const { cost, options, isLoading } = usePaymentOptions({ order, quantity, walletAddress });
 
   const picked = isLoading ? payWith : pickPayment(options, payWith);
   useEffect(() => {
@@ -75,8 +74,8 @@ export function PurchasePanel({
 
   const paying = options.find((o) => o.symbol === payWith) ?? null;
   const totalSymbol = paying?.symbol ?? currency;
-  const totalRaw = paying ? paying.cost : amountRaw;
-  const totalDecimals = paying?.decimals ?? options.find((o) => o.symbol === currency)?.decimals ?? 18;
+  const totalRaw = paying ? paying.cost : cost.total;
+  const totalDecimals = paying?.decimals ?? price?.decimals ?? 18;
 
   return (
     <div className="flex flex-col gap-5 p-5">
@@ -95,7 +94,7 @@ export function PurchasePanel({
         </div>
       </div>
 
-      {available != null && available > 1 ? (
+      {available !== null && available > 1 ? (
         <QuantityField value={quantity} max={available} onChange={onQuantityChange} />
       ) : null}
 
@@ -109,7 +108,7 @@ export function PurchasePanel({
         />
       ) : null}
 
-      <TotalLine symbol={totalSymbol} raw={totalRaw} decimals={totalDecimals} feeBps={feeBps} />
+      <TotalLine symbol={totalSymbol} raw={totalRaw} decimals={totalDecimals} feeBps={cost.feeBps} />
 
       <div className="flex flex-col gap-3">
         {error ? (

@@ -1,9 +1,10 @@
 "use client";
 
-import useSWR from "swr";
-import { getListableTokens } from "@medialane/sdk";
-import { erc20Balance } from "@medialane/sdk/starknet";
-import { useMedialaneApp } from "../components/medialane-app.js";
+import type { ApiOrder } from "@medialane/sdk";
+import type { PurchaseCost } from "@medialane/sdk/starknet";
+import { useMedialaneClient } from "./use-medialane-client.js";
+import { useSwapQuote } from "./use-swap-quote.js";
+import { useTokenBalance } from "./media-wallet/use-erc20-balance.js";
 
 export interface PaymentOption {
   symbol: string;
@@ -14,69 +15,42 @@ export interface PaymentOption {
   covers: boolean;
 }
 
-export interface PaymentOptionsInput {
-  /** The coin the order is priced in. */
-  currency: string;
-  /** What the purchase spends in `currency`, fee included. */
-  amountRaw: bigint;
-  walletAddress: string | null;
+/** The coins a purchase can be paid with, in the order they are offered. */
+export const PAYMENT_COINS = ["USDC", "USDT", "ETH", "STRK", "WBTC"] as const;
+
+function useCoin(symbol: string, currency: string, amountRaw: bigint, walletAddress: string | null) {
+  const { rawBalance, isLoading, decimals } = useTokenBalance(symbol, walletAddress);
+  const balance = rawBalance ?? 0n;
+  const own = symbol === currency;
+  const swappable = !own && balance > 0n && amountRaw > 0n;
+  const { quote, isLoading: quoting } = useSwapQuote(swappable ? symbol : null, currency, swappable ? amountRaw.toString() : null, walletAddress);
+  const cost = own ? amountRaw : quote ? BigInt(quote.sellAmount) : null;
+  const option: PaymentOption | null =
+    own || balance > 0n ? { symbol, decimals, balance, cost, covers: cost !== null && balance >= cost } : null;
+  return { option, isLoading: isLoading || (swappable && quoting) };
 }
 
 /**
- * The coins a wallet can pay with: the order's own coin first, then every other listable coin the
- * wallet holds, each priced through a swap quote.
+ * What buying `quantity` from `order` costs, and the coins the wallet can pay with: the order's own
+ * coin first, then every other coin it holds, each priced through a swap quote.
  */
-export function usePaymentOptions({ currency, amountRaw, walletAddress }: PaymentOptionsInput): {
+export function usePaymentOptions({ order, quantity, walletAddress }: { order: ApiOrder; quantity: number; walletAddress: string | null }): {
+  cost: PurchaseCost;
   options: PaymentOption[];
   isLoading: boolean;
 } {
-  const { getClient, signedIn } = useMedialaneApp();
-  const tokens = getListableTokens();
-
-  const balances = useSWR(
-    walletAddress ? ["payment-balances", walletAddress] : null,
-    ([, holder]) => Promise.all(tokens.map((t) => erc20Balance(getClient().provider, t.address, holder))),
-    { refreshInterval: 30_000, revalidateOnFocus: false, shouldRetryOnError: false, onError: () => {} },
-  );
-
-  const balanceOf = (symbol: string) => balances.data?.[tokens.findIndex((t) => t.symbol === symbol)] ?? 0n;
-  const held = tokens.filter((t) => t.symbol !== currency && balanceOf(t.symbol) > 0n).map((t) => t.symbol);
-
-  const quotes = useSWR(
-    signedIn && walletAddress && held.length > 0 && amountRaw > 0n
-      ? ["payment-quotes", currency, amountRaw.toString(), walletAddress, held.join(",")]
-      : null,
-    () =>
-      Promise.all(
-        held.map((symbol) =>
-          getClient()
-            .api.platform.swapQuote({
-              sellSymbol: symbol,
-              buySymbol: currency,
-              buyAmountRaw: amountRaw.toString(),
-              takerAddress: walletAddress!,
-            })
-            .then((quote) => BigInt(quote.sellAmount))
-            .catch(() => null),
-        ),
-      ),
-    { refreshInterval: 20_000, dedupingInterval: 15_000, revalidateOnFocus: false, shouldRetryOnError: false, keepPreviousData: true },
-  );
-
-  const own = tokens.find((t) => t.symbol === currency);
-  const options: PaymentOption[] = [];
-  if (own) {
-    const balance = balanceOf(currency);
-    options.push({ symbol: currency, decimals: own.decimals, balance, cost: amountRaw, covers: balance >= amountRaw });
-  }
-  held.forEach((symbol, i) => {
-    const token = tokens.find((t) => t.symbol === symbol)!;
-    const balance = balanceOf(symbol);
-    const cost = quotes.data?.[i] ?? null;
-    options.push({ symbol, decimals: token.decimals, balance, cost, covers: cost !== null && balance >= cost });
-  });
-
-  return { options, isLoading: balances.isLoading || (held.length > 0 && quotes.isLoading) };
+  const cost = useMedialaneClient().purchaseCost(order, quantity);
+  const currency = order.price?.currency ?? "";
+  const coins = [
+    useCoin(PAYMENT_COINS[0], currency, cost.total, walletAddress),
+    useCoin(PAYMENT_COINS[1], currency, cost.total, walletAddress),
+    useCoin(PAYMENT_COINS[2], currency, cost.total, walletAddress),
+    useCoin(PAYMENT_COINS[3], currency, cost.total, walletAddress),
+    useCoin(PAYMENT_COINS[4], currency, cost.total, walletAddress),
+  ];
+  const listed = coins.map((c) => c.option).filter((o): o is PaymentOption => o !== null);
+  const options = [...listed.filter((o) => o.symbol === currency), ...listed.filter((o) => o.symbol !== currency)];
+  return { cost, options, isLoading: coins.some((c) => c.isLoading) };
 }
 
 /** The coin to pay with: `current` while it still covers the purchase, otherwise the first that does. */

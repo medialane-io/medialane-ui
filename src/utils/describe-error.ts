@@ -76,10 +76,12 @@ export function describeError(error: unknown): ErrorNotice {
     );
   }
 
+  if (error instanceof SponsoredCallRejectedError && error.code === "insufficient_balance") {
+    return notice("Insufficient balance", `${INSUFFICIENT_BALANCE} Nothing was sent.`);
+  }
+
   if (error instanceof SponsoredCallRejectedError && error.code === "not_executable") {
-    return /insufficient (balance|allowance)|u256_sub overflow/i.test(error.detail ?? "")
-      ? notice("Insufficient balance", `${INSUFFICIENT_BALANCE} Nothing was sent.`)
-      : notice(undefined, NOT_EXECUTABLE);
+    return notice(undefined, NOT_EXECUTABLE);
   }
 
   if (error instanceof UserFacingError) {

@@ -109,14 +109,12 @@ describe("a transaction the network would not execute", () => {
     expect(notice.retryable).toBe(true);
   });
 
-  test("names a balance shortfall when the revert reason shows one", async () => {
+  test("names a balance shortfall", async () => {
     const { SponsoredCallRejectedError } = await import("@medialane/sdk/starknet");
-    for (const detail of ["... 'ERC20: insufficient balance' ...", "... 'u256_sub Overflow' ..."]) {
-      const notice = describeError(new SponsoredCallRejectedError("The transaction could not be executed as submitted", { code: "not_executable", detail }));
-      expect(notice.title).toBe("Insufficient balance");
-      expect(notice.message).toBe("You don't have enough balance to complete this transaction. Nothing was sent.");
-      expect(notice.retryable).toBe(true);
-    }
+    const notice = describeError(new SponsoredCallRejectedError("The account balance does not cover this transaction", { code: "insufficient_balance" }));
+    expect(notice.title).toBe("Insufficient balance");
+    expect(notice.message).toBe("You don't have enough balance to complete this transaction. Nothing was sent.");
+    expect(notice.retryable).toBe(true);
   });
 });
 
