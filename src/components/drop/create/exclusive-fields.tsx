@@ -13,7 +13,6 @@ export interface ExclusiveValue {
 
 const TYPES = Object.keys(GATED_CONTENT_TYPES).map((value) => ({ value, label: value.charAt(0) + value.slice(1).toLowerCase() }));
 
-/** Content only holders can open: a title, a private link and its kind. */
 export function ExclusiveFields({ value, onChange }: { value: ExclusiveValue; onChange: (v: ExclusiveValue) => void }) {
   const t = useT();
   return (

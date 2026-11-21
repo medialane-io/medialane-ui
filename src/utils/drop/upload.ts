@@ -6,7 +6,6 @@ export interface UploadTask {
   error: string | null;
 }
 
-/** Uploads every task that isn't done, `concurrency` at a time; never throws — failures stay on their task. */
 export async function uploadAll(
   tasks: UploadTask[],
   upload: (file: File) => Promise<string>,

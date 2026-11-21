@@ -29,7 +29,6 @@ export function popClaimedKey(collection: string | null, wallet: string | null):
   return collection && wallet ? `pop-claimed-${collection}-${wallet}` : null;
 }
 
-/** Whether `wallet` already holds this collection's credential, read from chain. */
 export function usePopClaimStatus(
   collection: string | null,
   wallet: string | null,

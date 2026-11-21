@@ -4,7 +4,6 @@ import useSWR from "swr";
 import type { ApiClient, ApiCollection, ApiTierOnchain } from "@medialane/sdk";
 import { useMedialaneClient } from "./use-medialane-client.js";
 
-/** An IP Ticket type or IP Club membership tier, with amounts as bigint. */
 export interface TierOnchain {
   maxSupply: bigint;
   minted: bigint;
@@ -43,12 +42,10 @@ function useMyCollectionsOf( service: string, owner: string | null) {
   return { collections: data ?? [], isLoading, error, mutate };
 }
 
-/** The id the next membership tier will get. Reads a fresh count, so call it right before creating the tier. */
 export async function predictNextMembershipId(api: ApiClient, contract: string): Promise<number> {
   return (await api.chainReads.clubMembershipCount(contract)) + 1;
 }
 
-/** The id the next ticket type will get. Reads a fresh count, so call it right before creating the ticket. */
 export async function predictNextTicketId(api: ApiClient, contract: string): Promise<number> {
   return (await api.chainReads.ticketCount(contract)) + 1;
 }

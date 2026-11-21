@@ -31,14 +31,12 @@ export function useDropMints( contract: string | null) {
   return { mints: data?.data ?? ([] as ApiDropMint[]), isLoading, mutate };
 }
 
-/** The platform fee, in basis points, the backend adds to a mint for this app; null until known. */
 export function useDropFee(): number | null {
   const client = useMedialaneClient();
   const { data } = useSWR("drop-fee", () => client.api.drops.fee(), { revalidateOnFocus: false });
   return data?.launchpadBps ?? null;
 }
 
-/** A file from the drop's metadata folder ("1" or "collection.json"). */
 export function useDropFile<T = Record<string, unknown>>(baseUri: string | null, name: string) {
   const client = useMedialaneClient();
   const { data } = useSWR(baseUri ? ["drop-file", baseUri, name] : null, async () => (await client.api.metadata.resolve(`${baseUri}${name}`)).data as T, quiet);

@@ -6,7 +6,6 @@ export interface AssetAccent {
   accentCountStyle: { background: string };
 }
 
-// Class names are written out in full so Tailwind finds them.
 const CLASSES = {
   blue: { border: "border-brand-blue/20", label: "text-brand-blue" },
   purple: { border: "border-brand-purple/20", label: "text-brand-purple" },

@@ -1,22 +1,9 @@
-// forked from design-sync lib/bundle.mjs — added nextShim plugin: medialane-ui
-// imports next/link, next/image, next/navigation directly, and esbuild was
-// bundling the real Next.js runtime modules (not stubs), which reference
-// process.env.__NEXT_* at module-eval time and crash the whole IIFE with
-// "ReferenceError: process is not defined" in the browser (no `next` bundler
-// present to define those). See reactShim below for the established pattern.
-
-// esbuild bundling: dist entry → IIFE at window.<GLOBAL>, plus the
-// `/* @ds-bundle: {...} */` first-line header the claude.ai/design app's
-// self-check parses.
-
 import { build } from 'esbuild';
 import { createHash } from 'node:crypto';
 import { existsSync, readFileSync, statSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { IIFE_IMPORT_META_DEFINE } from '../../.ds-sync/lib/common.mjs';
 
-// Resolve the package's browser entry. Prefer ESM (tree-shakes cleaner).
-// `soft` → return null on miss instead of exiting (caller synthesizes from src/).
 export function resolveDistEntry({ pkgDir, pkgJson, override, pkgName, soft = false }) {
   if (override) {
     const p = resolve(override);
@@ -27,7 +14,6 @@ export function resolveDistEntry({ pkgDir, pkgJson, override, pkgName, soft = fa
     }
     return p;
   }
-  // exports conditions can nest ({types, default:{types, default}}) — flatten.
   const str = (v) => (typeof v === 'string' ? v : v?.default ? str(v.default) : null);
   const cand = [
     pkgJson.module,
@@ -48,8 +34,6 @@ export function resolveDistEntry({ pkgDir, pkgJson, override, pkgName, soft = fa
   process.exit(1);
 }
 
-// react/react-dom are externals → resolved to window.React / window.ReactDOM.
-// Everything else is bundled from NODE_MODULES.
 export const reactShim = {
   name: 'react-global',
   setup(b) {
@@ -61,27 +45,9 @@ export const reactShim = {
       path: 'react-dom-shim',
       namespace: 'shim',
     }));
-    // react-is must match window.React's $$typeof symbols. A bundled copy
-    // from node_modules can be a different major (e.g. react-is@19 checks
-    // for 'react.transitional.element' while react@18 emits 'react.element'),
-    // which makes isElement() always false and breaks components that
-    // branch on it (count badges, nav indicators, …).
     b.onResolve({ filter: /^react-is$/ }, () => ({ path: 'react-is-shim', namespace: 'shim' }));
-    // scheduler must be the same instance window.React uses internally; a
-    // second bundled copy breaks concurrent rendering.
     b.onResolve({ filter: /^scheduler(\/|$)/ }, () => ({ path: 'scheduler-shim', namespace: 'shim' }));
     b.onLoad({ filter: /^react-shim$/, namespace: 'shim' }, () => ({
-      // Automatic-runtime jsx/jsxs → createElement. Two invariants matter:
-      //  · key is the 3rd ARG, never in props — lift it into the createElement
-      //    config object.
-      //  · jsxs means "static children array": the compiler emits it for
-      //    <div><A/><B/></div> as jsxs("div",{children:[A,B]}). The real
-      //    react/jsx-runtime suppresses key validation for that array. We
-      //    must SPREAD it into createElement variadic args — passing the
-      //    array via props.children makes React's reconciler treat it as a
-      //    dynamic list and warn "missing key" on every component with 2+
-      //    static children. jsx (single child slot) keeps the child as one
-      //    arg so a runtime .map() array there is still key-validated.
       contents: `var R=window.React;
 function np(p,k){var o={};for(var x in p)if(x!=="children")o[x]=p[x];if(k!==void 0)o.key=k;return o}
 function jsx(t,p,k){var c=p&&p.children;return c===void 0?R.createElement(t,np(p,k)):R.createElement(t,np(p,k),c)}
@@ -92,8 +58,6 @@ module.exports.Fragment=R.Fragment;`,
       loader: 'js',
     }));
     b.onLoad({ filter: /^react-dom-shim$/, namespace: 'shim' }, () => ({
-      // preload/preinit/preconnect/prefetchDNS (React 18.3+/19 resource
-      // hints) must exist — some DSes call them at Provider mount.
       contents: 'var D=window.ReactDOM,n=function(){};' +
         'module.exports=Object.assign({preload:n,preinit:n,preconnect:n,prefetchDNS:n,preloadModule:n,preinitModule:n},D);',
       loader: 'js',
@@ -117,21 +81,12 @@ exports.Fragment=R.Fragment;exports.Suspense=R.Suspense;exports.StrictMode=R.Str
       loader: 'js',
     }));
     b.onLoad({ filter: /^scheduler-shim$/, namespace: 'shim' }, () => ({
-      // A DS dist/ rarely imports scheduler directly — when it does, it
-      // means react-dom leaked into the dist. Surface it.
       contents: `throw new Error("[SCHEDULER_MISSING] this DS's dist/ imports 'scheduler' directly — usually react-dom leaked into the dist. Check the DS build's externals.");`,
       loader: 'js',
     }));
   },
 };
 
-// next/link, next/image, next/navigation: the real Next.js modules read
-// process.env.__NEXT_* at module-eval time (no `process` global exists in
-// this browser IIFE), which crashes the whole bundle the instant any
-// component imports one of them. Swap in minimal browser-safe stubs instead
-// — a plain <a>, a plain <img>, and no-op navigation hooks. Preview cards
-// don't have a real Next.js router anyway, so the real modules would behave
-// wrong even if they didn't crash.
 export const nextShim = {
   name: 'next-stub',
   setup(b) {
@@ -161,13 +116,9 @@ module.exports={usePathname:usePathname,useSearchParams:useSearchParams,useParam
   },
 };
 
-// Build a resolve plugin from tsconfig compilerOptions.paths. esbuild's
-// built-in `tsconfig` option only applies paths to files covered by that
-// tsconfig, which the synth entry (in OUT) isn't — so we resolve explicitly.
 export function tsconfigPathsPlugin(tsconfigPath) {
   let paths, baseUrl;
   try {
-    // Strip // and /* */ comments — tsconfig.json permits them, JSON.parse doesn't.
     const raw = readFileSync(tsconfigPath, 'utf8')
       .replace(/\/\*[\s\S]*?\*\//g, '')
       .replace(/(^|[^:])\/\/.*$/gm, '$1');
@@ -180,8 +131,6 @@ export function tsconfigPathsPlugin(tsconfigPath) {
     targets: (Array.isArray(v) ? v : [v]).map((t) => resolve(base, t.replace(/\*$/, ''))),
     wild: k.endsWith('*'),
   }));
-  // Filter on the alias prefixes so the plugin only fires for @/-style paths,
-  // not every node_modules import.
   const esc = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   const filter = new RegExp(`^(?:${rules.map((r) => esc(r.prefix)).join('|')})`);
   const exts = ['', '.ts', '.tsx', '.js', '.jsx', '.mjs', '/index.ts', '/index.tsx', '/index.js', '/index.jsx'];
@@ -205,14 +154,6 @@ export function tsconfigPathsPlugin(tsconfigPath) {
   };
 }
 
-// Bundle `entry` to a single IIFE at the project root. Returns paths +
-// inlinedExternals (npm packages esbuild pulled in, derived from the
-// metafile — react/react-dom/react-is are externalized so excluded).
-// Options shared by the runtime bundle pass and the export-evidence pass —
-// one source so the two resolutions can never drift: a loader or plugin
-// present in one but not the other would either throw the evidence pass
-// into its silent null-fallback or, worse, make the evidence diverge from
-// what the runtime bundle actually contains.
 function sharedBuildOptions({ nodePaths, tsconfig }) {
   const pathsPlugin = tsconfig ? tsconfigPathsPlugin(tsconfig) : null;
   const plugins = [reactShim, nextShim];
@@ -230,9 +171,6 @@ function sharedBuildOptions({ nodePaths, tsconfig }) {
       '.woff': 'dataurl',
       '.woff2': 'dataurl',
     },
-    // No '.css' loader override: some DSes ship scss already compiled to
-    // .css with css-modules hashes pre-baked, and esbuild's default 'css'
-    // loader (unlike 'local-css') preserves them.
     minify: false,
     define: { 'process.env.NODE_ENV': '"development"' },
   };
@@ -249,21 +187,12 @@ export async function bundleToIife({ entry, globalName, nodePaths, out, tsconfig
       entryPoints: [entry],
       format: 'iife',
       globalName,
-      // __dsMainNs (set by package-build when extraEntries are present) is
-      // the main package's runtime namespace — Object.assign it over the
-      // merged IIFE exports so main-package names win over icon collisions.
       footer: { js: `window.${globalName}=${globalName}.__dsMainNs?Object.assign({},${globalName},${globalName}.__dsMainNs,{__dsMainNs:undefined}):${globalName};` },
       outfile: bundleJs,
       logLevel: 'warning',
-      // iife can't evaluate import.meta.url natively — define it here only.
-      // The esm evidence pass supports it natively, and a define is not
-      // resolution-affecting, so the two graphs still resolve identically.
-      // Merged over the shared define (a bare override would drop NODE_ENV).
       define: { ...shared.define, ...IIFE_IMPORT_META_DEFINE },
     });
   } catch (e) {
-    // Tag unbuilt workspace siblings — package exists in node_modules but its
-    // entry points at a dist/ that hasn't been built.
     const unresolved = [...new Set((e.errors ?? []).map((er) => er.text.match(/Could not resolve "([^"]+)"/)?.[1]).filter(Boolean))];
     const siblings = unresolved.filter((p) => {
       const pj = join(nodePaths, p, 'package.json');
@@ -297,19 +226,6 @@ export async function bundleToIife({ entry, globalName, nodePaths, out, tsconfig
   return { bundleJs, bundleCss, inlinedExternals };
 }
 
-// Evidence pass for the provider gate: rebuild the same entry as ESM
-// (write:false, nothing touches disk) and read esbuild's own export list —
-// the same resolution that produced the runtime bundle, so presence/absence
-// is provable where a .d.ts scan is heuristic. One residual unknowable:
-// `export * from <cjs>` isn't statically enumerable (esbuild emits a
-// runtime __reExport and the names are missing from `exports`), and the
-// metafile carries no signal for WHICH import is a star — so any bundled
-// CJS input downgrades absence from provable to unverifiable (cjsPresent).
-// That over-triggers for plain CJS imports (a bundled lodash softens the
-// gate), which is the accepted price of never minting a false fatal.
-// Returns null on ANY failure: the caller must fall back to scan evidence —
-// this pass may only ever change a gate verdict, never fail a build the
-// real bundle pass accepted.
 export async function bundleExportEvidence({ entry, nodePaths, tsconfig }) {
   try {
     const r = await build({
@@ -322,9 +238,6 @@ export async function bundleExportEvidence({ entry, nodePaths, tsconfig }) {
     });
     const out = Object.values(r.metafile?.outputs ?? {})[0];
     const exports = new Set((out?.exports ?? []).filter((n) => n !== '__dsMainNs'));
-    // The react-family shims are authored as CJS and appear in every build's
-    // inputs under the 'shim:' namespace — they can't hide DS names, so
-    // only genuinely-bundled CJS counts toward the unverifiable signal.
     const cjsPresent = Object.entries(r.metafile?.inputs ?? {}).some(
       ([k, i]) => i.format === 'cjs' && !k.startsWith('shim:'),
     );
@@ -334,17 +247,9 @@ export async function bundleExportEvidence({ entry, nodePaths, tsconfig }) {
   }
 }
 
-// Prepend the `/* @ds-bundle: {…} */` first-line header. The
-// claude.ai/design app reads this; format is load-bearing — namespace +
-// components feed the consuming agent and the ds_manifest;
-// sourceHashes + inlinedExternals drive the keep-vs-rebuild decision.
-// `*/` inside the JSON is escaped so the comment can't terminate early.
 export function stampHeader(bundleJs, { namespace, components, inlinedExternals }) {
   const body = readFileSync(bundleJs, 'utf8');
   const out = dirname(bundleJs);
-  // Keyed by per-component output paths — what decideBundleRebuild compares
-  // against. Includes .d.ts and .prompt.md so contract/doc-only edits also
-  // surface in the incremental-upload diff.
   const sourceHashes = Object.fromEntries(
     components.flatMap((c) => {
       const base = `components/${c.group}/${c.name}/${c.name}`;

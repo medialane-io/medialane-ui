@@ -10,7 +10,6 @@ export interface ClaimRailProps {
 
   steps: string[];
 
-  /** Optional closing note; omitted, the rail ends with the steps. */
   trustLead?: string;
   trust?: string;
 

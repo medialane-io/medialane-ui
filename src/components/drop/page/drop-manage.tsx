@@ -22,7 +22,6 @@ export interface DropManageProps {
   indexed: ApiDrop | null;
   onchain: DropOnchain;
   mints: ApiDropMint[];
-  /** Runs a manage action as one transaction; resolves when confirmed. */
   run: (params: { action: "issue"; recipient: string; quantity: string } | { action: "set_allowlist_root"; root: string }) => Promise<void>;
   saveExclusive: (value: ExclusiveValue | null) => Promise<void>;
 }

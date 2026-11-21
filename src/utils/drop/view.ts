@@ -27,12 +27,10 @@ export interface ActionBoxView {
 
 const when = (ts: number, locale: string = DEFAULT_LOCALE) => formatDateTime(ts * 1000, locale, { weekday: "short", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
 
-/** Everything the mint box shows, decided from chain state before any transaction. */
 export function actionBoxView(input: {
   drop: DropOnchain;
   mint: DropMintState;
   quantity: bigint;
-  /** Platform fee added to a mint, in basis points. */
   feeBps: number;
   now: number;
 }): ActionBoxView {

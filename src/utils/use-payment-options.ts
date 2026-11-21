@@ -10,12 +10,10 @@ export interface PaymentOption {
   symbol: string;
   decimals: number;
   balance: bigint;
-  /** What paying with this coin costs, in this coin; null while it is quoted or when there is no route. */
   cost: bigint | null;
   covers: boolean;
 }
 
-/** The coins a purchase can be paid with, in the order they are offered. */
 export const PAYMENT_COINS = ["USDC", "USDT", "ETH", "STRK", "WBTC"] as const;
 
 function useCoin(symbol: string, currency: string, amountRaw: bigint, walletAddress: string | null) {
@@ -30,10 +28,6 @@ function useCoin(symbol: string, currency: string, amountRaw: bigint, walletAddr
   return { option, isLoading: isLoading || (swappable && quoting) };
 }
 
-/**
- * What buying `quantity` from `order` costs, and the coins the wallet can pay with: the order's own
- * coin first, then every other coin it holds, each priced through a swap quote.
- */
 export function usePaymentOptions({ order, quantity, walletAddress }: { order: ApiOrder; quantity: number; walletAddress: string | null }): {
   cost: PurchaseCost;
   options: PaymentOption[];
@@ -53,7 +47,6 @@ export function usePaymentOptions({ order, quantity, walletAddress }: { order: A
   return { cost, options, isLoading: coins.some((c) => c.isLoading) };
 }
 
-/** The coin to pay with: `current` while it still covers the purchase, otherwise the first that does. */
 export function pickPayment(options: readonly PaymentOption[], current: string | null): string | null {
   if (current && options.some((o) => o.symbol === current && o.covers)) return current;
   return options.find((o) => o.covers)?.symbol ?? null;

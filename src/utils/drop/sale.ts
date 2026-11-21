@@ -5,11 +5,9 @@ import { formatNumber } from "../../i18n/format.js";
 
 export interface SaleDraft {
   paid: boolean;
-  /** In the token's normal units, e.g. "5.5". */
   price: string;
   tokenSymbol: string;
   startNow: boolean;
-  /** `datetime-local` value in the creator's time zone. */
   start: string;
   hasEnd: boolean;
   end: string;
@@ -55,7 +53,6 @@ export function validateSale(d: SaleDraft, now: number): SaleErrors {
   return errors;
 }
 
-/** Terms for the create intent; call only after `validateSale` returns no errors. */
 export function toDropTerms(d: SaleDraft): DropTermsBody {
   const token = d.paid ? saleToken(d.tokenSymbol) : null;
   return {
@@ -67,7 +64,6 @@ export function toDropTerms(d: SaleDraft): DropTermsBody {
   };
 }
 
-/** What one token costs a collector, with the platform fee; null while the price is free or unfinished. */
 export function collectorPriceLine(d: SaleDraft, feeBps: number): string | null {
   const token = d.paid ? saleToken(d.tokenSymbol) : null;
   if (!token || validateSale({ ...EMPTY_SALE, paid: true, price: d.price, tokenSymbol: d.tokenSymbol }, 0).price) return null;

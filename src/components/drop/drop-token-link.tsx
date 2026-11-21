@@ -5,7 +5,6 @@ import { dropHref } from "@medialane/sdk";
 import Link from "../link.js";
 import { useT } from "../../i18n/provider.js";
 
-/** On a token page: where the token was minted. */
 export function DropTokenLink({ contract, name }: { contract: string; name: string | null }) {
   const t = useT();
   return (

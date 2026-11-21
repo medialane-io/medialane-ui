@@ -62,7 +62,6 @@ export function DropPage(props: { contract: string; initialTab?: string; portfol
   }
 
   const onchain = chain.drop;
-  // Until the fee is known the mint box counts as loading: no total, no mint button on a guessed fee.
   const priced = feeBps === null ? null : onchain;
   const mint = dropMintState({ drop: priced, wallet: walletAddress, claimed: chain.claimed, proof, balance: chain.balance, feeBps: feeBps ?? 0, now });
   const view = priced ? actionBoxView({ drop: priced, mint, quantity, feeBps: feeBps!, now }) : null;

@@ -1,4 +1,3 @@
-
 export class WrongNetworkError extends Error {
   constructor() {
     super("Your wallet is connected to the wrong network.");

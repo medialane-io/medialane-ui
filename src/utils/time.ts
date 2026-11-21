@@ -1,4 +1,3 @@
-
 function toMs(dateStr: string | number): number {
   const raw = typeof dateStr === "string" && /^\d+$/.test(dateStr.trim())
     ? Number(dateStr)

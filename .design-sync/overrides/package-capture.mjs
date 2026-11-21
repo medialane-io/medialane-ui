@@ -1,34 +1,4 @@
 #!/usr/bin/env node
-// package-capture — capture harness for the PACKAGE shape's ABSOLUTE grading.
-// There is no storybook here, so there is no reference render to compare
-// against: this photographs each authored preview story alone (via the
-// card's ?story= single-story render mode) and produces sheets
-// the working agent grades on ABSOLUTE criteria — styled with the DS's own
-// tokens/fonts, complete, legible, a plausible composition — rather than
-// against a reference column.
-//
-// Scope: only components with a COMPILED preview (_preview/<Name>.js —
-// authored .design-sync/previews/<Name>.tsx). Floor-card components are the
-// validator's territory (.render-check.json `fallbackCard`), not graded.
-//
-// LIFECYCLE — one invariant: grades follow the user's SOURCES. gradeKey =
-// H(sourceKey), the build-stamped key over the authored .tsx and the
-// preview-affecting config (lib/sync-hashes.mjs — the same values the
-// uploaded _ds_sync.json sidecar carries); styling/bundle/pipeline churn
-// never invalidates (the pipeline's fidelity travels; churn is spot-checked
-// by sample via --spot-check-components, driven by the resync driver).
-// Unchanged & fully graded `good` → carried forward, zero work.
-//
-// ALL state here is campaign-local and gitignored (.design-sync/.cache/
-// review/): <Name>.json is capture bookkeeping, <Name>.grade.json holds the
-// agent's verdicts:
-//   { "cells": { "<CellName>": { "verdict": "good"|"needs-work", "note": "…" } } }
-// Nothing is committed — CROSS-MACHINE carry-forward is derived from the
-// uploaded project instead (lib/remote-diff.mjs vs its _ds_sync.json):
-// a component unchanged vs the upload was already verified at upload time.
-//
-// Usage: node package-capture.mjs --out ./ds-bundle [--components A,B] [--force]
-//        [--spot-check-components A,B]
 
 import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
@@ -47,9 +17,6 @@ const flag = (n, d) => { const i = argv.indexOf(`--${n}`); return i < 0 ? d : ar
 }
 const OUT = flag('out') && resolve(flag('out'));
 const ONLY = flag('components') ? new Set(flag('components').split(',').map((s) => s.trim())) : null;
-// compare.mjs pick semantics: re-capture with grades KEPT, confirm the sheet
-// against recorded verdicts; honored on scoped runs (the driver's canary).
-// A pick whose grade or key doesn't carry falls through to normal rules.
 const SPOT_PICKS = flag('spot-check-components') ? flag('spot-check-components').split(',').map((s) => s.trim()).filter(Boolean) : [];
 const FORCE = argv.includes('--force');
 if (!OUT || !existsSync(join(OUT, '.stories-map.json'))) {
@@ -58,23 +25,14 @@ if (!OUT || !existsSync(join(OUT, '.stories-map.json'))) {
 }
 
 const manifest = JSON.parse(readFileSync(join(OUT, '.stories-map.json'), 'utf8'));
-// Recipe-gate the stamped keys (see compare.mjs): a manifest stamped under a
-// different recipe falls back to render-contract keying.
 if (manifest.keyRecipe !== KEY_RECIPE) for (const c of manifest.components ?? []) delete c.sourceKey;
 const escapeHtml = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
-// The grade key is the sourceKey package-build STAMPED into the manifest —
-// the same value in the uploaded _ds_sync.json sidecar, so local carry-
-// forward and remote verified-by-upload can never disagree. Only the user's
-// sources (authored .tsx, preview-affecting config) re-grade; --force
-// re-opens everything when a human wants a fresh look. A manifest from
-// pre-sourceKey scripts falls back to the old render-contract key.
 const oldGradeKeyFor = (c) => gradeKeyFrom(renderHashFor(OUT, c, {}));
 const gradeKeyFor = (c) => (c.sourceKey ? gradeKeyFrom(c.sourceKey) : oldGradeKeyFor(c));
 
 const cacheDir = resolve('.design-sync', '.cache', 'review');
 mkdirSync(cacheDir, { recursive: true });
-// Self-defending: even a sloppy `git add .design-sync` can't commit the cache.
 writeFileSync(join(resolve('.design-sync', '.cache'), '.gitignore'), '*\n');
 const shotBase = join(OUT, '_screenshots', 'review');
 const rawDir = join(shotBase, 'raw');
@@ -85,8 +43,6 @@ const comps = ONLY ? all.filter((c) => ONLY.has(c.name) || SPOT_PICKS.includes(c
 const floorCount = (manifest.components ?? []).length - all.length;
 if (floorCount && !ONLY) console.error(`  (${floorCount} component(s) on the floor card — author previews to bring them into grading)`);
 const spotChecks = new Set(FORCE ? [] : SPOT_PICKS.filter((n) => all.some((c) => c.name === n)));
-// A typo'd, renamed, or floor-card pick must never vanish silently — same
-// contract as compare.mjs's per-pick warning.
 for (const n of SPOT_PICKS) {
   if (!spotChecks.has(n)) console.error(`! --spot-check-components: "${n}" matches no capturable component (typo? renamed? floor card with no compiled preview?) — pick ignored`);
 }
@@ -99,7 +55,7 @@ try { ({ chromium } = await import('playwright')); }
 catch { console.error('playwright not installed — npm i playwright (in .ds-sync/) first'); process.exit(2); }
 const browser = await chromium.launch(process.env.DS_CHROMIUM_PATH ? { executablePath: process.env.DS_CHROMIUM_PATH } : {});
 const page = await browser.newPage({ viewport: { width: 900, height: 700 } });
-try { await page.clock.setFixedTime(new Date('2024-05-15T12:00:00Z')); } catch { /* older playwright */ }
+try { await page.clock.setFixedTime(new Date('2024-05-15T12:00:00Z')); } catch { }
 let pageErrs = [];
 page.on('pageerror', (e) => pageErrs.push(String(e).split('\n')[0]));
 const { srv, port } = await serveDir(OUT);
@@ -109,21 +65,13 @@ async function settle() {
     document.fonts?.ready,
     ...[...document.images].map((i) => i.decode().catch(() => {})),
   ])).catch(() => {});
-  // Let CSS/JS mount transitions (framer-motion entrance fades, etc.) finish
-  // before the screenshot.
   await page.waitForTimeout(600).catch(() => {});
-  // After a same-page navigation (this loop's per-story page.goto), headless
-  // Chromium can screenshot before it has actually painted the new document
-  // — computed styles already read correctly via evaluate(), but the pixels
-  // aren't there yet. A double rAF round-trip forces a real paint first.
   await page.evaluate(() => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)))).catch(() => {});
 }
 
 const report = [];
 for (const c of comps) {
   const rel = `components/${c.group}/${c.name}/${c.name}.html`;
-  // Capture feasibility BEFORE the grade key: a missing card html would hash
-  // as '∅' — a phantom contract change that clears a perfectly valid grade.
   let cardHead;
   try { cardHead = readFileSync(join(OUT, rel), 'utf8').split('\n', 1)[0] ?? ''; }
   catch {
@@ -132,23 +80,17 @@ for (const c of comps) {
     continue;
   }
   const gradeKey = gradeKeyFor(c);
-  // Grade identity is the component NAME (export names are unique; the group
-  // is display-only) — a pure regroup must not orphan grades.
   const capPath = join(cacheDir, `${c.name}.json`);
   const gradePath = join(cacheDir, `${c.name}.grade.json`);
   let prev = null, grade = null;
-  try { prev = JSON.parse(readFileSync(capPath, 'utf8')); } catch { /* first capture */ }
-  try { grade = JSON.parse(readFileSync(gradePath, 'utf8')); } catch { /* ungraded */ }
-  // Adoption shim (see compare.mjs): a pre-recipe json whose artifacts are
-  // byte-identical adopts the new key silently — here every captured
-  // component has an owned preview, so that's the only safe evidence.
+  try { prev = JSON.parse(readFileSync(capPath, 'utf8')); } catch { }
+  try { grade = JSON.parse(readFileSync(gradePath, 'utf8')); } catch { }
   if (c.sourceKey && prev && prev.gradeKey !== gradeKey && (prev.keyRecipe ?? 0) !== KEY_RECIPE &&
       prev.gradeKey === oldGradeKeyFor(c)) {
     prev = { ...prev, gradeKey, sourceKey: c.sourceKey, keyRecipe: KEY_RECIPE };
     writeFileSync(capPath, JSON.stringify(prev, null, 2));
   }
 
-  // Honor the card's declared viewport (single-mode cards).
   const vpMatch = /viewport="(\d+)x(\d+)"/.exec(cardHead);
   const vp = vpMatch ? { width: Math.min(+vpMatch[1], 2000), height: Math.min(+vpMatch[2], 2000) } : { width: 900, height: 700 };
 
@@ -164,9 +106,6 @@ for (const c of comps) {
     continue;
   }
   if (cells.length === 0) {
-    // The preview module compiled but evaluated to nothing (module-scope
-    // throw, or no exports) — permanently ungradable, so it's an error, not
-    // a clean zero-cell capture.
     const why = pageErrs[0] ?? 'preview module evaluated to no exports (window.__dsCells is empty)';
     report.push({ name: c.name, group: c.group, verdict: 'error', reason: why });
     console.error(`✗ [CAPTURE] ${c.name}: ${why} — fix the preview (.design-sync/previews/${c.name}.tsx) and rebuild`);
@@ -176,8 +115,6 @@ for (const c of comps) {
   const fullyGraded = grade?.cells && cells.length > 0
     && cells.every((k) => ['good'].includes(grade.cells[k]?.verdict));
   if (!FORCE && fullyGraded && prev?.gradeKey === gradeKey && !spotChecks.has(c.name)) {
-    // Refresh the pendingGrade bit (grading happens after capture — see the
-    // same refresh in compare.mjs's skip path).
     if (prev.pendingGrade !== false) {
       writeFileSync(capPath, JSON.stringify({ ...prev, pendingGrade: false }, null, 2));
     }
@@ -209,8 +146,6 @@ for (const c of comps) {
     shots.push({ label, png: png ? `raw/${file}` : null, err: info.caught ? info.text.slice(0, 120) : null });
   }
 
-  // Single-column sheet: one labeled render per row — the agent grades each
-  // on the absolute rubric in the SKILL.
   const rows = shots.map((s) =>
     `<tr><td style="vertical-align:top;padding:8px;font:600 14px system-ui">${escapeHtml(s.label)}${s.err ? `<br><span style="color:#d33;font-weight:400;font-size:12px">${escapeHtml(s.err)}</span>` : ''}</td>` +
     `<td style="vertical-align:top;padding:8px;border-left:1px solid #eee">${s.png ? `<img src="./${s.png}" style="max-width:760px;max-height:520px;display:block">` : '<div style="color:#999">(no shot)</div>'}</td></tr>`).join('\n');
@@ -225,9 +160,6 @@ for (const c of comps) {
     await page.screenshot({ path: join(shotBase, `${c.group}__${c.name}.png`), fullPage: true });
   } catch (e) { console.error(`  (sheet skipped for ${c.name} — ${String(e).split('\n')[0]})`); }
 
-  // pendingGrade: post-capture grade state for consumers (the resync
-  // driver) — one bit instead of re-implementing this harness's verdicts.
-  // The clear block above nulls `grade`, so non-null here means it survived.
   const pendingGrade = !(cells.length > 0 && cells.every((k) => grade?.cells?.[k]?.verdict === 'good'));
   writeFileSync(capPath, JSON.stringify({ gradeKey, sourceKey: c.sourceKey ?? null, keyRecipe: c.sourceKey ? KEY_RECIPE : undefined, cells, pendingGrade, shots: shots.map((s) => s.label), pageErrs: [...new Set(pageErrs)].slice(0, 3) }, null, 2));
   const errCells = shots.filter((s) => s.err).length;
@@ -240,7 +172,6 @@ await browser.close();
 srv.close();
 
 if (!ONLY) {
-  // Prune grade + cache state for components that left the sync.
   const live = new Set((manifest.components ?? []).map((c) => c.name));
   try {
     for (const f of readdirSync(cacheDir)) {
@@ -249,13 +180,11 @@ if (!ONLY) {
       rmSync(join(cacheDir, f), { force: true });
       console.error(`  (pruned stale ${f} — component no longer in the sync)`);
     }
-  } catch { /* fresh dir */ }
-  // Unfolded subagent learnings block the upload gate, so a missed fold
-  // can't silently ship.
+  } catch { }
   try {
     const unmerged = readdirSync(resolve('.design-sync', 'learnings')).filter((f) => f.endsWith('.md'));
     if (unmerged.length) console.error(`! [LEARNINGS_UNMERGED] ${unmerged.length} file(s) in .design-sync/learnings/ — fold into NOTES.md and delete them before upload`);
-  } catch { /* no learnings dir */ }
+  } catch { }
 }
 
 const skipped = report.filter((r) => r.skipped);

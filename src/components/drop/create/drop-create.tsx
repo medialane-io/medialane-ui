@@ -21,12 +21,10 @@ import { useFormat } from "../../../i18n/use-format.js";
 
 const toItem = (file: File): DraftItem => ({ id: crypto.randomUUID(), file, previewUrl: URL.createObjectURL(file), name: "", description: "" });
 
-/** The images of a draft, in order. */
 export function draftFiles(draft: DropDraft): File[] {
   return draft.kind === "edition" ? (draft.edition ? [draft.edition] : []) : draft.items.map((it) => it.file);
 }
 
-/** The draft with these images added: one image is an edition, several are a collection. */
 export function withArtwork(draft: DropDraft, files: File[]): Partial<DropDraft> {
   const current: DraftItem[] = draft.kind === "edition" ? (draft.edition ? [toItem(draft.edition)] : []) : draft.items;
   const items = [...current, ...files.map(toItem)];
@@ -34,7 +32,6 @@ export function withArtwork(draft: DropDraft, files: File[]): Partial<DropDraft>
   return { kind: "collection", edition: null, items };
 }
 
-/** The draft without this image; a single image left makes it an edition again. */
 export function withoutArtwork(draft: DropDraft, file: File): Partial<DropDraft> {
   if (draft.kind === "edition") return { edition: null };
   const items = draft.items.filter((it) => it.file !== file);
@@ -42,15 +39,10 @@ export function withoutArtwork(draft: DropDraft, file: File): Partial<DropDraft>
   return { items };
 }
 
-/** The collection's symbol, made from the drop's name. */
 export function dropSymbol(name: string): string {
   return suggestLaunchpadSymbol(name) || "DROP";
 }
 
-/**
- * Create a collection drop in the launchpad layout: the form in the main column, the live preview
- * and the app's `aside` in the secondary one.
- */
 export function DropCreate({ aside }: { aside?: ReactNode }) {
   const t = useT();
   const intl = useFormat();

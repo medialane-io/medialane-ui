@@ -123,7 +123,6 @@ function SearchIcon({ query, active }: { query: string; active: boolean }) {
 
 const ROW_CLASSES = "group/item flex cursor-pointer items-center gap-3.5 rounded-xl px-2 py-3 transition-colors duration-150 aria-selected:bg-muted/70";
 
-/** Row icons: 36px tiles in the logo's shape. */
 const ROW_TILE = "h-9 w-9 [&_svg]:h-[18px] [&_svg]:w-[18px]";
 
 function ResultRow({ value, label, description, leading, onSelect }: {

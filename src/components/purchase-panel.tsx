@@ -13,7 +13,6 @@ import { pickPayment, usePaymentOptions, type PaymentOption } from "../utils/use
 import { useT } from "../i18n/provider.js";
 import { useFormat } from "../i18n/use-format.js";
 
-/** A raw amount as text: four decimals, or four significant digits below one. */
 export function amountText(raw: bigint, decimals: number): string {
   const [whole, frac = ""] = formatAmount(raw.toString(), decimals).split(".");
   const lead = whole === "0" ? (frac.match(/^0*/)?.[0].length ?? 0) : 0;
@@ -23,32 +22,22 @@ export function amountText(raw: bigint, decimals: number): string {
 
 export interface PurchasePanelProps {
   order: ApiOrder;
-  /** The asset image, resolved by the app. */
   image?: string | null;
   quantity: number;
   onQuantityChange: (quantity: number) => void;
-  /** The buyer's wallet; without one the coins are not listed. */
   walletAddress: string | null;
   payWith: string | null;
   onPayWithChange: (symbol: string | null) => void;
-  /** Opens a way to add funds when no coin covers the purchase. */
   onAddFunds?: () => void;
   error?: string | null;
-  /** The action area: the Buy button, or what replaces it. */
   children: ReactNode;
 }
 
-/** Editions left to buy from an ERC-1155 listing; null for ERC-721. */
 export function editionsAvailable(order: ApiOrder): number | null {
   if (order.offer.itemType !== "ERC1155") return null;
   return Math.max(1, parseInt(order.remainingAmount ?? order.offer.startAmount ?? "1", 10));
 }
 
-/**
- * The body of a purchase: what is bought, how many, which coin pays and the total, with the cost
- * the app's client builds the purchase with. Each app passes its own action in `children`; the
- * panel does not buy anything itself.
- */
 export function PurchasePanel({
   order,
   image,
