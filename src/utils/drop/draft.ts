@@ -1,10 +1,18 @@
 import type { T } from "../../i18n/make-t.js";
-import type { DraftItem } from "../../components/drop-item-list.js";
 import { isPositiveInteger, isSymbol } from "../launchpad-rules.js";
 import { parseAllowlist } from "./allowlist.js";
 import { MAX_DROP_SUPPLY, type DropKind, type DropLicense } from "./metadata.js";
 import { EMPTY_SALE, validateSale, type SaleDraft, type SaleErrors } from "./sale.js";
 import { formatNumber } from "../../i18n/format.js";
+
+/** One image of a collection drop, with its optional own name and description. */
+export interface DraftItem {
+  id: string;
+  file: File;
+  previewUrl: string;
+  name: string;
+  description: string;
+}
 
 export interface DropDraft {
   kind: DropKind;

@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.390.0] — 2026-11-21
+
+### Changed
+
+- `DropCreate` is the drop page filled in place. A short header says what a collection drop is. The artwork sits on the left as a large square: tap or drop images, the chosen image shows large with the others in a strip, any image can be used as the cover. On the right: the name typed as the page title, the creator, the description, and one box with price, copies (or the number of pieces), timing, who can mint, license, exclusive content and the launch button, noting what can't change after launch. Each setting is one line with its value and opens in place, one at a time; an invalid setting opens itself on launch.
+
+### Removed
+
+- `DropItemList` (the artwork strip replaces it); `DraftItem` now comes from the drop draft.
+- `Dropzone`'s `multiple`, `onFilesSelected`, `title` and `subtitle` props.
+
 ## [0.389.0] — 2026-11-21
 
 ### Changed
