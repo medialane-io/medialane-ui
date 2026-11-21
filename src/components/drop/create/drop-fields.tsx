@@ -40,10 +40,6 @@ export function Field({ label, htmlFor, children }: { label: React.ReactNode; ht
   );
 }
 
-/**
- * The artwork, in the same upload box as minting: one image, or several for a set of unique
- * pieces, shown as thumbnails that can be removed.
- */
 export function ArtworkUpload({ files, onAdd, onRemove, error }: {
   files: File[];
   onAdd: (files: File[]) => void;

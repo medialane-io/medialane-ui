@@ -1,6 +1,5 @@
 import { buildAssetMetadata, type BuildAssetMetadataInput } from "@medialane/sdk";
 
-/** The metadata folder upload holds 2,001 files (tokens + collection.json). */
 export const MAX_DROP_SUPPLY = 2000;
 export const MAX_DROP_METADATA_BYTES = 5 * 1024 * 1024;
 
@@ -18,9 +17,7 @@ export interface DropMetadataInput {
   creator: string;
   coverUri: string | null;
   license: DropLicense;
-  /** Edition: the one artwork. Collection: one per token. */
   items: { name: string; description: string; imageUri: string }[];
-  /** Edition copies; ignored for a collection. */
   supply: number;
 }
 
@@ -29,7 +26,6 @@ export interface DropMetadataFile {
   content: unknown;
 }
 
-/** Token files 1…N (token URI = base URI + id) and collection.json. */
 export function buildDropMetadataFiles(input: DropMetadataInput): DropMetadataFile[] {
   const edition = input.kind === "edition";
   const count = edition ? input.supply : input.items.length;
@@ -60,7 +56,6 @@ export function buildDropMetadataFiles(input: DropMetadataInput): DropMetadataFi
   return files;
 }
 
-/** Size as the upload route counts it. */
 export function metadataBytes(files: DropMetadataFile[]): number {
   return files.reduce((n, f) => n + JSON.stringify(f.content).length, 0);
 }

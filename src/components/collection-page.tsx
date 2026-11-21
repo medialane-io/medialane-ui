@@ -56,7 +56,6 @@ const MINT_HREFS: Partial<Record<string, (contract: string) => string>> = {
   "ip-club": (c) => `/launchpad/club/${c}/mint`,
 };
 
-/** Ownership transfer exists from the audited v3 collection registry (2026-05-14) on. */
 export function canTransferCollectionOwnership(collection: ApiCollection): boolean {
   return !!collection.collectionId && collection.standard === "ERC721" && collection.createdAt >= "2026-05-14";
 }

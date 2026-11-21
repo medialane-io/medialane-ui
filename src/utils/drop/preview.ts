@@ -1,6 +1,5 @@
 const urls = new WeakMap<File, string>();
 
-/** One object URL per picked file, reused across renders. */
 export function previewUrl(file: File): string {
   let url = urls.get(file);
   if (!url) {

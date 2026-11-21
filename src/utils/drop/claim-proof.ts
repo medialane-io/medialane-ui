@@ -3,11 +3,6 @@ import { decodePopClaimFragment } from "@medialane/sdk/starknet";
 
 type ProofStorage = Pick<Storage, "getItem" | "setItem">;
 
-/**
- * The claim proof for `collection`: from the link's fragment when present (and remembered),
- * otherwise the one remembered from an earlier visit — so it survives a sign-in redirect,
- * which keeps only the page path.
- */
 export function claimProofFor(
   storage: ProofStorage | null,
   collection: string,
@@ -20,7 +15,6 @@ export function claimProofFor(
     try {
       storage?.setItem(key, JSON.stringify(fromLink));
     } catch {
-      // Storage may be unavailable (private mode); the link still works on this visit.
     }
     return fromLink;
   }

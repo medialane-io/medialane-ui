@@ -1,4 +1,3 @@
-
 export type CappedBody =
   | { ok: true; body: Uint8Array<ArrayBuffer> }
   | { ok: false; status: 413 | 502; error: string };

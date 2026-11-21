@@ -1,7 +1,3 @@
-/* Design-sync base CSS: dark theme vars + Medialane DS shared stylesheet.
-   Theme vars are set on :root using dark-mode values (Medialane's primary visual identity).
-   Sourced from medialane-io/src/app/globals.css .dark block. */
-
 :root {
   --background: 224 50% 4%;
   --foreground: 210 20% 95%;
@@ -31,12 +27,6 @@
   --brand-orange: 21 90% 44%;
 }
 
-/* Medialane Design System — shared CSS
-   Imported by apps via: import "@medialane/ui/styles"
-   Do NOT import @tailwind directives here — apps handle that.
-   All classes here are pure CSS, no @apply. */
-
-/* ── Scrollbars ───────────────────────────────────────────────────────── */
 ::-webkit-scrollbar { width: 4px; height: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: hsl(var(--border)); border-radius: 4px; }
@@ -45,7 +35,6 @@
 .scrollbar-hide { scrollbar-width: none; }
 .scrollbar-hide::-webkit-scrollbar { display: none; }
 
-/* ── Glass ────────────────────────────────────────────────────────────── */
 .glass {
   background: rgba(10, 14, 30, 0.60);
   backdrop-filter: blur(16px);
@@ -59,7 +48,6 @@
   border: 1px solid rgba(255, 255, 255, 0.5);
 }
 
-/* ── Typography gradients ─────────────────────────────────────────────── */
 .gradient-text {
   background: linear-gradient(135deg, #8a5cf6 0%, #5b4ce6 40%, #3b7bff 100%);
   -webkit-background-clip: text;
@@ -85,14 +73,12 @@
   background-clip: text;
 }
 
-/* ── Price ────────────────────────────────────────────────────────────── */
 .price-value {
   color: hsl(var(--price));
   font-weight: 700;
   font-variant-numeric: tabular-nums;
 }
 
-/* ── Section label ────────────────────────────────────────────────────── */
 .section-label {
   font-size: 0.625rem;
   font-weight: 700;
@@ -101,7 +87,6 @@
   color: hsl(var(--muted-foreground));
 }
 
-/* ── Pill badge ───────────────────────────────────────────────────────── */
 .pill-badge {
   display: inline-flex;
   align-items: center;
@@ -117,13 +102,11 @@
   color: hsl(var(--primary));
 }
 
-/* ── Aurora blobs ─────────────────────────────────────────────────────── */
 .aurora-purple { position: absolute; border-radius: 9999px; background: #8a5cf6; filter: blur(100px); opacity: 0.15; }
 .aurora-blue   { position: absolute; border-radius: 9999px; background: #3b7bff; filter: blur(120px); opacity: 0.11; }
 .aurora-rose   { position: absolute; border-radius: 9999px; background: #f6608f; filter: blur(100px); opacity: 0.09; }
 .aurora-orange { position: absolute; border-radius: 9999px; background: #fb8b46; filter: blur(110px); opacity: 0.07; }
 
-/* Navigation canvas */
 .nav-canvas-overlay {
   position: fixed;
   inset: 0;
@@ -139,7 +122,6 @@
   overflow: hidden;
 }
 
-/* ── Card primitives ──────────────────────────────────────────────────── */
 .card-base {
   border-radius: calc(var(--radius) * 1.25);
   border: 1px solid hsl(var(--border));
@@ -155,7 +137,6 @@
   position: relative;
 }
 
-/* ── Background grid ──────────────────────────────────────────────────── */
 .bg-grid {
   background-image:
     linear-gradient(hsl(var(--border) / 0.4) 1px, transparent 1px),
@@ -163,11 +144,9 @@
   background-size: 48px 48px;
 }
 
-/* ── Snap scroll ──────────────────────────────────────────────────────── */
 .snap-x-mandatory { scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
 .snap-start { scroll-snap-align: start; }
 
-/* ── Keyframes ────────────────────────────────────────────────────────── */
 @keyframes float {
   0%, 100% { transform: translateY(0px); }
   50% { transform: translateY(-10px); }
@@ -206,7 +185,6 @@
   50%       { background-position: 100% 50%; }
 }
 
-/* ── Animation utilities ──────────────────────────────────────────────── */
 .animate-float      { animation: float 5s ease-in-out infinite; }
 .animate-blob       { animation: blob-pulse 7s ease-in-out infinite; }
 .animate-blob-slow  { animation: blob-pulse-slow 9s ease-in-out infinite 2s; }
@@ -215,40 +193,29 @@
 .animate-sparkle    { animation: pulse-glow 2.5s ease-in-out infinite; }
 .animate-kenburns   { animation: kenburns 8s ease-in-out infinite alternate; transform-origin: center center; }
 
-/* ── Reduced motion ───────────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   .animate-float, .animate-blob, .animate-blob-slow,
   .animate-pulse-glow, .animate-spin-slow, .animate-sparkle,
   .animate-kenburns { animation: none; }
 }
 
-/* ── Anchor reset ─────────────────────────────────────────────────────── */
-/* Real apps get this from Tailwind's preflight; this hand-maintained sheet
-   doesn't ship preflight, so every next/link-wrapped card (AssetCard,
-   TokenCard, CollectionCard, ListingCard, …) rendered with the browser's
-   default blue/underlined link styling instead of inheriting the design
-   system's own text color. */
 a { color: inherit; text-decoration: inherit; }
 
-/* ── Input spinners ───────────────────────────────────────────────────── */
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
 input[type="number"] { -moz-appearance: textfield; }
 
-/* ── Card exclusive wrapper ───────────────────────────────────────────── */
 .card-exclusive-wrapper {
   padding: 2px;
   border-radius: calc(var(--radius) * 1.25 + 2px);
 }
 
-/* ── Animated gradient border ─────────────────────────────────────────── */
 .btn-border-animated {
   background: linear-gradient(270deg, #3b7bff, #8a5cf6, #f6608f, #fb8b46, #3b7bff);
   background-size: 300% 300%;
   animation: border-flow 5s ease infinite;
 }
 
-/* ── Action button — animated gradient border via ::before mask ────────── */
 .ml-gbtn { position: relative; }
 .ml-gbtn::before {
   content: '';
@@ -270,7 +237,6 @@ input[type="number"] { -moz-appearance: textfield; }
   100% { background-position: 220% 50%; }
 }
 
-/* ── Action dialog keyframes ──────────────────────────────────────────── */
 @keyframes mlFade {
   from { opacity: 0; }
   to   { opacity: 1; }

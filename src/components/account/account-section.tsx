@@ -7,7 +7,6 @@ export interface AccountSectionProps {
   icon: ElementType;
   title: string;
   description: string;
-  /** Red icon tile for irreversible actions. */
   destructive?: boolean;
   children: ReactNode;
 }

@@ -7,14 +7,10 @@ import { HelpIcon } from "./help-icon.js";
 export interface ActionButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   icon?: React.ReactNode;
   big?: boolean;
-  /** Compact size for actions inside cards and list rows. */
   small?: boolean;
-  /** Brand blue, for the one primary action on a surface. */
   solid?: boolean;
-  /** The moving brand-colour ring, for Buy. */
   ring?: boolean;
   helpContent?: string;
-  /** Give the single child element (for example a link) the button's look. */
   asChild?: boolean;
 }
 

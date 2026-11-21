@@ -7,16 +7,13 @@ const SIZES = {
   lg: "h-16 w-16 text-xl [&_svg]:h-7 [&_svg]:w-7",
 } as const;
 
-/** The logo's corner: a radius of 30% of the side, the same at every size. */
 const LOGO_CORNER = "rounded-[30%]";
 
 export interface IconTileProps extends React.HTMLAttributes<HTMLSpanElement> {
   size?: keyof typeof SIZES;
-  /** Red tile for errors and irreversible actions. */
   destructive?: boolean;
 }
 
-/** An icon in the logo's shape: white line icon on solid brand blue. */
 export function IconTile({ size = "md", destructive, className, ...props }: IconTileProps) {
   return (
     <span

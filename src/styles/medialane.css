@@ -1,5 +1,5 @@
 :root {
-  --brand-blue: 240 100% 50%; /* #0000FF, the logo's blue */
+  --brand-blue: 240 100% 50%;
   --brand-navy: 229 51% 8%;
   --brand-rose: 341 89% 67%;
   --brand-purple: 258 90% 66%;
@@ -77,12 +77,10 @@ h1 {
   backdrop-filter: blur(48px) saturate(1.5);
 }
 
-/* The one surface: a borderless panel with a soft gradient from the top-left corner. */
 .panel {
   border-radius: 1rem;
   background-image: linear-gradient(to bottom right, hsl(var(--muted) / 0.4), transparent);
 }
-/* Chip that sits on a panel. */
 .pill {
   display: inline-flex;
   width: fit-content;
@@ -95,7 +93,6 @@ h1 {
   line-height: 1rem;
   font-weight: 500;
 }
-/* The ring button: a plain button inside a moving brand-colour border. */
 .btn-ring {
   --ring-fill: hsl(var(--background));
   border: 1.5px solid transparent;
@@ -114,7 +111,6 @@ h1 {
   .btn-ring { animation: none; }
 }
 
-/* Launchpad cards: brand-gradient border on hover. */
 .ml-grad-hover-border { position: relative; }
 .ml-grad-hover-border::before {
   content: '';

@@ -12,7 +12,6 @@ import { useT } from "../../i18n/provider.js";
 export interface DropCardProps {
   drop: ApiDrop;
   now: number;
-  /** Organizer view: links to the Manage tab. */
   manage?: boolean;
 }
 

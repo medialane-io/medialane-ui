@@ -7,8 +7,6 @@ import { PUBLIC_IMAGE_GATEWAYS } from "../utils/ipfs-gateway-fallback.js";
 const PRIMARY = "https://example.mypinata.cloud/ipfs/";
 const FIRST_PUBLIC = PUBLIC_IMAGE_GATEWAYS[0]!;
 
-// The test DOM never loads images and reports them as complete; a browser reports an image that
-// is still loading as not complete.
 const completeness = Object.getOwnPropertyDescriptor(HTMLImageElement.prototype, "complete");
 beforeAll(() => Object.defineProperty(HTMLImageElement.prototype, "complete", { get: () => false, configurable: true }));
 afterAll(() => {

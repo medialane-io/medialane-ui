@@ -3,13 +3,11 @@ import { normalizeAddress } from "@medialane/sdk";
 const STARKNET_ADDRESS_BOUND = 2n ** 251n;
 
 export interface ParsedAllowlist {
-  /** Normalized, each once, in the order pasted. */
   addresses: string[];
   invalid: string[];
   duplicates: string[];
 }
 
-/** Reads a pasted list or CSV: one wallet per line, comma or space; a header named "address" is skipped. */
 export function parseAllowlist(raw: string): ParsedAllowlist {
   const out: ParsedAllowlist = { addresses: [], invalid: [], duplicates: [] };
   const seen = new Set<string>();
