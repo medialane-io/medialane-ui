@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.389.0] — 2026-11-21
+
+### Changed
+
+- `DropCreate`: one screen, in the shared create layout (`ClaimRouteShell`) with a live preview card. It opens on an artwork dropzone: one image makes an edition with a number of copies, several images make a collection where each image is its own token, and more images can be added later. Below it come name, description, price and who can mint. Timing and limits, license terms and exclusive content sit in panels closed by default, each showing its current setting. The collection symbol is made from the name; the cover is the first image unless changed from the preview. The draft, validation and launch dialog are unchanged.
+- `Dropzone`: `multiple` with `onFilesSelected`, and `title` / `subtitle` to replace the default copy.
+
+### Removed
+
+- `DraftSummary` (the preview is `MedialaneCollectionCard`).
+
 ## [0.388.0] — 2026-11-21
 
 ### Changed
