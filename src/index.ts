@@ -219,7 +219,7 @@ export { DropFeatures } from "./components/drop/drop-features.js";
 export { MyDrops } from "./components/drop/my-drops.js";
 export { DropTokenLink } from "./components/drop/drop-token-link.js";
 export type { DropPhase } from "./utils/drop/view.js";
-export { DropCreate, DraftSummary } from "./components/drop/create/drop-create.js";
+export { DropCreate } from "./components/drop/create/drop-create.js";
 export { ExclusiveFields } from "./components/drop/create/exclusive-fields.js";
 export { DropPage } from "./components/drop/page/drop-page.js";
 export { DropActionBox } from "./components/drop/page/drop-action-box.js";

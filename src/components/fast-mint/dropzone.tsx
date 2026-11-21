@@ -15,6 +15,11 @@ export interface DropzoneProps {
   onRequireWallet: () => void;
   onFileSelected: (file: File) => void;
   connectLabel?: string;
+  /** Accept several files at once; they go to `onFilesSelected`. */
+  multiple?: boolean;
+  onFilesSelected?: (files: File[]) => void;
+  title?: string;
+  subtitle?: string;
 }
 
 export function Dropzone({
@@ -24,6 +29,10 @@ export function Dropzone({
   onRequireWallet,
   onFileSelected,
   connectLabel = "Sign in",
+  multiple = false,
+  onFilesSelected,
+  title,
+  subtitle,
 }: DropzoneProps) {
   const t = useT();
   const mediaInputRef = useRef<HTMLInputElement>(null);
@@ -31,6 +40,13 @@ export function Dropzone({
   const openMediaPicker = () => {
     if (!hasWallet) { onRequireWallet(); return; }
     mediaInputRef.current?.click();
+  };
+
+  const pick = (list: FileList | null) => {
+    const files = Array.from(list ?? []);
+    if (files.length === 0) return;
+    if (multiple && onFilesSelected) onFilesSelected(files);
+    else onFileSelected(files[0]!);
   };
 
   return (
@@ -41,7 +57,7 @@ export function Dropzone({
       onClick={openMediaPicker}
       onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openMediaPicker(); } }}
       onDragOver={(e) => e.preventDefault()}
-      onDrop={(e) => { e.preventDefault(); if (!hasWallet) { onRequireWallet(); return; } const f = e.dataTransfer.files?.[0]; if (f) onFileSelected(f); }}
+      onDrop={(e) => { e.preventDefault(); if (!hasWallet) { onRequireWallet(); return; } pick(e.dataTransfer.files); }}
       className={cn(
         "relative flex flex-col items-center justify-center gap-4 cursor-pointer transition-colors text-center rounded-2xl border-[3px] border-dashed border-brand-blue/40 hover:border-brand-blue/70 hover:bg-brand-blue/[0.04] p-6",
         presentation === "dialog" ? "min-h-[16rem] sm:min-h-[18rem]" : "min-h-[20rem] sm:min-h-[24rem]"
@@ -52,10 +68,10 @@ export function Dropzone({
       </div>
       <div className="space-y-1.5 px-6">
         <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">
-          {mediaKindLock ? `Drop or upload an ${mediaKindLock}` : t("Drop or upload your media")}
+          {title ?? (mediaKindLock ? `Drop or upload an ${mediaKindLock}` : t("Drop or upload your media"))}
         </h2>
         <p className="text-base text-muted-foreground max-w-sm mx-auto">
-          {mediaKindLock === "image" ? t("It becomes your avatar and app theme.") : t("Protect your creation and monetize it worldwide.")}
+          {subtitle ?? (mediaKindLock === "image" ? t("It becomes your avatar and app theme.") : t("Protect your creation and monetize it worldwide."))}
         </p>
       </div>
       <Button
@@ -83,8 +99,9 @@ export function Dropzone({
         ref={mediaInputRef}
         type="file"
         accept={mediaKindLock === "image" ? acceptFor("image") : undefined}
+        multiple={multiple}
         className="hidden"
-        onChange={(e) => { const f = e.target.files?.[0]; if (f) onFileSelected(f); }}
+        onChange={(e) => { pick(e.target.files); e.target.value = ""; }}
       />
     </section>
   );
