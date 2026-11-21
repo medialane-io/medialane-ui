@@ -1162,7 +1162,7 @@ const pt: Catalog = {
   "Search collections": "Buscar coleções",
   "Search collections…": "Buscar coleções…",
   "Search creative works": "Buscar obras criativas",
-  "Search or run a command…": "Buscar ou executar um comando…",
+  "Navigate and search Medialane": "Navegue e pesquise na Medialane",
   "Search services": "Buscar serviços",
   "Search your assets": "Buscar nos seus ativos",
   "Secure an account to create a POP event": "Proteja sua conta para criar um evento POP",
