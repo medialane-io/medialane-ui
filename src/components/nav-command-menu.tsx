@@ -115,9 +115,18 @@ function useMenuSearch(query: string) {
 function SearchIcon({ query, active }: { query: string; active: boolean }) {
   const { isLoading } = useMenuSearch(query);
   return isLoading ? (
-    <Loader2 className="h-[18px] w-[18px] shrink-0 animate-spin text-primary" />
+    <Loader2 className="h-[18px] w-[18px] shrink-0 animate-spin text-muted-foreground" />
   ) : (
-    <Search className={cn("h-[18px] w-[18px] shrink-0 transition-colors", active ? "text-primary" : "text-muted-foreground")} />
+    <Search className={cn("h-[18px] w-[18px] shrink-0 transition-colors", active ? "text-foreground" : "text-muted-foreground")} />
+  );
+}
+
+const ROW_CLASSES = "group/item flex cursor-pointer items-center gap-3 rounded-xl px-2.5 py-1.5 transition-colors duration-150 aria-selected:bg-muted/70";
+
+/** Shown only on the selected row. */
+function RowArrow() {
+  return (
+    <ArrowRight className="h-3.5 w-3.5 shrink-0 text-muted-foreground opacity-0 transition-opacity group-aria-selected/item:opacity-100" />
   );
 }
 
@@ -129,19 +138,15 @@ function ResultRow({ value, label, description, leading, onSelect }: {
   onSelect: () => void;
 }) {
   return (
-    <Command.Item
-      value={value}
-      onSelect={onSelect}
-      className="group/item flex cursor-pointer items-center gap-3 rounded-xl px-2.5 py-2 transition-colors duration-150 aria-selected:bg-primary/10"
-    >
+    <Command.Item value={value} onSelect={onSelect} className={ROW_CLASSES}>
       {leading}
       <span className="min-w-0 flex-1">
         <span className="block truncate text-sm leading-tight">{label}</span>
         {description && (
-          <span className="mt-0.5 block truncate text-[11.5px] leading-tight text-muted-foreground">{description}</span>
+          <span className="mt-0.5 block truncate text-xs leading-tight text-muted-foreground">{description}</span>
         )}
       </span>
-      <ArrowRight className="h-3.5 w-3.5 shrink-0 text-muted-foreground/30 transition-colors group-aria-selected/item:text-primary/70" />
+      <RowArrow />
     </Command.Item>
   );
 }
@@ -214,7 +219,7 @@ function SearchResults({ query, debouncedQuery, onNavigate }: {
           value="search:all"
           label={`All results for "${q}"`}
           leading={
-            <IconTile size="sm">
+            <IconTile size="xs">
               <Search />
             </IconTile>
           }
@@ -228,61 +233,27 @@ function SearchResults({ query, debouncedQuery, onNavigate }: {
 function CommandRow({ item, primary, onSelect }: { item: NavCommand; primary: boolean; onSelect: () => void }) {
   const t = useT();
   return (
-    <Command.Item
-      value={commandValue(item, t)}
-      onSelect={onSelect}
-      className={cn(
-        "group/item flex cursor-pointer items-center gap-3 rounded-xl",
-        "transition-colors duration-150 aria-selected:bg-primary/10",
-        primary ? "px-2.5 py-2.5" : "px-2.5 py-2"
-      )}
-    >
+    <Command.Item value={commandValue(item, t)} onSelect={onSelect} className={ROW_CLASSES}>
       {item.iconSrc ? (
-        <img
-          src={item.iconSrc}
-          alt=""
-          className={cn("shrink-0 rounded-2xl", primary ? "h-9 w-9" : "h-8 w-8")}
-        />
+        <img src={item.iconSrc} alt="" className="h-7 w-7 shrink-0 object-contain" />
       ) : (
-        <span
-          className={cn(
-            "flex shrink-0 items-center justify-center rounded-2xl transition-colors",
-            "bg-muted/50 group-aria-selected/item:bg-primary/15",
-            primary ? "h-9 w-9" : "h-8 w-8"
-          )}
-        >
-          <item.icon
-            className={cn(
-              "text-foreground/80 transition-colors group-aria-selected/item:text-primary",
-              primary ? "h-[18px] w-[18px]" : "h-4 w-4"
-            )}
-          />
-        </span>
+        <IconTile size="xs">
+          <item.icon />
+        </IconTile>
       )}
-      <span className="min-w-0 flex-1">
-        <span
-          className={cn(
-            "block truncate leading-tight",
-            primary ? "text-base font-medium" : "text-sm"
-          )}
-        >
-          {t(item.label)}
-        </span>
-      </span>
-      <ArrowRight className="h-3.5 w-3.5 shrink-0 text-muted-foreground/30 transition-colors group-aria-selected/item:text-primary/70" />
+      <span className={cn("min-w-0 flex-1 truncate text-sm leading-tight", primary && "font-medium")}>{t(item.label)}</span>
+      <RowArrow />
     </Command.Item>
   );
 }
 
 const GROUP_HEADING_CLASSES = cn(
   "[&_[cmdk-group-heading]]:px-2.5",
-  "[&_[cmdk-group-heading]]:pt-2",
-  "[&_[cmdk-group-heading]]:pb-1",
-  "[&_[cmdk-group-heading]]:text-[10.5px]",
-  "[&_[cmdk-group-heading]]:font-semibold",
-  "[&_[cmdk-group-heading]]:uppercase",
-  "[&_[cmdk-group-heading]]:tracking-[0.08em]",
-  "[&_[cmdk-group-heading]]:text-muted-foreground/60"
+  "[&_[cmdk-group-heading]]:pt-3",
+  "[&_[cmdk-group-heading]]:pb-1.5",
+  "[&_[cmdk-group-heading]]:text-xs",
+  "[&_[cmdk-group-heading]]:font-medium",
+  "[&_[cmdk-group-heading]]:text-muted-foreground"
 );
 
 export function NavCommandMenu({
@@ -394,7 +365,7 @@ export function NavCommandMenu({
                       <Search
                         className={cn(
                           "h-[18px] w-[18px] shrink-0 transition-colors",
-                          query ? "text-primary" : "text-muted-foreground"
+                          query ? "text-foreground" : "text-muted-foreground"
                         )}
                       />
                     )}
@@ -444,7 +415,7 @@ export function NavCommandMenu({
                         return (
                         <React.Fragment key={group.heading ?? `__primary-${i}`}>
                           {i > 0 && (
-                            <Command.Separator className="my-1.5 h-px bg-border/40" />
+                            <Command.Separator className="my-1 h-px bg-border/30" />
                           )}
                           <Command.Group heading={group.heading && t(group.heading)} className={GROUP_HEADING_CLASSES}>
                             {group.items.map((item) => (

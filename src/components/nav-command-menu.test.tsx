@@ -121,6 +121,20 @@ test("an entry with an image shows it in place of its icon; the rest keep their 
   view.unmount();
 });
 
+test("command icons sit on brand-blue tiles in the logo's shape, and the logo itself is not cropped", async () => {
+  const branded = [
+    { items: [{ id: "home", label: "Medialane", icon: Home, iconSrc: "/icon.png", href: "/" }] },
+    { heading: "Navigate", items: [{ id: "search", label: "Search", icon: Search, href: "/search" }] },
+  ];
+  const { view } = await openMenu(false, branded);
+  const row = (label: string) => view.getByText(label).closest('[cmdk-item]') as HTMLElement;
+  const tile = row("Search").firstElementChild!;
+  expect(tile.className).toContain("bg-primary");
+  expect(tile.className).toContain("rounded-[30%]");
+  expect(row("Medialane").firstElementChild?.className).not.toMatch(/rounded/);
+  view.unmount();
+});
+
 test("matchCommands matches the translated label as well as the English one", () => {
   const translate = (text: string) => (text === "Search" ? "Pesquisar" : text);
   expect(matchCommands(commands, "pesq", translate).map((c) => c.id)).toEqual(["search"]);

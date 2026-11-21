@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.386.0] — 2026-11-21
+
+### Changed
+
+- Brand blue is `#0000FF`, the logo's blue, in light and dark mode. `primary` and `accent` follow it; the lighter dark-mode override is gone.
+- `IconTile`: corners are 30% of the side at every size, the logo's shape. New `xs` size (28px).
+- `NavCommandMenu`: every command shows its icon on a brand-blue `IconTile`, one row size for every group, regular weight (medium for the first group), sentence-case group headings, and the arrow only on the selected row. The logo entry is shown uncropped.
+
 ## [0.385.1] — 2026-11-21
 
 ### Changed
