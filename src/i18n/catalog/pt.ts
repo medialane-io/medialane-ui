@@ -1679,6 +1679,15 @@ const pt: Catalog = {
   "✓ Uploaded": "✓ Enviado",
   "✓ Verified holder": "✓ Portador verificado",
   "✓ You're a holder — unlocked": "✓ Você é portador — liberado",
+  "{count} available": "{count} disponíveis",
+  "Pay with": "Pagar com",
+  "Checking your balances…": "Verificando seus saldos…",
+  "Add funds to your wallet to buy this.": "Adicione fundos à sua carteira para comprar.",
+  "Add funds": "Adicionar fundos",
+  "Total": "Total",
+  "Includes {percent}% platform fee": "Inclui taxa de plataforma de {percent}%",
+  "Decrease quantity": "Diminuir quantidade",
+  "Increase quantity": "Aumentar quantidade",
 };
 
 export default pt;

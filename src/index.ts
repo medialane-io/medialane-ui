@@ -540,6 +540,8 @@ export {
 export { useTokenRemixes } from "./utils/use-remix-offers.js";
 export { useRemixOffers } from "./utils/use-my-remix-offers.js";
 export { useSwapQuote, swapQuoteKey } from "./utils/use-swap-quote.js";
+export { usePaymentOptions, pickPayment, type PaymentOption, type PaymentOptionsInput } from "./utils/use-payment-options.js";
+export { PurchasePanel, amountText, type PurchasePanelProps } from "./components/purchase-panel.js";
 export type { SwapToken, SwapAmountMode, SwapQuoteSummary } from "./utils/use-swap-quote.js";
 export { RemixesTab } from "./components/remixes-tab.js";
 export type { RemixesTabProps } from "./components/remixes-tab.js";
