@@ -156,13 +156,16 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
       <div className="relative space-y-4">
         {isOwner ? (
           <div className="space-y-4">
-            {liveMyListing ? (
+            {buyButton && liveCheapest ? (
+              <PriceBlock order={liveCheapest} usdValue={usdValue} />
+            ) : liveMyListing ? (
               <PriceBlock
                 order={liveMyListing}
                 usdValue={liveMyListing.orderHash === liveCheapest?.orderHash ? usdValue : null}
               />
             ) : null}
             <ActionRow>
+              {buyButton}
               {liveMyListing ? (
                 <ActionButton
                   icon={isProcessing ? <Loader2 className="h-4 w-4 animate-spin" /> : <X className="h-4 w-4" />}
@@ -190,12 +193,6 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
                 </ActionButton>
               ) : null}
             </ActionRow>
-            {buyButton && liveCheapest ? (
-              <div className="space-y-4">
-                <PriceBlock order={liveCheapest} usdValue={usdValue} />
-                <ActionRow>{buyButton}</ActionRow>
-              </div>
-            ) : null}
           </div>
         ) : (
           <div className="space-y-4">
