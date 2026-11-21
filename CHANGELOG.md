@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.385.1] — 2026-11-21
+
+### Changed
+
+- `AssetMarketplacePanel`: an owner who can buy more editions sees the price Buy now pays first, then one row of actions with Buy now ahead of Sell, Transfer and Cancel listing, the same order visitors see. Without another seller's listing, the owner's own listing price shows as before.
+
 ## [0.385.0] — 2026-11-21
 
 ### Added

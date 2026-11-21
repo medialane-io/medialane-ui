@@ -21,7 +21,7 @@ const noop = () => {};
 
 const listing = { orderHash: "0x1", offerer: "0xseller", endTime: "2999-01-01T00:00:00Z", price: { formatted: "119", currency: "STRK" } };
 
-const render = (app0: MedialaneApp, isSignedIn: boolean, extra: { cheapest?: typeof listing; myListing?: typeof listing | null; isOwner?: boolean; remix?: boolean; bids?: unknown[] } = {}) =>
+const render = (app0: MedialaneApp, isSignedIn: boolean, extra: { cheapest?: typeof listing; myListing?: typeof listing | null; isOwner?: boolean; isERC1155?: boolean; remix?: boolean; bids?: unknown[] } = {}) =>
   renderToStaticMarkup(
     <MedialaneAppProvider value={{ ...app0, walletAddress: isSignedIn ? "0xme" : null }}>
       <AssetMarketplacePanel
@@ -32,7 +32,7 @@ const render = (app0: MedialaneApp, isSignedIn: boolean, extra: { cheapest?: typ
         remixEnabled={extra.remix ?? false}
         onOpenRemix={() => {}}
         isProcessing={false}
-        isERC1155={false}
+        isERC1155={extra.isERC1155 ?? false}
         myListing={extra.myListing ?? null}
         activeBids={(extra.bids ?? []) as never[]}
         onCancelClick={noop}
@@ -88,6 +88,24 @@ test("the owner's listed price is shown above the Cancel listing button, not ins
   expect(html).not.toContain("Buy now");
   expect(html).not.toContain("Last sale");
   expect(html).not.toContain("Floor");
+});
+
+test("an owner who can buy more sees the price first, then Buy now ahead of their own actions", () => {
+  const html = render(base, true, { isOwner: true, isERC1155: true, cheapest: listing });
+  const at = (text: string) => html.indexOf(text);
+  expect(at("119")).toBeGreaterThan(-1);
+  expect(at("119")).toBeLessThan(at("Buy now"));
+  expect(at("Buy now")).toBeLessThan(at("Sell"));
+  expect(at("Sell")).toBeLessThan(at("Transfer"));
+  expect(html.split("119").length - 1).toBe(1);
+});
+
+test("with their own listing and a cheaper one, the owner sees the price Buy now pays, then Buy now ahead of Cancel listing", () => {
+  const mine = { ...listing, orderHash: "0x2", offerer: "0xme", price: { formatted: "150", currency: "STRK" } };
+  const html = render(base, true, { isOwner: true, isERC1155: true, cheapest: listing, myListing: mine });
+  expect(html).toContain("119");
+  expect(html).not.toContain("150");
+  expect(html.indexOf("Buy now")).toBeLessThan(html.indexOf("Cancel listing"));
 });
 
 test("signed out shows the price above the sign-in buttons", () => {
