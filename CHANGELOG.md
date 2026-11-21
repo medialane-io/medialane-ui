@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.384.1] — 2026-11-21
+
+### Fixed
+
+- `installIpfsGatewayFallback` / `IpfsGatewayFallback`: IPFS images that failed before the fallback was installed (a server-rendered image can fail before the page hydrates) now switch to the next gateway when it is installed.
+
 ## [0.384.0] — 2026-11-20
 
 ### Changed

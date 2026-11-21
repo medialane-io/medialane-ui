@@ -24,18 +24,24 @@ export function gatewayFallbackSrc(src: string, chain: readonly string[]): strin
  *
  * Listens for image errors on the whole document (they reach it in the capture phase), so it
  * covers every image whichever component renders it. The switched image's own error handlers
- * do not run; once the last gateway fails as well, they do. Returns a function that uninstalls it.
+ * do not run; once the last gateway fails as well, they do. Images that already failed before it
+ * was installed (a server-rendered image can fail before the page hydrates) are switched at once.
+ * Returns a function that uninstalls it.
  */
 export function installIpfsGatewayFallback(chain: readonly string[], root: Document = document): () => void {
-  const onError = (event: Event) => {
-    const img = event.target;
-    if (!(img instanceof HTMLImageElement)) return;
+  const switchToNext = (img: HTMLImageElement): boolean => {
     const next = gatewayFallbackSrc(img.getAttribute("src") ?? "", chain);
-    if (!next) return;
-    event.stopPropagation();
+    if (!next) return false;
     img.removeAttribute("srcset");
     img.setAttribute("src", next);
+    return true;
+  };
+  const onError = (event: Event) => {
+    if (event.target instanceof HTMLImageElement && switchToNext(event.target)) event.stopPropagation();
   };
   root.addEventListener("error", onError, true);
+  for (const img of Array.from(root.querySelectorAll("img"))) {
+    if (img.complete && img.naturalWidth === 0) switchToNext(img);
+  }
   return () => root.removeEventListener("error", onError, true);
 }
