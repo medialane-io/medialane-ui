@@ -100,7 +100,7 @@ export function DropCreate() {
         </p>
       </header>
       <div className="mt-8 grid gap-8 lg:grid-cols-2 lg:gap-12">
-        <div className="space-y-2 lg:sticky lg:top-24 lg:self-start">
+        <div className="space-y-2">
           <ArtworkCanvas
             files={files}
             cover={draft.cover}
