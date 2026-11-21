@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.385.0] — 2026-11-21
+
+### Added
+
+- `PurchasePanel`: the body of a purchase dialog, given the `order`: the asset with its unit price, a quantity field for ERC-1155 listings (type or step, kept within what is left), one choice per coin the wallet can pay with showing its balance, the total in the chosen coin with the platform fee included (from `MedialaneClient.purchaseCost`), and the error shown right above the app's own action.
+- `usePaymentOptions`: the purchase cost and the coins the wallet can pay with, built on `useTokenBalance` and `useSwapQuote`: the order's coin first, then every other coin it holds, each with its balance, what paying with it costs and whether it covers the purchase. `pickPayment` keeps the chosen coin while it covers the purchase, otherwise picks the first that does. `editionsAvailable`, `PAYMENT_COINS`.
+
+### Changed
+
+- `describeError`: the `insufficient_balance` failure code names the shortfall; `not_executable` reads "Nothing was sent. Check your balance and try again."; both can be retried.
+- Requires `@medialane/sdk` 0.237.0.
+
+### Fixed
+
+- `installIpfsGatewayFallback` / `IpfsGatewayFallback`: IPFS images that failed before the fallback was installed (a server-rendered image can fail before the page hydrates) now switch to the next gateway when it is installed.
+
 ## [0.384.0] — 2026-11-20
 
 ### Changed

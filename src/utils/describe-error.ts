@@ -1,4 +1,5 @@
 import { MedialaneApiError, PasskeyCancelledError, UserFacingError } from "@medialane/sdk";
+import { SponsoredCallRejectedError } from "@medialane/sdk/starknet";
 import { WrongNetworkError, isBareExecuteFailure, isUserRejectedRequest, collectErrorText } from "./wallet-error.js";
 import { describeWalletFailure, passkeyUnsupportedReason } from "./wallet-failure.js";
 import { msg } from "../i18n/translate.js";
@@ -6,6 +7,8 @@ import { msg } from "../i18n/translate.js";
 export const NOT_SUBMITTED = "Request not completed. Nothing was submitted.";
 export const NETWORK_BUSY = "Our service is very busy right now. Please try again in a minute.";
 export const CONNECTION_FAILED = "We couldn't connect. Check your internet connection and try again.";
+export const INSUFFICIENT_BALANCE = "You don't have enough balance to complete this transaction.";
+export const NOT_EXECUTABLE = "Nothing was sent. Check your balance and try again.";
 
 export interface ErrorNotice {
   title?: string;
@@ -73,6 +76,14 @@ export function describeError(error: unknown): ErrorNotice {
     );
   }
 
+  if (error instanceof SponsoredCallRejectedError && error.code === "insufficient_balance") {
+    return notice("Insufficient balance", `${INSUFFICIENT_BALANCE} Nothing was sent.`);
+  }
+
+  if (error instanceof SponsoredCallRejectedError && error.code === "not_executable") {
+    return notice(undefined, NOT_EXECUTABLE);
+  }
+
   if (error instanceof UserFacingError) {
     return notice(undefined, error.message, undefined, error.retryable);
   }
@@ -95,7 +106,7 @@ export function describeError(error: unknown): ErrorNotice {
   if (text.includes("insufficient") && /balance|allowance|funds/.test(text)) {
     return notice(
       "Insufficient balance",
-      "You don't have enough balance to complete this transaction.",
+      INSUFFICIENT_BALANCE,
       "Add funds to your wallet, then try again.",
     );
   }

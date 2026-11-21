@@ -94,9 +94,28 @@ describe("a passkey that can't be used for a wallet", () => {
 
 test("a refused sponsored transaction shows the server's reason and cannot be retried", async () => {
   const { SponsoredCallRejectedError } = await import("@medialane/sdk/starknet");
-  const notice = describeError(new SponsoredCallRejectedError("the server's reason", { code: "not_executable" }));
+  const notice = describeError(new SponsoredCallRejectedError("the server's reason", { code: "not_authorized" }));
   expect(notice.message).toBe("the server's reason");
   expect(notice.retryable).toBe(false);
+});
+
+describe("a transaction the network would not execute", () => {
+  test("says nothing was sent and can be retried, without the server's wording", async () => {
+    const { SponsoredCallRejectedError } = await import("@medialane/sdk/starknet");
+    const notice = describeError(
+      new SponsoredCallRejectedError("The transaction could not be executed as submitted", { code: "not_executable", detail: "RPC: paymaster_buildTransaction ..." }),
+    );
+    expect(notice.message).toBe("Nothing was sent. Check your balance and try again.");
+    expect(notice.retryable).toBe(true);
+  });
+
+  test("names a balance shortfall", async () => {
+    const { SponsoredCallRejectedError } = await import("@medialane/sdk/starknet");
+    const notice = describeError(new SponsoredCallRejectedError("The account balance does not cover this transaction", { code: "insufficient_balance" }));
+    expect(notice.title).toBe("Insufficient balance");
+    expect(notice.message).toBe("You don't have enough balance to complete this transaction. Nothing was sent.");
+    expect(notice.retryable).toBe(true);
+  });
 });
 
 test("a declined fee prompt can be retried", () => {

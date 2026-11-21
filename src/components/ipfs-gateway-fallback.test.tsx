@@ -1,4 +1,4 @@
-import { afterEach, expect, test } from "bun:test";
+import { afterAll, afterEach, beforeAll, expect, test } from "bun:test";
 import { act, cleanup, render } from "@testing-library/react";
 import { IpfsGatewayFallback } from "./ipfs-gateway-fallback.js";
 import { DEFAULT_GATEWAY } from "../utils/ipfs.js";
@@ -7,6 +7,14 @@ import { PUBLIC_IMAGE_GATEWAYS } from "../utils/ipfs-gateway-fallback.js";
 const PRIMARY = "https://example.mypinata.cloud/ipfs/";
 const FIRST_PUBLIC = PUBLIC_IMAGE_GATEWAYS[0]!;
 
+// The test DOM never loads images and reports them as complete; a browser reports an image that
+// is still loading as not complete.
+const completeness = Object.getOwnPropertyDescriptor(HTMLImageElement.prototype, "complete");
+beforeAll(() => Object.defineProperty(HTMLImageElement.prototype, "complete", { get: () => false, configurable: true }));
+afterAll(() => {
+  if (completeness) Object.defineProperty(HTMLImageElement.prototype, "complete", completeness);
+  else delete (HTMLImageElement.prototype as { complete?: boolean }).complete;
+});
 afterEach(() => cleanup());
 
 test("a React-rendered image from the primary gateway switches to the first public gateway, and its onError does not run", async () => {

@@ -81,6 +81,28 @@ describe("installIpfsGatewayFallback", () => {
     expect(seen).toEqual([`${THIRD}QmA/1.jpg`]);
   });
 
+  function settled(img: HTMLImageElement, complete: boolean, naturalWidth = 0) {
+    Object.defineProperty(img, "complete", { value: complete, configurable: true });
+    Object.defineProperty(img, "naturalWidth", { value: naturalWidth, configurable: true });
+  }
+
+  test("an image that failed before it was installed switches to the next gateway on install", () => {
+    const { img } = failingImage(`${PRIMARY}QmA/1.jpg?img-width=1200`);
+    settled(img, true);
+    uninstall = installIpfsGatewayFallback(CHAIN);
+    expect(img.getAttribute("src")).toBe(`${SECOND}QmA/1.jpg`);
+  });
+
+  test("images that loaded, or are still loading, are left alone on install", () => {
+    const { img: done } = failingImage(`${PRIMARY}QmA/1.jpg`);
+    settled(done, true, 640);
+    const { img: pending } = failingImage(`${PRIMARY}QmB/1.jpg`);
+    settled(pending, false);
+    uninstall = installIpfsGatewayFallback(CHAIN);
+    expect(done.getAttribute("src")).toBe(`${PRIMARY}QmA/1.jpg`);
+    expect(pending.getAttribute("src")).toBe(`${PRIMARY}QmB/1.jpg`);
+  });
+
   test("images from other hosts are left to their own error handling", () => {
     uninstall = installIpfsGatewayFallback(CHAIN);
     const { img, seen, fail } = failingImage("/api/img?url=x");
