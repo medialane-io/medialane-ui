@@ -4,7 +4,7 @@ import * as React from "react";
 import { Command, defaultFilter } from "cmdk";
 import { assetHref, collectionHref, profileHref } from "@medialane/sdk";
 import { useRouter } from "./router.js";
-import { Search, X, ArrowRight, Loader2 } from "lucide-react";
+import { Search, X, Loader2 } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { cn } from "../utils/cn.js";
 import { profileIdentity } from "../utils/profile-identity.js";
@@ -121,14 +121,10 @@ function SearchIcon({ query, active }: { query: string; active: boolean }) {
   );
 }
 
-const ROW_CLASSES = "group/item flex cursor-pointer items-center gap-3 rounded-xl px-2.5 py-1.5 transition-colors duration-150 aria-selected:bg-muted/70";
+const ROW_CLASSES = "group/item flex cursor-pointer items-center gap-3.5 rounded-xl px-2 py-1.5 transition-colors duration-150 aria-selected:bg-muted/70";
 
-/** Shown only on the selected row. */
-function RowArrow() {
-  return (
-    <ArrowRight className="h-3.5 w-3.5 shrink-0 text-muted-foreground opacity-0 transition-opacity group-aria-selected/item:opacity-100" />
-  );
-}
+/** Row icons: 36px tiles in the logo's shape. */
+const ROW_TILE = "h-9 w-9 [&_svg]:h-[18px] [&_svg]:w-[18px]";
 
 function ResultRow({ value, label, description, leading, onSelect }: {
   value: string;
@@ -141,12 +137,11 @@ function ResultRow({ value, label, description, leading, onSelect }: {
     <Command.Item value={value} onSelect={onSelect} className={ROW_CLASSES}>
       {leading}
       <span className="min-w-0 flex-1">
-        <span className="block truncate text-sm leading-tight">{label}</span>
+        <span className="block truncate text-[15px] leading-tight">{label}</span>
         {description && (
           <span className="mt-0.5 block truncate text-xs leading-tight text-muted-foreground">{description}</span>
         )}
       </span>
-      <RowArrow />
     </Command.Item>
   );
 }
@@ -219,7 +214,7 @@ function SearchResults({ query, debouncedQuery, onNavigate }: {
           value="search:all"
           label={`All results for "${q}"`}
           leading={
-            <IconTile size="xs">
+            <IconTile size="sm" className={ROW_TILE}>
               <Search />
             </IconTile>
           }
@@ -235,21 +230,20 @@ function CommandRow({ item, primary, onSelect }: { item: NavCommand; primary: bo
   return (
     <Command.Item value={commandValue(item, t)} onSelect={onSelect} className={ROW_CLASSES}>
       {item.iconSrc ? (
-        <img src={item.iconSrc} alt="" className="h-7 w-7 shrink-0 object-contain" />
+        <img src={item.iconSrc} alt="" className="h-9 w-9 shrink-0 object-contain" />
       ) : (
-        <IconTile size="xs">
+        <IconTile size="sm" className={ROW_TILE}>
           <item.icon />
         </IconTile>
       )}
-      <span className={cn("min-w-0 flex-1 truncate text-sm leading-tight", primary && "font-medium")}>{t(item.label)}</span>
-      <RowArrow />
+      <span className={cn("min-w-0 flex-1 truncate text-[15px] leading-tight", primary && "font-medium")}>{t(item.label)}</span>
     </Command.Item>
   );
 }
 
 const GROUP_HEADING_CLASSES = cn(
-  "[&_[cmdk-group-heading]]:px-2.5",
-  "[&_[cmdk-group-heading]]:pt-3",
+  "[&_[cmdk-group-heading]]:px-2",
+  "[&_[cmdk-group-heading]]:pt-5",
   "[&_[cmdk-group-heading]]:pb-1.5",
   "[&_[cmdk-group-heading]]:text-xs",
   "[&_[cmdk-group-heading]]:font-medium",
@@ -347,8 +341,8 @@ export function NavCommandMenu({
             >
               <div
                 className={cn(
-                  "flex w-full max-h-[85dvh] flex-col overflow-hidden rounded-2xl sm:max-h-[min(680px,88dvh)] sm:max-w-[620px]",
-                  "bg-background/90 backdrop-blur-2xl backdrop-saturate-150"
+                  "flex w-full max-w-[390px] aspect-[9/19.5] max-h-[85dvh] flex-col overflow-hidden rounded-2xl",
+                  "bg-background"
                 )}
                 onClick={(e) => e.stopPropagation()}
               >
@@ -414,9 +408,6 @@ export function NavCommandMenu({
                         const primary = !group.heading;
                         return (
                         <React.Fragment key={group.heading ?? `__primary-${i}`}>
-                          {i > 0 && (
-                            <Command.Separator className="my-1 h-px bg-border/30" />
-                          )}
                           <Command.Group heading={group.heading && t(group.heading)} className={GROUP_HEADING_CLASSES}>
                             {group.items.map((item) => (
                               <CommandRow

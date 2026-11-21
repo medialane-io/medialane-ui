@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.387.0] — 2026-11-21
+
+### Changed
+
+- `NavCommandMenu`: the Media Wallet's frame (390px wide, phone proportions, at most 85% of the screen height, solid background). Commands show 36px brand-blue tiles with 15px labels; no separators and no arrows, groups are set apart by spacing and their heading.
+- `IconTile`: the `xs` size is removed.
+
 ## [0.386.0] — 2026-11-21
 
 ### Changed
