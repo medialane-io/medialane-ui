@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.390.0] — 2026-11-21
+
+### Changed
+
+- `DropCreate` follows the launchpad create layout (`ClaimRouteShell`), like `SingleEditionMint`: a "Collection drop" header with a description, the form in the main column (artwork upload, name, description, price, copies, who can mint, timing, then license terms and exclusive content in collapsible sections, and the launch button), and the live preview with the app's `aside` in the secondary column. One image is an edition with copies; adding more images makes a set of unique pieces, shown as removable thumbnails. The collection symbol is made from the name.
+- `ClaimRail`: `trustLead` and `trust` are optional; without them the rail ends with the steps.
+
+### Removed
+
+- `DropItemList`; `DraftItem` now comes from the drop draft.
+- `Dropzone`'s `multiple`, `onFilesSelected`, `title` and `subtitle` props.
+
 ## [0.389.0] — 2026-11-21
 
 ### Changed

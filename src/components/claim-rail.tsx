@@ -10,8 +10,9 @@ export interface ClaimRailProps {
 
   steps: string[];
 
-  trustLead: string;
-  trust: string;
+  /** Optional closing note; omitted, the rail ends with the steps. */
+  trustLead?: string;
+  trust?: string;
 
   trustIcon?: LucideIcon;
 }
@@ -59,12 +60,14 @@ export function ClaimRail({
         </ol>
       </section>
 
-      <section className="p-5 bg-muted/40 flex items-start gap-3">
-        <TrustIcon className="h-5 w-5 shrink-0 mt-0.5 text-primary" />
-        <p className="text-sm text-muted-foreground leading-relaxed">
-          <span className="font-semibold text-foreground">{trustLead}</span> {trust}
-        </p>
-      </section>
+      {trust && (
+        <section className="p-5 bg-muted/40 flex items-start gap-3">
+          <TrustIcon className="h-5 w-5 shrink-0 mt-0.5 text-primary" />
+          <p className="text-sm text-muted-foreground leading-relaxed">
+            {trustLead && <span className="font-semibold text-foreground">{trustLead}</span>} {trust}
+          </p>
+        </section>
+      )}
     </div>
   );
 }

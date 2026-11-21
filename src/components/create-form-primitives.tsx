@@ -14,7 +14,7 @@ const OPTION_LABELS: Record<string, string> = {
   Free: msg("Free"),
   Paid: msg("Paid"),
   Everyone: msg("Everyone"),
-  "A list": msg("A list"),
+  "Invited wallets": msg("Invited wallets"),
   Edition: msg("Edition"),
   Collection: msg("Collection"),
 };
