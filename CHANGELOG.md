@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.391.0] — 2026-11-22
+
+### Changed
+
+- Shorter copy across shared components: messages, errors, success notices and placeholders are one short phrase. Portuguese catalog updated.
+- Source comments removed.
+
 ## [0.390.0] — 2026-11-21
 
 ### Changed
