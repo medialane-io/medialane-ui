@@ -7,6 +7,7 @@ const onchain: DropOnchain = {
   maxPerWallet: 0n, allowlistRoot: "0x0", maxSupply: 100n, totalMinted: 10n,
 };
 
+mock.module("next/image", () => ({ default: ({ src, alt }: { src: string; alt: string }) => <img src={src} alt={alt} /> }));
 mock.module("next/navigation", () => ({ useSearchParams: () => new URLSearchParams(), usePathname: () => "/", useRouter: () => ({ push: () => {}, back: () => {} }) }));
 mock.module("../../../utils/use-drops.js", () => ({
   useDrop: () => ({ drop: { name: "Neon", baseUri: "ipfs://base/", description: "", image: "https://cdn.test/cover.png" }, isLoading: false }),

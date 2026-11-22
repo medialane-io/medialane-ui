@@ -138,3 +138,10 @@ test("image assets have no feature image field", () => {
   fireEvent.click(view.getAllByTestId("asset-card")[0]!);
   expect(within(view.getByRole("dialog")).queryByText("Feature image *")).toBeNull();
 });
+
+test("the Add media button uses foreground text, not brand blue", () => {
+  const view = render(<Harness initial={EMPTY_DRAFT} />);
+  const button = view.getByText("Add media").closest("label")!;
+  expect(button.className).toContain("text-foreground");
+  expect(button.className).not.toContain("text-primary");
+});
