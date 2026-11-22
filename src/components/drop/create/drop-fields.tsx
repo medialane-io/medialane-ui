@@ -28,7 +28,8 @@ export interface FieldsProps {
 }
 
 export function FieldError({ message }: { message?: string }) {
-  return message ? <p role="alert" className="text-sm text-destructive">{message}</p> : null;
+  const t = useT();
+  return message ? <p role="alert" className="text-sm text-destructive">{t(message)}</p> : null;
 }
 
 export function Field({ label, htmlFor, children }: { label: React.ReactNode; htmlFor?: string; children: React.ReactNode }) {
