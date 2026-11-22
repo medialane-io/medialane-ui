@@ -101,3 +101,17 @@ test("a past start time shows its error in the summary", () => {
   const view = settings(draft, false);
   expect(view.getByText("Pick a start time in the future").className).toContain("text-destructive");
 });
+
+test("errors read in Portuguese", async () => {
+  const { I18nProvider } = await import("../../../i18n/provider.js");
+  const { loadCatalog } = await import("../../../i18n/catalogs.js");
+  const messages = await loadCatalog("pt");
+  const draft = named({ collection: { ...EMPTY_DRAFT.collection, name: "", externalUrl: "http://x" } });
+  const view = render(
+    <I18nProvider locale="pt" messages={messages}>
+      <CollectionPanel draft={draft} setDraft={() => {}} errors={validateDropDraft(draft, NOW)} open onToggle={() => {}} />
+    </I18nProvider>,
+  );
+  expect(view.getAllByText("Dê um nome à coleção").length).toBeGreaterThan(0);
+  expect(view.getByText("Adicione um link que comece com https://")).toBeTruthy();
+});

@@ -5,9 +5,9 @@ import { msg } from "../../i18n/translate.js";
 
 import { useT } from "../../i18n/provider.js";
 const FEATURES = [
-  { icon: Layers, title: msg("Edition or collection"), desc: msg("Numbered copies or unique items.") },
-  { icon: Timer, title: msg("Your sale window"), desc: msg("Open and close on any date.") },
-  { icon: Users, title: msg("Everyone or a list"), desc: msg("Open to all or by invite.") },
+  { icon: Layers, title: msg("Copies per asset"), desc: msg("One artwork or many, each with its own copies.") },
+  { icon: Timer, title: msg("A sale window"), desc: msg("Start and end on any date.") },
+  { icon: Users, title: msg("Open or by list"), desc: msg("Everyone or listed wallets only.") },
   { icon: Package, title: msg("Collectors own them"), desc: msg("Collectors own every token.") },
 ];
 

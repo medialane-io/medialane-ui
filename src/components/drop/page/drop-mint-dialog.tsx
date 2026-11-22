@@ -7,6 +7,7 @@ import { ActionButton } from "../../action-button.js";
 import { Button } from "../../button.js";
 import { describeError } from "../../../utils/describe-error.js";
 import { useT } from "../../../i18n/provider.js";
+import type { Phrase } from "../../../i18n/translate.js";
 
 type Step = { kind: "confirm" } | { kind: "minting" } | { kind: "done"; tokenIds: string[] } | { kind: "error"; message: string };
 
@@ -17,7 +18,7 @@ export function DropMintDialog({
   onClose: () => void;
   name: string;
   quantity: bigint;
-  totalText: string | null;
+  totalText: Phrase | null;
   onMint: () => Promise<{ tokenIds: string[] }>;
   portfolioHref: string;
 }) {
@@ -43,7 +44,7 @@ export function DropMintDialog({
         {step.kind === "confirm" && (
           <>
             <DialogTitle className="text-lg font-semibold">{t("Mint {quantity} from {name}", { quantity: quantity.toString(), name })}</DialogTitle>
-            {totalText && <p className="text-sm text-muted-foreground">{totalText}</p>}
+            {totalText && <p className="text-sm text-muted-foreground">{t(totalText.text, totalText.vars)}</p>}
             <ActionButton solid big onClick={() => void mint()} className="w-full">{t("Confirm mint")}</ActionButton>
           </>
         )}

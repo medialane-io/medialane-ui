@@ -40,5 +40,7 @@ test("tables of marked sentences render translated", () => {
   expect(features.getByText("Resistência à censura")).toBeTruthy();
   cleanup();
   const drop = portuguese(<DropFeatures />);
-  expect(drop.getByText("Edição ou coleção")).toBeTruthy();
+  expect(drop.getByText("Cópias por ativo")).toBeTruthy();
+  expect(drop.getByText("Uma obra ou várias, cada uma com suas cópias.")).toBeTruthy();
+  expect(drop.getByText("Aberto ou por lista")).toBeTruthy();
 });

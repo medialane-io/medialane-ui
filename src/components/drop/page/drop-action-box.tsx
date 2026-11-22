@@ -25,7 +25,7 @@ export function DropActionBox({ view, minted, maxSupply, quantity, onQuantity, o
     <div className="panel space-y-5 p-5">
       <div className="flex items-center justify-between gap-3">
         <DropStatusBadge phase={view.phase} />
-        <span className="text-xs text-muted-foreground">{view.statusText}</span>
+        <span className="text-xs text-muted-foreground">{t(view.statusText.text, view.statusText.vars)}</span>
       </div>
       {view.countdown && <DropCountdown targetTs={view.countdown.target} label={t(view.countdown.label)} />}
       {maxSupply > 0n
@@ -45,10 +45,10 @@ export function DropActionBox({ view, minted, maxSupply, quantity, onQuantity, o
           </div>
         )}
       </div>
-      {view.totalText && <p className="text-sm text-muted-foreground">{view.totalText}</p>}
-      {view.eligibility && <p className="text-sm">{view.eligibility}</p>}
+      {view.totalText && <p className="text-sm text-muted-foreground">{t(view.totalText.text, view.totalText.vars)}</p>}
+      <p className="text-sm">{t(view.eligibility.text, view.eligibility.vars)}</p>
       <ActionButton solid big disabled={view.button.action === "none"} onClick={onAction} className="w-full">
-        {t(view.button.label)}
+        {t(view.button.label.text, view.button.label.vars)}
       </ActionButton>
     </div>
   );

@@ -2,6 +2,7 @@ import { formatAmount, getListableTokens, getTokenByAddress, parseAmount, type D
 import { dropMintCost } from "@medialane/sdk/starknet";
 import { isPositiveInteger } from "../launchpad-rules.js";
 import { formatNumber } from "../../i18n/format.js";
+import { msg, type Phrase } from "../../i18n/translate.js";
 
 export interface SaleDraft {
   paid: boolean;
@@ -21,7 +22,7 @@ export const EMPTY_SALE: SaleDraft = {
   limitPerWallet: false, perWallet: "",
 };
 
-export type SaleErrors = Partial<Record<"price" | "start" | "end" | "perWallet", string>>;
+export type SaleErrors = Partial<Record<"price" | "start" | "end" | "perWallet", Phrase>>;
 
 export function saleToken(symbol: string) {
   return getListableTokens().find((t) => t.symbol === symbol) ?? null;
@@ -38,18 +39,18 @@ export function validateSale(d: SaleDraft, now: number): SaleErrors {
   if (d.paid) {
     const token = saleToken(d.tokenSymbol);
     const decimals = d.price.split(".")[1]?.length ?? 0;
-    if (!token) errors.price = "Choose a currency";
-    else if (!/^\d+(\.\d+)?$/.test(d.price)) errors.price = "Enter a price above 0";
-    else if (decimals > token.decimals) errors.price = `Use at most ${token.decimals} decimals for ${token.symbol}`;
-    else if (BigInt(parseAmount(d.price, token.decimals)) === 0n) errors.price = "Enter a price above 0";
+    if (!token) errors.price = { text: msg("Choose a currency") };
+    else if (!/^\d+(\.\d+)?$/.test(d.price)) errors.price = { text: msg("Enter a price above 0") };
+    else if (decimals > token.decimals) errors.price = { text: msg("Use at most {decimals} decimals for {symbol}"), vars: { decimals: token.decimals, symbol: token.symbol } };
+    else if (BigInt(parseAmount(d.price, token.decimals)) === 0n) errors.price = { text: msg("Enter a price above 0") };
   }
   const start = d.startNow ? now : toSeconds(d.start);
-  if (!d.startNow && (start === null || start <= now)) errors.start = "Pick a start time in the future";
+  if (!d.startNow && (start === null || start <= now)) errors.start = { text: msg("Pick a start time in the future") };
   if (d.hasEnd) {
     const end = toSeconds(d.end);
-    if (end === null || (start !== null && end <= start)) errors.end = "The sale must end after it starts";
+    if (end === null || (start !== null && end <= start)) errors.end = { text: msg("The sale must end after it starts") };
   }
-  if (d.limitPerWallet && !isPositiveInteger(d.perWallet)) errors.perWallet = "Enter 1 or more";
+  if (d.limitPerWallet && !isPositiveInteger(d.perWallet)) errors.perWallet = { text: msg("Enter 1 or more") };
   return errors;
 }
 
@@ -64,14 +65,14 @@ export function toDropTerms(d: SaleDraft): DropTermsBody {
   };
 }
 
-export function collectorPriceLine(d: SaleDraft, feeBps: number): string | null {
+export function collectorPriceLine(d: SaleDraft, feeBps: number): Phrase | null {
   const token = d.paid ? saleToken(d.tokenSymbol) : null;
   if (!token || validateSale({ ...EMPTY_SALE, paid: true, price: d.price, tokenSymbol: d.tokenSymbol }, 0).price) return null;
   const price = BigInt(parseAmount(d.price, token.decimals));
   const { fee, total } = dropMintCost(price, 1, feeBps);
   const amount = (v: bigint) => `${formatAmount(v.toString(), token.decimals)} ${token.symbol}`;
-  if (fee === 0n) return `Collectors pay ${amount(price)}.`;
-  return `Collectors pay ${amount(total)} (incl. ${feeBps / 100}% platform fee). You receive ${amount(price)}.`;
+  if (fee === 0n) return { text: msg("Collectors pay {price}."), vars: { price: amount(price) } };
+  return { text: msg("Collectors pay {total} with a {fee}% platform fee. The creator gets {price}."), vars: { total: amount(total), fee: feeBps / 100, price: amount(price) } };
 }
 
 export function priceLabel(price: string, paymentToken: string): string {
