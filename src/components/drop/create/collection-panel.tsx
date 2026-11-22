@@ -7,14 +7,15 @@ import { Input } from "../../input.js";
 import { Textarea } from "../../textarea.js";
 import { DropPanel, type PanelProps } from "./drop-panel.js";
 import { Field, FieldError } from "./drop-fields.js";
-import type { DropDraft } from "../../../utils/drop/draft.js";
+import { assetImage, type DropDraft } from "../../../utils/drop/draft.js";
 import { previewUrl } from "../../../utils/drop/preview.js";
 import { acceptFor, uploadError } from "../../../utils/upload-limits.js";
 import { FIELD_LIMITS } from "../../../utils/field-limits.js";
 import { useT } from "../../../i18n/provider.js";
 
 export function coverFile(draft: DropDraft): File | null {
-  return draft.collection.cover ?? draft.assets[0]?.file ?? null;
+  const first = draft.assets[0];
+  return draft.collection.cover ?? (first ? assetImage(first) : null);
 }
 
 export function CollectionPanel({ draft, setDraft, errors, open, onToggle }: PanelProps) {

@@ -1,12 +1,12 @@
 "use client";
 
-import { ChevronLeft, ChevronRight, Plus, Trash2, X } from "lucide-react";
+import { ChevronLeft, ChevronRight, FileText, ImagePlus, Plus, Trash2, X } from "lucide-react";
 import { Button } from "../../button.js";
 import { Input } from "../../input.js";
 import { Textarea } from "../../textarea.js";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "../../dialog.js";
 import { Field, FieldError } from "./drop-fields.js";
-import type { DraftAsset, DropDraft, DropDraftErrors } from "../../../utils/drop/draft.js";
+import { assetKind, type DraftAsset, type DropDraft, type DropDraftErrors } from "../../../utils/drop/draft.js";
 import { previewUrl } from "../../../utils/drop/preview.js";
 import { acceptFor, uploadError } from "../../../utils/upload-limits.js";
 import { FIELD_LIMITS } from "../../../utils/field-limits.js";
@@ -30,6 +30,7 @@ export function AssetEditor({ draft, index, onIndex, onChange, onRemove, errors,
   const setTrait = (i: number, patch: Partial<DraftAsset["traits"][number]>) =>
     set({ traits: asset.traits.map((tr, j) => (j === i ? { ...tr, ...patch } : tr)) });
   const collectionName = draft.collection.name.trim() || t("Untitled");
+  const kind = assetKind(asset);
 
   return (
     <Dialog open onOpenChange={(next) => { if (!next) onClose(); }}>
@@ -41,19 +42,39 @@ export function AssetEditor({ draft, index, onIndex, onChange, onRemove, errors,
         <DialogDescription className="sr-only">{t("Edit the asset's image and details.")}</DialogDescription>
 
         <div className="space-y-2">
-          <img src={previewUrl(asset.file)} alt={asset.name || asset.file.name} className="aspect-square w-full rounded-2xl bg-muted object-cover" />
-          <Button asChild variant="soft" size="sm">
+          <MediaPreview file={asset.file} kind={kind} alt={asset.name || asset.file.name} />
+          <Button asChild variant="soft" size="sm" className="bg-muted text-foreground hover:bg-muted/70">
             <label className="cursor-pointer">
-              {t("Replace image")}
-              <input type="file" data-testid="replace-input" accept={acceptFor("image")} className="hidden"
+              {t("Replace media")}
+              <input type="file" data-testid="replace-input" accept={acceptFor("media")} className="hidden"
                 onChange={(e) => {
                   const file = e.target.files?.[0];
                   e.target.value = "";
-                  if (file && !uploadError(file)) set({ file });
+                  if (file && !uploadError(file, "media")) set({ file });
                 }} />
             </label>
           </Button>
         </div>
+
+        {kind !== "image" && (
+          <Field label={t("Feature image *")}>
+            <div className="flex items-center gap-4">
+              <label className="relative grid h-24 w-24 shrink-0 cursor-pointer place-items-center overflow-hidden rounded-xl bg-muted">
+                {asset.feature
+                  ? <img src={previewUrl(asset.feature)} alt={t("Feature image")} className="h-full w-full object-cover" />
+                  : <ImagePlus className="h-6 w-6 text-muted-foreground" />}
+                <input type="file" data-testid="feature-input" accept={acceptFor("image")} className="hidden"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    e.target.value = "";
+                    if (file && !uploadError(file)) set({ feature: file });
+                  }} />
+              </label>
+              <p className="text-xs text-muted-foreground">{t("Shown wherever the asset appears.")}</p>
+            </div>
+            <FieldError message={fieldErrors.feature} />
+          </Field>
+        )}
 
         <Field label={t("Name")} htmlFor="asset-name">
           <Input id="asset-name" value={asset.name} maxLength={FIELD_LIMITS.name} placeholder={`${collectionName} #…`}
@@ -108,5 +129,18 @@ export function AssetEditor({ draft, index, onIndex, onChange, onRemove, errors,
         </div>
       </DialogContent>
     </Dialog>
+  );
+}
+
+function MediaPreview({ file, kind, alt }: { file: File; kind: ReturnType<typeof assetKind>; alt: string }) {
+  const src = previewUrl(file);
+  if (kind === "image") return <img src={src} alt={alt} className="aspect-square w-full rounded-2xl bg-muted object-cover" />;
+  if (kind === "video") return <video src={src} controls className="aspect-video w-full rounded-2xl bg-muted" />;
+  if (kind === "audio") return <audio src={src} controls className="w-full" />;
+  return (
+    <div className="flex items-center gap-3 rounded-2xl bg-muted p-4">
+      <FileText className="h-6 w-6 shrink-0 text-muted-foreground" />
+      <span className="truncate text-sm">{file.name}</span>
+    </div>
   );
 }

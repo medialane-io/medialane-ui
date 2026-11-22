@@ -12,7 +12,7 @@ import { uploadDirectoryToIpfs, uploadFileToIpfs } from "../../../utils/ipfs-upl
 import { parseAllowlist } from "../../../utils/drop/allowlist.js";
 import { buildDropMetadataFiles, metadataBytes, MAX_DROP_METADATA_BYTES, tokenOrder } from "../../../utils/drop/metadata.js";
 import { toDropTerms } from "../../../utils/drop/sale.js";
-import { dropSymbol, type DropDraft } from "../../../utils/drop/draft.js";
+import { assetMedia, assetUploads, dropSymbol, type DropDraft } from "../../../utils/drop/draft.js";
 import { uploadAll, type UploadTask } from "../../../utils/drop/upload.js";
 import { launchDrop, saveExclusiveContent } from "../../../utils/drop/actions.js";
 import { useMedialaneApp } from "../../medialane-app.js";
@@ -49,10 +49,10 @@ export function LaunchDialog({ open, onClose, draft, onLaunched }: { open: boole
       if (!uri) {
         setStep({ kind: "uploading" });
         const initial = tasks.length > 0 ? tasks : [
-          ...draft.assets.map((a) => ({ id: a.id, file: a.file, status: "pending" as const, uri: null, error: null })),
+          ...assetUploads(draft.assets).map((u) => ({ ...u, status: "pending" as const, uri: null, error: null })),
           ...(draft.collection.cover ? [{ id: COVER, file: draft.collection.cover, status: "pending" as const, uri: null, error: null }] : []),
         ];
-        const done = await uploadAll(initial, async (f) => (await uploadFileToIpfs(client.api, f, "image")).uri, setTasks);
+        const done = await uploadAll(initial, async (f) => (await uploadFileToIpfs(client.api, f, f.type.startsWith("image/") ? "image" : "media")).uri, setTasks);
         setTasks(done);
         if (done.some((task) => task.status !== "done")) {
           setStep({ kind: "error", message: t("Retry the remaining uploads.") });
@@ -68,7 +68,7 @@ export function LaunchDialog({ open, onClose, draft, onLaunched }: { open: boole
           coverUri,
           license: draft.license,
           assets: draft.assets.map((a) => ({
-            name: a.name, description: a.description, imageUri: uriOf(a.id)!, copies: Number(a.copies),
+            name: a.name, description: a.description, ...assetMedia(a, uriOf), copies: Number(a.copies),
             traits: a.traits.filter((tr) => tr.key.trim() && tr.value.trim()),
           })),
           order,
@@ -78,7 +78,7 @@ export function LaunchDialog({ open, onClose, draft, onLaunched }: { open: boole
           return;
         }
         uri = (await uploadDirectoryToIpfs(client.api, metadata)).baseUri;
-        image = coverUri ?? uriOf(draft.assets[0]!.id) ?? undefined;
+        image = coverUri ?? assetMedia(draft.assets[0]!, uriOf).imageUri;
         setBaseUri(uri);
       }
       setStep({ kind: "launching" });

@@ -1,19 +1,23 @@
 "use client";
 
 import { useState } from "react";
-import { Check, ImagePlus, Images } from "lucide-react";
+import { Check, FileText, Film, ImagePlus, Images, Music } from "lucide-react";
 import { Button } from "../../button.js";
 import { Input } from "../../input.js";
 import { Switch } from "../../switch.js";
 import { DropPanel, type PanelProps } from "./drop-panel.js";
 import { AssetEditor } from "./asset-editor.js";
 import { MAX_DROP_SUPPLY } from "../../../utils/drop/metadata.js";
-import { draftTokens, newAsset, type DraftAsset } from "../../../utils/drop/draft.js";
+import { assetImage, assetKind, draftTokens, newAsset, type DraftAsset } from "../../../utils/drop/draft.js";
+import { msg } from "../../../i18n/translate.js";
 import { previewUrl } from "../../../utils/drop/preview.js";
 import { acceptFor, uploadError } from "../../../utils/upload-limits.js";
 import { cn } from "../../../utils/cn.js";
 import { useT } from "../../../i18n/provider.js";
 import { useFormat } from "../../../i18n/use-format.js";
+
+export const KIND_ICON = { image: Images, video: Film, audio: Music, document: FileText } as const;
+export const KIND_LABEL = { image: msg("Image"), video: msg("Video"), audio: msg("Audio"), document: msg("PDF") } as const;
 
 export function AssetsPanel({ draft, setDraft, errors, open, onToggle }: PanelProps) {
   const t = useT();
@@ -34,7 +38,7 @@ export function AssetsPanel({ draft, setDraft, errors, open, onToggle }: PanelPr
   const add = (files: File[]) => {
     const problems: { name: string; reason: string }[] = [];
     const accepted = files.filter((file) => {
-      const reason = uploadError(file);
+      const reason = uploadError(file, "media");
       if (reason) problems.push({ name: file.name, reason });
       return !reason;
     });
@@ -55,7 +59,7 @@ export function AssetsPanel({ draft, setDraft, errors, open, onToggle }: PanelPr
       {t.plural("from {count} asset", "from {count} assets", assets.length, { count: intl.number(assets.length) })}
     </>
   );
-  const firstAssetError = Object.values(errors.assets.byId).map((e) => e.copies ?? e.traits).find(Boolean);
+  const firstAssetError = Object.values(errors.assets.byId).map((e) => e.feature ?? e.copies ?? e.traits).find(Boolean);
 
   return (
     <DropPanel
@@ -67,7 +71,12 @@ export function AssetsPanel({ draft, setDraft, errors, open, onToggle }: PanelPr
       summary={assets.length === 0 ? t("Add an asset") : (
         <span className="flex items-center gap-2.5">
           <span className="flex -space-x-1.5">
-            {assets.slice(0, 4).map((a) => <img key={a.id} src={previewUrl(a.file)} alt="" className="h-6 w-6 rounded-md object-cover ring-2 ring-background" />)}
+            {assets.slice(0, 4).map((a) => {
+              const image = assetImage(a);
+              return image
+                ? <img key={a.id} src={previewUrl(image)} alt="" className="h-6 w-6 rounded-md object-cover ring-2 ring-background" />
+                : <span key={a.id} className="h-6 w-6 rounded-md bg-muted ring-2 ring-background" />;
+            })}
           </span>
           {assets.length > 4 && <span>+{assets.length - 4}</span>}
           <span>{t.plural("{count} token", "{count} tokens", tokens, { count: intl.number(tokens) })}</span>
@@ -80,17 +89,17 @@ export function AssetsPanel({ draft, setDraft, errors, open, onToggle }: PanelPr
         onDrop={(e) => { e.preventDefault(); add(Array.from(e.dataTransfer.files)); }}
       >
         <div className="flex flex-wrap items-center justify-between gap-2">
-          <p className={cn("text-sm", tokens > MAX_DROP_SUPPLY ? "text-destructive" : "text-muted-foreground")}>{totals}</p>
+          {assets.length > 0 ? <p className={cn("text-sm", tokens > MAX_DROP_SUPPLY ? "text-destructive" : "text-muted-foreground")}>{totals}</p> : <span />}
           <div className="flex gap-2">
             {assets.length > 0 && (
               <Button type="button" variant="ghost" size="sm" onClick={() => { setSelecting(!selecting); setSelected(new Set()); }}>
                 {selecting ? t("Cancel") : t("Select")}
               </Button>
             )}
-            <Button asChild variant="tonal" size="sm">
+            <Button asChild variant="soft" size="sm" className="bg-muted text-foreground hover:bg-muted/70">
               <label className="cursor-pointer">
-                <ImagePlus className="h-4 w-4" />{t("Add images")}
-                <input type="file" multiple data-testid="assets-input" accept={acceptFor("image")} className="hidden"
+                <ImagePlus className="h-4 w-4" />{t("Add media")}
+                <input type="file" multiple data-testid="assets-input" accept={acceptFor("media")} className="hidden"
                   onChange={(e) => { add(Array.from(e.target.files ?? [])); e.target.value = ""; }} />
               </label>
             </Button>
@@ -106,8 +115,9 @@ export function AssetsPanel({ draft, setDraft, errors, open, onToggle }: PanelPr
         {assets.length === 0 ? (
           <label className="grid cursor-pointer place-items-center gap-2 rounded-xl border-2 border-dashed border-border p-10 text-center text-sm text-muted-foreground">
             <ImagePlus className="h-7 w-7" />
-            {t("Drop images here or tap to add")}
-            <input type="file" multiple accept={acceptFor("image")} className="hidden"
+            <span className="text-foreground">{t("Drop media here or tap to add")}</span>
+            <span className="text-xs">{t("Images, video, audio or PDF")}</span>
+            <input type="file" multiple accept={acceptFor("media")} className="hidden"
               onChange={(e) => { add(Array.from(e.target.files ?? [])); e.target.value = ""; }} />
           </label>
         ) : (
@@ -115,6 +125,9 @@ export function AssetsPanel({ draft, setDraft, errors, open, onToggle }: PanelPr
             {assets.map((a, i) => {
               const isSelected = selected.has(a.id);
               const invalid = !!errors.assets.byId[a.id];
+              const kind = assetKind(a);
+              const image = assetImage(a);
+              const KindIcon = KIND_ICON[kind];
               return (
                 <button key={a.id} type="button" data-testid="asset-card" aria-pressed={selecting ? isSelected : undefined}
                   onClick={() => {
@@ -124,7 +137,12 @@ export function AssetsPanel({ draft, setDraft, errors, open, onToggle }: PanelPr
                     setSelected(next);
                   }}
                   className={cn("group relative overflow-hidden rounded-xl bg-muted text-left", invalid && "ring-2 ring-destructive", isSelected && "ring-2 ring-primary")}>
-                  <img src={previewUrl(a.file)} alt={a.name || a.file.name} className="aspect-square w-full object-cover" />
+                  {image
+                    ? <img src={previewUrl(image)} alt={a.name || a.file.name} className="aspect-square w-full object-cover" />
+                    : <span className="grid aspect-square w-full place-items-center"><KindIcon className="h-7 w-7 text-muted-foreground" /></span>}
+                  {kind !== "image" && !selecting && (
+                    <span className="absolute left-1.5 top-1.5 rounded-full bg-background/90 px-2 py-0.5 text-xs font-medium">{t(KIND_LABEL[kind])}</span>
+                  )}
                   <span className="absolute inset-x-0 bottom-0 truncate bg-gradient-to-t from-black/70 to-transparent px-2 pb-1.5 pt-5 text-xs font-medium text-white">
                     {a.name.trim() || `#${i + 1}`}
                   </span>

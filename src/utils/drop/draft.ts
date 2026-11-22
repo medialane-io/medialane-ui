@@ -65,6 +65,20 @@ export function dropSymbol(name: string): string {
   return suggestLaunchpadSymbol(name) || "DROP";
 }
 
+const featureId = (a: DraftAsset) => `${a.id}:feature`;
+
+export function assetUploads(assets: DraftAsset[]): { id: string; file: File }[] {
+  return assets.flatMap((a) => [
+    { id: a.id, file: a.file },
+    ...(assetKind(a) !== "image" && a.feature ? [{ id: featureId(a), file: a.feature }] : []),
+  ]);
+}
+
+export function assetMedia(a: DraftAsset, uriOf: (id: string) => string | null): { imageUri: string; animationUrl: string | null } {
+  if (assetKind(a) === "image") return { imageUri: uriOf(a.id)!, animationUrl: null };
+  return { imageUri: uriOf(featureId(a))!, animationUrl: uriOf(a.id) };
+}
+
 export function draftTokens(d: DropDraft): number {
   return d.assets.reduce((n, a) => n + (isPositiveInteger(a.copies) ? Number(a.copies) : 0), 0);
 }

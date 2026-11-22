@@ -1,5 +1,5 @@
 import { expect, test } from "bun:test";
-import { EMPTY_DRAFT, assetImage, assetKind, draftTokens, firstMissing, hasErrors, newAsset, validateDropDraft, type DropDraft } from "./draft.js";
+import { EMPTY_DRAFT, assetImage, assetKind, assetMedia, assetUploads, draftTokens, firstMissing, hasErrors, newAsset, validateDropDraft, type DropDraft } from "./draft.js";
 
 const NOW = 1_800_000_000;
 const png = (name: string) => new File(["x"], `${name}.png`, { type: "image/png" });
@@ -93,4 +93,21 @@ test("each asset reports its media kind and the image that represents it", () =>
   expect(assetImage(audio)?.name).toBe("art.png");
   expect(assetKind(newAsset(new File(["x"], "doc.pdf", { type: "application/pdf" })))).toBe("document");
   expect(assetImage(newAsset(new File(["x"], "clip.webm", { type: "video/webm" })))).toBeNull();
+});
+
+test("uploads cover each media file and each feature image once", () => {
+  const image = newAsset(png("a"));
+  const song = { ...newAsset(new File(["x"], "song.mp3", { type: "audio/mpeg" })), feature: png("art") };
+  expect(assetUploads([image, song]).map((u) => [u.id, u.file.name])).toEqual([
+    [image.id, "a.png"], [song.id, "song.mp3"], [`${song.id}:feature`, "art.png"],
+  ]);
+});
+
+test("an image asset's image is the file; a media asset's image is its feature and the file is animation_url", () => {
+  const image = newAsset(png("a"));
+  const song = { ...newAsset(new File(["x"], "song.mp3", { type: "audio/mpeg" })), feature: png("art") };
+  const uris: Record<string, string> = { [image.id]: "ipfs://a", [song.id]: "ipfs://song", [`${song.id}:feature`]: "ipfs://art" };
+  const uriOf = (id: string) => uris[id] ?? null;
+  expect(assetMedia(image, uriOf)).toEqual({ imageUri: "ipfs://a", animationUrl: null });
+  expect(assetMedia(song, uriOf)).toEqual({ imageUri: "ipfs://art", animationUrl: "ipfs://song" });
 });
