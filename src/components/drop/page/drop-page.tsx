@@ -37,7 +37,7 @@ export function DropPage(props: { contract: string; initialTab?: string; portfol
   const chain = useDropChain(contract, walletAddress);
   const { mints, mutate: refreshMints } = useDropMints(contract);
   const feeBps = useDropFee();
-  const collectionFile = useDropFile<{ drop_kind?: string }>(indexed?.baseUri ?? null, "collection.json");
+  const collectionFile = useDropFile<{ drop_kind?: string; image?: string | null }>(indexed?.baseUri ?? null, "collection.json");
   const isCollection = collectionFile?.drop_kind === "collection";
   const firstToken = useDropFile<TokenFile>(indexed?.baseUri ?? null, "1");
   const { tokens } = useCollectionTokens(isCollection ? contract : null, 1, 24);
@@ -66,7 +66,7 @@ export function DropPage(props: { contract: string; initialTab?: string; portfol
   const mint = dropMintState({ drop: priced, wallet: walletAddress, claimed: chain.claimed, proof, balance: chain.balance, feeBps: feeBps ?? 0, now });
   const view = priced ? actionBoxView({ drop: priced, mint, quantity, feeBps: feeBps!, now, locale }) : null;
   const isOrganizer = !!walletAddress && !!onchain && BigInt(walletAddress) === BigInt(onchain.organizer);
-  const art = resolveImage(firstToken?.image ?? indexed?.image);
+  const art = resolveImage(indexed?.image ?? collectionFile?.image ?? firstToken?.image);
   const name = indexed?.name ?? "Drop";
   const deps = async () => ({ client: getClient(), signer: await app.getSigner() });
 
