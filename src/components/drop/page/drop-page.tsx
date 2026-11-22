@@ -23,12 +23,13 @@ import { claimProofFor } from "../../../utils/drop/claim-proof.js";
 import { manageDrop, mintDrop, saveExclusiveContent } from "../../../utils/drop/actions.js";
 import { useMedialaneApp } from "../../medialane-app.js";
 import { useImageUrl } from "../../../utils/use-image-url.js";
-import { useT } from "../../../i18n/provider.js";
+import { useLocale, useT } from "../../../i18n/provider.js";
 
 type TokenFile = { image?: string; attributes?: { trait_type?: string; value?: string }[] };
 
 export function DropPage(props: { contract: string; initialTab?: string; portfolioHref?: string }) {
   const t = useT();
+  const locale = useLocale();
   const resolveImage = useImageUrl();
   const app = useMedialaneApp();
   const { contract } = props;
@@ -64,7 +65,7 @@ export function DropPage(props: { contract: string; initialTab?: string; portfol
   const onchain = chain.drop;
   const priced = feeBps === null ? null : onchain;
   const mint = dropMintState({ drop: priced, wallet: walletAddress, claimed: chain.claimed, proof, balance: chain.balance, feeBps: feeBps ?? 0, now });
-  const view = priced ? actionBoxView({ drop: priced, mint, quantity, feeBps: feeBps!, now }) : null;
+  const view = priced ? actionBoxView({ drop: priced, mint, quantity, feeBps: feeBps!, now, locale }) : null;
   const isOrganizer = !!walletAddress && !!onchain && BigInt(walletAddress) === BigInt(onchain.organizer);
   const art = resolveImage(firstToken?.image ?? indexed?.image);
   const name = indexed?.name ?? "Drop";
@@ -102,7 +103,7 @@ export function DropPage(props: { contract: string; initialTab?: string; portfol
         <div className="lg:hidden">
           <DropActionBox view={view} minted={onchain.totalMinted} maxSupply={onchain.maxSupply} quantity={quantity} onQuantity={setQuantity} onAction={onAction} />
           <div className="fixed inset-x-0 bottom-0 z-30 border-t border-border bg-background/95 p-3 backdrop-blur">
-            <ActionButton solid disabled={view.button.action === "none"} onClick={onAction} className="w-full">{t(view.button.label)}</ActionButton>
+            <ActionButton solid disabled={view.button.action === "none"} onClick={onAction} className="w-full">{t(view.button.label.text, view.button.label.vars)}</ActionButton>
           </div>
         </div>
       )}

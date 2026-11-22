@@ -25,33 +25,45 @@ describe("dropPhase", () => {
 describe("action box", () => {
   test("ready on a paid drop shows the total with the fee and a Mint button", () => {
     const v = view("ready", { price: 5_000_000n, paymentToken: USDC }, 5n, 2n);
-    expect(v.button).toEqual({ label: "Mint 2", action: "mint" });
+    expect(v.button).toEqual({ label: { text: "Mint {count}", vars: { count: "2" } }, action: "mint" });
     expect(v.priceText).toBe("5 USDC");
-    expect(v.totalText).toBe("Total 10.1 USDC (incl. platform fee)");
+    expect(v.totalText).toEqual({ text: "Total {amount} with the platform fee", vars: { amount: "10.1 USDC" } });
     expect(v.maxQuantity).toBe(5n);
-    expect(v.eligibility).toBe("Open to everyone");
+    expect(v.eligibility).toEqual({ text: "Open to everyone" });
   });
 
   test("each blocked state has its own message", () => {
-    expect(view("upcoming", { startTime: NOW + 60 }).button.label.startsWith("Starts ")).toBe(true);
+    expect(view("upcoming", { startTime: NOW + 60 }).button.label.text).toBe("Starts {date}");
+    expect(view("upcoming", { startTime: NOW + 60 }).button.label.vars?.date).toBeTruthy();
     expect(view("upcoming", { startTime: NOW + 60 }).countdown).toEqual({ label: "Starts in", target: NOW + 60 });
-    expect(view("ended").button).toEqual({ label: "This drop has ended", action: "none" });
-    expect(view("sold-out").button).toEqual({ label: "Sold out", action: "none" });
-    expect(view("no-wallet").button).toEqual({ label: "Sign in to mint", action: "sign-in" });
-    expect(view("no-link", { allowlistRoot: "0xabc" }).eligibility).toBe("This drop is for a list — open your claim link to mint");
-    expect(view("not-on-list", { allowlistRoot: "0xabc" }).button).toEqual({ label: "This wallet isn't on the list", action: "none" });
-    expect(view("limit-reached", { maxPerWallet: 5n }).button).toEqual({ label: "You've minted your limit (5)", action: "none" });
-    expect(view("insufficient-balance", { price: 1n, paymentToken: USDC }).button).toEqual({ label: "Not enough USDC", action: "none" });
-    expect(view("loading").button).toEqual({ label: "Checking…", action: "none" });
+    expect(view("ended").button).toEqual({ label: { text: "This drop has ended" }, action: "none" });
+    expect(view("sold-out").button).toEqual({ label: { text: "Sold out" }, action: "none" });
+    expect(view("no-wallet").button).toEqual({ label: { text: "Sign in to mint" }, action: "sign-in" });
+    expect(view("no-link", { allowlistRoot: "0xabc" }).eligibility).toEqual({ text: "List only. Open the claim link to mint." });
+    expect(view("no-link", { allowlistRoot: "0xabc" }).button).toEqual({ label: { text: "Open the claim link to mint" }, action: "none" });
+    expect(view("not-on-list", { allowlistRoot: "0xabc" }).button).toEqual({ label: { text: "This wallet isn't on the list" }, action: "none" });
+    expect(view("limit-reached", { maxPerWallet: 5n }).button).toEqual({ label: { text: "Limit reached: {count} per wallet", vars: { count: "5" } }, action: "none" });
+    expect(view("insufficient-balance", { price: 1n, paymentToken: USDC }).button).toEqual({ label: { text: "Not enough {symbol}", vars: { symbol: "USDC" } }, action: "none" });
+    expect(view("loading").button).toEqual({ label: { text: "Checking…" }, action: "none" });
   });
 
-  test("a list drop that's ready says you're on the list; a live drop with an end counts down", () => {
-    expect(view("ready", { allowlistRoot: "0xabc" }, 1n).eligibility).toBe("You're on the list");
+  test("a list drop that's ready says the wallet is on the list; a live drop with an end counts down", () => {
+    expect(view("ready", { allowlistRoot: "0xabc" }, 1n).eligibility).toEqual({ text: "On the list" });
+    expect(view("not-on-list", { allowlistRoot: "0xabc" }).eligibility).toEqual({ text: "List only" });
     expect(view("ready", { endTime: NOW + 600 }, 1n).countdown).toEqual({ label: "Ends in", target: NOW + 600 });
-    expect(view("ready", {}, 1n).statusText).toBe("Live · no end date");
+    expect(view("ready", { endTime: NOW + 600 }, 1n).statusText.text).toBe("Ends {date}");
+    expect(view("ready", {}, 1n).statusText).toEqual({ text: "No end date" });
+    expect(view("upcoming", { startTime: NOW + 60 }).statusText.text).toBe("Starts {date}");
+    expect(view("sold-out", { totalMinted: 500n }).statusText).toEqual({ text: "Sold out" });
+  });
+
+  test("dates follow the visitor's language", () => {
+    const en = actionBoxView({ drop: drop({ startTime: NOW + 60 }), mint: { state: "upcoming", maxQuantity: 0n }, quantity: 1n, feeBps: 0, now: NOW, locale: "en" });
+    const pt = actionBoxView({ drop: drop({ startTime: NOW + 60 }), mint: { state: "upcoming", maxQuantity: 0n }, quantity: 1n, feeBps: 0, now: NOW, locale: "pt" });
+    expect(en.statusText.vars?.date).not.toBe(pt.statusText.vars?.date);
   });
 
   test("the quantity never exceeds what the wallet can mint", () => {
-    expect(view("ready", {}, 3n, 9n).button).toEqual({ label: "Mint 3", action: "mint" });
+    expect(view("ready", {}, 3n, 9n).button).toEqual({ label: { text: "Mint {count}", vars: { count: "3" } }, action: "mint" });
   });
 });

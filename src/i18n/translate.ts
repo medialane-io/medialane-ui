@@ -3,6 +3,11 @@ export type Entry = string | PluralForms;
 export type Catalog = Record<string, Entry>;
 export type Vars = Record<string, string | number>;
 
+export interface Phrase {
+  text: string;
+  vars?: Vars;
+}
+
 const pluralRules = new Map<string, Intl.PluralRules>();
 
 function pluralCategory(locale: string, count: number): Intl.LDMLPluralRule {
