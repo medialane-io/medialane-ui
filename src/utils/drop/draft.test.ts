@@ -1,5 +1,5 @@
 import { expect, test } from "bun:test";
-import { EMPTY_DRAFT, draftTokens, firstMissing, hasErrors, newAsset, validateDropDraft, type DropDraft } from "./draft.js";
+import { EMPTY_DRAFT, assetImage, assetKind, draftTokens, firstMissing, hasErrors, newAsset, validateDropDraft, type DropDraft } from "./draft.js";
 
 const NOW = 1_800_000_000;
 const png = (name: string) => new File(["x"], `${name}.png`, { type: "image/png" });
@@ -70,4 +70,27 @@ test("sale errors land in settings", () => {
   const e = validateDropDraft(named({ sale: { ...EMPTY_DRAFT.sale, paid: true, price: "" } }), NOW);
   expect(e.settings.price).toEqual({ text: "Enter a price above 0" });
   expect(firstMissing(e)).toEqual({ panel: "settings", message: { text: "Enter a price above 0" } });
+});
+
+test("video, audio and PDF assets need a feature image; images do not", () => {
+  const video = newAsset(new File(["x"], "wave.mp4", { type: "video/mp4" }));
+  const e = validateDropDraft(named({ assets: [video] }), NOW);
+  expect(e.assets.byId[video.id]?.feature).toEqual({ text: "Add a feature image" });
+  expect(firstMissing(e)).toEqual({ panel: "assets", message: { text: "Add a feature image" } });
+  const withFeature = { ...video, feature: png("cover") };
+  expect(validateDropDraft(named({ assets: [withFeature] }), NOW).assets.byId[video.id]).toBeUndefined();
+  const image = newAsset(png("a"));
+  expect(image.feature).toBeNull();
+  expect(validateDropDraft(named({ assets: [image] }), NOW).assets.byId[image.id]).toBeUndefined();
+});
+
+test("each asset reports its media kind and the image that represents it", () => {
+  const image = newAsset(png("a"));
+  expect(assetKind(image)).toBe("image");
+  expect(assetImage(image)).toBe(image.file);
+  const audio = { ...newAsset(new File(["x"], "song.mp3", { type: "audio/mpeg" })), feature: png("art") };
+  expect(assetKind(audio)).toBe("audio");
+  expect(assetImage(audio)?.name).toBe("art.png");
+  expect(assetKind(newAsset(new File(["x"], "doc.pdf", { type: "application/pdf" })))).toBe("document");
+  expect(assetImage(newAsset(new File(["x"], "clip.webm", { type: "video/webm" })))).toBeNull();
 });
