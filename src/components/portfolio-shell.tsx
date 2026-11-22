@@ -43,7 +43,7 @@ function SignedOut() {
     <div className="mx-auto max-w-lg space-y-4 px-4 pt-24 pb-8 text-center">
       <Wallet className="mx-auto h-10 w-10 text-muted-foreground" />
       <h1 className="text-2xl font-bold">{t("Your portfolio")}</h1>
-      <p className="text-muted-foreground">{t("Sign in to see your assets, listings and offers.")}</p>
+      <p className="text-muted-foreground">{t("Sign in to see the portfolio.")}</p>
       <Button size="lg" className="rounded-full px-7" onClick={onRequireWallet}>
         {connectLabel ?? t("Sign in")}
       </Button>

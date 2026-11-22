@@ -43,7 +43,7 @@ export function DevicesSection({ walletAddress, wallet, loadSealed }: DevicesSec
     if (!sealed || !devices) return;
 
     const confirmed = window.confirm(
-      "Remove this device? It will no longer be able to sign for your account. Adding it back needs a device you still have.",
+      "Remove this device from the account?",
     );
     if (!confirmed) return;
 
@@ -65,7 +65,7 @@ export function DevicesSection({ walletAddress, wallet, loadSealed }: DevicesSec
         <div>
           <h3 className="text-base font-bold text-foreground">{t("Your devices")}</h3>
           <p className="text-sm text-muted-foreground mt-0.5">
-            {t("Each device signs for itself. Add one to use this account somewhere else.")}
+            {t("Add a device to use this account elsewhere.")}
           </p>
         </div>
         <Button size="sm" variant="soft" onClick={() => setAddOpen(true)}>

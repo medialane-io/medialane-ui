@@ -200,7 +200,7 @@ export function MediaWalletSend({
         >
           {t("Review transfer")}
         </ActionButton>
-        <TrustNote>{t("Gas paid from your balance. Transfers are permanent and recorded onchain.")}</TrustNote>
+        <TrustNote>{t("Transfers are permanent.")}</TrustNote>
       </div>
 
       {pickerOpen && (

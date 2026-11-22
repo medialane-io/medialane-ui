@@ -81,7 +81,7 @@ export function AssetProvenanceTab({
         <Fingerprint className="h-4 w-4 text-primary shrink-0" />
         <div className="min-w-0">
           <p className="text-xs font-semibold text-primary">{t("Onchain provenance")}</p>
-          <p className="text-xs text-muted-foreground">{t("Every transfer and sale is immutably recorded on Starknet — this history cannot be altered.")}</p>
+          <p className="text-xs text-muted-foreground">{t("Every transfer and sale is recorded on Starknet.")}</p>
         </div>
         <a
           href={`${EXPLORER_URL}/contract/${contract}`}

@@ -19,7 +19,7 @@ export function DiscoverHero({
   stats,
   orders,
   badgeText,
-  headlineText = "Create, share & explore",
+  headlineText = "Create and explore",
   getTickerHref,
 }: DiscoverHeroProps) {
   const intl = useFormat();

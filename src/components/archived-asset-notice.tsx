@@ -12,7 +12,7 @@ export function ArchivedAssetNotice() {
       <div className="space-y-0.5">
         <p className="text-sm font-semibold">{t("Permanently archived")}</p>
         <p className="text-xs text-muted-foreground">
-          {t("This asset's record stays onchain with its owner, creator and history. It can no longer be transferred or sold.")}
+          {t("This asset is archived.")}
         </p>
       </div>
     </Panel>

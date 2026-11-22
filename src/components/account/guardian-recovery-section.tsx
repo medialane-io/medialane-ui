@@ -81,7 +81,7 @@ export function GuardianRecoverySection({
         <div>
           <h3 className="text-base font-bold text-foreground">{t("Security & recovery")}</h3>
           <p className="text-sm text-muted-foreground mt-0.5">
-            {t("A guardian is a trusted backup that helps restore this wallet on a new device.")}
+            {t("A trusted backup that restores this wallet.")}
           </p>
         </div>
       </div>
@@ -90,9 +90,9 @@ export function GuardianRecoverySection({
         {inProgress && (
           <Alert variant="destructive">
             <ShieldAlert className="h-4 w-4" />
-            <AlertDescription>{t.rich("A guardian has started replacing this wallet's owner key. {value} The replacement can be stopped with the button below.{value2}{button}", { value: inProgress.status === "Ready"
-                ? "It can complete at any time."
-                : `It can complete on ${intl.dateTime(new Date(inProgress.readyAt * 1000))}.`, value2: cancelError && <p className="mt-1 text-destructive">{cancelError}</p>, button: <Button
+            <AlertDescription>{t.rich("{value}{value2}{button}", { value: inProgress.status === "Ready"
+                ? t("Owner key replacement can finish anytime.")
+                : t("Owner key replacement finishes on {value}.", { value: intl.date(inProgress.readyAt * 1000, { month: "short", day: "numeric" }) }), value2: cancelError && <p className="mt-1 text-destructive">{cancelError}</p>, button: <Button
                 onClick={handleCancel}
                 disabled={cancelBusy}
                 variant="destructive"
@@ -113,7 +113,7 @@ export function GuardianRecoverySection({
               <p className="text-xs text-muted-foreground mt-0.5">{t("Checking…")}</p>
             ) : status.kind === "none" ? (
               <p className="text-xs text-muted-foreground mt-0.5">
-                {guardianRecoveryAvailable ? t("Not set up — add one from another device you trust.") : t("Not available yet.")}
+                {guardianRecoveryAvailable ? t("Add one from a trusted device.") : t("Not available yet.")}
               </p>
             ) : (
               <p className="text-xs text-muted-foreground mt-0.5">{t("Active: {type} guardian {short}", { type: status.guardian.type, short: short(status.guardian.storedValue) })}
@@ -139,7 +139,7 @@ export function GuardianRecoverySection({
           <div>
             <p className="text-sm font-medium text-foreground">{t("Recover a wallet")}</p>
             <p className="text-xs text-muted-foreground mt-0.5">
-              {t("Lost this device, or acting as someone's guardian?")}
+              {t("Restore a wallet")}
             </p>
           </div>
           <ChevronRight className="h-4 w-4 text-muted-foreground shrink-0" />

@@ -57,7 +57,7 @@ export function CollectionPicker({ collections, loading, value, onChange, newCol
   if (collections.length === 0) {
     return (
       <div className="rounded-xl border border-dashed border-border p-5 text-center space-y-3">
-        <p className="text-sm text-muted-foreground">{t("No collection found. It may take a minute to display recently created collections.")}</p>
+        <p className="text-sm text-muted-foreground">{t("New collections appear within a minute.")}</p>
         <ActionButton solid small asChild>
           <Link href={newCollectionHref}>
             <Plus className="h-3.5 w-3.5" />

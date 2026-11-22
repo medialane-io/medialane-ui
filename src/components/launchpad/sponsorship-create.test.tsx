@@ -50,7 +50,7 @@ test("an offer needs an asset before anything is created", async () => {
   const { view, intents } = setup();
   fireEvent.click(view.getByText("Offer my asset"));
   fireEvent.click(view.getByText("Create offer"));
-  await waitFor(() => expect(view.getByText("Choose which asset you're offering.")).toBeTruthy());
+  await waitFor(() => expect(view.getByText("Choose the asset to offer.")).toBeTruthy());
   expect(intents).toEqual([]);
 });
 

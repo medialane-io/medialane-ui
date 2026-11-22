@@ -115,14 +115,14 @@ export function ArchiveAssetDialog({
                 <Alert variant="destructive">
                   <AlertCircle className="h-4 w-4" />
                   <AlertDescription className="text-xs">
-                    {t("Archiving is permanent and cannot be undone. The asset stays recorded onchain with its owner, creator and history, but it can no longer be transferred or archived again.")}
+                    {t("Archiving is permanent.")}
                   </AlertDescription>
                 </Alert>
                 {hasActiveListing ? (
                   <Alert variant="destructive">
                     <AlertCircle className="h-4 w-4" />
                     <AlertDescription className="text-xs">
-                      {t("This asset has an active listing. Cancel the listing first, so the sale can't be left open after archiving.")}
+                      {t("Cancel the active listing first.")}
                     </AlertDescription>
                   </Alert>
                 ) : null}

@@ -108,11 +108,11 @@ test("after the upload the creator picks what to make, with Single NFT chosen", 
 
 test("every format keeps the title, description and link, with nothing dropped when switching", async () => {
   const { view } = await withFile();
-  fireEvent.change(view.getByPlaceholderText(/Describe your work/), { target: { value: "A poster" } });
+  fireEvent.change(view.getByPlaceholderText(/The story behind the work/), { target: { value: "A poster" } });
   for (const label of [/Immutable certificate/, /IP Ticket/, /IP Club/, /Limited Editions/, /Single NFT/]) {
     pick(view, label);
     expect(view.getByPlaceholderText("My Creative Work")).toBeTruthy();
-    expect((view.getByPlaceholderText(/Describe your work/) as HTMLTextAreaElement).value).toBe("A poster");
+    expect((view.getByPlaceholderText(/The story behind the work/) as HTMLTextAreaElement).value).toBe("A poster");
     expect(view.getByPlaceholderText("https://yourwebsite.com")).toBeTruthy();
   }
 });
@@ -136,7 +136,7 @@ test("a certificate is created in place, with its metadata, symbol and deadline"
   const { view, intents, uploads } = await withFile();
   pick(view, /Immutable certificate/);
   title(view, "Rio Summit");
-  fireEvent.change(view.getByPlaceholderText(/Describe your work/), { target: { value: "Conference poster" } });
+  fireEvent.change(view.getByPlaceholderText(/The story behind the work/), { target: { value: "Conference poster" } });
   await waitFor(() => expect(button(view, "Create certificate").disabled).toBe(false));
   fireEvent.click(button(view, "Create certificate"));
   await waitFor(() => expect(view.getByText("Certificate created")).toBeTruthy());

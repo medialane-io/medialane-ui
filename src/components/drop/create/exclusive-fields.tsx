@@ -17,9 +17,9 @@ export function ExclusiveFields({ value, onChange }: { value: ExclusiveValue; on
   const t = useT();
   return (
     <div className="space-y-3">
-      <Input placeholder={t("Title, e.g. Behind-the-scenes footage")} value={value.title} maxLength={100} onChange={(e) => onChange({ ...value, title: e.target.value })} />
+      <Input placeholder={t("Title")} value={value.title} maxLength={100} onChange={(e) => onChange({ ...value, title: e.target.value })} />
       <Input placeholder={t("https://…")} value={value.url} onChange={(e) => onChange({ ...value, url: e.target.value.trim() })} />
-      <p className="text-xs text-muted-foreground">{t("Only holders see this link. Use a private or unlisted one.")}</p>
+      <p className="text-xs text-muted-foreground">{t("Only holders see this link.")}</p>
       <Select value={value.type} onValueChange={(type) => onChange({ ...value, type })}>
         <SelectTrigger><SelectValue placeholder={t("Kind of content")} /></SelectTrigger>
         <SelectContent>{TYPES.map((type) => <SelectItem key={type.value} value={type.value}>{t(type.label)}</SelectItem>)}</SelectContent>

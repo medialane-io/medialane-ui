@@ -233,7 +233,7 @@ export function CollectionCreateForm({ preset, aside }: CollectionCreateFormProp
                     </button>
                   )}
                   <p className="text-xs text-muted-foreground">
-                    {t("JPG, PNG, GIF, SVG or WebP")}
+                    {t("Image files")}
                     {imageUri && <span className="ml-2 text-brand-blue font-medium">{t("✓ Uploaded")}</span>}
                   </p>
                   {copy.imageHelp && <p className="text-xs text-muted-foreground">{copy.imageHelp}</p>}

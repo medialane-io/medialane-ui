@@ -188,14 +188,14 @@ export function SingleEditionMint({ aside }: { aside?: ReactNode }) {
       icon={ImagePlus}
       iconClassName="text-brand-blue"
       title={t("Secure your account to create")}
-      description={t("Publish your creative work as a single-copy NFT in a collection you own.")}
+      description={t("Publish a single-copy work.")}
     >
       <TransactionDialog tx={tx} title={t("Mint NFT")} workingLabel="Minting your work…" firstStepLabel="Upload to IPFS">
         <TransactionSuccess
           name={form.getValues("name") || "Your asset"}
           image={imagePreview}
           title={t("Asset minted")}
-          description={t("Your wallet is the owner. The license terms and royalty are recorded in its metadata.")}
+          description={t("License terms are recorded with the work.")}
           actions={[
             ...(mintedHref ? [{ href: mintedHref, label: t("View asset") }] : []),
             { href: "/portfolio/assets", label: t("View portfolio") },
@@ -209,7 +209,7 @@ export function SingleEditionMint({ aside }: { aside?: ReactNode }) {
       <ClaimRouteShell
         icon={<ImagePlus className="h-4 w-4 text-white" />}
         title={t("Mint NFT")}
-        subtitle={t("Publish your creative work as a single-copy NFT in a collection you own — free to mint, and it's yours.")}
+        subtitle={t("Publish a single-copy work.")}
         aside={
           <>
             <MedialaneCollectionCard
@@ -256,7 +256,7 @@ export function SingleEditionMint({ aside }: { aside?: ReactNode }) {
                 ) : (
                   <div className="flex flex-col items-center gap-2 text-muted-foreground">
                     <Upload className="h-8 w-8" />
-                    <p className="text-sm">{t("Click to upload (JPG, PNG, GIF, SVG, WebP)")}</p>
+                    <p className="text-sm">{t("Click to upload an image")}</p>
                   </div>
                 )}
                 <input
@@ -297,7 +297,7 @@ export function SingleEditionMint({ aside }: { aside?: ReactNode }) {
             <FormField control={form.control} name="description" render={({ field }) => (
               <FormItem>
                 <FormLabel>{t("Description")}</FormLabel>
-                <FormControl><Textarea placeholder={t("Describe your work, its story, and any context for buyers…")} rows={4} {...field} /></FormControl>
+                <FormControl><Textarea placeholder={t("The story behind the work…")} rows={4} {...field} /></FormControl>
                 <FormMessage />
               </FormItem>
             )} />
@@ -317,7 +317,7 @@ export function SingleEditionMint({ aside }: { aside?: ReactNode }) {
               label={t("License terms")}
               hint={t("Optional · Berne Convention")}
             >
-              <p className="text-xs text-muted-foreground">{t("Set how others can use your work. These terms are saved permanently with it as proof of authorship.")}</p>
+              <p className="text-xs text-muted-foreground">{t("Set how others use the work.")}</p>
               <FormField control={form.control} name="licenseType" render={({ field }) => (
                 <FormItem>
                   <FormLabel>{t("License")}</FormLabel>
@@ -375,7 +375,7 @@ export function SingleEditionMint({ aside }: { aside?: ReactNode }) {
               label={t("IP type & metadata")}
               hint={t("Optional")}
             >
-              <p className="text-xs text-muted-foreground">{t("Choose a content type, fill suggested metadata, or add your own trait pairs.")}</p>
+              <p className="text-xs text-muted-foreground">{t("Add traits for this edition.")}</p>
               <FormField control={form.control} name="ipType" render={({ field }) => (
                 <FormItem>
                   <FormLabel>{t("IP type")}</FormLabel>
@@ -396,7 +396,7 @@ export function SingleEditionMint({ aside }: { aside?: ReactNode }) {
             <ActionButton solid big type="submit" disabled={busy} className="w-full">
               {t("Mint NFT")}
             </ActionButton>
-            <p className="text-xs text-center text-muted-foreground">{t("Free to mint — protocol fee is zero.")}</p>
+            <p className="text-xs text-center text-muted-foreground">{t("Free to mint.")}</p>
           </form>
         </Form>
       </ClaimRouteShell>

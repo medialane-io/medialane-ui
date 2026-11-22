@@ -31,7 +31,7 @@ test("rows link to each profile and show the name when there is one", async () =
 
 test("an empty leaderboard invites the first points", async () => {
   const view = renderPanel([]);
-  await waitFor(() => expect(view.getByText(/be the first/)).toBeTruthy());
+  await waitFor(() => expect(view.getByText(/Be the first/)).toBeTruthy());
 });
 
 test("the compact panel lists each rank in one slim row", async () => {

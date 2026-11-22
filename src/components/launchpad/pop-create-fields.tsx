@@ -102,7 +102,7 @@ export function PopCreateFields({
             {t(EVENT_TYPES.find((event) => event.value === eventType)?.description ?? "")}
           </p>
           <p className="text-xs text-muted-foreground">
-            {t("This helps label the certificate collection and makes the event easier to understand at a glance.")}
+            {t("Labels the certificate collection.")}
           </p>
         </div>
       </FadeIn>
@@ -175,7 +175,7 @@ export function PopCreateFields({
                 </button>
               ) : null}
               <p className="text-xs text-muted-foreground">
-                {imageUri ? <span className="text-brand-blue">{t("✓ Uploaded")}</span> : t("JPG, PNG, SVG or WebP")}
+                {imageUri ? <span className="text-brand-blue">{t("✓ Uploaded")}</span> : t("Image files")}
               </p>
             </div>
           </div>
@@ -214,7 +214,7 @@ export function PopCreateFields({
                   className="max-w-[160px]"
                 />
               </FormControl>
-              <FormDescription>{t("Short ticker shown in wallets. We suggest one from the event name.")}</FormDescription>
+              <FormDescription>{t("Short ticker for wallets.")}</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -270,7 +270,7 @@ export function PopCreateFields({
             />
           </div>
           <p className="text-xs text-muted-foreground">
-            {t("Participants can claim certificates until this time. After it closes, the collection remains as the onchain record.")}
+            {t("Claims close at this time.")}
           </p>
         </div>
       </FadeIn>
@@ -302,7 +302,7 @@ export function PopCreateFields({
           </button>
         </div>
         <p className="text-xs text-muted-foreground">
-          {t("Private events remain claimable by link, but won’t appear in the public POP directory.")}
+          {t("Private events are claimable by link only.")}
         </p>
       </FadeIn>
 
@@ -326,7 +326,7 @@ export function PopCreateFields({
           )}
         </Button>
         <p className="text-xs text-center text-muted-foreground mt-2">
-          {t("Free to publish — protocol fee is zero.")}
+          {t("Free to publish.")}
         </p>
       </FadeIn>
     </div>

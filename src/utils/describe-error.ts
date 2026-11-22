@@ -4,11 +4,11 @@ import { WrongNetworkError, isBareExecuteFailure, isUserRejectedRequest, collect
 import { describeWalletFailure, passkeyUnsupportedReason } from "./wallet-failure.js";
 import { msg } from "../i18n/translate.js";
 
-export const NOT_SUBMITTED = "Request not completed. Nothing was submitted.";
-export const NETWORK_BUSY = "Our service is very busy right now. Please try again in a minute.";
-export const CONNECTION_FAILED = "We couldn't connect. Check your internet connection and try again.";
-export const INSUFFICIENT_BALANCE = "You don't have enough balance to complete this transaction.";
-export const NOT_EXECUTABLE = "Nothing was sent. Check your balance and try again.";
+export const NOT_SUBMITTED = "Nothing was submitted.";
+export const NETWORK_BUSY = "Try again in a minute.";
+export const CONNECTION_FAILED = "Check the connection and try again.";
+export const INSUFFICIENT_BALANCE = "Add funds to continue.";
+export const NOT_EXECUTABLE = "Check the balance and try again.";
 
 export interface ErrorNotice {
   title?: string;
@@ -57,8 +57,8 @@ export function describeError(error: unknown): ErrorNotice {
       title: msg("Request not completed"),
       message: NOT_SUBMITTED,
       description: unclear
-        ? "Your wallet didn't complete this request. You may have closed or declined it, it may need extra verification such as 2FA before it can sign, or it may have hit a temporary network hiccup. Try again in a moment."
-        : "Your wallet didn't complete this request. You may have closed or declined it, or it may need extra verification before it can sign.",
+        ? "Try again in a moment."
+        : "The wallet did not sign.",
       isUserRejection: true,
       retryable: true,
     };
@@ -71,13 +71,12 @@ export function describeError(error: unknown): ErrorNotice {
   if (error instanceof WrongNetworkError) {
     return notice(
       "Wrong network",
-      "Your wallet is connected to the wrong network. Nothing was submitted.",
-      "Switch your wallet to Starknet Mainnet, then try again.",
+      "Switch the wallet to Starknet Mainnet.",
     );
   }
 
   if (error instanceof SponsoredCallRejectedError && error.code === "insufficient_balance") {
-    return notice("Insufficient balance", `${INSUFFICIENT_BALANCE} Nothing was sent.`);
+    return notice("Insufficient balance", INSUFFICIENT_BALANCE);
   }
 
   if (error instanceof SponsoredCallRejectedError && error.code === "not_executable") {

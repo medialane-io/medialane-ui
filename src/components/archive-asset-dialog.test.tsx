@@ -66,7 +66,7 @@ function show(opts: { registry?: string; archived?: string; hasActiveListing?: b
 describe("ArchiveAssetDialog", () => {
   test("warns that archiving is permanent and sends nothing until confirmed", async () => {
     const { executed } = show();
-    await screen.findByText(/Archiving is permanent and cannot be undone/);
+    await screen.findByText(/Archiving is permanent/);
     await screen.findByText("Archive this asset permanently?");
     expect(executed).toEqual([]);
   });

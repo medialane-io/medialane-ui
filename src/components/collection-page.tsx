@@ -295,7 +295,7 @@ export function CollectionPage({ contract, slots }: CollectionPageProps) {
 
               <TabsContent value="listings" className="mt-4">
                 {ordersLoading ? loadingGrid : activeListings.length === 0 ? (
-                  <EmptyState title={t("No active listings")} body={t("When items in this collection are listed for sale, they'll appear here.")} />
+                  <EmptyState title={t("No active listings")} body={t("Listings appear here.")} />
                 ) : (
                   <div className="space-y-3">
                     <div className="flex justify-end">
@@ -312,7 +312,7 @@ export function CollectionPage({ contract, slots }: CollectionPageProps) {
                   <MakeOfferPicker contract={contract} onPick={market.offer} />
                 </div>
                 {ordersLoading ? loadingGrid : activeBids.length === 0 ? (
-                  <EmptyState title={t("No active offers")} body={t("Make the first offer, or check back when collectors start bidding.")} />
+                  <EmptyState title={t("No active offers")} body={t("Make the first offer.")} />
                 ) : (
                   listingGrid(activeBids, offersSort, false)
                 )}

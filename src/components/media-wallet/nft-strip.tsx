@@ -30,7 +30,7 @@ export function NftStrip({
   if (items.length === 0) {
     return (
       <p className="text-sm text-muted-foreground">
-        {t("No NFTs yet — mint or collect your first one to see it here.")}
+        {t("NFTs appear here.")}
       </p>
     );
   }

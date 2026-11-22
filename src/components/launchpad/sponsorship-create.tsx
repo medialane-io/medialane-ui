@@ -118,8 +118,8 @@ export function SponsorshipCreate({ aside }: { aside?: ReactNode }) {
 
   const onSubmit = () => {
     setFormError(null);
-    if (!walletAddress) return setFormError("Your account isn't ready yet. Refresh the page and try again.");
-    if (!chosen) return setFormError(mode === "offer" ? "Choose which asset you're offering." : "Search for the asset you want to sponsor, then pick it.");
+    if (!walletAddress) return setFormError("Refresh to continue.");
+    if (!chosen) return setFormError(mode === "offer" ? "Choose the asset to offer." : "Pick the asset to sponsor.");
     if (!terms.amount || Number(terms.amount) <= 0) return setFormError("Add an amount before continuing.");
     const token = getTokenBySymbol(terms.paymentTokenSymbol);
     if (!token) return setFormError("Pick a currency.");
@@ -164,7 +164,7 @@ export function SponsorshipCreate({ aside }: { aside?: ReactNode }) {
       <ClaimRouteShell
         icon={<Handshake className="h-4 w-4 text-white" />}
         title={t("Set up a sponsorship")}
-        subtitle={t("Found IP you'd like to back? Propose terms directly to its owner. Own something worth sponsoring? Post it and let sponsors bid.")}
+        subtitle={t("Sponsor a work or open one to sponsors.")}
         aside={aside}
       >
         <div className="space-y-6">
@@ -236,7 +236,7 @@ export function SponsorshipCreate({ aside }: { aside?: ReactNode }) {
           description={
             mode === "offer"
               ? t("The offer is recorded onchain with the asset and terms you chose.")
-              : t("The proposal is recorded onchain with the amount and duration you chose.")
+              : t("The proposal is recorded onchain.")
           }
           actions={[{ href: "/launchpad/sponsorship", label: t("Back to Sponsorship launchpad") }, { label: t("Create another"), onClick: handleAgain }]}
         >

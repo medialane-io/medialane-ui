@@ -121,7 +121,7 @@ function Hero() {
         {t("Community")} <span className="text-brand-orange">{t("Rewards")}</span>
       </h1>
       <p className="text-lg text-foreground/70 max-w-xl leading-relaxed font-medium">
-        {t("Every action earns XP, and active members receive allocations from the Creator's Fund based on how much they participate. Scores and badges are recalculated weekly.")}{" "}
+        {t("Every action earns XP toward the Creator's Fund.")}{" "}
         <Link href="/journey" className="text-foreground underline underline-offset-2 hover:text-brand-orange transition-colors">
           {t("See the full system")}
         </Link>
@@ -176,7 +176,7 @@ function StatusPanel({ address }: { address: string | null | undefined }) {
         <LevelBadge level={rewards.currentLevel} name={rewards.currentLevelName} badgeColor={rewards.badgeColor} size="md" />
       </div>
       {!hasXp && (
-        <p className="text-sm text-foreground/60 font-medium mt-2">{t("Mint, collect, or complete your profile to start.")}</p>
+        <p className="text-sm text-foreground/60 font-medium mt-2">{t("Create or collect to start.")}</p>
       )}
       {rewards.nextLevel && (
         <div className="mt-3 space-y-1.5">
@@ -286,7 +286,7 @@ function CreatorsFundCard() {
         </h2>
 
         <p className="text-base font-medium text-white/90 leading-relaxed max-w-sm">
-          {t("A share of what Medialane earns is set aside in one public wallet and airdropped back to the people creating and trading here, split by XP.")}
+          {t("Part of Medialane revenue is airdropped by XP.")}
         </p>
 
         <div className="flex flex-wrap items-center gap-4 pt-2">

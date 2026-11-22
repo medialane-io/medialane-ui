@@ -158,7 +158,7 @@ export function IPTypeDisplay({ attributes }: IPTypeDisplayProps) {
               </p>
               <p className="text-xs text-muted-foreground flex items-center gap-1 mt-0.5">
                 <ShieldCheck className="h-3 w-3 shrink-0" />
-                {t("Stored on IPFS — immutable, timestamped copy of the original")}
+                {t("Timestamped copy on IPFS")}
               </p>
             </div>
             <ExternalLink className="h-3.5 w-3.5 text-muted-foreground shrink-0" />

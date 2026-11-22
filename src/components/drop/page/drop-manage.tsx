@@ -76,11 +76,11 @@ export function DropManage({ contract, indexed, onchain, mints, run, saveExclusi
       <section className="space-y-3">
         <h3 className="text-sm font-semibold">{t("Who can mint")}</h3>
         <p className="text-sm text-muted-foreground">{listed ? t("Only wallets on your list can mint.") : t("Everyone can mint.")}</p>
-        <Textarea rows={5} placeholder={t("Paste wallet addresses, one per line")} value={listText} onChange={(e) => { setListText(e.target.value); setLinks([]); }} />
+        <Textarea rows={5} placeholder={t("One wallet address per line")} value={listText} onChange={(e) => { setListText(e.target.value); setLinks([]); }} />
         {parsed.invalid.length > 0 && <p className="text-xs text-destructive">{t("{count} line(s) aren't wallet addresses: {value}", { count: parsed.invalid.length, value: parsed.invalid.slice(0, 3).join(", ") })}</p>}
         <div className="flex flex-wrap gap-2">
           {list && sameList && (
-            <Button variant="soft" onClick={() => setLinks(dropClaimLinks(window.location.origin, contract, list))}>{t("This is your current list — get its claim links")}</Button>
+            <Button variant="soft" onClick={() => setLinks(dropClaimLinks(window.location.origin, contract, list))}>{t("Get the claim links")}</Button>
           )}
           {list && !sameList && parsed.invalid.length === 0 && (
             <Button onClick={() => setPending({
@@ -92,7 +92,7 @@ export function DropManage({ contract, indexed, onchain, mints, run, saveExclusi
           {listed && (
             <Button variant="soft" onClick={() => setPending({
               title: t("Drop opened to everyone"),
-              body: t("Anyone will be able to mint, with or without a claim link."),
+              body: t("Anyone can mint."),
               act: () => run({ action: "set_allowlist_root", root: "0x0" }),
             })}>{t("Open to everyone")}</Button>
           )}
@@ -102,7 +102,7 @@ export function DropManage({ contract, indexed, onchain, mints, run, saveExclusi
 
       <section className="space-y-3">
         <h3 className="text-sm font-semibold">{t("Gift")}</h3>
-        <p className="text-sm text-muted-foreground">{left !== null ? t("Mint free tokens to a wallet · {left} left. Gifts don't count toward that wallet's limit.", { left: left.toString() }) : t("Mint free tokens to a wallet. Gifts don't count toward that wallet's limit.")}</p>
+        <p className="text-sm text-muted-foreground">{left !== null ? t("Gift tokens to a wallet · {left} left", { left: left.toString() }) : t("Gift tokens to a wallet.")}</p>
         <div className="flex gap-2">
           <Input placeholder={t("Wallet address")} value={gift.to} onChange={(e) => setGift({ ...gift, to: e.target.value.trim() })} />
           <Input className="w-20" inputMode="numeric" value={gift.quantity} onChange={(e) => setGift({ ...gift, quantity: e.target.value.trim() })} />

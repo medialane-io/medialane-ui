@@ -26,10 +26,10 @@ import { IconTile } from "./icon-tile.js";
 const DESC_MAX = 500;
 
 const CONTENT_TYPES = [
-  { value: "VIDEO",    label: msg("Video"),       icon: Video,    hint: msg("YouTube, Vimeo, or any video URL") },
-  { value: "AUDIO",    label: msg("Audio"),        icon: Music,    hint: msg("Spotify, SoundCloud, MP3 link…") },
-  { value: "STREAM",   label: msg("Live stream"),  icon: Radio,    hint: msg("Twitch, YouTube Live, etc.") },
-  { value: "DOCUMENT", label: msg("Document"),     icon: FileText, hint: msg("PDF, Notion, Google Doc…") },
+  { value: "VIDEO",    label: msg("Video"),       icon: Video,    hint: msg("Video URL") },
+  { value: "AUDIO",    label: msg("Audio"),        icon: Music,    hint: msg("Audio URL") },
+  { value: "STREAM",   label: msg("Live stream"),  icon: Radio,    hint: msg("Stream URL") },
+  { value: "DOCUMENT", label: msg("Document"),     icon: FileText, hint: msg("Document URL") },
   { value: "LINK",     label: msg("Link"),         icon: Link2,    hint: msg("Any URL") },
 ];
 
@@ -49,7 +49,7 @@ export function CollectionSettings({ contract }: { contract: string }) {
         </IconTile>
         <p className="text-sm font-medium">{t("Owner access only")}</p>
         <p className="text-xs text-muted-foreground max-w-xs">
-          {t("Only the collection owner can access settings. If you believe this is yours, visit your portfolio to claim it.")}
+          {t("Settings open for the collection owner.")}
         </p>
         <Button variant="soft" size="sm" asChild>
           <Link href="/portfolio/collections">{t("Go to my collections")}</Link>
@@ -66,7 +66,7 @@ export function CollectionSettings({ contract }: { contract: string }) {
       <div>
         <h1 className="text-xl font-semibold">{t("Collection settings")}</h1>
         <p className="text-sm text-muted-foreground mt-1">
-          {t("Customize how your collection appears on Medialane and manage exclusive content for your community.")}
+          {t("Customize the collection page.")}
         </p>
         {collection && (
           <Link
@@ -83,7 +83,7 @@ export function CollectionSettings({ contract }: { contract: string }) {
         <SectionHeader
           icon={User}
           title={t("Identity")}
-          description={t("Your collection's public name and description. A complete profile builds trust with collectors.")}
+          description={t("Public name and description.")}
           badge={
             profile?.displayName ? (
               <Badge variant="soft" className="text-2xs h-4 px-1.5 gap-1 text-brand-blue border-brand-blue/30">
@@ -109,7 +109,7 @@ export function CollectionSettings({ contract }: { contract: string }) {
               disabled={isLoading}
             />
             <HelperText>
-              {t("Shown on your collection page and search results. Uses the on-chain name by default.")}
+              {t("Shown on the collection page.")}
             </HelperText>
           </FieldRow>
           <FieldRow>
@@ -126,7 +126,7 @@ export function CollectionSettings({ contract }: { contract: string }) {
                 if (e.target.value.length <= DESC_MAX) set("description")(e);
               }}
               rows={4}
-              placeholder={t("Tell collectors what makes this collection special — the story, the art style, the community…")}
+              placeholder={t("The story behind the collection…")}
               disabled={isLoading}
             />
           </FieldRow>
@@ -137,7 +137,7 @@ export function CollectionSettings({ contract }: { contract: string }) {
         <SectionHeader
           icon={ImageIcon}
           title={t("Media")}
-          description={t("Images shown on your collection page. Use IPFS URIs (ipfs://Qm…) or direct HTTPS URLs.")}
+          description={t("Images for the collection page.")}
         />
         <div className="space-y-4 pt-1 border-t border-border">
           <FieldRow>
@@ -149,7 +149,7 @@ export function CollectionSettings({ contract }: { contract: string }) {
               onChange={set("image")}
               disabled={isLoading}
             />
-            <HelperText>{t("Square or portrait image shown on collection cards across the marketplace.")}</HelperText>
+            <HelperText>{t("Shown on collection cards.")}</HelperText>
           </FieldRow>
           <FieldRow>
             <Label htmlFor="bannerImage">{t("Banner image")}</Label>
@@ -160,7 +160,7 @@ export function CollectionSettings({ contract }: { contract: string }) {
               onChange={set("bannerImage")}
               disabled={isLoading}
             />
-            <HelperText>{t("Wide image displayed as the hero banner at the top of your collection page. Recommended 1500×500 px.")}</HelperText>
+            <HelperText>{t("Wide banner at 1500×500 px.")}</HelperText>
           </FieldRow>
         </div>
       </SectionCard>
@@ -169,7 +169,7 @@ export function CollectionSettings({ contract }: { contract: string }) {
         <SectionHeader
           icon={Lock}
           title={t("Exclusive content")}
-          description={t("Reward your holders with exclusive content — only wallets that own a token from this collection can access it.")}
+          description={t("Exclusive content for holders.")}
           badge={
             form.gatedEnabled ? (
               <Badge variant="soft" className="text-2xs h-4 px-1.5 gap-1 text-brand-blue border-brand-blue/30">
@@ -189,8 +189,8 @@ export function CollectionSettings({ contract }: { contract: string }) {
               </p>
               <p className="text-xs text-muted-foreground mt-0.5">
                 {form.gatedEnabled
-                  ? t("Holders will see and unlock your exclusive content on the collection page.")
-                  : t("Add exclusive content that only token holders can access — video, audio, links, or documents.")}
+                  ? t("Holders unlock it on the collection page.")
+                  : t("Add content only holders can open.")}
               </p>
             </div>
             <Switch
@@ -207,12 +207,12 @@ export function CollectionSettings({ contract }: { contract: string }) {
                 <Label htmlFor="gatedContentTitle">{t("Content title")}</Label>
                 <Input
                   id="gatedContentTitle"
-                  placeholder={t("e.g. Exclusive Track, Behind the Scenes, Holders Chat…")}
+                  placeholder={t("Exclusive track")}
                   value={form.gatedContentTitle}
                   onChange={set("gatedContentTitle")}
                 />
                 <HelperText>
-                  {t("Displayed publicly as a teaser on your collection page — this title is visible to everyone, but the actual content is only accessible to verified holders.")}
+                  {t("The title is public and the content is for holders.")}
                 </HelperText>
               </FieldRow>
 
@@ -225,7 +225,7 @@ export function CollectionSettings({ contract }: { contract: string }) {
                   onChange={set("gatedContentUrl")}
                 />
                 <HelperText>
-                  {t("The link holders will receive. This is kept private by the backend and never exposed publicly. Works with any URL — video, audio, document, community link, etc.")}
+                  {t("The private link holders receive.")}
                 </HelperText>
               </FieldRow>
 
@@ -257,7 +257,7 @@ export function CollectionSettings({ contract }: { contract: string }) {
               {form.gatedContentTitle && (
                 <div className="panel p-4 space-y-1.5" style={panelTint("blue")}>
                   <p className="text-2xs font-semibold text-brand-blue uppercase tracking-widest">
-                    {t("Preview — what holders see")}
+                    {t("Holder preview")}
                   </p>
                   <p className="text-sm font-semibold">{form.gatedContentTitle || "—"}</p>
                   <p className="text-xs text-muted-foreground">
@@ -274,15 +274,15 @@ export function CollectionSettings({ contract }: { contract: string }) {
               <ul className="text-xs text-muted-foreground space-y-1.5">
                 <li className="flex items-start gap-2">
                   <Sparkles className="h-3 w-3 text-brand-blue mt-0.5 shrink-0" />
-                  {t("Set a URL — a private video, Discord invite, audio file, or any link.")}
+                  {t("Add a private link.")}
                 </li>
                 <li className="flex items-start gap-2">
                   <ShieldCheck className="h-3 w-3 text-brand-blue mt-0.5 shrink-0" />
-                  {t("Medialane verifies on-chain ownership before granting access. No spoofing.")}
+                  {t("Access requires holding a token.")}
                 </li>
                 <li className="flex items-start gap-2">
                   <Lock className="h-3 w-3 text-brand-blue mt-0.5 shrink-0" />
-                  {t("The content URL is never exposed publicly — only verified holders receive it.")}
+                  {t("Only holders receive the link.")}
                 </li>
               </ul>
             </div>

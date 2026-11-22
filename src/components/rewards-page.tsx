@@ -14,7 +14,7 @@ export function RewardsPage() {
       <footer className="panel px-5 py-4 flex items-start gap-3">
         <Info className="h-4 w-4 text-muted-foreground shrink-0 mt-0.5" />
         <p className="text-xs text-muted-foreground leading-relaxed">
-          {t("The community can adjust point values and badge criteria over time to keep the fund fair as Medialane grows. Your share of each distribution is set when that distribution goes out.")}
+          {t("Point values can change over time.")}
         </p>
       </footer>
     </PageContainer>

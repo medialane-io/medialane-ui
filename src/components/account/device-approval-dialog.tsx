@@ -70,7 +70,7 @@ export function DeviceApprovalDialog({ open, onOpenChange, onApproved, wallet, l
         <DialogHeader>
           <DialogTitle>{t("Add a device")}</DialogTitle>
           <DialogDescription>
-            {t("On the new device, sign in and choose “Add this device”. Paste the code it shows you here.")}
+            {t("Paste the code from the new device.")}
           </DialogDescription>
         </DialogHeader>
 
@@ -79,7 +79,7 @@ export function DeviceApprovalDialog({ open, onOpenChange, onApproved, wallet, l
             <Alert>
               <TriangleAlert className="h-4 w-4" />
               <AlertDescription>
-                {t("This gives the device full control of your account and everything in it. Only continue if you are holding it yourself.")}
+                {t("The device gets full control of the account.")}
               </AlertDescription>
             </Alert>
 

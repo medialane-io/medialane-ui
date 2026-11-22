@@ -100,14 +100,14 @@ export function PopCreate({ aside }: { aside?: ReactNode }) {
       icon={Award}
       iconClassName="text-brand-blue"
       title={t("Secure an account to create a POP event")}
-      description={t("A secured account is needed to deploy a certificate collection onchain.")}
+      description={t("Secure your account to create certificates.")}
     >
       <TransactionDialog tx={tx} title={t("Create POP event")} workingLabel="Creating the POP event…" firstStepLabel="Upload certificate metadata">
         <TransactionSuccess
           name={eventName || "New event"}
           image={imagePreview}
           title={t("Event created")}
-          description={t("Immutable digital asset certificates, recorded onchain.")}
+          description={t("Certificates recorded onchain.")}
           actions={[{ href: "/launchpad/pop", label: t("Back to POP launchpad") }, { label: t("Create another"), onClick: handleAgain }]}
         >
           <RewardEarned actionType="launch_launchpad" />
@@ -117,7 +117,7 @@ export function PopCreate({ aside }: { aside?: ReactNode }) {
       <ClaimRouteShell
         icon={<Award className="h-4 w-4 text-white" />}
         title={t("Create a POP event")}
-        subtitle={t("Immutable digital asset certificates — free to publish.")}
+        subtitle={t("Certificates free to publish.")}
         aside={
           <>
             <MedialaneCollectionCard

@@ -248,7 +248,7 @@ export function RemixMint({ contract, tokenId }: { contract: string; tokenId: st
           name={name}
           image={imagePreview ?? originalImage ?? null}
           title={t("Remix minted")}
-          description={t("It is registered as a remix of the original asset and carries its own license terms.")}
+          description={t("Registered as a remix with its own license.")}
           actions={[
             ...(remixHref ? [{ href: remixHref, label: t("View remix") }] : []),
             { href: "/portfolio/assets", label: t("View portfolio") },
@@ -270,7 +270,7 @@ export function RemixMint({ contract, tokenId }: { contract: string; tokenId: st
             <span className="text-sm font-semibold">{t("Create remix")}</span>
           </div>
           <h1 className="text-3xl font-bold">{t("Mint a remix")}</h1>
-          <p className="text-muted-foreground max-w-xl">{t("Mint a derivative work based on this asset. The parent attribution is embedded in the IPFS metadata.")}</p>
+          <p className="text-muted-foreground max-w-xl">{t("Remix this asset with credit to the original.")}</p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-8 items-start">
@@ -298,7 +298,7 @@ export function RemixMint({ contract, tokenId }: { contract: string; tokenId: st
                     <Upload className="h-8 w-8" />
                     <div className="text-center">
                       <p className="text-sm font-medium">{t("Upload remix artwork")}</p>
-                      <p className="text-xs mt-0.5">{originalImage ? t("Leave empty to inherit original artwork") : t("PNG, JPG, GIF, WebP up to 10MB")}</p>
+                      <p className="text-xs mt-0.5">{originalImage ? t("Leave empty to inherit original artwork") : t("Images up to 10MB")}</p>
                     </div>
                   </div>
                 )}
@@ -312,7 +312,7 @@ export function RemixMint({ contract, tokenId }: { contract: string; tokenId: st
               </div>
               <div className="space-y-1.5">
                 <Label>{t("Description")}</Label>
-                <Textarea value={description} onChange={(e) => setDescription(e.target.value)} placeholder={t("Describe your remix, the creative changes you're making, or your vision for it…")} rows={3} className="resize-none" />
+                <Textarea value={description} onChange={(e) => setDescription(e.target.value)} placeholder={t("What changes in the remix…")} rows={3} className="resize-none" />
               </div>
             </Section>
 
@@ -321,7 +321,7 @@ export function RemixMint({ contract, tokenId }: { contract: string; tokenId: st
                 <Skeleton className="h-10 w-full rounded-xl" />
               ) : eligibleCollections.length === 0 ? (
                 <div className="rounded-2xl border border-dashed border-border p-4 text-center space-y-2">
-                  <p className="text-sm text-muted-foreground">{t("No eligible collections. Create one first.")}</p>
+                  <p className="text-sm text-muted-foreground">{t("Create a collection first.")}</p>
                   <Button size="sm" variant="soft" asChild>
                     <Link href="/launchpad/single-editions/collection"><Plus className="h-3.5 w-3.5 mr-1.5" />{t("Create collection")}</Link>
                   </Button>
@@ -390,7 +390,7 @@ export function RemixMint({ contract, tokenId }: { contract: string; tokenId: st
             <ActionButton solid big type="button" disabled={tx.phase !== "idle"} onClick={handleSubmit} icon={<GitBranch className="h-5 w-5" />} className="w-full">
               {t("Mint remix")}
             </ActionButton>
-            <p className="text-xs text-center text-muted-foreground">{t("Two operations: IPFS metadata upload + on-chain mint. Gas is free.")}</p>
+            <p className="text-xs text-center text-muted-foreground">{t("Gas is free.")}</p>
           </div>
 
           <div className="space-y-4 lg:sticky lg:top-16">

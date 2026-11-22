@@ -52,7 +52,7 @@ export function EmailCodeEntry({ emailCode, onVerify }: EmailCodeEntryProps) {
             {t("Verify")}
           </Button>
           <p className="text-center text-xs leading-relaxed text-muted-foreground">
-            {t("Didn't receive it? Check your spam, or")}{" "}
+            {t("Check spam or")}{" "}
             {state.cooldown > 0 ? (
               <span>{t("resend in {cooldown}s", { cooldown: state.cooldown })}</span>
             ) : (

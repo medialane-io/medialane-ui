@@ -14,18 +14,16 @@ describe("telling a closed passkey prompt from other failures", () => {
 });
 
 describe("a closed passkey prompt", () => {
-  test("says the prompt was closed and what to try, and offers a retry", () => {
+  test("says the prompt was closed and offers a retry", () => {
     const notice = describeWalletFailure(cancelled);
     expect(notice.kind).toBe("cancelled");
     expect(notice.canRetry).toBe(true);
-    expect(notice.message).toContain("The passkey prompt was closed");
-    expect(notice.message).toContain("regular browser window");
+    expect(notice.message).toBe("The passkey prompt was closed.");
   });
 
-  test("when the browser says passkeys are not available here, it says exactly that", () => {
+  test("when the browser says passkeys are not available here, it points to a regular window", () => {
     const notice = describeWalletFailure(cancelled, "unavailable");
     expect(notice.kind).toBe("no-passkeys");
-    expect(notice.message).toContain("Passkeys aren't available in this window");
     expect(notice.message).toContain("regular browser window");
   });
 
@@ -39,7 +37,7 @@ describe("other failures each get their own plain message", () => {
     for (const err of [new TypeError("Failed to fetch"), new Error("NetworkError when attempting to fetch resource."), new TypeError("Load failed")]) {
       const notice = describeWalletFailure(err);
       expect(notice.kind).toBe("network");
-      expect(notice.message).toBe("We couldn't reach Medialane. Check your connection and try again.");
+      expect(notice.message).toBe("Check the connection and try again.");
       expect(notice.canRetry).toBe(true);
     }
   });
@@ -53,7 +51,7 @@ describe("other failures each get their own plain message", () => {
       new Error("Your wallet was submitted but has not appeared on Starknet yet. Please try again in a moment."),
     );
     expect(notice.kind).toBe("still-deploying");
-    expect(notice.message).toBe("Your wallet is still being set up. Give it a minute, then try again. Nothing is lost.");
+    expect(notice.message).toBe("The wallet is still being set up.");
     expect(notice.message).not.toContain("Starknet");
   });
 
@@ -65,7 +63,7 @@ describe("other failures each get their own plain message", () => {
     ]) {
       const notice = describeWalletFailure(new Error(msg));
       expect(notice.kind).toBe("deployment");
-      expect(notice.message).toBe("We couldn't finish setting up your wallet. Please try again in a moment.");
+      expect(notice.message).toBe("Try again in a moment.");
       expect(notice.canRetry).toBe(true);
     }
   });
@@ -73,7 +71,7 @@ describe("other failures each get their own plain message", () => {
   test("a passkey that can't protect a wallet suggests updating the browser or another device, and offers a retry", () => {
     expect(describeWalletFailure(unsupported("no-prf"))).toEqual({
       kind: "unsupported-passkey",
-      message: "Update your browser, or open Medialane on another device, then try again.",
+      message: "Update the browser and try again.",
       canRetry: true,
     });
   });
@@ -81,7 +79,7 @@ describe("other failures each get their own plain message", () => {
   test("no passkeys at all says so, with no retry", () => {
     expect(describeWalletFailure(unsupported("no-webauthn"))).toEqual({
       kind: "no-passkeys",
-      message: "Open Medialane in a regular browser window or on another device to continue.",
+      message: "Open Medialane in a regular browser window.",
       canRetry: false,
     });
   });
@@ -101,7 +99,7 @@ describe("other failures each get their own plain message", () => {
   test("anything else is the short generic message, with a retry", () => {
     expect(describeWalletFailure(new Error("socket hang up"))).toEqual({
       kind: "unknown",
-      message: "We couldn't finish setting up your account. Please try again.",
+      message: "Try again.",
       canRetry: true,
     });
     expect(describeWalletFailure("boom").kind).toBe("unknown");

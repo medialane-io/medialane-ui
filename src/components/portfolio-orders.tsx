@@ -52,7 +52,7 @@ const VIEWS = {
   },
   received: {
     emptyTitle: msg("No offers received yet"),
-    emptyDescription: msg("When someone makes an offer on your asset, it will appear here."),
+    emptyDescription: msg("Offers received appear here."),
     emptyCta: undefined,
     emptyIcon: Inbox,
     priceLabel: msg("Offer price"),
@@ -60,7 +60,7 @@ const VIEWS = {
   },
   "counter-offers": {
     emptyTitle: msg("No counter-offers yet"),
-    emptyDescription: msg("When a seller responds to your bid with a counter-offer, it will appear here."),
+    emptyDescription: msg("Counter-offers appear here."),
     emptyCta: undefined,
     emptyIcon: Inbox,
     priceLabel: msg("Their price / Your bid"),

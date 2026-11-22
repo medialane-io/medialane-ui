@@ -85,7 +85,7 @@ export function SearchPage() {
           <Input
             autoFocus
             className="h-11 pl-9 pr-10 text-base"
-            placeholder={t("Search assets, collections, creators…")}
+            placeholder={t("Search Medialane…")}
             value={inputValue}
             onChange={(e) => handleInputChange(e.target.value)}
           />
@@ -107,7 +107,7 @@ export function SearchPage() {
       </div>
 
       {!q.trim() && (
-        <p className="py-24 text-center text-muted-foreground">{t("Type above to search assets, collections and creators.")}</p>
+        <p className="py-24 text-center text-muted-foreground">{t("Type to search.")}</p>
       )}
 
       {isLoading && (

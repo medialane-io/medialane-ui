@@ -2,7 +2,7 @@ import { buildAssetMetadata, UserFacingError, type ApiClient, type BuildAssetMet
 import { msg } from "../i18n/translate.js";
 
 export const FILE_UPLOAD_FAILED =
-  "We couldn't upload your file. Check your connection and try again, or choose a different file.";
+  "Try the upload again.";
 
 function uploadFailed(cause: unknown): UserFacingError {
   return Object.assign(new UserFacingError(FILE_UPLOAD_FAILED), { cause });

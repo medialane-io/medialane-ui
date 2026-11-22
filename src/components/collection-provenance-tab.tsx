@@ -221,7 +221,7 @@ export function CollectionProvenanceTab({ contract }: CollectionProvenanceTabPro
         <Inbox className="h-10 w-10 text-muted-foreground/40" />
         <p className="text-sm font-medium text-muted-foreground">{t("No history yet")}</p>
         <p className="text-xs text-muted-foreground/70 max-w-xs">
-          {t("Mints, transfers, listings and sales will appear here as they happen.")}
+          {t("Activity appears here.")}
         </p>
       </div>
     );

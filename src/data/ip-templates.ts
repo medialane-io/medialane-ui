@@ -62,14 +62,14 @@ export interface IPTemplate {
 
 export const DOC_UPLOAD: DocUploadConfig = {
   traitType: "Document File",
-  hint: msg("Stored permanently on IPFS — an immutable, timestamped copy of your work (proof of authorship under the Berne Convention)."),
+  hint: msg("Timestamped copy on IPFS"),
 };
 
 export const IP_TEMPLATES: Record<IPType, IPTemplate> = {
   Audio: {
     type: "Audio",
     label: msg("Audio"),
-    description: msg("Music, podcasts, sound effects, audio art"),
+    description: msg("Music and podcasts"),
     icon: Music,
     color: { bg: "bg-brand-blue/10", text: "text-brand-blue", border: "border-brand-blue/20" },
     embeds: ["spotify", "soundcloud"],
@@ -80,7 +80,7 @@ export const IP_TEMPLATES: Record<IPType, IPTemplate> = {
   Video: {
     type: "Video",
     label: msg("Video"),
-    description: msg("Films, animations, short-form video content"),
+    description: msg("Films and animations"),
     icon: Clapperboard,
     color: { bg: "bg-destructive/10", text: "text-destructive", border: "border-destructive/20" },
     embeds: ["youtube", "tiktok", "vimeo"],
@@ -91,7 +91,7 @@ export const IP_TEMPLATES: Record<IPType, IPTemplate> = {
   Art: {
     type: "Art",
     label: msg("Art"),
-    description: msg("Digital and physical artwork, illustrations, generative art"),
+    description: msg("Artwork and illustrations"),
     icon: Palette,
     color: { bg: "bg-brand-purple/10", text: "text-brand-purple", border: "border-brand-purple/20" },
     traitSuggestions: [
@@ -104,7 +104,7 @@ export const IP_TEMPLATES: Record<IPType, IPTemplate> = {
   Photography: {
     type: "Photography",
     label: msg("Photography"),
-    description: msg("Photography, photo essays, visual documentation"),
+    description: msg("Photography"),
     icon: Camera,
     color: { bg: "bg-brand-orange/10", text: "text-brand-orange", border: "border-brand-orange/20" },
     traitSuggestions: [
@@ -117,7 +117,7 @@ export const IP_TEMPLATES: Record<IPType, IPTemplate> = {
   Posts: {
     type: "Posts",
     label: msg("Posts"),
-    description: msg("Articles, blog posts, social media content, essays"),
+    description: msg("Articles and essays"),
     icon: MessageSquare,
     color: { bg: "bg-brand-blue/10", text: "text-brand-blue", border: "border-brand-blue/20" },
     socials: ["x", "instagram", "facebook", "tiktok", "website"],
@@ -128,7 +128,7 @@ export const IP_TEMPLATES: Record<IPType, IPTemplate> = {
   Publications: {
     type: "Publications",
     label: msg("Publications"),
-    description: msg("Books, journals, magazines, academic papers"),
+    description: msg("Books and papers"),
     icon: BookOpen,
     color: { bg: "bg-brand-purple/10", text: "text-brand-purple", border: "border-brand-purple/20" },
     docUpload: DOC_UPLOAD,
@@ -140,7 +140,7 @@ export const IP_TEMPLATES: Record<IPType, IPTemplate> = {
   Documents: {
     type: "Documents",
     label: msg("Documents"),
-    description: msg("Contracts, reports, whitepapers, legal documents"),
+    description: msg("Contracts and reports"),
     icon: FileText,
     color: { bg: "bg-muted/10", text: "text-muted-foreground", border: "border-muted/20" },
     docUpload: DOC_UPLOAD,
@@ -163,7 +163,7 @@ export const IP_TEMPLATES: Record<IPType, IPTemplate> = {
   RWA: {
     type: "RWA",
     label: msg("Real world asset"),
-    description: msg("Tokenized physical assets: real estate, commodities, collectibles"),
+    description: msg("Tokenized physical assets"),
     icon: Building2,
     color: { bg: "bg-brand-blue/10", text: "text-brand-blue", border: "border-brand-blue/20" },
     traitSuggestions: [

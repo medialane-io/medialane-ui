@@ -3,7 +3,7 @@ import { render } from "@testing-library/react";
 import { HiddenContentBanner } from "./hidden-content-banner.js";
 import { I18nProvider } from "../i18n/provider.js";
 
-const SENTENCE = "This content is not public visible on Medialane. For more information you can request support.";
+const SENTENCE = "This content is hidden on Medialane.";
 
 test("shows the English sentence without a provider", () => {
   const { container } = render(<HiddenContentBanner />);

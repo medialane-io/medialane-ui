@@ -49,7 +49,7 @@ export function GatedContentHero({
           <Icon />
         </IconTile>
         <div className="flex-1 min-w-0">
-          <p className="text-2xs font-bold text-brand-blue leading-none">{t("✓ You're a holder — unlocked")}</p>
+          <p className="text-2xs font-bold text-brand-blue leading-none">{t("✓ Unlocked")}</p>
           <p className="text-sm font-bold text-foreground leading-snug mt-1 truncate">{state.content.title ?? title}</p>
         </div>
         <Unlock className="h-4 w-4 text-brand-blue shrink-0" />
@@ -103,7 +103,7 @@ export function GatedContentPanel({ state, onBrowseListings }: { state: GatedCon
 
   if (state.status === "signed_out") {
     return (
-      <LockedNotice title={t("{label} to unlock", { label: t(connectLabel) })} body={t("This collection has exclusive content for holders. Sign in so we can check your holdings.")}>
+      <LockedNotice title={t("{label} to unlock", { label: t(connectLabel) })} body={t("Sign in to open holder content.")}>
         <button type="button" onClick={onRequireWallet} className={PRIMARY}>{t(connectLabel)}</button>
       </LockedNotice>
     );
@@ -118,7 +118,7 @@ export function GatedContentPanel({ state, onBrowseListings }: { state: GatedCon
   }
   if (state.status === "not_holder") {
     return (
-      <LockedNotice title={t("Holders only")} body={t("Hold at least one token from this collection to open the exclusive content.")}>
+      <LockedNotice title={t("Holders only")} body={t("Hold a token to open it.")}>
         <button type="button" onClick={onBrowseListings} className={PRIMARY}>
           <ShoppingBag className="h-4 w-4" />
           {t("Browse listings")}
@@ -144,7 +144,7 @@ export function GatedContentPanel({ state, onBrowseListings }: { state: GatedCon
       <div className="space-y-1.5">
         <p className="text-2xs font-bold text-brand-blue">{t("✓ Verified holder")}</p>
         <h3 className="text-xl font-bold">{state.content.title ?? t("Exclusive content")}</h3>
-        <p className="text-sm text-muted-foreground">{t("Your access is verified. Enjoy your exclusive content.")}</p>
+        <p className="text-sm text-muted-foreground">{t("Access verified.")}</p>
       </div>
       <ActionButton solid asChild>
         <a href={state.content.url} target="_blank" rel="noopener noreferrer">

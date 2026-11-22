@@ -82,7 +82,7 @@ export function FastMint(props: FastMintProps) {
   const handleMediaSelect = async (file: File) => {
     const kind = detectMediaKind(file.type);
     if (!kind) {
-      setErrorMsg("Publish an image, audio, video (JPG/PNG/GIF/SVG/WebP, MP3/WAV/OGG/FLAC, MP4/WebM), or document (PDF, DOC, DOCX, ODT, RTF, TXT, MD).");
+      setErrorMsg("Use a supported media file.");
       return;
     }
     if (mediaKindLock && kind !== mediaKindLock) {
@@ -183,7 +183,7 @@ export function FastMint(props: FastMintProps) {
       <Dialog open={open} onOpenChange={(next) => { if (!next) onClose?.(); }}>
         <DialogContent className="gap-0 p-6 sm:max-w-2xl sm:p-8">
           <DialogTitle className="sr-only">{t("Create")}</DialogTitle>
-          <DialogDescription className="sr-only">{t("Add media, describe it and publish it as an asset.")}</DialogDescription>
+          <DialogDescription className="sr-only">{t("Publish media as an asset.")}</DialogDescription>
           {node}
         </DialogContent>
       </Dialog>
@@ -246,7 +246,7 @@ export function FastMint(props: FastMintProps) {
               <Textarea
                 value={description}
                 onChange={(e) => form.setValue("description", e.target.value)}
-                placeholder={t("Describe your work, its story, and any context for buyers…")}
+                placeholder={t("The story behind the work…")}
                 rows={3}
               />
             </div>

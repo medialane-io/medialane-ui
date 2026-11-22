@@ -31,7 +31,7 @@ export function CreationRecord({ originalCreator, registeredAt }: CreationRecord
         <p className="text-sm font-semibold text-brand-orange">{t("Creation record")}</p>
       </div>
       <p className="text-xs text-muted-foreground mb-3">
-        {t("Immutable on-chain authorship record set at mint and stored permanently for legal evidence of creation (Berne Convention).")}
+        {t("Permanent authorship record under the Berne Convention.")}
       </p>
       <dl className="space-y-2 text-sm">
         <div className="flex items-center justify-between">

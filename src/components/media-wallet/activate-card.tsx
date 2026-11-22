@@ -38,7 +38,7 @@ export function ActivateCard({ onActivated }: { onActivated: (txHash?: string) =
           {t("Activate my wallet")}
         </ActionButton>
         <p className="mx-auto max-w-[22rem] text-sm leading-relaxed text-muted-foreground">
-          {t("Your account is stored securely and ready whenever you need it. Activating is free — no gas fees.")}
+          {t("Activating is free.")}
         </p>
         {error && <p className="text-xs text-destructive">{error}</p>}
       </div>

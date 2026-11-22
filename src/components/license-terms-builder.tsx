@@ -212,7 +212,7 @@ export function LicenseTermsBuilder({
         />
         <span className="text-sm">
           <span className="font-medium">{t("Sponsor can resell this license")}</span>
-          <span className={cn(FIELD_HELP, "block")}>{t("Off means it's meant to stay with the sponsor who accepts it — resale still isn't blocked on-chain, this is just the stated intent.")}</span>
+          <span className={cn(FIELD_HELP, "block")}>{t("Off states it stays with the sponsor.")}</span>
         </span>
       </label>
 
@@ -239,7 +239,7 @@ export function LicenseTermsBuilder({
             ))}
           </select>
         </div>
-        <p className={FIELD_HELP}>{t("Counted from the moment the deal is accepted, not from today.")}</p>
+        <p className={FIELD_HELP}>{t("Counted from acceptance.")}</p>
       </div>
 
       <div className="space-y-1.5">
@@ -279,7 +279,7 @@ export function LicenseTermsBuilder({
           disabled={disabled}
           value={value.territory}
           onChange={(e) => set("territory", e.target.value)}
-          placeholder={t("e.g. Worldwide, Brazil only, excluding China")}
+          placeholder={t("Worldwide")}
           className={INPUT_BASE}
         />
       </div>
@@ -306,7 +306,7 @@ export function LicenseTermsBuilder({
           disabled={disabled}
           value={value.scope}
           onChange={(e) => set("scope", e.target.value)}
-          placeholder={t("e.g. Instagram + YouTube only")}
+          placeholder={t("Instagram")}
           className={INPUT_BASE}
         />
       </div>
@@ -317,7 +317,7 @@ export function LicenseTermsBuilder({
           disabled={disabled}
           value={value.deliverables}
           onChange={(e) => set("deliverables", e.target.value)}
-          placeholder={t("e.g. 3 posts, 1 video")}
+          placeholder={t("3 posts")}
           rows={2}
           className={cn(INPUT_BASE, "h-auto py-2.5 resize-y")}
         />

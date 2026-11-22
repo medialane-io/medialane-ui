@@ -29,7 +29,7 @@ export function ExternalLinkField({ form, address }: { form: UseFormReturn<any>;
           <FormControl>
             <Input placeholder={t("https://yourwebsite.com")} {...field} />
           </FormControl>
-          <FormDescription>{t("Your website, portfolio, or social profile. Defaults to your Medialane account page.")}</FormDescription>
+          <FormDescription>{t("A website or social profile.")}</FormDescription>
           <FormMessage />
         </FormItem>
       )}

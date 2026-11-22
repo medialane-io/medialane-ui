@@ -86,7 +86,7 @@ export function LeaderboardPanel({
         </div>
       ) : rows.length === 0 ? (
         <p className={cn("text-sm text-muted-foreground py-4", compact && "px-4")}>
-          {t("Nobody's earned points yet — be the first.")}
+          {t("Be the first to earn points.")}
         </p>
       ) : (
         <LeaderboardTable

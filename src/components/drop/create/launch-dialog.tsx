@@ -54,7 +54,7 @@ export function LaunchDialog({ open, onClose, draft }: { open: boolean; onClose:
         const done = await uploadAll(initial, async (f) => (await uploadFileToIpfs(client.api, f, "image")).uri, setTasks);
         setTasks(done);
         if (done.some((t) => t.status !== "done")) {
-          setStep({ kind: "error", message: t("Some files didn't upload. Retry to send only those.") });
+          setStep({ kind: "error", message: t("Retry the remaining uploads.") });
           return;
         }
         const art = done.filter((t) => t.id.startsWith("art-"));
@@ -71,7 +71,7 @@ export function LaunchDialog({ open, onClose, draft }: { open: boolean; onClose:
           supply: draftSupply(draft),
         });
         if (metadataBytes(metadata) > MAX_DROP_METADATA_BYTES) {
-          setStep({ kind: "error", message: t("The descriptions are too long for this many tokens. Shorten them and try again.") });
+          setStep({ kind: "error", message: t("Shorten the descriptions.") });
           return;
         }
         uri = (await uploadDirectoryToIpfs(client.api, metadata)).baseUri;
@@ -94,7 +94,7 @@ export function LaunchDialog({ open, onClose, draft }: { open: boolean; onClose:
         try {
           await saveExclusiveContent(client, collection, draft.gated);
         } catch {
-          warning = "Your drop launched, but the exclusive content wasn't saved. You can add it from Manage.";
+          warning = "Add the exclusive content from Manage.";
         }
       }
       setStep({ kind: "done", collection, links: list ? dropClaimLinks(window.location.origin, collection, list) : [], warning });
@@ -124,7 +124,7 @@ export function LaunchDialog({ open, onClose, draft }: { open: boolean; onClose:
               <Row label={t("Ends")} value={terms.endTime === 0 ? "No end date" : intl.dateTime(new Date(terms.endTime * 1000))} />
               <Row label={t("Per wallet")} value={terms.maxPerWallet === "0" ? "No limit" : terms.maxPerWallet} />
               <Row label={t("Who can mint")} value={list ? `${Object.keys(list.proofs).length} wallets on a list` : "Everyone"} />
-              <p className="pt-1 text-xs text-muted-foreground">{t("The artwork and these terms can't be changed after launch. You can change the list later.")}</p>
+              <p className="pt-1 text-xs text-muted-foreground">{t("Artwork and terms are final at launch.")}</p>
             </div>
             <ActionButton solid big onClick={() => void run()} className="w-full">{t("Launch drop")}</ActionButton>
           </>
@@ -161,7 +161,7 @@ export function LaunchDialog({ open, onClose, draft }: { open: boolean; onClose:
                 <Button variant="soft" onClick={() => downloadCsv(popClaimLinksCsv(step.links), "claim-links.csv")}>{t("Download claim links")}</Button>
               )}
             </div>
-            {step.links.length > 0 && <p className="text-xs text-muted-foreground">{t("Send each wallet its link — the link is what lets it mint.")}</p>}
+            {step.links.length > 0 && <p className="text-xs text-muted-foreground">{t("Send each wallet its mint link.")}</p>}
           </>
         )}
       </DialogContent>

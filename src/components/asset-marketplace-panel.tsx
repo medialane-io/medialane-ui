@@ -215,7 +215,7 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
                   <ActionButton
                     icon={<Handshake className="h-4 w-4" />}
                     onClick={onOpenSponsorProposal}
-                    helpContent="Propose to sponsor this creator's work — pay them directly for a license, no escrow."
+                    helpContent="Pay the creator directly for a license."
                   >
                     {t("Sponsor")}
                   </ActionButton>

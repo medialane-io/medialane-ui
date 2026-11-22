@@ -113,7 +113,7 @@ export function DiscoverCommunitySection() {
       <CommunityCard
         icon={<Sparkles />}
         title={t("Rewards")}
-        subtitle={t("Earn XP. Share the Creator's Fund.")}
+        subtitle={t("Earn XP for the Creator's Fund.")}
         href="/rewards"
         linkLabel={msg("Scoreboard")}
       >

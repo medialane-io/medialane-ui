@@ -24,7 +24,7 @@ const show = (value: MedialaneApp = app, aside?: React.ReactNode) =>
 test("the page follows the launchpad layout: header, every field, and the app's aside beside the preview", () => {
   const view = show(app, <p>Drop features</p>);
   expect(view.getByText("Collection drop")).toBeTruthy();
-  expect(view.getByText(/Collectors mint straight from your drop page/)).toBeTruthy();
+  expect(view.getByText(/Release work at a set price and time/)).toBeTruthy();
   for (const text of ["Artwork *", "Name *", "Description", "Price", "Copies", "Who can mint", "Timing", "License terms", "Exclusive content"]) {
     expect(view.getAllByText(text).length).toBeGreaterThan(0);
   }

@@ -53,7 +53,7 @@ export function CollectionSlugClaimSection({
       if (!result.available) setCheckReason(result.reason ?? "That slug is not available.");
     } catch {
       setCheckState("invalid");
-      setCheckReason("Unable to check availability. Try again.");
+      setCheckReason("Try checking again.");
     }
   };
 
@@ -111,7 +111,7 @@ export function CollectionSlugClaimSection({
           }
         />
         <div className="pt-1 border-t border-border">
-          <p className="text-xs text-muted-foreground">{t.rich("Your claim for {span} is under review. You'll be notified once it's approved.", { span: <span className="tabular-nums text-foreground">medialane.io/collection/{pendingSlug}</span> })}</p>
+          <p className="text-xs text-muted-foreground">{t.rich("{span} is in review.", { span: <span className="tabular-nums text-foreground">medialane.io/collection/{pendingSlug}</span> })}</p>
         </div>
       </SectionCard>
     );
@@ -122,7 +122,7 @@ export function CollectionSlugClaimSection({
       <SectionHeader
         icon={Gem}
         title={t("Claim your collection URL")}
-        description={t("Reserve a unique URL — medialane.io/collection/your-name")}
+        description={t("Reserve medialane.io/collection/your-name")}
       />
       <div className="pt-3 border-t border-border space-y-3">
         <div className="flex items-center gap-2">
@@ -184,7 +184,7 @@ export function CollectionSlugClaimSection({
         )}
 
         <p className="text-xs text-muted-foreground">
-          {t("3–20 characters, lowercase letters, numbers, underscores or hyphens. Claims are reviewed before going live.")}
+          {t("3–20 lowercase characters.")}
         </p>
       </div>
     </SectionCard>

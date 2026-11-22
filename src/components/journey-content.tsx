@@ -30,8 +30,8 @@ function Hero() {
           </span>
         </h1>
       </div>
-      <p className="text-lg text-foreground/70 max-w-xl leading-relaxed font-medium">{t.rich("Every level, every badge, every way to earn — the whole system, in one place. Check {link} on Rewards.", { link: <Link href="/rewards" className="text-foreground underline underline-offset-2 hover:text-brand-orange transition-colors">
-          {t("your own score")}
+      <p className="text-lg text-foreground/70 max-w-xl leading-relaxed font-medium">{t.rich("Track {link} on Rewards.", { link: <Link href="/rewards" className="text-foreground underline underline-offset-2 hover:text-brand-orange transition-colors">
+          {t("progress")}
         </Link> })}</p>
     </section>
   );
@@ -44,7 +44,7 @@ function LevelsSection() {
     <section className="py-14 space-y-6">
       <div>
         <h2 className="text-2xl font-black tracking-tight">{t("The level ladder")}</h2>
-        <p className="text-base text-foreground/60 mt-1.5 font-medium">{t("50 levels, from Starter to Genesis.")}</p>
+        <p className="text-base text-foreground/60 mt-1.5 font-medium">{t("50 levels from Starter to Genesis.")}</p>
       </div>
       {isLoading || !config ? (
         <Skeleton className="h-96 w-full rounded-2xl" />
@@ -65,7 +65,7 @@ function HowXpWorksSection() {
       <div className="max-w-2xl">
         <h2 className="text-2xl font-black tracking-tight">{t("How XP works")}</h2>
         <p className="text-base text-foreground/60 mt-1.5 font-medium leading-relaxed">
-          {t("Every action earns real XP, automatically — no buying points, no gaming the system. Some early actions and loyalty count extra. Scores and badges are recalculated weekly.")}
+          {t("Every action earns XP updated weekly.")}
         </p>
       </div>
       {isLoading || !config ? (
@@ -91,7 +91,7 @@ function BadgesSection() {
     <section className="py-14 space-y-6">
       <div>
         <h2 className="text-2xl font-black tracking-tight">{t("Badges")}</h2>
-        <p className="text-base text-foreground/60 mt-1.5 font-medium">{t("What's achievable, not just what you've done.")}</p>
+        <p className="text-base text-foreground/60 mt-1.5 font-medium">{t("Every badge to earn.")}</p>
       </div>
       {isLoading || !config ? (
         <Skeleton className="h-64 w-full rounded-2xl" />
