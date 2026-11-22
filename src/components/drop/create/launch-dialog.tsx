@@ -1,42 +1,42 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { CheckCircle2, Loader2, RotateCcw, XCircle } from "lucide-react";
 import { dropHref } from "@medialane/sdk";
 import { buildPopAllowlist, dropClaimLinks, popClaimLinksCsv, type PopClaimLink } from "@medialane/sdk/starknet";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "../../dialog.js";
-import { ActionButton } from "../../action-button.js";
 import { Button } from "../../button.js";
 import { ShareButton } from "../../share-button.js";
 import { describeError } from "../../../utils/describe-error.js";
 import { uploadDirectoryToIpfs, uploadFileToIpfs } from "../../../utils/ipfs-upload.js";
 import { parseAllowlist } from "../../../utils/drop/allowlist.js";
-import { buildDropMetadataFiles, metadataBytes, MAX_DROP_METADATA_BYTES } from "../../../utils/drop/metadata.js";
-import { toDropTerms, priceLabel } from "../../../utils/drop/sale.js";
-import { draftSupply, type DropDraft, supplyLabel } from "../../../utils/drop/draft.js";
+import { buildDropMetadataFiles, metadataBytes, MAX_DROP_METADATA_BYTES, tokenOrder } from "../../../utils/drop/metadata.js";
+import { toDropTerms } from "../../../utils/drop/sale.js";
+import { dropSymbol, type DropDraft } from "../../../utils/drop/draft.js";
 import { uploadAll, type UploadTask } from "../../../utils/drop/upload.js";
 import { launchDrop, saveExclusiveContent } from "../../../utils/drop/actions.js";
 import { useMedialaneApp } from "../../medialane-app.js";
 import { useT } from "../../../i18n/provider.js";
-import { useFormat } from "../../../i18n/use-format.js";
 
 type Step =
-  | { kind: "review" }
   | { kind: "uploading" }
   | { kind: "launching" }
   | { kind: "done"; collection: string; links: PopClaimLink[]; warning: string | null }
   | { kind: "error"; message: string };
 
-export function LaunchDialog({ open, onClose, draft }: { open: boolean; onClose: () => void; draft: DropDraft }) {
-  const intl = useFormat();
+const COVER = "cover";
+
+export function LaunchDialog({ open, onClose, draft, onLaunched }: { open: boolean; onClose: () => void; draft: DropDraft; onLaunched: () => void }) {
   const t = useT();
   const app = useMedialaneApp();
-  const [step, setStep] = useState<Step>({ kind: "review" });
+  const [step, setStep] = useState<Step>({ kind: "uploading" });
   const [tasks, setTasks] = useState<UploadTask[]>([]);
   const [baseUri, setBaseUri] = useState<string | null>(null);
+  const started = useRef(false);
   const client = app.getClient();
-  const files = draft.kind === "edition" ? (draft.edition ? [draft.edition] : []) : draft.items.map((i) => i.file);
-  const terms = toDropTerms(draft.sale);
+  const name = draft.collection.name.trim();
+  const description = draft.collection.description.trim();
+  const order = useMemo(() => tokenOrder(draft.assets.map((a) => Number(a.copies)), draft.mixOrder), [draft.assets, draft.mixOrder]);
   const list = useMemo(
     () => (draft.listOnly ? buildPopAllowlist(parseAllowlist(draft.allowlist).addresses) : null),
     [draft.listOnly, draft.allowlist],
@@ -45,50 +45,56 @@ export function LaunchDialog({ open, onClose, draft }: { open: boolean; onClose:
   const run = async () => {
     try {
       let uri = baseUri;
+      let image: string | undefined;
       if (!uri) {
         setStep({ kind: "uploading" });
         const initial = tasks.length > 0 ? tasks : [
-          ...files.map((file, i) => ({ id: `art-${i}`, file, status: "pending" as const, uri: null, error: null })),
-          ...(draft.cover ? [{ id: "cover", file: draft.cover, status: "pending" as const, uri: null, error: null }] : []),
+          ...draft.assets.map((a) => ({ id: a.id, file: a.file, status: "pending" as const, uri: null, error: null })),
+          ...(draft.collection.cover ? [{ id: COVER, file: draft.collection.cover, status: "pending" as const, uri: null, error: null }] : []),
         ];
         const done = await uploadAll(initial, async (f) => (await uploadFileToIpfs(client.api, f, "image")).uri, setTasks);
         setTasks(done);
-        if (done.some((t) => t.status !== "done")) {
+        if (done.some((task) => task.status !== "done")) {
           setStep({ kind: "error", message: t("Retry the remaining uploads.") });
           return;
         }
-        const art = done.filter((t) => t.id.startsWith("art-"));
+        const uriOf = (id: string) => done.find((task) => task.id === id)?.uri ?? null;
+        const coverUri = uriOf(COVER);
         const metadata = buildDropMetadataFiles({
-          kind: draft.kind,
-          name: draft.name.trim(),
-          description: draft.description.trim(),
+          name,
+          description,
+          externalUrl: draft.collection.externalUrl,
           creator: app.walletAddress!,
-          coverUri: done.find((t) => t.id === "cover")?.uri ?? null,
+          coverUri,
           license: draft.license,
-          items: draft.kind === "edition"
-            ? [{ name: "", description: "", imageUri: art[0]!.uri! }]
-            : draft.items.map((it, i) => ({ name: it.name, description: it.description, imageUri: art[i]!.uri! })),
-          supply: draftSupply(draft),
+          assets: draft.assets.map((a) => ({
+            name: a.name, description: a.description, imageUri: uriOf(a.id)!, copies: Number(a.copies),
+            traits: a.traits.filter((tr) => tr.key.trim() && tr.value.trim()),
+          })),
+          order,
         });
         if (metadataBytes(metadata) > MAX_DROP_METADATA_BYTES) {
           setStep({ kind: "error", message: t("Shorten the descriptions.") });
           return;
         }
         uri = (await uploadDirectoryToIpfs(client.api, metadata)).baseUri;
+        image = coverUri ?? uriOf(draft.assets[0]!.id) ?? undefined;
         setBaseUri(uri);
       }
       setStep({ kind: "launching" });
       const signer = await app.getSigner();
       const { collection } = await launchDrop({ client, signer }, {
         owner: app.walletAddress!,
-        name: draft.name.trim(),
-        symbol: draft.symbol,
+        name,
+        symbol: dropSymbol(name),
         baseUri: uri!,
-        maxSupply: draftSupply(draft),
-        terms,
+        maxSupply: order.length,
+        terms: toDropTerms(draft.sale),
         allowlistRoot: list?.root,
-        description: draft.description.trim() || undefined,
+        description: description || undefined,
+        image,
       });
+      onLaunched();
       let warning: string | null = null;
       if (draft.gated.enabled) {
         try {
@@ -103,6 +109,12 @@ export function LaunchDialog({ open, onClose, draft }: { open: boolean; onClose:
     }
   };
 
+  useEffect(() => {
+    if (started.current) return;
+    started.current = true;
+    void run();
+  });
+
   const close = () => {
     if (step.kind === "uploading" || step.kind === "launching") return;
     onClose();
@@ -111,24 +123,7 @@ export function LaunchDialog({ open, onClose, draft }: { open: boolean; onClose:
   return (
     <Dialog open={open} onOpenChange={(next) => { if (!next) close(); }}>
       <DialogContent className="gap-5" hideClose={step.kind === "uploading" || step.kind === "launching"}>
-        <DialogDescription className="sr-only">{t("Review the drop and launch it.")}</DialogDescription>
-        {step.kind === "review" && (
-          <>
-            <DialogTitle className="text-lg font-semibold">{t("Review and launch")}</DialogTitle>
-            <div className="panel space-y-2 p-4 text-sm">
-              <p className="font-semibold">{draft.name}</p>
-              <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">{t("Fixed after launch")}</p>
-              <Row label={t("Price")} value={priceLabel(terms.price, terms.paymentToken)} />
-              <Row label={t("Supply")} value={supplyLabel(t, draft.kind, draftSupply(draft), intl.number(draftSupply(draft)))} />
-              <Row label={t("Starts")} value={terms.startTime === 0 ? "At launch" : intl.dateTime(new Date(terms.startTime * 1000))} />
-              <Row label={t("Ends")} value={terms.endTime === 0 ? "No end date" : intl.dateTime(new Date(terms.endTime * 1000))} />
-              <Row label={t("Per wallet")} value={terms.maxPerWallet === "0" ? "No limit" : terms.maxPerWallet} />
-              <Row label={t("Who can mint")} value={list ? `${Object.keys(list.proofs).length} wallets on a list` : "Everyone"} />
-              <p className="pt-1 text-xs text-muted-foreground">{t("Artwork and terms are final at launch.")}</p>
-            </div>
-            <ActionButton solid big onClick={() => void run()} className="w-full">{t("Launch drop")}</ActionButton>
-          </>
-        )}
+        <DialogDescription className="sr-only">{t("Launching the drop.")}</DialogDescription>
         {step.kind === "uploading" && (
           <>
             <DialogTitle className="flex items-center gap-2 text-lg font-semibold"><Loader2 className="h-4 w-4 animate-spin" />{t("Uploading")}</DialogTitle>
@@ -155,7 +150,7 @@ export function LaunchDialog({ open, onClose, draft }: { open: boolean; onClose:
             <DialogTitle className="flex items-center gap-2 text-lg font-semibold"><CheckCircle2 className="h-5 w-5 text-brand-blue" />{t("Your drop is live")}</DialogTitle>
             {step.warning && <p className="text-sm text-brand-orange">{step.warning}</p>}
             <div className="flex flex-wrap gap-2">
-              <ShareButton title={draft.name} url={`${window.location.origin}${dropHref(step.collection)}`} variant="soft" />
+              <ShareButton title={name} url={`${window.location.origin}${dropHref(step.collection)}`} variant="soft" />
               <Button asChild variant="soft"><a href={dropHref(step.collection)}>{t("View drop")}</a></Button>
               {step.links.length > 0 && (
                 <Button variant="soft" onClick={() => downloadCsv(popClaimLinksCsv(step.links), "claim-links.csv")}>{t("Download claim links")}</Button>
@@ -167,10 +162,6 @@ export function LaunchDialog({ open, onClose, draft }: { open: boolean; onClose:
       </DialogContent>
     </Dialog>
   );
-}
-
-function Row({ label, value }: { label: string; value: string }) {
-  return <div className="flex justify-between gap-3"><span className="text-muted-foreground">{label}</span><span className="text-right font-medium">{value}</span></div>;
 }
 
 export function downloadCsv(csv: string, name: string) {

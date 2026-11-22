@@ -208,7 +208,7 @@ export type { OrderFormValues } from "./utils/order-form.js";
 export { ActivityRow } from "./components/activity-row.js";
 export { ActivityTimelineRow } from "./components/activity-timeline-row.js";
 export type { ActivityTimelineRowProps } from "./components/activity-timeline-row.js";
-export type { DraftItem } from "./utils/drop/draft.js";
+export type { DraftAsset, DropDraft } from "./utils/drop/draft.js";
 export { getDefaultClaimWindow, suggestLaunchpadSymbol } from "./utils/launchpad-defaults.js";
 export { DropStatusBadge, DropSupplyProgress } from "./components/drop/drop-status.js";
 export { DropCard, DropGrid, DropGridSkeleton } from "./components/drop/drop-card.js";

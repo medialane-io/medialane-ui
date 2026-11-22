@@ -1,5 +1,6 @@
 import { RESERVED_TRAITS } from "@medialane/sdk";
 import { isPositiveInteger } from "../launchpad-rules.js";
+import { suggestLaunchpadSymbol } from "../launchpad-defaults.js";
 import { parseAllowlist } from "./allowlist.js";
 import { MAX_DROP_SUPPLY, type DropLicense } from "./metadata.js";
 import { EMPTY_SALE, validateSale, type SaleDraft, type SaleErrors } from "./sale.js";
@@ -46,6 +47,10 @@ export const EMPTY_DRAFT: DropDraft = {
 
 export function newAsset(file: File): DraftAsset {
   return { id: crypto.randomUUID(), file, name: "", description: "", copies: "1", traits: [] };
+}
+
+export function dropSymbol(name: string): string {
+  return suggestLaunchpadSymbol(name) || "DROP";
 }
 
 export function draftTokens(d: DropDraft): number {
