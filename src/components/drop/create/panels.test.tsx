@@ -3,6 +3,8 @@ import { cleanup, fireEvent, render } from "@testing-library/react";
 import { EMPTY_DRAFT, newAsset, validateDropDraft, type DropDraft } from "../../../utils/drop/draft.js";
 import { previewUrl } from "../../../utils/drop/preview.js";
 import { CollectionPanel } from "./collection-panel.js";
+import { SettingsPanel } from "./settings-panel.js";
+import { MedialaneAppProvider, type MedialaneApp } from "../../medialane-app.js";
 
 afterEach(() => cleanup());
 
@@ -62,4 +64,40 @@ test("an error replaces the summary", () => {
   const view = render(<CollectionPanel draft={EMPTY_DRAFT} setDraft={() => {}} errors={errors} open={false} onToggle={() => {}} />);
   const message = view.getByText("Name the collection");
   expect(message.className).toContain("text-destructive");
+});
+
+const app: MedialaneApp = {
+  getClient: () => ({ api: { drops: { fee: async () => ({ launchpadBps: 0 }) } } }) as never,
+  getSigner: () => { throw new Error("not used"); },
+  walletAddress: null,
+  onRequireWallet: () => {},
+};
+const settings = (draft: DropDraft, open: boolean) =>
+  render(
+    <MedialaneAppProvider value={app}>
+      <SettingsPanel draft={draft} setDraft={() => {}} errors={validateDropDraft(draft, NOW)} open={open} onToggle={() => {}} />
+    </MedialaneAppProvider>,
+  );
+
+test("settings summary shows price and start, plus the wallet list", () => {
+  const free = settings(named({ assets: [newAsset(png("a"))] }), false);
+  expect(free.getByText("Free")).toBeTruthy();
+  expect(free.getByText("Starts at launch")).toBeTruthy();
+  expect(free.queryByText("Wallet list")).toBeNull();
+  cleanup();
+  const listed = settings(named({ assets: [newAsset(png("a"))], listOnly: true, allowlist: "0x1" }), false);
+  expect(listed.getByText("Wallet list")).toBeTruthy();
+});
+
+test("settings open with every term", () => {
+  const view = settings(named({ assets: [newAsset(png("a"))] }), true);
+  for (const label of ["Price", "Starts", "Ends", "Limit per wallet", "Who can mint", "License terms", "Exclusive content"]) {
+    expect(view.getAllByText(label).length).toBeGreaterThan(0);
+  }
+});
+
+test("a past start time shows its error in the summary", () => {
+  const draft = named({ assets: [newAsset(png("a"))], sale: { ...EMPTY_DRAFT.sale, startNow: false, start: "2020-01-01T10:00" } });
+  const view = settings(draft, false);
+  expect(view.getByText("Pick a start time in the future").className).toContain("text-destructive");
 });
