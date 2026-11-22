@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.392.0] — 2026-11-22
+
+### Changed
+
+- `DropCreate` is an overview of three panels that open in place, one at a time: Collection (cover, name, description, external link), Assets (a grid of images; each asset has its own name, description, traits and copies, edited in a dialog; bulk copies, traits and removal for a selection; "Mix the mint order") and Drop settings (price, start, end, limit per wallet, everyone or a wallet list, license terms, exclusive content). The launch button names the first missing item and opens its panel. The draft is saved in IndexedDB and restored with a "Start over" action. `DropCreate` takes an optional `store` and no longer takes `aside`.
+- Drop metadata: tokens come from each asset repeated by its copies, in grid or mixed order; unnamed tokens are numbered by token id; `Edition` is set for assets with more than one copy; asset traits and the external link are written to each token; `collection.json` carries `external_link`.
+- The launch dialog starts uploading when opened; the wallet signature confirms the launch.
+
+### Removed
+
+- The edition/collection draft fields (`kind`, `edition`, `supply`, `items`, `symbol`) and `DraftItem`; `DraftAsset` and `DropDraft` are exported instead.
+
 ## [0.391.0] — 2026-11-22
 
 ### Changed

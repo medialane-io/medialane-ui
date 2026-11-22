@@ -14,7 +14,12 @@ const OPTION_LABELS: Record<string, string> = {
   Free: msg("Free"),
   Paid: msg("Paid"),
   Everyone: msg("Everyone"),
-  "Invited wallets": msg("Invited wallets"),
+  "Wallet list": msg("Wallet list"),
+  "At launch": msg("At launch"),
+  "Pick a date": msg("Pick a date"),
+  "No end": msg("No end"),
+  "No limit": msg("No limit"),
+  "Set a limit": msg("Set a limit"),
   Edition: msg("Edition"),
   Collection: msg("Collection"),
 };

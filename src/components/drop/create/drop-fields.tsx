@@ -1,34 +1,26 @@
 "use client";
 
-import { useRef } from "react";
-import { Upload, X } from "lucide-react";
 import { getListableTokens } from "@medialane/sdk";
-import Image from "../../image.js";
 import { Input } from "../../input.js";
 import { Label } from "../../label.js";
 import { Textarea } from "../../textarea.js";
-import { Switch } from "../../switch.js";
 import { ToggleGroup } from "../../create-form-primitives.js";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../select.js";
 import { AI_POLICIES, DERIVATIVES_OPTIONS, IP_TYPES, LICENSE_TYPES } from "../../../data/ip.js";
-import { MAX_DROP_SUPPLY } from "../../../utils/drop/metadata.js";
 import type { DropDraft, DropDraftErrors } from "../../../utils/drop/draft.js";
 import { collectorPriceLine, type SaleDraft } from "../../../utils/drop/sale.js";
 import { parseAllowlist } from "../../../utils/drop/allowlist.js";
-import { previewUrl } from "../../../utils/drop/preview.js";
-import { acceptFor, uploadError } from "../../../utils/upload-limits.js";
-import { FIELD_LIMITS } from "../../../utils/field-limits.js";
 import { useT } from "../../../i18n/provider.js";
-import { useFormat } from "../../../i18n/use-format.js";
 
 export interface FieldsProps {
   draft: DropDraft;
   setDraft: (patch: Partial<DropDraft>) => void;
-  errors: DropDraftErrors;
+  errors: DropDraftErrors["settings"];
 }
 
 export function FieldError({ message }: { message?: string }) {
-  return message ? <p role="alert" className="text-sm text-destructive">{message}</p> : null;
+  const t = useT();
+  return message ? <p role="alert" className="text-sm text-destructive">{t(message)}</p> : null;
 }
 
 export function Field({ label, htmlFor, children }: { label: React.ReactNode; htmlFor?: string; children: React.ReactNode }) {
@@ -37,92 +29,6 @@ export function Field({ label, htmlFor, children }: { label: React.ReactNode; ht
       <Label htmlFor={htmlFor}>{label}</Label>
       {children}
     </div>
-  );
-}
-
-export function ArtworkUpload({ files, onAdd, onRemove, error }: {
-  files: File[];
-  onAdd: (files: File[]) => void;
-  onRemove: (file: File) => void;
-  error?: string;
-}) {
-  const t = useT();
-  const ref = useRef<HTMLInputElement | null>(null);
-  const open = () => ref.current?.click();
-  return (
-    <Field label={t("Artwork *")}>
-      <div
-        role="button"
-        tabIndex={0}
-        aria-label={t("Upload images")}
-        onClick={open}
-        onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); open(); } }}
-        className="cursor-pointer rounded-xl border-2 border-dashed border-border p-8 text-center transition-colors hover:border-primary/50"
-      >
-        {files.length === 0 ? (
-          <div className="flex flex-col items-center gap-2 text-muted-foreground">
-            <Upload className="h-8 w-8" />
-            <p className="text-sm">{t("Click to upload an image")}</p>
-          </div>
-        ) : files.length === 1 ? (
-          <Thumb file={files[0]!} className="mx-auto h-48 w-48" onRemove={() => onRemove(files[0]!)} />
-        ) : (
-          <div className="grid grid-cols-3 gap-3 sm:grid-cols-4">
-            {files.map((file, i) => <Thumb key={`${file.name}-${i}`} file={file} className="aspect-square w-full" onRemove={() => onRemove(file)} />)}
-          </div>
-        )}
-        <input
-          ref={ref}
-          type="file"
-          accept={acceptFor("image")}
-          multiple
-          className="hidden"
-          data-testid="artwork-input"
-          onChange={(e) => {
-            const picked = Array.from(e.target.files ?? []).filter((f) => !uploadError(f, "image"));
-            if (picked.length) onAdd(picked);
-            e.target.value = "";
-          }}
-        />
-      </div>
-      {files.length > 0 && (
-        <p className="text-xs text-muted-foreground">
-          {files.length === 1 ? t("Add more images to make a set of unique pieces.") : t.plural("{count} unique piece", "{count} unique pieces", files.length)}
-        </p>
-      )}
-      <FieldError message={error} />
-    </Field>
-  );
-}
-
-function Thumb({ file, className, onRemove }: { file: File; className: string; onRemove: () => void }) {
-  const t = useT();
-  return (
-    <div className={`relative overflow-hidden rounded-2xl bg-muted ${className}`}>
-      <Image src={previewUrl(file)} alt={file.name} fill unoptimized className="object-cover" />
-      <button type="button" aria-label={t("Remove")}
-        onClick={(e) => { e.stopPropagation(); onRemove(); }}
-        className="absolute right-1.5 top-1.5 grid h-6 w-6 place-items-center rounded-full bg-background/85 text-foreground hover:bg-background">
-        <X className="h-3.5 w-3.5" />
-      </button>
-    </div>
-  );
-}
-
-export function NameFields({ draft, setDraft, errors, onNameChange }: FieldsProps & { onNameChange: (name: string) => void }) {
-  const t = useT();
-  return (
-    <>
-      <Field label={t("Name *")} htmlFor="drop-name">
-        <Input id="drop-name" value={draft.name} maxLength={FIELD_LIMITS.name} placeholder={t("My Creative Work")} onChange={(e) => onNameChange(e.target.value)} />
-        <FieldError message={errors.name ?? errors.symbol} />
-      </Field>
-      <Field label={t("Description")} htmlFor="drop-description">
-        <Textarea id="drop-description" value={draft.description} maxLength={FIELD_LIMITS.description} rows={4}
-          placeholder={t("The story behind the work…")}
-          onChange={(e) => setDraft({ description: e.target.value })} />
-      </Field>
-    </>
   );
 }
 
@@ -149,28 +55,16 @@ export function PriceFields({ draft, setDraft, errors, feeBps }: FieldsProps & {
   );
 }
 
-export function CopiesField({ draft, setDraft, errors }: FieldsProps) {
-  const t = useT();
-  const intl = useFormat();
-  return (
-    <Field label={t("Copies")} htmlFor="drop-supply">
-      <Input id="drop-supply" inputMode="numeric" value={draft.supply} onChange={(e) => setDraft({ supply: e.target.value.trim() })} className="max-w-[10rem]" />
-      <p className="text-xs text-muted-foreground">{t("Up to {MAX_DROP_SUPPLY}.", { MAX_DROP_SUPPLY: intl.number(MAX_DROP_SUPPLY) })}</p>
-      <FieldError message={errors.supply} />
-    </Field>
-  );
-}
-
 export function AccessFields({ draft, setDraft, errors }: FieldsProps) {
   const t = useT();
   const parsed = draft.listOnly ? parseAllowlist(draft.allowlist) : null;
   return (
     <Field label={t("Who can mint")}>
-      <ToggleGroup value={draft.listOnly ? "Invited wallets" : "Everyone"} options={["Everyone", "Invited wallets"]}
-        onChange={(v) => setDraft({ listOnly: v === "Invited wallets" })} />
+      <ToggleGroup value={draft.listOnly ? "Wallet list" : "Everyone"} options={["Everyone", "Wallet list"]}
+        onChange={(v) => setDraft({ listOnly: v === "Wallet list" })} />
       {draft.listOnly && (
         <div className="space-y-2">
-          <Textarea rows={5} placeholder={t("One wallet address per line")} value={draft.allowlist} onChange={(e) => setDraft({ allowlist: e.target.value })} />
+          <Textarea rows={5} aria-label={t("Wallet list")} placeholder={t("One wallet address per line")} value={draft.allowlist} onChange={(e) => setDraft({ allowlist: e.target.value })} />
           <label className="inline-block cursor-pointer text-xs font-semibold text-primary">
             {t("Upload a CSV")}
             <input type="file" accept=".csv,text/csv,text/plain" className="hidden"
@@ -182,7 +76,7 @@ export function AccessFields({ draft, setDraft, errors }: FieldsProps) {
               {parsed.duplicates.length > 0 && ` · ${t.plural("{count} duplicate skipped", "{count} duplicates skipped", parsed.duplicates.length)}`}
             </p>
           )}
-          <p className="text-xs text-muted-foreground">{t("After launch you get a claim link for each wallet to share.")}</p>
+          <p className="text-xs text-muted-foreground">{t("Each wallet gets a claim link after launch.")}</p>
           <FieldError message={errors.allowlist} />
         </div>
       )}
@@ -195,31 +89,26 @@ export function TimingFields({ draft, setDraft, errors }: FieldsProps) {
   const sale = draft.sale;
   const set = (patch: Partial<SaleDraft>) => setDraft({ sale: { ...sale, ...patch } });
   return (
-    <Field label={t("Timing")}>
-      <div className="space-y-3">
-        <SwitchRow label={t("Starts now")} checked={sale.startNow} onChange={(v) => set({ startNow: v })} />
-        {!sale.startNow && (
-          <div className="space-y-1.5">
-            <Input type="datetime-local" aria-label={t("Start")} value={sale.start} onChange={(e) => set({ start: e.target.value })} />
-            <FieldError message={errors.start} />
-          </div>
-        )}
-        <SwitchRow label={t("Has an end date")} checked={sale.hasEnd} onChange={(v) => set({ hasEnd: v })} />
-        {sale.hasEnd && (
-          <div className="space-y-1.5">
-            <Input type="datetime-local" aria-label={t("End")} value={sale.end} onChange={(e) => set({ end: e.target.value })} />
-            <FieldError message={errors.end} />
-          </div>
-        )}
-        <SwitchRow label={t("Limit per wallet")} checked={sale.limitPerWallet} onChange={(v) => set({ limitPerWallet: v })} />
-        {sale.limitPerWallet && (
-          <div className="space-y-1.5">
-            <Input inputMode="numeric" aria-label={t("Limit per wallet")} className="max-w-[10rem]" value={sale.perWallet} onChange={(e) => set({ perWallet: e.target.value.trim() })} />
-            <FieldError message={errors.perWallet} />
-          </div>
-        )}
-      </div>
-    </Field>
+    <>
+      <Field label={t("Starts")}>
+        <ToggleGroup value={sale.startNow ? "At launch" : "Pick a date"} options={["At launch", "Pick a date"]}
+          onChange={(v) => set({ startNow: v === "At launch" })} />
+        {!sale.startNow && <Input type="datetime-local" aria-label={t("Start")} value={sale.start} onChange={(e) => set({ start: e.target.value })} />}
+        <FieldError message={errors.start} />
+      </Field>
+      <Field label={t("Ends")}>
+        <ToggleGroup value={sale.hasEnd ? "Pick a date" : "No end"} options={["No end", "Pick a date"]}
+          onChange={(v) => set({ hasEnd: v === "Pick a date" })} />
+        {sale.hasEnd && <Input type="datetime-local" aria-label={t("End")} value={sale.end} onChange={(e) => set({ end: e.target.value })} />}
+        <FieldError message={errors.end} />
+      </Field>
+      <Field label={t("Limit per wallet")}>
+        <ToggleGroup value={sale.limitPerWallet ? "Set a limit" : "No limit"} options={["No limit", "Set a limit"]}
+          onChange={(v) => set({ limitPerWallet: v === "Set a limit" })} />
+        {sale.limitPerWallet && <Input inputMode="numeric" aria-label={t("Tokens per wallet")} className="max-w-[10rem]" value={sale.perWallet} onChange={(e) => set({ perWallet: e.target.value.trim() })} />}
+        <FieldError message={errors.perWallet} />
+      </Field>
+    </>
   );
 }
 
@@ -257,14 +146,5 @@ export function LicenseFields({ draft, setDraft }: Omit<FieldsProps, "errors">) 
         </Select>
       </Field>
     </>
-  );
-}
-
-function SwitchRow({ label, checked, onChange }: { label: string; checked: boolean; onChange: (v: boolean) => void }) {
-  return (
-    <div className="flex items-center justify-between">
-      <span className="text-sm">{label}</span>
-      <Switch checked={checked} onCheckedChange={onChange} />
-    </div>
   );
 }
