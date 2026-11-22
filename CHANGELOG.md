@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.394.0] — 2026-11-22
+
+### Changed
+
+- Drop create assets accept media: images, video, audio and PDF ("Add media"). Video, audio and PDF assets need a feature image. Each token's `image` is the feature image (the file itself for images) and non-image media goes in `animation_url`, following the metadata baseline. Media and feature images upload once each.
+- The collection's default feature image is the first asset's image.
+- `DropPage` shows the collection's feature image as its main image instead of token #1.
+- Drop settings: neutral toggles (`ToggleGroup` gains `tone="neutral"`, default unchanged), muted section icons, and the price summary no longer falls back to "Set a price" when another setting is incomplete (`salePriceLabel`).
+- "Add media" uses foreground text.
+- `ToggleGroup` options expose `aria-pressed`.
+
 ## [0.393.0] — 2026-11-22
 
 ### Changed

@@ -115,3 +115,33 @@ test("over 2,000 tokens flags the totals line", () => {
   const view = render(<Harness initial={withAssets({ ...newAsset(png("a")), copies: "2001" })} />);
   expect(view.getByText("2,001 tokens from 1 asset").className).toContain("text-destructive");
 });
+
+test("media of any kind becomes an asset; non-image media shows its kind until a feature image is added", () => {
+  let last: DropDraft | null = null;
+  const view = render(<Harness initial={EMPTY_DRAFT} onDraft={(d) => { last = d; }} />);
+  expect(view.getByText("Add media")).toBeTruthy();
+  fireEvent.change(view.getByTestId("assets-input"), { target: { files: [new File(["x"], "wave.mp4", { type: "video/mp4" })] } });
+  const card = view.getAllByTestId("asset-card")[0]!;
+  expect(within(card).getByText("Video")).toBeTruthy();
+  expect(card.querySelector("img")).toBeNull();
+  fireEvent.click(card);
+  const dialog = view.getByRole("dialog");
+  expect(within(dialog).getByText("Feature image *")).toBeTruthy();
+  fireEvent.change(within(dialog).getByTestId("feature-input"), { target: { files: [png("art")] } });
+  expect(last!.assets[0]!.feature?.name).toBe("art.png");
+  fireEvent.click(within(dialog).getByRole("button", { name: "Done" }));
+  expect(view.getAllByTestId("asset-card")[0]!.querySelector("img")).toBeTruthy();
+});
+
+test("image assets have no feature image field", () => {
+  const view = render(<Harness initial={withAssets(newAsset(png("a")))} />);
+  fireEvent.click(view.getAllByTestId("asset-card")[0]!);
+  expect(within(view.getByRole("dialog")).queryByText("Feature image *")).toBeNull();
+});
+
+test("the Add media button uses foreground text, not brand blue", () => {
+  const view = render(<Harness initial={EMPTY_DRAFT} />);
+  const button = view.getByText("Add media").closest("label")!;
+  expect(button.className).toContain("text-foreground");
+  expect(button.className).not.toContain("text-primary");
+});

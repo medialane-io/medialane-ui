@@ -47,6 +47,17 @@ describe("drop metadata files", () => {
     expect(meta(files, 2).attributes.some((a) => a.trait_type === "Edition")).toBe(false);
   });
 
+  test("media assets follow the baseline: image is the feature image, the media goes in animation_url", () => {
+    const files = buildDropMetadataFiles({
+      ...base,
+      assets: [{ ...asset, imageUri: "ipfs://feature", animationUrl: "ipfs://song.mp3" }, { ...asset, imageUri: "ipfs://b" }],
+      order: [0, 1],
+    });
+    expect(meta(files, 1).image).toBe("ipfs://feature");
+    expect((files[0]!.content as Record<string, unknown>).animation_url).toBe("ipfs://song.mp3");
+    expect("animation_url" in (files[1]!.content as Record<string, unknown>)).toBe(false);
+  });
+
   test("asset traits and the external link reach the token", () => {
     const files = buildDropMetadataFiles({ ...base, externalUrl: "https://neon.art", assets: [{ ...asset, traits: [{ key: "Mood", value: "Calm" }] }] });
     expect(meta(files, 1).attributes).toContainEqual({ trait_type: "Mood", value: "Calm" });

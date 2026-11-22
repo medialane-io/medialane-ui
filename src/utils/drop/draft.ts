@@ -6,6 +6,8 @@ import { MAX_DROP_SUPPLY, type DropLicense } from "./metadata.js";
 import { EMPTY_SALE, validateSale, type SaleDraft, type SaleErrors } from "./sale.js";
 import { formatNumber } from "../../i18n/format.js";
 import { msg, type Phrase } from "../../i18n/translate.js";
+import { detectMediaKind } from "../../components/fast-mint/media-kind.js";
+import type { MediaKind } from "../../components/fast-mint/types.js";
 
 export interface DraftTrait {
   key: string;
@@ -15,6 +17,7 @@ export interface DraftTrait {
 export interface DraftAsset {
   id: string;
   file: File;
+  feature: File | null;
   name: string;
   description: string;
   copies: string;
@@ -47,11 +50,33 @@ export const EMPTY_DRAFT: DropDraft = {
 };
 
 export function newAsset(file: File): DraftAsset {
-  return { id: crypto.randomUUID(), file, name: "", description: "", copies: "1", traits: [] };
+  return { id: crypto.randomUUID(), file, feature: null, name: "", description: "", copies: "1", traits: [] };
+}
+
+export function assetKind(a: DraftAsset): MediaKind {
+  return detectMediaKind(a.file.type) ?? "document";
+}
+
+export function assetImage(a: DraftAsset): File | null {
+  return assetKind(a) === "image" ? a.file : a.feature;
 }
 
 export function dropSymbol(name: string): string {
   return suggestLaunchpadSymbol(name) || "DROP";
+}
+
+const featureId = (a: DraftAsset) => `${a.id}:feature`;
+
+export function assetUploads(assets: DraftAsset[]): { id: string; file: File }[] {
+  return assets.flatMap((a) => [
+    { id: a.id, file: a.file },
+    ...(assetKind(a) !== "image" && a.feature ? [{ id: featureId(a), file: a.feature }] : []),
+  ]);
+}
+
+export function assetMedia(a: DraftAsset, uriOf: (id: string) => string | null): { imageUri: string; animationUrl: string | null } {
+  if (assetKind(a) === "image") return { imageUri: uriOf(a.id)!, animationUrl: null };
+  return { imageUri: uriOf(featureId(a))!, animationUrl: uriOf(a.id) };
 }
 
 export function draftTokens(d: DropDraft): number {
@@ -60,7 +85,7 @@ export function draftTokens(d: DropDraft): number {
 
 export type DropPanel = "collection" | "assets" | "settings";
 
-type AssetErrors = Partial<Record<"copies" | "traits", Phrase>>;
+type AssetErrors = Partial<Record<"copies" | "traits" | "feature", Phrase>>;
 
 export interface DropDraftErrors {
   collection: Partial<Record<"name" | "externalUrl", Phrase>>;
@@ -73,6 +98,7 @@ const RESERVED = new Map([...RESERVED_TRAITS].map((t) => [t.toLowerCase(), t]));
 
 function assetErrors(a: DraftAsset): AssetErrors | null {
   const e: AssetErrors = {};
+  if (!assetImage(a)) e.feature = { text: msg("Add a feature image") };
   if (!isPositiveInteger(a.copies)) e.copies = { text: msg("Enter 1 or more") };
   const reserved = a.traits.map((t) => RESERVED.get(t.key.trim().toLowerCase())).find(Boolean);
   if (reserved) e.traits = { text: msg("{name} is set by the license terms"), vars: { name: reserved } };

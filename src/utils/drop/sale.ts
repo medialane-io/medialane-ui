@@ -65,6 +65,13 @@ export function toDropTerms(d: SaleDraft): DropTermsBody {
   };
 }
 
+export function salePriceLabel(d: SaleDraft): string | null {
+  if (!d.paid) return "Free";
+  const token = saleToken(d.tokenSymbol);
+  if (!token || validateSale({ ...EMPTY_SALE, paid: true, price: d.price, tokenSymbol: d.tokenSymbol }, 0).price) return null;
+  return priceLabel(parseAmount(d.price, token.decimals), token.address);
+}
+
 export function collectorPriceLine(d: SaleDraft, feeBps: number): Phrase | null {
   const token = d.paid ? saleToken(d.tokenSymbol) : null;
   if (!token || validateSale({ ...EMPTY_SALE, paid: true, price: d.price, tokenSymbol: d.tokenSymbol }, 0).price) return null;

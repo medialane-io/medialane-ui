@@ -40,7 +40,7 @@ export function PriceFields({ draft, setDraft, errors, feeBps }: FieldsProps & {
   const line = feeBps === null ? null : collectorPriceLine(sale, feeBps);
   return (
     <Field label={t("Price")}>
-      <ToggleGroup value={sale.paid ? "Paid" : "Free"} options={["Free", "Paid"]} onChange={(v) => set({ paid: v === "Paid" })} />
+      <ToggleGroup tone="neutral" value={sale.paid ? "Paid" : "Free"} options={["Free", "Paid"]} onChange={(v) => set({ paid: v === "Paid" })} />
       {sale.paid && (
         <div className="flex gap-2">
           <Input inputMode="decimal" aria-label={t("Price per token")} placeholder={t("Price per token")} value={sale.price} onChange={(e) => set({ price: e.target.value.trim() })} />
@@ -61,7 +61,7 @@ export function AccessFields({ draft, setDraft, errors }: FieldsProps) {
   const parsed = draft.listOnly ? parseAllowlist(draft.allowlist) : null;
   return (
     <Field label={t("Who can mint")}>
-      <ToggleGroup value={draft.listOnly ? "Wallet list" : "Everyone"} options={["Everyone", "Wallet list"]}
+      <ToggleGroup tone="neutral" value={draft.listOnly ? "Wallet list" : "Everyone"} options={["Everyone", "Wallet list"]}
         onChange={(v) => setDraft({ listOnly: v === "Wallet list" })} />
       {draft.listOnly && (
         <div className="space-y-2">
@@ -92,19 +92,19 @@ export function TimingFields({ draft, setDraft, errors }: FieldsProps) {
   return (
     <>
       <Field label={t("Starts")}>
-        <ToggleGroup value={sale.startNow ? "At launch" : "Pick a date"} options={["At launch", "Pick a date"]}
+        <ToggleGroup tone="neutral" value={sale.startNow ? "At launch" : "Pick a date"} options={["At launch", "Pick a date"]}
           onChange={(v) => set({ startNow: v === "At launch" })} />
         {!sale.startNow && <Input type="datetime-local" aria-label={t("Start")} value={sale.start} onChange={(e) => set({ start: e.target.value })} />}
         <FieldError message={errors.start} />
       </Field>
       <Field label={t("Ends")}>
-        <ToggleGroup value={sale.hasEnd ? "Pick a date" : "No end"} options={["No end", "Pick a date"]}
+        <ToggleGroup tone="neutral" value={sale.hasEnd ? "Pick a date" : "No end"} options={["No end", "Pick a date"]}
           onChange={(v) => set({ hasEnd: v === "Pick a date" })} />
         {sale.hasEnd && <Input type="datetime-local" aria-label={t("End")} value={sale.end} onChange={(e) => set({ end: e.target.value })} />}
         <FieldError message={errors.end} />
       </Field>
       <Field label={t("Limit per wallet")}>
-        <ToggleGroup value={sale.limitPerWallet ? "Set a limit" : "No limit"} options={["No limit", "Set a limit"]}
+        <ToggleGroup tone="neutral" value={sale.limitPerWallet ? "Set a limit" : "No limit"} options={["No limit", "Set a limit"]}
           onChange={(v) => set({ limitPerWallet: v === "Set a limit" })} />
         {sale.limitPerWallet && <Input inputMode="numeric" aria-label={t("Tokens per wallet")} className="max-w-[10rem]" value={sale.perWallet} onChange={(e) => set({ perWallet: e.target.value.trim() })} />}
         <FieldError message={errors.perWallet} />
@@ -132,13 +132,13 @@ export function LicenseFields({ draft, setDraft }: Omit<FieldsProps, "errors">) 
         {def && <p className="text-xs text-muted-foreground">{t(def.description)}</p>}
       </Field>
       <Field label={t("Commercial use")}>
-        <ToggleGroup value={license.commercialUse} options={["Yes", "No"]} onChange={(v) => set({ commercialUse: v })} />
+        <ToggleGroup tone="neutral" value={license.commercialUse} options={["Yes", "No"]} onChange={(v) => set({ commercialUse: v })} />
       </Field>
       <Field label={t("Derivatives")}>
-        <ToggleGroup value={license.derivatives} options={DERIVATIVES_OPTIONS} onChange={(v) => set({ derivatives: v })} />
+        <ToggleGroup tone="neutral" value={license.derivatives} options={DERIVATIVES_OPTIONS} onChange={(v) => set({ derivatives: v })} />
       </Field>
       <Field label={t("AI & data mining")}>
-        <ToggleGroup value={license.aiPolicy} options={AI_POLICIES} onChange={(v) => set({ aiPolicy: v })} />
+        <ToggleGroup tone="neutral" value={license.aiPolicy} options={AI_POLICIES} onChange={(v) => set({ aiPolicy: v })} />
       </Field>
       <Field label={t("IP type")}>
         <Select value={license.ipType} onValueChange={(v) => set({ ipType: v })}>

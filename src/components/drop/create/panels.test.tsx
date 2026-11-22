@@ -115,3 +115,21 @@ test("errors read in Portuguese", async () => {
   expect(view.getAllByText("Dê um nome à coleção").length).toBeGreaterThan(0);
   expect(view.getByText("Adicione um link que comece com https://")).toBeTruthy();
 });
+
+test("settings choices use neutral toggles, not brand blue", () => {
+  const view = settings(named({ assets: [newAsset(png("a"))] }), true);
+  const selected = view.getByRole("button", { name: "Free" });
+  expect(selected.className).not.toContain("bg-primary");
+  expect(selected.getAttribute("aria-pressed")).toBe("true");
+});
+
+test("the price summary stays Free while another setting is incomplete", () => {
+  const draft = named({ assets: [newAsset(png("a"))], sale: { ...EMPTY_DRAFT.sale, limitPerWallet: true, perWallet: "" } });
+  const view = render(
+    <MedialaneAppProvider value={app}>
+      <SettingsPanel draft={draft} setDraft={() => {}} errors={{ collection: {}, assets: { byId: {} }, settings: {} }} open={false} onToggle={() => {}} />
+    </MedialaneAppProvider>,
+  );
+  expect(view.getByText("Free")).toBeTruthy();
+  expect(view.queryByText("Set a price")).toBeNull();
+});

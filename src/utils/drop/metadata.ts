@@ -18,7 +18,7 @@ export interface DropMetadataInput {
   creator: string;
   coverUri: string | null;
   license: DropLicense;
-  assets: { name: string; description: string; imageUri: string; copies: number; traits: DraftTrait[] }[];
+  assets: { name: string; description: string; imageUri: string; animationUrl?: string | null; copies: number; traits: DraftTrait[] }[];
   order: number[];
 }
 
@@ -49,19 +49,17 @@ export function buildDropMetadataFiles(input: DropMetadataInput): DropMetadataFi
     const id = i + 1;
     const asset = input.assets[index]!;
     seen[index]! += 1;
-    return {
-      name: String(id),
-      content: buildAssetMetadata({
-        ...input.license,
-        name: asset.name.trim() || `${input.name} #${id}`,
-        description: asset.description.trim() || input.description,
-        externalUrl,
-        imageUri: asset.imageUri,
-        creator: input.creator,
-        edition: asset.copies > 1 ? `${seen[index]}/${asset.copies}` : null,
-        templateTraits: asset.traits.map((t) => ({ traitType: t.key, value: t.value })),
-      }),
-    };
+    const content = buildAssetMetadata({
+      ...input.license,
+      name: asset.name.trim() || `${input.name} #${id}`,
+      description: asset.description.trim() || input.description,
+      externalUrl,
+      imageUri: asset.imageUri,
+      creator: input.creator,
+      edition: asset.copies > 1 ? `${seen[index]}/${asset.copies}` : null,
+      templateTraits: asset.traits.map((t) => ({ traitType: t.key, value: t.value })),
+    });
+    return { name: String(id), content: asset.animationUrl ? { ...content, animation_url: asset.animationUrl } : content };
   });
   files.push({
     name: "collection.json",

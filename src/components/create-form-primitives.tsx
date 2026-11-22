@@ -25,8 +25,8 @@ const OPTION_LABELS: Record<string, string> = {
 };
 
 export function ToggleGroup({
-  value, options, onChange,
-}: { value: string; options: readonly string[]; onChange: (v: string) => void }) {
+  value, options, onChange, tone = "brand",
+}: { value: string; options: readonly string[]; onChange: (v: string) => void; tone?: "brand" | "neutral" }) {
   const t = useT();
   return (
     <div className="flex rounded-2xl overflow-hidden w-full bg-muted/40">
@@ -34,12 +34,13 @@ export function ToggleGroup({
         <button
           key={opt}
           type="button"
+          aria-pressed={value === opt}
           onClick={() => onChange(opt)}
           className={cn(
             "flex-1 px-3 py-2 text-sm transition-colors",
             i > 0 && "border-l border-border",
             value === opt
-              ? "bg-primary text-primary-foreground font-medium"
+              ? tone === "neutral" ? "bg-muted text-foreground font-medium" : "bg-primary text-primary-foreground font-medium"
               : "bg-background hover:bg-muted text-muted-foreground",
           )}
         >

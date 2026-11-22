@@ -7,13 +7,14 @@ const onchain: DropOnchain = {
   maxPerWallet: 0n, allowlistRoot: "0x0", maxSupply: 100n, totalMinted: 10n,
 };
 
+mock.module("next/image", () => ({ default: ({ src, alt }: { src: string; alt: string }) => <img src={src} alt={alt} /> }));
 mock.module("next/navigation", () => ({ useSearchParams: () => new URLSearchParams(), usePathname: () => "/", useRouter: () => ({ push: () => {}, back: () => {} }) }));
 mock.module("../../../utils/use-drops.js", () => ({
-  useDrop: () => ({ drop: { name: "Neon", baseUri: null, description: "", image: null }, isLoading: false }),
+  useDrop: () => ({ drop: { name: "Neon", baseUri: "ipfs://base/", description: "", image: "https://cdn.test/cover.png" }, isLoading: false }),
   useDropChain: () => ({ drop: onchain, claimed: 0n, balance: 0n, mutate: async () => {} }),
   useDropMints: () => ({ mints: [], mutate: async () => {} }),
   useDropFee: () => 0,
-  useDropFile: () => null,
+  useDropFile: (_base: string | null, name: string) => (name === "1" ? { image: "https://cdn.test/token-1.png" } : null),
 }));
 mock.module("../../../utils/use-collections.js", () => ({ useCollectionTokens: () => ({ tokens: [] }) }));
 
@@ -30,4 +31,15 @@ test("the drop page has no fixed elements and one mint button", () => {
   );
   expect(view.container.querySelector(".fixed")).toBeNull();
   expect(view.getAllByRole("button", { name: "Sign in to mint" })).toHaveLength(1);
+});
+
+test("the main image is the collection's feature image, not token #1", () => {
+  const view = render(
+    <MedialaneAppProvider value={{ getClient: () => ({ api: {} }) as never, getSigner: () => { throw new Error("not used"); }, walletAddress: null, onRequireWallet: () => {} }}>
+      <DropPage contract="0x2" />
+    </MedialaneAppProvider>,
+  );
+  const src = view.getByAltText("Neon").getAttribute("src") ?? "";
+  expect(src).toContain("cover.png");
+  expect(src).not.toContain("token-1");
 });

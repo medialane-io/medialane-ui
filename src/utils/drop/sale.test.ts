@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test";
 import { getTokenBySymbol } from "@medialane/sdk";
-import { EMPTY_SALE, collectorPriceLine, priceLabel, supplyLabel, toDropTerms, validateSale } from "./sale.js";
+import { EMPTY_SALE, collectorPriceLine, priceLabel, salePriceLabel, supplyLabel, toDropTerms, validateSale } from "./sale.js";
 
 const NOW = 1_800_000_000;
 const local = (unix: number) => {
@@ -48,6 +48,12 @@ describe("sale terms", () => {
     expect(collectorPriceLine({ ...EMPTY_SALE, paid: true, price: "5", tokenSymbol: "USDC" }, 0))
       .toEqual({ text: "Collectors pay {price}.", vars: { price: "5 USDC" } });
     expect(collectorPriceLine(EMPTY_SALE, 100)).toBeNull();
+  });
+
+  test("the sale price label ignores other incomplete settings", () => {
+    expect(salePriceLabel({ ...EMPTY_SALE, limitPerWallet: true, perWallet: "" })).toBe("Free");
+    expect(salePriceLabel({ ...EMPTY_SALE, paid: true, price: "5", tokenSymbol: "USDC", startNow: false, start: "" })).toBe("5 USDC");
+    expect(salePriceLabel({ ...EMPTY_SALE, paid: true, price: "" })).toBeNull();
   });
 
   test("labels", () => {
