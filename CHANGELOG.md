@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.393.0] — 2026-11-22
+
+### Changed
+
+- `DropPage`: one action box in the info column at every size; the fixed mobile mint bar is removed.
+- `actionBoxView` returns translatable phrases (`{ text, vars }`) for the status, button, total and eligibility, and takes an optional `locale` for dates. `DropActionBox`, `DropPage` and `DropMintDialog` render them through `t()`. Copy: "Mint {count}", "Starts {date}", "Ends {date}", "No end date", "Total {amount} with the platform fee", "On the list", "List only", "Open the claim link to mint", "Limit reached: {count} per wallet".
+- Drop sale and draft validation return phrases; `FieldError` and the drop panels translate them. `collectorPriceLine` returns a phrase: "Collectors pay {total} with a {fee}% platform fee. The creator gets {price}."
+- `DropFeatures` copy: "Copies per asset", "A sale window", "Open or by list", "Collectors own them".
+- Portuguese catalog updated; obsolete keys removed.
+
 ## [0.392.0] — 2026-11-22
 
 ### Changed
