@@ -14,7 +14,6 @@ import { DropActionBox } from "./drop-action-box.js";
 import { DropActivityList } from "./drop-activity.js";
 import { DropManage } from "./drop-manage.js";
 import { DropMintDialog } from "./drop-mint-dialog.js";
-import { ActionButton } from "../../action-button.js";
 import { useCollectionTokens } from "../../../utils/use-collections.js";
 import { useDrop, useDropChain, useDropFee, useDropFile, useDropMints } from "../../../utils/use-drops.js";
 import { useNow } from "../../../utils/drop/use-now.js";
@@ -78,7 +77,7 @@ export function DropPage(props: { contract: string; initialTab?: string; portfol
   };
 
   return (
-    <div className="space-y-10 pb-28 lg:pb-0">
+    <div className="space-y-10">
       <div className="grid gap-8 lg:grid-cols-2 lg:gap-10">
         <div className="relative aspect-square overflow-hidden rounded-2xl bg-muted">
           {art && <Image src={art} alt={name} fill unoptimized className="object-cover" />}
@@ -92,21 +91,10 @@ export function DropPage(props: { contract: string; initialTab?: string; portfol
             <ShareButton title={name} variant="soft" size="sm" />
           </div>
           {view && onchain && (
-            <div className="hidden lg:block">
-              <DropActionBox view={view} minted={onchain.totalMinted} maxSupply={onchain.maxSupply} quantity={quantity} onQuantity={setQuantity} onAction={onAction} />
-            </div>
+            <DropActionBox view={view} minted={onchain.totalMinted} maxSupply={onchain.maxSupply} quantity={quantity} onQuantity={setQuantity} onAction={onAction} />
           )}
         </div>
       </div>
-
-      {view && onchain && (
-        <div className="lg:hidden">
-          <DropActionBox view={view} minted={onchain.totalMinted} maxSupply={onchain.maxSupply} quantity={quantity} onQuantity={setQuantity} onAction={onAction} />
-          <div className="fixed inset-x-0 bottom-0 z-30 border-t border-border bg-background/95 p-3 backdrop-blur">
-            <ActionButton solid disabled={view.button.action === "none"} onClick={onAction} className="w-full">{t(view.button.label.text, view.button.label.vars)}</ActionButton>
-          </div>
-        </div>
-      )}
 
       <Tabs defaultValue={props.initialTab === "manage" && isOrganizer ? "manage" : "about"}>
         <TabsList>
