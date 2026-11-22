@@ -1,4 +1,5 @@
 import { buildAssetMetadata, type BuildAssetMetadataInput } from "@medialane/sdk";
+import type { DraftTrait } from "./draft.js";
 
 export const MAX_DROP_SUPPLY = 2000;
 export const MAX_DROP_METADATA_BYTES = 5 * 1024 * 1024;
@@ -11,14 +12,14 @@ export type DropLicense = Record<
 >;
 
 export interface DropMetadataInput {
-  kind: DropKind;
   name: string;
   description: string;
+  externalUrl: string;
   creator: string;
   coverUri: string | null;
   license: DropLicense;
-  items: { name: string; description: string; imageUri: string }[];
-  supply: number;
+  assets: { name: string; description: string; imageUri: string; copies: number; traits: DraftTrait[] }[];
+  order: number[];
 }
 
 export interface DropMetadataFile {
@@ -26,31 +27,50 @@ export interface DropMetadataFile {
   content: unknown;
 }
 
+function secureRandom(n: number): number {
+  const [value] = crypto.getRandomValues(new Uint32Array(1));
+  return value! % n;
+}
+
+export function tokenOrder(copies: number[], mix: boolean, random: (n: number) => number = secureRandom): number[] {
+  const order = copies.flatMap((count, asset) => Array.from({ length: count }, () => asset));
+  if (!mix) return order;
+  for (let i = order.length - 1; i > 0; i--) {
+    const j = random(i + 1);
+    [order[i], order[j]] = [order[j]!, order[i]!];
+  }
+  return order;
+}
+
 export function buildDropMetadataFiles(input: DropMetadataInput): DropMetadataFile[] {
-  const edition = input.kind === "edition";
-  const count = edition ? input.supply : input.items.length;
-  const files: DropMetadataFile[] = [];
-  for (let id = 1; id <= count; id++) {
-    const item = edition ? input.items[0]! : input.items[id - 1]!;
-    files.push({
+  const externalUrl = input.externalUrl.trim() || null;
+  const seen = input.assets.map(() => 0);
+  const files: DropMetadataFile[] = input.order.map((index, i) => {
+    const id = i + 1;
+    const asset = input.assets[index]!;
+    seen[index]! += 1;
+    return {
       name: String(id),
       content: buildAssetMetadata({
         ...input.license,
-        name: edition || !item.name ? `${input.name} #${id}` : item.name,
-        description: item.description || input.description,
-        imageUri: item.imageUri,
+        name: asset.name.trim() || `${input.name} #${id}`,
+        description: asset.description.trim() || input.description,
+        externalUrl,
+        imageUri: asset.imageUri,
         creator: input.creator,
-        edition: edition ? `${id}/${count}` : null,
+        edition: asset.copies > 1 ? `${seen[index]}/${asset.copies}` : null,
+        templateTraits: asset.traits.map((t) => ({ traitType: t.key, value: t.value })),
       }),
-    });
-  }
+    };
+  });
   files.push({
     name: "collection.json",
     content: {
       name: input.name,
       description: input.description,
-      image: input.coverUri ?? input.items[0]?.imageUri ?? null,
-      drop_kind: input.kind,
+      image: input.coverUri ?? input.assets[0]?.imageUri ?? null,
+      ...(externalUrl ? { external_link: externalUrl } : {}),
+      drop_kind: (input.assets.length > 1 ? "collection" : "edition") satisfies DropKind,
     },
   });
   return files;
