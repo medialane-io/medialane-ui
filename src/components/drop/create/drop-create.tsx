@@ -64,7 +64,7 @@ export function DropCreate({ store }: { store?: DraftStore }) {
           <div className="space-y-3 pt-3">
             <p className="text-center text-xs text-muted-foreground">{t("Fixed at launch: assets, price, dates, supply and the wallet limit.")}</p>
             <ActionButton solid big onClick={launch} className="w-full">
-              {!wallet ? app.connectLabel ?? t("Sign in to launch") : missing ? t(missing.message) : t("Launch drop")}
+              {!wallet ? app.connectLabel ?? t("Sign in to launch") : missing ? t(missing.message.text, missing.message.vars) : t("Launch drop")}
             </ActionButton>
           </div>
         </div>

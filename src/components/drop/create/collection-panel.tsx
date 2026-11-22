@@ -66,7 +66,7 @@ export function CollectionPanel({ draft, setDraft, errors, open, onToggle }: Pan
               <Button type="button" variant="ghost" size="sm" onClick={() => set({ cover: null })}>{t("Use first asset")}</Button>
             )}
           </div>
-          <FieldError message={coverError ?? undefined} />
+          <FieldError message={coverError ? { text: coverError } : null} />
         </div>
       </div>
       <Field label={t("Name *")} htmlFor="drop-name">

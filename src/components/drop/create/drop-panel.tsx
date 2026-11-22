@@ -6,6 +6,7 @@ import { IconTile } from "../../icon-tile.js";
 import { cn } from "../../../utils/cn.js";
 import type { DropDraft, DropDraftErrors } from "../../../utils/drop/draft.js";
 import { useT } from "../../../i18n/provider.js";
+import type { Phrase } from "../../../i18n/translate.js";
 
 export interface PanelProps {
   draft: DropDraft;
@@ -19,7 +20,7 @@ export function DropPanel({ icon, title, summary, error, open, onToggle, childre
   icon: ReactNode;
   title: string;
   summary: ReactNode;
-  error?: string;
+  error?: Phrase;
   open: boolean;
   onToggle: () => void;
   children: ReactNode;
@@ -33,7 +34,7 @@ export function DropPanel({ icon, title, summary, error, open, onToggle, childre
         <span className="min-w-0 flex-1 space-y-1">
           <span className="block text-[15px] font-semibold">{title}</span>
           {error
-            ? <span className="block text-sm text-destructive">{t(error)}</span>
+            ? <span className="block text-sm text-destructive">{t(error.text, error.vars)}</span>
             : <span className="block text-sm text-muted-foreground">{summary}</span>}
         </span>
         <ChevronDown className={cn("h-4 w-4 shrink-0 text-muted-foreground transition-transform", open && "rotate-180")} />

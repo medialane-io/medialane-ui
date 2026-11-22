@@ -33,20 +33,20 @@ describe("sale terms", () => {
       hasEnd: true, end: local(NOW - 120), limitPerWallet: true, perWallet: "0",
     };
     expect(validateSale(d, NOW)).toEqual({
-      price: "Enter a price above 0",
-      start: "Pick a start time in the future",
-      end: "The sale must end after it starts",
-      perWallet: "Enter 1 or more",
+      price: { text: "Enter a price above 0" },
+      start: { text: "Pick a start time in the future" },
+      end: { text: "The sale must end after it starts" },
+      perWallet: { text: "Enter 1 or more" },
     });
-    expect(validateSale({ ...EMPTY_SALE, paid: true, price: "1.1234567", tokenSymbol: "USDC" }, NOW).price).toBe("Use at most 6 decimals for USDC");
-    expect(validateSale({ ...EMPTY_SALE, paid: true, price: "abc", tokenSymbol: "USDC" }, NOW).price).toBe("Enter a price above 0");
+    expect(validateSale({ ...EMPTY_SALE, paid: true, price: "1.1234567", tokenSymbol: "USDC" }, NOW).price).toEqual({ text: "Use at most {decimals} decimals for {symbol}", vars: { decimals: 6, symbol: "USDC" } });
+    expect(validateSale({ ...EMPTY_SALE, paid: true, price: "abc", tokenSymbol: "USDC" }, NOW).price).toEqual({ text: "Enter a price above 0" });
   });
 
   test("the collector line includes the platform fee", () => {
     expect(collectorPriceLine({ ...EMPTY_SALE, paid: true, price: "5", tokenSymbol: "USDC" }, 100))
-      .toBe("Collectors pay 5.05 USDC (incl. 1% platform fee). You receive 5 USDC.");
+      .toEqual({ text: "Collectors pay {total} with a {fee}% platform fee. The creator gets {price}.", vars: { total: "5.05 USDC", fee: 1, price: "5 USDC" } });
     expect(collectorPriceLine({ ...EMPTY_SALE, paid: true, price: "5", tokenSymbol: "USDC" }, 0))
-      .toBe("Collectors pay 5 USDC.");
+      .toEqual({ text: "Collectors pay {price}.", vars: { price: "5 USDC" } });
     expect(collectorPriceLine(EMPTY_SALE, 100)).toBeNull();
   });
 

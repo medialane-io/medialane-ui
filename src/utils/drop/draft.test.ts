@@ -12,9 +12,9 @@ const named = (patch: Partial<DropDraft> = {}): DropDraft => ({
 
 test("an empty draft asks for a collection name and an asset", () => {
   const e = validateDropDraft(EMPTY_DRAFT, NOW);
-  expect(e.collection.name).toBe("Name the collection");
-  expect(e.assets.list).toBe("Add an asset");
-  expect(firstMissing(e)).toEqual({ panel: "collection", message: "Name the collection" });
+  expect(e.collection.name).toEqual({ text: "Name the collection" });
+  expect(e.assets.list).toEqual({ text: "Add an asset" });
+  expect(firstMissing(e)).toEqual({ panel: "collection", message: { text: "Name the collection" } });
   expect(hasErrors(e)).toBe(true);
 });
 
@@ -33,41 +33,41 @@ test("a new asset starts with one copy and no details", () => {
 test("tokens are the sum of copies and stop at 2,000", () => {
   const d = named({ assets: [{ ...newAsset(png("a")), copies: "1500" }, { ...newAsset(png("b")), copies: "501" }] });
   expect(draftTokens(d)).toBe(2001);
-  expect(validateDropDraft(d, NOW).assets.list).toBe("Up to 2,000 tokens");
-  expect(firstMissing(validateDropDraft(d, NOW))).toEqual({ panel: "assets", message: "Up to 2,000 tokens" });
+  expect(validateDropDraft(d, NOW).assets.list).toEqual({ text: "Up to {count} tokens", vars: { count: "2,000" } });
+  expect(firstMissing(validateDropDraft(d, NOW))).toEqual({ panel: "assets", message: { text: "Up to {count} tokens", vars: { count: "2,000" } } });
 });
 
 test("copies must be a whole number from 1", () => {
   for (const copies of ["", "0", "1.5", "x"]) {
     const a = { ...newAsset(png("a")), copies };
     const e = validateDropDraft(named({ assets: [a] }), NOW);
-    expect(e.assets.byId[a.id]?.copies).toBe("Enter 1 or more");
-    expect(firstMissing(e)).toEqual({ panel: "assets", message: "Enter 1 or more" });
+    expect(e.assets.byId[a.id]?.copies).toEqual({ text: "Enter 1 or more" });
+    expect(firstMissing(e)).toEqual({ panel: "assets", message: { text: "Enter 1 or more" } });
   }
 });
 
 test("reserved trait names are refused; blank rows are ignored", () => {
   const a = { ...newAsset(png("a")), traits: [{ key: "License", value: "x" }] };
-  expect(validateDropDraft(named({ assets: [a] }), NOW).assets.byId[a.id]?.traits).toBe("License is set by the license terms");
+  expect(validateDropDraft(named({ assets: [a] }), NOW).assets.byId[a.id]?.traits).toEqual({ text: "{name} is set by the license terms", vars: { name: "License" } });
   const b = { ...newAsset(png("b")), traits: [{ key: "", value: "" }] };
   expect(validateDropDraft(named({ assets: [b] }), NOW).assets.byId[b.id]).toBeUndefined();
 });
 
 test("the external link must start with https://", () => {
   const d = named({ collection: { ...EMPTY_DRAFT.collection, name: "Drop", externalUrl: "http://x" } });
-  expect(validateDropDraft(d, NOW).collection.externalUrl).toBe("Add a link starting with https://");
+  expect(validateDropDraft(d, NOW).collection.externalUrl).toEqual({ text: "Add a link starting with https://" });
   const ok = named({ collection: { ...EMPTY_DRAFT.collection, name: "Drop", externalUrl: "https://x.io" } });
   expect(validateDropDraft(ok, NOW).collection.externalUrl).toBeUndefined();
 });
 
 test("a list drop needs readable wallet addresses; exclusive content needs a link", () => {
-  expect(validateDropDraft(named({ listOnly: true, allowlist: "" }), NOW).settings.allowlist).toBe("Add at least one wallet address");
-  expect(validateDropDraft(named({ listOnly: true, allowlist: "0x1\nnope" }), NOW).settings.allowlist).toBe("1 line isn't a wallet address: nope");
-  expect(validateDropDraft(named({ gated: { enabled: true, title: "", url: "ftp://x", type: "" } }), NOW).settings.gated).toBe("Add a link starting with https://");
+  expect(validateDropDraft(named({ listOnly: true, allowlist: "" }), NOW).settings.allowlist).toEqual({ text: "Add at least one wallet address" });
+  expect(validateDropDraft(named({ listOnly: true, allowlist: "0x1\nnope" }), NOW).settings.allowlist).toEqual({ text: "Not wallet addresses: {lines}", vars: { lines: "nope" } });
+  expect(validateDropDraft(named({ gated: { enabled: true, title: "", url: "ftp://x", type: "" } }), NOW).settings.gated).toEqual({ text: "Add a link starting with https://" });
 });
 
 test("sale errors land in settings", () => {
   const e = validateDropDraft(named({ sale: { ...EMPTY_DRAFT.sale, paid: true, price: "" } }), NOW);
-  expect(e.settings.price).toBe("Enter a price above 0");
-  expect(firstMissing(e)).toEqual({ panel: "settings", message: "Enter a price above 0" });
+  expect(e.settings.price).toEqual({ text: "Enter a price above 0" });
+  expect(firstMissing(e)).toEqual({ panel: "settings", message: { text: "Enter a price above 0" } });
 });

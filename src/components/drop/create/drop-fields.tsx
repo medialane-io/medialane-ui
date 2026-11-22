@@ -11,6 +11,7 @@ import type { DropDraft, DropDraftErrors } from "../../../utils/drop/draft.js";
 import { collectorPriceLine, type SaleDraft } from "../../../utils/drop/sale.js";
 import { parseAllowlist } from "../../../utils/drop/allowlist.js";
 import { useT } from "../../../i18n/provider.js";
+import type { Phrase } from "../../../i18n/translate.js";
 
 export interface FieldsProps {
   draft: DropDraft;
@@ -18,9 +19,9 @@ export interface FieldsProps {
   errors: DropDraftErrors["settings"];
 }
 
-export function FieldError({ message }: { message?: string }) {
+export function FieldError({ message }: { message?: Phrase | null }) {
   const t = useT();
-  return message ? <p role="alert" className="text-sm text-destructive">{t(message)}</p> : null;
+  return message ? <p role="alert" className="text-sm text-destructive">{t(message.text, message.vars)}</p> : null;
 }
 
 export function Field({ label, htmlFor, children }: { label: React.ReactNode; htmlFor?: string; children: React.ReactNode }) {
@@ -49,7 +50,7 @@ export function PriceFields({ draft, setDraft, errors, feeBps }: FieldsProps & {
           </Select>
         </div>
       )}
-      {sale.paid && line && <p className="text-xs text-muted-foreground">{line}</p>}
+      {sale.paid && line && <p className="text-xs text-muted-foreground">{t(line.text, line.vars)}</p>}
       <FieldError message={errors.price} />
     </Field>
   );
