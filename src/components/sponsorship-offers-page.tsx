@@ -17,7 +17,7 @@ import { ActionButton } from "./action-button.js";
 import { panelTint } from "./panel.js";
 import { IconTile } from "./icon-tile.js";
 const FEATURES = [
-  msg("No escrow — direct settlement"),
+  msg("Direct settlement"),
   msg("Owner-verified on-chain"),
   msg("Open bidding or one invited sponsor"),
 ];
@@ -55,7 +55,7 @@ export function SponsorshipOffersPage() {
               plain
               icon={<Handshake className="h-4 w-4 text-white" />}
               title={t("IP Sponsorship")}
-              subtitle={t("Sponsorship offers anchored to your IP assets — a sponsor bids, you accept, they receive a license.")}
+              subtitle={t("Sponsors bid for a license.")}
             />
           </div>
         </FadeIn>
@@ -80,7 +80,7 @@ export function SponsorshipOffersPage() {
             <div className="space-y-0.5">
               <p className="text-sm font-semibold">{t("Start a sponsorship deal")}</p>
               <p className="text-xs text-muted-foreground">
-                {t("Offer one of your assets for sponsors to bid on, or propose terms directly on one you'd like to sponsor.")}
+                {t("Open an asset to sponsors.")}
               </p>
             </div>
             <ActionButton solid small asChild className="shrink-0">
@@ -115,7 +115,7 @@ export function SponsorshipOffersPage() {
               </div>
               <div className="space-y-1">
                 <p className="font-semibold text-sm">{t("No open sponsorship offers yet")}</p>
-                <p className="text-xs text-muted-foreground">{t("Creators open offers from their asset pages — sponsors bid on them here.")}</p>
+                <p className="text-xs text-muted-foreground">{t("Sponsors bid on open offers here.")}</p>
               </div>
             </div>
           </FadeIn>

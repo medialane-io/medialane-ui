@@ -52,7 +52,7 @@ function IssueSection({
         <span className="font-semibold text-sm">{t("Issue directly")}</span>
       </div>
       <p className="text-xs text-muted-foreground">
-        {t("Send the certificate straight to one wallet — for a late participant, without republishing the list or changing anyone's claim link.")}
+        {t("Send a certificate to one wallet.")}
       </p>
       <input
         type="text"
@@ -103,7 +103,7 @@ function AllowlistSection({
         )}
       </div>
       <p className="text-xs text-muted-foreground">
-        {t("Paste every participant's wallet address. Publishing replaces the previous list and every link sent before it — send the new links to everyone who hasn't claimed yet. The list stays in this browser: download the claim links and send each participant theirs.")}
+        {t("Publishing replaces the previous list and its links.")}
       </p>
       <Textarea
         placeholder={t("Paste Starknet addresses, one per line:\n0x04a...\n0x06b...")}
@@ -235,7 +235,7 @@ export function PopManagePage({ contract }: { contract: string }) {
           <FadeIn delay={0.08}>
             <div className="panel relative overflow-hidden p-4 flex items-center gap-3">
               <Award className="h-4 w-4 text-brand-blue shrink-0" />
-              <p className="text-xs text-muted-foreground">{t.rich("Only participants on your {strong} can claim, with the link you send them.", { strong: <strong className="text-foreground">{t("published list")}</strong> })}</p>
+              <p className="text-xs text-muted-foreground">{t.rich("Only the {strong} can claim.", { strong: <strong className="text-foreground">{t("published list")}</strong> })}</p>
             </div>
           </FadeIn>
 

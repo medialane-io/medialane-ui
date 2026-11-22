@@ -179,7 +179,7 @@ export function AssetOverviewContent({
                 <Scale />
               </IconTile>
               <p className="text-sm leading-relaxed text-muted-foreground">
-                {t("Creative work is protected with international copyright law. The Berne Convention for the Protection of Literary and Artistic Works is the foundational international copyright treaty, ratified by 181 signatory countries.")}
+                {t("Protected by the Berne Convention in 181 countries.")}
               </p>
             </Panel>
           </div>

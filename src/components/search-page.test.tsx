@@ -31,7 +31,7 @@ function renderWith(q: string, search: (...a: unknown[]) => Promise<unknown>) {
 test("an empty query shows the prompt and reads nothing", async () => {
   calls.length = 0;
   const view = renderWith("", async () => ({ data: empty }));
-  expect(view.getByText(/Type above to search/)).toBeTruthy();
+  expect(view.getByText(/Type to search/)).toBeTruthy();
   await new Promise((r) => setTimeout(r, 20));
   expect(calls).toEqual([]);
   view.unmount();

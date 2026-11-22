@@ -54,7 +54,7 @@ export function SelfFundConsentDialog({ consent }: { consent: SelfFundConsent })
       <DialogContent className="sm:max-w-md">
         <DialogTitle>{t("Network fee needed")}</DialogTitle>
         <DialogDescription>
-          {t("Sponsored transactions are unavailable. You can pay with your wallet balance.")}
+          {t("Pay with the wallet balance.")}
         </DialogDescription>
         <div className="rounded-2xl bg-muted px-4 py-3 flex items-center justify-between">
           <span className="text-sm text-muted-foreground">{t("Network fee")}</span>
@@ -68,7 +68,7 @@ export function SelfFundConsentDialog({ consent }: { consent: SelfFundConsent })
         )}
         {notEnough && (
           <p className="text-sm text-destructive">
-            {t("You don't have enough to pay this fee. Try again later, when Medialane can cover it.")}
+            {t("Try again later.")}
           </p>
         )}
         <div className="flex justify-end gap-2">

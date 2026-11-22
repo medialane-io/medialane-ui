@@ -128,7 +128,7 @@ export function EditionMintFields({
                 {imageUri ? (
                   <span className="text-brand-purple">{t("✓ Uploaded")}</span>
                 ) : (
-                  t("JPG, PNG, SVG or WebP")
+                  t("Image files")
                 )}
               </p>
               <p className="text-xs text-muted-foreground">{t("This media and metadata are pinned before the first mint is submitted.")}</p>
@@ -155,7 +155,7 @@ export function EditionMintFields({
             <FormControl>
               <Textarea placeholder={t("Describe this digital asset…")} rows={3} {...field} />
             </FormControl>
-            <FormDescription>{t("Add context, utility, or creative notes for this token edition.")}</FormDescription>
+            <FormDescription>{t("Notes for this edition.")}</FormDescription>
             <FormMessage />
           </FormItem>
         )} />
@@ -192,7 +192,7 @@ export function EditionMintFields({
             <FormControl>
               <Input placeholder="0x…" {...field} />
             </FormControl>
-            <FormDescription>{t("Account that receives the minted tokens. Defaults to your account.")}</FormDescription>
+            <FormDescription>{t("Receives the tokens.")}</FormDescription>
             <FormMessage />
           </FormItem>
         )} />
@@ -207,7 +207,7 @@ export function EditionMintFields({
           hint={t("Optional · Berne Convention")}
         >
                 <p className="text-xs text-muted-foreground">
-                  {t("Set the licensing terms for this edition — saved permanently with it.")}
+                  {t("Licensing terms for this edition.")}
                 </p>
 
                 <FormField control={form.control} name="licenseType" render={({ field }) => (
@@ -310,7 +310,7 @@ export function EditionMintFields({
           hint={t("Optional")}
         >
                 <p className="text-xs text-muted-foreground">
-                  {t("Choose a content type, fill suggested metadata, or add your own trait pairs.")}
+                  {t("Add traits for this edition.")}
                 </p>
 
                 <FormField control={form.control} name="ipType" render={({ field }) => (
@@ -349,7 +349,7 @@ export function EditionMintFields({
           {t("Mint edition")}
         </Button>
         <p className="text-xs text-center text-muted-foreground mt-2">
-          {t("Free to mint — protocol fee is zero.")}
+          {t("Free to mint.")}
         </p>
       </FadeIn>
     </div>

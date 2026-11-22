@@ -73,7 +73,7 @@ test("discover's Activities and Rewards cards share a header layout and ask for 
   const activities = view.getByRole("heading", { name: "Activities" }).closest("section")!;
   const rewards = view.getByRole("heading", { name: "Rewards" }).closest("section")!;
   expect(activities.className).toBe(rewards.className);
-  expect(view.getByText("Earn XP. Share the Creator's Fund.")).toBeTruthy();
+  expect(view.getByText("Earn XP for the Creator's Fund.")).toBeTruthy();
   const features = view.getByRole("heading", { name: "Medialane features" }).closest("section")!;
   expect(rewards.compareDocumentPosition(features) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
 });

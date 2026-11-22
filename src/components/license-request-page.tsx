@@ -147,7 +147,7 @@ export function LicenseRequestPage({ contract, tokenId }: { contract: string; to
         </div>
         <h1 className="text-3xl font-bold">{t("License this asset")}</h1>
         <p className="text-muted-foreground max-w-xl">
-          {t("Propose license terms and a fee to the creator. If they accept, the licensed derivative is minted and listed for you.")}
+          {t("Propose terms and a fee to the creator.")}
         </p>
       </div>
 
@@ -167,7 +167,7 @@ export function LicenseRequestPage({ contract, tokenId }: { contract: string; to
             <Check />
           </IconTile>
           <p className="text-lg font-semibold">{t("License request sent")}</p>
-          <p className="text-sm text-muted-foreground">{t("The creator will review it. Track it under Portfolio → Licensing.")}</p>
+          <p className="text-sm text-muted-foreground">{t("Track it under Portfolio → Licensing.")}</p>
           <Button asChild variant="soft"><Link href="/portfolio/licensing">{t("View my requests")}</Link></Button>
         </div>
       ) : (

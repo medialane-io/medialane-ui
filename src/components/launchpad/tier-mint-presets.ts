@@ -50,7 +50,7 @@ export const CLUB_TIER_PRESET: TierMintPreset = {
   success: { title: msg("Membership created"), description: msg("The supply is minted to your wallet and ready to sell."), againLabel: msg("Create another membership") },
   shell: {
     title: msg("Create membership"),
-    subtitle: (name, t) => t("Add a new membership tier to {name} and mint its supply to your wallet, ready to sell.", { name: name ?? t("your club") }),
+    subtitle: (name, t) => t("Add a membership tier to {name}.", { name: name ?? t("your club") }),
   },
   cardFallbackSymbol: "Club",
   copy: {
@@ -82,7 +82,7 @@ export const TICKETS_TIER_PRESET: TierMintPreset = {
   success: { title: msg("Tickets minted"), description: msg("Each ticket is recorded onchain under your wallet."), againLabel: msg("Mint another ticket") },
   shell: {
     title: msg("Mint tickets"),
-    subtitle: (name, t) => t("Add a new ticket type to {name} and mint its supply to your wallet, ready to sell.", { name: name ?? t("your collection") }),
+    subtitle: (name, t) => t("Add a ticket type to {name}.", { name: name ?? t("your collection") }),
   },
   cardFallbackSymbol: "Tickets",
   copy: {

@@ -35,7 +35,7 @@ export const LICENSE_TYPES: LicenseType[] = [
   {
     value: "CC0",
     label: msg("CC0 — Public Domain"),
-    description: msg("No rights reserved. Anyone can use for any purpose."),
+    description: msg("Free for any use."),
     commercialUse: "Yes",
     derivatives: "Allowed",
     attribution: "Not Required",
@@ -51,7 +51,7 @@ export const LICENSE_TYPES: LicenseType[] = [
   {
     value: "CC BY-SA",
     label: msg("CC BY-SA — Attribution ShareAlike"),
-    description: msg("Free to use with attribution; derivatives must use the same license."),
+    description: msg("Use with credit under the same license."),
     commercialUse: "Yes",
     derivatives: "Share-Alike",
     attribution: "Required",
@@ -67,7 +67,7 @@ export const LICENSE_TYPES: LicenseType[] = [
   {
     value: "CC BY-ND",
     label: msg("CC BY-ND — Attribution NoDerivatives"),
-    description: msg("Free to share with attribution; no modifications allowed."),
+    description: msg("Share with credit and without changes."),
     commercialUse: "Yes",
     derivatives: "Not Allowed",
     attribution: "Required",
@@ -75,7 +75,7 @@ export const LICENSE_TYPES: LicenseType[] = [
   {
     value: "CC BY-NC-SA",
     label: msg("CC BY-NC-SA — Attribution NonCommercial ShareAlike"),
-    description: msg("Non-commercial use with attribution; derivatives must use same license."),
+    description: msg("Non-commercial use with credit under the same license."),
     commercialUse: "No",
     derivatives: "Share-Alike",
     attribution: "Required",
@@ -83,7 +83,7 @@ export const LICENSE_TYPES: LicenseType[] = [
   {
     value: "CC BY-NC-ND",
     label: msg("CC BY-NC-ND — Attribution NonCommercial NoDerivatives"),
-    description: msg("Non-commercial sharing only; no modifications allowed."),
+    description: msg("Non-commercial sharing without changes."),
     commercialUse: "No",
     derivatives: "Not Allowed",
     attribution: "Required",

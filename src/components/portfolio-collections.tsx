@@ -34,7 +34,7 @@ export function PortfolioCollections({ claimPanel }: { claimPanel: ReactNode }) 
         isEmpty={collections.length === 0}
         onRetry={mutate}
         emptyTitle={t("No collections yet")}
-        emptyDescription={t("If you just created a collection, it may take a few seconds to appear.")}
+        emptyDescription={t("New collections appear within seconds.")}
         emptyActions={<CollectionTypeChoices />}
         emptyIcon={<Layers className="h-7 w-7 text-muted-foreground" />}
         skeletonNode={
@@ -60,7 +60,7 @@ export function PortfolioCollections({ claimPanel }: { claimPanel: ReactNode }) 
           <h3 className="text-sm font-semibold">{t("Claim a collection")}</h3>
         </div>
         <p className="text-xs text-muted-foreground -mt-2">
-          {t("Import an existing Starknet ERC-721 collection into your Medialane profile.")}
+          {t("Link a Starknet collection to your profile.")}
         </p>
         {claimPanel}
       </div>

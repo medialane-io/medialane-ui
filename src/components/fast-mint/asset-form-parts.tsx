@@ -113,7 +113,7 @@ export function CoverUpload({
           )}
           <input ref={inputRef} type="file" accept={acceptFor("image")} className="hidden" onChange={(e) => { const f = e.target.files?.[0]; if (f) onSelect(f); }} />
         </div>
-        <p className="text-xs text-muted-foreground">{t("Cover art shown wherever the work is previewed. JPG, PNG, GIF, SVG or WebP.")}</p>
+        <p className="text-xs text-muted-foreground">{t("Cover art for previews.")}</p>
       </div>
     </div>
   );

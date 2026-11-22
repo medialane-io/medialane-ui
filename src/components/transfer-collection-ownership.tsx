@@ -64,7 +64,7 @@ export function TransferCollectionOwnership({ collectionId, currentOwner, collec
       <Dialog open={open} onOpenChange={(next) => { if (!next) close(); }}>
         <DialogContent className="max-w-[calc(100%-6px)] sm:max-w-md p-0 overflow-hidden gap-0 rounded-2xl">
           <DialogTitle className="sr-only">{t("Transfer ownership of")} {collectionName ?? t("collection")}</DialogTitle>
-          <DialogDescription className="sr-only">{t("Transfer the on-chain owner of this collection. Existing tokens are unaffected.")}</DialogDescription>
+          <DialogDescription className="sr-only">{t("Transfer collection ownership.")}</DialogDescription>
 
           {confirming ? (
             <MarketplaceConfirmStep
@@ -82,7 +82,7 @@ export function TransferCollectionOwnership({ collectionId, currentOwner, collec
                 <p className="font-bold text-lg">{t("Transfer collection ownership")}</p>
               </div>
               <p className="text-sm text-muted-foreground">
-                {t("The new owner will control minting and future ownership transfers for this collection. Existing tokens are unaffected.")}
+                {t("The new owner controls minting.")}
               </p>
               <div className="space-y-2">
                 <Label htmlFor="new-owner">{t("New owner address")}</Label>

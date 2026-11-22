@@ -186,7 +186,7 @@ export function CoinCreate({ aside, tradeHref }: CoinCreateProps) {
       icon={Coins}
       iconClassName="text-brand-orange"
       title={t("Launch a creator coin")}
-      description={t("Secure your account to design and launch your own coin with permanently-locked liquidity, in a few clicks.")}
+      description={t("Secure your account to launch a coin.")}
     >
       <TransactionDialog tx={tx} title={t("Launch your coin")} workingLabel="Launching your coin…" firstStepLabel="Deploy your coin">
         <TransactionSuccess
@@ -207,7 +207,7 @@ export function CoinCreate({ aside, tradeHref }: CoinCreateProps) {
           )}
           {profileStatus === "failed" && (
             <p className="text-xs text-muted-foreground text-center">
-              {t("Couldn't save the image & description right now. Add them anytime from your collection settings.")}
+              {t("Add the image and description in collection settings.")}
             </p>
           )}
           <RewardEarned actionType="launch_coin" />
@@ -253,7 +253,7 @@ export function CoinCreate({ aside, tradeHref }: CoinCreateProps) {
                     )}
                   </button>
                   <div className="space-y-1 text-xs text-muted-foreground">
-                    <p>{t("JPG, PNG, GIF, SVG or WebP")}</p>
+                    <p>{t("Image files")}</p>
                     {imagePreview && (
                       <button type="button" onClick={clearImage} className="inline-flex items-center gap-1 text-muted-foreground active:text-foreground">
                         <X className="h-3 w-3" /> {t("Remove")}
@@ -394,7 +394,7 @@ export function CoinCreate({ aside, tradeHref }: CoinCreateProps) {
                   </p>
                 )}
                 {insufficient && (
-                  <p className="text-xs text-destructive">{t("Your wallet doesn't have enough {quote}. Add funds, or adjust the numbers above.", { quote })}</p>
+                  <p className="text-xs text-destructive">{t("Add {quote} to continue.", { quote })}</p>
                 )}
               </div>
 
@@ -414,7 +414,7 @@ export function CoinCreate({ aside, tradeHref }: CoinCreateProps) {
               </ActionButton>
               <p className="text-xs text-muted-foreground text-center">
                 <Link href="/claim/memecoin" className="underline active:text-foreground">
-                  {t("Already launched a coin? Claim it instead.")}
+                  {t("Claim an existing coin.")}
                 </Link>
               </p>
           </section>

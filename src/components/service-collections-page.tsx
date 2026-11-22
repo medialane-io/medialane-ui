@@ -21,7 +21,7 @@ const KINDS = {
   tickets: {
     icon: Ticket,
     title: getLaunchpadService("ip-tickets").title,
-    subtitle: msg("Create a tickets collection, then mint tickets from its collection page."),
+    subtitle: msg("Create a tickets collection."),
     createHref: "/launchpad/tickets/create",
     createLabel: msg("Create collection"),
     sectionLabel: msg("Your collections"),
@@ -34,7 +34,7 @@ const KINDS = {
   club: {
     icon: Users,
     title: getLaunchpadService("ip-club").title,
-    subtitle: msg("Create a club, then create membership tiers from its collection page."),
+    subtitle: msg("Create a club."),
     createHref: "/launchpad/club/create",
     createLabel: msg("Create club"),
     sectionLabel: msg("Your clubs"),

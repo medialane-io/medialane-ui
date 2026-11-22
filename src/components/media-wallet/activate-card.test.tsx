@@ -24,7 +24,7 @@ test("activation copy contains no crypto jargon", () => {
   }
 });
 
-test("activation copy still communicates the account is free and gas-sponsored", () => {
+test("activation copy says activating is free", () => {
   const { getByText } = renderCard();
-  expect(getByText(/no gas fees/i)).toBeTruthy();
+  expect(getByText(/Activating is free/)).toBeTruthy();
 });

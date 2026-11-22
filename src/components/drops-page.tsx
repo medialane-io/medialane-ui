@@ -21,7 +21,7 @@ export function DropsPage() {
               plain
               icon={<Package className="h-4 w-4 text-white" />}
               title={t("Drops")}
-              subtitle={t("Timed releases with a fixed supply. Browse live drops to collect, or launch your own.")}
+              subtitle={t("Timed releases with a fixed supply.")}
             />
           </div>
         </FadeIn>

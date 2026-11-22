@@ -69,7 +69,7 @@ export function CollectionPicker({
       <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0" align="start">
         <div className="max-h-64 overflow-y-auto p-1">
           {collections.length === 0 ? (
-            <p className="px-3 py-4 text-center text-sm text-muted-foreground">{t("No collections yet — create one instead.")}</p>
+            <p className="px-3 py-4 text-center text-sm text-muted-foreground">{t("Create a collection.")}</p>
           ) : (
             collections.map((col) => {
               const id = valueOf(col);
@@ -177,7 +177,7 @@ export function CollectionSection({
               rows={2}
               className="text-sm resize-none"
             />
-            <p className="text-2xs text-muted-foreground">{t("Prefilled from the title and description — edit anything above.")}</p>
+            <p className="text-2xs text-muted-foreground">{t("Prefilled from the details above.")}</p>
           </div>
         </div>
       )}

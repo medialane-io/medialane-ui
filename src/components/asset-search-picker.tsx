@@ -69,7 +69,7 @@ export function AssetSearchPicker({
       </div>
 
       {query.trim().length > 0 && query.trim().length < 2 ? (
-        <p className="text-xs text-muted-foreground text-center py-2">{t("Keep typing — 2+ characters to search.")}</p>
+        <p className="text-xs text-muted-foreground text-center py-2">{t("Type 2 or more characters.")}</p>
       ) : null}
 
       {results.length > 0 ? (

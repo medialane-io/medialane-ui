@@ -41,7 +41,7 @@ export function ReceiveCard({ address }: { address: string }) {
           <Image src="/Starknet-icon.svg" alt="Starknet" width={20} height={20} />
         </div>
         <p className="text-sm leading-relaxed text-muted-foreground">
-          {t("Your onchain account is self-custody and permissionless. Please use only the Starknet blockchain to send and receive assets.")}
+          {t("Use Starknet only.")}
         </p>
       </div>
 

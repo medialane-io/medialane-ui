@@ -137,7 +137,7 @@ export function TransferDialog({
           success={successMessages.transferred({ name: displayName, to: recipientShort }, t)}
           successActions={[{ label: t("Done"), onClick: () => { close(); onSuccess?.(); } }]}
           errorTitle={t("Transfer failed")}
-          errorDescription={t("The transaction was submitted, but the transfer could not be completed.")}
+          errorDescription={t("The transfer did not complete.")}
           onRetry={retryable ? () => { reset(); setStep("form"); } : undefined}
           onDone={close}
         >
@@ -174,7 +174,7 @@ export function TransferDialog({
                 <Alert variant="destructive">
                   <AlertCircle className="h-4 w-4" />
                   <AlertDescription className="text-xs">
-                    {t("This token has an active listing. Cancelling the listing first keeps the sale from completing after the transfer.")}
+                    {t("Cancel the active listing first.")}
                   </AlertDescription>
                 </Alert>
               )}

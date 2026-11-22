@@ -8,7 +8,7 @@ export interface EmptyMessage {
 export const emptyMessages = {
   activity: {
     title: msg("Activity appears here"),
-    description: msg("Mints, listings, offers and sales are recorded here as they happen."),
+    description: msg("Activity appears here."),
   },
   walletActivity: {
     title: msg("Activity appears here"),

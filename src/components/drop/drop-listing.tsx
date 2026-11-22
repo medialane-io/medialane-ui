@@ -14,7 +14,7 @@ import { msg } from "../../i18n/translate.js";
 import { Button } from "../button.js";
 
 const EMPTY: Record<ApiDropListStatus, { heading: string; body: string }> = {
-  live: { heading: msg("No live drops"), body: msg("Nothing is open for minting right now. Check Upcoming, or launch your own.") },
+  live: { heading: msg("No live drops"), body: msg("Live drops appear here.") },
   upcoming: { heading: msg("No upcoming drops"), body: msg("Scheduled drops will show here before they open.") },
   ended: { heading: msg("No ended drops"), body: msg("Drops that sold out or closed will show here.") },
 };

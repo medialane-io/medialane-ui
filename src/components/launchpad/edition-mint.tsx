@@ -150,7 +150,7 @@ export function EditionMint({ contract: rawContract, aside }: { contract: string
         <div className="max-w-lg mx-auto px-4 pt-24 pb-8 text-center space-y-4">
           <Sparkles className="h-10 w-10 text-muted-foreground mx-auto" />
           <h1 className="text-2xl font-bold">{t("Not the owner")}</h1>
-          <p className="text-muted-foreground">{t("Only the collection owner can mint tokens. Connect the wallet that deployed this collection.")}</p>
+          <p className="text-muted-foreground">{t("Minting opens for the collection owner.")}</p>
           <Button asChild variant="soft">
             <Link href="/launchpad">{t("Back to Launchpad")}</Link>
           </Button>
@@ -160,7 +160,7 @@ export function EditionMint({ contract: rawContract, aside }: { contract: string
           <ClaimRouteShell
             icon={<Sparkles className="h-4 w-4 text-white" />}
             title={t("Mint an edition")}
-            subtitle={t("Add a new piece to your collection — its details and authorship are saved permanently. Free to mint, and it's yours.")}
+            subtitle={t("Add a new piece to the collection.")}
             headerAccessory={
               <div className="panel flex items-center gap-2 px-3 py-2 max-w-full">
                 <span className="tabular-nums text-xs text-foreground/80 truncate">{t("Collection: {collectionAddress}", { collectionAddress })}</span>

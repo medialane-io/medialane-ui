@@ -129,7 +129,7 @@ export function CommentsSection({ contract, tokenId, className }: CommentsSectio
             <div>
               <p className="text-sm font-semibold">{t("Nothing here yet")}</p>
               <p className="text-xs text-muted-foreground mt-1 leading-relaxed max-w-[220px]">
-                {t("Your comment will be minted onchain — attached to this NFT forever.")}
+                {t("Comments are recorded onchain.")}
               </p>
             </div>
             <Button

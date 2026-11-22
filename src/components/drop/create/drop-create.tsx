@@ -68,7 +68,7 @@ export function DropCreate({ aside }: { aside?: ReactNode }) {
     <ClaimRouteShell
       icon={<Package className="h-4 w-4 text-white" />}
       title={msg("Collection drop")}
-      subtitle={msg("Release your work to collectors at a price and time you choose. Collectors mint straight from your drop page.")}
+      subtitle={msg("Release work at a set price and time.")}
       aside={
         <>
           <MedialaneCollectionCard
@@ -113,7 +113,7 @@ export function DropCreate({ aside }: { aside?: ReactNode }) {
         <ActionButton solid big onClick={launch} className="w-full">
           {wallet ? t("Launch drop") : app.connectLabel ?? t("Sign in to launch")}
         </ActionButton>
-        <p className="text-center text-xs text-muted-foreground">{t("Artwork, price and copies can't change after launch.")}</p>
+        <p className="text-center text-xs text-muted-foreground">{t("The drop is final at launch.")}</p>
       </div>
       {launching && <LaunchDialog open onClose={() => setLaunching(false)} draft={draft} />}
     </ClaimRouteShell>

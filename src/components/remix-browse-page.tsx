@@ -109,7 +109,7 @@ export function RemixBrowsePage() {
               plain
               icon={<GitBranch className="h-4 w-4 text-white" />}
               title={t("Remix")}
-              subtitle={t("Pick a work that is open to remixing. Attribution and royalties flow back to the original creator.")}
+              subtitle={t("Pick a work open to remixing.")}
             />
           </div>
         </FadeIn>
@@ -135,7 +135,7 @@ export function RemixBrowsePage() {
               <div>
                 <p className="font-semibold">{t("No works open to remixing yet")}</p>
                 <p className="text-sm text-muted-foreground mt-1 max-w-sm">
-                  {t("Works appear here when their creator sets the license to allow derivatives.")}
+                  {t("Remixable works appear here.")}
                 </p>
               </div>
             </div>

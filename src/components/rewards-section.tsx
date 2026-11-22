@@ -14,7 +14,7 @@ const pillars = [
   {
     icon: Zap,
     label: "XP",
-    detail: msg("Earned for every mint, trade, and connection you make."),
+    detail: msg("Earned with every action."),
   },
   {
     icon: Coins,
@@ -24,7 +24,7 @@ const pillars = [
   {
     icon: Gift,
     label: msg("Airdrop"),
-    detail: msg("Claim your share on-chain, every round."),
+    detail: msg("Claim a share every round."),
   },
 ];
 
@@ -38,7 +38,7 @@ export function RewardsSection({ rewardsHref }: RewardsSectionProps) {
             {t("Rewards")}
           </h2>
           <p className="mt-2 text-sm text-muted-foreground leading-relaxed max-w-md">
-            {t("Every action earns XP. Active members receive a growing share of the Creator's Fund, claimed as an airdrop each round.")}
+            {t("Every action earns XP toward the Creator's Fund.")}
           </p>
 
           <Link

@@ -118,8 +118,8 @@ export function LaunchpadStrip({
           href: marketplaceHref,
           icon: ShoppingBag,
           title: t("Marketplace"),
-          blurb: t("Discover and trade works from creators — gasless, instantly settled."),
-          example: t("Buy an art print, make an offer on a music track"),
+          blurb: t("Trade works from creators."),
+          example: t("Buy an art print"),
           cta: t("Browse"),
           hue: MARKETPLACE_HUE,
         }]

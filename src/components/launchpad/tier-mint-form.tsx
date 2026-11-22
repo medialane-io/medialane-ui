@@ -238,7 +238,7 @@ export function TierMintForm({ contract: rawContract, preset, aside }: TierMintF
                       <X className="h-3 w-3" /> {t("Remove")}
                     </button>
                   )}
-                  <p className="text-xs text-muted-foreground">{imageUri ? <span className={preset.uploadedClass}>{t("✓ Uploaded")}</span> : t("JPG, PNG, SVG or WebP")}</p>
+                  <p className="text-xs text-muted-foreground">{imageUri ? <span className={preset.uploadedClass}>{t("✓ Uploaded")}</span> : t("Image files")}</p>
                 </div>
               </div>
             </div>

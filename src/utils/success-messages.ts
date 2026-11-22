@@ -11,7 +11,7 @@ type Priced = Named & { price: string };
 export const successMessages = {
   listed: ({ name, price }: Priced, t: T = plainT): SuccessMessage => ({
     title: t("Listing created"),
-    description: t("{name} is listed for {price}. The order is recorded onchain.", { name, price }),
+    description: t("{name} is listed for {price}.", { name, price }),
   }),
   offered: ({ name, price }: Priced, t: T = plainT): SuccessMessage => ({
     title: t("Offer created"),
@@ -19,7 +19,7 @@ export const successMessages = {
   }),
   accepted: ({ name, price }: Priced, t: T = plainT): SuccessMessage => ({
     title: t("Sale completed"),
-    description: t("{name} sold for {price}. Ownership is recorded onchain with the buyer's wallet.", { name, price }),
+    description: t("{name} sold for {price}.", { name, price }),
   }),
   countered: ({ name, price }: Priced, t: T = plainT): SuccessMessage => ({
     title: t("Counter-offer created"),
@@ -37,12 +37,12 @@ export const successMessages = {
     title: t("Purchase completed"),
     description:
       quantity > 1
-        ? t("{quantity} editions of {name} are owned by your wallet. The sale is recorded onchain.", { quantity, name })
-        : t("{name} is owned by your wallet. The sale is recorded onchain.", { name }),
+        ? t("{quantity} editions of {name} are yours.", { quantity, name })
+        : t("{name} is yours.", { name }),
   }),
   commented: (t: T = plainT): SuccessMessage => ({
     title: t("Comment published"),
-    description: t("Your comment is recorded onchain and appears here within about 30 seconds."),
+    description: t("The comment appears within 30 seconds."),
   }),
   claimed: (t: T = plainT): SuccessMessage => ({
     title: t("Certificate claimed"),
@@ -75,8 +75,8 @@ export const successMessages = {
   participantsPublished: ({ count }: { count: number }, t: T = plainT): SuccessMessage => ({
     title: t("Participants published"),
     description: t.plural(
-      "The list of {count} participant is recorded onchain. Each one claims with their own link.",
-      "The list of {count} participants is recorded onchain. Each one claims with their own link.",
+      "The list of {count} participant is recorded onchain.",
+      "The list of {count} participants is recorded onchain.",
       count,
     ),
   }),
@@ -86,11 +86,11 @@ export const successMessages = {
   }),
   sent: ({ amount, symbol, to }: { amount: string; symbol: string; to: string }, t: T = plainT): SuccessMessage => ({
     title: t("Transfer completed"),
-    description: t("{amount} {symbol} sent to {to}. The transfer is recorded onchain.", { amount, symbol, to }),
+    description: t("{amount} {symbol} sent to {to}.", { amount, symbol, to }),
   }),
   licenseGranted: ({ price }: { price: string }, t: T = plainT): SuccessMessage => ({
     title: t("License granted"),
-    description: t("The remix is minted and listed for {price}. The buyer completes the purchase from their portfolio.", { price }),
+    description: t("The remix is listed for {price}.", { price }),
   }),
   cancelled: ({ kind }: { kind: "listing" | "offer" }, t: T = plainT): SuccessMessage => ({
     title: kind === "offer" ? t("Offer cancelled") : t("Listing cancelled"),

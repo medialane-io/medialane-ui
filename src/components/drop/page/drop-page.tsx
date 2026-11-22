@@ -56,7 +56,7 @@ export function DropPage(props: { contract: string; initialTab?: string; portfol
     return (
       <div className="space-y-3 py-24 text-center">
         <Package className="mx-auto h-10 w-10 text-muted-foreground/30" />
-        <p className="text-sm text-muted-foreground">{t("This drop wasn't found. A new drop can take a minute to appear.")}</p>
+        <p className="text-sm text-muted-foreground">{t("New drops appear within a minute.")}</p>
       </div>
     );
   }

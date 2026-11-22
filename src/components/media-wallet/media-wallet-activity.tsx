@@ -225,7 +225,7 @@ function ActivityLoadError({ onRetry }: { onRetry: () => void }) {
       <div>
         <div className="text-sm font-semibold">{t("Couldn't load your activity")}</div>
         <p className="mx-auto mt-1 max-w-[16rem] text-xs leading-relaxed text-muted-foreground">
-          {t("There was a problem reaching the server. Check your connection and try again.")}
+          {t("Check the connection and try again.")}
         </p>
       </div>
       <button

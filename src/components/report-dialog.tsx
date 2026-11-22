@@ -167,7 +167,7 @@ export function ReportDialog({ target, open, onOpenChange }: ReportDialogProps) 
               </div>
 
               <p className="text-xs text-muted-foreground">
-                {t("Reports are reviewed by the Medialane DAO team. Content remains accessible onchain and via the permissionless dapp.")}
+                {t("The DAO reviews every report.")}
               </p>
             </div>
 

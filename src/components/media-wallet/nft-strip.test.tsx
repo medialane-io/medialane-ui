@@ -47,11 +47,11 @@ test("falls back to a generic icon when the item has no image", () => {
 
 test("shows an empty state when there are no items and nothing is loading", () => {
   const { getByText } = render(<NftStrip items={[]} isLoading={false} resolveImage={resolveImage} />);
-  expect(getByText(/no nfts yet/i)).toBeTruthy();
+  expect(getByText(/NFTs appear here/)).toBeTruthy();
 });
 
 test("shows a loading skeleton instead of the empty message while loading", () => {
   const { queryByText, getByTestId } = render(<NftStrip items={[]} isLoading={true} resolveImage={resolveImage} />);
-  expect(queryByText(/no nfts yet/i)).toBeNull();
+  expect(queryByText(/NFTs appear here/)).toBeNull();
   expect(getByTestId("nft-strip-skeleton")).toBeTruthy();
 });

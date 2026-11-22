@@ -187,7 +187,7 @@ export function SponsorshipOfferPage({ offerId }: { offerId: string }) {
               )}
               {!paymentToken && <p className="text-xs text-destructive">{t("This offer uses a currency the app does not support yet.")}</p>}
               <p className="text-xs text-muted-foreground">
-                {t("Placing a bid approves the offer's payment token — no funds move until the owner accepts.")}
+                {t("Funds move only when the owner accepts.")}
               </p>
             </div>
           </FadeIn>

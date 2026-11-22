@@ -62,18 +62,16 @@ test("insufficient balance is named", () => {
   expect(describeError(new Error("insufficient balance for transfer")).title).toBe("Insufficient balance");
 });
 
-test("a bare 'Execute failed' names all three real causes, not just a decline", () => {
+test("a bare 'Execute failed' asks to try again, not just a decline", () => {
   const notice = describeError(new Error("Execute failed"));
   expect(notice.isUserRejection).toBe(true);
-  expect(notice.description).toContain("temporary network hiccup");
-  expect(notice.description).toContain("2FA");
+  expect(notice.description).toBe("Try again in a moment.");
 });
 
 test("an explicit rejection phrase keeps the decline-focused copy", () => {
   const notice = describeError(new Error("User rejected the request"));
   expect(notice.isUserRejection).toBe(true);
-  expect(notice.description).toContain("closed or declined it");
-  expect(notice.description).not.toContain("temporary network hiccup");
+  expect(notice.description).toBe("The wallet did not sign.");
 });
 
 describe("a passkey that can't be used for a wallet", () => {
@@ -81,13 +79,13 @@ describe("a passkey that can't be used for a wallet", () => {
 
   test("no-prf gets the same message as the wallet step, not the fallback", () => {
     const notice = describeError(unsupported("no-prf"));
-    expect(notice.message).toBe("Update your browser, or open Medialane on another device, then try again.");
+    expect(notice.message).toBe("Update the browser and try again.");
     expect(notice.isUserRejection).toBe(false);
   });
 
   test("no-webauthn says passkeys aren't available here", () => {
     expect(describeError(unsupported("no-webauthn")).message).toBe(
-      "Open Medialane in a regular browser window or on another device to continue.",
+      "Open Medialane in a regular browser window.",
     );
   });
 });
@@ -105,7 +103,7 @@ describe("a transaction the network would not execute", () => {
     const notice = describeError(
       new SponsoredCallRejectedError("The transaction could not be executed as submitted", { code: "not_executable", detail: "RPC: paymaster_buildTransaction ..." }),
     );
-    expect(notice.message).toBe("Nothing was sent. Check your balance and try again.");
+    expect(notice.message).toBe("Check the balance and try again.");
     expect(notice.retryable).toBe(true);
   });
 
@@ -113,7 +111,7 @@ describe("a transaction the network would not execute", () => {
     const { SponsoredCallRejectedError } = await import("@medialane/sdk/starknet");
     const notice = describeError(new SponsoredCallRejectedError("The account balance does not cover this transaction", { code: "insufficient_balance" }));
     expect(notice.title).toBe("Insufficient balance");
-    expect(notice.message).toBe("You don't have enough balance to complete this transaction. Nothing was sent.");
+    expect(notice.message).toBe("Add funds to continue.");
     expect(notice.retryable).toBe(true);
   });
 });

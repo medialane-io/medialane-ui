@@ -37,7 +37,7 @@ function MintPromoCard({ onMintClick }: { onMintClick: () => void }) {
       </IconTile>
       <div className="flex-1 min-w-0">
         <p className="text-sm font-bold text-foreground">{t("Mint your first asset")}</p>
-        <p className="text-xs text-muted-foreground mt-0.5">{t("It becomes your avatar and app theme — ready in seconds.")}</p>
+        <p className="text-xs text-muted-foreground mt-0.5">{t("Sets the avatar and theme.")}</p>
       </div>
       <ActionButton type="button" onClick={onMintClick} className="shrink-0">
         {t("Mint an asset")}

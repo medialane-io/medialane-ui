@@ -2,10 +2,10 @@ import { expect, test } from "bun:test";
 import { successMessages } from "./success-messages.js";
 import { makeT } from "../i18n/make-t.js";
 
-test("each marketplace message names the asset and says what is recorded", () => {
+test("each marketplace message names the asset", () => {
   expect(successMessages.listed({ name: "GO 01", price: "5 STRK" })).toEqual({
     title: "Listing created",
-    description: "GO 01 is listed for 5 STRK. The order is recorded onchain.",
+    description: "GO 01 is listed for 5 STRK.",
   });
   expect(successMessages.accepted({ name: "GO 01", price: "5 STRK" }).description).toContain("sold for 5 STRK");
   expect(successMessages.transferred({ name: "GO 01", to: "0x12…ab" }).description).toBe("GO 01 is owned by 0x12…ab.");
@@ -14,26 +14,26 @@ test("each marketplace message names the asset and says what is recorded", () =>
 });
 
 test("a purchase says how many editions the wallet owns", () => {
-  expect(successMessages.purchased({ name: "GO 01", quantity: 1 }).description).toBe("GO 01 is owned by your wallet. The sale is recorded onchain.");
+  expect(successMessages.purchased({ name: "GO 01", quantity: 1 }).description).toBe("GO 01 is yours.");
   expect(successMessages.purchased({ name: "GO 01", quantity: 3 }).description).toContain("3 editions of GO 01");
 });
 
 test("publishing participants says the list is recorded and each one claims with a link", () => {
-  expect(successMessages.participantsPublished({ count: 1 }).description).toBe("The list of 1 participant is recorded onchain. Each one claims with their own link.");
+  expect(successMessages.participantsPublished({ count: 1 }).description).toBe("The list of 1 participant is recorded onchain.");
   expect(successMessages.participantsPublished({ count: 3 }).description).toContain("3 participants");
 });
 
-test("wallet, transfer and license messages state what was recorded", () => {
+test("wallet, transfer and license messages name what happened", () => {
   expect(successMessages.walletActivated().title).toBe("Wallet activated");
-  expect(successMessages.sent({ amount: "5", symbol: "STRK", to: "0x12…ab" }).description).toBe("5 STRK sent to 0x12…ab. The transfer is recorded onchain.");
+  expect(successMessages.sent({ amount: "5", symbol: "STRK", to: "0x12…ab" }).description).toBe("5 STRK sent to 0x12…ab.");
   expect(successMessages.licenseGranted({ price: "10 STRK" }).description).toContain("listed for 10 STRK");
 });
 
 test("a message uses the t it is given, including plural forms", () => {
   const messages = {
     "Listing created": "Anúncio criado",
-    "{name} is listed for {price}. The order is recorded onchain.": "{name} está à venda por {price}.",
-    "The list of {count} participant is recorded onchain. Each one claims with their own link.": { one: "A lista de {count} participante está registada.", other: "A lista de {count} participantes está registada." },
+    "{name} is listed for {price}.": "{name} está à venda por {price}.",
+    "The list of {count} participant is recorded onchain.": { one: "A lista de {count} participante está registada.", other: "A lista de {count} participantes está registada." },
   };
   const t = makeT("pt", messages);
   expect(successMessages.listed({ name: "GO 01", price: "5 STRK" }, t)).toEqual({ title: "Anúncio criado", description: "GO 01 está à venda por 5 STRK." });

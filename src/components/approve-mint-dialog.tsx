@@ -73,7 +73,7 @@ export function ApproveMintDialog({ offer, open, onOpenChange, collections, foot
           <GitBranch className="h-4 w-4 text-primary shrink-0" />
           <DialogTitle className="text-base font-bold">{t("Grant license & mint")}</DialogTitle>
         </div>
-        <DialogDescription className="sr-only">{t("Mint the derivative into one of your collections and sell it to the requester.")}</DialogDescription>
+        <DialogDescription className="sr-only">{t("Mint the remix and sell it to the requester.")}</DialogDescription>
 
         <TransactionDialogStates
           phase={phase}
@@ -87,7 +87,7 @@ export function ApproveMintDialog({ offer, open, onOpenChange, collections, foot
             ...(newAssetHref ? [{ label: t("View new asset"), href: newAssetHref }] : []),
           ]}
           errorTitle={t("Minting failed")}
-          errorDescription={t("The transaction was submitted, but the remix could not be completed.")}
+          errorDescription={t("The remix did not complete.")}
           onRetry={retryable ? reset : undefined}
           onDone={close}
         >

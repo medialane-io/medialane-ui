@@ -39,12 +39,12 @@ const FEATURES: ReadonlyArray<{ icon: LucideIcon; title: string; description: st
   { icon: ScanEye, title: msg("Zero knowledge"), description: msg("Information can be proven valid without revealing the data behind it.") },
   { icon: Percent, title: msg("Zero-fee protocols"), description: msg("The smart contracts charge zero fees for interaction.") },
   { icon: Lock, title: msg("Immutable contracts"), description: msg("All smart contracts are fully open source and immutable.") },
-  { icon: DoorOpen, title: msg("Permissionless"), description: msg("Anyone can create, trade and interact with onchain protocols.") },
-  { icon: Database, title: msg("Onchain as the source of truth"), description: msg("Assets, ownership, markets and data are read directly onchain.") },
+  { icon: DoorOpen, title: msg("Permissionless"), description: msg("Open to everyone.") },
+  { icon: Database, title: msg("Onchain as the source of truth"), description: msg("Everything reads directly onchain.") },
   { icon: FileCog, title: msg("Programmable IP"), description: msg("Licensing terms and rights are stored with the assets.") },
   { icon: Gem, title: msg("Decentralized portfolio"), description: msg("Assets are stored onchain with licensing and metadata on IPFS.") },
   { icon: Scale, title: msg("Protection compliance"), description: msg("Authorship and license are protected under international laws.") },
-  { icon: Code, title: msg("Open source and auditable"), description: msg("The code is public to audit, review and collaborate on.") },
+  { icon: Code, title: msg("Open source and auditable"), description: msg("The code is public.") },
 ];
 
 export function DiscoverFeatures() {

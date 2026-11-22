@@ -62,7 +62,7 @@ export function ArtworkUpload({ files, onAdd, onRemove, error }: {
         {files.length === 0 ? (
           <div className="flex flex-col items-center gap-2 text-muted-foreground">
             <Upload className="h-8 w-8" />
-            <p className="text-sm">{t("Click to upload (JPG, PNG, GIF, SVG, WebP)")}</p>
+            <p className="text-sm">{t("Click to upload an image")}</p>
           </div>
         ) : files.length === 1 ? (
           <Thumb file={files[0]!} className="mx-auto h-48 w-48" onRemove={() => onRemove(files[0]!)} />
@@ -119,7 +119,7 @@ export function NameFields({ draft, setDraft, errors, onNameChange }: FieldsProp
       </Field>
       <Field label={t("Description")} htmlFor="drop-description">
         <Textarea id="drop-description" value={draft.description} maxLength={FIELD_LIMITS.description} rows={4}
-          placeholder={t("Describe your work, its story, and any context for buyers…")}
+          placeholder={t("The story behind the work…")}
           onChange={(e) => setDraft({ description: e.target.value })} />
       </Field>
     </>
@@ -170,7 +170,7 @@ export function AccessFields({ draft, setDraft, errors }: FieldsProps) {
         onChange={(v) => setDraft({ listOnly: v === "Invited wallets" })} />
       {draft.listOnly && (
         <div className="space-y-2">
-          <Textarea rows={5} placeholder={t("Paste wallet addresses, one per line")} value={draft.allowlist} onChange={(e) => setDraft({ allowlist: e.target.value })} />
+          <Textarea rows={5} placeholder={t("One wallet address per line")} value={draft.allowlist} onChange={(e) => setDraft({ allowlist: e.target.value })} />
           <label className="inline-block cursor-pointer text-xs font-semibold text-primary">
             {t("Upload a CSV")}
             <input type="file" accept=".csv,text/csv,text/plain" className="hidden"
@@ -230,7 +230,7 @@ export function LicenseFields({ draft, setDraft }: Omit<FieldsProps, "errors">) 
   const def = LICENSE_TYPES.find((l) => l.value === license.licenseType);
   return (
     <>
-      <p className="text-xs text-muted-foreground">{t("Set how collectors can use the work. These terms are saved with every token.")}</p>
+      <p className="text-xs text-muted-foreground">{t("Set how collectors use the work.")}</p>
       <Field label={t("License")}>
         <Select value={license.licenseType} onValueChange={(v) => {
           const next = LICENSE_TYPES.find((l) => l.value === v);

@@ -52,7 +52,7 @@ export function AddGuardianDialog({ open, onOpenChange, sealed, onAdded, wallet 
             <Shield className="h-4 w-4" /> {t("Add a guardian")}
           </DialogTitle>
           <DialogDescription>
-            {t("A guardian is a trusted backup that helps restore this wallet on a new device. It can never move funds. Paste the public key of a wallet already in use, such as another device's Media Wallet. A guardian is set once from here.")}
+            {t("Paste the public key of a trusted wallet.")}
           </DialogDescription>
         </DialogHeader>
         <div className="space-y-3">
