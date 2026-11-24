@@ -1,5 +1,6 @@
 "use client";
 
+import { SectionHeading } from "./section-heading.js";
 import type { ReactNode } from "react";
 import { Download, Layers } from "lucide-react";
 import { useCollectionsByOwner } from "../utils/use-collections.js";
@@ -18,15 +19,10 @@ export function PortfolioCollections({ claimPanel }: { claimPanel: ReactNode }) 
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <h2 className="text-lg font-semibold">{t("Collections")}</h2>
-          {collections.length > 0 && (
-            <span className="text-sm text-muted-foreground">({collections.length})</span>
-          )}
-        </div>
-        <NewCollectionMenu />
-      </div>
+      <SectionHeading
+        title={collections.length > 0 ? `${t("Collections")} (${collections.length})` : t("Collections")}
+        action={<NewCollectionMenu />}
+      />
 
       <EmptyOrError
         isLoading={isLoading}

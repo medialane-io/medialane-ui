@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.395.0] — 2026-11-24
+
+### Changed
+
+- `PageHeader` is the one page title block (`title`, `subtitle`, `icon`, `back`, `action`, children below), with `PageHeaderSkeleton` for loading states. Every page header uses it: launchpad, discover, collections, coins, search, asset types, accounts, rewards, journey, portfolio, account, service pages, create forms, remix, license request and POP events.
+- `PageContainer` sets the page padding (`pt-20 pb-16`); pages no longer repeat width, padding or box classes.
+- Page titles use one style. Kicker pills above titles and two-tone title words are removed, and `DiscoverHero` and `DiscoverPage` drop the `heroBadge` prop.
+- Stat counts on pages use `StatPillRow`.
+- `SectionHeading` is the one section title (`title`, optional `icon`, `subtitle`, `href` or `action`, `id`); it is exported, and page sections in launchpad, journey, rewards, portfolio, search and service pages use it. Small labels above section titles are removed.
+- Portfolio and account headers show the page name as the title and the address below it.
+- Shared pages: `ActivitiesPage`, `MyDropsPage`, `DropDetailPage`, `PopPage` and `CoinsPage` replace the copies each app kept. `JourneyContent` includes its page container. Apps keep their route files for metadata.
+- Collection settings uses `SectionHeading` for its title.
+- Portuguese catalog: obsolete keys removed, POP page keys added.
+
+### Removed
+
+- `ServiceHeader`; use `PageHeader`.
+
 ## [0.394.0] — 2026-11-22
 
 ### Changed

@@ -9,7 +9,8 @@ import { Input } from "./input.js";
 import { useMedialaneApp } from "./medialane-app.js";
 import { FadeIn } from "./motion-primitives.js";
 import { RewardEarned } from "./rewards/reward-earned.js";
-import { ServiceHeader } from "./service-header.js";
+import { PageContainer } from "./page-container.js";
+import { PageHeader } from "./page-header.js";
 import { TransactionDialog } from "./transaction-dialog.js";
 import { TransactionSuccess } from "./transaction-success.js";
 import { shortenAddress } from "../utils/address.js";
@@ -91,7 +92,7 @@ export function SponsorshipOfferPage({ offerId }: { offerId: string }) {
   const copy = COPY[action];
 
   return (
-    <div className="pb-16">
+    <PageContainer variant="narrow" className="max-w-3xl">
       <TransactionDialog tx={tx} title={t(copy.title)} workingLabel={t(copy.working)} firstStepLabel={t("Prepare")}>
         <TransactionSuccess
           name={name}
@@ -103,11 +104,13 @@ export function SponsorshipOfferPage({ offerId }: { offerId: string }) {
         </TransactionSuccess>
       </TransactionDialog>
 
-      <section className="px-4 pt-10 max-w-3xl mx-auto space-y-6">
-        <BackButton fallbackHref="/launchpad/sponsorship" />
-        <FadeIn>
-          <ServiceHeader plain icon={<Handshake className="h-4 w-4 text-white" />} title={name} subtitle={offer.open ? t("Open for bids") : t("Closed")} />
-        </FadeIn>
+      <section className="space-y-8">
+        <PageHeader
+          back={<BackButton fallbackHref="/launchpad/sponsorship" />}
+          icon={<Handshake />}
+          title={name}
+          subtitle={offer.open ? t("Open for bids") : t("Closed")}
+        />
 
         <FadeIn>
           <div className="panel overflow-hidden">
@@ -193,6 +196,6 @@ export function SponsorshipOfferPage({ offerId }: { offerId: string }) {
           </FadeIn>
         )}
       </section>
-    </div>
+    </PageContainer>
   );
 }

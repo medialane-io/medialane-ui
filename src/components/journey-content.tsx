@@ -1,14 +1,16 @@
 "use client";
 
+import { SectionHeading } from "./section-heading.js";
 import Link from "./link.js";
-import { Sparkles, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { useMedialaneApp } from "./medialane-app.js";
 import { LevelJourneyList } from "./rewards/level-journey-list.js";
 import { BadgeCatalog } from "./rewards/badge-catalog.js";
 import { Skeleton } from "./skeleton.js";
 import { useRewardsConfig } from "../utils/use-rewards.js";
 import { useT } from "../i18n/provider.js";
-import { IconTile } from "./icon-tile.js";
+import { PageContainer } from "./page-container.js";
+import { PageHeader } from "./page-header.js";
 
 const EXAMPLE_ACTION_TYPES = [
   "mint_asset", "buy_asset", "create_collection", "comment",
@@ -18,22 +20,16 @@ const EXAMPLE_ACTION_TYPES = [
 function Hero() {
   const t = useT();
   return (
-    <section className="py-14 space-y-5">
-      <div className="flex items-center gap-3">
-        <IconTile>
-          <Sparkles />
-        </IconTile>
-        <h1 className="text-5xl sm:text-6xl font-black tracking-tight leading-[1.02]">
-          {t("Your")}{" "}
-          <span className="text-brand-orange">
-            {t("Journey")}
-          </span>
-        </h1>
-      </div>
-      <p className="text-lg text-foreground/70 max-w-xl leading-relaxed font-medium">{t.rich("Track {link} on Rewards.", { link: <Link href="/rewards" className="text-foreground underline underline-offset-2 hover:text-brand-orange transition-colors">
-          {t("progress")}
-        </Link> })}</p>
-    </section>
+    <PageHeader
+      title={`${t("Your")} ${t("Journey")}`}
+      subtitle={t.rich("Track {link} on Rewards.", {
+        link: (
+          <Link href="/rewards" className="text-foreground underline underline-offset-2 hover:text-primary transition-colors">
+            {t("progress")}
+          </Link>
+        ),
+      })}
+    />
   );
 }
 
@@ -42,10 +38,7 @@ function LevelsSection() {
   const { data: config, isLoading } = useRewardsConfig();
   return (
     <section className="py-14 space-y-6">
-      <div>
-        <h2 className="text-2xl font-black tracking-tight">{t("The level ladder")}</h2>
-        <p className="text-base text-foreground/60 mt-1.5 font-medium">{t("50 levels from Starter to Genesis.")}</p>
-      </div>
+      <SectionHeading title={t("The level ladder")} subtitle={t("50 levels from Starter to Genesis.")} />
       {isLoading || !config ? (
         <Skeleton className="h-96 w-full rounded-2xl" />
       ) : (
@@ -62,12 +55,7 @@ function HowXpWorksSection() {
 
   return (
     <section className="py-14 space-y-6">
-      <div className="max-w-2xl">
-        <h2 className="text-2xl font-black tracking-tight">{t("How XP works")}</h2>
-        <p className="text-base text-foreground/60 mt-1.5 font-medium leading-relaxed">
-          {t("Every action earns XP updated weekly.")}
-        </p>
-      </div>
+      <SectionHeading title={t("How XP works")} subtitle={t("Every action earns XP updated weekly.")} />
       {isLoading || !config ? (
         <Skeleton className="h-40 w-full rounded-2xl" />
       ) : (
@@ -89,10 +77,7 @@ function BadgesSection() {
   const { data: config, isLoading } = useRewardsConfig();
   return (
     <section className="py-14 space-y-6">
-      <div>
-        <h2 className="text-2xl font-black tracking-tight">{t("Badges")}</h2>
-        <p className="text-base text-foreground/60 mt-1.5 font-medium">{t("Every badge to earn.")}</p>
-      </div>
+      <SectionHeading title={t("Badges")} subtitle={t("Every badge to earn.")} />
       {isLoading || !config ? (
         <Skeleton className="h-64 w-full rounded-2xl" />
       ) : (
@@ -134,12 +119,12 @@ function CtaSection({ startHint }: { startHint: string }) {
 
 export function JourneyContent({ startHint }: { startHint: string }) {
   return (
-    <>
+    <PageContainer variant="narrow">
       <Hero />
       <LevelsSection />
       <HowXpWorksSection />
       <BadgesSection />
       <CtaSection startHint={startHint} />
-    </>
+    </PageContainer>
   );
 }

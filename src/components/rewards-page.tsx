@@ -8,7 +8,7 @@ import { useT } from "../i18n/provider.js";
 export function RewardsPage() {
   const t = useT();
   return (
-    <PageContainer className="box-border max-w-full pt-20 pb-16 space-y-8">
+    <PageContainer className="space-y-8">
       <RewardsDashboard />
 
       <footer className="panel px-5 py-4 flex items-start gap-3">

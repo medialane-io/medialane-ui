@@ -102,6 +102,10 @@ export type { MedialaneLogoFullProps } from "./components/brand-logo.js";
 export { MotionCard, FadeIn, Stagger, StaggerItem, KineticWords, SPRING, EASE_OUT } from "./components/motion-primitives.js";
 export { PageContainer } from "./components/page-container.js";
 export type { PageContainerProps } from "./components/page-container.js";
+export { PageHeader, PageHeaderSkeleton } from "./components/page-header.js";
+export type { PageHeaderProps } from "./components/page-header.js";
+export { SectionHeading } from "./components/section-heading.js";
+export type { SectionHeadingProps } from "./components/section-heading.js";
 export { ScrollSection } from "./components/scroll-section.js";
 export type { ScrollSectionProps } from "./components/scroll-section.js";
 export { ShareButton } from "./components/share-button.js";
@@ -141,7 +145,7 @@ export { CoinGuarantees, type CoinGuaranteesProps, type CoinGuaranteesData } fro
 export { CoinRow, CoinRowSkeleton, CoinAvatar, COIN_GRID, type UseCoinPrice, type CoinRowProps, type CoinMarketStatus } from "./components/coin-row.js";
 export { orderCoins, type CoinPriceSort } from "./data/coin-order.js";
 export {
-  CoinsExplorer,
+  CoinsExplorer, CoinsPage,
   type CoinsExplorerProps, type CoinFilter, type CoinSort, type UseCoins, type UsePriceMap, type CoinCounts,
 } from "./components/coins-explorer.js";
 
@@ -215,6 +219,10 @@ export { DropCard, DropGrid, DropGridSkeleton } from "./components/drop/drop-car
 export { DropListing } from "./components/drop/drop-listing.js";
 export { DropFeatures } from "./components/drop/drop-features.js";
 export { MyDrops } from "./components/drop/my-drops.js";
+export { MyDropsPage } from "./components/drop/my-drops-page.js";
+export { DropDetailPage } from "./components/drop/drop-detail-page.js";
+export { ActivitiesPage } from "./components/activities-page.js";
+export { PopPage } from "./components/pop-page.js";
 export { DropTokenLink } from "./components/drop/drop-token-link.js";
 export type { DropPhase } from "./utils/drop/view.js";
 export { DropCreate } from "./components/drop/create/drop-create.js";
@@ -325,8 +333,6 @@ export type {
   PortfolioChipFilterOption,
 } from "./components/portfolio-chip-filter.js";
 
-export { ServiceHeader } from "./components/service-header.js";
-export type { ServiceHeaderProps } from "./components/service-header.js";
 export { ClaimRail } from "./components/claim-rail.js";
 export type { ClaimRailProps } from "./components/claim-rail.js";
 

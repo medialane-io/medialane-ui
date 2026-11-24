@@ -1,5 +1,6 @@
 "use client";
 
+import { SectionHeading } from "./section-heading.js";
 import { useEffect, useMemo, useState } from "react";
 import Link from "./link.js";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
@@ -315,12 +316,7 @@ export function LaunchpadGroupedSections({ overrides, defs, onClearFilters, clas
               aria-labelledby={`${launchpadSectionId(group.key)}-title`}
               className="scroll-mt-20 space-y-5"
             >
-              <div className="space-y-1">
-                <h2 id={`${launchpadSectionId(group.key)}-title`} className="text-2xl sm:text-3xl font-semibold leading-tight">
-                  {group.title}
-                </h2>
-                <p className="text-sm sm:text-base text-muted-foreground">{group.tagline}</p>
-              </div>
+              <SectionHeading id={`${launchpadSectionId(group.key)}-title`} title={group.title} subtitle={group.tagline} />
               <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-5 sm:gap-6">
                 <AnimatePresence mode="popLayout">
                   {groupDefs.map((def, i) => (

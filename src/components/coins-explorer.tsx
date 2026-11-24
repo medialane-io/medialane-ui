@@ -4,6 +4,8 @@ import { useState, useMemo } from "react";
 import { Search } from "lucide-react";
 import { cn } from "../utils/cn.js";
 import { CoinRow, CoinRowSkeleton, COIN_GRID, type UseCoinPrice } from "./coin-row.js";
+import { PageContainer } from "./page-container.js";
+import { PageHeader } from "./page-header.js";
 import { StatPillRow } from "./stat-tile.js";
 import { orderCoins, type CoinPriceSort } from "../data/coin-order.js";
 import { coinKind, coinKindLabelPlural, coinServiceIds, COIN_KINDS, type CoinCollectionLike, type CoinKind } from "../data/coins.js";
@@ -78,19 +80,15 @@ export function CoinsExplorer({ useCoins, usePrice, usePriceMap, coinHref, headi
   const activeIndex = pillFilters.indexOf(filter);
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-8">
       {heading && (
-        <div className="flex flex-wrap items-start justify-between gap-4">
-          <div className="space-y-2">
-            <h1 className="text-3xl font-bold">{t("Creator coins & memecoins")}</h1>
-            <StatPillRow
-              items={statItems}
-              onSelect={(index) => setFilter(pillFilters[index])}
-              activeIndex={activeIndex}
-            />
-          </div>
-          {action}
-        </div>
+        <PageHeader title={t("Creator coins & memecoins")} action={action}>
+          <StatPillRow
+            items={statItems}
+            onSelect={(index) => setFilter(pillFilters[index])}
+            activeIndex={activeIndex}
+          />
+        </PageHeader>
       )}
 
       <div className="flex items-center gap-2">
@@ -157,5 +155,13 @@ export function CoinsExplorer({ useCoins, usePrice, usePriceMap, coinHref, headi
         )}
       </div>
     </div>
+  );
+}
+
+export function CoinsPage(props: Omit<CoinsExplorerProps, "heading">) {
+  return (
+    <PageContainer>
+      <CoinsExplorer {...props} />
+    </PageContainer>
   );
 }

@@ -19,11 +19,10 @@ import { useT } from "../i18n/provider.js";
 
 export interface DiscoverPageProps {
   useMarketActions: () => CollectionMarketActions;
-  heroBadge?: string;
   heroHeadline?: string;
 }
 
-export function DiscoverPage({ useMarketActions, heroBadge, heroHeadline }: DiscoverPageProps) {
+export function DiscoverPage({ useMarketActions, heroHeadline }: DiscoverPageProps) {
   const t = useT();
   const { walletAddress } = useMedialaneApp();
   const market = useMarketActions();
@@ -34,12 +33,11 @@ export function DiscoverPage({ useMarketActions, heroBadge, heroHeadline }: Disc
   const { collections, isLoading: collectionsLoading } = useCollections(1, 8);
 
   return (
-    <PageContainer className="box-border max-w-full space-y-14 px-4 pt-20 sm:space-y-20 sm:px-5 lg:px-6">
+    <PageContainer className="space-y-14 sm:space-y-20">
       <div className="space-y-8 sm:space-y-10">
         <DiscoverHero
           stats={stats ?? null}
           orders={tickerOrders}
-          badgeText={heroBadge}
           headlineText={heroHeadline}
           getTickerHref={(o) => assetHref("STARKNET", o.nftContract, o.nftTokenId)}
         />

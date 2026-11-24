@@ -6,6 +6,7 @@ import { Activity, Image as ImageIcon, LayoutGrid, ShoppingBag } from "lucide-re
 import type { ApiToken } from "@medialane/sdk";
 import { LoadMoreSentinel } from "./load-more-sentinel.js";
 import { Skeleton } from "./skeleton.js";
+import { PageContainer } from "./page-container.js";
 import { PortfolioHeader } from "./portfolio-header.js";
 import { PortfolioChipFilter } from "./portfolio-chip-filter.js";
 import { HiddenContentBanner } from "./hidden-content-banner.js";
@@ -79,7 +80,7 @@ export function AccountPage({ address, useAssetActions, useMarketActions }: Acco
   const tabs = TABS.map(({ key, label }) => ({ key, label: counts[key] === undefined ? label : `${label} (${counts[key]})` }));
 
   return (
-    <div className="space-y-6 px-4 pt-20 pb-8 sm:px-6 lg:px-8">
+    <PageContainer className="space-y-8">
       {hidden === true ? <HiddenContentBanner /> : null}
 
       <PortfolioHeader
@@ -171,6 +172,6 @@ export function AccountPage({ address, useAssetActions, useMarketActions }: Acco
         />
       ) : null}
       <ReportDialog open={reportOpen} onOpenChange={setReportOpen} target={{ type: "CREATOR", address, name: shortenAddress(address) }} />
-    </div>
+    </PageContainer>
   );
 }

@@ -1,5 +1,6 @@
 "use client";
 
+import { SectionHeading } from "./section-heading.js";
 import {
   User, Image as ImageIcon, Globe, Twitter, MessageCircle, Send,
   Lock, Unlock, Sparkles, ShieldCheck, CheckCircle2, ExternalLink,
@@ -63,21 +64,21 @@ export function CollectionSettings({ contract }: { contract: string }) {
   return (
     <div className="space-y-6 max-w-2xl pb-16">
 
-      <div>
-        <h1 className="text-xl font-semibold">{t("Collection settings")}</h1>
-        <p className="text-sm text-muted-foreground mt-1">
-          {t("Customize the collection page.")}
-        </p>
-        {collection && (
-          <Link
-            href={collectionHref("STARKNET", contract)}
-            className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground mt-2 transition-colors"
-          >
-            <ExternalLink className="h-3 w-3" />
-            {t("View collection page")}
-          </Link>
-        )}
-      </div>
+      <SectionHeading
+        title={t("Collection settings")}
+        subtitle={t("Customize the collection page.")}
+        action={
+          collection ? (
+            <Link
+              href={collectionHref("STARKNET", contract)}
+              className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <ExternalLink className="h-3 w-3" />
+              {t("View collection page")}
+            </Link>
+          ) : undefined
+        }
+      />
 
       <SectionCard id="identity">
         <SectionHeader

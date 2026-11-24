@@ -7,7 +7,7 @@ afterEach(cleanup);
 test("the account loading screen follows the account page: text header, pill tabs and token cards", () => {
   const { container } = render(<AccountLoading />);
   expect(container.querySelectorAll(".rounded-2xl.bg-card")).toHaveLength(8);
-  expect(container.querySelectorAll(".rounded-full.h-9")).toHaveLength(5);
+  expect(container.querySelectorAll(".rounded-full.h-9")).toHaveLength(4);
   expect(container.querySelector(".h-48")).toBeNull();
   expect(container.querySelector(".h-\\[88px\\]")).toBeNull();
 });
@@ -29,10 +29,10 @@ test("the collection loading screen shows the header, the tab row and a grid of 
   expect(container.querySelector(".rounded-2xl.h-10")).not.toBeNull();
 });
 
-test("the IP type loading screen shows the title row and token card skeletons", () => {
+test("the IP type loading screen shows the page header and token card skeletons", () => {
   const { container } = render(<IpTypeLoading />);
   expect(container.querySelectorAll(".rounded-2xl.bg-card")).toHaveLength(10);
-  expect(container.querySelector(".h-14.w-14")).not.toBeNull();
+  expect(container.querySelector(".h-9.w-64")).not.toBeNull();
 });
 
 test("the creator loading screen follows the creator page: header block, tab row and token cards", () => {

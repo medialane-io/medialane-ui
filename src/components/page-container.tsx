@@ -23,7 +23,7 @@ export function PageContainer({
       className={cn(
         variantClass[variant],
 
-        "px-4 sm:px-6 lg:px-8 pt-10 pb-16",
+        "px-4 pb-16 pt-20 sm:px-6 lg:px-8",
         className
       )}
       {...props}

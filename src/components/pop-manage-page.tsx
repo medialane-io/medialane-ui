@@ -1,5 +1,7 @@
 "use client";
 
+import { PageContainer } from "./page-container.js";
+import { PageHeader, PageHeaderSkeleton } from "./page-header.js";
 import { useState } from "react";
 import { normalizeAddress } from "@medialane/sdk";
 import { buildPopAllowlist, popClaimLinks, popClaimLinksCsv, type PopClaimLink } from "@medialane/sdk/starknet";
@@ -185,11 +187,11 @@ export function PopManagePage({ contract }: { contract: string }) {
   return (
     <WalletRequired icon={Award} title={t("Connect your wallet")} description={t("Connect to manage your event.")}>
       {isLoading ? (
-        <div className="max-w-xl mx-auto px-4 pt-10 pb-16 space-y-4">
-          <Skeleton className="h-6 w-24" />
+        <PageContainer variant="narrow" className="max-w-xl space-y-8">
+          <PageHeaderSkeleton />
           <Skeleton className="h-32 w-full rounded-2xl" />
           <Skeleton className="h-64 w-full rounded-2xl" />
-        </div>
+        </PageContainer>
       ) : !collection ? (
         <div className="max-w-xl mx-auto px-4 pt-24 pb-8 text-center space-y-4">
           <AlertCircle className="h-10 w-10 text-muted-foreground/20 mx-auto" />
@@ -207,30 +209,24 @@ export function PopManagePage({ contract }: { contract: string }) {
           </Button>
         </div>
       ) : (
-        <div className="max-w-xl mx-auto px-4 pt-10 pb-16 space-y-6">
+        <PageContainer variant="narrow" className="max-w-xl space-y-8">
           <TransactionDialog tx={tx} title={t("Manage event")} workingLabel="Updating your event…" firstStepLabel="Prepare">
             <TransactionSuccess name={collection.name ?? "Event"} title={done.title} description={done.description} txHash={tx.txHash} actions={[{ label: t("Done"), onClick: tx.reset }]} />
           </TransactionDialog>
 
-          <FadeIn>
-            <Button asChild variant="ghost" size="sm" className="-ml-2">
-              <Link href="/launchpad/pop">
-                <ArrowLeft className="h-3.5 w-3.5 mr-1.5" />
-                {t("All events")}
-              </Link>
-            </Button>
-          </FadeIn>
-
-          <FadeIn delay={0.04}>
-            <div>
-              <span className="pill inline-flex gap-1.5 mb-2">
-                <Award className="h-3 w-3" />
-                {t("Organizer")}
-              </span>
-              <h1 className="text-2xl font-bold mt-1">{t("Manage event")}</h1>
-              <p className="text-sm text-muted-foreground">{collection.name ?? contract}</p>
-            </div>
-          </FadeIn>
+          <PageHeader
+            back={
+              <Button asChild variant="ghost" size="sm" className="-ml-2 w-fit">
+                <Link href="/launchpad/pop">
+                  <ArrowLeft className="h-3.5 w-3.5 mr-1.5" />
+                  {t("All events")}
+                </Link>
+              </Button>
+            }
+            icon={<Award />}
+            title={t("Manage event")}
+            subtitle={collection.name ?? contract}
+          />
 
           <FadeIn delay={0.08}>
             <div className="panel relative overflow-hidden p-4 flex items-center gap-3">
@@ -246,7 +242,7 @@ export function PopManagePage({ contract }: { contract: string }) {
           <FadeIn delay={0.16}>
             <IssueSection onIssue={issue} isSubmitting={isSubmitting} />
           </FadeIn>
-        </div>
+        </PageContainer>
       )}
     </WalletRequired>
   );

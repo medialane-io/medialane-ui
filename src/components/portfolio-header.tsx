@@ -2,7 +2,7 @@
 
 import type { ReactNode } from "react";
 import Link from "./link.js";
-import { cn } from "../utils/cn.js";
+import { PageHeader } from "./page-header.js";
 import { AddressDisplay } from "./address-display.js";
 import { useT } from "../i18n/provider.js";
 import { useFormat } from "../i18n/use-format.js";
@@ -43,25 +43,22 @@ export function PortfolioHeader({
   );
 
   return (
-    <div className={cn("flex items-center justify-between gap-4", className)}>
-      <div className="min-w-0">
-        <p className="text-xs font-medium text-muted-foreground">
-          {label}
-        </p>
-        <AddressDisplay
-          address={address}
-          chars={6}
-          className="text-2xl sm:text-3xl font-black tracking-tight text-foreground"
-        />
-      </div>
-      {trailing}
-      {score?.href ? (
-        <Link href={score.href} className="shrink-0 active:opacity-80">
-          {scoreChip}
-        </Link>
-      ) : (
-        <div className="shrink-0">{scoreChip}</div>
-      )}
-    </div>
+    <PageHeader
+      title={label}
+      subtitle={<AddressDisplay address={address} chars={6} className="text-base" />}
+      className={className}
+      action={
+        <div className="flex items-center gap-3">
+          {trailing}
+          {score?.href ? (
+            <Link href={score.href} className="shrink-0 active:opacity-80">
+              {scoreChip}
+            </Link>
+          ) : (
+            scoreChip
+          )}
+        </div>
+      }
+    />
   );
 }

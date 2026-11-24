@@ -1,5 +1,6 @@
 "use client";
 
+import { SectionHeading } from "./section-heading.js";
 import { useEffect, useRef, useState } from "react";
 import { assetHref, collectionHref, profileHref } from "@medialane/sdk";
 import { Search, X } from "lucide-react";
@@ -9,6 +10,7 @@ import { Input } from "./input.js";
 import { Button } from "./button.js";
 import { Skeleton } from "./skeleton.js";
 import { PageContainer } from "./page-container.js";
+import { PageHeader } from "./page-header.js";
 import { AssetCard } from "./asset-card.js";
 import { ResultThumbnail } from "./result-thumbnail.js";
 import { profileIdentity } from "../utils/profile-identity.js";
@@ -35,9 +37,7 @@ function ResultLink({ href, label, description, thumbnail }: { href: string; lab
 function Section({ title, count, children }: { title: string; count: number; children: React.ReactNode }) {
   return (
     <section className="space-y-3">
-      <h2 className="text-sm font-semibold">
-        {title} <span className="font-normal text-muted-foreground">({count})</span>
-      </h2>
+      <SectionHeading title={`${title} (${count})`} />
       {children}
     </section>
   );
@@ -77,9 +77,8 @@ export function SearchPage() {
   const showEmpty = Boolean(q.trim()) && !isLoading && (Boolean(error) || (results !== null && total === 0));
 
   return (
-    <PageContainer className="box-border max-w-full space-y-8 pt-14 pb-8">
-      <div className="space-y-4">
-        <h1 className="text-3xl font-bold">{t("Search")}</h1>
+    <PageContainer className="space-y-8">
+      <PageHeader title={t("Search")}>
         <div className="relative max-w-xl">
           <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <Input
@@ -104,7 +103,7 @@ export function SearchPage() {
         {results && total > 0 && (
           <p className="text-sm text-muted-foreground">{`${total} result${total === 1 ? "" : "s"} for "${q.trim()}"`}</p>
         )}
-      </div>
+      </PageHeader>
 
       {!q.trim() && (
         <p className="py-24 text-center text-muted-foreground">{t("Type to search.")}</p>

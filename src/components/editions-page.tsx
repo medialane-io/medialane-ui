@@ -4,7 +4,8 @@ import { useState, useMemo } from "react";
 import { collectionHref } from "@medialane/sdk";
 import Link from "./link.js";
 import Image from "./image.js";
-import { ServiceHeader } from "./service-header.js";
+import { PageContainer } from "./page-container.js";
+import { PageHeader } from "./page-header.js";
 import { FadeIn, Stagger, StaggerItem } from "./motion-primitives.js";
 import { Skeleton } from "./skeleton.js";
 import { Button } from "./button.js";
@@ -138,38 +139,30 @@ export function EditionsPage() {
   );
 
   return (
-    <div className="pb-16">
+    <PageContainer variant="narrow" className="space-y-8">
 
-      <section className="px-4 pt-10 max-w-5xl mx-auto">
-        <BackButton />
-        <FadeIn>
-          <div className="mt-6">
-            <ServiceHeader
-              plain
-              icon={<Layers className="h-4 w-4 text-white" />}
-              title={t("Limited Editions")}
-              subtitle={t("Pick one of your editions collections and mint new pieces into it.")}
-            />
-          </div>
-        </FadeIn>
-        <FadeIn delay={0.08}>
-          <div className="mt-6 flex items-center gap-3">
-            <ActionButton solid asChild>
-              <Link href="/launchpad/nfteditions/create">
-                <Plus className="h-4 w-4" />
-                {t("New collection")}
-              </Link>
-            </ActionButton>
-            <Button variant="soft" size="sm" asChild>
-              <a href="https://docs.medialane.io/learn/ip-collection-1155" target="_blank" rel="noopener noreferrer">
-                {t("Learn more")} <ArrowRight className="h-3.5 w-3.5 ml-1" />
-              </a>
-            </Button>
-          </div>
-        </FadeIn>
-      </section>
+      <PageHeader
+        back={<BackButton />}
+        icon={<Layers />}
+        title={t("Limited Editions")}
+        subtitle={t("Pick one of your editions collections and mint new pieces into it.")}
+      >
+        <div className="flex items-center gap-3">
+          <ActionButton solid asChild>
+            <Link href="/launchpad/nfteditions/create">
+              <Plus className="h-4 w-4" />
+              {t("New collection")}
+            </Link>
+          </ActionButton>
+          <Button variant="soft" size="sm" asChild>
+            <a href="https://docs.medialane.io/learn/ip-collection-1155" target="_blank" rel="noopener noreferrer">
+              {t("Learn more")} <ArrowRight className="h-3.5 w-3.5 ml-1" />
+            </a>
+          </Button>
+        </div>
+      </PageHeader>
 
-      <section className="px-4 pt-8 space-y-5 max-w-5xl mx-auto">
+      <section className="space-y-5">
         {!walletAddress && !walletLoading ? (
           <SignInPrompt icon={<Layers className="h-10 w-10 text-muted-foreground/30" />} title={t("Sign in to see your collections")} />
         ) : isLoading || walletLoading ? (
@@ -214,6 +207,6 @@ export function EditionsPage() {
         )}
       </section>
 
-    </div>
+    </PageContainer>
   );
 }

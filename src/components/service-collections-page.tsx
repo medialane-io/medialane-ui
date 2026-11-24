@@ -1,13 +1,15 @@
 "use client";
 
+import { SectionHeading } from "./section-heading.js";
 import { Plus, Ticket, Users } from "lucide-react";
 import { collectionHref } from "@medialane/sdk";
 import Link from "./link.js";
 import { Button } from "./button.js";
 import { Skeleton } from "./skeleton.js";
-import { FadeIn, Stagger, StaggerItem } from "./motion-primitives.js";
+import { Stagger, StaggerItem } from "./motion-primitives.js";
 import { BackButton } from "./back-button.js";
-import { ServiceHeader } from "./service-header.js";
+import { PageContainer } from "./page-container.js";
+import { PageHeader } from "./page-header.js";
 import { CollectionCard } from "./collection-card.js";
 import { SignInPrompt } from "./sign-in-prompt.js";
 import { useMedialaneApp } from "./medialane-app.js";
@@ -24,7 +26,6 @@ const KINDS = {
     subtitle: msg("Create a tickets collection."),
     createHref: "/launchpad/tickets/create",
     createLabel: msg("Create collection"),
-    sectionLabel: msg("Your collections"),
     sectionTitle: msg("Ticket collections"),
     empty: msg("Your ticket collections appear here"),
     emptyText: msg("Create your first tickets collection."),
@@ -37,7 +38,6 @@ const KINDS = {
     subtitle: msg("Create a club."),
     createHref: "/launchpad/club/create",
     createLabel: msg("Create club"),
-    sectionLabel: msg("Your clubs"),
     sectionTitle: msg("Club collections"),
     empty: msg("Your clubs appear here"),
     emptyText: msg("Create your first club."),
@@ -70,21 +70,13 @@ export function ServiceCollectionsPage({ kind }: { kind: keyof typeof KINDS }) {
   );
 
   return (
-    <div className="mx-auto max-w-5xl space-y-10 pb-16">
-      <section className="px-4 pt-10">
-        <BackButton />
-        <FadeIn>
-          <div className="mt-6">
-            <ServiceHeader plain icon={<Icon className="h-4 w-4 text-white" />} title={t(config.title)} subtitle={t(config.subtitle)} headerAccessory={createButton} />
-          </div>
-        </FadeIn>
-      </section>
+    <PageContainer variant="narrow" className="space-y-8">
+      <PageHeader back={<BackButton />} icon={<Icon />} title={t(config.title)} subtitle={t(config.subtitle)}>
+        {createButton}
+      </PageHeader>
 
-      <section className="space-y-4 px-4">
-        <div>
-          <p className="section-label">{t(config.sectionLabel)}</p>
-          <h2 className="mt-0.5 text-xl font-bold">{t(config.sectionTitle)}</h2>
-        </div>
+      <section className="space-y-4">
+        <SectionHeading title={t(config.sectionTitle)} />
 
         {!walletAddress && !walletLoading ? (
           <SignInPrompt icon={iconTile} title={t("Sign in to see your collections")} />
@@ -111,6 +103,6 @@ export function ServiceCollectionsPage({ kind }: { kind: keyof typeof KINDS }) {
           </Stagger>
         )}
       </section>
-    </div>
+    </PageContainer>
   );
 }

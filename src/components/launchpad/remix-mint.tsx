@@ -1,5 +1,7 @@
 "use client";
 
+import { PageContainer } from "../page-container.js";
+import { PageHeader, PageHeaderSkeleton } from "../page-header.js";
 import { useEffect, useRef, useState } from "react";
 import { Boxes, ChevronDown, ChevronLeft, GitBranch, ImagePlus, Info, Percent, Plus, Shield, Upload } from "lucide-react";
 import { assetHref, getDerivativesTerm, getService, normalizeAddress, resolveRemixPolicy } from "@medialane/sdk";
@@ -221,13 +223,13 @@ export function RemixMint({ contract, tokenId }: { contract: string; tokenId: st
   if (tokenLoading) {
     return (
       <WalletRequired {...gate}>
-        <div className="max-w-5xl mx-auto px-4 pt-14 pb-8 space-y-6">
-          <Skeleton className="h-8 w-48" />
+        <PageContainer variant="narrow" className="space-y-8">
+          <PageHeaderSkeleton />
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_340px] gap-8">
             <div className="space-y-4">{[1, 2, 3, 4].map((i) => <Skeleton key={i} className="h-32 w-full rounded-xl" />)}</div>
             <Skeleton className="h-80 w-full rounded-xl" />
           </div>
-        </div>
+        </PageContainer>
       </WalletRequired>
     );
   }
@@ -259,19 +261,18 @@ export function RemixMint({ contract, tokenId }: { contract: string; tokenId: st
         </TransactionSuccess>
       </TransactionDialog>
 
-      <div className="max-w-5xl mx-auto px-4 pt-14 pb-12 space-y-6">
-        <div className="space-y-3">
-          <Link href={assetHref("STARKNET", contract, tokenId)} className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
-            <ChevronLeft className="h-4 w-4" />
-            {t("Back to asset")}
-          </Link>
-          <div className="flex items-center gap-2 text-primary">
-            <GitBranch className="h-5 w-5" />
-            <span className="text-sm font-semibold">{t("Create remix")}</span>
-          </div>
-          <h1 className="text-3xl font-bold">{t("Mint a remix")}</h1>
-          <p className="text-muted-foreground max-w-xl">{t("Remix this asset with credit to the original.")}</p>
-        </div>
+      <PageContainer variant="narrow" className="space-y-8">
+        <PageHeader
+          back={
+            <Link href={assetHref("STARKNET", contract, tokenId)} className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
+              <ChevronLeft className="h-4 w-4" />
+              {t("Back to asset")}
+            </Link>
+          }
+          icon={<GitBranch />}
+          title={t("Mint a remix")}
+          subtitle={t("Remix this asset with credit to the original.")}
+        />
 
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-8 items-start">
           <div className="space-y-4">
@@ -426,7 +427,7 @@ export function RemixMint({ contract, tokenId }: { contract: string; tokenId: st
             </div>
           </div>
         </div>
-      </div>
+      </PageContainer>
     </WalletRequired>
   );
 }

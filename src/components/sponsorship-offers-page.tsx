@@ -1,12 +1,14 @@
 "use client";
 
+import { SectionHeading } from "./section-heading.js";
 import { ArrowRight, Check, Handshake } from "lucide-react";
 import { formatAmount, getTokenByAddress, type ApiSponsorshipOffer } from "@medialane/sdk";
 import { AssetCard, AssetCardSkeleton } from "./asset-card.js";
 import { BackButton } from "./back-button.js";
 import Link from "./link.js";
 import { FadeIn, Stagger, StaggerItem } from "./motion-primitives.js";
-import { ServiceHeader } from "./service-header.js";
+import { PageContainer } from "./page-container.js";
+import { PageHeader } from "./page-header.js";
 import { shortenAddress } from "../utils/address.js";
 import { useSponsorshipOffers } from "../utils/use-sponsorship.js";
 import { useToken } from "../utils/use-tokens.js";
@@ -46,22 +48,15 @@ export function SponsorshipOffersPage() {
   const openOffers = offers.filter((o) => o.open);
 
   return (
-    <div className="pb-16 space-y-10">
-      <section className="px-4 pt-10 max-w-5xl mx-auto">
-        <BackButton />
-        <FadeIn>
-          <div className="mt-6">
-            <ServiceHeader
-              plain
-              icon={<Handshake className="h-4 w-4 text-white" />}
-              title={t("IP Sponsorship")}
-              subtitle={t("Sponsors bid for a license.")}
-            />
-          </div>
-        </FadeIn>
-      </section>
+    <PageContainer variant="narrow" className="space-y-8">
+      <PageHeader
+        back={<BackButton />}
+        icon={<Handshake />}
+        title={t("IP Sponsorship")}
+        subtitle={t("Sponsors bid for a license.")}
+      />
 
-      <section className="px-4 max-w-5xl mx-auto">
+      <section>
         <FadeIn>
           <div className="flex flex-wrap gap-2">
             {FEATURES.map((f) => (
@@ -74,7 +69,7 @@ export function SponsorshipOffersPage() {
         </FadeIn>
       </section>
 
-      <section className="px-4 max-w-5xl mx-auto">
+      <section>
         <FadeIn>
           <div className="panel p-5 flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between" style={panelTint("rose")}>
             <div className="space-y-0.5">
@@ -93,12 +88,9 @@ export function SponsorshipOffersPage() {
         </FadeIn>
       </section>
 
-      <section className="px-4 space-y-4 max-w-5xl mx-auto">
+      <section className="space-y-4">
         <FadeIn>
-          <div>
-            <p className="section-label">{t("Open")}</p>
-            <h2 className="text-xl font-bold mt-0.5">{t("Sponsorship offers")}</h2>
-          </div>
+          <SectionHeading title={t("Sponsorship offers")} />
         </FadeIn>
 
         {isLoading ? (
@@ -129,6 +121,6 @@ export function SponsorshipOffersPage() {
           </Stagger>
         )}
       </section>
-    </div>
+    </PageContainer>
   );
 }
