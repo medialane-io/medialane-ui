@@ -1,6 +1,7 @@
 "use client";
 
 import { PageContainer } from "./page-container.js";
+import { PageState } from "./page-state.js";
 import { PageHeader } from "./page-header.js";
 import { Award, Plus, Settings } from "lucide-react";
 import type { ApiCollection } from "@medialane/sdk";
@@ -61,22 +62,22 @@ export function PopMyEventsPage() {
 
   if (!walletAddress) {
     return (
-      <div className="mx-auto max-w-lg px-4 pt-24 pb-8">
+      <PageState>
         {walletLoading ? <Skeleton className="h-40 w-full rounded-xl" /> : (
           <SignInPrompt icon={<Award className="h-10 w-10 text-muted-foreground/20" />} title={t("Sign in to see your events")} />
         )}
-      </div>
+      </PageState>
     );
   }
 
   return (
-    <PageContainer variant="narrow" className="max-w-2xl space-y-8">
+    <PageContainer variant="form" className="space-y-8">
       <PageHeader
         icon={<Award />}
         title={t("My events")}
         subtitle={t("Events you've created")}
         action={
-          <Button asChild size="sm" className="bg-brand-blue hover:bg-brand-blue text-white gap-1.5">
+          <Button asChild size="sm" className="bg-brand-blue text-white hover:brightness-110 gap-1.5">
             <Link href="/launchpad/pop/create">
               <Plus className="h-3.5 w-3.5" />
               {t("New event")}
@@ -96,7 +97,7 @@ export function PopMyEventsPage() {
           <div className="panel relative overflow-hidden p-16 text-center space-y-3">
             <Award className="h-10 w-10 text-muted-foreground/20 mx-auto" />
             <p className="text-sm text-muted-foreground">{t("No events yet")}</p>
-            <Button asChild size="sm" className="bg-brand-blue hover:bg-brand-blue text-white gap-1.5">
+            <Button asChild size="sm" className="bg-brand-blue text-white hover:brightness-110 gap-1.5">
               <Link href="/launchpad/pop/create">
                 <Plus className="h-3.5 w-3.5" />
                 {t("Create your first event")}

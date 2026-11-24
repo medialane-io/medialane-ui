@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.396.0] — 2026-11-24
+
+### Added
+
+- `PageState` and `PageStateSkeleton`: one centered full-page state (icon, title, description, actions) for not-found, not-allowed and sign-in screens. `WalletRequired`, portfolio, creator, sponsorship offer, license request, POP events, edition, tier and remix pages use it.
+- `BackButton` takes `href` and `label`, so a page can link back to a fixed place with the same style as a history back.
+- `PageContainer` variant `form` for form and detail pages (replaces per-page `max-w-*` overrides).
+- `Section` takes an optional `action`.
+
+### Changed
+
+- POP manage page uses `Section`, `Input`, `BackButton` and `PageState`; its publish button label is a translatable plural.
+- Transaction dialog titles, working labels and first-step labels are translated in every create flow; `TransactionDialog` translates its default first step.
+- License request redirects in an effect instead of during render, and the license fee message is translated.
+- Portuguese catalog updated.
+
+### Removed
+
+- Unused `tint` styles in the service collections page.
+
 ## [0.395.0] — 2026-11-24
 
 ### Changed

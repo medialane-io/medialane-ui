@@ -161,14 +161,16 @@ import { PageContainer, PageHeader, PageHeaderSkeleton, StatPillRow } from "@med
 </PageContainer>
 ```
 
-Every page starts with `PageHeader`, inside `PageContainer`. Browse pages use the default full-width container; focused pages (forms, service pages) use `variant="narrow"`.
+Every page starts with `PageHeader`, inside `PageContainer`. Browse pages use the default full-width container; service pages use `variant="narrow"` and forms use `variant="form"`. Full-page states (not found, sign in) use `PageState`.
 
 | Component | Description |
 |---|---|
-| `<PageContainer>` | Page width and padding; `variant` is `app` (default), `content` or `narrow` |
+| `<PageContainer>` | Page width and padding; `variant` is `app` (default), `content`, `narrow` or `form` |
 | `<PageHeader title subtitle icon back action>` | The page title block; children render below it (stat pills, filters) |
 | `<PageHeaderSkeleton stats={2} />` | Loading placeholder for `PageHeader` |
 | `<SectionHeading title subtitle icon href action>` | The title of a section on a page |
+| `<PageState icon title description>` | Centered full-page state; children render below (buttons, sign-in) |
+| `<BackButton href label>` | Back link; without `href` it goes back in history |
 
 ---
 

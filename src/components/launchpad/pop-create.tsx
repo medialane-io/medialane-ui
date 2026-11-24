@@ -102,7 +102,7 @@ export function PopCreate({ aside }: { aside?: ReactNode }) {
       title={t("Secure an account to create a POP event")}
       description={t("Secure your account to create certificates.")}
     >
-      <TransactionDialog tx={tx} title={t("Create POP event")} workingLabel="Creating the POP event…" firstStepLabel="Upload certificate metadata">
+      <TransactionDialog tx={tx} title={t("Create POP event")} workingLabel={t("Creating the POP event…")} firstStepLabel={t("Upload certificate metadata")}>
         <TransactionSuccess
           name={eventName || "New event"}
           image={imagePreview}

@@ -30,7 +30,6 @@ const KINDS = {
     empty: msg("Your ticket collections appear here"),
     emptyText: msg("Create your first tickets collection."),
     accent: "bg-brand-blue",
-    tint: "bg-brand-blue/10 text-brand-blue/40",
   },
   club: {
     icon: Users,
@@ -42,7 +41,6 @@ const KINDS = {
     empty: msg("Your clubs appear here"),
     emptyText: msg("Create your first club."),
     accent: "bg-brand-purple",
-    tint: "bg-brand-purple/10 text-brand-purple/40",
   },
 } as const;
 

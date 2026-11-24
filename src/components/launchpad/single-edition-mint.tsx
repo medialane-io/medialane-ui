@@ -190,7 +190,7 @@ export function SingleEditionMint({ aside }: { aside?: ReactNode }) {
       title={t("Secure your account to create")}
       description={t("Publish a single-copy work.")}
     >
-      <TransactionDialog tx={tx} title={t("Mint NFT")} workingLabel="Minting your work…" firstStepLabel="Upload to IPFS">
+      <TransactionDialog tx={tx} title={t("Mint NFT")} workingLabel={t("Minting your work…")} firstStepLabel={t("Upload to IPFS")}>
         <TransactionSuccess
           name={form.getValues("name") || "Your asset"}
           image={imagePreview}

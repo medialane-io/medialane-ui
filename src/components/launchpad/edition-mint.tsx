@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Sparkles } from "lucide-react";
+import { PageState } from "../page-state.js";
 import { assetHref, normalizeAddress, profileHref } from "@medialane/sdk";
 import { mintedTokenIdFromReceipt } from "@medialane/sdk/starknet";
 import Link from "../link.js";
@@ -147,14 +148,11 @@ export function EditionMint({ contract: rawContract, aside }: { contract: string
       description={t("Secure your account to mint tokens into a multi-editions collection.")}
     >
       {ownerCheck === "denied" ? (
-        <div className="max-w-lg mx-auto px-4 pt-24 pb-8 text-center space-y-4">
-          <Sparkles className="h-10 w-10 text-muted-foreground mx-auto" />
-          <h1 className="text-2xl font-bold">{t("Not the owner")}</h1>
-          <p className="text-muted-foreground">{t("Minting opens for the collection owner.")}</p>
+        <PageState icon={Sparkles} title={t("Not the owner")} description={t("Minting opens for the collection owner.")}>
           <Button asChild variant="soft">
             <Link href="/launchpad">{t("Back to Launchpad")}</Link>
           </Button>
-        </div>
+        </PageState>
       ) : (
         <>
           <ClaimRouteShell
@@ -202,7 +200,7 @@ export function EditionMint({ contract: rawContract, aside }: { contract: string
             </Form>
           </ClaimRouteShell>
 
-          <TransactionDialog tx={tx} title={t("Mint an edition")} workingLabel="Minting your edition…" firstStepLabel="Upload metadata">
+          <TransactionDialog tx={tx} title={t("Mint an edition")} workingLabel={t("Minting your edition…")} firstStepLabel={t("Upload metadata")}>
             <TransactionSuccess
               name={form.getValues("name") || "Your token"}
               image={imagePreview}

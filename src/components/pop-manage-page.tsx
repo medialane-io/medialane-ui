@@ -2,10 +2,14 @@
 
 import { PageContainer } from "./page-container.js";
 import { PageHeader, PageHeaderSkeleton } from "./page-header.js";
+import { PageState } from "./page-state.js";
+import { BackButton } from "./back-button.js";
+import { Section } from "./create-form-primitives.js";
+import { Input } from "./input.js";
 import { useState } from "react";
 import { normalizeAddress } from "@medialane/sdk";
 import { buildPopAllowlist, popClaimLinks, popClaimLinksCsv, type PopClaimLink } from "@medialane/sdk/starknet";
-import { ArrowLeft, Award, AlertCircle, CheckCircle2, Download, Loader2, Send, Users } from "lucide-react";
+import { Award, AlertCircle, CheckCircle2, Download, Loader2, Send, Users } from "lucide-react";
 import { Button } from "./button.js";
 import Link from "./link.js";
 import { useMedialaneApp } from "./medialane-app.js";
@@ -48,21 +52,11 @@ function IssueSection({
   const valid = /^0x[0-9a-fA-F]{1,64}$/.test(address);
 
   return (
-    <div className="panel relative overflow-hidden p-5 space-y-3">
-      <div className="flex items-center gap-2">
-        <Award className="h-4 w-4 text-brand-blue" />
-        <span className="font-semibold text-sm">{t("Issue directly")}</span>
-      </div>
+    <Section title={t("Issue directly")} icon={<Award className="h-4 w-4" />}>
       <p className="text-xs text-muted-foreground">
         {t("Send a certificate to one wallet.")}
       </p>
-      <input
-        type="text"
-        placeholder="0x..."
-        value={raw}
-        onChange={(e) => setRaw(e.target.value)}
-        className="w-full rounded-2xl border border-border bg-background px-3 py-2 text-sm tabular-nums placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring"
-      />
+      <Input placeholder="0x..." value={raw} onChange={(e) => setRaw(e.target.value)} className="tabular-nums" />
       <Button
         size="sm"
         variant="soft"
@@ -76,7 +70,7 @@ function IssueSection({
         <Send className="h-3.5 w-3.5 mr-1.5" />
         {t("Issue certificate")}
       </Button>
-    </div>
+    </Section>
   );
 }
 
@@ -94,16 +88,11 @@ function AllowlistSection({
   const parsed = parseAddresses(raw);
 
   return (
-    <div className="panel relative overflow-hidden p-5 space-y-3">
-      <div className="flex items-center gap-2">
-        <Users className="h-4 w-4 text-brand-blue" />
-        <span className="font-semibold text-sm">{t("Participants")}</span>
-        {parsed.length > 0 && (
-          <span className="ml-auto text-xs text-muted-foreground">
-            {t.plural("{count} address", "{count} addresses", parsed.length)}
-          </span>
-        )}
-      </div>
+    <Section
+      title={t("Participants")}
+      icon={<Users className="h-4 w-4" />}
+      action={parsed.length > 0 ? t.plural("{count} address", "{count} addresses", parsed.length) : undefined}
+    >
       <p className="text-xs text-muted-foreground">
         {t("Publishing replaces the previous list and its links.")}
       </p>
@@ -116,7 +105,7 @@ function AllowlistSection({
       />
       <Button
         size="sm"
-        className="w-full bg-brand-blue hover:bg-brand-blue text-white"
+        className="w-full bg-brand-blue text-white hover:brightness-110"
         disabled={parsed.length === 0 || isSubmitting}
         onClick={() => onPublish(parsed)}
       >
@@ -128,7 +117,7 @@ function AllowlistSection({
         ) : (
           <>
             <CheckCircle2 className="h-3.5 w-3.5 mr-1.5" />
-            {t("Publish")} {parsed.length > 0 ? `${parsed.length} participant${parsed.length !== 1 ? "s" : ""}` : t("participants")}
+            {parsed.length > 0 ? t.plural("Publish {count} participant", "Publish {count} participants", parsed.length) : t("Publish participants")}
           </>
         )}
       </Button>
@@ -145,7 +134,7 @@ function AllowlistSection({
           </ul>
         </div>
       )}
-    </div>
+    </Section>
   );
 }
 
@@ -187,42 +176,31 @@ export function PopManagePage({ contract }: { contract: string }) {
   return (
     <WalletRequired icon={Award} title={t("Connect your wallet")} description={t("Connect to manage your event.")}>
       {isLoading ? (
-        <PageContainer variant="narrow" className="max-w-xl space-y-8">
+        <PageContainer variant="form" className="space-y-8">
           <PageHeaderSkeleton />
           <Skeleton className="h-32 w-full rounded-2xl" />
           <Skeleton className="h-64 w-full rounded-2xl" />
         </PageContainer>
       ) : !collection ? (
-        <div className="max-w-xl mx-auto px-4 pt-24 pb-8 text-center space-y-4">
-          <AlertCircle className="h-10 w-10 text-muted-foreground/20 mx-auto" />
-          <p className="text-muted-foreground">{t("Collection not found.")}</p>
+        <PageState icon={AlertCircle} description={t("Collection not found.")}>
           <Button asChild variant="soft" size="sm">
             <Link href="/launchpad/pop">{t("← Back")}</Link>
           </Button>
-        </div>
+        </PageState>
       ) : !isOwner ? (
-        <div className="max-w-xl mx-auto px-4 pt-24 pb-8 text-center space-y-4">
-          <Award className="h-10 w-10 text-muted-foreground/20 mx-auto" />
-          <p className="text-muted-foreground">{t("You are not the organizer of this event.")}</p>
+        <PageState icon={Award} description={t("You are not the organizer of this event.")}>
           <Button asChild variant="soft" size="sm">
             <Link href="/launchpad/pop">{t("← Back to events")}</Link>
           </Button>
-        </div>
+        </PageState>
       ) : (
-        <PageContainer variant="narrow" className="max-w-xl space-y-8">
-          <TransactionDialog tx={tx} title={t("Manage event")} workingLabel="Updating your event…" firstStepLabel="Prepare">
-            <TransactionSuccess name={collection.name ?? "Event"} title={done.title} description={done.description} txHash={tx.txHash} actions={[{ label: t("Done"), onClick: tx.reset }]} />
+        <PageContainer variant="form" className="space-y-8">
+          <TransactionDialog tx={tx} title={t("Manage event")} workingLabel={t("Updating your event…")} firstStepLabel={t("Prepare")}>
+            <TransactionSuccess name={collection.name ?? t("Event")} title={done.title} description={done.description} txHash={tx.txHash} actions={[{ label: t("Done"), onClick: tx.reset }]} />
           </TransactionDialog>
 
           <PageHeader
-            back={
-              <Button asChild variant="ghost" size="sm" className="-ml-2 w-fit">
-                <Link href="/launchpad/pop">
-                  <ArrowLeft className="h-3.5 w-3.5 mr-1.5" />
-                  {t("All events")}
-                </Link>
-              </Button>
-            }
+            back={<BackButton href="/launchpad/pop" label={t("All events")} />}
             icon={<Award />}
             title={t("Manage event")}
             subtitle={collection.name ?? contract}

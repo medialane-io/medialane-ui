@@ -1,8 +1,10 @@
 "use client";
 
 import { PageContainer } from "./page-container.js";
+import { PageState } from "./page-state.js";
+import { BackButton } from "./back-button.js";
 import { PageHeader, PageHeaderSkeleton } from "./page-header.js";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { assetHref, getListableTokens, getTokenBySymbol, getService, resolveRemixPolicy, getDerivativesTerm } from "@medialane/sdk";
 import Image from "./image.js";
 import Link from "./link.js";
@@ -24,7 +26,7 @@ import { useImageUrl } from "../utils/use-image-url.js";
 import { useMedialaneClient } from "../utils/use-medialane-client.js";
 import { useToken, useTokenBalance } from "../utils/use-tokens.js";
 import { useCollection } from "../utils/use-collections.js";
-import { ChevronLeft, ChevronDown, Shield, DollarSign, Percent, HandCoins, Loader2, Check } from "lucide-react";
+import { ChevronDown, Shield, DollarSign, Percent, HandCoins, Loader2, Check } from "lucide-react";
 import { useT } from "../i18n/provider.js";
 import { ActionButton } from "./action-button.js";
 import { IconTile } from "./icon-tile.js";
@@ -77,7 +79,7 @@ export function LicenseRequestPage({ contract, tokenId }: { contract: string; to
 
   const handleSubmit = async () => {
     if (!price || isNaN(parseFloat(price)) || parseFloat(price) <= 0) {
-      setError("Enter a license fee");
+      setError(t("Enter a license fee"));
       return;
     }
     setLoading(true);
@@ -107,9 +109,14 @@ export function LicenseRequestPage({ contract, tokenId }: { contract: string; to
     }
   };
 
+  const redirect = !!token && !!walletAddress && (viewerIsOwner || !policy.dealAvailable);
+  useEffect(() => {
+    if (redirect) router.replace(assetHref("STARKNET", contract, tokenId));
+  }, [redirect, router, contract, tokenId]);
+
   if (tokenLoading) {
     return (
-      <PageContainer variant="narrow" className="max-w-2xl space-y-8">
+      <PageContainer variant="form" className="space-y-8">
         <PageHeaderSkeleton />
         {[1, 2, 3].map((i) => <Skeleton key={i} className="h-32 w-full rounded-xl" />)}
       </PageContainer>
@@ -117,34 +124,26 @@ export function LicenseRequestPage({ contract, tokenId }: { contract: string; to
   }
   if (!token) {
     return (
-      <div className="max-w-2xl mx-auto px-4 py-24 text-center space-y-4">
-        <p className="text-2xl font-bold">{t("Asset not found")}</p>
+      <PageState title={t("Asset not found")}>
         <Button asChild variant="soft"><Link href="/">{t("Go home")}</Link></Button>
-      </div>
+      </PageState>
     );
   }
 
   if (!walletAddress) {
     return (
-      <div className="max-w-2xl mx-auto px-4 py-24">
+      <PageState>
         {walletLoading ? <Skeleton className="h-40 w-full rounded-xl" /> : <SignInPrompt icon={<HandCoins className="h-10 w-10 text-muted-foreground/30" />} title={t("Sign in to request a license")} />}
-      </div>
+      </PageState>
     );
   }
 
-  if (viewerIsOwner || !policy.dealAvailable) {
-    router.replace(assetHref("STARKNET", contract, tokenId));
-    return null;
-  }
+  if (redirect) return null;
 
   return (
-    <PageContainer variant="narrow" className="max-w-2xl space-y-8">
+    <PageContainer variant="form" className="space-y-8">
       <PageHeader
-        back={
-          <Link href={assetHref("STARKNET", contract, tokenId)} className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
-            <ChevronLeft className="h-4 w-4" /> {t("Back to asset")}
-          </Link>
-        }
+        back={<BackButton href={assetHref("STARKNET", contract, tokenId)} label={t("Back to asset")} />}
         icon={<HandCoins />}
         title={t("License this asset")}
         subtitle={t("Propose terms and a fee to the creator.")}
@@ -214,7 +213,7 @@ export function LicenseRequestPage({ contract, tokenId }: { contract: string; to
               <Select value={currency} onValueChange={setCurrency}>
                 <SelectTrigger className="w-28"><SelectValue /></SelectTrigger>
                 <SelectContent>
-                  {TOKENS.map((t) => <SelectItem key={t.symbol} value={t.symbol}>{t.symbol}</SelectItem>)}
+                  {TOKENS.map((token) => <SelectItem key={token.symbol} value={token.symbol}>{token.symbol}</SelectItem>)}
                 </SelectContent>
               </Select>
             </div>

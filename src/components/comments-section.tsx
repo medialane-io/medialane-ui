@@ -303,7 +303,7 @@ export function CommentsSection({ contract, tokenId, className }: CommentsSectio
         />
       )}
 
-      <TransactionDialog tx={tx} title={t("Comment")} workingLabel="Posting your comment…" firstStepLabel="Prepare comment">
+      <TransactionDialog tx={tx} title={t("Comment")} workingLabel={t("Posting your comment…")} firstStepLabel={t("Prepare comment")}>
         <TransactionSuccess
           name="Comment"
           {...successMessages.commented(t)}
