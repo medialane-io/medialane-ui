@@ -11,6 +11,8 @@ import { ResultThumbnail } from "./result-thumbnail.js";
 import Link from "./link.js";
 import { useRouter } from "./router.js";
 import { PageContainer } from "./page-container.js";
+import { PageHeader } from "./page-header.js";
+import { StatPillRow } from "./stat-tile.js";
 import { CollectionCard, CollectionCardSkeleton } from "./collection-card.js";
 import { LoadMoreSentinel } from "./load-more-sentinel.js";
 import { cn } from "../utils/cn.js";
@@ -20,7 +22,6 @@ import { SEARCH_MIN_LENGTH, useSearch } from "../utils/use-search.js";
 import { collectionHref, type ApiCollection } from "@medialane/sdk";
 import { useT } from "../i18n/provider.js";
 import { msg } from "../i18n/translate.js";
-import { useFormat } from "../i18n/use-format.js";
 
 const PAGE_SIZE = 25;
 
@@ -123,7 +124,6 @@ function CollectionSearch() {
 }
 
 export function CollectionsPage() {
-  const intl = useFormat();
   const t = useT();
   const counts = useStandardCounts();
   const [sort, setSort]           = useState<CollectionSort>("recent");
@@ -187,26 +187,15 @@ export function CollectionsPage() {
   };
 
   return (
-    <PageContainer className="box-border max-w-full pt-14 pb-8 space-y-8">
-
-      <div className="space-y-2 pt-8">
-
-        <h1 className="text-3xl font-bold">{t("Onchain collections")}</h1>
-        <div className="flex flex-wrap items-center gap-2 mt-1">
-          {counts?.single != null && counts.multi != null && (
-            <div className="flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-sm bg-background/40">
-              <span className="font-bold tabular-nums">{intl.number((counts.single + counts.multi))}</span>
-              <span className="text-muted-foreground">{t("Collections")}</span>
-            </div>
-          )}
-          {counts?.multi != null && (
-            <div className="flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-sm bg-background/40">
-              <span className="font-bold tabular-nums">{intl.number(counts.multi)}</span>
-              <span className="text-muted-foreground">{t("Multi editions")}</span>
-            </div>
-          )}
-        </div>
-      </div>
+    <PageContainer className="space-y-8">
+      <PageHeader title={t("Onchain collections")}>
+        <StatPillRow
+          items={[
+            { label: t("Collections"), value: counts?.single != null && counts.multi != null ? counts.single + counts.multi : undefined },
+            { label: t("Multi editions"), value: counts?.multi ?? undefined },
+          ]}
+        />
+      </PageHeader>
 
       {(featuredLoading || featuredCollections.length > 0) && (
         <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 sm:gap-5">

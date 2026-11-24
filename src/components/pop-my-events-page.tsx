@@ -1,5 +1,7 @@
 "use client";
 
+import { PageContainer } from "./page-container.js";
+import { PageHeader } from "./page-header.js";
 import { Award, Plus, Settings } from "lucide-react";
 import type { ApiCollection } from "@medialane/sdk";
 import Image from "./image.js";
@@ -68,25 +70,20 @@ export function PopMyEventsPage() {
   }
 
   return (
-    <div className="max-w-2xl mx-auto px-4 pt-10 pb-16 space-y-8">
-      <FadeIn>
-        <div className="flex items-center justify-between">
-          <div>
-            <span className="pill inline-flex gap-1.5 mb-2">
-              <Award className="h-3 w-3" />
-              {t("POP Protocol")}
-            </span>
-            <h1 className="text-2xl font-bold mt-1">{t("My events")}</h1>
-            <p className="text-sm text-muted-foreground">{t("Events you've created")}</p>
-          </div>
+    <PageContainer variant="narrow" className="max-w-2xl space-y-8">
+      <PageHeader
+        icon={<Award />}
+        title={t("My events")}
+        subtitle={t("Events you've created")}
+        action={
           <Button asChild size="sm" className="bg-brand-blue hover:bg-brand-blue text-white gap-1.5">
             <Link href="/launchpad/pop/create">
               <Plus className="h-3.5 w-3.5" />
               {t("New event")}
             </Link>
           </Button>
-        </div>
-      </FadeIn>
+        }
+      />
 
       {isLoading ? (
         <div className="space-y-3">
@@ -116,6 +113,6 @@ export function PopMyEventsPage() {
           ))}
         </Stagger>
       )}
-    </div>
+    </PageContainer>
   );
 }

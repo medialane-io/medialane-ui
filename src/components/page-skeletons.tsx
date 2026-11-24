@@ -4,6 +4,7 @@ import { AssetCardSkeleton } from "./asset-card.js";
 import { CollectionCardSkeleton } from "./collection-card.js";
 import { ListingCardSkeleton } from "./listing-card.js";
 import { PageContainer } from "./page-container.js";
+import { PageHeaderSkeleton } from "./page-header.js";
 import { CreatorHeader } from "./creator-header.js";
 import { ActivityListSkeleton } from "./activity-row.js";
 
@@ -11,17 +12,8 @@ const GRID = "grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-
 
 export function AccountLoading() {
   return (
-    <div className="space-y-6 px-4 pt-20 pb-8 sm:px-6 lg:px-8 min-h-screen">
-      <div className="flex items-center justify-between gap-4">
-        <div className="min-w-0 space-y-2">
-          <Skeleton className="h-3 w-16" />
-          <Skeleton className="h-8 w-64 sm:h-9 sm:w-80" />
-        </div>
-        <div className="ml-auto flex shrink-0 items-center gap-2">
-          <Skeleton className="h-7 w-20 rounded-full" />
-          <Skeleton className="h-9 w-9 rounded-full" />
-        </div>
-      </div>
+    <PageContainer className="min-h-screen space-y-8">
+      <PageHeaderSkeleton />
 
       <div className="flex items-center gap-1.5 overflow-hidden">
         {[104, 132, 112, 84].map((w, i) => (
@@ -34,7 +26,7 @@ export function AccountLoading() {
           <TokenCardSkeleton key={i} />
         ))}
       </div>
-    </div>
+    </PageContainer>
   );
 }
 
@@ -62,10 +54,8 @@ export function CreatorLoading() {
 
 export function ActivitiesLoading() {
   return (
-    <PageContainer className="box-border max-w-full pt-14 pb-8 space-y-8">
-      <div className="space-y-2 pt-8">
-        <Skeleton className="h-9 w-64" />
-      </div>
+    <PageContainer className="space-y-8">
+      <PageHeaderSkeleton />
       <div className="space-y-5">
         <Skeleton className="h-5 w-36" />
         <div className="flex flex-wrap gap-2">
@@ -81,14 +71,8 @@ export function ActivitiesLoading() {
 
 export function CollectionsLoading() {
   return (
-    <PageContainer className="box-border max-w-full pt-14 pb-8 space-y-8">
-      <div className="space-y-2 pt-8">
-        <Skeleton className="h-9 w-72" />
-        <div className="flex flex-wrap items-center gap-2 mt-1">
-          <Skeleton className="h-8 w-36 rounded-full" />
-          <Skeleton className="h-8 w-40 rounded-full" />
-        </div>
-      </div>
+    <PageContainer className="space-y-8">
+      <PageHeaderSkeleton stats={2} />
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 sm:gap-5">
         {Array.from({ length: 10 }).map((_, i) => (
           <CollectionCardSkeleton key={i} />
@@ -100,14 +84,8 @@ export function CollectionsLoading() {
 
 export function MarketplaceLoading() {
   return (
-    <PageContainer className="box-border max-w-full pt-14 pb-8 space-y-8">
-      <div className="space-y-2 pt-8">
-        <Skeleton className="h-9 w-64" />
-        <div className="flex flex-wrap items-center gap-2 mt-1">
-          <Skeleton className="h-8 w-28 rounded-full" />
-          <Skeleton className="h-8 w-24 rounded-full" />
-        </div>
-      </div>
+    <PageContainer className="space-y-8">
+      <PageHeaderSkeleton stats={2} />
       <Skeleton className="h-10 w-full rounded-full" />
       <div className="flex items-center gap-2">
         <Skeleton className="h-10 flex-1 rounded-full" />
@@ -160,17 +138,8 @@ export function CollectionLoading() {
 
 export function IpTypeLoading() {
   return (
-    <PageContainer className="box-border max-w-full pt-20 pb-16 space-y-8">
-      <div className="space-y-4">
-        <div className="flex items-center gap-4">
-          <Skeleton className="h-14 w-14 rounded-2xl shrink-0" />
-          <div className="space-y-2">
-            <Skeleton className="h-9 w-56" />
-            <Skeleton className="h-4 w-72 max-w-full" />
-          </div>
-        </div>
-        <Skeleton className="h-9 w-12 rounded-full" />
-      </div>
+    <PageContainer className="space-y-8">
+      <PageHeaderSkeleton stats={1} />
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
         {Array.from({ length: 10 }).map((_, i) => (
           <TokenCardSkeleton key={i} />

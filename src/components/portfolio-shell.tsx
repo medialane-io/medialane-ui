@@ -5,6 +5,7 @@ import { Wallet } from "lucide-react";
 import { usePathname } from "./router.js";
 import { Button } from "./button.js";
 import { Skeleton } from "./skeleton.js";
+import { PageContainer } from "./page-container.js";
 import { PortfolioHeader } from "./portfolio-header.js";
 import { PortfolioChipFilter } from "./portfolio-chip-filter.js";
 import { useMedialaneApp } from "./medialane-app.js";
@@ -93,7 +94,7 @@ export function PortfolioShell({ tabs = PORTFOLIO_TABS, remixOffers, licensing, 
   const shownTabs = visiblePortfolioTabs(tabs, present, pathname ?? "");
 
   return (
-    <div className="space-y-6 px-4 pt-20 pb-8 sm:px-6 lg:px-8">
+    <PageContainer className="space-y-8">
       <PortfolioHeader
         address={address}
         score={rewards ? { levelName: rewards.currentLevelName, totalXp: rewards.totalXp, href: "/rewards" } : null}
@@ -105,6 +106,6 @@ export function PortfolioShell({ tabs = PORTFOLIO_TABS, remixOffers, licensing, 
         showAll={false}
       />
       {children}
-    </div>
+    </PageContainer>
   );
 }

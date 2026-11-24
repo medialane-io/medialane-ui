@@ -3,7 +3,8 @@
 import { useEffect, useState } from "react";
 import Link from "./link.js";
 import Image from "./image.js";
-import { ServiceHeader } from "./service-header.js";
+import { PageContainer } from "./page-container.js";
+import { PageHeader } from "./page-header.js";
 import { BackButton } from "./back-button.js";
 import { FadeIn, Stagger, StaggerItem } from "./motion-primitives.js";
 import { Skeleton } from "./skeleton.js";
@@ -100,22 +101,15 @@ export function RemixBrowsePage() {
   const { tokens, isLoading, hasMore, error, loadMore } = useRemixableTokens();
 
   return (
-    <div className="pb-16">
-      <section className="px-4 pt-10 max-w-5xl mx-auto">
-        <BackButton />
-        <FadeIn>
-          <div className="mt-6">
-            <ServiceHeader
-              plain
-              icon={<GitBranch className="h-4 w-4 text-white" />}
-              title={t("Remix")}
-              subtitle={t("Pick a work open to remixing.")}
-            />
-          </div>
-        </FadeIn>
-      </section>
+    <PageContainer variant="narrow" className="space-y-8">
+      <PageHeader
+        back={<BackButton />}
+        icon={<GitBranch />}
+        title={t("Remix")}
+        subtitle={t("Pick a work open to remixing.")}
+      />
 
-      <section className="px-4 pt-8 max-w-5xl mx-auto space-y-6">
+      <section className="space-y-6">
         {isLoading && tokens.length === 0 ? (
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
             {Array.from({ length: 8 }).map((_, i) => (
@@ -159,6 +153,6 @@ export function RemixBrowsePage() {
           </>
         )}
       </section>
-    </div>
+    </PageContainer>
   );
 }

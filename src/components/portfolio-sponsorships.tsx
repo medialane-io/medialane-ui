@@ -1,5 +1,6 @@
 "use client";
 
+import { SectionHeading } from "./section-heading.js";
 import { useState } from "react";
 import { CheckCircle2, Handshake, Loader2, X } from "lucide-react";
 import { assetHref, type ApiSponsorshipOffer } from "@medialane/sdk";
@@ -197,13 +198,13 @@ export function PortfolioSponsorships() {
   return (
     <div className="space-y-8">
       <section className="space-y-3">
-        <h2 className="text-sm font-bold flex items-center gap-2"><Handshake className="h-4 w-4 text-brand-rose" />{t("Proposals awaiting your decision")}</h2>
+        <SectionHeading icon={<Handshake />} title={t("Proposals awaiting your decision")} />
         <ReceivedProposals walletAddress={walletAddress} />
       </section>
 
       {offers.length > 0 && (
         <section className="space-y-3">
-          <h2 className="text-sm font-bold">{t("Bids on your offers")}</h2>
+          <SectionHeading title={t("Bids on your offers")} />
           <div className="space-y-2">
             {offers.map((o) => <OfferBidsRow key={o.id} offer={o} />)}
           </div>
@@ -211,12 +212,12 @@ export function PortfolioSponsorships() {
       )}
 
       <section className="space-y-3">
-        <h2 className="text-sm font-bold">{t("Proposals you've sent")}</h2>
+        <SectionHeading title={t("Proposals you've sent")} />
         <SentProposals walletAddress={walletAddress} />
       </section>
 
       <section className="space-y-3">
-        <h2 className="text-sm font-bold">{t("Licenses you hold")}</h2>
+        <SectionHeading title={t("Licenses you hold")} />
         <LicenseList loading={heldLoading} empty={emptyMessages.heldLicenses}>
           {held.map((l) => (
             <div key={l.id} className="panel relative overflow-hidden p-4">
@@ -230,7 +231,7 @@ export function PortfolioSponsorships() {
       </section>
 
       <section className="space-y-3">
-        <h2 className="text-sm font-bold">{t("Licenses issued on your work")}</h2>
+        <SectionHeading title={t("Licenses issued on your work")} />
         <LicenseList loading={issuedLoading} empty={emptyMessages.issuedLicenses}>
           {issued.map((l) => (
             <div key={l.id} className="panel relative overflow-hidden p-4">

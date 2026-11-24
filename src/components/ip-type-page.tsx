@@ -9,6 +9,7 @@ import { Button } from "./button.js";
 import { Dialog, DialogContent, DialogTitle } from "./dialog.js";
 import { Input } from "./input.js";
 import { PageContainer } from "./page-container.js";
+import { PageHeader } from "./page-header.js";
 import { LoadMoreSentinel } from "./load-more-sentinel.js";
 import { IP_TYPE_CONFIG, IP_TYPE_MAP } from "./ip-type-badge.js";
 import { TokenCard, TokenCardSkeleton } from "./token-card.js";
@@ -147,27 +148,16 @@ export function IpTypePage({ slug, useMarketActions }: IpTypePageProps) {
   const listedCount = allTokens.filter((t) => (t.activeOrders?.length ?? 0) > 0).length;
 
   return (
-    <PageContainer className="box-border max-w-full pt-20 pb-16 space-y-8">
-
-      <div className="space-y-4">
-        <div className="flex items-center gap-4">
-          {config && Icon && (
-            <IconTile size="lg">
-              <Icon />
-            </IconTile>
-          )}
-          <div>
-            <h1 className="text-3xl font-semibold">{config?.label ? t(config.label) : slug}</h1>
-            <p className="text-muted-foreground mt-0.5">
-              {meta?.total != null ? (
-                <>{t("{total} assets · {listedCount} market", { total: intl.number(meta.total), listedCount })}</>
-              ) : (
-                t("Browsing indexed digital assets on Medialane")
-              )}
-            </p>
-          </div>
-        </div>
-
+    <PageContainer className="space-y-8">
+      <PageHeader
+        icon={config && Icon ? <Icon /> : undefined}
+        title={config?.label ? t(config.label) : slug}
+        subtitle={
+          meta?.total != null
+            ? t("{total} assets · {listedCount} market", { total: intl.number(meta.total), listedCount })
+            : t("Browsing indexed digital assets on Medialane")
+        }
+      >
         <div className="flex items-center gap-2 flex-wrap">
           <button
             onClick={() => setFiltersOpen(true)}
@@ -212,101 +202,101 @@ export function IpTypePage({ slug, useMarketActions }: IpTypePageProps) {
             </Badge>
           )}
         </div>
+      </PageHeader>
 
-        <Dialog open={filtersOpen} onOpenChange={setFiltersOpen}>
-          <DialogContent className="w-full max-w-sm sm:max-w-md p-0 overflow-hidden gap-0 flex flex-col max-h-[85svh]">
-            <div className="flex items-center justify-between px-5 py-4 border-b border-border/60 pr-12">
-              <DialogTitle className="text-base font-bold flex items-center gap-2">
-                <SlidersHorizontal className="h-4 w-4 text-primary" />
-                {t("Filters")}
-              </DialogTitle>
-              {hasActiveFilters && (
-                <Button variant="ghost" size="sm" className="h-7 text-xs text-muted-foreground" onClick={resetAll}>
-                  {t("Clear all")}
-                </Button>
-              )}
-            </div>
-
-            <div className="flex-1 overflow-y-auto px-5 py-4 space-y-5">
-
-              <div className="space-y-2">
-                <p className="text-2xs font-semibold text-muted-foreground">{t("Status")}</p>
-                <div className="flex flex-wrap gap-1.5">
-                  <FilterChip active={!listedOnly} onClick={() => setListedOnly(false)} label={t("All")} />
-                  <FilterChip
-                    active={listedOnly}
-                    onClick={() => setListedOnly(true)}
-                    label={`${t("Listed only")}${listedCount > 0 ? ` (${listedCount})` : ""}`}
-                  />
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <p className="text-2xs font-semibold text-muted-foreground">{t("Sort")}</p>
-                <div className="flex flex-wrap gap-1.5">
-                  <FilterChip active={sortOrder === "recent"} onClick={() => setSortOrder("recent")} label={t("Recent")} />
-                  <FilterChip active={sortOrder === "price_asc"} onClick={() => setSortOrder("price_asc")} label={t("Price ↑")} />
-                  <FilterChip active={sortOrder === "price_desc"} onClick={() => setSortOrder("price_desc")} label={t("Price ↓")} />
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <p className="text-2xs font-semibold text-muted-foreground">{t("License")}</p>
-                <div className="flex flex-wrap gap-1.5">
-                  {["all", "CC0", "CC BY", "CC BY-SA", "CC BY-NC", "CC BY-ND", "Custom"].map((lic) => (
-                    <FilterChip
-                      key={lic}
-                      active={licenseFilter === lic}
-                      onClick={() => setLicenseFilter(lic)}
-                      label={lic === "all" ? t("All licenses") : lic}
-                    />
-                  ))}
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <p className="text-2xs font-semibold text-muted-foreground">{t("Creator")}</p>
-                <div className="relative">
-                  <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
-                  <Input
-                    className="h-9 text-sm pl-8"
-                    placeholder={t("Name or wallet address…")}
-                    value={creatorSearchInput}
-                    onChange={(e) => setCreatorSearchInput(e.target.value)}
-                  />
-                </div>
-              </div>
-
-              <div className="space-y-2 pt-1 border-t border-border/60">
-                <p className="text-2xs font-semibold text-muted-foreground">{t("IP type")}</p>
-                <div className="flex flex-wrap gap-1.5">
-                  {IP_TYPE_CONFIG.map((tab) => (
-                    <Link
-                      key={tab.slug}
-                      href={`/${tab.slug}`}
-                      className={cn(
-                        "inline-flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full transition-colors whitespace-nowrap",
-                        tab.slug === slug
-                          ? "bg-primary/15 text-primary font-medium"
-                          : "text-muted-foreground bg-background/40"
-                      )}
-                    >
-                      <tab.icon className={cn("h-3 w-3", tab.slug === slug ? tab.colorClass : "")} />
-                      {t(tab.label)}
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            <div className="px-5 py-3 border-t border-border/60">
-              <Button className="w-full" onClick={() => setFiltersOpen(false)}>
-                {t("Apply filters")}
+      <Dialog open={filtersOpen} onOpenChange={setFiltersOpen}>
+        <DialogContent className="w-full max-w-sm sm:max-w-md p-0 overflow-hidden gap-0 flex flex-col max-h-[85svh]">
+          <div className="flex items-center justify-between px-5 py-4 border-b border-border/60 pr-12">
+            <DialogTitle className="text-base font-bold flex items-center gap-2">
+              <SlidersHorizontal className="h-4 w-4 text-primary" />
+              {t("Filters")}
+            </DialogTitle>
+            {hasActiveFilters && (
+              <Button variant="ghost" size="sm" className="h-7 text-xs text-muted-foreground" onClick={resetAll}>
+                {t("Clear all")}
               </Button>
+            )}
+          </div>
+
+          <div className="flex-1 overflow-y-auto px-5 py-4 space-y-5">
+
+            <div className="space-y-2">
+              <p className="text-2xs font-semibold text-muted-foreground">{t("Status")}</p>
+              <div className="flex flex-wrap gap-1.5">
+                <FilterChip active={!listedOnly} onClick={() => setListedOnly(false)} label={t("All")} />
+                <FilterChip
+                  active={listedOnly}
+                  onClick={() => setListedOnly(true)}
+                  label={`${t("Listed only")}${listedCount > 0 ? ` (${listedCount})` : ""}`}
+                />
+              </div>
             </div>
-          </DialogContent>
-        </Dialog>
-      </div>
+
+            <div className="space-y-2">
+              <p className="text-2xs font-semibold text-muted-foreground">{t("Sort")}</p>
+              <div className="flex flex-wrap gap-1.5">
+                <FilterChip active={sortOrder === "recent"} onClick={() => setSortOrder("recent")} label={t("Recent")} />
+                <FilterChip active={sortOrder === "price_asc"} onClick={() => setSortOrder("price_asc")} label={t("Price ↑")} />
+                <FilterChip active={sortOrder === "price_desc"} onClick={() => setSortOrder("price_desc")} label={t("Price ↓")} />
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <p className="text-2xs font-semibold text-muted-foreground">{t("License")}</p>
+              <div className="flex flex-wrap gap-1.5">
+                {["all", "CC0", "CC BY", "CC BY-SA", "CC BY-NC", "CC BY-ND", "Custom"].map((lic) => (
+                  <FilterChip
+                    key={lic}
+                    active={licenseFilter === lic}
+                    onClick={() => setLicenseFilter(lic)}
+                    label={lic === "all" ? t("All licenses") : lic}
+                  />
+                ))}
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <p className="text-2xs font-semibold text-muted-foreground">{t("Creator")}</p>
+              <div className="relative">
+                <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
+                <Input
+                  className="h-9 text-sm pl-8"
+                  placeholder={t("Name or wallet address…")}
+                  value={creatorSearchInput}
+                  onChange={(e) => setCreatorSearchInput(e.target.value)}
+                />
+              </div>
+            </div>
+
+            <div className="space-y-2 pt-1 border-t border-border/60">
+              <p className="text-2xs font-semibold text-muted-foreground">{t("IP type")}</p>
+              <div className="flex flex-wrap gap-1.5">
+                {IP_TYPE_CONFIG.map((tab) => (
+                  <Link
+                    key={tab.slug}
+                    href={`/${tab.slug}`}
+                    className={cn(
+                      "inline-flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full transition-colors whitespace-nowrap",
+                      tab.slug === slug
+                        ? "bg-primary/15 text-primary font-medium"
+                        : "text-muted-foreground bg-background/40"
+                    )}
+                  >
+                    <tab.icon className={cn("h-3 w-3", tab.slug === slug ? tab.colorClass : "")} />
+                    {t(tab.label)}
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="px-5 py-3 border-t border-border/60">
+            <Button className="w-full" onClick={() => setFiltersOpen(false)}>
+              {t("Apply filters")}
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
 
       {isInitialLoading ? (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">

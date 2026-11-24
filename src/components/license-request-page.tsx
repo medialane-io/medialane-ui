@@ -1,5 +1,7 @@
 "use client";
 
+import { PageContainer } from "./page-container.js";
+import { PageHeader, PageHeaderSkeleton } from "./page-header.js";
 import { useState } from "react";
 import { assetHref, getListableTokens, getTokenBySymbol, getService, resolveRemixPolicy, getDerivativesTerm } from "@medialane/sdk";
 import Image from "./image.js";
@@ -107,10 +109,10 @@ export function LicenseRequestPage({ contract, tokenId }: { contract: string; to
 
   if (tokenLoading) {
     return (
-      <div className="max-w-2xl mx-auto px-4 pt-14 pb-8 space-y-4">
-        <Skeleton className="h-8 w-48" />
+      <PageContainer variant="narrow" className="max-w-2xl space-y-8">
+        <PageHeaderSkeleton />
         {[1, 2, 3].map((i) => <Skeleton key={i} className="h-32 w-full rounded-xl" />)}
-      </div>
+      </PageContainer>
     );
   }
   if (!token) {
@@ -136,20 +138,17 @@ export function LicenseRequestPage({ contract, tokenId }: { contract: string; to
   }
 
   return (
-    <div className="max-w-2xl mx-auto px-4 pt-14 pb-12 space-y-6">
-      <div className="space-y-3">
-        <Link href={assetHref("STARKNET", contract, tokenId)} className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
-          <ChevronLeft className="h-4 w-4" /> {t("Back to asset")}
-        </Link>
-        <div className="flex items-center gap-2 text-primary">
-          <HandCoins className="h-5 w-5" />
-          <span className="text-sm font-semibold">{t("Request a license")}</span>
-        </div>
-        <h1 className="text-3xl font-bold">{t("License this asset")}</h1>
-        <p className="text-muted-foreground max-w-xl">
-          {t("Propose terms and a fee to the creator.")}
-        </p>
-      </div>
+    <PageContainer variant="narrow" className="max-w-2xl space-y-8">
+      <PageHeader
+        back={
+          <Link href={assetHref("STARKNET", contract, tokenId)} className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
+            <ChevronLeft className="h-4 w-4" /> {t("Back to asset")}
+          </Link>
+        }
+        icon={<HandCoins />}
+        title={t("License this asset")}
+        subtitle={t("Propose terms and a fee to the creator.")}
+      />
 
       <div className="panel flex items-center gap-3 p-4">
         {originalImage && (
@@ -233,6 +232,6 @@ export function LicenseRequestPage({ contract, tokenId }: { contract: string; to
           </ActionButton>
         </>
       )}
-    </div>
+    </PageContainer>
   );
 }

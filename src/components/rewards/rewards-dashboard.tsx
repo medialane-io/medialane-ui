@@ -2,6 +2,8 @@
 
 import Link from "../link.js";
 import { Button } from "../button.js";
+import { PageHeader } from "../page-header.js";
+import { SectionHeading } from "../section-heading.js";
 import { Skeleton } from "../skeleton.js";
 import { useMedialaneApp } from "../medialane-app.js";
 import { useRewards, useRewardsConfig, useRewardsEvents } from "../../utils/use-rewards.js";
@@ -113,24 +115,6 @@ const EARN_GROUPS: {
   },
 ];
 
-function Hero() {
-  const t = useT();
-  return (
-    <section className="space-y-5">
-      <h1 className="text-5xl sm:text-6xl font-black tracking-tight leading-[1.02]">
-        {t("Community")} <span className="text-brand-orange">{t("Rewards")}</span>
-      </h1>
-      <p className="text-lg text-foreground/70 max-w-xl leading-relaxed font-medium">
-        {t("Every action earns XP toward the Creator's Fund.")}{" "}
-        <Link href="/journey" className="text-foreground underline underline-offset-2 hover:text-brand-orange transition-colors">
-          {t("See the full system")}
-        </Link>
-        .
-      </p>
-    </section>
-  );
-}
-
 function SignInButton() {
   const t = useT();
   const { onRequireWallet, connectLabel } = useMedialaneApp();
@@ -209,7 +193,7 @@ function PersonalPanel({ address }: { address: string | null | undefined }) {
 
   return (
     <section className="space-y-5">
-      <SectionTitle>{t("Your breakdown")}</SectionTitle>
+      <SectionHeading title={t("Your breakdown")} />
       <div className="divide-y divide-foreground/[0.06]">
         {Object.entries(rewards.breakdown)
           .sort(([, a], [, b]) => b - a)
@@ -238,10 +222,7 @@ function CommunityPanel({ address }: { address: string | null | undefined }) {
   const t = useT();
   return (
     <section className="space-y-5">
-      <div>
-        <SectionTitle>{t("Community")}</SectionTitle>
-        <p className="text-base text-foreground/60 mt-1.5 font-medium">{t("Real members already earning XP.")}</p>
-      </div>
+      <SectionHeading title={t("Community")} subtitle={t("Real members already earning XP.")} />
       <LeaderboardPanel myAddress={address} showHeading={false} limit={12} />
     </section>
   );
@@ -251,7 +232,7 @@ function EarnMorePanel() {
   const t = useT();
   return (
     <section className="space-y-6">
-      <SectionTitle>{t("Ways to earn")}</SectionTitle>
+      <SectionHeading title={t("Ways to earn")} />
       {EARN_GROUPS.map((group) => (
         <div key={group.title} className="space-y-3">
           <p className={`text-sm font-black uppercase tracking-wide ${group.textClass}`}>{t(group.title)}</p>
@@ -333,7 +314,7 @@ function BadgesPanel({ address }: { address: string | null | undefined }) {
 
   return (
     <section className="space-y-4">
-      <SectionTitle>{t("Badges to earn")}</SectionTitle>
+      <SectionHeading title={t("Badges to earn")} />
       <div className="grid grid-cols-3 gap-3">
         {config.badges.map((badge: ApiRewardsBadge) => {
           const isEarned = earnedKeys.has(badge.key);
@@ -356,11 +337,8 @@ function BadgesPanel({ address }: { address: string | null | undefined }) {
   );
 }
 
-function SectionTitle({ children }: { children: React.ReactNode }) {
-  return <h2 className="text-2xl font-black tracking-tight text-foreground">{children}</h2>;
-}
-
 export function RewardsDashboard() {
+  const t = useT();
   const { walletAddress: address } = useMedialaneApp();
   const { data: rewards } = useRewards(address);
   const { leveledUpTo, newBadgeKeys, dismiss } = useRewardsCelebrations(address, rewards ?? null);
@@ -388,10 +366,19 @@ export function RewardsDashboard() {
         />
       )}
 
-      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-8">
-        <Hero />
-        <StatusPanel address={address} />
-      </div>
+      <PageHeader
+        title={`${t("Community")} ${t("Rewards")}`}
+        subtitle={
+          <>
+            {t("Every action earns XP toward the Creator's Fund.")}{" "}
+            <Link href="/journey" className="text-foreground underline underline-offset-2 hover:text-primary transition-colors">
+              {t("See the full system")}
+            </Link>
+            .
+          </>
+        }
+        action={<StatusPanel address={address} />}
+      />
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-14 items-start">
 

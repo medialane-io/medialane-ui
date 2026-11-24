@@ -1,5 +1,7 @@
 "use client";
 
+import { PageContainer } from "../page-container.js";
+import { PageHeaderSkeleton } from "../page-header.js";
 import { useEffect, useState, type ReactNode } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -149,11 +151,11 @@ export function TierMintForm({ contract: rawContract, preset, aside }: TierMintF
   if (isLoading) {
     return (
       <WalletRequired {...gateProps}>
-        <div className="max-w-5xl mx-auto px-4 pt-10 pb-16 space-y-4">
-          <Skeleton className="h-6 w-24" />
+        <PageContainer variant="narrow" className="space-y-8">
+          <PageHeaderSkeleton />
           <Skeleton className="h-32 w-full rounded-2xl" />
           <Skeleton className="h-64 w-full rounded-2xl" />
-        </div>
+        </PageContainer>
       </WalletRequired>
     );
   }

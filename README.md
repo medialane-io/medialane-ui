@@ -148,6 +148,30 @@ import {
 
 ---
 
+### Page layout
+
+```tsx
+import { PageContainer, PageHeader, PageHeaderSkeleton, StatPillRow } from "@medialane/ui";
+
+<PageContainer className="space-y-8">
+  <PageHeader title="Onchain collections">
+    <StatPillRow items={[{ label: "Collections", value: 210 }]} />
+  </PageHeader>
+  {/* page content */}
+</PageContainer>
+```
+
+Every page starts with `PageHeader`, inside `PageContainer`. Browse pages use the default full-width container; focused pages (forms, service pages) use `variant="narrow"`.
+
+| Component | Description |
+|---|---|
+| `<PageContainer>` | Page width and padding; `variant` is `app` (default), `content` or `narrow` |
+| `<PageHeader title subtitle icon back action>` | The page title block; children render below it (stat pills, filters) |
+| `<PageHeaderSkeleton stats={2} />` | Loading placeholder for `PageHeader` |
+| `<SectionHeading title subtitle icon href action>` | The title of a section on a page |
+
+---
+
 ### v0.3: Activity + Launchpad + Marketplace
 
 ```ts

@@ -2,7 +2,8 @@
 
 import { useMemo, type ReactNode } from "react";
 import { getService } from "@medialane/sdk";
-import { FadeIn } from "./motion-primitives.js";
+import { PageContainer } from "./page-container.js";
+import { PageHeader } from "./page-header.js";
 import { LaunchpadGroupedSections, LAUNCHPAD_ROUTE_OVERRIDES, selectLaunchpadServices, useLaunchpadFilter, type ServiceOverrides } from "./launchpad-services.js";
 import { LAUNCHPAD_SERVICE_GROUPS } from "../data/launchpad-services.js";
 import { LaunchpadFilterBar } from "./launchpad-filter-bar.js";
@@ -41,20 +42,16 @@ export function LaunchpadPage({ fastMint, hideGroups = [], excludeKeys }: Launch
     .filter((s) => s.count > 0);
 
   return (
-    <div className="relative pb-20 space-y-16 sm:space-y-24">
-      <section className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 pt-20 sm:pt-24 space-y-6">
-        <FadeIn>
-          <h1 className="text-3xl sm:text-4xl font-semibold leading-tight">{t("Creator Launchpad")}</h1>
-        </FadeIn>
-        <FadeIn delay={0.06}>{fastMint}</FadeIn>
+    <PageContainer className="space-y-12 sm:space-y-16">
+      <section className="space-y-8">
+        <PageHeader title={t("Creator Launchpad")} />
+        {fastMint}
       </section>
 
-      <section className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
-        <FadeIn delay={0.06}>
-          <LaunchpadFilterBar query={filter.query} onQueryChange={filter.setQuery} sections={sections} />
-        </FadeIn>
+      <section className="space-y-8">
+        <LaunchpadFilterBar query={filter.query} onQueryChange={filter.setQuery} sections={sections} />
         <LaunchpadGroupedSections overrides={overrides} defs={defs} onClearFilters={filter.clear} />
       </section>
-    </div>
+    </PageContainer>
   );
 }
