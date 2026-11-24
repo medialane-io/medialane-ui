@@ -226,8 +226,8 @@ export function SponsorshipCreate({ aside }: { aside?: ReactNode }) {
       <TransactionDialog
         tx={tx}
         title={mode === "offer" ? t("Create sponsorship offer") : t("Send proposal")}
-        workingLabel={mode === "offer" ? "Creating your sponsorship offer…" : "Sending your proposal…"}
-        firstStepLabel="Upload license terms"
+        workingLabel={mode === "offer" ? t("Creating your sponsorship offer…") : t("Sending your proposal…")}
+        firstStepLabel={t("Upload license terms")}
       >
         <TransactionSuccess
           name={chosen?.name ?? "Your sponsorship"}

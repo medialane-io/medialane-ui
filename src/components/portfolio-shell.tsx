@@ -4,7 +4,7 @@ import { useEffect, type ReactNode } from "react";
 import { Wallet } from "lucide-react";
 import { usePathname } from "./router.js";
 import { Button } from "./button.js";
-import { Skeleton } from "./skeleton.js";
+import { PageState, PageStateSkeleton } from "./page-state.js";
 import { PageContainer } from "./page-container.js";
 import { PortfolioHeader } from "./portfolio-header.js";
 import { PortfolioChipFilter } from "./portfolio-chip-filter.js";
@@ -41,25 +41,16 @@ function SignedOut() {
   const t = useT();
   const { onRequireWallet, connectLabel } = useMedialaneApp();
   return (
-    <div className="mx-auto max-w-lg space-y-4 px-4 pt-24 pb-8 text-center">
-      <Wallet className="mx-auto h-10 w-10 text-muted-foreground" />
-      <h1 className="text-2xl font-bold">{t("Your portfolio")}</h1>
-      <p className="text-muted-foreground">{t("Sign in to see the portfolio.")}</p>
+    <PageState icon={Wallet} title={t("Your portfolio")} description={t("Sign in to see the portfolio.")}>
       <Button size="lg" className="rounded-full px-7" onClick={onRequireWallet}>
         {connectLabel ?? t("Sign in")}
       </Button>
-    </div>
+    </PageState>
   );
 }
 
 function Loading() {
-  return (
-    <div className="mx-auto max-w-lg space-y-4 px-4 pt-24 pb-8">
-      <Skeleton className="mx-auto h-10 w-10 rounded-full" />
-      <Skeleton className="mx-auto h-7 w-56" />
-      <Skeleton className="mx-auto h-4 w-72" />
-    </div>
-  );
+  return <PageStateSkeleton />;
 }
 
 export function PortfolioShell({ tabs = PORTFOLIO_TABS, remixOffers, licensing, children }: {

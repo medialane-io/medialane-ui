@@ -36,6 +36,7 @@ import { useUserOrders } from "../utils/use-orders.js";
 import { useActivitiesByAddress } from "../utils/use-activities.js";
 import { useCreatorByUsername } from "../utils/use-profiles.js";
 import { useT } from "../i18n/provider.js";
+import { PageState } from "./page-state.js";
 
 type TabId = "assets" | "collections" | "listings" | "activity";
 
@@ -77,11 +78,12 @@ export function CreatorPage({ username, useAssetActions, useMarketActions }: Cre
 
   if (!creator) {
     return (
-      <div className="mx-auto max-w-lg space-y-4 px-4 py-24 text-center">
-        <h1 className="text-2xl font-bold">{t("Creator not found")}</h1>
-        <p className="text-muted-foreground"><span className="tabular-nums">@{username}</span> {t("isn't a profile yet.")}</p>
+      <PageState
+        title={t("Creator not found")}
+        description={<><span className="tabular-nums">@{username}</span> {t("isn't a profile yet.")}</>}
+      >
         <Button variant="soft" asChild><Link href="/accounts">{t("Browse accounts")}</Link></Button>
-      </div>
+      </PageState>
     );
   }
 

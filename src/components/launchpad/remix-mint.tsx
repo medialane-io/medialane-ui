@@ -1,9 +1,11 @@
 "use client";
 
 import { PageContainer } from "../page-container.js";
+import { PageState } from "../page-state.js";
+import { BackButton } from "../back-button.js";
 import { PageHeader, PageHeaderSkeleton } from "../page-header.js";
 import { useEffect, useRef, useState } from "react";
-import { Boxes, ChevronDown, ChevronLeft, GitBranch, ImagePlus, Info, Percent, Plus, Shield, Upload } from "lucide-react";
+import { Boxes, ChevronDown, GitBranch, ImagePlus, Info, Percent, Plus, Shield, Upload } from "lucide-react";
 import { assetHref, getDerivativesTerm, getService, normalizeAddress, resolveRemixPolicy } from "@medialane/sdk";
 import { acceptFor, uploadError } from "../../utils/upload-limits.js";
 import { assertTransactionSucceeded, mintedTokenIdFromReceipt } from "@medialane/sdk/starknet";
@@ -236,16 +238,15 @@ export function RemixMint({ contract, tokenId }: { contract: string; tokenId: st
 
   if (!token) {
     return (
-      <div className="max-w-5xl mx-auto px-4 py-24 text-center space-y-4">
-        <p className="text-2xl font-bold">{t("Asset not found")}</p>
+      <PageState title={t("Asset not found")}>
         <Button asChild variant="soft"><Link href="/">{t("Go home")}</Link></Button>
-      </div>
+      </PageState>
     );
   }
 
   return (
     <WalletRequired {...gate}>
-      <TransactionDialog tx={tx} title={t("Mint a remix")} workingLabel="Minting your remix…" firstStepLabel="Upload to IPFS">
+      <TransactionDialog tx={tx} title={t("Mint a remix")} workingLabel={t("Minting your remix…")} firstStepLabel={t("Upload to IPFS")}>
         <TransactionSuccess
           name={name}
           image={imagePreview ?? originalImage ?? null}
@@ -263,12 +264,7 @@ export function RemixMint({ contract, tokenId }: { contract: string; tokenId: st
 
       <PageContainer variant="narrow" className="space-y-8">
         <PageHeader
-          back={
-            <Link href={assetHref("STARKNET", contract, tokenId)} className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
-              <ChevronLeft className="h-4 w-4" />
-              {t("Back to asset")}
-            </Link>
-          }
+          back={<BackButton href={assetHref("STARKNET", contract, tokenId)} label={t("Back to asset")} />}
           icon={<GitBranch />}
           title={t("Mint a remix")}
           subtitle={t("Remix this asset with credit to the original.")}

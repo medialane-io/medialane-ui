@@ -10,6 +10,7 @@ import { useMedialaneApp } from "./medialane-app.js";
 import { FadeIn } from "./motion-primitives.js";
 import { RewardEarned } from "./rewards/reward-earned.js";
 import { PageContainer } from "./page-container.js";
+import { PageState } from "./page-state.js";
 import { PageHeader } from "./page-header.js";
 import { TransactionDialog } from "./transaction-dialog.js";
 import { TransactionSuccess } from "./transaction-success.js";
@@ -51,10 +52,10 @@ export function SponsorshipOfferPage({ offerId }: { offerId: string }) {
   }, [tx.phase, mutateOffer, mutateBids]);
 
   if (isLoading) {
-    return <div className="max-w-3xl mx-auto px-4 pt-24 pb-8 text-center text-sm text-muted-foreground">{t("Loading offer…")}</div>;
+    return <PageState description={t("Loading offer…")} />;
   }
   if (!offer) {
-    return <div className="max-w-3xl mx-auto px-4 pt-24 pb-8 text-center text-sm text-muted-foreground">{t("Offer not found.")}</div>;
+    return <PageState description={t("Offer not found.")} />;
   }
 
   const isOwner = !!walletAddress && normalizeAddress("STARKNET", walletAddress) === normalizeAddress("STARKNET", offer.author);
@@ -92,7 +93,7 @@ export function SponsorshipOfferPage({ offerId }: { offerId: string }) {
   const copy = COPY[action];
 
   return (
-    <PageContainer variant="narrow" className="max-w-3xl">
+    <PageContainer variant="form">
       <TransactionDialog tx={tx} title={t(copy.title)} workingLabel={t(copy.working)} firstStepLabel={t("Prepare")}>
         <TransactionSuccess
           name={name}

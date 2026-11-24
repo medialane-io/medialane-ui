@@ -188,7 +188,7 @@ export function CoinCreate({ aside, tradeHref }: CoinCreateProps) {
       title={t("Launch a creator coin")}
       description={t("Secure your account to launch a coin.")}
     >
-      <TransactionDialog tx={tx} title={t("Launch your coin")} workingLabel="Launching your coin…" firstStepLabel="Deploy your coin">
+      <TransactionDialog tx={tx} title={t("Launch your coin")} workingLabel={t("Launching your coin…")} firstStepLabel={t("Deploy your coin")}>
         <TransactionSuccess
           name={name || "Your coin"}
           image={imagePreview}

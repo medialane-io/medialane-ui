@@ -19,13 +19,13 @@ export interface TransactionDialogProps {
 
 const ACTIVE_STEP = { preparing: 0, submitting: 1, confirming: 2 } as const;
 
-export function TransactionDialog({ tx, title, workingLabel, firstStepLabel = "Prepare", children }: TransactionDialogProps) {
+export function TransactionDialog({ tx, title, workingLabel, firstStepLabel, children }: TransactionDialogProps) {
   const t = useT();
   const { phase, error, reset, retryable = true } = tx;
   const working = phase === "preparing" || phase === "submitting" || phase === "confirming";
   const success = phase === "success";
   const failed = phase === "error";
-  const steps = [firstStepLabel, t("Submit transaction"), t("Confirm transaction")];
+  const steps = [firstStepLabel ?? t("Prepare"), t("Submit transaction"), t("Confirm transaction")];
 
   useConfetti(success);
 

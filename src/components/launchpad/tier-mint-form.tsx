@@ -1,6 +1,7 @@
 "use client";
 
 import { PageContainer } from "../page-container.js";
+import { PageState } from "../page-state.js";
 import { PageHeaderSkeleton } from "../page-header.js";
 import { useEffect, useState, type ReactNode } from "react";
 import { useForm } from "react-hook-form";
@@ -163,11 +164,9 @@ export function TierMintForm({ contract: rawContract, preset, aside }: TierMintF
   if (!collection) {
     return (
       <WalletRequired {...gateProps}>
-        <div className="max-w-xl mx-auto px-4 pt-24 pb-8 text-center space-y-4">
-          <AlertCircle className="h-10 w-10 text-muted-foreground/20 mx-auto" />
-          <p className="text-muted-foreground">{t("Collection not found.")}</p>
+        <PageState icon={AlertCircle} description={t("Collection not found.")}>
           <Button asChild variant="soft" size="sm"><Link href={preset.back.href}>{t(preset.back.label)}</Link></Button>
-        </div>
+        </PageState>
       </WalletRequired>
     );
   }
@@ -175,11 +174,9 @@ export function TierMintForm({ contract: rawContract, preset, aside }: TierMintF
   if (!isOwner) {
     return (
       <WalletRequired {...gateProps}>
-        <div className="max-w-xl mx-auto px-4 pt-24 pb-8 text-center space-y-4">
-          <Icon className="h-10 w-10 text-muted-foreground/20 mx-auto" />
-          <p className="text-muted-foreground">{t(preset.notOwner.message)}</p>
+        <PageState icon={Icon} description={t(preset.notOwner.message)}>
           <Button asChild variant="soft" size="sm"><Link href={preset.notOwner.back.href}>{t(preset.notOwner.back.label)}</Link></Button>
-        </div>
+        </PageState>
       </WalletRequired>
     );
   }

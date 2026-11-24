@@ -51,14 +51,15 @@ export function ToggleGroup({
   );
 }
 
-export function Section({ title, icon, children }: {
-  title: string; icon: React.ReactNode; children: React.ReactNode;
+export function Section({ title, icon, action, children }: {
+  title: string; icon: React.ReactNode; action?: React.ReactNode; children: React.ReactNode;
 }) {
   return (
     <div className="panel p-5 space-y-4">
       <div className="flex items-center gap-2 text-sm font-semibold">
         <span className="text-primary">{icon}</span>
         {title}
+        {action && <span className="ml-auto text-xs font-normal text-muted-foreground">{action}</span>}
       </div>
       {children}
     </div>

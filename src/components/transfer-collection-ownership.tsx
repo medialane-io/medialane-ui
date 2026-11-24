@@ -111,7 +111,7 @@ export function TransferCollectionOwnership({ collectionId, currentOwner, collec
         </DialogContent>
       </Dialog>
 
-      <TransactionDialog tx={tx} title={t("Transfer ownership")} workingLabel="Transferring ownership…" firstStepLabel="Prepare transfer">
+      <TransactionDialog tx={tx} title={t("Transfer ownership")} workingLabel={t("Transferring ownership…")} firstStepLabel={t("Prepare transfer")}>
         <TransactionSuccess
           name={collectionName ?? "Collection"}
           {...successMessages.ownershipTransferred({ name: collectionName ?? "the collection", to: shortenAddress(trimmed) }, t)}

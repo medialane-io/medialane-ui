@@ -64,7 +64,7 @@ export function PopClaimButton({ collectionAddress }: { collectionAddress: strin
           {busy ? t("Claiming…") : t("Claim certificate")}
         </Button>
       )}
-      <TransactionDialog tx={tx} title={t("Claim certificate")} workingLabel="Claiming the certificate…" firstStepLabel="Prepare claim">
+      <TransactionDialog tx={tx} title={t("Claim certificate")} workingLabel={t("Claiming the certificate…")} firstStepLabel={t("Prepare claim")}>
         <TransactionSuccess
           name="Certificate"
           {...successMessages.claimed(t)}
