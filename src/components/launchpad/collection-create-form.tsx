@@ -30,9 +30,10 @@ import { suggestLaunchpadSymbol } from "../../utils/launchpad-defaults.js";
 import { symbolField, webLinkField } from "../../utils/launchpad-rules.js";
 import type { CollectionCreatePreset } from "./collection-create-presets.js";
 import { useT } from "../../i18n/provider.js";
+import { msg } from "../../i18n/translate.js";
 
 const schema = z.object({
-  name: z.string().min(1, "Name required").max(FIELD_LIMITS.name),
+  name: z.string().min(1, msg("Name required")).max(FIELD_LIMITS.name),
   symbol: symbolField(),
   description: z.string().max(FIELD_LIMITS.description).optional(),
   external_link: webLinkField(),
@@ -159,7 +160,7 @@ export function CollectionCreateForm({ preset, aside }: CollectionCreateFormProp
             <MedialaneCollectionCard
               image={upload.preview}
               name={name}
-              collection={form.watch("symbol") || preset.cardFallbackSymbol}
+              collection={form.watch("symbol") || t(preset.cardFallbackSymbol)}
               creator={walletAddress ? `${walletAddress.slice(0, 6)}…${walletAddress.slice(-4)}` : undefined}
               creatorHref={walletAddress ? profileHref({ address: walletAddress }) : undefined}
             />
@@ -173,24 +174,23 @@ export function CollectionCreateForm({ preset, aside }: CollectionCreateFormProp
               upload={upload}
               label={t(copy.imageHeading)}
               alt={t(copy.imageHeading)}
-              hint={copy.imageHelp ? t(copy.imageHelp) : undefined}
+              optional
             />
 
             <FormField control={form.control} name="name" render={({ field }) => (
               <FormItem>
-                <FormLabel>{copy.nameLabel}</FormLabel>
-                <FormControl><Input placeholder={copy.namePlaceholder} {...field} /></FormControl>
-                <FormDescription>{copy.nameHint}</FormDescription>
+                <FormLabel>{t(copy.nameLabel)}</FormLabel>
+                <FormControl><Input placeholder={t(copy.namePlaceholder)} {...field} /></FormControl>
                 <FormMessage />
               </FormItem>
             )} />
 
             <FormField control={form.control} name="symbol" render={({ field }) => (
               <FormItem>
-                <FormLabel>{t("Symbol *")}</FormLabel>
+                <FormLabel>{t("Short code")}</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder={copy.symbolPlaceholder}
+                    placeholder={t(copy.symbolPlaceholder)}
                     maxLength={FIELD_LIMITS.symbol}
                     {...field}
                     onChange={(e) => field.onChange(e.target.value.toUpperCase())}
@@ -204,17 +204,16 @@ export function CollectionCreateForm({ preset, aside }: CollectionCreateFormProp
             <FormField control={form.control} name="description" render={({ field }) => (
               <FormItem>
                 <FormLabel>{t("Description")} <span className="text-muted-foreground font-normal">{t("(optional)")}</span></FormLabel>
-                <FormControl><Textarea placeholder={copy.descriptionPlaceholder} rows={3} {...field} /></FormControl>
-                {copy.descriptionHint && <FormDescription>{copy.descriptionHint}</FormDescription>}
+                <FormControl><Textarea placeholder={t(copy.descriptionPlaceholder)} rows={3} {...field} /></FormControl>
                 <FormMessage />
               </FormItem>
             )} />
 
             <ExternalLinkField form={form} address={walletAddress} />
 
-            <ActionButton solid big type="submit" disabled={busy} icon={<Icon className="h-4 w-4" />} className="w-full">              {copy.submit}            </ActionButton>
+            <ActionButton solid big type="submit" disabled={busy} icon={<Icon className="h-4 w-4" />} className="w-full">              {t(copy.submit)}            </ActionButton>
             {copy.footnotes.map((note) => (
-              <p key={note} className="text-xs text-center text-muted-foreground">{note}</p>
+              <p key={note} className="text-xs text-center text-muted-foreground">{t(note)}</p>
             ))}
           </form>
         </Form>

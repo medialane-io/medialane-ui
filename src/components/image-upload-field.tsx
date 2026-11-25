@@ -14,7 +14,6 @@ export interface ImageUploadFieldProps {
   label?: ReactNode;
   ariaLabel?: string;
   alt?: string;
-  required?: boolean;
   optional?: boolean;
   hint?: ReactNode;
   buttonLabel?: string;
@@ -22,7 +21,7 @@ export interface ImageUploadFieldProps {
   currentImage?: string | null;
 }
 
-export function ImageUploadField({ upload, label, ariaLabel, alt = "", required, optional, hint, buttonLabel, round, currentImage }: ImageUploadFieldProps) {
+export function ImageUploadField({ upload, label, ariaLabel, alt = "", optional, hint, buttonLabel, round, currentImage }: ImageUploadFieldProps) {
   const t = useT();
   const inputRef = useRef<HTMLInputElement>(null);
   const { status, error, uploading } = upload;
@@ -44,7 +43,6 @@ export function ImageUploadField({ upload, label, ariaLabel, alt = "", required,
       {label ? (
         <p className="text-sm font-medium">
           {label}
-          {required ? <span className="text-destructive"> *</span> : null}
           {optional ? <span className="text-muted-foreground font-normal"> {t("(optional)")}</span> : null}
         </p>
       ) : null}
@@ -113,11 +111,9 @@ export function ImageUploadField({ upload, label, ariaLabel, alt = "", required,
           ) : null}
           {error ? (
             <p role="alert" className="text-sm text-destructive">{error}</p>
-          ) : (
-            <p className="text-xs text-muted-foreground">
-              {status === "uploaded" ? <span className="text-primary">{t("✓ Uploaded")}</span> : t("Image files")}
-            </p>
-          )}
+          ) : status === "uploaded" ? (
+            <p className="text-xs text-primary">{t("✓ Uploaded")}</p>
+          ) : null}
           {hint ? <p className="text-xs text-muted-foreground">{hint}</p> : null}
         </div>
       </div>

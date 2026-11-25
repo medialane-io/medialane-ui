@@ -1,8 +1,10 @@
-import { buildAssetMetadata, UserFacingError, type ApiClient, type BuildAssetMetadataInput } from "@medialane/sdk";
+import { buildAssetMetadata, MedialaneApiError, UserFacingError, type ApiClient, type BuildAssetMetadataInput } from "@medialane/sdk";
 import { msg } from "../i18n/translate.js";
 
 export const FILE_UPLOAD_FAILED =
   "Try the upload again.";
+
+export const UPLOADS_UNAVAILABLE = msg("Uploads are temporarily unavailable. Please try again later. If the error persists, contact our support.");
 
 function uploadFailed(cause: unknown): UserFacingError {
   return Object.assign(new UserFacingError(FILE_UPLOAD_FAILED), { cause });
@@ -46,7 +48,13 @@ function connectionType(): string | null {
 }
 
 async function signedUploadUrl(api: ApiClient, kind: SignedUploadKind): Promise<string> {
-  const signedUrl = (await api.metadata.signedUrl(kind)).data?.url;
+  const response = await api.metadata.signedUrl(kind).catch((error: unknown) => {
+    if (error instanceof MedialaneApiError && error.serverCode === "uploads_unavailable") {
+      throw Object.assign(new UserFacingError(UPLOADS_UNAVAILABLE), { cause: error });
+    }
+    throw error;
+  });
+  const signedUrl = response.data?.url;
   if (!signedUrl) throw new Error("Failed to prepare the upload");
   return signedUrl;
 }

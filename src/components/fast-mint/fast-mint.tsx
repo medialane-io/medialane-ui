@@ -31,6 +31,13 @@ import { useT } from "../../i18n/provider.js";
 import { msg } from "../../i18n/translate.js";
 import { ActionButton } from "../action-button.js";
 
+const WRONG_KIND: Record<MediaKind, string> = {
+  image: msg("Please upload an image."),
+  video: msg("Please upload a video."),
+  audio: msg("Please upload an audio file."),
+  document: msg("Please upload a document."),
+};
+
 export function FastMint(props: FastMintProps) {
   const t = useT();
   const {
@@ -72,7 +79,7 @@ export function FastMint(props: FastMintProps) {
 
   const uploadFile = async (file: File, kind: SignedUploadKind) => {
     const token = await getUploadToken();
-    if (!token) throw new Error("Sign in first");
+    if (!token) throw new Error(msg("Sign in first"));
     return (await uploadFileToIpfs(client.api, file, kind)).uri;
   };
 
@@ -82,7 +89,7 @@ export function FastMint(props: FastMintProps) {
     const kind = detectMediaKind(file.type);
     if (!kind) return msg("Use a supported media file.");
     if (mediaKindLock && kind !== mediaKindLock) {
-      return mediaKindLock === "image" ? msg("Please upload an image.") : `Please upload a ${mediaKindLock}.`;
+      return WRONG_KIND[mediaKindLock];
     }
     return uploadError(file, routeFor(file));
   };
@@ -128,7 +135,7 @@ export function FastMint(props: FastMintProps) {
     if (!shared || !walletAddress) return;
     const link = form.getValues("external_url");
     if (!isWebLink(link)) {
-      setErrorMsg("External link must start with http:// or https://");
+      setErrorMsg(t("Link must start with http:// or https://"));
       setStatus("error");
       return;
     }
@@ -154,9 +161,9 @@ export function FastMint(props: FastMintProps) {
     } catch (err) {
       if (err instanceof PartialCreateError) {
         setResume({ format: formatKey, destination: err.destination });
-        setErrorMsg(`${err.message} ${describeError(err.reason).message} Press the button again to finish.`);
+        setErrorMsg(`${t(err.message)} ${t(describeError(err.reason).message)} ${t("Press the button again to finish.")}`);
       } else {
-        setErrorMsg(describeError(err).message);
+        setErrorMsg(t(describeError(err).message));
       }
       setStatus("error");
     }
@@ -184,7 +191,7 @@ export function FastMint(props: FastMintProps) {
       <Dialog open={open} onOpenChange={(next) => { if (!next) onClose?.(); }}>
         <DialogContent className="gap-0 p-6 sm:max-w-2xl sm:p-8">
           <DialogTitle className="sr-only">{t("Create")}</DialogTitle>
-          <DialogDescription className="sr-only">{t("Publish media as an asset.")}</DialogDescription>
+          <DialogDescription className="sr-only">{t("Publish your work.")}</DialogDescription>
           {node}
         </DialogContent>
       </Dialog>
@@ -215,7 +222,7 @@ export function FastMint(props: FastMintProps) {
 
   const submitBlocked = !ready || busy || !hasWallet;
   const buttonLabel = busy
-    ? `${step?.label ?? "Working"}…${step && step.total > 1 ? ` (${step.index} of ${step.total})` : ""}`
+    ? `${t(step?.label ?? msg("Working"))}…${step && step.total > 1 ? ` ${t("({index} of {total})", { index: step.index, total: step.total })}` : ""}`
     : t(format.submitLabel(formatState));
 
   return wrap(
@@ -238,26 +245,26 @@ export function FastMint(props: FastMintProps) {
             <FormatPicker formats={FORMATS} value={formatKey} onChange={setFormatKey} />
 
             <div className="space-y-2">
-              <label className="text-sm font-medium">{t("Title *")}</label>
+              <label className="text-sm font-medium">{t("Name")}</label>
               <Input
                 value={name}
                 onChange={(e) => form.setValue("name", e.target.value)}
-                placeholder={t("My Creative Work")}
+                placeholder={t("The title people will see")}
               />
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-medium">{t("Description")}</label>
+              <label className="text-sm font-medium">{t("Description")} <span className="text-muted-foreground font-normal">{t("(optional)")}</span></label>
               <Textarea
                 value={description}
                 onChange={(e) => form.setValue("description", e.target.value)}
-                placeholder={t("The story behind the work…")}
+                placeholder={t("Tell the story behind this work")}
                 rows={3}
               />
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-medium">{t("External link")} <span className="text-muted-foreground font-normal">{t("(optional)")}</span></label>
+              <label className="text-sm font-medium">{t("Link")} <span className="text-muted-foreground font-normal">{t("(optional)")}</span></label>
               <Input
                 value={form.watch("external_url")}
                 onChange={(e) => form.setValue("external_url", e.target.value)}
@@ -268,8 +275,7 @@ export function FastMint(props: FastMintProps) {
             {mediaKind !== "image" && (
               <ImageUploadField
                 upload={feature}
-                label={t("Upload a cover image for your asset *")}
-                hint={t("Cover art for previews.")}
+                label={t("Cover image")}
               />
             )}
 
@@ -282,7 +288,7 @@ export function FastMint(props: FastMintProps) {
               {buttonLabel}
             </ActionButton>
             <p className="text-xs text-center text-muted-foreground">
-              {t("Zero platform fees to mint.")}
+              {t("Zero platform fees to publish.")}
             </p>
           </div>
 
@@ -290,7 +296,7 @@ export function FastMint(props: FastMintProps) {
             <MedialaneCollectionCard
               image={previewImage}
               name={name}
-              collection={shared ? format.previewLabel(shared, formatState) : undefined}
+              collection={shared ? format.previewLabel(shared, formatState, t) : undefined}
               creator={walletAddress ? `${walletAddress.slice(0, 6)}…${walletAddress.slice(-4)}` : undefined}
               creatorHref={walletAddress ? profileHref({ address: walletAddress }) : undefined}
             />

@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.398.0] — 2026-11-25
+
+### Added
+
+- `CreateAside`: the side panel of each create page.
+- `scanUnmarkedMessages` in `i18n-tools`: finds validation and form error messages that are not marked for translation.
+
+### Changed
+
+- Create and publish forms, their progress and success screens, the launchpad cards and menu entries use plainer wording, with fewer helper lines. Optional fields are marked; required fields are not.
+- The edition form shows the collection's name.
+- Validation, file check and upload errors are translated. When uploads are unavailable, the interface shows its own message.
+- `uploadError` returns `{ text, vars }`, ready to translate.
+- Tier presets add `supplyLabel` and `supplyRequired`.
+
+### Removed
+
+- The `required` prop of `ImageUploadField`.
+- `imageHelp`, `nameHint` and `descriptionHint` in collection create presets.
+
 ## [0.397.0] — 2026-11-25
 
 ### Added

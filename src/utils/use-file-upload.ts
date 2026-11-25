@@ -3,10 +3,11 @@
 import { useEffect, useRef, useState } from "react";
 import { uploadFailureToast } from "./ipfs-upload.js";
 import { useT } from "../i18n/provider.js";
+import type { Phrase } from "../i18n/translate.js";
 
 export interface FileUploadOptions {
   upload: (file: File) => Promise<string>;
-  validate?: (file: File) => string | null;
+  validate?: (file: File) => string | Phrase | null;
   failureMessage?: string;
   onChange?: (uri: string | null) => void;
 }
@@ -67,7 +68,7 @@ export function useFileUpload(options: FileUploadOptions) {
     const problem = options.validate?.(file);
     if (problem) {
       attemptRef.current += 1;
-      setState({ status: "failed", file, preview: null, uri: null, error: t(problem), canRetry: false });
+      setState({ status: "failed", file, preview: null, uri: null, error: typeof problem === "string" ? t(problem) : t(problem.text, problem.vars), canRetry: false });
       return;
     }
     previewRef.current = URL.createObjectURL(file);

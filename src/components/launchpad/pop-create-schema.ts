@@ -10,11 +10,11 @@ function parseDateTime(date: string, time: string): number | null {
 
 export const popCreateSchema = z
   .object({
-    name: z.string().min(1, "Event name required").max(FIELD_LIMITS.name),
+    name: z.string().min(1, msg("Name required")).max(FIELD_LIMITS.name),
     symbol: symbolField(),
     description: z.string().max(FIELD_LIMITS.description).optional(),
     external_link: webLinkField(),
-    claimEndDate: z.string().min(1, "Claim end date required"),
+    claimEndDate: z.string().min(1, msg("Claim end date required")),
     claimEndTime: z.string().default("23:59"),
   })
   .superRefine((values, context) => {

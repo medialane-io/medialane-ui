@@ -47,3 +47,53 @@ export function readSources(dir: string, skip: ReadonlySet<string> = new Set(["c
   }
   return files;
 }
+
+export interface UnmarkedMessage {
+  file: string;
+  text: string;
+}
+
+const SCHEMA_RULES = new Set(["min", "max", "regex", "refine", "superRefine", "email", "url", "length", "addIssue"]);
+
+export function scanUnmarkedMessages(files: Record<string, string>): UnmarkedMessage[] {
+  const found: UnmarkedMessage[] = [];
+  for (const [file, text] of Object.entries(files)) {
+    const kind = file.endsWith("x") ? ts.ScriptKind.TSX : ts.ScriptKind.TS;
+    const source = ts.createSourceFile(file, text, ts.ScriptTarget.Latest, true, kind);
+    const report = (node: ts.Node | undefined): void => {
+      if (!node) return;
+      if (ts.isConditionalExpression(node)) {
+        report(node.whenTrue);
+        report(node.whenFalse);
+        return;
+      }
+      if (ts.isParenthesizedExpression(node)) {
+        report(node.expression);
+        return;
+      }
+      if (ts.isObjectLiteralExpression(node)) {
+        for (const property of node.properties) {
+          if (ts.isPropertyAssignment(property) && property.name.getText(source) === "message") report(property.initializer);
+        }
+        return;
+      }
+      const sentence = literalText(node) ?? (ts.isTemplateExpression(node) ? node.getText(source).slice(1, -1) : null);
+      if (sentence !== null && /^[A-Z].*\s/.test(sentence)) found.push({ file, text: sentence });
+    };
+    const visit = (node: ts.Node) => {
+      if (ts.isCallExpression(node)) {
+        const callee = node.expression;
+        const method = ts.isPropertyAccessExpression(callee) ? callee.name.text : null;
+        const name = ts.isIdentifier(callee) ? callee.text : null;
+        if (method && SCHEMA_RULES.has(method) && !(ts.isPropertyAccessExpression(callee) && callee.expression.getText(source) === "Math")) {
+          node.arguments.forEach(report);
+        }
+        if (name && (/^set\w*Error(Msg)?$/.test(name) || /^\w+Field$/.test(name))) node.arguments.forEach(report);
+      }
+      if (ts.isVariableDeclaration(node) && /_MESSAGE$/.test(node.name.getText(source))) report(node.initializer);
+      ts.forEachChild(node, visit);
+    };
+    visit(source);
+  }
+  return found;
+}

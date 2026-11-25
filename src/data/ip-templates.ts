@@ -62,7 +62,7 @@ export interface IPTemplate {
 
 export const DOC_UPLOAD: DocUploadConfig = {
   traitType: "Document File",
-  hint: msg("Timestamped copy on IPFS"),
+  hint: msg("A dated copy saved permanently"),
 };
 
 export const IP_TEMPLATES: Record<IPType, IPTemplate> = {
@@ -151,7 +151,7 @@ export const IP_TEMPLATES: Record<IPType, IPTemplate> = {
   NFT: {
     type: "NFT",
     label: msg("NFT"),
-    description: msg("Blockchain-native digital assets and collectibles"),
+    description: msg("Digital collectibles"),
     icon: Hexagon,
     color: { bg: "bg-brand-blue/10", text: "text-brand-blue", border: "border-brand-blue/20" },
     traitSuggestions: [
@@ -163,7 +163,7 @@ export const IP_TEMPLATES: Record<IPType, IPTemplate> = {
   RWA: {
     type: "RWA",
     label: msg("Real world asset"),
-    description: msg("Tokenized physical assets"),
+    description: msg("Physical items with a digital record"),
     icon: Building2,
     color: { bg: "bg-brand-blue/10", text: "text-brand-blue", border: "border-brand-blue/20" },
     traitSuggestions: [

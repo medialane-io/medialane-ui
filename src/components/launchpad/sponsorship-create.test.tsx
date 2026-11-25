@@ -48,15 +48,15 @@ function setup() {
 
 test("an offer needs an asset before anything is created", async () => {
   const { view, intents } = setup();
-  fireEvent.click(view.getByText("Offer my asset"));
+  fireEvent.click(view.getByText("Offer my work"));
   fireEvent.click(view.getByText("Create offer"));
-  await waitFor(() => expect(view.getByText("Choose the asset to offer.")).toBeTruthy());
+  await waitFor(() => expect(view.getByText("Choose the work to offer.")).toBeTruthy());
   expect(intents).toEqual([]);
 });
 
 test("an offer is created with the chosen asset, amount and duration", async () => {
   const { view, intents } = setup();
-  fireEvent.click(view.getByText("Offer my asset"));
+  fireEvent.click(view.getByText("Offer my work"));
   await waitFor(() => expect(view.getByText("My Song")).toBeTruthy());
   fireEvent.click(view.getByText("My Song"));
   fireEvent.change(view.getByPlaceholderText("0.00"), { target: { value: "5" } });

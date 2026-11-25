@@ -24,17 +24,25 @@ interface TierState {
   endDate: string;
 }
 
+interface TierText {
+  collectionLabel: string;
+  newCollection: string;
+  creating: string;
+  adding: string;
+  unfinished: string;
+  unreadable: string;
+}
+
 function makeTierFormat(config: {
   key: "tickets" | "club";
   service: string;
   preset: TierMintPreset;
   icon: typeof Ticket;
-  noun: string;
   supplyLabel: string;
   submitLabel: string;
-  addLabel: string;
+  text: TierText;
 }) {
-  const { preset, noun } = config;
+  const { preset, text } = config;
   const copy = getMintFormatCopy(config.service);
 
   const ownCollections = (shared: FormatShared) =>
@@ -45,7 +53,7 @@ function makeTierFormat(config: {
     return (
       <>
         <CollectionSection
-          noun={noun}
+          label={text.collectionLabel}
           mode={state.mode}
           onModeChange={(mode) => update({ mode })}
           collections={ownCollections(shared)}
@@ -57,7 +65,7 @@ function makeTierFormat(config: {
         />
 
         <div className="space-y-2">
-          <label className="text-sm font-medium" htmlFor={`fast-mint-${config.key}-supply`}>{t(config.supplyLabel)} *</label>
+          <label className="text-sm font-medium" htmlFor={`fast-mint-${config.key}-supply`}>{t(config.supplyLabel)}</label>
           <Input
             id={`fast-mint-${config.key}-supply`}
             type="number"
@@ -74,7 +82,7 @@ function makeTierFormat(config: {
             <Input type="date" aria-label={t("Valid from")} value={state.startDate} onChange={(e) => update({ startDate: e.target.value })} />
             <Input type="date" aria-label={t("Valid until")} value={state.endDate} onChange={(e) => update({ endDate: e.target.value })} />
           </div>
-          <p className="text-xs text-muted-foreground">{preset.copy.validUntilHint}</p>
+          <p className="text-xs text-muted-foreground">{t(preset.copy.validUntilHint)}</p>
         </div>
 
         <LicensingSection form={shared.form} />
@@ -95,9 +103,9 @@ function makeTierFormat(config: {
       if (state.mode === "new") return shared.draft.name.trim().length > 0 && shared.draft.symbol.trim().length > 0;
       return state.existingContract !== "";
     },
-    previewLabel: (shared, state) =>
+    previewLabel: (shared, state, t) =>
       state.mode === "new"
-        ? shared.draft.name || `New ${noun}`
+        ? shared.draft.name || t(text.newCollection)
         : ownCollections(shared).find((c) => c.contractAddress === state.existingContract)?.name || undefined,
     submit: async (shared, state, runtime) => {
       const { client, signer, onStep } = runtime;
@@ -106,14 +114,14 @@ function makeTierFormat(config: {
       const supply = state.supply.trim();
 
       const uploadToken = await runtime.getUploadToken();
-      if (!uploadToken) throw new Error("Sign in first");
+      if (!uploadToken) throw new Error(msg("Sign in first"));
 
       const existing = (runtime.resume as string | null) ?? (state.mode === "existing" && state.existingContract ? state.existingContract : null);
 
       const contract = await createThenAdd<string, string>({
         existing,
-        noun,
-        labels: { create: `Creating the ${noun}`, add: config.addLabel },
+        unfinished: text.unfinished,
+        labels: { create: text.creating, add: text.adding },
         onStep,
         create: async () => {
           const baseUri = await uploadJsonToIpfs(
@@ -135,7 +143,7 @@ function makeTierFormat(config: {
           });
           const { receipt } = await executeIntent(signer, client, created);
           const deployed = deployedCollectionFromReceipt(receipt, preset.service);
-          if (!deployed) throw new Error(`The ${noun} was deployed, but its address couldn't be read — check My Collections.`);
+          if (!deployed) throw new Error(text.unreadable);
           return deployed;
         },
         add: async (address) => {
@@ -188,10 +196,16 @@ export const TICKETS_FORMAT = makeTierFormat({
   preset: TICKETS_TIER_PRESET,
   service: "ip-tickets",
   icon: Ticket,
-  noun: "ticket collection",
   supplyLabel: msg("Number of tickets"),
   submitLabel: msg("Create tickets"),
-  addLabel: msg("Minting tickets"),
+  text: {
+    collectionLabel: msg("Ticket collection"),
+    newCollection: msg("New ticket collection"),
+    creating: msg("Creating the ticket collection"),
+    adding: msg("Publishing tickets"),
+    unfinished: msg("Your ticket collection was created, but the last step did not finish."),
+    unreadable: msg("The ticket collection was created, but its address couldn't be read — check My Collections."),
+  },
 });
 
 export const CLUB_FORMAT = makeTierFormat({
@@ -199,8 +213,14 @@ export const CLUB_FORMAT = makeTierFormat({
   preset: CLUB_TIER_PRESET,
   service: "ip-club",
   icon: Users,
-  noun: "club",
   supplyLabel: msg("Number of memberships"),
   submitLabel: msg("Create membership"),
-  addLabel: msg("Minting memberships"),
+  text: {
+    collectionLabel: msg("Club"),
+    newCollection: msg("New club"),
+    creating: msg("Creating the club"),
+    adding: msg("Publishing memberships"),
+    unfinished: msg("Your club was created, but the last step did not finish."),
+    unreadable: msg("The club was created, but its address couldn't be read — check My Collections."),
+  },
 });

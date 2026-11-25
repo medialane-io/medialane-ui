@@ -13,7 +13,7 @@ const named = (patch: Partial<DropDraft> = {}): DropDraft => ({
 test("an empty draft asks for a collection name and an asset", () => {
   const e = validateDropDraft(EMPTY_DRAFT, NOW);
   expect(e.collection.name).toEqual({ text: "Name the collection" });
-  expect(e.assets.list).toEqual({ text: "Add an asset" });
+  expect(e.assets.list).toEqual({ text: "Add a work" });
   expect(firstMissing(e)).toEqual({ panel: "collection", message: { text: "Name the collection" } });
   expect(hasErrors(e)).toBe(true);
 });
@@ -33,8 +33,8 @@ test("a new asset starts with one copy and no details", () => {
 test("tokens are the sum of copies and stop at 2,000", () => {
   const d = named({ assets: [{ ...newAsset(png("a")), copies: "1500" }, { ...newAsset(png("b")), copies: "501" }] });
   expect(draftTokens(d)).toBe(2001);
-  expect(validateDropDraft(d, NOW).assets.list).toEqual({ text: "Up to {count} tokens", vars: { count: "2,000" } });
-  expect(firstMissing(validateDropDraft(d, NOW))).toEqual({ panel: "assets", message: { text: "Up to {count} tokens", vars: { count: "2,000" } } });
+  expect(validateDropDraft(d, NOW).assets.list).toEqual({ text: "Up to {count} copies", vars: { count: "2,000" } });
+  expect(firstMissing(validateDropDraft(d, NOW))).toEqual({ panel: "assets", message: { text: "Up to {count} copies", vars: { count: "2,000" } } });
 });
 
 test("copies must be a whole number from 1", () => {
@@ -75,8 +75,8 @@ test("sale errors land in settings", () => {
 test("video, audio and PDF assets need a feature image; images do not", () => {
   const video = newAsset(new File(["x"], "wave.mp4", { type: "video/mp4" }));
   const e = validateDropDraft(named({ assets: [video] }), NOW);
-  expect(e.assets.byId[video.id]?.feature).toEqual({ text: "Add a feature image" });
-  expect(firstMissing(e)).toEqual({ panel: "assets", message: { text: "Add a feature image" } });
+  expect(e.assets.byId[video.id]?.feature).toEqual({ text: "Add a cover image" });
+  expect(firstMissing(e)).toEqual({ panel: "assets", message: { text: "Add a cover image" } });
   const withFeature = { ...video, feature: png("cover") };
   expect(validateDropDraft(named({ assets: [withFeature] }), NOW).assets.byId[video.id]).toBeUndefined();
   const image = newAsset(png("a"));

@@ -102,12 +102,12 @@ export function PopCreate({ aside }: { aside?: ReactNode }) {
       title={t("Secure an account to create a POP event")}
       description={t("Secure your account to create certificates.")}
     >
-      <TransactionDialog tx={tx} title={t("Create POP event")} workingLabel={t("Creating the POP event…")} firstStepLabel={t("Upload certificate metadata")}>
+      <TransactionDialog tx={tx} title={t("Create POP event")} workingLabel={t("Creating the POP event…")} firstStepLabel={t("Saving details")}>
         <TransactionSuccess
-          name={eventName || "New event"}
+          name={eventName || t("New event")}
           image={upload.preview}
           title={t("Event created")}
-          description={t("Certificates recorded onchain.")}
+          description={t("Certificates are saved permanently.")}
           actions={[{ href: "/launchpad/pop", label: t("Back to POP launchpad") }, { label: t("Create another"), onClick: handleAgain }]}
         >
           <RewardEarned actionType="launch_launchpad" />
@@ -123,7 +123,7 @@ export function PopCreate({ aside }: { aside?: ReactNode }) {
             <MedialaneCollectionCard
               image={upload.preview}
               name={eventName}
-              collection={form.watch("symbol") || "POP Event"}
+              collection={form.watch("symbol") || t("POP Event")}
               creator={walletAddress ? `${walletAddress.slice(0, 6)}…${walletAddress.slice(-4)}` : undefined}
               creatorHref={walletAddress ? profileHref({ address: walletAddress }) : undefined}
             />

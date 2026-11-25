@@ -7,6 +7,7 @@ import { Button } from "../button.js";
 import type { MediaKind } from "./types.js";
 import { acceptFor } from "../../utils/upload-limits.js";
 import { useT } from "../../i18n/provider.js";
+import { msg } from "../../i18n/translate.js";
 
 export interface DropzoneProps {
   mediaKindLock?: MediaKind;
@@ -16,6 +17,13 @@ export interface DropzoneProps {
   onFileSelected: (file: File) => void;
   connectLabel?: string;
 }
+
+const DROP_HEADINGS: Record<MediaKind, string> = {
+  image: msg("Drop or upload an image"),
+  video: msg("Drop or upload a video"),
+  audio: msg("Drop or upload an audio file"),
+  document: msg("Drop or upload a document"),
+};
 
 export function Dropzone({
   mediaKindLock,
@@ -52,7 +60,7 @@ export function Dropzone({
       </div>
       <div className="space-y-1.5 px-6">
         <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">
-          {mediaKindLock ? `Drop or upload an ${mediaKindLock}` : t("Drop or upload your media")}
+          {t(mediaKindLock ? DROP_HEADINGS[mediaKindLock] : msg("Drop or upload your media"))}
         </h2>
         <p className="text-base text-muted-foreground max-w-sm mx-auto">
           {mediaKindLock === "image" ? t("It becomes your avatar and app theme.") : t("Protect your creation and monetize it worldwide.")}

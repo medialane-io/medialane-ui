@@ -98,10 +98,10 @@ export function PopCreateFields({
       <FadeIn delay={0.1}>
         <ImageUploadField
           upload={upload}
-          label={t("Certificate image")}
+          label={t("Cover image")}
           alt={t("Certificate")}
           optional
-          buttonLabel={t("Upload certificate art")}
+          buttonLabel={t("Upload image")}
         />
       </FadeIn>
 
@@ -111,11 +111,10 @@ export function PopCreateFields({
           name="name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t("Event name *")}</FormLabel>
+              <FormLabel>{t("Name")}</FormLabel>
               <FormControl>
                 <Input placeholder={t("Starknet Hackathon 2026")} {...field} />
               </FormControl>
-              <FormDescription>{t("The event or program name participants will recognize immediately.")}</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -128,7 +127,7 @@ export function PopCreateFields({
           name="symbol"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t("Symbol *")}</FormLabel>
+              <FormLabel>{t("Short code")}</FormLabel>
               <FormControl>
                 <Input
                   placeholder={t("SKHACK")}
@@ -137,7 +136,7 @@ export function PopCreateFields({
                   className="max-w-[160px]"
                 />
               </FormControl>
-              <FormDescription>{t("Short ticker for wallets.")}</FormDescription>
+              <FormDescription>{t("A short name shown in wallets.")}</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -166,7 +165,7 @@ export function PopCreateFields({
 
       <FadeIn delay={0.16}>
         <div className="space-y-1.5">
-          <p className="text-sm font-medium">{t("Claim window closes *")}</p>
+          <p className="text-sm font-medium">{t("Claims close")}</p>
           <div className="flex gap-2 items-center">
             <FormField
               control={form.control}
@@ -192,9 +191,6 @@ export function PopCreateFields({
               )}
             />
           </div>
-          <p className="text-xs text-muted-foreground">
-            {t("Claims close at this time.")}
-          </p>
         </div>
       </FadeIn>
 
@@ -224,9 +220,6 @@ export function PopCreateFields({
             />
           </button>
         </div>
-        <p className="text-xs text-muted-foreground">
-          {t("Private events are claimable by link only.")}
-        </p>
       </FadeIn>
 
       <FadeIn delay={0.2}>

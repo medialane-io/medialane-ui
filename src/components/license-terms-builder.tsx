@@ -140,7 +140,7 @@ function YesNoToggle({ label, help, checked, onChange, disabled }: { label: stri
 }
 
 export function LicenseTermsBuilder({
-  value, onChange, tokenOptions, amountLabel = "Amount", disabled, className,
+  value, onChange, tokenOptions, amountLabel, disabled, className,
 }: LicenseTermsBuilderProps) {
   const t = useT();
   const set = <K extends keyof SponsorshipTerms>(key: K, v: SponsorshipTerms[K]) =>
@@ -164,7 +164,7 @@ export function LicenseTermsBuilder({
   return (
     <div className={cn("space-y-4", className)}>
       <div className="space-y-1.5">
-        <label className={FIELD_LABEL}>{amountLabel}</label>
+        <label className={FIELD_LABEL}>{amountLabel ?? t("Amount")}</label>
         <input
           type="number"
           min={0}
@@ -325,7 +325,7 @@ export function LicenseTermsBuilder({
 
       <YesNoToggle
         label={t("Exclusive to this sponsor")}
-        help="No other sponsors during the license term."
+        help={t("No other sponsors during the license term.")}
         checked={value.exclusive}
         onChange={(v) => set("exclusive", v)}
         disabled={disabled}
@@ -333,7 +333,7 @@ export function LicenseTermsBuilder({
 
       <YesNoToggle
         label={t("Content approval required")}
-        help="Sponsor reviews content before it's published."
+        help={t("Sponsor reviews content before it's published.")}
         checked={value.approvalRequired}
         onChange={(v) => set("approvalRequired", v)}
         disabled={disabled}

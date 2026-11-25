@@ -21,8 +21,8 @@ test("shows the app's quick mint first, then a section for each kind of service"
   const view = renderPage();
   expect(view.getByText("Creator Launchpad")).toBeTruthy();
   const text = view.container.textContent ?? "";
-  expect(text.indexOf("app fast mint")).toBeLessThan(text.indexOf("Single Edition NFT"));
-  for (const title of ["Single NFTs", "Limited Editions", "Coins", "Membership", "Licensing", "Claims"]) {
+  expect(text.indexOf("app fast mint")).toBeLessThan(text.indexOf("Single work"));
+  for (const title of ["Single works", "Limited Editions", "Coins", "Membership", "Licensing", "Claims"]) {
     expect(view.getByRole("heading", { name: title })).toBeTruthy();
   }
 });
@@ -30,7 +30,7 @@ test("shows the app's quick mint first, then a section for each kind of service"
 test("each section can be reached from the jump bar", () => {
   const view = renderPage();
   const nav = view.getByRole("navigation", { name: "Launchpad sections" });
-  for (const title of ["Single NFTs", "Limited Editions", "Coins", "Membership", "Licensing", "Claims"]) {
+  for (const title of ["Single works", "Limited Editions", "Coins", "Membership", "Licensing", "Claims"]) {
     expect(nav.textContent).toContain(title);
   }
   expect(view.container.querySelector("#launchpad-licensing")).toBeTruthy();

@@ -37,14 +37,15 @@ import { invalidatePortfolioCache } from "../../utils/portfolio-cache.js";
 import type { MetadataField } from "../ip-type-fields.js";
 import { useT } from "../../i18n/provider.js";
 import { ActionButton } from "../action-button.js";
+import { msg } from "../../i18n/translate.js";
 
 const schema = z.object({
-  collectionId: z.string().min(1, "Select a collection"),
-  name: z.string().min(1, "Name required").max(FIELD_LIMITS.name),
+  collectionId: z.string().min(1, msg("Select a collection")),
+  name: z.string().min(1, msg("Name required")).max(FIELD_LIMITS.name),
   description: z.string().max(FIELD_LIMITS.description).optional(),
   external_url: webLinkField(),
   ipType: z.enum(IP_TYPES),
-  licenseType: z.string().min(1, "License required"),
+  licenseType: z.string().min(1, msg("License required")),
   commercialUse: z.enum(["Yes", "No"]),
   derivatives: z.enum(["Allowed", "Not Allowed", "Share-Alike"]),
   attribution: z.enum(["Required", "Not Required"]),
@@ -176,19 +177,19 @@ export function SingleEditionMint({ aside }: { aside?: ReactNode }) {
     <WalletRequired
       icon={ImagePlus}
       iconClassName="text-brand-blue"
-      title={t("Secure your account to create")}
+      title={t("Secure your account to publish")}
       description={t("Publish a single-copy work.")}
     >
-      <TransactionDialog tx={tx} title={t("Mint NFT")} workingLabel={t("Minting your work…")} firstStepLabel={t("Upload to IPFS")}>
+      <TransactionDialog tx={tx} title={t("Publish a work")} workingLabel={t("Publishing your work…")} firstStepLabel={t("Saving your work")}>
         <TransactionSuccess
-          name={form.getValues("name") || "Your asset"}
+          name={form.getValues("name") || t("Your work")}
           image={upload.preview}
-          title={t("Asset minted")}
+          title={t("Work published")}
           description={t("License terms are recorded with the work.")}
           actions={[
-            ...(mintedHref ? [{ href: mintedHref, label: t("View asset") }] : []),
+            ...(mintedHref ? [{ href: mintedHref, label: t("View work") }] : []),
             { href: "/portfolio/assets", label: t("View portfolio") },
-            { label: t("Mint another"), onClick: handleAgain },
+            { label: t("Publish another"), onClick: handleAgain },
           ]}
         >
           <RewardEarned actionType="mint_asset" />
@@ -197,14 +198,14 @@ export function SingleEditionMint({ aside }: { aside?: ReactNode }) {
 
       <ClaimRouteShell
         icon={<ImagePlus className="h-4 w-4 text-white" />}
-        title={t("Mint NFT")}
+        title={t("Publish a work")}
         subtitle={t("Publish a single-copy work.")}
         aside={
           <>
             <MedialaneCollectionCard
               image={upload.preview}
               name={form.watch("name")}
-              collection={selectedCollection?.name || "IP Asset"}
+              collection={selectedCollection?.name || t("Work")}
               creator={walletAddress ? `${walletAddress.slice(0, 6)}…${walletAddress.slice(-4)}` : undefined}
               creatorHref={walletAddress ? profileHref({ address: walletAddress }) : undefined}
             />
@@ -216,7 +217,7 @@ export function SingleEditionMint({ aside }: { aside?: ReactNode }) {
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <FormField control={form.control} name="collectionId" render={({ field }) => (
               <FormItem>
-                <FormLabel className="flex items-center gap-1.5"><Boxes className="h-4 w-4" />{t("Collection *")}</FormLabel>
+                <FormLabel className="flex items-center gap-1.5"><Boxes className="h-4 w-4" />{t("Collection")}</FormLabel>
                 <CollectionPicker
                   collections={collections}
                   loading={collectionsLoading}
@@ -228,27 +229,27 @@ export function SingleEditionMint({ aside }: { aside?: ReactNode }) {
               </FormItem>
             )} />
 
-            <ImageUploadField upload={upload} label={t("Cover image")} alt={t("Preview")} />
+            <ImageUploadField upload={upload} label={t("Cover image")} alt={t("Preview")} optional />
 
             <FormField control={form.control} name="name" render={({ field }) => (
               <FormItem>
-                <FormLabel>{t("Name *")}</FormLabel>
-                <FormControl><Input placeholder={t("My Creative Work")} {...field} /></FormControl>
+                <FormLabel>{t("Name")}</FormLabel>
+                <FormControl><Input placeholder={t("The title people will see")} {...field} /></FormControl>
                 <FormMessage />
               </FormItem>
             )} />
 
             <FormField control={form.control} name="description" render={({ field }) => (
               <FormItem>
-                <FormLabel>{t("Description")}</FormLabel>
-                <FormControl><Textarea placeholder={t("The story behind the work…")} rows={4} {...field} /></FormControl>
+                <FormLabel>{t("Description")} <span className="text-muted-foreground font-normal">{t("(optional)")}</span></FormLabel>
+                <FormControl><Textarea placeholder={t("Tell the story behind this work")} rows={4} {...field} /></FormControl>
                 <FormMessage />
               </FormItem>
             )} />
 
             <FormField control={form.control} name="external_url" render={({ field }) => (
               <FormItem>
-                <FormLabel>{t("External link")} <span className="text-muted-foreground font-normal">{t("(optional)")}</span></FormLabel>
+                <FormLabel>{t("Link")} <span className="text-muted-foreground font-normal">{t("(optional)")}</span></FormLabel>
                 <FormControl><Input placeholder={t("https://yourwebsite.com")} {...field} /></FormControl>
                 <FormMessage />
               </FormItem>
@@ -261,7 +262,6 @@ export function SingleEditionMint({ aside }: { aside?: ReactNode }) {
               label={t("License terms")}
               hint={t("Optional · Berne Convention")}
             >
-              <p className="text-xs text-muted-foreground">{t("Set how others use the work.")}</p>
               <FormField control={form.control} name="licenseType" render={({ field }) => (
                 <FormItem>
                   <FormLabel>{t("License")}</FormLabel>
@@ -316,13 +316,12 @@ export function SingleEditionMint({ aside }: { aside?: ReactNode }) {
               open={ipTypeOpen}
               onOpenChange={setIpTypeOpen}
               icon={<Layers className="h-4 w-4 text-primary" />}
-              label={t("IP type & metadata")}
+              label={t("More details")}
               hint={t("Optional")}
             >
-              <p className="text-xs text-muted-foreground">{t("Add traits for this edition.")}</p>
               <FormField control={form.control} name="ipType" render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t("IP type")}</FormLabel>
+                  <FormLabel>{t("Type of work")}</FormLabel>
                   <Select onValueChange={field.onChange} value={field.value}>
                     <FormControl><SelectTrigger><SelectValue /></SelectTrigger></FormControl>
                     <SelectContent>{IP_TYPES.map((t) => <SelectItem key={t} value={t}>{t}</SelectItem>)}</SelectContent>
@@ -338,9 +337,9 @@ export function SingleEditionMint({ aside }: { aside?: ReactNode }) {
             </CollapsibleSection>
 
             <ActionButton solid big type="submit" disabled={busy} className="w-full">
-              {t("Mint NFT")}
+              {t("Publish")}
             </ActionButton>
-            <p className="text-xs text-center text-muted-foreground">{t("Free to mint.")}</p>
+            <p className="text-xs text-center text-muted-foreground">{t("Free to publish.")}</p>
           </form>
         </Form>
       </ClaimRouteShell>

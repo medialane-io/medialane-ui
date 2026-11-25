@@ -1,4 +1,5 @@
-import { uploadSizeError, type UploadKind } from "@medialane/sdk";
+import { MAX_UPLOAD_BYTES, formatFileSize, uploadSizeError, type UploadKind } from "@medialane/sdk";
+import { msg, type Phrase } from "../i18n/translate.js";
 
 export interface UploadLimit {
   mimeTypes: readonly string[];
@@ -41,15 +42,20 @@ export function acceptFor(kind: UploadKind): string {
   return [...mimeTypes, ...extensions].join(",");
 }
 
-function typeList(extensions: readonly string[]): string {
+function typeNames(extensions: readonly string[]): { types: string; last: string } {
   const names = extensions.map((ext) => ext.slice(1).toUpperCase());
-  return names.length > 1 ? `${names.slice(0, -1).join(", ")} or ${names[names.length - 1]}` : names.join("");
+  return { types: names.slice(0, -1).join(", "), last: names[names.length - 1] ?? "" };
 }
 
-export function uploadError(file: { size: number; type: string; name?: string }, kind: UploadKind = "image"): string | null {
+export function uploadError(file: { size: number; type: string; name?: string }, kind: UploadKind = "image"): Phrase | null {
   const { mimeTypes, extensions } = UPLOAD_LIMITS[kind];
   const name = (file.name ?? "").toLowerCase();
   const allowed = mimeTypes.includes(file.type) || (file.type === "" && extensions.some((ext) => name.endsWith(ext)));
-  if (!allowed) return `Choose ${kind === "image" ? "an image" : "a file"} in ${typeList(extensions)}.`;
-  return uploadSizeError(file, kind);
+  if (!allowed) {
+    const text = kind === "image" ? msg("Choose an image in {types} or {last}.") : msg("Choose a file in {types} or {last}.");
+    return { text, vars: typeNames(extensions) };
+  }
+  if (!uploadSizeError(file, kind)) return null;
+  const text = kind === "image" ? msg("That image is {size}. Please choose one under {limit}.") : msg("That file is {size}. Please choose one under {limit}.");
+  return { text, vars: { size: formatFileSize(file.size), limit: formatFileSize(MAX_UPLOAD_BYTES) } };
 }

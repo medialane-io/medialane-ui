@@ -90,7 +90,7 @@ export function CoinLaunchPreview({ data, className }: { data: CoinPreviewData; 
         <div className="space-y-1.5">
           <div className="flex items-center justify-between text-sm">
             <span className="font-medium text-brand-orange">
-              {t("You keep")} {teamPct}%{yourCoins != null ? ` · ${intl.number(yourCoins)} ${symbol || "coins"}` : ""}
+              {t("You keep")} {teamPct}%{yourCoins != null ? ` · ${intl.number(yourCoins)} ${symbol || t("coins")}` : ""}
             </span>
             <span className="text-muted-foreground">{t("Community")} {100 - teamPct}%</span>
           </div>

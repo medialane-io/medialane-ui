@@ -6,7 +6,7 @@ const groupOf = (key: string) => LAUNCHPAD_SERVICE_DEFINITIONS.find((d) => d.key
 describe("the launchpad sections", () => {
   test("appear in this order", () => {
     expect(LAUNCHPAD_SERVICE_GROUPS.map((g) => g.title)).toEqual([
-      "Single NFTs",
+      "Single works",
       "Limited Editions",
       "Coins",
       "Membership",
@@ -37,7 +37,7 @@ describe("the launchpad sections", () => {
 
   test("each service Fast Mint can make carries the name and hint the picker shows", () => {
     const names = ["nfts", "limited-editions", "pop-protocol", "ip-tickets", "ip-club"].map((key) => getMintFormatCopy(key).name);
-    expect(names).toEqual(["Single NFT", "Limited Editions", "Immutable certificate", "IP Ticket", "IP Club"]);
+    expect(names).toEqual(["Single work", "Limited Editions", "Permanent certificate", "IP Ticket", "IP Club"]);
     expect(() => getMintFormatCopy("claim-username")).toThrow();
   });
 });

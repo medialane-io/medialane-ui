@@ -9,6 +9,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { describeError } from "../../utils/describe-error.js";
 import type { GuardianWallet } from "./wallet-types.js";
 import { useT } from "../../i18n/provider.js";
+import { msg } from "../../i18n/translate.js";
 
 export interface AddGuardianDialogProps {
   open: boolean;
@@ -27,7 +28,7 @@ export function AddGuardianDialog({ open, onOpenChange, sealed, onAdded, wallet 
   const handleAdd = async () => {
     const trimmed = pubkey.trim();
     if (!isValidStarknetAddress(trimmed)) {
-      setError("Enter a valid Stark-curve public key.");
+      setError(msg("Enter a valid Stark-curve public key."));
       return;
     }
     setBusy(true);
@@ -64,7 +65,7 @@ export function AddGuardianDialog({ open, onOpenChange, sealed, onAdded, wallet 
             className="font-mono text-xs"
             onKeyDown={(e) => e.key === "Enter" && pubkey.trim() && void handleAdd()}
           />
-          {error && <p className="text-sm text-destructive">{error}</p>}
+          {error && <p className="text-sm text-destructive">{t(error)}</p>}
           <Button onClick={handleAdd} disabled={busy || !pubkey.trim()} className="w-full">
             {busy ? <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" /> : null}
             {busy ? t("Confirm with passkey…") : t("Add guardian")}

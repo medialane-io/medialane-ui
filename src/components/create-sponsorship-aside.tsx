@@ -10,7 +10,7 @@ export function CreateSponsorshipAside() {
     <ClaimRail
       included={[
         { icon: Handshake, title: t("Direct settlement"), desc: t("The sponsor pays directly.") },
-        { icon: ShieldCheck, title: t("Owner-verified"), desc: t("For assets you own.") },
+        { icon: ShieldCheck, title: t("Owner-verified"), desc: t("For works you own.") },
         { icon: Coins, title: t("Open bidding"), desc: t("Open to any sponsor.") },
       ]}
       steps={[

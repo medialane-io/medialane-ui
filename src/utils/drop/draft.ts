@@ -98,7 +98,7 @@ const RESERVED = new Map([...RESERVED_TRAITS].map((t) => [t.toLowerCase(), t]));
 
 function assetErrors(a: DraftAsset): AssetErrors | null {
   const e: AssetErrors = {};
-  if (!assetImage(a)) e.feature = { text: msg("Add a feature image") };
+  if (!assetImage(a)) e.feature = { text: msg("Add a cover image") };
   if (!isPositiveInteger(a.copies)) e.copies = { text: msg("Enter 1 or more") };
   const reserved = a.traits.map((t) => RESERVED.get(t.key.trim().toLowerCase())).find(Boolean);
   if (reserved) e.traits = { text: msg("{name} is set by the license terms"), vars: { name: reserved } };
@@ -115,8 +115,8 @@ export function validateDropDraft(d: DropDraft, now: number): DropDraftErrors {
     const e = assetErrors(a);
     if (e) assets.byId[a.id] = e;
   }
-  if (d.assets.length === 0) assets.list = { text: msg("Add an asset") };
-  else if (draftTokens(d) > MAX_DROP_SUPPLY) assets.list = { text: msg("Up to {count} tokens"), vars: { count: formatNumber(MAX_DROP_SUPPLY) } };
+  if (d.assets.length === 0) assets.list = { text: msg("Add a work") };
+  else if (draftTokens(d) > MAX_DROP_SUPPLY) assets.list = { text: msg("Up to {count} copies"), vars: { count: formatNumber(MAX_DROP_SUPPLY) } };
 
   const settings: DropDraftErrors["settings"] = { ...validateSale(d.sale, now) };
   if (d.listOnly) {

@@ -46,7 +46,7 @@ export function DropCreate({ store }: { store?: DraftStore }) {
     <ClaimRouteShell
       icon={<Package className="h-4 w-4 text-white" />}
       title={msg("Collection drop")}
-      subtitle={msg("A new collection released for collectors to mint.")}
+      subtitle={msg("A new collection for people to collect.")}
     >
       {ready && (
         <div className="space-y-3">
@@ -62,7 +62,7 @@ export function DropCreate({ store }: { store?: DraftStore }) {
           <AssetsPanel {...panel} open={open === "assets"} onToggle={toggle("assets")} />
           <SettingsPanel {...panel} open={open === "settings"} onToggle={toggle("settings")} />
           <div className="space-y-3 pt-3">
-            <p className="text-center text-xs text-muted-foreground">{t("Fixed at launch: assets, price, dates, supply and the wallet limit.")}</p>
+            <p className="text-center text-xs text-muted-foreground">{t("Fixed at launch: works, price, dates, quantity and the wallet limit.")}</p>
             <ActionButton solid big onClick={launch} className="w-full">
               {!wallet ? app.connectLabel ?? t("Sign in to launch") : missing ? t(missing.message.text, missing.message.vars) : t("Launch drop")}
             </ActionButton>

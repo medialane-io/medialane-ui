@@ -56,7 +56,7 @@ test("an event is created as a pop collection with its claim deadline", async ()
 test("an event without a name is not created", async () => {
   const { view, intents } = setup();
   fireEvent.submit(view.container.querySelector("form")!);
-  await waitFor(() => expect(view.getByText("Event name required")).toBeTruthy());
+  await waitFor(() => expect(view.getByText("Name required")).toBeTruthy());
   expect(intents).toEqual([]);
 });
 

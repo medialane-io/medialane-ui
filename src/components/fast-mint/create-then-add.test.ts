@@ -1,7 +1,8 @@
 import { describe, expect, test } from "bun:test";
 import { createThenAdd, PartialCreateError, type StepInfo } from "./create-then-add";
 
-const labels = { create: "Creating the collection", add: "Minting" };
+const labels = { create: "Creating the collection", add: "Publishing" };
+const unfinished = "Your collection was created, but the last step did not finish.";
 
 describe("creating a destination and adding the first item to it", () => {
   test("with an existing destination there is one step and nothing is created", async () => {
@@ -11,11 +12,11 @@ describe("creating a destination and adding the first item to it", () => {
       existing: "0xold",
       create: async () => { created++; return "0xnew"; },
       add: async (d) => `added to ${d}`,
-      labels, noun: "collection", onStep: (s) => steps.push(s),
+      labels, unfinished, onStep: (s) => steps.push(s),
     });
     expect(result).toBe("added to 0xold");
     expect(created).toBe(0);
-    expect(steps).toEqual([{ label: "Minting", index: 1, total: 1 }]);
+    expect(steps).toEqual([{ label: "Publishing", index: 1, total: 1 }]);
   });
 
   test("without one the destination is created first, then the item is added to it", async () => {
@@ -25,13 +26,13 @@ describe("creating a destination and adding the first item to it", () => {
       existing: null,
       create: async () => { order.push("create"); return "0xnew"; },
       add: async (d) => { order.push(`add ${d}`); return "done"; },
-      labels, noun: "collection", onStep: (s) => steps.push(s),
+      labels, unfinished, onStep: (s) => steps.push(s),
     });
     expect(result).toBe("done");
     expect(order).toEqual(["create", "add 0xnew"]);
     expect(steps).toEqual([
       { label: "Creating the collection", index: 1, total: 2 },
-      { label: "Minting", index: 2, total: 2 },
+      { label: "Publishing", index: 2, total: 2 },
     ]);
   });
 
@@ -41,7 +42,7 @@ describe("creating a destination and adding the first item to it", () => {
       existing: null,
       create: async () => { throw new Error("rejected"); },
       add: async () => { added++; return 1; },
-      labels, noun: "collection", onStep: () => {},
+      labels, unfinished, onStep: () => {},
     })).rejects.toThrow("rejected");
     expect(added).toBe(0);
   });
@@ -52,11 +53,10 @@ describe("creating a destination and adding the first item to it", () => {
       existing: null,
       create: async () => "0xnew",
       add: async () => { throw failure; },
-      labels, noun: "ticket collection", onStep: () => {},
+      labels, unfinished: "Your ticket collection was created, but the last step did not finish.", onStep: () => {},
     }).catch((e) => e);
     expect(error).toBeInstanceOf(PartialCreateError);
     expect(error.destination).toBe("0xnew");
-    expect(error.noun).toBe("ticket collection");
     expect(error.reason).toBe(failure);
     expect(error.message).toBe("Your ticket collection was created, but the last step did not finish.");
   });
@@ -66,7 +66,7 @@ describe("creating a destination and adding the first item to it", () => {
       existing: "0xold",
       create: async () => "0xnew",
       add: async () => { throw new Error("nope"); },
-      labels, noun: "collection", onStep: () => {},
+      labels, unfinished, onStep: () => {},
     })).rejects.toThrow("nope");
   });
 });

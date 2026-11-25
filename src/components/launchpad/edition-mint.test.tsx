@@ -20,12 +20,12 @@ afterEach(() => cleanup());
 const OWNER = "0x00000000000000000000000000000000000000000000000000000000000000aa";
 const CONTRACT = "0x00000000000000000000000000000000000000000000000000000000000000c7";
 
-function setup(collectionOwner: string, metadata: Record<string, unknown> = {}) {
+function setup(collectionOwner: string, metadata: Record<string, unknown> = {}, collectionName: string | null = "Night Songs") {
   const intents: Record<string, unknown>[] = [];
   const client = {
     provider: { getTransactionReceipt: async () => ({ execution_status: "SUCCEEDED", events: [{ from_address: CONTRACT, keys: [hash.getSelectorFromName("IPMinted"), "0x4", "0x0"], data: [] }] }) },
     api: {
-      collections: { get: async () => ({ owner: collectionOwner }) },
+      collections: { get: async () => ({ owner: collectionOwner, name: collectionName }) },
       metadata: { signedUrl: async () => ({ data: { url: "https://upload.example/signed" } }), upload: async () => ({ data: { url: "ipfs://meta" } }), ...metadata },
       intents: {
         create: async (_kind: string, params: Record<string, unknown>) => { intents.push(params); return { id: "i1", requiresSignature: false, calls: [{}] }; },
@@ -50,29 +50,29 @@ function setup(collectionOwner: string, metadata: Record<string, unknown> = {}) 
 
 test("only the collection owner can mint into it", async () => {
   const { view } = setup("0x00000000000000000000000000000000000000000000000000000000000000bb");
-  await waitFor(() => expect(view.getByText("Not the owner")).toBeTruthy());
+  await waitFor(() => expect(view.getByText("Owner only")).toBeTruthy());
 });
 
 test("an edition needs an image before anything is created", async () => {
   const { view, intents } = setup(OWNER);
-  await waitFor(() => expect(view.getByPlaceholderText("Genesis Track #1")).toBeTruthy());
-  fireEvent.change(view.getByPlaceholderText("Genesis Track #1"), { target: { value: "Track" } });
+  await waitFor(() => expect(view.getByPlaceholderText("The title people will see")).toBeTruthy());
+  fireEvent.change(view.getByPlaceholderText("The title people will see"), { target: { value: "Track" } });
   fireEvent.submit(view.container.querySelector("form")!);
-  await waitFor(() => expect(view.getByRole("group").textContent).toContain("Upload an image before minting."));
+  await waitFor(() => expect(view.getByRole("group").textContent).toContain("Upload an image before publishing."));
   expect(intents).toEqual([]);
 });
 
 test("an edition is minted with its quantity and links to the new asset", async () => {
   const { view, intents } = setup(OWNER);
-  await waitFor(() => expect(view.getByPlaceholderText("Genesis Track #1")).toBeTruthy());
+  await waitFor(() => expect(view.getByPlaceholderText("The title people will see")).toBeTruthy());
   fireEvent.change(view.container.querySelector('input[type="file"]')!, { target: { files: [new File(["x"], "cover.png", { type: "image/png" })] } });
   await waitFor(() => expect(view.getByText("✓ Uploaded")).toBeTruthy());
-  fireEvent.change(view.getByPlaceholderText("Genesis Track #1"), { target: { value: "Track" } });
+  fireEvent.change(view.getByPlaceholderText("The title people will see"), { target: { value: "Track" } });
   fireEvent.change(view.getByPlaceholderText("1"), { target: { value: "25" } });
   fireEvent.submit(view.container.querySelector("form")!);
-  await waitFor(() => expect(view.getByText("Mint another")).toBeTruthy());
+  await waitFor(() => expect(view.getByText("Publish another")).toBeTruthy());
   expect(intents[0]).toMatchObject({ owner: OWNER, recipient: OWNER, collectionContract: CONTRACT, tokenUri: "ipfs://meta", value: "25", royaltyBps: 0 });
-  expect(view.getByText("View asset").closest("a")?.getAttribute("href")).toBe(`/asset/starknet/${CONTRACT}/4`);
+  expect(view.getByText("View work").closest("a")?.getAttribute("href")).toBe(`/asset/starknet/${CONTRACT}/4`);
 });
 
 function failingUploads() {
@@ -86,10 +86,23 @@ const pickImage = (view: { container: HTMLElement }) =>
 
 test("a failed picture is reported in the picture field as soon as it happens", async () => {
   const { view, intents } = setup(OWNER, failingUploads());
-  await waitFor(() => expect(view.getByPlaceholderText("Genesis Track #1")).toBeTruthy());
+  await waitFor(() => expect(view.getByPlaceholderText("The title people will see")).toBeTruthy());
   pickImage(view);
   await waitFor(() => expect(view.getByRole("group").textContent).toContain("Image upload failed: Storage limit reached"));
   expect(view.getAllByRole("alert")).toHaveLength(1);
   expect(view.getByText("Retry")).toBeTruthy();
   expect(intents).toEqual([]);
+});
+
+test("the edition form names the collection instead of showing its address", async () => {
+  const { view } = setup(OWNER);
+  await waitFor(() => expect(view.getByText("Night Songs")).toBeTruthy());
+  expect(view.container.textContent).not.toContain(CONTRACT);
+});
+
+test("an unnamed collection adds no header line", async () => {
+  const { view } = setup(OWNER, {}, null);
+  await waitFor(() => expect(view.getByPlaceholderText("The title people will see")).toBeTruthy());
+  expect(view.container.textContent).not.toContain(CONTRACT);
+  expect(view.queryByTestId("collection-name")).toBeNull();
 });

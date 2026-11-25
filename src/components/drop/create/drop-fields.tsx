@@ -43,7 +43,7 @@ export function PriceFields({ draft, setDraft, errors, feeBps }: FieldsProps & {
       <ToggleGroup tone="neutral" value={sale.paid ? "Paid" : "Free"} options={["Free", "Paid"]} onChange={(v) => set({ paid: v === "Paid" })} />
       {sale.paid && (
         <div className="flex gap-2">
-          <Input inputMode="decimal" aria-label={t("Price per token")} placeholder={t("Price per token")} value={sale.price} onChange={(e) => set({ price: e.target.value.trim() })} />
+          <Input inputMode="decimal" aria-label={t("Price per copy")} placeholder={t("Price per copy")} value={sale.price} onChange={(e) => set({ price: e.target.value.trim() })} />
           <Select value={sale.tokenSymbol} onValueChange={(v) => set({ tokenSymbol: v })}>
             <SelectTrigger className="w-28"><SelectValue /></SelectTrigger>
             <SelectContent>{getListableTokens().map((token) => <SelectItem key={token.symbol} value={token.symbol}>{token.symbol}</SelectItem>)}</SelectContent>
@@ -60,7 +60,7 @@ export function AccessFields({ draft, setDraft, errors }: FieldsProps) {
   const t = useT();
   const parsed = draft.listOnly ? parseAllowlist(draft.allowlist) : null;
   return (
-    <Field label={t("Who can mint")}>
+    <Field label={t("Who can collect")}>
       <ToggleGroup tone="neutral" value={draft.listOnly ? "Wallet list" : "Everyone"} options={["Everyone", "Wallet list"]}
         onChange={(v) => setDraft({ listOnly: v === "Wallet list" })} />
       {draft.listOnly && (
@@ -106,7 +106,7 @@ export function TimingFields({ draft, setDraft, errors }: FieldsProps) {
       <Field label={t("Limit per wallet")}>
         <ToggleGroup tone="neutral" value={sale.limitPerWallet ? "Set a limit" : "No limit"} options={["No limit", "Set a limit"]}
           onChange={(v) => set({ limitPerWallet: v === "Set a limit" })} />
-        {sale.limitPerWallet && <Input inputMode="numeric" aria-label={t("Tokens per wallet")} className="max-w-[10rem]" value={sale.perWallet} onChange={(e) => set({ perWallet: e.target.value.trim() })} />}
+        {sale.limitPerWallet && <Input inputMode="numeric" aria-label={t("Copies per wallet")} className="max-w-[10rem]" value={sale.perWallet} onChange={(e) => set({ perWallet: e.target.value.trim() })} />}
         <FieldError message={errors.perWallet} />
       </Field>
     </>
@@ -120,7 +120,6 @@ export function LicenseFields({ draft, setDraft }: Omit<FieldsProps, "errors">) 
   const def = LICENSE_TYPES.find((l) => l.value === license.licenseType);
   return (
     <>
-      <p className="text-xs text-muted-foreground">{t("Set how collectors use the work.")}</p>
       <Field label={t("License")}>
         <Select value={license.licenseType} onValueChange={(v) => {
           const next = LICENSE_TYPES.find((l) => l.value === v);
@@ -140,7 +139,7 @@ export function LicenseFields({ draft, setDraft }: Omit<FieldsProps, "errors">) 
       <Field label={t("AI & data mining")}>
         <ToggleGroup tone="neutral" value={license.aiPolicy} options={AI_POLICIES} onChange={(v) => set({ aiPolicy: v })} />
       </Field>
-      <Field label={t("IP type")}>
+      <Field label={t("Type of work")}>
         <Select value={license.ipType} onValueChange={(v) => set({ ipType: v })}>
           <SelectTrigger><SelectValue /></SelectTrigger>
           <SelectContent>{IP_TYPES.map((type) => <SelectItem key={type} value={type}>{type}</SelectItem>)}</SelectContent>

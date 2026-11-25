@@ -6,14 +6,12 @@ export interface StepInfo {
 
 export class PartialCreateError extends Error {
   readonly destination: unknown;
-  readonly noun: string;
   readonly reason: unknown;
 
-  constructor(destination: unknown, noun: string, reason: unknown) {
-    super(`Your ${noun} was created, but the last step did not finish.`);
+  constructor(destination: unknown, unfinished: string, reason: unknown) {
+    super(unfinished);
     this.name = "PartialCreateError";
     this.destination = destination;
-    this.noun = noun;
     this.reason = reason;
   }
 }
@@ -23,10 +21,10 @@ export async function createThenAdd<D, R>(opts: {
   create: () => Promise<D>;
   add: (destination: D) => Promise<R>;
   labels: { create: string; add: string };
-  noun: string;
+  unfinished: string;
   onStep: (step: StepInfo) => void;
 }): Promise<R> {
-  const { existing, create, add, labels, noun, onStep } = opts;
+  const { existing, create, add, labels, unfinished, onStep } = opts;
   const total = existing === null ? 2 : 1;
 
   if (existing !== null) {
@@ -40,6 +38,6 @@ export async function createThenAdd<D, R>(opts: {
   try {
     return await add(created);
   } catch (reason) {
-    throw new PartialCreateError(created, noun, reason);
+    throw new PartialCreateError(created, unfinished, reason);
   }
 }

@@ -7,6 +7,7 @@ import { describeError } from "../../utils/describe-error.js";
 import { Button } from "../button.js";
 import { Alert, AlertDescription } from "../alert.js";
 import { useT } from "../../i18n/provider.js";
+import { msg } from "../../i18n/translate.js";
 
 export interface ExportKeySectionProps {
   loadSealed: () => SealedOwner | null;
@@ -27,7 +28,7 @@ export function ExportKeySection({ loadSealed, unlock, actions }: ExportKeySecti
     try {
       const sealed = loadSealed();
       if (!sealed) {
-        setError("This browser has no wallet key stored.");
+        setError(msg("This browser has no wallet key stored."));
         return;
       }
       setRecoveryKey(encodeRecoveryKey({ walletAddress: sealed.address, privateKey: await unlock(sealed) }));
@@ -84,7 +85,7 @@ export function ExportKeySection({ loadSealed, unlock, actions }: ExportKeySecti
         </>
       ) : (
         <>
-          {error && <p className="text-sm text-destructive">{error}</p>}
+          {error && <p className="text-sm text-destructive">{t(error)}</p>}
           <div className="flex flex-wrap items-center gap-2">
             <Button onClick={reveal} disabled={busy} variant="soft" size="sm">
               {busy ? <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" /> : <KeyRound className="mr-1.5 h-3.5 w-3.5" />}

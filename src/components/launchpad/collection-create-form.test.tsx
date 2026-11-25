@@ -88,7 +88,7 @@ test("single-editions links to the new collection by the address its registry ho
   await waitFor(() => expect(view.getByText("View collection")).toBeTruthy());
   expect(view.getByText("View collection").closest("a")?.getAttribute("href")).toEndWith("0bb");
   const links = Array.from(view.container.ownerDocument.querySelectorAll("a")).map((a) => a.textContent);
-  expect(links.indexOf("View collection")).toBeLessThan(links.indexOf("Mint an asset"));
+  expect(links.indexOf("View collection")).toBeLessThan(links.indexOf("Publish a work"));
 });
 
 function failingUploads() {

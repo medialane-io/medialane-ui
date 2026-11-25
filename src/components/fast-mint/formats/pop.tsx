@@ -53,7 +53,7 @@ function PopFields({ shared, state, update }: FormatFieldsProps<PopState>) {
       </div>
 
       <div className="space-y-2">
-        <label className="text-sm font-medium" htmlFor="fast-mint-symbol">{t("Symbol *")}</label>
+        <label className="text-sm font-medium" htmlFor="fast-mint-symbol">{t("Short code")}</label>
         <Input
           id="fast-mint-symbol"
           value={shared.draft.symbol}
@@ -64,7 +64,7 @@ function PopFields({ shared, state, update }: FormatFieldsProps<PopState>) {
       </div>
 
       <div className="space-y-2">
-        <label className="text-sm font-medium">{t("Claim window closes *")}</label>
+        <label className="text-sm font-medium">{t("Claims close")}</label>
         <div className="flex gap-2 items-center">
           <Input type="date" aria-label={t("Claim window closing date")} value={state.claimEndDate} onChange={(e) => update({ claimEndDate: e.target.value })} className="flex-1" />
           <Input type="time" aria-label={t("Claim window closing time")} value={state.claimEndTime} onChange={(e) => update({ claimEndTime: e.target.value })} className="w-28" />
@@ -118,7 +118,7 @@ export const POP_FORMAT = defineFormat<PopState>({
     const { client, signer, onStep } = runtime;
     const values = shared.form.getValues();
     const uploadToken = await runtime.getUploadToken();
-    if (!uploadToken) throw new Error("Sign in first");
+    if (!uploadToken) throw new Error(msg("Sign in first"));
 
     onStep({ label: msg("Creating"), index: 1, total: 1 });
     const baseUri = await uploadJsonToIpfs(client.api, {
@@ -142,7 +142,7 @@ export const POP_FORMAT = defineFormat<PopState>({
 
     return {
       headline: msg("Certificate created"),
-      detail: msg("It is recorded onchain with your wallet as owner."),
+      detail: msg("It's saved permanently with you as the owner."),
       name: values.name,
       links: [{ href: "/launchpad/pop", label: msg("Open POP"), icon: Award }],
       reward: "launch_launchpad",
