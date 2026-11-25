@@ -1,22 +1,20 @@
 "use client";
 
-import type { ElementType, RefObject } from "react";
+import type { ElementType } from "react";
 import type { UseFormReturn } from "react-hook-form";
-import Image from "../image.js";
 import {
   Award,
   BookOpen,
   Code2,
-  ImagePlus,
   Loader2,
   Mic2,
   Star,
   Users,
   Wrench,
-  X,
   Zap,
 } from "lucide-react";
-import { acceptFor } from "../../utils/upload-limits.js";
+import { ImageUploadField } from "../image-upload-field.js";
+import type { FileUpload } from "../../utils/use-file-upload.js";
 import { Button } from "../button.js";
 import { Input } from "../input.js";
 import { Textarea } from "../textarea.js";
@@ -45,15 +43,10 @@ interface PopCreateFieldsProps {
   walletAddress: string | null | undefined;
   eventType: PopEventType;
   isPublic: boolean;
-  imagePreview: string | null;
-  imageUri: string | null;
-  imageUploading: boolean;
+  upload: FileUpload;
   isSubmitting: boolean;
-  fileInputRef: RefObject<HTMLInputElement | null>;
   onSetEventType: (value: PopEventType) => void;
   onSetPublic: (value: boolean) => void;
-  onImageSelect: (file: File) => void;
-  onClearImage: () => void;
 }
 
 export function PopCreateFields({
@@ -61,15 +54,10 @@ export function PopCreateFields({
   walletAddress,
   eventType,
   isPublic,
-  imagePreview,
-  imageUri,
-  imageUploading,
+  upload,
   isSubmitting,
-  fileInputRef,
   onSetEventType,
   onSetPublic,
-  onImageSelect,
-  onClearImage,
 }: PopCreateFieldsProps) {
   const t = useT();
   return (
@@ -108,78 +96,13 @@ export function PopCreateFields({
       </FadeIn>
 
       <FadeIn delay={0.1}>
-        <div className="space-y-2">
-          <p className="text-sm font-medium">
-            {t("Certificate image")} <span className="text-muted-foreground font-normal">{t("(optional)")}</span>
-          </p>
-          <div className="flex items-center gap-4">
-            <div
-              role="button"
-              tabIndex={0}
-              onClick={() => !imageUploading && fileInputRef.current?.click()}
-              onKeyDown={(event) => {
-                if (event.key === "Enter" || event.key === " ") {
-                  event.preventDefault();
-                  if (!imageUploading) fileInputRef.current?.click();
-                }
-              }}
-              className="relative h-20 w-20 rounded-2xl border-2 border-dashed border-border bg-muted flex items-center justify-center overflow-hidden shrink-0 cursor-pointer hover:border-brand-blue/50 transition-colors"
-            >
-              {imagePreview ? (
-                <Image src={imagePreview} alt={t("Certificate")} fill unoptimized className="object-cover" />
-              ) : (
-                <ImagePlus className="h-6 w-6 text-muted-foreground" />
-              )}
-              {imageUploading ? (
-                <div className="absolute inset-0 bg-background/70 flex items-center justify-center">
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                </div>
-              ) : null}
-            </div>
-            <div className="space-y-1.5">
-              <input
-                ref={fileInputRef}
-                type="file"
-                accept={acceptFor("image")}
-                className="hidden"
-                onChange={(event) => {
-                  const file = event.target.files?.[0];
-                  if (file) onImageSelect(file);
-                }}
-              />
-              <Button
-                type="button"
-                variant="soft"
-                size="sm"
-                disabled={imageUploading}
-                onClick={() => fileInputRef.current?.click()}
-              >
-                {imageUploading ? (
-                  <>
-                    <Loader2 className="h-3.5 w-3.5 mr-1.5 animate-spin" />
-                    {t("Uploading…")}
-                  </>
-                ) : imagePreview ? (
-                  t("Change")
-                ) : (
-                  t("Upload certificate art")
-                )}
-              </Button>
-              {imagePreview ? (
-                <button
-                  type="button"
-                  onClick={onClearImage}
-                  className="flex items-center gap-1 text-xs text-muted-foreground hover:text-destructive transition-colors"
-                >
-                  <X className="h-3 w-3" /> {t("Remove")}
-                </button>
-              ) : null}
-              <p className="text-xs text-muted-foreground">
-                {imageUri ? <span className="text-brand-blue">{t("✓ Uploaded")}</span> : t("Image files")}
-              </p>
-            </div>
-          </div>
-        </div>
+        <ImageUploadField
+          upload={upload}
+          label={t("Certificate image")}
+          alt={t("Certificate")}
+          optional
+          buttonLabel={t("Upload certificate art")}
+        />
       </FadeIn>
 
       <FadeIn delay={0.12}>
@@ -311,7 +234,7 @@ export function PopCreateFields({
           type="submit"
           size="lg"
           className="w-full rounded-xl mt-2"
-          disabled={isSubmitting || imageUploading}
+          disabled={isSubmitting || upload.uploading}
         >
           {isSubmitting ? (
             <>

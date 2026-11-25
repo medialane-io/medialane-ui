@@ -4,13 +4,10 @@ import { useEffect, useState, type ReactNode } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { ImagePlus, Loader2, X } from "lucide-react";
 import { buildCollectionMetadata, collectionHref, getCoordinates, profileHref } from "@medialane/sdk";
-import { acceptFor } from "../../utils/upload-limits.js";
+import { ImageUploadField } from "../image-upload-field.js";
 import { FIELD_LIMITS } from "../../utils/field-limits.js";
 import { createdCollectionAddress, createdCollectionFromReceipt, deployedCollectionFromReceipt } from "@medialane/sdk/starknet";
-import Image from "../image.js";
-import { Button } from "../button.js";
 import { ActionButton } from "../action-button.js";
 import { Input } from "../input.js";
 import { Textarea } from "../textarea.js";
@@ -27,7 +24,7 @@ import { runIntentCalls } from "../../utils/run-intent-calls.js";
 import { serviceCollectionIntent } from "../../utils/launchpad-actions.js";
 import { uploadJsonToIpfs } from "../../utils/ipfs-upload.js";
 import { useTransaction } from "../../utils/use-transaction.js";
-import { useLaunchpadImageUpload } from "../../utils/use-launchpad-image-upload.js";
+import { useImageUpload } from "../../utils/use-image-upload.js";
 import { invalidatePortfolioCache } from "../../utils/portfolio-cache.js";
 import { suggestLaunchpadSymbol } from "../../utils/launchpad-defaults.js";
 import { symbolField, webLinkField } from "../../utils/launchpad-rules.js";
@@ -52,8 +49,7 @@ export function CollectionCreateForm({ preset, aside }: CollectionCreateFormProp
   const app = useMedialaneApp();
   const walletAddress = app.walletAddress;
   const tx = useTransaction();
-  const upload = useLaunchpadImageUpload({ successMessage: t("Image uploaded") });
-  const { imageFile, imagePreview, imageUri, imageUploading, uploadError, fileInputRef, handleImageSelect, clearImage } = upload;
+  const upload = useImageUpload();
   const [autoSymbol, setAutoSymbol] = useState("");
   const [viewHref, setViewHref] = useState<string | null>(null);
   const Icon = preset.icon;
@@ -104,11 +100,11 @@ export function CollectionCreateForm({ preset, aside }: CollectionCreateFormProp
     setViewHref(null);
     setAutoSymbol("");
     form.reset();
-    clearImage();
+    upload.clear();
   };
 
   const onSubmit = (values: FormValues) => {
-    if (imageFile && !imageUri && !imageUploading) return;
+    if (!upload.confirm()) return;
     if (!walletAddress) return;
     void tx.run(async (signer) => {
       await app.ensureSignedIn?.();
@@ -118,7 +114,7 @@ export function CollectionCreateForm({ preset, aside }: CollectionCreateFormProp
         buildCollectionMetadata({
           name: values.name,
           description: values.description,
-          image: imageUri,
+          image: upload.uri,
           externalLink: values.external_link,
           owner: walletAddress,
         }),
@@ -137,7 +133,7 @@ export function CollectionCreateForm({ preset, aside }: CollectionCreateFormProp
   };
 
   const { copy } = preset;
-  const busy = tx.phase !== "idle" || imageUploading;
+  const busy = tx.phase !== "idle" || upload.uploading;
   const actions = preset.actions({ address: deployedAddress, collectionHref: viewHref });
 
   return (
@@ -145,7 +141,7 @@ export function CollectionCreateForm({ preset, aside }: CollectionCreateFormProp
       <TransactionDialog tx={tx} title={t(preset.dialog.title)} workingLabel={t(preset.dialog.workingLabel)} firstStepLabel={t(preset.dialog.firstStepLabel)}>
         <TransactionSuccess
           name={name || t(preset.success.fallbackName)}
-          image={imagePreview}
+          image={upload.preview}
           title={t(preset.success.title)}
           description={t(preset.success.description)}
           actions={[actions.primary, actions.secondary, { label: t(preset.success.againLabel), onClick: handleAgain }]}
@@ -161,7 +157,7 @@ export function CollectionCreateForm({ preset, aside }: CollectionCreateFormProp
         aside={
           <>
             <MedialaneCollectionCard
-              image={imagePreview}
+              image={upload.preview}
               name={name}
               collection={form.watch("symbol") || preset.cardFallbackSymbol}
               creator={walletAddress ? `${walletAddress.slice(0, 6)}…${walletAddress.slice(-4)}` : undefined}
@@ -173,74 +169,12 @@ export function CollectionCreateForm({ preset, aside }: CollectionCreateFormProp
       >
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
-            <div className="space-y-2">
-              <p className="text-sm font-medium">{copy.imageHeading}</p>
-              <div className="flex items-start gap-4">
-                <div
-                  className="relative h-28 w-28 rounded-xl border-2 border-dashed border-border bg-muted flex items-center justify-center overflow-hidden shrink-0 cursor-pointer hover:border-primary/50 transition-colors"
-                  role="button"
-                  tabIndex={0}
-                  aria-label={`Upload ${copy.imageHeading.toLowerCase()}`}
-                  onClick={() => !imageUploading && fileInputRef.current?.click()}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" || e.key === " ") {
-                      e.preventDefault();
-                      if (!imageUploading) fileInputRef.current?.click();
-                    }
-                  }}
-                >
-                  {imagePreview ? (
-                    <Image src={imagePreview} alt={copy.imageHeading} fill unoptimized className="object-cover" />
-                  ) : (
-                    <ImagePlus className="h-8 w-8 text-muted-foreground" />
-                  )}
-                  {imageUploading && (
-                    <div className="absolute inset-0 bg-background/70 flex items-center justify-center">
-                      <Loader2 className="h-5 w-5 animate-spin text-primary" />
-                    </div>
-                  )}
-                </div>
-                <div className="space-y-2 flex-1">
-                  <input
-                    ref={fileInputRef}
-                    type="file"
-                    accept={acceptFor("image")}
-                    className="hidden"
-                    onChange={(e) => {
-                      const f = e.target.files?.[0];
-                      if (f) void handleImageSelect(f);
-                    }}
-                  />
-                  <Button type="button" variant="soft" size="sm" disabled={imageUploading} onClick={() => fileInputRef.current?.click()}>
-                    {imageUploading ? (
-                      <>
-                        <Loader2 className="h-3.5 w-3.5 mr-1.5 animate-spin" />
-                        {t("Uploading…")}
-                      </>
-                    ) : imageFile ? (
-                      t("Change image")
-                    ) : (
-                      t("Upload image")
-                    )}
-                  </Button>
-                  {imageFile && (
-                    <button
-                      type="button"
-                      onClick={clearImage}
-                      className="flex items-center gap-1 text-xs text-muted-foreground hover:text-destructive transition-colors"
-                    >
-                      <X className="h-3 w-3" /> {t("Remove")}
-                    </button>
-                  )}
-                  <p className="text-xs text-muted-foreground">
-                    {t("Image files")}
-                    {imageUri && <span className="ml-2 text-brand-blue font-medium">{t("✓ Uploaded")}</span>}
-                  </p>
-                  {copy.imageHelp && <p className="text-xs text-muted-foreground">{copy.imageHelp}</p>}
-                  {uploadError && <p className="text-xs text-destructive">{uploadError}</p>}
-                </div>
-              </div>
-            </div>
+            <ImageUploadField
+              upload={upload}
+              label={t(copy.imageHeading)}
+              alt={t(copy.imageHeading)}
+              hint={copy.imageHelp ? t(copy.imageHelp) : undefined}
+            />
 
             <FormField control={form.control} name="name" render={({ field }) => (
               <FormItem>

@@ -4,12 +4,12 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { Boxes, ChevronDown, ImagePlus, Layers, ShieldCheck, Upload } from "lucide-react";
+import { Boxes, ChevronDown, ImagePlus, Layers, ShieldCheck } from "lucide-react";
 import { assetHref, collectionHref, getService, profileHref } from "@medialane/sdk";
-import { acceptFor, uploadError } from "../../utils/upload-limits.js";
+import { useImageUpload } from "../../utils/use-image-upload.js";
+import { ImageUploadField } from "../image-upload-field.js";
 import { FIELD_LIMITS } from "../../utils/field-limits.js";
 import { mintedTokenIdFromReceipt } from "@medialane/sdk/starknet";
-import Image from "../image.js";
 import { Input } from "../input.js";
 import { Textarea } from "../textarea.js";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../select.js";
@@ -51,7 +51,6 @@ const schema = z.object({
   geographicScope: z.string(),
   aiPolicy: z.enum(["Allowed", "Not Allowed", "Training Only"]),
   royalty: z.coerce.number().min(0).max(50),
-  image: z.instanceof(File).optional(),
 });
 type FormValues = z.infer<typeof schema>;
 
@@ -82,21 +81,12 @@ export function SingleEditionMint({ aside }: { aside?: ReactNode }) {
   const { collections: allCollections, isLoading: collectionsLoading } = useCollectionsByOwner(walletAddress ?? null);
   const collections = allCollections.filter((c) => getService(c.service)?.id === "mip-erc721" && c.collectionId != null);
 
-  const [imageFile, setImageFile] = useState<File | null>(null);
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const upload = useImageUpload();
   const [advancedOpen, setAdvancedOpen] = useState(false);
   const [licensingOpen, setLicensingOpen] = useState(false);
   const [ipTypeOpen, setIpTypeOpen] = useState(false);
   const [metadataResetKey, setMetadataResetKey] = useState(0);
   const metadataFieldsRef = useRef<MetadataField[]>([]);
-  const previewUrlRef = useRef<string | null>(null);
-  const imageInputRef = useRef<HTMLInputElement | null>(null);
-
-  useEffect(() => {
-    return () => {
-      if (previewUrlRef.current) URL.revokeObjectURL(previewUrlRef.current);
-    };
-  }, []);
 
   const form = useForm<FormValues>({ resolver: zodResolver(schema), defaultValues: DEFAULTS });
   const selectedCollectionId = form.watch("collectionId");
@@ -140,12 +130,11 @@ export function SingleEditionMint({ aside }: { aside?: ReactNode }) {
     form.reset({ ...DEFAULTS, collectionId: first?.collectionId ?? "", external_url: autoUrlRef.current });
     metadataFieldsRef.current = [];
     setMetadataResetKey((key) => key + 1);
-    setImageFile(null);
-    setImagePreview(null);
-    if (imageInputRef.current) imageInputRef.current.value = "";
+    upload.clear();
   };
 
   const onSubmit = (values: FormValues) => {
+    if (!upload.confirm()) return;
     if (!walletAddress) return;
     void tx.run(async (signer) => {
       await app.ensureSignedIn?.();
@@ -163,7 +152,7 @@ export function SingleEditionMint({ aside }: { aside?: ReactNode }) {
         geographicScope: values.geographicScope,
         aiPolicy: values.aiPolicy,
         royalty: String(values.royalty),
-        imageFile,
+        imageUri: upload.uri,
         templateTraits: metadataFieldsRef.current.filter((f) => f.traitType.trim() && f.value.trim()).map((f) => ({ traitType: f.traitType.trim(), value: f.value.trim() })),
       });
       await runIntentCalls(signer, () =>
@@ -181,7 +170,7 @@ export function SingleEditionMint({ aside }: { aside?: ReactNode }) {
 
   const mintedTokenId = tx.receipt && selectedCollection ? mintedTokenIdFromReceipt(tx.receipt, selectedCollection.contractAddress) : null;
   const mintedHref = mintedTokenId && selectedCollection ? assetHref("STARKNET", selectedCollection.contractAddress, mintedTokenId) : null;
-  const busy = tx.phase !== "idle" || collectionsLoading || collections.length === 0;
+  const busy = tx.phase !== "idle" || upload.uploading || collectionsLoading || collections.length === 0;
 
   return (
     <WalletRequired
@@ -193,7 +182,7 @@ export function SingleEditionMint({ aside }: { aside?: ReactNode }) {
       <TransactionDialog tx={tx} title={t("Mint NFT")} workingLabel={t("Minting your work…")} firstStepLabel={t("Upload to IPFS")}>
         <TransactionSuccess
           name={form.getValues("name") || "Your asset"}
-          image={imagePreview}
+          image={upload.preview}
           title={t("Asset minted")}
           description={t("License terms are recorded with the work.")}
           actions={[
@@ -213,7 +202,7 @@ export function SingleEditionMint({ aside }: { aside?: ReactNode }) {
         aside={
           <>
             <MedialaneCollectionCard
-              image={imagePreview}
+              image={upload.preview}
               name={form.watch("name")}
               collection={selectedCollection?.name || "IP Asset"}
               creator={walletAddress ? `${walletAddress.slice(0, 6)}…${walletAddress.slice(-4)}` : undefined}
@@ -239,52 +228,7 @@ export function SingleEditionMint({ aside }: { aside?: ReactNode }) {
               </FormItem>
             )} />
 
-            <div className="space-y-2">
-              <label className="text-sm font-medium">{t("Cover image")}</label>
-              <div
-                className="border-2 border-dashed border-border rounded-xl p-8 text-center cursor-pointer hover:border-primary/50 transition-colors"
-                role="button"
-                tabIndex={0}
-                aria-label={t("Upload image")}
-                onClick={() => imageInputRef.current?.click()}
-                onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); imageInputRef.current?.click(); } }}
-              >
-                {imagePreview ? (
-                  <div className="relative mx-auto h-48 w-48 overflow-hidden rounded-2xl">
-                    <Image src={imagePreview} alt={t("Preview")} fill unoptimized className="object-cover" />
-                  </div>
-                ) : (
-                  <div className="flex flex-col items-center gap-2 text-muted-foreground">
-                    <Upload className="h-8 w-8" />
-                    <p className="text-sm">{t("Click to upload an image")}</p>
-                  </div>
-                )}
-                <input
-                  ref={imageInputRef}
-                  type="file"
-                  accept={acceptFor("image")}
-                  className="hidden"
-                  onChange={(e) => {
-                    const file = e.target.files?.[0];
-                    if (!file) return;
-                    const fileError = uploadError(file, "image");
-                    if (fileError) {
-                      form.setError("image", { message: fileError });
-                      e.target.value = "";
-                      return;
-                    }
-                    form.clearErrors("image");
-                    setImageFile(file);
-                    form.setValue("image", file);
-                    if (previewUrlRef.current) URL.revokeObjectURL(previewUrlRef.current);
-                    const objectUrl = URL.createObjectURL(file);
-                    previewUrlRef.current = objectUrl;
-                    setImagePreview(objectUrl);
-                  }}
-                />
-              </div>
-              {form.formState.errors.image && <p role="alert" className="text-sm text-destructive">{form.formState.errors.image.message}</p>}
-            </div>
+            <ImageUploadField upload={upload} label={t("Cover image")} alt={t("Preview")} />
 
             <FormField control={form.control} name="name" render={({ field }) => (
               <FormItem>

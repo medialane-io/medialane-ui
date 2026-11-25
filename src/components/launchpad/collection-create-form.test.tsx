@@ -24,7 +24,7 @@ function setup(events: unknown[], ipNft = "0x0") {
       callContract: async () => ["0x0", "0x0", "0x0", "0x0", "0x0", "0xaa", ipNft],
     },
     api: {
-      metadata: { upload: async () => ({ data: { url: "ipfs://meta" } }) },
+      metadata: { upload: async () => ({ data: { url: "ipfs://meta" } }), signedUrl: async () => { throw new Error("Storage limit reached"); } },
       intents: {
         create: async (_kind: string, params: unknown) => {
           created.push(params);
@@ -89,4 +89,23 @@ test("single-editions links to the new collection by the address its registry ho
   expect(view.getByText("View collection").closest("a")?.getAttribute("href")).toEndWith("0bb");
   const links = Array.from(view.container.ownerDocument.querySelectorAll("a")).map((a) => a.textContent);
   expect(links.indexOf("View collection")).toBeLessThan(links.indexOf("Mint an asset"));
+});
+
+function failingUploads() {
+  (globalThis as { URL: typeof URL }).URL.createObjectURL = () => "blob:preview";
+  (globalThis as { URL: typeof URL }).URL.revokeObjectURL = () => {};
+  return { signedUrl: async () => { throw new Error("Storage limit reached"); } };
+}
+
+const pickImage = (view: { container: HTMLElement }) =>
+  fireEvent.change(view.container.querySelector('input[type="file"]')!, { target: { files: [new File(["x"], "cover.png", { type: "image/png" })] } });
+
+test("submitting after a failed picture returns to the picture and creates nothing", async () => {
+  failingUploads();
+  const { view, created } = setup([]);
+  pickImage(view);
+  await waitFor(() => expect(view.getByRole("alert").textContent).toBe("Image upload failed: Storage limit reached"));
+  fill(view, "Rio Drummers", "RIO");
+  await waitFor(() => expect(document.activeElement?.getAttribute("data-status")).toBe("failed"));
+  expect(created).toEqual([]);
 });

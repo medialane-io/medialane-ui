@@ -1,9 +1,8 @@
 "use client";
 
 import { useMemo, useState, type ReactNode } from "react";
-import { ArrowRight, Coins, ImagePlus, Loader2, X } from "lucide-react";
+import { ArrowRight, Coins, Loader2 } from "lucide-react";
 import { SUPPORTED_TOKENS, formatAmount, getTokenBySymbol, normalizeAddress } from "@medialane/sdk";
-import { acceptFor } from "../../utils/upload-limits.js";
 import {
   SUGGESTED_DEFAULT_PRICE,
   buybackQuoteRaw,
@@ -18,7 +17,6 @@ import {
   assertTransactionSucceeded,
   type CreatorCoinReceiptLike,
 } from "@medialane/sdk/starknet";
-import Image from "../image.js";
 import Link from "../link.js";
 import { Input } from "../input.js";
 import { Label } from "../label.js";
@@ -36,7 +34,8 @@ import { cn } from "../../utils/cn.js";
 import { suggestLaunchpadSymbol } from "../../utils/launchpad-defaults.js";
 import { runIntentCalls } from "../../utils/run-intent-calls.js";
 import { useTransaction } from "../../utils/use-transaction.js";
-import { useLaunchpadImageUpload } from "../../utils/use-launchpad-image-upload.js";
+import { useImageUpload } from "../../utils/use-image-upload.js";
+import { ImageUploadField } from "../image-upload-field.js";
 import { useTokenBalance } from "../../utils/media-wallet/use-erc20-balance.js";
 import { useT } from "../../i18n/provider.js";
 import { useFormat } from "../../i18n/use-format.js";
@@ -74,8 +73,7 @@ export function CoinCreate({ aside, tradeHref }: CoinCreateProps) {
   const [coinAddress, setCoinAddress] = useState<string | null>(null);
   const [profileStatus, setProfileStatus] = useState<ProfileStatus>("idle");
 
-  const upload = useLaunchpadImageUpload({ successMessage: t("Image ready") });
-  const { imagePreview, imageUri, imageUploading, uploadError, uploadSuccess, fileInputRef, handleImageSelect, clearImage } = upload;
+  const upload = useImageUpload();
 
   const quoteToken = getTokenBySymbol(quote)!;
   const { rawBalance } = useTokenBalance(quote, walletAddress ?? null);
@@ -112,13 +110,13 @@ export function CoinCreate({ aside, tradeHref }: CoinCreateProps) {
   }, [supply, priceNum, teamPct, quoteToken.decimals]);
 
   const insufficient = preview != null && rawBalance != null && rawBalance < preview.buybackRaw;
-  const canLaunch = identityValid && economicsValid && preview != null && teamPct > 0 && !insufficient && !imageUploading;
+  const canLaunch = identityValid && economicsValid && preview != null && teamPct > 0 && !insufficient && !upload.uploading;
 
   const previewData: CoinPreviewData = {
     name,
     symbol,
     description,
-    imageUrl: imagePreview,
+    imageUrl: upload.preview,
     supplyHuman: economicsValid && supply ? Number(supply) : null,
     price: priceErr ? SUGGESTED_DEFAULT_PRICE : priceNum,
     quoteSymbol: quote,
@@ -127,6 +125,7 @@ export function CoinCreate({ aside, tradeHref }: CoinCreateProps) {
 
   const handleLaunchClick = () => {
     if (!canLaunch || !walletAddress || !preview) return;
+    if (!upload.confirm()) return;
     const owner = normalizeAddress("STARKNET", walletAddress);
     const supplyRaw = toRaw(BigInt(supply));
     const teamRaw = teamCoinsRaw(supplyRaw, teamPct);
@@ -157,10 +156,10 @@ export function CoinCreate({ aside, tradeHref }: CoinCreateProps) {
       await api.coins.sync(address, owner).catch(() => {});
       setCoinAddress(address);
 
-      if (imageUri || description) {
+      if (upload.uri || description) {
         setProfileStatus("saving");
         await api.collections
-          .updateProfile(address, { ...(imageUri ? { image: imageUri } : {}), ...(description ? { description } : {}) })
+          .updateProfile(address, { ...(upload.uri ? { image: upload.uri } : {}), ...(description ? { description } : {}) })
           .then(() => setProfileStatus("saved"))
           .catch(() => setProfileStatus("failed"));
       }
@@ -178,7 +177,7 @@ export function CoinCreate({ aside, tradeHref }: CoinCreateProps) {
     setSupply("");
     setPrice(String(SUGGESTED_DEFAULT_PRICE));
     setTeamPct(5);
-    clearImage();
+    upload.clear();
   };
 
   return (
@@ -191,7 +190,7 @@ export function CoinCreate({ aside, tradeHref }: CoinCreateProps) {
       <TransactionDialog tx={tx} title={t("Launch your coin")} workingLabel={t("Launching your coin…")} firstStepLabel={t("Deploy your coin")}>
         <TransactionSuccess
           name={name || "Your coin"}
-          image={imagePreview}
+          image={upload.preview}
           title={t("Coin launched")}
           description={t("The supply is fixed and the liquidity is locked.")}
           actions={[
@@ -232,45 +231,7 @@ export function CoinCreate({ aside, tradeHref }: CoinCreateProps) {
               <h3 className="text-lg font-bold">{t("Give it a face")}</h3>
             </div>
 
-              <div className="space-y-1.5">
-                <Label>{t("Coin image")}</Label>
-                <div className="flex items-center gap-4">
-                  <button
-                    type="button"
-                    onClick={() => fileInputRef.current?.click()}
-                    className="relative h-24 w-24 shrink-0 rounded-full overflow-hidden border border-dashed border-border bg-muted/20 flex items-center justify-center"
-                  >
-                    {imagePreview ? (
-
-                      <Image src={imagePreview} alt={t("Coin")} fill unoptimized className="object-cover" />
-                    ) : (
-                      <ImagePlus className="h-6 w-6 text-muted-foreground" />
-                    )}
-                    {imageUploading && (
-                      <span className="absolute inset-0 bg-background/70 flex items-center justify-center">
-                        <Loader2 className="h-4 w-4 animate-spin text-primary" />
-                      </span>
-                    )}
-                  </button>
-                  <div className="space-y-1 text-xs text-muted-foreground">
-                    <p>{t("Image files")}</p>
-                    {imagePreview && (
-                      <button type="button" onClick={clearImage} className="inline-flex items-center gap-1 text-muted-foreground active:text-foreground">
-                        <X className="h-3 w-3" /> {t("Remove")}
-                      </button>
-                    )}
-                    {uploadError && <p className="text-destructive">{uploadError}</p>}
-                    {uploadSuccess && <p className="text-brand-blue">✓ {uploadSuccess}</p>}
-                  </div>
-                  <input
-                    ref={fileInputRef}
-                    type="file"
-                    accept={acceptFor("image")}
-                    className="hidden"
-                    onChange={(e) => { const f = e.target.files?.[0]; if (f) void handleImageSelect(f); }}
-                  />
-                </div>
-              </div>
+              <ImageUploadField upload={upload} label={t("Coin image")} alt={t("Coin")} round />
 
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="space-y-1.5">

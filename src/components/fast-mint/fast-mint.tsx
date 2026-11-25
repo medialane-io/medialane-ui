@@ -16,17 +16,19 @@ import { Dialog, DialogContent, DialogDescription, DialogTitle } from "../dialog
 import type { MetadataField } from "../ip-type-fields.js";
 import { Dropzone } from "./dropzone.js";
 import { SuccessView } from "./success-view.js";
-import { CoverUpload, FormatPicker, MediaRow } from "./asset-form-parts.js";
+import { FormatPicker, MediaRow } from "./asset-form-parts.js";
 import { PartialCreateError, type StepInfo } from "./create-then-add.js";
 import { FORMATS, getFormat, initialFormatStates } from "./formats/registry.js";
 import type { FormatResult, FormatShared, MintFormat } from "./formats/types.js";
 import { DEFAULT_VALUES, type FormValues } from "./form.js";
 import { IP_TYPE_BY_KIND, MEDIA_ROUTE_MIME_TYPES, detectMediaKind } from "./media-kind.js";
 import { isWebLink } from "../../utils/launchpad-rules.js";
-import { useIpfsUpload } from "./use-ipfs-upload.js";
+import { useFileUpload } from "../../utils/use-file-upload.js";
+import { ImageUploadField } from "../image-upload-field.js";
 import { useNewCollectionDraft } from "./use-new-collection-draft.js";
 import type { FastMintProps, MediaKind } from "./types.js";
 import { useT } from "../../i18n/provider.js";
+import { msg } from "../../i18n/translate.js";
 import { ActionButton } from "../action-button.js";
 
 export function FastMint(props: FastMintProps) {
@@ -42,12 +44,7 @@ export function FastMint(props: FastMintProps) {
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [step, setStep] = useState<StepInfo | null>(null);
 
-  const media = useIpfsUpload();
-  const feature = useIpfsUpload();
-  const [mediaFile, setMediaFile] = useState<File | null>(null);
   const [mediaKind, setMediaKind] = useState<MediaKind>("image");
-  const mediaInputRef = useRef<HTMLInputElement>(null);
-  const featureInputRef = useRef<HTMLInputElement>(null);
 
   const [formatKey, setFormatKey] = useState<MintFormat>("single");
   const [formatStates, setFormatStates] = useState(initialFormatStates);
@@ -79,32 +76,36 @@ export function FastMint(props: FastMintProps) {
     return (await uploadFileToIpfs(client.api, file, kind)).uri;
   };
 
-  const handleMediaSelect = async (file: File) => {
+  const routeFor = (file: File) => (MEDIA_ROUTE_MIME_TYPES.has(file.type) ? "media" : "document");
+
+  const mediaProblem = (file: File) => {
     const kind = detectMediaKind(file.type);
-    if (!kind) {
-      setErrorMsg("Use a supported media file.");
-      return;
-    }
+    if (!kind) return msg("Use a supported media file.");
     if (mediaKindLock && kind !== mediaKindLock) {
-      setErrorMsg(`Please upload a${mediaKindLock === "image" ? "n" : ""} ${mediaKindLock}.`);
-      return;
+      return mediaKindLock === "image" ? msg("Please upload an image.") : `Please upload a ${mediaKindLock}.`;
     }
-    const route = MEDIA_ROUTE_MIME_TYPES.has(file.type) ? "media" : "document";
-    const fileError = uploadError(file, route);
-    if (fileError) {
-      setErrorMsg(fileError);
-      return;
-    }
-    setMediaFile(file);
-    setMediaKind(kind);
-    setIpType(IP_TYPE_BY_KIND[kind]);
-    await media.start(file, (f) => uploadFile(f, route), setErrorMsg);
+    return uploadError(file, routeFor(file));
   };
 
-  const clearMedia = () => {
-    setMediaFile(null);
-    media.clear();
-    if (mediaInputRef.current) mediaInputRef.current.value = "";
+  const media = useFileUpload({
+    validate: mediaProblem,
+    upload: (file) => uploadFile(file, routeFor(file)),
+    failureMessage: msg("Upload failed"),
+  });
+  const feature = useFileUpload({
+    validate: (file) => uploadError(file, "image"),
+    upload: (file) => uploadFile(file, "image"),
+    failureMessage: msg("Upload failed"),
+  });
+  const mediaFile = media.status !== "failed" || media.canRetry ? media.file : null;
+
+  const handleMediaSelect = (file: File) => {
+    const kind = detectMediaKind(file.type);
+    if (kind && !mediaProblem(file)) {
+      setMediaKind(kind);
+      setIpType(IP_TYPE_BY_KIND[kind]);
+    }
+    void media.select(file);
   };
 
   const image = mediaKind === "image" ? media.uri : feature.uri;
@@ -168,7 +169,7 @@ export function FastMint(props: FastMintProps) {
     setResult(null);
     setResume(null);
     form.reset();
-    clearMedia();
+    media.clear();
     feature.clear();
     setFormatStates(initialFormatStates());
     draft.reset();
@@ -198,14 +199,17 @@ export function FastMint(props: FastMintProps) {
 
   if (!mediaFile) {
     return wrap(
-      <Dropzone
-        mediaKindLock={mediaKindLock}
-        presentation={presentation}
-        hasWallet={hasWallet}
-        onRequireWallet={onRequireWallet}
-        connectLabel={connectLabel}
-        onFileSelected={handleMediaSelect}
-      />
+      <div className="space-y-3">
+        <Dropzone
+          mediaKindLock={mediaKindLock}
+          presentation={presentation}
+          hasWallet={hasWallet}
+          onRequireWallet={onRequireWallet}
+          connectLabel={connectLabel}
+          onFileSelected={handleMediaSelect}
+        />
+        {media.error && <p role="alert" className="text-center text-sm text-destructive">{media.error}</p>}
+      </div>
     );
   }
 
@@ -223,7 +227,8 @@ export function FastMint(props: FastMintProps) {
         uri={media.uri}
         uploading={media.uploading}
         ipType={ipType}
-        inputRef={mediaInputRef}
+        error={media.error}
+        onRetry={() => void media.retry()}
         onSelect={handleMediaSelect}
       />
 
@@ -261,11 +266,10 @@ export function FastMint(props: FastMintProps) {
             </div>
 
             {mediaKind !== "image" && (
-              <CoverUpload
-                preview={feature.preview}
-                uploading={feature.uploading}
-                inputRef={featureInputRef}
-                onSelect={(file) => void feature.start(file, (f) => uploadFile(f, "image"), setErrorMsg)}
+              <ImageUploadField
+                upload={feature}
+                label={t("Upload a cover image for your asset *")}
+                hint={t("Cover art for previews.")}
               />
             )}
 

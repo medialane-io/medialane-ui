@@ -7,11 +7,9 @@ import { useEffect, useState, type ReactNode } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { AlertCircle, ChevronDown, ImagePlus, Loader2, ShieldCheck, X } from "lucide-react";
+import { AlertCircle, ChevronDown, ShieldCheck } from "lucide-react";
 import { collectionHref, normalizeAddress, profileHref } from "@medialane/sdk";
-import { acceptFor } from "../../utils/upload-limits.js";
 import { FIELD_LIMITS } from "../../utils/field-limits.js";
-import Image from "../image.js";
 import Link from "../link.js";
 import { Button } from "../button.js";
 import { ActionButton } from "../action-button.js";
@@ -38,7 +36,8 @@ import { pinAssetMetadata } from "../../utils/ipfs-upload.js";
 import { useCollection } from "../../utils/use-collections.js";
 import { useCollectionProfile } from "../../utils/use-profiles.js";
 import { useTransaction } from "../../utils/use-transaction.js";
-import { useLaunchpadImageUpload } from "../../utils/use-launchpad-image-upload.js";
+import { useImageUpload } from "../../utils/use-image-upload.js";
+import { ImageUploadField } from "../image-upload-field.js";
 import type { TierMintPreset } from "./tier-mint-presets.js";
 import { useT } from "../../i18n/provider.js";
 
@@ -57,7 +56,6 @@ function makeSchema(preset: TierMintPreset) {
     aiPolicy: z.enum(["Allowed", "Not Allowed", "Training Only"]),
     startDate: z.string().optional(),
     endDate: z.string().optional(),
-    imageUri: z.string().min(1, preset.copy.imageRequired),
   });
 }
 type FormValues = z.infer<ReturnType<typeof makeSchema>>;
@@ -76,8 +74,7 @@ export function TierMintForm({ contract: rawContract, preset, aside }: TierMintF
   const { collection, isLoading } = useCollection(contract);
   const { profile, isLoading: profileLoading } = useCollectionProfile(preset.suggestExternalLink ? contract : undefined);
   const tx = useTransaction();
-  const upload = useLaunchpadImageUpload({ successMessage: "Image uploaded" });
-  const { imagePreview, imageUri, imageUploading, uploadError, fileInputRef, handleImageSelect, clearImage } = upload;
+  const upload = useImageUpload();
   const [licensingOpen, setLicensingOpen] = useState(false);
   const [advancedOpen, setAdvancedOpen] = useState(false);
   const Icon = preset.icon;
@@ -85,15 +82,11 @@ export function TierMintForm({ contract: rawContract, preset, aside }: TierMintF
   const form = useForm<FormValues>({
     resolver: zodResolver(makeSchema(preset)),
     defaultValues: {
-      name: "", imageUri: "", description: "", external_url: "",
+      name: "", description: "", external_url: "",
       maxSupply: "100", royalty: 2.5, licenseType: "CC BY-SA", commercialUse: "Yes",
       derivatives: "Share-Alike", attribution: "Required", geographicScope: "Worldwide", aiPolicy: "Allowed",
     },
   });
-
-  useEffect(() => {
-    form.setValue("imageUri", imageUri ?? "", { shouldValidate: !!imageUri });
-  }, [imageUri, form]);
 
   useEffect(() => {
     if (!preset.suggestExternalLink || profileLoading) return;
@@ -106,10 +99,11 @@ export function TierMintForm({ contract: rawContract, preset, aside }: TierMintF
   const handleAgain = () => {
     tx.reset();
     form.reset({ ...form.getValues(), name: "", description: "", maxSupply: "100" });
-    clearImage();
+    upload.clear();
   };
 
   const onSubmit = (values: FormValues) => {
+    if (!upload.confirm(preset.copy.imageRequired)) return;
     if (!address) return;
     void tx.run(async (signer) => {
       await app.ensureSignedIn?.();
@@ -117,7 +111,7 @@ export function TierMintForm({ contract: rawContract, preset, aside }: TierMintF
       const pinned = await pinAssetMetadata(api, {
         name: values.name,
         description: values.description ?? "",
-        imageUri: imageUri!,
+        imageUri: upload.uri!,
         externalUrl: values.external_url,
         ipType: "NFT",
         licenseType: values.licenseType,
@@ -146,8 +140,7 @@ export function TierMintForm({ contract: rawContract, preset, aside }: TierMintF
   };
 
   const gateProps = { icon: Icon, iconClassName: preset.iconClass, title: t(preset.signedOut.title), description: t(preset.signedOut.description) };
-  const inputId = `mint-${preset.service}-file-input`;
-  const busy = tx.phase !== "idle" || imageUploading;
+  const busy = tx.phase !== "idle" || upload.uploading;
 
   if (isLoading) {
     return (
@@ -186,7 +179,7 @@ export function TierMintForm({ contract: rawContract, preset, aside }: TierMintF
       <TransactionDialog tx={tx} title={t(preset.dialog.title)} workingLabel={t(preset.dialog.workingLabel)} firstStepLabel={t(preset.dialog.firstStepLabel)}>
         <TransactionSuccess
           name={form.getValues("name")}
-          image={imagePreview}
+          image={upload.preview}
           title={t(preset.success.title)}
           description={t(preset.success.description)}
           actions={[{ href: collectionHref("STARKNET", contract), label: t("View collection") }, { label: t(preset.success.againLabel), onClick: handleAgain }]}
@@ -202,7 +195,7 @@ export function TierMintForm({ contract: rawContract, preset, aside }: TierMintF
         aside={
           <>
             <MedialaneCollectionCard
-              image={imagePreview}
+              image={upload.preview}
               name={form.watch("name")}
               collection={collection.symbol || preset.cardFallbackSymbol}
               creator={address ? `${address.slice(0, 6)}…${address.slice(-4)}` : undefined}
@@ -213,38 +206,8 @@ export function TierMintForm({ contract: rawContract, preset, aside }: TierMintF
         }
       >
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
-            <div className="space-y-2">
-              <p className="text-sm font-medium">{t(preset.copy.imageHeading)} <span className="text-destructive">*</span></p>
-              <div className="flex items-center gap-4">
-                <div
-                  role="button"
-                  tabIndex={0}
-                  onClick={() => !imageUploading && fileInputRef.current?.click()}
-                  onKeyDown={(e) => { if (e.key === "Enter") fileInputRef.current?.click(); }}
-                  className={cn("relative h-20 w-20 rounded-2xl border-2 border-dashed border-border bg-muted flex items-center justify-center overflow-hidden shrink-0 cursor-pointer transition-colors", preset.hoverBorderClass)}
-                >
-                  {imagePreview ? <Image src={imagePreview} alt={t(preset.copy.imageAlt)} fill unoptimized className="object-cover" /> : <ImagePlus className="h-6 w-6 text-muted-foreground" />}
-                  {imageUploading && <div className="absolute inset-0 bg-background/70 flex items-center justify-center"><Loader2 className="h-4 w-4 animate-spin" /></div>}
-                </div>
-                <div className="space-y-1.5">
-                  <input id={inputId} ref={fileInputRef} type="file" accept={acceptFor("image")} className="hidden" onChange={(e) => { const f = e.target.files?.[0]; if (f) void handleImageSelect(f); }} />
-                  <Button type="button" variant="soft" size="sm" disabled={imageUploading} onClick={() => fileInputRef.current?.click()}>
-                    {imageUploading ? <><Loader2 className="h-3.5 w-3.5 mr-1.5 animate-spin" />{t("Uploading…")}</> : imagePreview ? t("Change") : t("Upload image")}
-                  </Button>
-                  {imagePreview && (
-                    <button type="button" onClick={clearImage} className="flex items-center gap-1 text-xs text-muted-foreground hover:text-destructive transition-colors">
-                      <X className="h-3 w-3" /> {t("Remove")}
-                    </button>
-                  )}
-                  <p className="text-xs text-muted-foreground">{imageUri ? <span className={preset.uploadedClass}>{t("✓ Uploaded")}</span> : t("Image files")}</p>
-                </div>
-              </div>
-            </div>
-
-            {(uploadError || form.formState.errors.imageUri) && (
-              <p role="alert" className="text-sm text-destructive">{uploadError ?? form.formState.errors.imageUri?.message}</p>
-            )}
+          <form onSubmit={form.handleSubmit(onSubmit, () => { upload.confirm(preset.copy.imageRequired); })} className="space-y-5">
+            <ImageUploadField upload={upload} label={t(preset.copy.imageHeading)} alt={t(preset.copy.imageAlt)} required />
 
             <FormField control={form.control} name="name" render={({ field }) => (
               <FormItem>

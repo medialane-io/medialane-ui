@@ -1,15 +1,16 @@
-import { expect, test, mock, afterEach } from "bun:test";
+import { expect, test, mock, afterEach, afterAll } from "bun:test";
 import { cleanup, fireEvent, render, waitFor } from "@testing-library/react";
 import { hash } from "starknet";
 import { getCoordinates, getService, normalizeAddress } from "@medialane/sdk";
 import type { MedialaneClient } from "@medialane/sdk/starknet";
 
 mock.module("next/image", () => ({ default: ({ alt }: { alt?: string }) => <span data-alt={alt} /> }));
-const actualUpload = await import("../../utils/ipfs-upload.js");
+const actualUpload = { ...(await import("../../utils/ipfs-upload.js")) };
 mock.module("../../utils/ipfs-upload.js", () => ({
   ...actualUpload,
   uploadFileToIpfs: async () => ({ uri: "ipfs://uploaded" }),
 }));
+afterAll(() => { mock.module("../../utils/ipfs-upload.js", () => actualUpload); });
 
 const { FastMint } = await import("./fast-mint.js");
 const { MedialaneAppProvider } = await import("../medialane-app.js");

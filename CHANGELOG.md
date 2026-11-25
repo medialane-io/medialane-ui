@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.397.0] — 2026-11-25
+
+### Added
+
+- `ImageUploadField`: one image picker with upload progress, an error shown in the field, retry with the same file, and remove.
+- `useFileUpload` and `useImageUpload`: upload state with `retry`, and `confirm`, which holds a submit while an upload is running, failed or required, and brings the field into view. Results that arrive after a file was removed or replaced are ignored.
+
+### Changed
+
+- Create and mint forms use `ImageUploadField`. Remix and single edition upload the image when it is picked.
+- A form is not submitted without an image that failed to upload.
+- Fast mint shows why a file was refused or an upload failed, with retry.
+- The drop asset editor says why a replacement or feature image was not used.
+
+### Removed
+
+- `useLaunchpadImageUpload` (use `useImageUpload`).
+- `imageFile` in `pinAssetMetadata` (upload first and pass `imageUri`).
+- `hoverBorderClass` and `uploadedClass` in tier mint presets.
+
 ## [0.396.0] — 2026-11-24
 
 ### Added

@@ -1,10 +1,10 @@
 "use client";
 
-import { useState, type RefObject } from "react";
+import { useState } from "react";
 import type { UseFormReturn } from "react-hook-form";
-import { ChevronDown, ImagePlus, Layers, Loader2, ShieldCheck, Sparkles, X } from "lucide-react";
-import { acceptFor } from "../../utils/upload-limits.js";
-import Image from "../image.js";
+import { ChevronDown, Layers, ShieldCheck, Sparkles } from "lucide-react";
+import { ImageUploadField } from "../image-upload-field.js";
+import type { FileUpload } from "../../utils/use-file-upload.js";
 import { Button } from "../button.js";
 import { Input } from "../input.js";
 import { Textarea } from "../textarea.js";
@@ -22,13 +22,8 @@ import { useT } from "../../i18n/provider.js";
 
 interface EditionMintFieldsProps {
   form: UseFormReturn<EditionMintValues>;
-  imagePreview: string | null;
-  imageUri: string | null;
-  imageUploading: boolean;
+  upload: FileUpload;
   mintDisabled: boolean;
-  fileInputRef: RefObject<HTMLInputElement | null>;
-  onImageSelect: (file: File) => void;
-  onClearImage: () => void;
   metadataResetKey: number;
   onMetadataFieldsChange: (fields: MetadataField[]) => void;
   uploadDocument: (file: File) => Promise<string>;
@@ -36,13 +31,8 @@ interface EditionMintFieldsProps {
 
 export function EditionMintFields({
   form,
-  imagePreview,
-  imageUri,
-  imageUploading,
+  upload,
   mintDisabled,
-  fileInputRef,
-  onImageSelect,
-  onClearImage,
   metadataResetKey,
   onMetadataFieldsChange,
   uploadDocument,
@@ -65,76 +55,13 @@ export function EditionMintFields({
   return (
     <div className="space-y-5">
       <FadeIn delay={0.06}>
-        <div className="space-y-2">
-          <p className="text-sm font-medium">
-            {t("Asset image")} <span className="text-destructive">*</span>
-          </p>
-          <div className="flex items-center gap-4">
-            <div
-              role="button"
-              tabIndex={0}
-              onClick={() => !imageUploading && fileInputRef.current?.click()}
-              onKeyDown={(event) => { if (event.key === "Enter") fileInputRef.current?.click(); }}
-              className="relative h-20 w-20 rounded-2xl border-2 border-dashed border-border bg-muted flex items-center justify-center overflow-hidden shrink-0 cursor-pointer hover:border-brand-purple/50 transition-colors"
-            >
-              {imagePreview ? (
-                <Image src={imagePreview} alt={t("Token")} fill unoptimized className="object-cover" />
-              ) : (
-                <ImagePlus className="h-6 w-6 text-muted-foreground" />
-              )}
-              {imageUploading ? (
-                <div className="absolute inset-0 bg-background/70 flex items-center justify-center">
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                </div>
-              ) : null}
-            </div>
-            <div className="space-y-1.5">
-              <input
-                ref={fileInputRef}
-                type="file"
-                accept={acceptFor("image")}
-                className="hidden"
-                onChange={(event) => {
-                  const file = event.target.files?.[0];
-                  if (file) onImageSelect(file);
-                }}
-              />
-              <Button
-                type="button"
-                variant="soft"
-                size="sm"
-                disabled={imageUploading}
-                onClick={() => fileInputRef.current?.click()}
-              >
-                {imageUploading ? (
-                  <>
-                    <Loader2 className="h-3.5 w-3.5 mr-1.5 animate-spin" />
-                    {t("Uploading…")}
-                  </>
-                ) : (
-                  imagePreview ? t("Change") : t("Upload image")
-                )}
-              </Button>
-              {imagePreview ? (
-                <button
-                  type="button"
-                  onClick={onClearImage}
-                  className="flex items-center gap-1 text-xs text-muted-foreground hover:text-destructive transition-colors"
-                >
-                  <X className="h-3 w-3" /> {t("Remove")}
-                </button>
-              ) : null}
-              <p className="text-xs text-muted-foreground">
-                {imageUri ? (
-                  <span className="text-brand-purple">{t("✓ Uploaded")}</span>
-                ) : (
-                  t("Image files")
-                )}
-              </p>
-              <p className="text-xs text-muted-foreground">{t("This media and metadata are pinned before the first mint is submitted.")}</p>
-            </div>
-          </div>
-        </div>
+        <ImageUploadField
+          upload={upload}
+          label={t("Asset image")}
+          alt={t("Token")}
+          required
+          hint={t("This media and metadata are pinned before the first mint is submitted.")}
+        />
       </FadeIn>
 
       <FadeIn delay={0.08}>
