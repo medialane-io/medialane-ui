@@ -21,13 +21,13 @@ afterEach(() => cleanup());
 const OWNER = "0x00000000000000000000000000000000000000000000000000000000000000aa";
 const CONTRACT = "0x00000000000000000000000000000000000000000000000000000000000000c5";
 
-function setup(collections: unknown[]) {
+function setup(collections: unknown[], metadata: Record<string, unknown> = {}) {
   const intents: Record<string, unknown>[] = [];
   const client = {
     provider: { getTransactionReceipt: async () => ({ execution_status: "SUCCEEDED", events: [{ from_address: CONTRACT, keys: [hash.getSelectorFromName("IPMinted"), "0x9", "0x0"], data: [] }] }) },
     api: {
       collections: { list: async () => ({ data: collections }) },
-      metadata: { signedUrl: async () => ({ data: { url: "https://upload.example/signed" } }), upload: async () => ({ data: { url: "ipfs://meta" } }) },
+      metadata: { signedUrl: async () => ({ data: { url: "https://upload.example/signed" } }), upload: async () => ({ data: { url: "ipfs://meta" } }), ...metadata },
       intents: {
         create: async (_kind: string, params: Record<string, unknown>) => { intents.push(params); return { id: "i1", requiresSignature: false, calls: [{}] }; },
         syncTransaction: async () => ({ pending: false }),
@@ -63,6 +63,7 @@ test("a work is minted into the chosen collection and links to the new asset", a
   const { view, intents } = setup([COLLECTION]);
   await waitFor(() => expect(view.getAllByText("Art").length).toBeGreaterThan(0));
   fireEvent.change(view.container.querySelector('input[type="file"]')!, { target: { files: [new File(["x"], "cover.png", { type: "image/png" })] } });
+  await waitFor(() => expect(view.getByText("✓ Uploaded")).toBeTruthy());
   fireEvent.change(view.getByPlaceholderText("My Creative Work"), { target: { value: "Starry Night" } });
   fireEvent.submit(view.container.querySelector("form")!);
   await waitFor(() => expect(view.getByText("Asset minted")).toBeTruthy());
@@ -93,4 +94,15 @@ test("a link the person typed is kept when the collection changes", async () => 
   choose(view, "Drums");
   await waitFor(() => expect(view.getAllByText("Drums").length).toBeGreaterThan(0));
   expect(linkInput(view).value).toBe("https://example.com/work");
+});
+
+test("a failed picture shows at once and nothing is minted without it", async () => {
+  const { view, intents } = setup([COLLECTION], { signedUrl: async () => { throw new Error("Storage limit reached"); } });
+  await waitFor(() => expect(view.getAllByText("Art").length).toBeGreaterThan(0));
+  fireEvent.change(view.container.querySelector('input[type="file"]')!, { target: { files: [new File(["x"], "cover.png", { type: "image/png" })] } });
+  await waitFor(() => expect(view.getByRole("alert").textContent).toBe("Image upload failed: Storage limit reached"));
+  fireEvent.change(view.getByPlaceholderText("My Creative Work"), { target: { value: "Starry Night" } });
+  fireEvent.submit(view.container.querySelector("form")!);
+  await waitFor(() => expect(document.activeElement?.getAttribute("data-status")).toBe("failed"));
+  expect(intents).toEqual([]);
 });

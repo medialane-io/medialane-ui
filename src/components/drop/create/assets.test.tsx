@@ -145,3 +145,18 @@ test("the Add media button uses foreground text, not brand blue", () => {
   expect(button.className).toContain("text-foreground");
   expect(button.className).not.toContain("text-primary");
 });
+
+test("the editor says why a replacement or feature image was not used", () => {
+  let last: DropDraft | null = null;
+  const view = render(<Harness initial={withAssets(newAsset(new File(["x"], "wave.mp4", { type: "video/mp4" })))} onDraft={(d) => { last = d; }} />);
+  fireEvent.click(view.getAllByTestId("asset-card")[0]!);
+  const dialog = view.getByRole("dialog");
+  const wrong = new File(["x"], "tool.exe", { type: "application/x-msdownload" });
+  fireEvent.change(within(dialog).getByTestId("feature-input"), { target: { files: [wrong] } });
+  expect(within(dialog).getByText(/^Choose an image in /)).toBeTruthy();
+  fireEvent.change(within(dialog).getByTestId("replace-input"), { target: { files: [wrong] } });
+  expect(within(dialog).getByText(/^Choose a file in /)).toBeTruthy();
+  expect(last).toBeNull();
+  fireEvent.change(within(dialog).getByTestId("feature-input"), { target: { files: [png("art")] } });
+  expect(within(dialog).queryByText(/^Choose an image in /)).toBeNull();
+});

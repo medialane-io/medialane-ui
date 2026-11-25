@@ -23,9 +23,10 @@ import { editionMintSchema, type EditionMintValues } from "./edition-mint-schema
 import { runIntentCalls } from "../../utils/run-intent-calls.js";
 import { pinAssetMetadata, uploadFileToIpfs } from "../../utils/ipfs-upload.js";
 import { useTransaction } from "../../utils/use-transaction.js";
-import { useLaunchpadImageUpload } from "../../utils/use-launchpad-image-upload.js";
+import { useImageUpload } from "../../utils/use-image-upload.js";
 import { invalidatePortfolioCache } from "../../utils/portfolio-cache.js";
 import { useT } from "../../i18n/provider.js";
+import { msg } from "../../i18n/translate.js";
 
 const DEFAULTS: EditionMintValues = {
   value: "1",
@@ -49,10 +50,8 @@ export function EditionMint({ contract: rawContract, aside }: { contract: string
   const walletAddress = app.walletAddress;
   const collectionAddress = normalizeAddress("STARKNET", rawContract);
   const tx = useTransaction();
-  const upload = useLaunchpadImageUpload({ successMessage: t("Image uploaded to IPFS"), failureMessage: t("Image upload failed") });
-  const { imagePreview, imageUri, imageUploading, uploadError, uploadSuccess, fileInputRef, handleImageSelect, clearImage } = upload;
+  const upload = useImageUpload();
   const [ownerCheck, setOwnerCheck] = useState<"loading" | "ok" | "denied">("loading");
-  const [formError, setFormError] = useState<string | null>(null);
   const [metadataResetKey, setMetadataResetKey] = useState(0);
   const [autoExternalUrl, setAutoExternalUrl] = useState("");
   const metadataFieldsRef = useRef<MetadataField[]>([]);
@@ -94,24 +93,20 @@ export function EditionMint({ contract: rawContract, aside }: { contract: string
     metadataFieldsRef.current = [];
     setMetadataResetKey((key) => key + 1);
     setAutoExternalUrl("");
-    clearImage();
+    upload.clear();
     form.reset({ ...DEFAULTS, recipient: walletAddress ?? "" });
   };
 
   const onSubmit = (values: EditionMintValues) => {
-    if (!imageUri) {
-      setFormError("Upload an image before minting.");
-      return;
-    }
+    if (!upload.confirm(msg("Upload an image before minting."))) return;
     if (!walletAddress) return;
-    setFormError(null);
     void tx.run(async (signer) => {
       await app.ensureSignedIn?.();
       const api = app.getClient().api;
       const pinned = await pinAssetMetadata(api, {
         name: values.name,
         description: values.description ?? "",
-        imageUri,
+        imageUri: upload.uri,
         externalUrl: values.external_url,
         ipType: values.ipType,
         licenseType: values.licenseType,
@@ -167,7 +162,7 @@ export function EditionMint({ contract: rawContract, aside }: { contract: string
             aside={
               <>
                 <MedialaneCollectionCard
-                  image={imagePreview}
+                  image={upload.preview}
                   name={form.watch("name")}
                   collection="Edition"
                   serial={Number(form.watch("value")) > 1 ? `${form.watch("value")} editions` : undefined}
@@ -182,20 +177,12 @@ export function EditionMint({ contract: rawContract, aside }: { contract: string
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
                 <EditionMintFields
                   form={form}
-                  imagePreview={imagePreview}
-                  imageUri={imageUri}
-                  imageUploading={imageUploading}
-                  mintDisabled={imageUploading || tx.phase !== "idle"}
-                  fileInputRef={fileInputRef}
-                  onImageSelect={handleImageSelect}
-                  onClearImage={clearImage}
+                  upload={upload}
+                  mintDisabled={upload.uploading || tx.phase !== "idle"}
                   metadataResetKey={metadataResetKey}
                   onMetadataFieldsChange={(fields) => { metadataFieldsRef.current = fields; }}
                   uploadDocument={uploadDocument}
                 />
-                {uploadError && <p className="text-xs text-destructive mt-1">{uploadError}</p>}
-                {uploadSuccess && <p className="text-xs text-brand-blue mt-1">✓ {uploadSuccess}</p>}
-                {formError && <p className="text-xs text-destructive mt-1">{formError}</p>}
               </form>
             </Form>
           </ClaimRouteShell>
@@ -203,7 +190,7 @@ export function EditionMint({ contract: rawContract, aside }: { contract: string
           <TransactionDialog tx={tx} title={t("Mint an edition")} workingLabel={t("Minting your edition…")} firstStepLabel={t("Upload metadata")}>
             <TransactionSuccess
               name={form.getValues("name") || "Your token"}
-              image={imagePreview}
+              image={upload.preview}
               title={t("Editions minted")}
               description={t("Each copy is recorded onchain with the license terms in its metadata.")}
               actions={[

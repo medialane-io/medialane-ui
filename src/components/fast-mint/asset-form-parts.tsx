@@ -1,11 +1,10 @@
 "use client";
 
-import type { RefObject } from "react";
+import { useRef } from "react";
 import Image from "next/image";
 import { FileText, ImagePlus, Loader2, Music, Video } from "lucide-react";
 import { IP_TEMPLATES } from "../../data/ip-templates.js";
 import type { IPType } from "../../data/ip.js";
-import { acceptFor } from "../../utils/upload-limits.js";
 import { cn } from "../../utils/cn.js";
 import type { FormatDefinition, MintFormat } from "./formats/types.js";
 import type { MediaKind } from "./types.js";
@@ -19,18 +18,20 @@ const MEDIA_KIND_ICON: Record<MediaKind, typeof ImagePlus> = {
 };
 
 export function MediaRow({
-  file, kind, preview, uri, uploading, ipType, inputRef, onSelect,
+  file, kind, preview, uri, uploading, error, ipType, onSelect, onRetry,
 }: {
   file: File;
   kind: MediaKind;
   preview: string | null;
   uri: string | null;
   uploading: boolean;
+  error: string | null;
   ipType: IPType;
-  inputRef: RefObject<HTMLInputElement | null>;
   onSelect: (file: File) => void;
+  onRetry: () => void;
 }) {
   const t = useT();
+  const inputRef = useRef<HTMLInputElement>(null);
   const KindIcon = MEDIA_KIND_ICON[kind];
   const template = IP_TEMPLATES[ipType];
   const TemplateIcon = template.icon;
@@ -53,9 +54,13 @@ export function MediaRow({
       <div className="min-w-0 flex-1 space-y-1">
         <p className="text-sm font-semibold truncate">{file.name}</p>
         <div className="flex items-center gap-2 flex-wrap">
-          <p className="text-xs text-muted-foreground">
-            {uploading ? t("Uploading…") : uri ? t("Uploaded") : t("Upload failed")}
-          </p>
+          {error ? (
+            <p role="alert" className="text-xs text-destructive">{error}</p>
+          ) : (
+            <p className="text-xs text-muted-foreground">
+              {uploading ? t("Uploading…") : uri ? t("Uploaded") : t("Upload failed")}
+            </p>
+          )}
           {uri && (
             <span
               className={cn(
@@ -69,6 +74,11 @@ export function MediaRow({
           )}
         </div>
       </div>
+      {error && (
+        <button type="button" onClick={onRetry} className="text-xs font-semibold text-brand-blue hover:underline shrink-0">
+          {t("Retry")}
+        </button>
+      )}
       <button
         type="button"
         onClick={() => inputRef.current?.click()}
@@ -76,45 +86,7 @@ export function MediaRow({
       >
         {t("Change")}
       </button>
-      <input ref={inputRef} type="file" className="hidden" onChange={(e) => { const f = e.target.files?.[0]; if (f) onSelect(f); }} />
-    </div>
-  );
-}
-
-export function CoverUpload({
-  preview, uploading, inputRef, onSelect,
-}: {
-  preview: string | null;
-  uploading: boolean;
-  inputRef: RefObject<HTMLInputElement | null>;
-  onSelect: (file: File) => void;
-}) {
-  const t = useT();
-  return (
-    <div className="space-y-2">
-      <label className="text-sm font-medium">{t("Upload a cover image for your asset *")}</label>
-      <div className="flex items-center gap-4">
-        <div
-          role="button"
-          tabIndex={0}
-          onClick={() => !uploading && inputRef.current?.click()}
-          onKeyDown={(e) => { if ((e.key === "Enter" || e.key === " ") && !uploading) { e.preventDefault(); inputRef.current?.click(); } }}
-          className="relative h-20 w-20 rounded-xl border-2 border-dashed border-border bg-muted flex items-center justify-center overflow-hidden shrink-0 cursor-pointer hover:border-primary/50 transition-colors"
-        >
-          {preview ? (
-            <Image src={preview} alt="" fill className="object-cover" unoptimized />
-          ) : (
-            <ImagePlus className="h-6 w-6 text-muted-foreground" />
-          )}
-          {uploading && (
-            <div className="absolute inset-0 flex items-center justify-center bg-background/70">
-              <Loader2 className="h-4 w-4 animate-spin" />
-            </div>
-          )}
-          <input ref={inputRef} type="file" accept={acceptFor("image")} className="hidden" onChange={(e) => { const f = e.target.files?.[0]; if (f) onSelect(f); }} />
-        </div>
-        <p className="text-xs text-muted-foreground">{t("Cover art for previews.")}</p>
-      </div>
+      <input ref={inputRef} type="file" className="hidden" onChange={(e) => { const f = e.target.files?.[0]; e.target.value = ""; if (f) onSelect(f); }} />
     </div>
   );
 }

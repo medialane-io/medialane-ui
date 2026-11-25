@@ -33,7 +33,7 @@ function setup(parent: { owner: string; derivatives: string }) {
         get: async () => ({ service: "mip-erc721" }),
         list: async () => ({ data: [{ collectionId: "3", contractAddress: MINE, name: "My art", service: "mip-erc721", standard: "ERC721" }] }),
       },
-      metadata: { upload: async () => ({ data: { url: "ipfs://remix" } }) },
+      metadata: { upload: async () => ({ data: { url: "ipfs://remix" } }), signedUrl: async () => { throw new Error("Storage limit reached"); } },
       intents: {
         create: async (_kind: string, params: Record<string, unknown>) => { intents.push(params); return { id: "i1", requiresSignature: false, calls: [{}] }; },
         syncTransaction: async () => ({ pending: false }),
@@ -73,4 +73,25 @@ test("the owner mints a remix and it is registered against its parent", async ()
 test("someone who may not remix directly is sent back to the asset", async () => {
   setup({ owner: OTHER, derivatives: "Not Allowed" });
   await waitFor(() => expect(replaced).toEqual([`/asset/starknet/${PARENT}/1`]));
+});
+
+function failingUploads() {
+  (globalThis as { URL: typeof URL }).URL.createObjectURL = () => "blob:preview";
+  (globalThis as { URL: typeof URL }).URL.revokeObjectURL = () => {};
+  return { signedUrl: async () => { throw new Error("Storage limit reached"); } };
+}
+
+const pickImage = (view: { container: HTMLElement }) =>
+  fireEvent.change(view.container.querySelector('input[type="file"]')!, { target: { files: [new File(["x"], "cover.png", { type: "image/png" })] } });
+
+test("a remix does not fall back to the original art when the new art failed to upload", async () => {
+  failingUploads();
+  const { view, intents } = setup({ owner: ME, derivatives: "Not Allowed" });
+  await waitFor(() => expect(view.getAllByText("My art").length).toBeGreaterThan(0));
+  pickImage(view);
+  await waitFor(() => expect(view.getByRole("alert").textContent).toBe("Image upload failed: Storage limit reached"));
+  fireEvent.click(view.getByText("Mint remix"));
+  await new Promise((r) => setTimeout(r, 30));
+  expect(intents).toEqual([]);
+  expect(document.activeElement?.getAttribute("data-status")).toBe("failed");
 });

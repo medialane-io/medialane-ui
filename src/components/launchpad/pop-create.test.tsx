@@ -13,13 +13,13 @@ afterEach(() => cleanup());
 
 const ME = "0x00000000000000000000000000000000000000000000000000000000000000aa";
 
-function setup() {
+function setup(metadata: Record<string, unknown> = {}) {
   const intents: Record<string, unknown>[] = [];
   const uploads: Record<string, unknown>[] = [];
   const client = {
     provider: { getTransactionReceipt: async () => ({ execution_status: "SUCCEEDED", events: [] }) },
     api: {
-      metadata: { upload: async (m: Record<string, unknown>) => { uploads.push(m); return { data: { url: "ipfs://pop" } }; } },
+      metadata: { upload: async (m: Record<string, unknown>) => { uploads.push(m); return { data: { url: "ipfs://pop" } }; }, ...metadata },
       intents: {
         create: async (_kind: string, params: Record<string, unknown>) => { intents.push(params); return { id: "i1", requiresSignature: false, calls: [{}] }; },
         syncTransaction: async () => ({ pending: false }),
@@ -57,5 +57,26 @@ test("an event without a name is not created", async () => {
   const { view, intents } = setup();
   fireEvent.submit(view.container.querySelector("form")!);
   await waitFor(() => expect(view.getByText("Event name required")).toBeTruthy());
+  expect(intents).toEqual([]);
+});
+
+function failingUploads() {
+  (globalThis as { URL: typeof URL }).URL.createObjectURL = () => "blob:preview";
+  (globalThis as { URL: typeof URL }).URL.revokeObjectURL = () => {};
+  return { signedUrl: async () => { throw new Error("Storage limit reached"); } };
+}
+
+const pickImage = (view: { container: HTMLElement }) =>
+  fireEvent.change(view.container.querySelector('input[type="file"]')!, { target: { files: [new File(["x"], "cover.png", { type: "image/png" })] } });
+
+test("an event is not created without the picture that failed to upload", async () => {
+  const { view, intents, uploads } = setup(failingUploads());
+  pickImage(view);
+  await waitFor(() => expect(view.getByRole("alert").textContent).toBe("Image upload failed: Storage limit reached"));
+  fireEvent.change(view.getByPlaceholderText("Starknet Hackathon 2026"), { target: { value: "Rio Summit" } });
+  await waitFor(() => expect((view.getByPlaceholderText("SKHACK") as HTMLInputElement).value).not.toBe(""));
+  fireEvent.submit(view.container.querySelector("form")!);
+  await waitFor(() => expect(document.activeElement?.getAttribute("data-status")).toBe("failed"));
+  expect(uploads).toEqual([]);
   expect(intents).toEqual([]);
 });

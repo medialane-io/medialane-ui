@@ -30,6 +30,7 @@ function setup() {
         create: async (kind: string, params: Record<string, unknown>) => { intents.push({ kind, params }); return { id: `i-${kind}`, requiresSignature: false, calls: [{ kind }] }; },
         syncTransaction: async () => ({ pending: false }),
       },
+      metadata: { signedUrl: async () => { throw new Error("Storage limit reached"); } },
       coins: { sync: async () => ({}) },
       collections: { updateProfile: async () => ({}) },
       rewards: { config: async () => ({ actions: [], levels: [] }) },
@@ -67,4 +68,26 @@ test("a coin cannot be launched until it has a name and a supply", async () => {
   fireEvent.click(view.getByText("Launch your coin"));
   await new Promise((r) => setTimeout(r, 30));
   expect(intents).toEqual([]);
+});
+
+function failingUploads() {
+  (globalThis as { URL: typeof URL }).URL.createObjectURL = () => "blob:preview";
+  (globalThis as { URL: typeof URL }).URL.revokeObjectURL = () => {};
+  return { signedUrl: async () => { throw new Error("Storage limit reached"); } };
+}
+
+const pickImage = (view: { container: HTMLElement }) =>
+  fireEvent.change(view.container.querySelector('input[type="file"]')!, { target: { files: [new File(["x"], "cover.png", { type: "image/png" })] } });
+
+test("a coin is not launched without the picture that failed to upload", async () => {
+  failingUploads();
+  const { view, intents } = setup();
+  pickImage(view);
+  await waitFor(() => expect(view.getByRole("alert").textContent).toBe("Image upload failed: Storage limit reached"));
+  fireEvent.change(view.getByPlaceholderText("My Coin"), { target: { value: "Rio Coin" } });
+  fireEvent.click(view.getByText("1M"));
+  fireEvent.click(view.getByText("Launch your coin"));
+  await new Promise((r) => setTimeout(r, 30));
+  expect(intents).toEqual([]);
+  expect(document.activeElement?.getAttribute("data-status")).toBe("failed");
 });

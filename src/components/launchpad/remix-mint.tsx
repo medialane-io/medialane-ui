@@ -5,9 +5,10 @@ import { PageState } from "../page-state.js";
 import { BackButton } from "../back-button.js";
 import { PageHeader, PageHeaderSkeleton } from "../page-header.js";
 import { useEffect, useRef, useState } from "react";
-import { Boxes, ChevronDown, GitBranch, ImagePlus, Info, Percent, Plus, Shield, Upload } from "lucide-react";
+import { Boxes, ChevronDown, GitBranch, ImagePlus, Info, Percent, Plus, Shield } from "lucide-react";
 import { assetHref, getDerivativesTerm, getService, normalizeAddress, resolveRemixPolicy } from "@medialane/sdk";
-import { acceptFor, uploadError } from "../../utils/upload-limits.js";
+import { useImageUpload } from "../../utils/use-image-upload.js";
+import { ImageUploadField } from "../image-upload-field.js";
 import { assertTransactionSucceeded, mintedTokenIdFromReceipt } from "@medialane/sdk/starknet";
 import Image from "../image.js";
 import Link from "../link.js";
@@ -69,8 +70,7 @@ export function RemixMint({ contract, tokenId }: { contract: string; tokenId: st
     dealAvailable: !!getService(parentCollection?.service),
   });
 
-  const [imageFile, setImageFile] = useState<File | null>(null);
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const upload = useImageUpload();
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [collectionKey, setCollectionKey] = useState("");
@@ -82,8 +82,6 @@ export function RemixMint({ contract, tokenId }: { contract: string; tokenId: st
   const [advancedOpen, setAdvancedOpen] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
   const [remixHref, setRemixHref] = useState<string | null>(null);
-  const previewUrlRef = useRef<string | null>(null);
-  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
     if (token && !name) setName(`Remix of ${originalName}`);
@@ -99,12 +97,6 @@ export function RemixMint({ contract, tokenId }: { contract: string; tokenId: st
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps -- runs once when the eligible collections first load
   }, [eligibleCollections.length]);
-
-  useEffect(() => {
-    return () => {
-      if (previewUrlRef.current) URL.revokeObjectURL(previewUrlRef.current);
-    };
-  }, []);
 
   const redirected = useRef(false);
   useEffect(() => {
@@ -122,23 +114,10 @@ export function RemixMint({ contract, tokenId }: { contract: string; tokenId: st
     }
   };
 
-  const handleImageChange = (file: File) => {
-    const fileError = uploadError(file, "image");
-    if (fileError) {
-      setFormError(fileError);
-      return;
-    }
-    setFormError(null);
-    if (previewUrlRef.current) URL.revokeObjectURL(previewUrlRef.current);
-    const url = URL.createObjectURL(file);
-    previewUrlRef.current = url;
-    setImageFile(file);
-    setImagePreview(url);
-  };
-
   const handleSubmit = () => {
     if (!name.trim()) return setFormError("Remix name is required");
     if (!collectionKey) return setFormError("Select a collection");
+    if (!upload.confirm()) return;
     if (!walletAddress) return;
     setFormError(null);
     void tx.run(async (signer) => {
@@ -149,10 +128,10 @@ export function RemixMint({ contract, tokenId }: { contract: string; tokenId: st
       if (!selected) throw new Error("Collection not found");
 
       let tokenUri: string;
-      if (imageFile) {
+      if (upload.uri) {
         tokenUri = (
           await pinAssetMetadata(api, {
-            imageFile,
+            imageUri: upload.uri,
             name: name.trim(),
             description: description.trim() || `Remix of ${originalName}`,
             creator: walletAddress,
@@ -249,7 +228,7 @@ export function RemixMint({ contract, tokenId }: { contract: string; tokenId: st
       <TransactionDialog tx={tx} title={t("Mint a remix")} workingLabel={t("Minting your remix…")} firstStepLabel={t("Upload to IPFS")}>
         <TransactionSuccess
           name={name}
-          image={imagePreview ?? originalImage ?? null}
+          image={upload.preview ?? originalImage ?? null}
           title={t("Remix minted")}
           description={t("Registered as a remix with its own license.")}
           actions={[
@@ -273,33 +252,13 @@ export function RemixMint({ contract, tokenId }: { contract: string; tokenId: st
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-8 items-start">
           <div className="space-y-4">
             <Section title={t("Remix artwork")} icon={<ImagePlus className="h-4 w-4" />}>
-              <div
-                className={cn("relative group rounded-xl border-2 border-dashed border-border transition-colors cursor-pointer overflow-hidden", "hover:border-primary/50 hover:bg-muted/30")}
-                onClick={() => fileInputRef.current?.click()}
-              >
-                <input ref={fileInputRef} type="file" accept={acceptFor("image")} className="hidden" onChange={(e) => { const f = e.target.files?.[0]; if (f) handleImageChange(f); }} />
-                {imagePreview ? (
-                  <div className="relative aspect-square w-full">
-                    <Image src={imagePreview} alt={t("Remix preview")} fill unoptimized className="object-cover" />
-                    <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                      <p className="text-white text-sm font-medium flex items-center gap-2"><Upload className="h-4 w-4" /> {t("Change image")}</p>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="aspect-square flex flex-col items-center justify-center gap-3 text-muted-foreground p-8">
-                    {originalImage && (
-                      <div className="relative h-20 w-20 rounded-xl overflow-hidden opacity-40 mb-1 ring-2 ring-border">
-                        <Image src={originalImage} alt="" fill unoptimized className="object-cover" />
-                      </div>
-                    )}
-                    <Upload className="h-8 w-8" />
-                    <div className="text-center">
-                      <p className="text-sm font-medium">{t("Upload remix artwork")}</p>
-                      <p className="text-xs mt-0.5">{originalImage ? t("Leave empty to inherit original artwork") : t("Images up to 10MB")}</p>
-                    </div>
-                  </div>
-                )}
-              </div>
+              <ImageUploadField
+                upload={upload}
+                ariaLabel={t("Remix artwork")}
+                alt={t("Remix preview")}
+                buttonLabel={t("Upload remix artwork")}
+                hint={originalImage ? t("Leave empty to inherit original artwork") : undefined}
+              />
             </Section>
 
             <Section title={t("Remix details")} icon={<GitBranch className="h-4 w-4" />}>
@@ -384,7 +343,7 @@ export function RemixMint({ contract, tokenId }: { contract: string; tokenId: st
 
             {formError && <p role="alert" className="text-sm text-destructive">{formError}</p>}
 
-            <ActionButton solid big type="button" disabled={tx.phase !== "idle"} onClick={handleSubmit} icon={<GitBranch className="h-5 w-5" />} className="w-full">
+            <ActionButton solid big type="button" disabled={tx.phase !== "idle" || upload.uploading} onClick={handleSubmit} icon={<GitBranch className="h-5 w-5" />} className="w-full">
               {t("Mint remix")}
             </ActionButton>
             <p className="text-xs text-center text-muted-foreground">{t("Gas is free.")}</p>

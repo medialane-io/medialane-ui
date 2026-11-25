@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { ChevronLeft, ChevronRight, FileText, ImagePlus, Plus, Trash2, X } from "lucide-react";
 import { Button } from "../../button.js";
 import { Input } from "../../input.js";
@@ -22,6 +23,7 @@ export function AssetEditor({ draft, index, onIndex, onChange, onRemove, errors,
   onClose: () => void;
 }) {
   const t = useT();
+  const [rejected, setRejected] = useState<{ id: string; field: "file" | "feature"; text: string } | null>(null);
   const asset = draft.assets[index];
   if (!asset) return null;
   const count = draft.assets.length;
@@ -29,6 +31,14 @@ export function AssetEditor({ draft, index, onIndex, onChange, onRemove, errors,
   const set = (patch: Partial<DraftAsset>) => onChange(asset.id, patch);
   const setTrait = (i: number, patch: Partial<DraftAsset["traits"][number]>) =>
     set({ traits: asset.traits.map((tr, j) => (j === i ? { ...tr, ...patch } : tr)) });
+  const rejection = (field: "file" | "feature") =>
+    rejected?.id === asset.id && rejected.field === field ? { text: rejected.text } : null;
+  const take = (field: "file" | "feature", file: File | undefined) => {
+    if (!file) return;
+    const problem = uploadError(file, field === "file" ? "media" : "image");
+    setRejected(problem ? { id: asset.id, field, text: problem } : null);
+    if (!problem) set({ [field]: file });
+  };
   const collectionName = draft.collection.name.trim() || t("Untitled");
   const kind = assetKind(asset);
 
@@ -50,10 +60,11 @@ export function AssetEditor({ draft, index, onIndex, onChange, onRemove, errors,
                 onChange={(e) => {
                   const file = e.target.files?.[0];
                   e.target.value = "";
-                  if (file && !uploadError(file, "media")) set({ file });
+                  take("file", file);
                 }} />
             </label>
           </Button>
+          <FieldError message={rejection("file")} />
         </div>
 
         {kind !== "image" && (
@@ -67,12 +78,12 @@ export function AssetEditor({ draft, index, onIndex, onChange, onRemove, errors,
                   onChange={(e) => {
                     const file = e.target.files?.[0];
                     e.target.value = "";
-                    if (file && !uploadError(file)) set({ feature: file });
+                    take("feature", file);
                   }} />
               </label>
               <p className="text-xs text-muted-foreground">{t("Shown wherever the asset appears.")}</p>
             </div>
-            <FieldError message={fieldErrors.feature} />
+            <FieldError message={rejection("feature") ?? fieldErrors.feature} />
           </Field>
         )}
 

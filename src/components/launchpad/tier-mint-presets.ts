@@ -11,8 +11,6 @@ export interface TierMintPreset {
   traitType: string;
   icon: ElementType;
   iconClass: string;
-  hoverBorderClass: string;
-  uploadedClass: string;
   suggestExternalLink: boolean;
   signedOut: { title: string; description: string };
   back: { href: string; label: string };
@@ -40,8 +38,6 @@ export const CLUB_TIER_PRESET: TierMintPreset = {
   traitType: "IP Club Membership",
   icon: Users,
   iconClass: "text-brand-purple",
-  hoverBorderClass: "hover:border-brand-purple/50",
-  uploadedClass: "text-brand-purple",
   suggestExternalLink: false,
   signedOut: { title: msg("Secure your account to create memberships"), description: msg("Create a membership tier and mint its supply to your account.") },
   back: { href: "/launchpad/club", label: msg("← Back") },
@@ -72,8 +68,6 @@ export const TICKETS_TIER_PRESET: TierMintPreset = {
   traitType: "IP Ticket",
   icon: Ticket,
   iconClass: "text-brand-blue",
-  hoverBorderClass: "hover:border-brand-blue/50",
-  uploadedClass: "text-brand-blue",
   suggestExternalLink: true,
   signedOut: { title: msg("Secure your account to mint tickets"), description: msg("Create a ticket type and mint its supply to your account.") },
   back: { href: "/launchpad/tickets", label: msg("← Back") },

@@ -169,9 +169,7 @@ export function uploadFailureToast(err: unknown): { title: string; description?:
   };
 }
 
-export interface PinAssetMetadataInput extends BuildAssetMetadataInput {
-  imageFile?: File | null;
-}
+export type PinAssetMetadataInput = BuildAssetMetadataInput;
 
 export interface PinnedAsset {
   uri: string;
@@ -179,19 +177,14 @@ export interface PinnedAsset {
 }
 
 export async function pinAssetMetadata(api: ApiClient, input: PinAssetMetadataInput): Promise<PinnedAsset> {
-  const { imageFile, ...fields } = input;
-
-  let imageUri = fields.imageUri ?? null;
-  if (!imageUri && imageFile && imageFile.size > 0) {
-    imageUri = (await uploadFileToIpfs(api, imageFile)).uri;
-  }
+  const imageUri = input.imageUri ?? null;
 
   const uri = await uploadJsonToIpfs(
     api,
     buildAssetMetadata({
-      ...fields,
+      ...input,
       imageUri,
-      externalUrl: fields.externalUrl || "https://medialane.io",
+      externalUrl: input.externalUrl || "https://medialane.io",
     }),
   );
 

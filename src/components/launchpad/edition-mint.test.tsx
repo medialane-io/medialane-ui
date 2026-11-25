@@ -20,13 +20,13 @@ afterEach(() => cleanup());
 const OWNER = "0x00000000000000000000000000000000000000000000000000000000000000aa";
 const CONTRACT = "0x00000000000000000000000000000000000000000000000000000000000000c7";
 
-function setup(collectionOwner: string) {
+function setup(collectionOwner: string, metadata: Record<string, unknown> = {}) {
   const intents: Record<string, unknown>[] = [];
   const client = {
     provider: { getTransactionReceipt: async () => ({ execution_status: "SUCCEEDED", events: [{ from_address: CONTRACT, keys: [hash.getSelectorFromName("IPMinted"), "0x4", "0x0"], data: [] }] }) },
     api: {
       collections: { get: async () => ({ owner: collectionOwner }) },
-      metadata: { signedUrl: async () => ({ data: { url: "https://upload.example/signed" } }), upload: async () => ({ data: { url: "ipfs://meta" } }) },
+      metadata: { signedUrl: async () => ({ data: { url: "https://upload.example/signed" } }), upload: async () => ({ data: { url: "ipfs://meta" } }), ...metadata },
       intents: {
         create: async (_kind: string, params: Record<string, unknown>) => { intents.push(params); return { id: "i1", requiresSignature: false, calls: [{}] }; },
         syncTransaction: async () => ({ pending: false }),
@@ -58,7 +58,7 @@ test("an edition needs an image before anything is created", async () => {
   await waitFor(() => expect(view.getByPlaceholderText("Genesis Track #1")).toBeTruthy());
   fireEvent.change(view.getByPlaceholderText("Genesis Track #1"), { target: { value: "Track" } });
   fireEvent.submit(view.container.querySelector("form")!);
-  await waitFor(() => expect(view.getByText("Upload an image before minting.")).toBeTruthy());
+  await waitFor(() => expect(view.getByRole("group").textContent).toContain("Upload an image before minting."));
   expect(intents).toEqual([]);
 });
 
@@ -66,11 +66,30 @@ test("an edition is minted with its quantity and links to the new asset", async 
   const { view, intents } = setup(OWNER);
   await waitFor(() => expect(view.getByPlaceholderText("Genesis Track #1")).toBeTruthy());
   fireEvent.change(view.container.querySelector('input[type="file"]')!, { target: { files: [new File(["x"], "cover.png", { type: "image/png" })] } });
-  await waitFor(() => expect(view.getByText("✓ Image uploaded to IPFS")).toBeTruthy());
+  await waitFor(() => expect(view.getByText("✓ Uploaded")).toBeTruthy());
   fireEvent.change(view.getByPlaceholderText("Genesis Track #1"), { target: { value: "Track" } });
   fireEvent.change(view.getByPlaceholderText("1"), { target: { value: "25" } });
   fireEvent.submit(view.container.querySelector("form")!);
   await waitFor(() => expect(view.getByText("Mint another")).toBeTruthy());
   expect(intents[0]).toMatchObject({ owner: OWNER, recipient: OWNER, collectionContract: CONTRACT, tokenUri: "ipfs://meta", value: "25", royaltyBps: 0 });
   expect(view.getByText("View asset").closest("a")?.getAttribute("href")).toBe(`/asset/starknet/${CONTRACT}/4`);
+});
+
+function failingUploads() {
+  (globalThis as { URL: typeof URL }).URL.createObjectURL = () => "blob:preview";
+  (globalThis as { URL: typeof URL }).URL.revokeObjectURL = () => {};
+  return { signedUrl: async () => { throw new Error("Storage limit reached"); } };
+}
+
+const pickImage = (view: { container: HTMLElement }) =>
+  fireEvent.change(view.container.querySelector('input[type="file"]')!, { target: { files: [new File(["x"], "cover.png", { type: "image/png" })] } });
+
+test("a failed picture is reported in the picture field as soon as it happens", async () => {
+  const { view, intents } = setup(OWNER, failingUploads());
+  await waitFor(() => expect(view.getByPlaceholderText("Genesis Track #1")).toBeTruthy());
+  pickImage(view);
+  await waitFor(() => expect(view.getByRole("group").textContent).toContain("Image upload failed: Storage limit reached"));
+  expect(view.getAllByRole("alert")).toHaveLength(1);
+  expect(view.getByText("Retry")).toBeTruthy();
+  expect(intents).toEqual([]);
 });

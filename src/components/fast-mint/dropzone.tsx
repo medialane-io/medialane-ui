@@ -84,7 +84,7 @@ export function Dropzone({
         type="file"
         accept={mediaKindLock === "image" ? acceptFor("image") : undefined}
         className="hidden"
-        onChange={(e) => { const f = e.target.files?.[0]; if (f) onFileSelected(f); }}
+        onChange={(e) => { const f = e.target.files?.[0]; e.target.value = ""; if (f) onFileSelected(f); }}
       />
     </section>
   );

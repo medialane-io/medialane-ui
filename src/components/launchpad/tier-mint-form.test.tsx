@@ -69,7 +69,7 @@ test("a membership needs an image before anything is created", async () => {
   await waitFor(() => expect(view.getByPlaceholderText("Kalamaha Fan Club — 2026 Season Pass")).toBeTruthy());
   fireEvent.change(view.getByPlaceholderText("Kalamaha Fan Club — 2026 Season Pass"), { target: { value: "Season Pass" } });
   fireEvent.submit(view.container.querySelector("form")!);
-  await waitFor(() => expect(view.getByText("Add a membership image.")).toBeTruthy());
+  await waitFor(() => expect(view.getByRole("group").textContent).toContain("Add a membership image."));
   expect(intents).toEqual([]);
 });
 

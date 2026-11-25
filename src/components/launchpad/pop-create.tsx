@@ -20,7 +20,7 @@ import { runIntentCalls } from "../../utils/run-intent-calls.js";
 import { claimEndTimestamp, popEventAttributes, popEventIntent } from "../../utils/launchpad-actions.js";
 import { uploadJsonToIpfs } from "../../utils/ipfs-upload.js";
 import { useTransaction } from "../../utils/use-transaction.js";
-import { useLaunchpadImageUpload } from "../../utils/use-launchpad-image-upload.js";
+import { useImageUpload } from "../../utils/use-image-upload.js";
 import { useT } from "../../i18n/provider.js";
 
 export function PopCreate({ aside }: { aside?: ReactNode }) {
@@ -28,8 +28,7 @@ export function PopCreate({ aside }: { aside?: ReactNode }) {
   const app = useMedialaneApp();
   const walletAddress = app.walletAddress;
   const tx = useTransaction();
-  const upload = useLaunchpadImageUpload({ successMessage: t("Certificate image uploaded"), failureMessage: t("Image upload failed") });
-  const { imagePreview, imageUri, imageUploading, uploadError, uploadSuccess, fileInputRef, handleImageSelect, clearImage } = upload;
+  const upload = useImageUpload();
   const [eventType, setEventType] = useState<PopEventType>("Conference");
   const [isPublic, setIsPublic] = useState(false);
   const [autoSymbol, setAutoSymbol] = useState("");
@@ -62,13 +61,14 @@ export function PopCreate({ aside }: { aside?: ReactNode }) {
     const defaults = getDefaultClaimWindow();
     tx.reset();
     form.reset({ name: "", symbol: "", claimEndDate: defaults.claimEndDate, claimEndTime: defaults.claimEndTime });
-    clearImage();
+    upload.clear();
     setEventType("Conference");
     setIsPublic(false);
     setAutoSymbol("");
   };
 
   const onSubmit = (values: PopCreateValues) => {
+    if (!upload.confirm()) return;
     if (!walletAddress) return;
     void tx.run(async (signer) => {
       await app.ensureSignedIn?.();
@@ -77,7 +77,7 @@ export function PopCreate({ aside }: { aside?: ReactNode }) {
         ...buildCollectionMetadata({
           name: values.name,
           description: values.description,
-          image: imageUri,
+          image: upload.uri,
           externalLink: values.external_link,
           owner: walletAddress,
         }),
@@ -105,7 +105,7 @@ export function PopCreate({ aside }: { aside?: ReactNode }) {
       <TransactionDialog tx={tx} title={t("Create POP event")} workingLabel={t("Creating the POP event…")} firstStepLabel={t("Upload certificate metadata")}>
         <TransactionSuccess
           name={eventName || "New event"}
-          image={imagePreview}
+          image={upload.preview}
           title={t("Event created")}
           description={t("Certificates recorded onchain.")}
           actions={[{ href: "/launchpad/pop", label: t("Back to POP launchpad") }, { label: t("Create another"), onClick: handleAgain }]}
@@ -121,7 +121,7 @@ export function PopCreate({ aside }: { aside?: ReactNode }) {
         aside={
           <>
             <MedialaneCollectionCard
-              image={imagePreview}
+              image={upload.preview}
               name={eventName}
               collection={form.watch("symbol") || "POP Event"}
               creator={walletAddress ? `${walletAddress.slice(0, 6)}…${walletAddress.slice(-4)}` : undefined}
@@ -138,18 +138,11 @@ export function PopCreate({ aside }: { aside?: ReactNode }) {
               form={form}
               eventType={eventType}
               isPublic={isPublic}
-              imagePreview={imagePreview}
-              imageUri={imageUri}
-              imageUploading={imageUploading}
+              upload={upload}
               isSubmitting={tx.phase !== "idle"}
-              fileInputRef={fileInputRef}
               onSetEventType={setEventType}
               onSetPublic={setIsPublic}
-              onImageSelect={handleImageSelect}
-              onClearImage={clearImage}
             />
-            {uploadError && <p className="text-xs text-destructive mt-1">{uploadError}</p>}
-            {uploadSuccess && <p className="text-xs text-brand-blue mt-1">✓ {uploadSuccess}</p>}
           </form>
         </Form>
       </ClaimRouteShell>
