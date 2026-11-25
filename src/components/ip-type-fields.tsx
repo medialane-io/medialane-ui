@@ -22,6 +22,7 @@ import {
 import { Check, FileText, FileUp, Loader2, Plus, Trash2, X } from "lucide-react";
 import { useT } from "../i18n/provider.js";
 import { panelTint } from "./panel.js";
+import { msg, type Phrase } from "../i18n/translate.js";
 
 export type MetadataField = {
   traitType: string;
@@ -61,7 +62,7 @@ export function IPTypeFields({ ipType, onChange, uploadDocument, existingDocumen
   const [docUri, setDocUri] = useState<string | null>(null);
   const [docName, setDocName] = useState<string | null>(null);
   const [docUploading, setDocUploading] = useState(false);
-  const [docError, setDocError] = useState<string | null>(null);
+  const [docError, setDocError] = useState<Phrase | null>(null);
   const docInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -136,7 +137,7 @@ export function IPTypeFields({ ipType, onChange, uploadDocument, existingDocumen
       setDocUri(uri);
       setDocName(file.name);
     } catch (err) {
-      setDocError(err instanceof Error ? err.message : "Document upload failed");
+      setDocError({ text: err instanceof Error ? err.message : msg("Document upload failed") });
     } finally {
       setDocUploading(false);
       if (docInputRef.current) docInputRef.current.value = "";
@@ -218,7 +219,7 @@ export function IPTypeFields({ ipType, onChange, uploadDocument, existingDocumen
                   </>
                 )}
               </Button>
-              {docError && <p className="text-xs text-destructive">{docError}</p>}
+              {docError && <p className="text-xs text-destructive">{t(docError.text, docError.vars)}</p>}
               <p className="text-xs text-muted-foreground leading-relaxed">{t(docUpload.hint)}</p>
             </div>
           )}
@@ -289,7 +290,7 @@ export function IPTypeFields({ ipType, onChange, uploadDocument, existingDocumen
       )}
 
       <section className="space-y-3 border-t border-border/60 pt-4">
-        <p className="text-sm font-semibold">{t("Traits")}</p>
+        <p className="text-sm font-semibold">{t("Details")}</p>
 
         {template.traitSuggestions && template.traitSuggestions.length > 0 && (
           <div className="flex flex-wrap gap-2">
@@ -319,7 +320,7 @@ export function IPTypeFields({ ipType, onChange, uploadDocument, existingDocumen
                 <Input
                   value={row.key}
                   onChange={(e) => updateTrait(row.id, { key: e.target.value })}
-                  placeholder={t("Trait name")}
+                  placeholder={t("Detail name")}
                   className="h-9 text-sm"
                   maxLength={64}
                 />
@@ -352,7 +353,7 @@ export function IPTypeFields({ ipType, onChange, uploadDocument, existingDocumen
                   size="icon"
                   className="h-9 w-9 shrink-0 text-muted-foreground hover:text-destructive"
                   onClick={() => removeTrait(row.id)}
-                  aria-label={t("Remove trait")}
+                  aria-label={t("Remove detail")}
                 >
                   <Trash2 className="h-4 w-4" />
                 </Button>
@@ -363,7 +364,7 @@ export function IPTypeFields({ ipType, onChange, uploadDocument, existingDocumen
 
         <Button type="button" variant="soft" size="sm" onClick={addCustomTrait}>
           <Plus className="mr-1.5 h-3.5 w-3.5" />
-          {t("Add custom trait")}
+          {t("Add detail")}
         </Button>
       </section>
     </div>

@@ -1,5 +1,5 @@
 import { test, expect, mock } from "bun:test";
-import { UserFacingError, type ApiClient, type MetadataApi } from "@medialane/sdk";
+import { MedialaneApiError, UserFacingError, type ApiClient, type MetadataApi } from "@medialane/sdk";
 import {
   uploadFileToIpfs,
   uploadJsonToIpfs,
@@ -7,6 +7,7 @@ import {
   uploadFailureToast,
   isUserRejection,
   FILE_UPLOAD_FAILED,
+  UPLOADS_UNAVAILABLE,
   setUploadDiagnosticsReporter,
   type UploadDiagnostics,
 } from "./ipfs-upload.js";
@@ -194,4 +195,21 @@ test("a reporter that throws does not change the upload result", async () => {
 
   expect(err.message).toBe(FILE_UPLOAD_FAILED);
   setUploadDiagnosticsReporter(null);
+});
+
+const refusal = (status: number, message: string, code?: string) =>
+  fakeApi({ metadata: { signedUrl: async () => { throw new MedialaneApiError(status, message, undefined, undefined, "/v1/metadata/signed-url", code); } } });
+
+const picture = () => new File(["x"], "a.png", { type: "image/png" });
+
+test("when the service says uploads are unavailable, the interface's own sentence is shown", async () => {
+  const error = await uploadFileToIpfs(refusal(403, "server wording", "uploads_unavailable"), picture()).catch((e) => e);
+  expect(error).toBeInstanceOf(UserFacingError);
+  expect(error.message).toBe(UPLOADS_UNAVAILABLE);
+  expect(error.message).toBe("Uploads are temporarily unavailable. Please try again later. If the error persists, contact our support.");
+});
+
+test("any other refusal keeps its own reason", async () => {
+  const error = await uploadFileToIpfs(refusal(403, "This account is inactive"), picture()).catch((e) => e);
+  expect(error.message).toBe("This account is inactive");
 });

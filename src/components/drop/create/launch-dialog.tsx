@@ -156,7 +156,7 @@ export function LaunchDialog({ open, onClose, draft, onLaunched }: { open: boole
                 <Button variant="soft" onClick={() => downloadCsv(popClaimLinksCsv(step.links), "claim-links.csv")}>{t("Download claim links")}</Button>
               )}
             </div>
-            {step.links.length > 0 && <p className="text-xs text-muted-foreground">{t("Send each wallet its mint link.")}</p>}
+            {step.links.length > 0 && <p className="text-xs text-muted-foreground">{t("Send each wallet its claim link.")}</p>}
           </>
         )}
       </DialogContent>

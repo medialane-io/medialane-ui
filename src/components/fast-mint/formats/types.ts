@@ -9,6 +9,7 @@ import type { FormValues } from "../form.js";
 import type { FastMintSigner, MediaKind, MintedAsset } from "../types.js";
 import type { useNewCollectionDraft } from "../use-new-collection-draft.js";
 import type { StepInfo } from "../create-then-add.js";
+import type { T } from "../../../i18n/make-t.js";
 
 export type MintFormat = "single" | "editions" | "pop" | "tickets" | "club";
 
@@ -67,7 +68,7 @@ export interface FormatDefinition<S = unknown> {
   initial: () => S;
   Fields: ComponentType<FormatFieldsProps<S>>;
   isReady: (shared: FormatShared, state: S) => boolean;
-  previewLabel: (shared: FormatShared, state: S) => string | undefined;
+  previewLabel: (shared: FormatShared, state: S, t: T) => string | undefined;
   submit: (shared: FormatShared, state: S, runtime: FormatRuntime) => Promise<FormatResult>;
 }
 

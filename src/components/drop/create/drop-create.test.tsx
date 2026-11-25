@@ -27,16 +27,16 @@ const show = async (value: MedialaneApp = app, store = memoryDraftStore()) => {
 test("the page shows the header and three panels, Collection open first", async () => {
   const view = await show();
   expect(view.getByText("Collection drop")).toBeTruthy();
-  expect(view.getByText("A new collection released for collectors to mint.")).toBeTruthy();
-  for (const title of ["Collection", "Assets", "Drop settings"]) expect(view.getByText(title)).toBeTruthy();
-  expect(view.getByLabelText("Name *")).toBeTruthy();
+  expect(view.getByText("A new collection for people to collect.")).toBeTruthy();
+  for (const title of ["Collection", "Works", "Drop settings"]) expect(view.getByText(title)).toBeTruthy();
+  expect(view.getByLabelText("Name")).toBeTruthy();
 });
 
 test("opening one panel closes the other", async () => {
   const view = await show();
-  fireEvent.click(view.getByRole("button", { name: /^Assets/ }));
+  fireEvent.click(view.getByRole("button", { name: /^Works/ }));
   expect(view.getByTestId("assets-input")).toBeTruthy();
-  expect(view.queryByLabelText("Name *")).toBeNull();
+  expect(view.queryByLabelText("Name")).toBeNull();
 });
 
 test("an empty draft asks for the collection name first", async () => {
@@ -46,9 +46,9 @@ test("an empty draft asks for the collection name first", async () => {
 
 test("the launch button names what is missing and opens that panel", async () => {
   const view = await show();
-  fireEvent.change(view.getByLabelText("Name *"), { target: { value: "Neon" } });
+  fireEvent.change(view.getByLabelText("Name"), { target: { value: "Neon" } });
   fireEvent.click(view.getByRole("button", { name: /^Drop settings/ }));
-  fireEvent.click(view.getByRole("button", { name: "Add an asset" }));
+  fireEvent.click(view.getByRole("button", { name: "Add a work" }));
   expect(view.getByTestId("assets-input")).toBeTruthy();
 });
 
@@ -64,15 +64,15 @@ test("a restored draft offers to start over", async () => {
   await store.save({ ...EMPTY_DRAFT, collection: { ...EMPTY_DRAFT.collection, name: "Neon" } });
   const view = await show(app, store);
   await waitFor(() => expect(view.getByText("Draft restored")).toBeTruthy());
-  expect((view.getByLabelText("Name *") as HTMLInputElement).value).toBe("Neon");
+  expect((view.getByLabelText("Name") as HTMLInputElement).value).toBe("Neon");
   fireEvent.click(view.getByRole("button", { name: "Start over" }));
-  expect((view.getByLabelText("Name *") as HTMLInputElement).value).toBe("");
+  expect((view.getByLabelText("Name") as HTMLInputElement).value).toBe("");
   expect(view.queryByText("Draft restored")).toBeNull();
 });
 
 test("the fixed-at-launch line sits above the button", async () => {
   const view = await show();
-  expect(view.getByText("Fixed at launch: assets, price, dates, supply and the wallet limit.")).toBeTruthy();
+  expect(view.getByText("Fixed at launch: works, price, dates, quantity and the wallet limit.")).toBeTruthy();
 });
 
 test("the symbol comes from the name, with a fallback when the name has no letters to use", () => {

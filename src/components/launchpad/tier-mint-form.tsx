@@ -46,7 +46,7 @@ function makeSchema(preset: TierMintPreset) {
     name: z.string().min(1, preset.copy.nameRequired).max(FIELD_LIMITS.name),
     description: z.string().max(FIELD_LIMITS.description).optional(),
     external_url: webLinkField(),
-    maxSupply: positiveIntegerField("Supply required"),
+    maxSupply: positiveIntegerField(preset.copy.supplyRequired),
     royalty: z.coerce.number().min(0).max(50).default(2.5),
     licenseType: z.string().min(1),
     commercialUse: z.enum(["Yes", "No"]),
@@ -197,7 +197,7 @@ export function TierMintForm({ contract: rawContract, preset, aside }: TierMintF
             <MedialaneCollectionCard
               image={upload.preview}
               name={form.watch("name")}
-              collection={collection.symbol || preset.cardFallbackSymbol}
+              collection={collection.symbol || t(preset.cardFallbackSymbol)}
               creator={address ? `${address.slice(0, 6)}…${address.slice(-4)}` : undefined}
               creatorHref={address ? profileHref({ address }) : undefined}
             />
@@ -207,11 +207,11 @@ export function TierMintForm({ contract: rawContract, preset, aside }: TierMintF
       >
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit, () => { upload.confirm(preset.copy.imageRequired); })} className="space-y-5">
-            <ImageUploadField upload={upload} label={t(preset.copy.imageHeading)} alt={t(preset.copy.imageAlt)} required />
+            <ImageUploadField upload={upload} label={t(preset.copy.imageHeading)} alt={t(preset.copy.imageAlt)} />
 
             <FormField control={form.control} name="name" render={({ field }) => (
               <FormItem>
-                <FormLabel>{t(preset.copy.nameLabel)} <span className="text-destructive">*</span></FormLabel>
+                <FormLabel>{t(preset.copy.nameLabel)}</FormLabel>
                 <FormControl><Input placeholder={t(preset.copy.namePlaceholder)} {...field} /></FormControl>
                 <FormMessage />
               </FormItem>
@@ -227,7 +227,7 @@ export function TierMintForm({ contract: rawContract, preset, aside }: TierMintF
 
             <FormField control={form.control} name="external_url" render={({ field }) => (
               <FormItem>
-                <FormLabel>{t("External link")} <span className="text-muted-foreground font-normal">{t("(optional)")}</span></FormLabel>
+                <FormLabel>{t("Link")} <span className="text-muted-foreground font-normal">{t("(optional)")}</span></FormLabel>
                 <FormControl><Input placeholder={t("https://yourwebsite.com")} {...field} /></FormControl>
                 <FormMessage />
               </FormItem>
@@ -302,9 +302,9 @@ export function TierMintForm({ contract: rawContract, preset, aside }: TierMintF
             <div className="grid grid-cols-2 gap-4">
               <FormField control={form.control} name="maxSupply" render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t("Supply")} <span className="text-destructive">*</span></FormLabel>
+                  <FormLabel>{t(preset.copy.supplyLabel)}</FormLabel>
                   <FormControl><Input type="number" min="1" placeholder="100" {...field} /></FormControl>
-                  <FormDescription>{t("Minted to your account.")}</FormDescription>
+                  <FormDescription>{t("They're added to your account.")}</FormDescription>
                   <FormMessage />
                 </FormItem>
               )} />
@@ -323,7 +323,7 @@ export function TierMintForm({ contract: rawContract, preset, aside }: TierMintF
                 <FormItem>
                   <FormLabel>{t("Valid from")} <span className="text-muted-foreground font-normal">{t("(optional)")}</span></FormLabel>
                   <FormControl><Input type="datetime-local" {...field} /></FormControl>
-                  <FormDescription>{t("You can mint and sell before it opens.")}</FormDescription>
+                  <FormDescription>{t("You can publish and sell before this date.")}</FormDescription>
                   <FormMessage />
                 </FormItem>
               )} />

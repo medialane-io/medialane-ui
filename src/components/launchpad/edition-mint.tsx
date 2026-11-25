@@ -52,6 +52,7 @@ export function EditionMint({ contract: rawContract, aside }: { contract: string
   const tx = useTransaction();
   const upload = useImageUpload();
   const [ownerCheck, setOwnerCheck] = useState<"loading" | "ok" | "denied">("loading");
+  const [collectionName, setCollectionName] = useState<string | null>(null);
   const [metadataResetKey, setMetadataResetKey] = useState(0);
   const [autoExternalUrl, setAutoExternalUrl] = useState("");
   const metadataFieldsRef = useRef<MetadataField[]>([]);
@@ -78,6 +79,7 @@ export function EditionMint({ contract: rawContract, aside }: { contract: string
       .api.collections.get(collectionAddress)
       .then((data) => {
         const owner = data.owner ? normalizeAddress("STARKNET", data.owner) : null;
+        setCollectionName(data.name ?? null);
         setOwnerCheck(owner === normalizeAddress("STARKNET", walletAddress) ? "ok" : "denied");
       })
       .catch(() => setOwnerCheck("denied"));
@@ -98,7 +100,7 @@ export function EditionMint({ contract: rawContract, aside }: { contract: string
   };
 
   const onSubmit = (values: EditionMintValues) => {
-    if (!upload.confirm(msg("Upload an image before minting."))) return;
+    if (!upload.confirm(msg("Upload an image before publishing."))) return;
     if (!walletAddress) return;
     void tx.run(async (signer) => {
       await app.ensureSignedIn?.();
@@ -139,11 +141,11 @@ export function EditionMint({ contract: rawContract, aside }: { contract: string
     <WalletRequired
       icon={Sparkles}
       iconClassName="text-brand-purple"
-      title={t("Secure your account to create")}
-      description={t("Secure your account to mint tokens into a multi-editions collection.")}
+      title={t("Secure your account to publish")}
+      description={t("Secure your account to publish editions.")}
     >
       {ownerCheck === "denied" ? (
-        <PageState icon={Sparkles} title={t("Not the owner")} description={t("Minting opens for the collection owner.")}>
+        <PageState icon={Sparkles} title={t("Owner only")} description={t("Publishing is open to the collection owner.")}>
           <Button asChild variant="soft">
             <Link href="/launchpad">{t("Back to Launchpad")}</Link>
           </Button>
@@ -152,20 +154,22 @@ export function EditionMint({ contract: rawContract, aside }: { contract: string
         <>
           <ClaimRouteShell
             icon={<Sparkles className="h-4 w-4 text-white" />}
-            title={t("Mint an edition")}
+            title={t("Publish an edition")}
             subtitle={t("Add a new piece to the collection.")}
             headerAccessory={
-              <div className="panel flex items-center gap-2 px-3 py-2 max-w-full">
-                <span className="tabular-nums text-xs text-foreground/80 truncate">{t("Collection: {collectionAddress}", { collectionAddress })}</span>
-              </div>
+              collectionName ? (
+                <div data-testid="collection-name" className="panel flex items-center gap-2 px-3 py-2 max-w-full">
+                  <span className="text-xs text-foreground/80 truncate">{collectionName}</span>
+                </div>
+              ) : undefined
             }
             aside={
               <>
                 <MedialaneCollectionCard
                   image={upload.preview}
                   name={form.watch("name")}
-                  collection="Edition"
-                  serial={Number(form.watch("value")) > 1 ? `${form.watch("value")} editions` : undefined}
+                  collection={t("Edition")}
+                  serial={Number(form.watch("value")) > 1 ? t("{count} editions", { count: form.watch("value") }) : undefined}
                   creator={walletAddress ? `${walletAddress.slice(0, 6)}…${walletAddress.slice(-4)}` : undefined}
                   creatorHref={walletAddress ? profileHref({ address: walletAddress }) : undefined}
                 />
@@ -187,16 +191,16 @@ export function EditionMint({ contract: rawContract, aside }: { contract: string
             </Form>
           </ClaimRouteShell>
 
-          <TransactionDialog tx={tx} title={t("Mint an edition")} workingLabel={t("Minting your edition…")} firstStepLabel={t("Upload metadata")}>
+          <TransactionDialog tx={tx} title={t("Publish an edition")} workingLabel={t("Publishing your edition…")} firstStepLabel={t("Saving details")}>
             <TransactionSuccess
-              name={form.getValues("name") || "Your token"}
+              name={form.getValues("name") || t("Your work")}
               image={upload.preview}
-              title={t("Editions minted")}
-              description={t("Each copy is recorded onchain with the license terms in its metadata.")}
+              title={t("Edition published")}
+              description={t("Each copy is saved permanently with its license terms.")}
               actions={[
-                ...(mintedTokenId ? [{ href: assetHref("STARKNET", collectionAddress, mintedTokenId), label: t("View asset") }] : []),
+                ...(mintedTokenId ? [{ href: assetHref("STARKNET", collectionAddress, mintedTokenId), label: t("View work") }] : []),
                 { href: "/portfolio/assets", label: t("View portfolio") },
-                { label: t("Mint another"), onClick: handleAgain },
+                { label: t("Publish another"), onClick: handleAgain },
               ]}
             >
               <RewardEarned actionType="mint_asset" />

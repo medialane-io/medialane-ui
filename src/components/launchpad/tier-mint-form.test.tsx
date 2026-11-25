@@ -66,8 +66,8 @@ test("someone who does not own the club is told so", async () => {
 
 test("a membership needs an image before anything is created", async () => {
   const { view, intents } = setup();
-  await waitFor(() => expect(view.getByPlaceholderText("Kalamaha Fan Club — 2026 Season Pass")).toBeTruthy());
-  fireEvent.change(view.getByPlaceholderText("Kalamaha Fan Club — 2026 Season Pass"), { target: { value: "Season Pass" } });
+  await waitFor(() => expect(view.getByPlaceholderText("2026 Season Pass")).toBeTruthy());
+  fireEvent.change(view.getByPlaceholderText("2026 Season Pass"), { target: { value: "Season Pass" } });
   fireEvent.submit(view.container.querySelector("form")!);
   await waitFor(() => expect(view.getByRole("group").textContent).toContain("Add a membership image."));
   expect(intents).toEqual([]);
@@ -75,11 +75,11 @@ test("a membership needs an image before anything is created", async () => {
 
 test("a membership is created and minted in one transaction for the next tier id", async () => {
   const { view, intents, executed } = setup();
-  await waitFor(() => expect(view.getByPlaceholderText("Kalamaha Fan Club — 2026 Season Pass")).toBeTruthy());
+  await waitFor(() => expect(view.getByPlaceholderText("2026 Season Pass")).toBeTruthy());
   const input = view.container.querySelector('input[type="file"]') as HTMLInputElement;
   fireEvent.change(input, { target: { files: [new File(["x"], "pass.png", { type: "image/png" })] } });
   await waitFor(() => expect(view.getByText("✓ Uploaded")).toBeTruthy());
-  fireEvent.change(view.getByPlaceholderText("Kalamaha Fan Club — 2026 Season Pass"), { target: { value: "Season Pass" } });
+  fireEvent.change(view.getByPlaceholderText("2026 Season Pass"), { target: { value: "Season Pass" } });
   fireEvent.submit(view.container.querySelector("form")!);
   await waitFor(() => expect(view.getByText("Create another membership")).toBeTruthy());
   expect(intents.map((i) => i.kind)).toEqual(["create-tier", "mint"]);

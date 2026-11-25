@@ -64,11 +64,11 @@ test("a work is minted into the chosen collection and links to the new asset", a
   await waitFor(() => expect(view.getAllByText("Art").length).toBeGreaterThan(0));
   fireEvent.change(view.container.querySelector('input[type="file"]')!, { target: { files: [new File(["x"], "cover.png", { type: "image/png" })] } });
   await waitFor(() => expect(view.getByText("✓ Uploaded")).toBeTruthy());
-  fireEvent.change(view.getByPlaceholderText("My Creative Work"), { target: { value: "Starry Night" } });
+  fireEvent.change(view.getByPlaceholderText("The title people will see"), { target: { value: "Starry Night" } });
   fireEvent.submit(view.container.querySelector("form")!);
-  await waitFor(() => expect(view.getByText("Asset minted")).toBeTruthy());
+  await waitFor(() => expect(view.getByText("Work published")).toBeTruthy());
   expect(intents[0]).toMatchObject({ owner: OWNER, collectionId: "3", recipient: OWNER, tokenUri: "ipfs://meta", royaltyBps: 0 });
-  expect(view.getByText("View asset").closest("a")?.getAttribute("href")).toBe(`/asset/starknet/${CONTRACT}/9`);
+  expect(view.getByText("View work").closest("a")?.getAttribute("href")).toBe(`/asset/starknet/${CONTRACT}/9`);
 });
 
 const OTHER_CONTRACT = "0x00000000000000000000000000000000000000000000000000000000000000d7";
@@ -101,7 +101,7 @@ test("a failed picture shows at once and nothing is minted without it", async ()
   await waitFor(() => expect(view.getAllByText("Art").length).toBeGreaterThan(0));
   fireEvent.change(view.container.querySelector('input[type="file"]')!, { target: { files: [new File(["x"], "cover.png", { type: "image/png" })] } });
   await waitFor(() => expect(view.getByRole("alert").textContent).toBe("Image upload failed: Storage limit reached"));
-  fireEvent.change(view.getByPlaceholderText("My Creative Work"), { target: { value: "Starry Night" } });
+  fireEvent.change(view.getByPlaceholderText("The title people will see"), { target: { value: "Starry Night" } });
   fireEvent.submit(view.container.querySelector("form")!);
   await waitFor(() => expect(document.activeElement?.getAttribute("data-status")).toBe("failed"));
   expect(intents).toEqual([]);

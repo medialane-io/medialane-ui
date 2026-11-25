@@ -76,9 +76,9 @@ export function ReportDialog({ target, open, onOpenChange }: ReportDialogProps) 
     } catch (err) {
       setSubmitStep("error");
       if (err instanceof MedialaneApiError && err.status === 409) {
-        setSubmitError("You've already reported this content.");
+        setSubmitError(msg("You've already reported this content."));
       } else if (err instanceof MedialaneApiError && err.status === 429) {
-        setSubmitError("Too many reports — please wait before trying again.");
+        setSubmitError(msg("Too many reports — please wait before trying again."));
       } else {
         setSubmitError(describeError(err).message);
       }
@@ -111,7 +111,7 @@ export function ReportDialog({ target, open, onOpenChange }: ReportDialogProps) 
         ) : submitStep === "error" ? (
           <div className="flex flex-col items-center gap-4 py-4 text-center">
             <AlertCircle className="h-10 w-10 text-destructive" />
-            <p className="text-sm text-muted-foreground">{submitError}</p>
+            <p className="text-sm text-muted-foreground">{submitError ? t(submitError) : null}</p>
             <div className="flex gap-2 w-full">
               <Button variant="soft" className="flex-1" onClick={() => { setSubmitStep("idle"); setSubmitError(null); }}>{t("Try again")}</Button>
               <Button variant="soft" className="flex-1" onClick={close}>{t("Dismiss")}</Button>

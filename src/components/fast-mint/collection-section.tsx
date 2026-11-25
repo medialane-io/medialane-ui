@@ -11,6 +11,7 @@ import { cn } from "../../utils/cn.js";
 import { useImageUrl } from "../../utils/use-image-url.js";
 import type { useNewCollectionDraft } from "./use-new-collection-draft.js";
 import { useT } from "../../i18n/provider.js";
+import { msg } from "../../i18n/translate.js";
 
 function collectionDisplayLabel(col: ApiCollection) {
   return col.name || col.symbol || `Collection #${col.collectionId}`;
@@ -60,7 +61,7 @@ export function CollectionPicker({
               {selected ? collectionDisplayLabel(selected) : collections.length ? t("Choose a collection") : t("No collections yet")}
             </p>
             <p className="text-xs text-muted-foreground">
-              {selected ? `${selected.totalSupply ?? 0} work${selected.totalSupply === 1 ? "" : "s"}` : t("Where this work will live")}
+              {selected ? t.plural("{count} work", "{count} works", selected.totalSupply ?? 0) : t("Where this work will live")}
             </p>
           </div>
           <ChevronDown className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
@@ -101,8 +102,9 @@ export function CollectionPicker({
 
 export type CollectionMode = "existing" | "new";
 
+
 export function CollectionSection({
-  mode, onModeChange, collections, value, onValue, valueOf, draft, previewImage, noun = "collection",
+  mode, onModeChange, collections, value, onValue, valueOf, draft, previewImage, label = msg("Collection"),
 }: {
   mode: CollectionMode;
   onModeChange: (mode: CollectionMode) => void;
@@ -112,7 +114,7 @@ export function CollectionSection({
   valueOf: (c: ApiCollection) => string | null | undefined;
   draft: ReturnType<typeof useNewCollectionDraft>;
   previewImage: string | null;
-  noun?: string;
+  label?: string;
 }) {
   const t = useT();
   return (
@@ -120,7 +122,7 @@ export function CollectionSection({
       <div className="flex items-center justify-between">
         <label className="text-sm font-medium flex items-center gap-1.5">
           <Boxes className="h-4 w-4" />
-          {noun.charAt(0).toUpperCase() + noun.slice(1)} *
+          {t(label)}
         </label>
         <div className="flex rounded-2xl overflow-hidden bg-muted/40">
           <button
@@ -160,24 +162,23 @@ export function CollectionSection({
               <Input
                 value={draft.name}
                 onChange={(e) => draft.setName(e.target.value)}
-                placeholder={`${noun.charAt(0).toUpperCase() + noun.slice(1)} name`}
+                placeholder={t("Name")}
                 className="h-9 text-sm"
               />
               <Input
                 value={draft.symbol}
                 onChange={(e) => draft.setSymbol(e.target.value.toUpperCase())}
-                placeholder={t("SYMBOL")}
+                placeholder={t("Short code")}
                 className="h-9 text-sm"
               />
             </div>
             <Textarea
               value={draft.description}
               onChange={(e) => draft.setDescription(e.target.value)}
-              placeholder={`Describe this ${noun}…`}
+              placeholder={t("What this collection is about")}
               rows={2}
               className="text-sm resize-none"
             />
-            <p className="text-2xs text-muted-foreground">{t("Prefilled from the details above.")}</p>
           </div>
         </div>
       )}

@@ -25,7 +25,7 @@ export function TransactionDialog({ tx, title, workingLabel, firstStepLabel, chi
   const working = phase === "preparing" || phase === "submitting" || phase === "confirming";
   const success = phase === "success";
   const failed = phase === "error";
-  const steps = [firstStepLabel ?? t("Prepare"), t("Submit transaction"), t("Confirm transaction")];
+  const steps = [firstStepLabel ?? t("Prepare"), t("Send"), t("Confirm")];
 
   useConfetti(success);
 
@@ -47,7 +47,7 @@ export function TransactionDialog({ tx, title, workingLabel, firstStepLabel, chi
             <div className="space-y-1 text-center">
               <p className="text-lg font-semibold">{workingLabel}</p>
               <p className="text-sm text-muted-foreground">
-                {phase === "confirming" ? t("Waiting for block confirmation") : t("Submitting transaction")}
+                {phase === "confirming" ? t("Waiting for confirmation") : t("Sending")}
               </p>
             </div>
             <ol className="panel w-full space-y-2 p-4">

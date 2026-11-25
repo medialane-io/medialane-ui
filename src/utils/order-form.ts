@@ -1,16 +1,17 @@
 import * as z from "zod";
 import { getListableTokens } from "@medialane/sdk";
+import { msg } from "../i18n/translate.js";
 
 export const LISTABLE_CURRENCIES: string[] = getListableTokens().map((token) => token.symbol);
 
 const priceField = z
   .string()
-  .min(1, "Price required")
-  .refine((value) => !isNaN(parseFloat(value)) && parseFloat(value) > 0, "Must be a positive number");
+  .min(1, msg("Price required"))
+  .refine((value) => !isNaN(parseFloat(value)) && parseFloat(value) > 0, msg("Must be a positive number"));
 
 export const orderFormSchema = z.object({
   price: priceField,
-  currency: z.string().refine((value) => LISTABLE_CURRENCIES.includes(value), "Invalid currency"),
+  currency: z.string().refine((value) => LISTABLE_CURRENCIES.includes(value), msg("Invalid currency")),
   durationSeconds: z.number().min(86400),
   amount: z.string().optional(),
 });

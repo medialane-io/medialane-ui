@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import type { UseFormReturn } from "react-hook-form";
 import { accountPageUrl } from "@medialane/sdk";
-import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "./form.js";
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "./form.js";
 import { Input } from "./input.js";
 import { useT } from "../i18n/provider.js";
 
@@ -25,11 +25,10 @@ export function ExternalLinkField({ form, address }: { form: UseFormReturn<any>;
       name="external_link"
       render={({ field }) => (
         <FormItem>
-          <FormLabel>{t("External link")} <span className="text-muted-foreground font-normal">{t("(optional)")}</span></FormLabel>
+          <FormLabel>{t("Link")} <span className="text-muted-foreground font-normal">{t("(optional)")}</span></FormLabel>
           <FormControl>
             <Input placeholder={t("https://yourwebsite.com")} {...field} />
           </FormControl>
-          <FormDescription>{t("A website or social profile.")}</FormDescription>
           <FormMessage />
         </FormItem>
       )}

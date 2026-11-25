@@ -2,7 +2,7 @@ import { expect, test } from "bun:test";
 import { join } from "node:path";
 import { loadCatalog } from "./catalogs.js";
 import { LOCALES } from "./locales.js";
-import { readSources, scanSentences } from "./tools/scan.js";
+import { readSources, scanSentences, scanUnmarkedMessages } from "./tools/scan.js";
 import type { Catalog } from "./translate.js";
 
 const SRC = join(import.meta.dir, "..");
@@ -47,4 +47,33 @@ test("plural entries use only categories the language has", async () => {
       expect(Object.keys(entry).filter((category) => !allowed.has(category as Intl.LDMLPluralRule)), `${code}: ${sentence}`).toEqual([]);
     }
   }
+});
+
+test("every sentence has a translation", async () => {
+  for (const { code } of otherLocales) {
+    const catalog = await loadCatalog(code);
+    expect([...known].filter((sentence) => !(sentence in catalog)).sort(), code).toEqual([]);
+  }
+});
+
+test("every validation and form error message is marked for translation", () => {
+  const unmarked = scanUnmarkedMessages(readSources(SRC)).map((found) => `${found.file.slice(SRC.length + 1)}: ${found.text}`);
+  expect(unmarked.sort()).toEqual([]);
+});
+
+test("the message check sees schema rules, field helpers, form errors and message constants", () => {
+  const source = `
+    const LINK_MESSAGE = "Must be a link";
+    z.string().min(1, "Name required").max(10, \`Max ${"$"}{n} characters\`).regex(/a/, "Letters only");
+    z.string().refine(ok, { message: "Bad link" });
+    context.addIssue({ code: "custom", message: "Date is wrong" });
+    positiveIntegerField("Copies required");
+    setFormError(offer ? "Choose a work." : msg("Pick a work."));
+    setError(err instanceof Error ? err.message : "Upload did not finish");
+    z.string().min(1, msg("Marked already"));
+    Math.max(0, value);
+  `;
+  expect(scanUnmarkedMessages({ "a.ts": source }).map((found) => found.text).sort()).toEqual(
+    ["Bad link", "Choose a work.", "Copies required", "Date is wrong", "Letters only", "Max ${n} characters", "Must be a link", "Name required", "Upload did not finish"].sort(),
+  );
 });

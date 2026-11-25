@@ -15,12 +15,13 @@ import { isBusyPhase, type TransactionPhase } from "../utils/use-transaction.js"
 import { successMessages } from "../utils/success-messages.js";
 import { useT } from "../i18n/provider.js";
 import { ActionButton } from "./action-button.js";
+import { msg } from "../i18n/translate.js";
 
 const schema = z.object({
   toAddress: z
     .string()
-    .min(1, "Recipient address is required")
-    .regex(/^0x[0-9a-fA-F]{1,64}$/, "Must be a valid Starknet address (0x followed by hex characters)"),
+    .min(1, msg("Recipient address is required"))
+    .regex(/^0x[0-9a-fA-F]{1,64}$/, msg("Must be a valid Starknet address (0x followed by hex characters)")),
 });
 
 type FormValues = z.infer<typeof schema>;

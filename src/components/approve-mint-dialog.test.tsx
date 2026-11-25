@@ -59,5 +59,5 @@ test("a failure before anything was sent shows inline and keeps the form", () =>
 test("success shows the licence and a link to the new asset", () => {
   const { view } = show({ tx: { phase: "success", txHash: "0xabc", error: null, reset: () => {} }, newAssetHref: "/asset/0xc2/9" });
   expect(view.getByText("License granted")).toBeTruthy();
-  expect(view.getByText("View new asset").closest("a")?.getAttribute("href")).toBe("/asset/0xc2/9");
+  expect(view.getByText("View new work").closest("a")?.getAttribute("href")).toBe("/asset/0xc2/9");
 });

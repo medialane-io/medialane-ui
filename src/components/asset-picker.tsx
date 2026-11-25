@@ -36,11 +36,11 @@ function MintPromoCard({ onMintClick }: { onMintClick: () => void }) {
         <Sparkles />
       </IconTile>
       <div className="flex-1 min-w-0">
-        <p className="text-sm font-bold text-foreground">{t("Mint your first asset")}</p>
+        <p className="text-sm font-bold text-foreground">{t("Publish your first work")}</p>
         <p className="text-xs text-muted-foreground mt-0.5">{t("Sets the avatar and theme.")}</p>
       </div>
       <ActionButton type="button" onClick={onMintClick} className="shrink-0">
-        {t("Mint an asset")}
+        {t("Publish a work")}
       </ActionButton>
     </div>
   );
@@ -83,7 +83,7 @@ if (assets.length === 0) {
   if (onMintClick) return <MintPromoCard onMintClick={onMintClick} />;
   return (
     <div className={cn("rounded-xl border border-dashed border-border/60 p-6 text-center text-sm text-muted-foreground", className)}>
-      {t("You don't own any assets yet.")}
+      {t("You don't own any works yet.")}
       {emptyStateHref ? (
         <a href={emptyStateHref} className="ml-1 font-semibold text-foreground underline underline-offset-2">
           {emptyStateLabel ?? t("Create one")}
@@ -102,7 +102,7 @@ return (
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder={t("Search your assets")}
+          placeholder={t("Search your works")}
           className="w-full h-10 rounded-full border border-border bg-card pl-9 pr-4 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-brand-purple/40 focus:border-brand-purple/40"
         />
       </div>
@@ -121,7 +121,7 @@ return (
     </div>
 
     {query && filtered.length === 0 ? (
-      <p className="text-xs text-muted-foreground text-center py-4">{t("No assets match \"{query}\".", { query })}</p>
+      <p className="text-xs text-muted-foreground text-center py-4">{t("No works match \"{query}\".", { query })}</p>
     ) : null}
   </div>
 );

@@ -11,7 +11,7 @@ afterEach(() => cleanup());
 function renderDialog(phase: TransactionPhase, extra: { error?: string | null; reset?: () => void; retryable?: boolean } = {}) {
   const tx = { phase, error: extra.error ?? null, reset: extra.reset ?? (() => {}), retryable: extra.retryable };
   return render(
-    <TransactionDialog tx={tx} title="Create collection" workingLabel="Creating your collection…" firstStepLabel="Upload metadata">
+    <TransactionDialog tx={tx} title="Create collection" workingLabel="Creating your collection…" firstStepLabel="Saving details">
       <p>All done</p>
     </TransactionDialog>,
   );
@@ -20,8 +20,8 @@ function renderDialog(phase: TransactionPhase, extra: { error?: string | null; r
 test("marks the active step while working", () => {
   renderDialog("submitting");
   const steps = Array.from(document.querySelectorAll("[data-step]"));
-  expect(steps.map((s) => s.textContent)).toEqual(["Upload metadata", "Submit transaction", "Confirm transaction"]);
-  expect(steps.filter((s) => s.getAttribute("aria-current") === "step").map((s) => s.textContent)).toEqual(["Submit transaction"]);
+  expect(steps.map((s) => s.textContent)).toEqual(["Saving details", "Send", "Confirm"]);
+  expect(steps.filter((s) => s.getAttribute("aria-current") === "step").map((s) => s.textContent)).toEqual(["Send"]);
 });
 
 test("stays open when dismissed while working", () => {

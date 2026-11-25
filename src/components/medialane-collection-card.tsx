@@ -31,7 +31,7 @@ export function MedialaneCollectionCard({
   className,
 }: MedialaneCollectionCardProps) {
   const t = useT();
-  const displayName = name?.trim() || "Untitled";
+  const displayName = name?.trim() || t("Untitled");
 
   return (
     <div className={cn(className)}>

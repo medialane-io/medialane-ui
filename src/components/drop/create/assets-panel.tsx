@@ -14,6 +14,7 @@ import { previewUrl } from "../../../utils/drop/preview.js";
 import { acceptFor, uploadError } from "../../../utils/upload-limits.js";
 import { cn } from "../../../utils/cn.js";
 import { useT } from "../../../i18n/provider.js";
+import type { Phrase } from "../../../i18n/translate.js";
 import { useFormat } from "../../../i18n/use-format.js";
 
 export const KIND_ICON = { image: Images, video: Film, audio: Music, document: FileText } as const;
@@ -22,7 +23,7 @@ export const KIND_LABEL = { image: msg("Image"), video: msg("Video"), audio: msg
 export function AssetsPanel({ draft, setDraft, errors, open, onToggle }: PanelProps) {
   const t = useT();
   const intl = useFormat();
-  const [rejected, setRejected] = useState<{ name: string; reason: string }[]>([]);
+  const [rejected, setRejected] = useState<{ name: string; reason: Phrase }[]>([]);
   const [editing, setEditing] = useState<number | null>(null);
   const [selecting, setSelecting] = useState(false);
   const [selected, setSelected] = useState<Set<string>>(new Set());
@@ -36,7 +37,7 @@ export function AssetsPanel({ draft, setDraft, errors, open, onToggle }: PanelPr
     setAssets(assets.map((a) => (selected.has(a.id) ? { ...a, ...patch(a) } : a)));
 
   const add = (files: File[]) => {
-    const problems: { name: string; reason: string }[] = [];
+    const problems: { name: string; reason: Phrase }[] = [];
     const accepted = files.filter((file) => {
       const reason = uploadError(file, "media");
       if (reason) problems.push({ name: file.name, reason });
@@ -64,11 +65,11 @@ export function AssetsPanel({ draft, setDraft, errors, open, onToggle }: PanelPr
   return (
     <DropPanel
       icon={<Images />}
-      title={t("Assets")}
+      title={t("Works")}
       open={open}
       onToggle={onToggle}
       error={errors.assets.list ?? firstAssetError}
-      summary={assets.length === 0 ? t("Add an asset") : (
+      summary={assets.length === 0 ? t("Add a work") : (
         <span className="flex items-center gap-2.5">
           <span className="flex -space-x-1.5">
             {assets.slice(0, 4).map((a) => {
@@ -108,7 +109,7 @@ export function AssetsPanel({ draft, setDraft, errors, open, onToggle }: PanelPr
 
         {rejected.length > 0 && (
           <ul className="space-y-1 text-sm text-destructive" role="alert">
-            {rejected.map((r) => <li key={r.name}>{r.name}: {t(r.reason)}</li>)}
+            {rejected.map((r) => <li key={r.name}>{r.name}: {t(r.reason.text, r.reason.vars)}</li>)}
           </ul>
         )}
 
@@ -173,13 +174,13 @@ export function AssetsPanel({ draft, setDraft, errors, open, onToggle }: PanelPr
                 onClick={() => updateSelected(() => ({ copies: bulkCopies }))}>{t("Set copies")}</Button>
             </div>
             <div className="flex gap-2">
-              <Input aria-label={t("Trait name for selected")} placeholder={t("Trait")} value={bulkTrait.key}
+              <Input aria-label={t("Detail name for selected")} placeholder={t("Detail")} value={bulkTrait.key}
                 onChange={(e) => setBulkTrait({ ...bulkTrait, key: e.target.value })} />
-              <Input aria-label={t("Trait value for selected")} placeholder={t("Value")} value={bulkTrait.value}
+              <Input aria-label={t("Detail value for selected")} placeholder={t("Value")} value={bulkTrait.value}
                 onChange={(e) => setBulkTrait({ ...bulkTrait, value: e.target.value })} />
               <Button type="button" variant="soft" disabled={selected.size === 0 || !bulkTrait.key.trim() || !bulkTrait.value.trim()}
                 onClick={() => updateSelected((a) => ({ traits: [...a.traits.filter((tr) => tr.key.trim().toLowerCase() !== bulkTrait.key.trim().toLowerCase()), { key: bulkTrait.key.trim(), value: bulkTrait.value.trim() }] }))}>
-                {t("Add trait")}
+                {t("Add detail")}
               </Button>
             </div>
             <Button type="button" variant="ghost" className="text-destructive" disabled={selected.size === 0} onClick={() => remove(selected)}>
@@ -191,8 +192,8 @@ export function AssetsPanel({ draft, setDraft, errors, open, onToggle }: PanelPr
         {assets.length > 1 && (
           <label className="flex items-center justify-between gap-3 text-sm">
             <span>
-              <span className="block font-medium">{t("Mix the mint order")}</span>
-              <span className="block text-muted-foreground">{t("Off: tokens mint in grid order.")}</span>
+              <span className="block font-medium">{t("Shuffle the order")}</span>
+              <span className="block text-muted-foreground">{t("Off: works go out in the order shown.")}</span>
             </span>
             <Switch checked={draft.mixOrder} onCheckedChange={(mixOrder) => setDraft({ mixOrder })} />
           </label>

@@ -38,7 +38,7 @@ function assetLinks(contract: string | null, tokenId: string | null): FormatResu
   if (!contract || !tokenId) return [];
   const asset = `/asset/STARKNET/${contract}/${tokenId}`;
   return [
-    { href: asset, label: msg("View asset"), icon: Eye },
+    { href: asset, label: msg("View work"), icon: Eye },
     { href: `${asset}?action=list`, label: msg("Sell on marketplace"), icon: Tag },
     { href: `${asset}?action=transfer`, label: msg("Transfer"), icon: ArrowRightLeft },
     { href: `/create/remix/${contract}/${tokenId}`, label: msg("Create a remix"), icon: GitBranch },
@@ -69,7 +69,7 @@ async function pinTokenUri(shared: FormatShared, runtime: FormatRuntime): Promis
   if (shared.mediaKind !== "image") metadata.animation_url = shared.mediaUri;
 
   const uploadToken = await runtime.getUploadToken();
-  if (!uploadToken) throw new Error("Sign in first");
+  if (!uploadToken) throw new Error(msg("Sign in first"));
   return uploadJsonToIpfs(runtime.client.api, metadata);
 }
 
@@ -83,7 +83,7 @@ function makeNftFormat(kind: MintAssetType) {
       <>
         {!single && (
           <div className="space-y-2">
-            <label className="text-sm font-medium" htmlFor="fast-mint-copies">{t("Number of copies")}</label>
+            <label className="text-sm font-medium" htmlFor="fast-mint-copies">{t("Copies")}</label>
             <Input
               id="fast-mint-copies"
               type="number"
@@ -124,7 +124,7 @@ function makeNftFormat(kind: MintAssetType) {
     title: copy.name,
     hint: copy.hint,
     icon: single ? ImagePlus : Layers,
-    submitLabel: () => (single ? msg("Mint NFT") : msg("Mint editions")),
+    submitLabel: () => (single ? msg("Publish") : msg("Publish editions")),
     initial: () => ({ mode: "existing", existingId: "", existingContract: "", editionCount: "10" }),
     Fields,
     isReady: (shared, state) => {
@@ -132,15 +132,15 @@ function makeNftFormat(kind: MintAssetType) {
       if (state.mode === "new") return shared.draft.name.trim().length > 0 && shared.draft.symbol.trim().length > 0;
       return (single ? state.existingId : state.existingContract) !== "";
     },
-    previewLabel: (shared, state) =>
-      state.mode === "new" ? shared.draft.name || "New collection" : selected(shared, state)?.name || "IP Asset",
+    previewLabel: (shared, state, t) =>
+      state.mode === "new" ? shared.draft.name || t("New collection") : selected(shared, state)?.name || t("Work"),
     submit: async (shared, state, runtime) => {
       const { client, signer, onStep } = runtime;
       const owner = shared.walletAddress;
       const values = shared.form.getValues();
       const tokenUri = await pinTokenUri(shared, runtime);
       const royaltyBps = Math.round(values.royalty * 100);
-      const labels = { create: msg("Creating the collection"), add: single ? "Minting" : "Minting editions" };
+      const labels = { create: msg("Creating the collection"), add: single ? msg("Publishing") : msg("Publishing editions") };
 
       if (single) {
         const picked = state.mode === "existing" ? selected(shared, state) : undefined;
@@ -150,7 +150,7 @@ function makeNftFormat(kind: MintAssetType) {
 
         const result = await createThenAdd<SingleDestination, { contract: string | null; tokenId: string | null }>({
           existing,
-          noun: "collection",
+          unfinished: msg("Your collection was created, but the last step did not finish."),
           labels,
           onStep,
           create: async () => {
@@ -164,7 +164,7 @@ function makeNftFormat(kind: MintAssetType) {
             const { receipt } = await executeIntent(signer, client, created);
             const registry = getCoordinates("STARKNET").collection721;
             const collectionId = createdCollectionFromReceipt(receipt, registry)?.collectionId;
-            if (!collectionId) throw new Error("Collection created, but its id couldn't be read — check My Collections to mint into it.");
+            if (!collectionId) throw new Error(msg("Collection created, but its id couldn't be read — check My Collections to publish in it."));
             return { collectionId, contract: await createdCollectionAddress(client.provider, registry, collectionId) };
           },
           add: async (destination) => {
@@ -189,7 +189,7 @@ function makeNftFormat(kind: MintAssetType) {
       const existing = (runtime.resume as string | null) ?? (picked || null);
       const result = await createThenAdd<string, { contract: string; tokenId: string | null }>({
         existing,
-        noun: "collection",
+        unfinished: msg("Your collection was created, but the last step did not finish."),
         labels,
         onStep,
         create: async () => {
@@ -204,7 +204,7 @@ function makeNftFormat(kind: MintAssetType) {
           });
           const { receipt } = await executeIntent(signer, client, created);
           const deployed = deployedCollectionFromReceipt(receipt, "mip-erc1155");
-          if (!deployed) throw new Error("Collection deployed, but its address couldn't be read — check My Collections to mint into it.");
+          if (!deployed) throw new Error(msg("Collection created, but its address couldn't be read — check My Collections to publish in it."));
           return deployed;
         },
         add: async (contract) => {
@@ -227,8 +227,8 @@ function makeNftFormat(kind: MintAssetType) {
 
 function nftResult(shared: FormatShared, name: string, contract: string | null, tokenId: string | null): FormatResult {
   return {
-    headline: msg("Asset published"),
-    detail: msg("It is recorded onchain with your wallet as owner."),
+    headline: msg("Work published"),
+    detail: msg("It's saved permanently with you as the owner."),
     name,
     links: assetLinks(contract, tokenId),
     reward: "mint_asset",

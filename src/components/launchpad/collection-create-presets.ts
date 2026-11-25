@@ -18,14 +18,11 @@ export interface CollectionCreatePreset {
   cardFallbackSymbol: string;
   copy: {
     imageHeading: string;
-    imageHelp?: string;
     nameLabel: string;
     namePlaceholder: string;
-    nameHint: string;
     symbolPlaceholder: string;
     symbolHint: string;
     descriptionPlaceholder: string;
-    descriptionHint?: string;
     submit: string;
     footnotes: string[];
   };
@@ -45,16 +42,15 @@ export const CLUB_PRESET: CollectionCreatePreset = {
   iconClass: "text-brand-purple",
   signedOut: { title: msg("Secure your account to create a club"), description: msg("Create a club with membership cards.") },
   shell: { title: msg("Create club"), subtitle: msg("One club with many tiers.") },
-  dialog: { title: msg("Create club"), workingLabel: msg("Creating your club…"), firstStepLabel: msg("Prepare metadata") },
-  success: { title: msg("Club created"), description: msg("Each membership you create is recorded onchain under your wallet."), fallbackName: msg("Your club"), reward: msg("create_club"), againLabel: msg("Create another") },
-  cardFallbackSymbol: "Club",
+  dialog: { title: msg("Create club"), workingLabel: msg("Creating your club…"), firstStepLabel: msg("Saving details") },
+  success: { title: msg("Club created"), description: msg("Each membership you create is saved permanently as yours."), fallbackName: msg("Your club"), reward: msg("create_club"), againLabel: msg("Create another") },
+  cardFallbackSymbol: msg("Club"),
   copy: {
-    imageHeading: msg("Club image"),
-    nameLabel: msg("Club name *"),
+    imageHeading: msg("Cover image"),
+    nameLabel: msg("Name"),
     namePlaceholder: msg("My Club"),
-    nameHint: msg("Shown on every card."),
     symbolPlaceholder: msg("CLUB"),
-    symbolHint: msg("2 to 10 uppercase letters."),
+    symbolHint: msg("2 to 10 letters."),
     descriptionPlaceholder: msg("What membership unlocks"),
     submit: msg("Create club"),
     footnotes: [FREE],
@@ -70,16 +66,15 @@ export const TICKETS_PRESET: CollectionCreatePreset = {
   iconClass: "text-brand-blue",
   signedOut: { title: msg("Secure your account to create tickets"), description: msg("Create a tickets collection.") },
   shell: { title: msg("Create ticket collection"), subtitle: msg("One collection with many tickets.") },
-  dialog: { title: msg("Create tickets collection"), workingLabel: msg("Creating your collection…"), firstStepLabel: msg("Prepare metadata") },
-  success: { title: msg("Ticket collection created"), description: msg("Each ticket you mint into it is recorded onchain under your wallet."), fallbackName: msg("Your collection"), reward: msg("create_ticket_collection"), againLabel: msg("Create another") },
-  cardFallbackSymbol: "Tickets",
+  dialog: { title: msg("Create tickets collection"), workingLabel: msg("Creating your collection…"), firstStepLabel: msg("Saving details") },
+  success: { title: msg("Ticket collection created"), description: msg("Each ticket you publish in it is saved permanently as yours."), fallbackName: msg("Your collection"), reward: msg("create_ticket_collection"), againLabel: msg("Create another") },
+  cardFallbackSymbol: msg("Tickets"),
   copy: {
-    imageHeading: msg("Collection image"),
-    nameLabel: msg("Collection name *"),
+    imageHeading: msg("Cover image"),
+    nameLabel: msg("Name"),
     namePlaceholder: msg("My tickets"),
-    nameHint: msg("Shown on every ticket."),
     symbolPlaceholder: msg("TIX"),
-    symbolHint: msg("2 to 10 uppercase letters."),
+    symbolHint: msg("2 to 10 letters."),
     descriptionPlaceholder: msg("What the tickets unlock"),
     submit: msg("Create ticket collection"),
     footnotes: [FREE],
@@ -95,29 +90,26 @@ export const EDITIONS_PRESET: CollectionCreatePreset = {
   iconClass: "text-brand-purple",
   signedOut: { title: msg("Secure your account to create a collection"), description: msg("Create a collection where each piece can have multiple editions.") },
   shell: { title: msg("Create an edition collection"), subtitle: msg("A collection with many editions per piece.") },
-  dialog: { title: msg("Create collection"), workingLabel: msg("Creating your collection…"), firstStepLabel: msg("Prepare metadata") },
-  success: { title: msg("Collection created"), description: msg("Each asset you mint into it carries its own license terms."), fallbackName: msg("Your collection"), reward: msg("create_collection"), againLabel: msg("Create another") },
-  cardFallbackSymbol: "Editions",
+  dialog: { title: msg("Create collection"), workingLabel: msg("Creating your collection…"), firstStepLabel: msg("Saving details") },
+  success: { title: msg("Collection created"), description: msg("Each work you publish in it has its own license terms."), fallbackName: msg("Your collection"), reward: msg("create_collection"), againLabel: msg("Create another") },
+  cardFallbackSymbol: msg("Editions"),
   copy: {
-    imageHeading: msg("Collection image"),
-    imageHelp: msg("This becomes the cover for your collection."),
-    nameLabel: msg("Collection name *"),
+    imageHeading: msg("Cover image"),
+    nameLabel: msg("Name"),
     namePlaceholder: msg("My Creative Works"),
-    nameHint: msg("The title collectors see."),
     symbolPlaceholder: msg("MCW"),
-    symbolHint: msg("2 to 10 uppercase letters."),
-    descriptionPlaceholder: msg("Describe your collection and what kind of work it contains…"),
-    descriptionHint: msg("The creative direction of the collection."),
-    submit: msg("Publish collection"),
+    symbolHint: msg("2 to 10 letters."),
+    descriptionPlaceholder: msg("What this collection is about"),
+    submit: msg("Create collection"),
     footnotes: [
       FREE,
-      msg("Next step: mint pieces into this collection."),
+      msg("Next step: publish work in this collection."),
     ],
   },
   suggestSymbol: true,
   registerAfterDeploy: true,
   actions: ({ address, collectionHref }) => ({
-    primary: address ? { href: `/launchpad/nfteditions/${address}/mint`, label: msg("Mint tokens") } : undefined,
+    primary: address ? { href: `/launchpad/nfteditions/${address}/mint`, label: msg("Publish an edition") } : undefined,
     secondary: collectionHref ? { href: collectionHref, label: msg("View collection") } : undefined,
   }),
 };
@@ -126,26 +118,25 @@ export const SINGLE_PRESET: CollectionCreatePreset = {
   service: null,
   icon: Layers,
   iconClass: "text-brand-blue",
-  signedOut: { title: msg("Secure your account to create a collection"), description: msg("Set up a collection to mint your work into.") },
+  signedOut: { title: msg("Secure your account to create a collection"), description: msg("Set up a collection for your work.") },
   shell: { title: msg("Create a collection"), subtitle: msg("A collection for your work.") },
-  dialog: { title: msg("Create collection"), workingLabel: msg("Creating your collection…"), firstStepLabel: msg("Prepare metadata") },
-  success: { title: msg("Collection created"), description: msg("Each asset you mint into it carries its own license terms."), fallbackName: msg("Your collection"), reward: msg("create_collection"), againLabel: msg("Create another") },
-  cardFallbackSymbol: "Collection",
+  dialog: { title: msg("Create collection"), workingLabel: msg("Creating your collection…"), firstStepLabel: msg("Saving details") },
+  success: { title: msg("Collection created"), description: msg("Each work you publish in it has its own license terms."), fallbackName: msg("Your collection"), reward: msg("create_collection"), againLabel: msg("Create another") },
+  cardFallbackSymbol: msg("Collection"),
   copy: {
-    imageHeading: msg("Collection image"),
-    nameLabel: msg("Collection name *"),
+    imageHeading: msg("Cover image"),
+    nameLabel: msg("Name"),
     namePlaceholder: msg("My Creative Works"),
-    nameHint: msg("The display name for your collection."),
     symbolPlaceholder: msg("MCW"),
-    symbolHint: msg("2 to 10 uppercase letters."),
-    descriptionPlaceholder: msg("Describe your collection and what kind of work it contains…"),
+    symbolHint: msg("2 to 10 letters."),
+    descriptionPlaceholder: msg("What this collection is about"),
     submit: msg("Create collection"),
     footnotes: [FREE],
   },
   suggestSymbol: false,
   registerAfterDeploy: false,
   actions: ({ collectionHref }) => {
-    const mint = { href: "/launchpad/single-editions", label: msg("Mint an asset") };
+    const mint = { href: "/launchpad/single-editions", label: msg("Publish a work") };
     return collectionHref ? { primary: { href: collectionHref, label: msg("View collection") }, secondary: mint } : { primary: mint };
   },
 };

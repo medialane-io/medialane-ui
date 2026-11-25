@@ -37,7 +37,7 @@ export interface ServiceGroupDefinition {
 export const LAUNCHPAD_SERVICE_GROUPS: ServiceGroupDefinition[] = [
   {
     key: "single-nfts",
-    title: msg("Single NFTs"),
+    title: msg("Single works"),
     tagline: msg("Works, collections and drops."),
   },
   {
@@ -97,14 +97,14 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
 
   {
     key: "nfts",
-    format: { name: msg("Single NFT"), hint: msg("One copy to keep or sell") },
+    format: { name: msg("Single work"), hint: msg("One copy to keep or sell") },
     cta: msg("Create"),
     blurb: msg("Publish each work as a single copy in a creator-owned collection."),
-    title: msg("Single Edition NFT"),
-    subtitle: msg("Each work is minted once"),
+    title: msg("Single work"),
+    subtitle: msg("One of a kind"),
     description:
       msg("Publish a single work in a collection."),
-    features: [msg("One mint per work"), msg("Collections with their own page and name"), msg("License terms set by the creator")],
+    features: [msg("One copy of each work"), msg("Collections with their own page and name"), msg("License terms set by the creator")],
     example: msg("A song or a short film"),
     icon: ImagePlus,
     status: "live",
@@ -113,9 +113,9 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
   {
     key: "limited-editions",
     format: { name: msg("Limited Editions"), hint: msg("Numbered copies people can collect") },
-    cta: msg("Mint"),
+    cta: msg("Publish"),
     blurb: msg("Release a work in numbered copies that can be collected and traded."),
-    title: msg("Limited Editions NFT"),
+    title: msg("Limited editions"),
     subtitle: msg("Numbered copies from a creator-owned collection"),
     description:
       msg("Release works in numbered copies."),
@@ -128,12 +128,12 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
   {
     key: "create-collection",
     cta: msg("Create"),
-    blurb: msg("Deploy a collection to mint single-edition works into."),
-    title: msg("NFT collection"),
+    blurb: msg("Create a collection for single works."),
+    title: msg("Collection"),
     subtitle: msg("A collection ready for works"),
     description:
       msg("A creator-owned collection with its own page."),
-    features: [msg("Own collection contract"), msg("Set the name and symbol"), msg("Mint into it anytime")],
+    features: [msg("A creator-owned collection"), msg("Choose the name and short code"), msg("Add works anytime")],
     example: msg("A photography collection"),
     icon: LayoutGrid,
     status: "live",
@@ -143,11 +143,11 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     key: "remix-asset",
     cta: msg("Browse"),
     blurb: msg("Create from another work with credit."),
-    title: msg("Remix asset"),
-    subtitle: msg("Derivative works with on-chain attribution"),
+    title: msg("Remix a work"),
+    subtitle: msg("Remixes with credit to the original"),
     description:
       msg("A licensed remix with credit to the original."),
-    features: [msg("Credit handled automatically"), msg("Royalties flow to the original"), msg("License respected at mint")],
+    features: [msg("Credit handled automatically"), msg("Royalties flow to the original"), msg("Follows the original license")],
     example: msg("A remix of a song"),
     icon: GitBranch,
     status: "live",
@@ -157,12 +157,12 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
   {
     key: "create-1155",
     cta: msg("Create"),
-    blurb: msg("Deploy a collection to release numbered editions from."),
+    blurb: msg("Create a collection for numbered editions."),
     title: msg("Limited Editions Collection"),
     subtitle: msg("A collection ready for editions"),
     description:
       msg("A creator-owned editions collection."),
-    features: [msg("Own collection contract"), msg("Set the name and symbol"), msg("Release editions anytime")],
+    features: [msg("A creator-owned collection"), msg("Choose the name and short code"), msg("Release editions anytime")],
     example: msg("A print series"),
     icon: Boxes,
     status: "live",
@@ -170,9 +170,9 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
   },
   {
     key: "pop-protocol",
-    format: { name: msg("Immutable certificate"), hint: msg("Digital asset certificates for authenticity") },
+    format: { name: msg("Permanent certificate"), hint: msg("Digital certificates of authenticity") },
     cta: msg("Create"),
-    blurb: msg("Digital asset certificates for authenticity."),
+    blurb: msg("Digital certificates of authenticity."),
     title: msg("POP Protocol"),
     subtitle: msg("Immutable certificates for authenticity"),
     description:
@@ -189,7 +189,7 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     cta: msg("Launch"),
     blurb: msg("Release a limited run at a set price and time window."),
     title: msg("Collection drop"),
-    subtitle: msg("Timed NFT releases with mint windows"),
+    subtitle: msg("Releases with a set opening time"),
     description:
       msg("A timed release with a set price."),
     features: [msg("Price and supply set by the creator"), msg("Opens and closes on a set schedule"), msg("Branded drop page to share")],
@@ -203,7 +203,7 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     key: "ip-tickets",
     format: { name: msg("IP Ticket"), hint: msg("Tickets people hold and show at the door") },
     cta: msg("Create"),
-    blurb: msg("Create on-chain tickets that holders can keep and trade."),
+    blurb: msg("Create tickets that holders can keep and trade."),
     title: msg("IP Tickets"),
     subtitle: msg("Tickets held in the wallet"),
     description:
@@ -238,8 +238,8 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     title: msg("IP Sponsorship"),
     subtitle: msg("Direct sponsorship offers"),
     description:
-      msg("Sponsors bid on an asset for a license."),
-    features: [msg("Direct settlement"), msg("Owner-verified on-chain"), msg("Open bidding or one invited sponsor")],
+      msg("Sponsors bid on a work for a license."),
+    features: [msg("Direct settlement"), msg("Ownership verified"), msg("Open bidding or one invited sponsor")],
     example: msg("Sponsor a song or an artwork for a license"),
     icon: Handshake,
     browseLinkLabel: msg("Browse offers"),

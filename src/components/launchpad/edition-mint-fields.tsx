@@ -10,7 +10,7 @@ import { Input } from "../input.js";
 import { Textarea } from "../textarea.js";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "../collapsible.js";
 import { CollapsibleSection } from "../collapsible-section.js";
-import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "../form.js";
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "../form.js";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../select.js";
 import { FadeIn } from "../motion-primitives.js";
 import { IPTypeFields, type MetadataField } from "../ip-type-fields.js";
@@ -57,19 +57,16 @@ export function EditionMintFields({
       <FadeIn delay={0.06}>
         <ImageUploadField
           upload={upload}
-          label={t("Asset image")}
-          alt={t("Token")}
-          required
-          hint={t("This media and metadata are pinned before the first mint is submitted.")}
+          label={t("Cover image")}
+          alt={t("Cover image")}
         />
       </FadeIn>
 
       <FadeIn delay={0.08}>
         <FormField control={form.control} name="name" render={({ field }) => (
           <FormItem>
-            <FormLabel>{t("Token name *")}</FormLabel>
-            <FormControl><Input placeholder={t("Genesis Track #1")} {...field} /></FormControl>
-            <FormDescription>{t("The title collectors will see for this edition.")}</FormDescription>
+            <FormLabel>{t("Name")}</FormLabel>
+            <FormControl><Input placeholder={t("The title people will see")} {...field} /></FormControl>
             <FormMessage />
           </FormItem>
         )} />
@@ -80,9 +77,8 @@ export function EditionMintFields({
           <FormItem>
             <FormLabel>{t("Description")} <span className="text-muted-foreground font-normal">{t("(optional)")}</span></FormLabel>
             <FormControl>
-              <Textarea placeholder={t("Describe this digital asset…")} rows={3} {...field} />
+              <Textarea placeholder={t("Tell the story behind this work")} rows={3} {...field} />
             </FormControl>
-            <FormDescription>{t("Notes for this edition.")}</FormDescription>
             <FormMessage />
           </FormItem>
         )} />
@@ -91,9 +87,8 @@ export function EditionMintFields({
       <FadeIn delay={0.12}>
         <FormField control={form.control} name="external_url" render={({ field }) => (
           <FormItem>
-            <FormLabel>{t("External link")} <span className="text-muted-foreground font-normal">{t("(optional)")}</span></FormLabel>
+            <FormLabel>{t("Link")} <span className="text-muted-foreground font-normal">{t("(optional)")}</span></FormLabel>
             <FormControl><Input placeholder={t("https://yourwebsite.com")} {...field} /></FormControl>
-            <FormDescription>{t("Canonical link for this edition.")}</FormDescription>
             <FormMessage />
           </FormItem>
         )} />
@@ -102,11 +97,10 @@ export function EditionMintFields({
       <FadeIn delay={0.14}>
         <FormField control={form.control} name="value" render={({ field }) => (
           <FormItem>
-            <FormLabel>{t("Quantity *")}</FormLabel>
+            <FormLabel>{t("Copies")}</FormLabel>
             <FormControl>
               <Input type="number" min={1} placeholder="1" className="max-w-[180px]" {...field} />
             </FormControl>
-            <FormDescription>{t("Number of copies to mint for this token ID.")}</FormDescription>
             <FormMessage />
           </FormItem>
         )} />
@@ -115,11 +109,10 @@ export function EditionMintFields({
       <FadeIn delay={0.16}>
         <FormField control={form.control} name="recipient" render={({ field }) => (
           <FormItem>
-            <FormLabel>{t("Recipient *")}</FormLabel>
+            <FormLabel>{t("Send to")}</FormLabel>
             <FormControl>
-              <Input placeholder="0x…" {...field} />
+              <Input placeholder={t("Wallet address")} {...field} />
             </FormControl>
-            <FormDescription>{t("Receives the tokens.")}</FormDescription>
             <FormMessage />
           </FormItem>
         )} />
@@ -133,10 +126,6 @@ export function EditionMintFields({
           label={t("License terms")}
           hint={t("Optional · Berne Convention")}
         >
-                <p className="text-xs text-muted-foreground">
-                  {t("Licensing terms for this edition.")}
-                </p>
-
                 <FormField control={form.control} name="licenseType" render={({ field }) => (
                   <FormItem>
                     <FormLabel>{t("License")}</FormLabel>
@@ -233,16 +222,12 @@ export function EditionMintFields({
           open={ipTypeOpen}
           onOpenChange={setIpTypeOpen}
           icon={<Layers className="h-4 w-4 text-primary" />}
-          label={t("IP type & metadata")}
+          label={t("More details")}
           hint={t("Optional")}
         >
-                <p className="text-xs text-muted-foreground">
-                  {t("Add traits for this edition.")}
-                </p>
-
                 <FormField control={form.control} name="ipType" render={({ field }) => (
                   <FormItem>
-                    <FormLabel>{t("IP type")}</FormLabel>
+                    <FormLabel>{t("Type of work")}</FormLabel>
                     <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
                         <SelectTrigger><SelectValue /></SelectTrigger>
@@ -273,10 +258,10 @@ export function EditionMintFields({
           disabled={mintDisabled}
         >
           <Sparkles className="h-4 w-4 mr-2" />
-          {t("Mint edition")}
+          {t("Publish edition")}
         </Button>
         <p className="text-xs text-center text-muted-foreground mt-2">
-          {t("Free to mint.")}
+          {t("Free to publish.")}
         </p>
       </FadeIn>
     </div>

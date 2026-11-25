@@ -52,11 +52,11 @@ test("the editor names an asset, adds a trait and replaces the image", () => {
   const view = render(<Harness initial={withAssets(newAsset(png("a")))} onDraft={(d) => { last = d; }} />);
   fireEvent.click(view.getAllByTestId("asset-card")[0]!);
   const dialog = view.getByRole("dialog");
-  expect(within(dialog).getByLabelText("Name").getAttribute("placeholder")).toBe("Neon #…");
-  fireEvent.change(within(dialog).getByLabelText("Name"), { target: { value: "Wave" } });
-  fireEvent.click(within(dialog).getByRole("button", { name: "Add trait" }));
-  fireEvent.change(within(dialog).getByLabelText("Trait name 1"), { target: { value: "Mood" } });
-  fireEvent.change(within(dialog).getByLabelText("Trait value 1"), { target: { value: "Calm" } });
+  expect(within(dialog).getByLabelText(/^Name/).getAttribute("placeholder")).toBe("Neon #…");
+  fireEvent.change(within(dialog).getByLabelText(/^Name/), { target: { value: "Wave" } });
+  fireEvent.click(within(dialog).getByRole("button", { name: "Add detail" }));
+  fireEvent.change(within(dialog).getByLabelText("Detail name 1"), { target: { value: "Mood" } });
+  fireEvent.change(within(dialog).getByLabelText("Detail value 1"), { target: { value: "Calm" } });
   fireEvent.change(within(dialog).getByTestId("replace-input"), { target: { files: [png("b")] } });
   expect(last!.assets[0]).toMatchObject({ name: "Wave", traits: [{ key: "Mood", value: "Calm" }] });
   expect(last!.assets[0]!.file.name).toBe("b.png");
@@ -70,7 +70,7 @@ test("the editor moves between assets and removes one", () => {
   fireEvent.click(within(dialog).getByRole("button", { name: "Next" }));
   dialog = view.getByRole("dialog");
   expect(within(dialog).getByText("2 of 2")).toBeTruthy();
-  fireEvent.click(within(dialog).getByRole("button", { name: "Remove asset" }));
+  fireEvent.click(within(dialog).getByRole("button", { name: "Remove" }));
   expect(view.getAllByTestId("asset-card")).toHaveLength(1);
 });
 
@@ -84,9 +84,9 @@ test("select mode sets copies, adds a trait and removes for the selection", () =
   fireEvent.change(view.getByLabelText("Copies for selected"), { target: { value: "3" } });
   fireEvent.click(view.getByRole("button", { name: "Set copies" }));
   expect(last!.assets.map((a) => a.copies)).toEqual(["3", "3", "1"]);
-  fireEvent.change(view.getByLabelText("Trait name for selected"), { target: { value: "Mood" } });
-  fireEvent.change(view.getByLabelText("Trait value for selected"), { target: { value: "Calm" } });
-  fireEvent.click(view.getByRole("button", { name: "Add trait" }));
+  fireEvent.change(view.getByLabelText("Detail name for selected"), { target: { value: "Mood" } });
+  fireEvent.change(view.getByLabelText("Detail value for selected"), { target: { value: "Calm" } });
+  fireEvent.click(view.getByRole("button", { name: "Add detail" }));
   expect(last!.assets.map((a) => a.traits.length)).toEqual([1, 1, 0]);
   fireEvent.click(view.getByRole("button", { name: "Remove" }));
   expect(view.getAllByTestId("asset-card")).toHaveLength(1);
@@ -104,10 +104,10 @@ test("select all picks every asset", () => {
 
 test("the mix switch shows only with more than one asset", () => {
   const one = render(<Harness initial={withAssets({ ...newAsset(png("a")), copies: "5" })} />);
-  expect(one.queryByText("Mix the mint order")).toBeNull();
+  expect(one.queryByText("Shuffle the order")).toBeNull();
   cleanup();
   const two = render(<Harness initial={withAssets(newAsset(png("a")), newAsset(png("b")))} />);
-  expect(two.getByText("Mix the mint order")).toBeTruthy();
+  expect(two.getByText("Shuffle the order")).toBeTruthy();
   expect(two.getByRole("switch").getAttribute("aria-checked")).toBe("true");
 });
 
@@ -126,7 +126,7 @@ test("media of any kind becomes an asset; non-image media shows its kind until a
   expect(card.querySelector("img")).toBeNull();
   fireEvent.click(card);
   const dialog = view.getByRole("dialog");
-  expect(within(dialog).getByText("Feature image *")).toBeTruthy();
+  expect(within(dialog).getByText("Cover image")).toBeTruthy();
   fireEvent.change(within(dialog).getByTestId("feature-input"), { target: { files: [png("art")] } });
   expect(last!.assets[0]!.feature?.name).toBe("art.png");
   fireEvent.click(within(dialog).getByRole("button", { name: "Done" }));
@@ -136,7 +136,7 @@ test("media of any kind becomes an asset; non-image media shows its kind until a
 test("image assets have no feature image field", () => {
   const view = render(<Harness initial={withAssets(newAsset(png("a")))} />);
   fireEvent.click(view.getAllByTestId("asset-card")[0]!);
-  expect(within(view.getByRole("dialog")).queryByText("Feature image *")).toBeNull();
+  expect(within(view.getByRole("dialog")).queryByText("Cover image")).toBeNull();
 });
 
 test("the Add media button uses foreground text, not brand blue", () => {
