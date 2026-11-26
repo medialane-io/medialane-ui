@@ -1,6 +1,6 @@
 "use client";
 
-import { ShieldCheck, type LucideIcon } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import { useT } from "../i18n/provider.js";
 import { IconTile } from "./icon-tile.js";
 
@@ -9,20 +9,9 @@ export interface ClaimRailProps {
   included?: { icon: LucideIcon; title: string; desc: string }[];
 
   steps: string[];
-
-  trustLead?: string;
-  trust?: string;
-
-  trustIcon?: LucideIcon;
 }
 
-export function ClaimRail({
-  included,
-  steps,
-  trustLead,
-  trust,
-  trustIcon: TrustIcon = ShieldCheck,
-}: ClaimRailProps) {
+export function ClaimRail({ included, steps }: ClaimRailProps) {
   const t = useT();
   return (
     <div className="rounded-2xl bg-muted/50 dark:bg-card divide-y divide-border/60 overflow-hidden">
@@ -58,15 +47,6 @@ export function ClaimRail({
           ))}
         </ol>
       </section>
-
-      {trust && (
-        <section className="p-5 bg-muted/40 flex items-start gap-3">
-          <TrustIcon className="h-5 w-5 shrink-0 mt-0.5 text-primary" />
-          <p className="text-sm text-muted-foreground leading-relaxed">
-            {trustLead && <span className="font-semibold text-foreground">{trustLead}</span>} {trust}
-          </p>
-        </section>
-      )}
     </div>
   );
 }

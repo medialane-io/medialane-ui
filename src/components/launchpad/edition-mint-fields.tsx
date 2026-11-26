@@ -66,7 +66,7 @@ export function EditionMintFields({
         <FormField control={form.control} name="name" render={({ field }) => (
           <FormItem>
             <FormLabel>{t("Name")}</FormLabel>
-            <FormControl><Input placeholder={t("The title people will see")} {...field} /></FormControl>
+            <FormControl><Input placeholder={t("The title of this digital asset")} {...field} /></FormControl>
             <FormMessage />
           </FormItem>
         )} />
@@ -258,11 +258,8 @@ export function EditionMintFields({
           disabled={mintDisabled}
         >
           <Sparkles className="h-4 w-4 mr-2" />
-          {t("Publish edition")}
+          {t("Mint Limited Editions")}
         </Button>
-        <p className="text-xs text-center text-muted-foreground mt-2">
-          {t("Free to publish.")}
-        </p>
       </FadeIn>
     </div>
   );

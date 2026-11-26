@@ -3,7 +3,6 @@
 import { ImageIcon } from "lucide-react";
 import { cn } from "../utils/cn.js";
 import { useT } from "../i18n/provider.js";
-import { panelTint } from "./panel.js";
 
 export interface MedialaneCollectionCardProps {
 
@@ -37,8 +36,7 @@ export function MedialaneCollectionCard({
     <div className={cn(className)}>
       <div className="rounded-2xl">
         <div
-          className="panel relative overflow-hidden text-foreground"
-          style={panelTint("blue")}
+          className="relative overflow-hidden rounded-2xl bg-muted/50 dark:bg-card text-foreground"
         >
 
           <div className="p-2.5 pb-0">
@@ -60,17 +58,17 @@ export function MedialaneCollectionCard({
                 {displayName}
               </p>
               {serial && (
-                <span className="mt-0.5 shrink-0 rounded-full bg-black/5 dark:bg-white/10 px-2 py-0.5 text-2xs font-semibold text-brand-navy/80 dark:text-white/80 tabular-nums">
+                <span className="mt-0.5 shrink-0 rounded-full bg-black/5 dark:bg-white/10 px-2 py-0.5 text-2xs font-semibold text-foreground/80 tabular-nums">
                   {serial}
                 </span>
               )}
             </div>
             {collection && (
-              <p className="mt-0.5 text-[12.5px] text-brand-navy/55 dark:text-white/55 truncate">{collection}</p>
+              <p className="mt-0.5 text-[12.5px] text-muted-foreground truncate">{collection}</p>
             )}
             <div className="my-3 h-px bg-black/10 dark:bg-white/10" />
             <div className="flex items-center gap-2">
-              <span className="text-2xs font-bold tracking-[0.18em] text-brand-navy/50 dark:text-white/50">
+              <span className="text-2xs font-bold tracking-[0.18em] text-muted-foreground">
                 {t("STARKNET")}
               </span>
               {creator && (
@@ -79,12 +77,12 @@ export function MedialaneCollectionCard({
                     href={creatorHref}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="ml-auto min-w-0 truncate text-2xs text-brand-navy/55 dark:text-white/55 tabular-nums hover:text-brand-navy/80 dark:hover:text-white/80 transition-colors"
+                    className="ml-auto min-w-0 truncate text-2xs text-muted-foreground tabular-nums hover:text-foreground transition-colors"
                   >
                     {creator}
                   </a>
                 ) : (
-                  <span className="ml-auto min-w-0 truncate text-2xs text-brand-navy/55 dark:text-white/55 tabular-nums">
+                  <span className="ml-auto min-w-0 truncate text-2xs text-muted-foreground tabular-nums">
                     {creator}
                   </span>
                 )

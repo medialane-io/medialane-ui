@@ -55,8 +55,8 @@ test("only the collection owner can mint into it", async () => {
 
 test("an edition needs an image before anything is created", async () => {
   const { view, intents } = setup(OWNER);
-  await waitFor(() => expect(view.getByPlaceholderText("The title people will see")).toBeTruthy());
-  fireEvent.change(view.getByPlaceholderText("The title people will see"), { target: { value: "Track" } });
+  await waitFor(() => expect(view.getByPlaceholderText("The title of this digital asset")).toBeTruthy());
+  fireEvent.change(view.getByPlaceholderText("The title of this digital asset"), { target: { value: "Track" } });
   fireEvent.submit(view.container.querySelector("form")!);
   await waitFor(() => expect(view.getByRole("group").textContent).toContain("Upload an image before publishing."));
   expect(intents).toEqual([]);
@@ -64,15 +64,29 @@ test("an edition needs an image before anything is created", async () => {
 
 test("an edition is minted with its quantity and links to the new asset", async () => {
   const { view, intents } = setup(OWNER);
-  await waitFor(() => expect(view.getByPlaceholderText("The title people will see")).toBeTruthy());
+  await waitFor(() => expect(view.getByPlaceholderText("The title of this digital asset")).toBeTruthy());
   fireEvent.change(view.container.querySelector('input[type="file"]')!, { target: { files: [new File(["x"], "cover.png", { type: "image/png" })] } });
   await waitFor(() => expect(view.getByText("✓ Uploaded")).toBeTruthy());
-  fireEvent.change(view.getByPlaceholderText("The title people will see"), { target: { value: "Track" } });
+  fireEvent.change(view.getByPlaceholderText("The title of this digital asset"), { target: { value: "Track" } });
   fireEvent.change(view.getByPlaceholderText("1"), { target: { value: "25" } });
   fireEvent.submit(view.container.querySelector("form")!);
   await waitFor(() => expect(view.getByText("Publish another")).toBeTruthy());
   expect(intents[0]).toMatchObject({ owner: OWNER, recipient: OWNER, collectionContract: CONTRACT, tokenUri: "ipfs://meta", value: "25", royaltyBps: 0 });
   expect(view.getByText("View work").closest("a")?.getAttribute("href")).toBe(`/asset/starknet/${CONTRACT}/4`);
+});
+
+test("the typed royalty is sent with the mint", async () => {
+  const { view, intents } = setup(OWNER);
+  await waitFor(() => expect(view.getByPlaceholderText("The title of this digital asset")).toBeTruthy());
+  fireEvent.change(view.container.querySelector('input[type="file"]')!, { target: { files: [new File(["x"], "cover.png", { type: "image/png" })] } });
+  await waitFor(() => expect(view.getByText("✓ Uploaded")).toBeTruthy());
+  fireEvent.change(view.getByPlaceholderText("The title of this digital asset"), { target: { value: "Track" } });
+  fireEvent.click(view.getByText("License terms"));
+  fireEvent.click(view.getByText("Advanced options"));
+  fireEvent.change(view.getByPlaceholderText("0"), { target: { value: "5" } });
+  fireEvent.submit(view.container.querySelector("form")!);
+  await waitFor(() => expect(intents).toHaveLength(1));
+  expect(intents[0]).toMatchObject({ royaltyBps: 500 });
 });
 
 function failingUploads() {
@@ -86,7 +100,7 @@ const pickImage = (view: { container: HTMLElement }) =>
 
 test("a failed picture is reported in the picture field as soon as it happens", async () => {
   const { view, intents } = setup(OWNER, failingUploads());
-  await waitFor(() => expect(view.getByPlaceholderText("The title people will see")).toBeTruthy());
+  await waitFor(() => expect(view.getByPlaceholderText("The title of this digital asset")).toBeTruthy());
   pickImage(view);
   await waitFor(() => expect(view.getByRole("group").textContent).toContain("Image upload failed: Storage limit reached"));
   expect(view.getAllByRole("alert")).toHaveLength(1);
@@ -102,7 +116,7 @@ test("the edition form names the collection instead of showing its address", asy
 
 test("an unnamed collection adds no header line", async () => {
   const { view } = setup(OWNER, {}, null);
-  await waitFor(() => expect(view.getByPlaceholderText("The title people will see")).toBeTruthy());
+  await waitFor(() => expect(view.getByPlaceholderText("The title of this digital asset")).toBeTruthy());
   expect(view.container.textContent).not.toContain(CONTRACT);
   expect(view.queryByTestId("collection-name")).toBeNull();
 });

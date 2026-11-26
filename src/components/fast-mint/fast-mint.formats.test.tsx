@@ -95,7 +95,7 @@ async function withFile(scenario?: Scenario) {
 
 const pick = (view: ReturnType<typeof render>, name: RegExp) => fireEvent.click(view.getByRole("radio", { name }));
 const title = (view: ReturnType<typeof render>, value: string) =>
-  fireEvent.change(view.getByPlaceholderText("The title people will see"), { target: { value } });
+  fireEvent.change(view.getByPlaceholderText("The title of this digital asset"), { target: { value } });
 const button = (view: ReturnType<typeof render>, name: string) => view.getByRole("button", { name: new RegExp(name) }) as HTMLButtonElement;
 
 test("after the upload the creator picks what to make, with Single work chosen", async () => {
@@ -112,7 +112,7 @@ test("every format keeps the title, description and link, with nothing dropped w
   fireEvent.change(view.getByPlaceholderText(/Tell the story behind this work/), { target: { value: "A poster" } });
   for (const label of [/Permanent certificate/, /IP Ticket/, /IP Club/, /Limited Editions/, /Single work/]) {
     pick(view, label);
-    expect(view.getByPlaceholderText("The title people will see")).toBeTruthy();
+    expect(view.getByPlaceholderText("The title of this digital asset")).toBeTruthy();
     expect((view.getByPlaceholderText(/Tell the story behind this work/) as HTMLTextAreaElement).value).toBe("A poster");
     expect(view.getByPlaceholderText("https://yourwebsite.com")).toBeTruthy();
   }
@@ -243,8 +243,8 @@ test("limited editions mint the number of copies into a new editions collection"
   fireEvent.click(view.getByRole("button", { name: "New" }));
   title(view, "Prints");
   fireEvent.change(view.getByLabelText("Copies") as HTMLInputElement, { target: { value: "50" } });
-  await waitFor(() => expect(button(view, "Publish editions").disabled).toBe(false));
-  fireEvent.click(button(view, "Publish editions"));
+  await waitFor(() => expect(button(view, "Mint Limited Editions").disabled).toBe(false));
+  fireEvent.click(button(view, "Mint Limited Editions"));
   await waitFor(() => expect(view.getByText("Work published")).toBeTruthy());
   expect(intents[1]!.params).toMatchObject({ value: "50", collectionContract: normalizeAddress("STARKNET", "0xed17") });
 });

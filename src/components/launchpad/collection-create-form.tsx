@@ -154,7 +154,6 @@ export function CollectionCreateForm({ preset, aside }: CollectionCreateFormProp
       <ClaimRouteShell
         icon={<Icon className="h-4 w-4 text-white" />}
         title={t(preset.shell.title)}
-        subtitle={t(preset.shell.subtitle)}
         aside={
           <>
             <MedialaneCollectionCard
@@ -212,9 +211,6 @@ export function CollectionCreateForm({ preset, aside }: CollectionCreateFormProp
             <ExternalLinkField form={form} address={walletAddress} />
 
             <ActionButton solid big type="submit" disabled={busy} icon={<Icon className="h-4 w-4" />} className="w-full">              {t(copy.submit)}            </ActionButton>
-            {copy.footnotes.map((note) => (
-              <p key={note} className="text-xs text-center text-muted-foreground">{t(note)}</p>
-            ))}
           </form>
         </Form>
       </ClaimRouteShell>

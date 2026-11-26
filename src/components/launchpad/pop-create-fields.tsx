@@ -241,9 +241,6 @@ export function PopCreateFields({
             </>
           )}
         </Button>
-        <p className="text-xs text-center text-muted-foreground mt-2">
-          {t("Free to publish.")}
-        </p>
       </FadeIn>
     </div>
   );

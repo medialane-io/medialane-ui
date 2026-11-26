@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Award, Users, Plus, LayoutList, Zap, ShieldCheck } from "lucide-react";
+import { Award, Users, Plus, LayoutList } from "lucide-react";
 import type { ApiCollection } from "@medialane/sdk";
 import { BackButton } from "./back-button.js";
 import { Button } from "./button.js";
@@ -16,7 +16,6 @@ import { Skeleton } from "./skeleton.js";
 import { useImageUrl } from "../utils/use-image-url.js";
 import { usePopCollections } from "../utils/use-pop.js";
 import { useT } from "../i18n/provider.js";
-import { msg } from "../i18n/translate.js";
 import { useFormat } from "../i18n/use-format.js";
 
 type CollectionWithAttributes = ApiCollection & {
@@ -97,29 +96,6 @@ function PopCollectionCardSkeleton() {
   );
 }
 
-const POP_FEATURES = [
-  {
-    icon: Award,
-    title: msg("Soulbound Credential"),
-    desc: msg("Tied to the account for good."),
-  },
-  {
-    icon: Users,
-    title: msg("One per address"),
-    desc: msg("Each participant claims exactly one credential per event."),
-  },
-  {
-    icon: Zap,
-    title: msg("Free to claim"),
-    desc: msg("One free claim per event."),
-  },
-  {
-    icon: ShieldCheck,
-    title: msg("Verifiable onchain"),
-    desc: msg("Credentials are permanently readable and provable onchain."),
-  },
-];
-
 export function PopPage() {
   const t = useT();
   const { collections, isLoading } = usePopCollections();
@@ -138,20 +114,6 @@ export function PopPage() {
         title={t("POP events")}
         subtitle={t("Browse events or create one.")}
       />
-
-      <section>
-        <FadeIn>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-            {POP_FEATURES.map(({ icon: Icon, title, desc }) => (
-              <div key={title} className="bento-cell p-4 space-y-2">
-                <Icon className="h-5 w-5 text-green-500" />
-                <p className="text-sm font-semibold leading-tight">{t(title)}</p>
-                <p className="text-xs text-muted-foreground leading-relaxed">{t(desc)}</p>
-              </div>
-            ))}
-          </div>
-        </FadeIn>
-      </section>
 
       <section className="space-y-4">
         <FadeIn>

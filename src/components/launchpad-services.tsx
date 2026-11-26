@@ -4,17 +4,10 @@ import { SectionHeading } from "./section-heading.js";
 import { useEffect, useMemo, useState } from "react";
 import Link from "./link.js";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { Lock, ArrowRight, Check } from "lucide-react";
+import { Lock, ArrowRight } from "lucide-react";
 import { cn } from "../utils/cn.js";
 import {
-  LAUNCHPAD_SERVICE_DEFINITIONS,
-  LAUNCHPAD_SERVICE_GROUPS,
-  localizeGroup,
-  localizeService,
-  type ServiceDefinition,
-  type ServiceGroup,
-  type ServiceGroupDefinition,
-  type ServiceStatus,
+  LAUNCHPAD_SERVICE_DEFINITIONS, LAUNCHPAD_SERVICE_GROUPS, localizeGroup, localizeService, type ServiceDefinition, type ServiceGroup, type ServiceGroupDefinition, type ServiceStatus,
 } from "../data/launchpad-services.js";
 import { useT } from "../i18n/provider.js";
 
@@ -111,7 +104,7 @@ export interface LaunchpadServiceCardProps {
 export function LaunchpadServiceCard({ def: source, override = {}, index = 0 }: LaunchpadServiceCardProps) {
   const t = useT();
   const def = useMemo(() => localizeService(t, source), [t, source]);
-  const { icon: Icon, title, group, features, cta } = def;
+  const { icon: Icon, title, group, cta } = def;
   const status = override.status ?? def.status;
   const blurb = override.blurb === undefined ? def.blurb : t(override.blurb);
   const { href } = override;
@@ -146,17 +139,6 @@ export function LaunchpadServiceCard({ def: source, override = {}, index = 0 }: 
         </p>
       </div>
 
-      {live && features.length > 0 && (
-        <ul className="space-y-1.5 pt-4">
-          {features.slice(0, 3).map((feature) => (
-            <li key={feature} className="flex items-start gap-2 text-xs text-muted-foreground leading-relaxed">
-              <Check className={cn("h-3.5 w-3.5 shrink-0 mt-px", slice.text)} />
-              {feature}
-            </li>
-          ))}
-        </ul>
-      )}
-
       {live && (
         <div className="pt-5">
           <span className="inline-flex items-center gap-1.5 text-sm font-semibold">
@@ -182,7 +164,7 @@ export function LaunchpadServiceCard({ def: source, override = {}, index = 0 }: 
         <Link
           href={href}
           className={cn(
-            "group flex flex-1 flex-col rounded-3xl border bg-card p-6 sm:aspect-[4/5]",
+            "group flex flex-1 flex-col rounded-3xl border bg-card p-6",
             "ml-grad-hover-border",
             slice.border,
           )}
@@ -190,7 +172,7 @@ export function LaunchpadServiceCard({ def: source, override = {}, index = 0 }: 
           {body}
         </Link>
       ) : (
-        <div className="flex flex-1 flex-col rounded-3xl border border-border/30 bg-card p-6 sm:aspect-[4/5] opacity-75">
+        <div className="flex flex-1 flex-col rounded-3xl border border-border/30 bg-card p-6 opacity-75">
           {body}
         </div>
       )}

@@ -1,7 +1,7 @@
 "use client";
 
 import { SectionHeading } from "./section-heading.js";
-import { ArrowRight, Check, Handshake } from "lucide-react";
+import { ArrowRight, Handshake } from "lucide-react";
 import { formatAmount, getTokenByAddress, type ApiSponsorshipOffer } from "@medialane/sdk";
 import { AssetCard, AssetCardSkeleton } from "./asset-card.js";
 import { BackButton } from "./back-button.js";
@@ -14,16 +14,9 @@ import { useSponsorshipOffers } from "../utils/use-sponsorship.js";
 import { useToken } from "../utils/use-tokens.js";
 import { useT } from "../i18n/provider.js";
 
-import { msg } from "../i18n/translate.js";
 import { ActionButton } from "./action-button.js";
 import { panelTint } from "./panel.js";
 import { IconTile } from "./icon-tile.js";
-const FEATURES = [
-  msg("Direct settlement"),
-  msg("Owner-verified on-chain"),
-  msg("Open bidding or one invited sponsor"),
-];
-
 function OfferCard({ offer }: { offer: ApiSponsorshipOffer }) {
   const { token } = useToken(offer.nftContract, offer.tokenId);
   const paymentToken = getTokenByAddress(offer.paymentToken);
@@ -55,19 +48,6 @@ export function SponsorshipOffersPage() {
         title={t("IP Sponsorship")}
         subtitle={t("Sponsors bid for a license.")}
       />
-
-      <section>
-        <FadeIn>
-          <div className="flex flex-wrap gap-2">
-            {FEATURES.map((f) => (
-              <span key={f} className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium text-muted-foreground bg-background/40">
-                <Check className="h-3 w-3 text-brand-rose shrink-0" />
-                {t(f)}
-              </span>
-            ))}
-          </div>
-        </FadeIn>
-      </section>
 
       <section>
         <FadeIn>

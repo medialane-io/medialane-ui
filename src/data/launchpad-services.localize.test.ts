@@ -11,7 +11,6 @@ test("localizeService translates every copy field and keeps the ids, icon, statu
   expect(out.description).toBe(def.description.toUpperCase());
   expect(out.blurb).toBe(def.blurb.toUpperCase());
   expect(out.cta).toBe(def.cta.toUpperCase());
-  expect(out.features).toEqual(def.features.map((f) => f.toUpperCase()));
   expect(out.example).toBe(def.example?.toUpperCase());
   expect(out.format).toEqual({ name: def.format!.name.toUpperCase(), hint: def.format!.hint.toUpperCase() });
   expect([out.key, out.icon, out.status, out.group]).toEqual([def.key, def.icon, def.status, def.group]);

@@ -7,12 +7,7 @@ import {
   AtSign, FolderInput, Link2,
   LayoutGrid, Boxes,
 } from "lucide-react";
-import { hasCapability } from "@medialane/sdk";
 import { msg } from "../i18n/translate.js";
-
-const TICKETS_TRANSFERABLE_FEATURE = hasCapability("ip-tickets", "transfer")
-  ? msg("Freely transferable")
-  : msg("Stays with the original holder");
 
 export type ServiceStatus = "live" | "building" | "soon";
 
@@ -77,7 +72,6 @@ export interface ServiceDefinition {
   title: string;
   subtitle: string;
   description: string;
-  features: string[];
   icon: LucideIcon;
   status: ServiceStatus;
   group: ServiceGroup;
@@ -104,7 +98,6 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     subtitle: msg("One of a kind"),
     description:
       msg("Publish a single work in a collection."),
-    features: [msg("One copy of each work"), msg("Collections with their own page and name"), msg("License terms set by the creator")],
     example: msg("A song or a short film"),
     icon: ImagePlus,
     status: "live",
@@ -119,7 +112,6 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     subtitle: msg("Numbered copies from a creator-owned collection"),
     description:
       msg("Release works in numbered copies."),
-    features: [msg("Numbered copies"), msg("Fans collect and trade"), msg("One home for every release")],
     example: msg("50 copies of a limited print"),
     icon: Layers,
     status: "live",
@@ -133,7 +125,6 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     subtitle: msg("A collection ready for works"),
     description:
       msg("A creator-owned collection with its own page."),
-    features: [msg("A creator-owned collection"), msg("Choose the name and short code"), msg("Add works anytime")],
     example: msg("A photography collection"),
     icon: LayoutGrid,
     status: "live",
@@ -147,7 +138,6 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     subtitle: msg("Remixes with credit to the original"),
     description:
       msg("A licensed remix with credit to the original."),
-    features: [msg("Credit handled automatically"), msg("Royalties flow to the original"), msg("Follows the original license")],
     example: msg("A remix of a song"),
     icon: GitBranch,
     status: "live",
@@ -162,7 +152,6 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     subtitle: msg("A collection ready for editions"),
     description:
       msg("A creator-owned editions collection."),
-    features: [msg("A creator-owned collection"), msg("Choose the name and short code"), msg("Release editions anytime")],
     example: msg("A print series"),
     icon: Boxes,
     status: "live",
@@ -177,7 +166,6 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     subtitle: msg("Immutable certificates for authenticity"),
     description:
       msg("Permanent certificates that cannot be changed or transferred."),
-    features: [msg("Free to claim"), msg("Invite-list gating optional"), msg("Branded claim page to share")],
     example: msg("Hackathon attendance"),
     icon: Award,
     browseLinkLabel: msg("Browse certificates"),
@@ -192,7 +180,6 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     subtitle: msg("Releases with a set opening time"),
     description:
       msg("A timed release with a set price."),
-    features: [msg("Price and supply set by the creator"), msg("Opens and closes on a set schedule"), msg("Branded drop page to share")],
     example: msg("A 48-hour drop of 200 pieces at 5 USDC each"),
     icon: Package,
     browseLinkLabel: msg("Browse drops"),
@@ -208,7 +195,6 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     subtitle: msg("Tickets held in the wallet"),
     description:
       msg("Verifiable tickets for any event."),
-    features: [msg("Verifiable at the door"), msg("Supply and validity set at creation"), TICKETS_TRANSFERABLE_FEATURE],
     icon: Ticket,
     browseLinkLabel: msg("Browse tickets"),
 
@@ -224,7 +210,6 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     subtitle: msg("Membership tiers as cards"),
     description:
       msg("A club with tradable membership cards."),
-    features: [msg("Membership tiers"), msg("Optional validity window"), msg("Trade like any collection")],
     icon: Users,
     browseLinkLabel: msg("Browse clubs"),
 
@@ -239,7 +224,6 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     subtitle: msg("Direct sponsorship offers"),
     description:
       msg("Sponsors bid on a work for a license."),
-    features: [msg("Direct settlement"), msg("Ownership verified"), msg("Open bidding or one invited sponsor")],
     example: msg("Sponsor a song or an artwork for a license"),
     icon: Handshake,
     browseLinkLabel: msg("Browse offers"),
@@ -256,7 +240,6 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     subtitle: msg("A creator-controlled coin"),
     description:
       msg("A coin with a public trading pool."),
-    features: [msg("Launch in a few clicks"), msg("Creator keeps control of the liquidity"), msg("Traded on a public pool")],
     example: msg("A fan coin for a channel"),
     icon: TrendingUp,
     status: "live",
@@ -271,7 +254,6 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     subtitle: msg("Bring an already launched coin"),
     description:
       msg("List an existing coin on Medialane."),
-    features: [msg("Bring an already launched coin"), msg("Reviewed by our team"), msg("Featured on the Coins page")],
     example: msg("A memecoin on a creator profile"),
     icon: Coins,
     status: "live",
@@ -285,7 +267,6 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     subtitle: msg("Reserve a creator page URL"),
     description:
       msg("A shareable creator page."),
-    features: [msg("Free claim"), msg("Shareable creator page"), msg("Public portfolio")],
     example: msg("medialane.io/creator/your-name"),
     icon: AtSign,
     status: "live",
@@ -299,7 +280,6 @@ export const LAUNCHPAD_SERVICE_DEFINITIONS: ServiceDefinition[] = [
     subtitle: msg("Bring an already made collection"),
     description:
       msg("Link an existing collection to a profile."),
-    features: [msg("Bring an existing collection"), msg("Linked to a profile"), msg("Branded collection page")],
     example: msg("A collection made elsewhere joins a profile"),
     icon: FolderInput,
     status: "live",
@@ -315,7 +295,6 @@ export const COLLECTION_NAME_CLAIM: ServiceDefinition = {
   subtitle: msg("Reserve a collection page URL"),
   description:
     msg("A custom name for a collection page."),
-  features: [msg("Free claim"), msg("Clean shareable URL"), msg("Easy to remember and share")],
   example: msg("medialane.io/collection/your-collection"),
   icon: Link2,
   status: "live",
@@ -348,7 +327,6 @@ export function localizeService(t: Translate, def: ServiceDefinition): ServiceDe
     description: t(def.description),
     blurb: t(def.blurb),
     cta: t(def.cta),
-    features: def.features.map((feature) => t(feature)),
     example: def.example && t(def.example),
     browseLinkLabel: def.browseLinkLabel && t(def.browseLinkLabel),
     format: def.format && { name: t(def.format.name), hint: t(def.format.hint) },

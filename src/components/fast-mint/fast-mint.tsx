@@ -249,7 +249,7 @@ export function FastMint(props: FastMintProps) {
               <Input
                 value={name}
                 onChange={(e) => form.setValue("name", e.target.value)}
-                placeholder={t("The title people will see")}
+                placeholder={t("The title of this digital asset")}
               />
             </div>
 
@@ -287,9 +287,6 @@ export function FastMint(props: FastMintProps) {
               {busy && <Loader2 className="h-4 w-4 animate-spin" />}
               {buttonLabel}
             </ActionButton>
-            <p className="text-xs text-center text-muted-foreground">
-              {t("Zero platform fees to publish.")}
-            </p>
           </div>
 
           <div className="order-first lg:order-last lg:sticky lg:top-20 max-w-[260px] mx-auto w-full lg:max-w-none lg:mx-0">

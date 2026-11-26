@@ -3,7 +3,7 @@
 import { PageContainer } from "../page-container.js";
 import { PageState } from "../page-state.js";
 import { PageHeaderSkeleton } from "../page-header.js";
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -63,10 +63,9 @@ type FormValues = z.infer<ReturnType<typeof makeSchema>>;
 export interface TierMintFormProps {
   contract: string;
   preset: TierMintPreset;
-  aside?: ReactNode;
 }
 
-export function TierMintForm({ contract: rawContract, preset, aside }: TierMintFormProps) {
+export function TierMintForm({ contract: rawContract, preset }: TierMintFormProps) {
   const t = useT();
   const app = useMedialaneApp();
   const address = app.walletAddress;
@@ -193,16 +192,13 @@ export function TierMintForm({ contract: rawContract, preset, aside }: TierMintF
         title={t(preset.shell.title)}
         subtitle={preset.shell.subtitle(collection.name ?? null, t)}
         aside={
-          <>
-            <MedialaneCollectionCard
-              image={upload.preview}
-              name={form.watch("name")}
-              collection={collection.symbol || t(preset.cardFallbackSymbol)}
-              creator={address ? `${address.slice(0, 6)}…${address.slice(-4)}` : undefined}
-              creatorHref={address ? profileHref({ address }) : undefined}
-            />
-            {aside}
-          </>
+          <MedialaneCollectionCard
+            image={upload.preview}
+            name={form.watch("name")}
+            collection={collection.symbol || t(preset.cardFallbackSymbol)}
+            creator={address ? `${address.slice(0, 6)}…${address.slice(-4)}` : undefined}
+            creatorHref={address ? profileHref({ address }) : undefined}
+          />
         }
       >
         <Form {...form}>
