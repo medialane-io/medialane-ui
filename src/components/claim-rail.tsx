@@ -17,7 +17,7 @@ export function ClaimRail({ included, steps }: ClaimRailProps) {
     <div className="rounded-2xl bg-muted/50 dark:bg-card divide-y divide-border/60 overflow-hidden">
       {included && included.length > 0 && (
         <section className="p-5">
-          <p className="section-label">{t("What's included")}</p>
+          <p className="section-label">{t("What you get")}</p>
           <ul className="mt-4 space-y-4">
             {included.map(({ icon: Icon, title, desc }) => (
               <li key={title} className="flex items-start gap-3">

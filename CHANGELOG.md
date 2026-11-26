@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.399.1] — 2026-11-26
+
+### Changed
+
+- Clearer limited edition wording on the form, success screen and side panels. The side panel heading is now "What you get".
+
 ## [0.399.0] — 2026-11-26
 
 ### Changed

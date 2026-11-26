@@ -195,7 +195,7 @@ export function EditionMint({ contract: rawContract, aside }: { contract: string
               name={form.getValues("name") || t("Your work")}
               image={upload.preview}
               title={t("Edition published")}
-              description={t("Each copy is saved permanently with its license terms.")}
+              description={t("Your Limited Editions are saved permanently with their license terms.")}
               actions={[
                 ...(mintedTokenId ? [{ href: assetHref("STARKNET", collectionAddress, mintedTokenId), label: t("View work") }] : []),
                 { href: "/portfolio/assets", label: t("View portfolio") },
