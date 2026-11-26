@@ -49,7 +49,7 @@ export function SuccessView({ presentation = "inline", previewImage, result, onP
           <RewardEarned actionType={result.reward} />
 
           <Button variant="soft" onClick={onPublishAnother} className="w-full sm:w-auto">
-            {t("Publish another")}
+            {t("Create another")}
           </Button>
         </div>
       </div>

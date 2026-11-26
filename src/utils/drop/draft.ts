@@ -115,7 +115,7 @@ export function validateDropDraft(d: DropDraft, now: number): DropDraftErrors {
     const e = assetErrors(a);
     if (e) assets.byId[a.id] = e;
   }
-  if (d.assets.length === 0) assets.list = { text: msg("Add a work") };
+  if (d.assets.length === 0) assets.list = { text: msg("Add an NFT") };
   else if (draftTokens(d) > MAX_DROP_SUPPLY) assets.list = { text: msg("Up to {count} copies"), vars: { count: formatNumber(MAX_DROP_SUPPLY) } };
 
   const settings: DropDraftErrors["settings"] = { ...validateSale(d.sale, now) };

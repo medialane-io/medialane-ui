@@ -77,7 +77,7 @@ function RemixableCard({ token }: { token: ApiToken }) {
         </p>
         <p className="text-xs font-semibold pt-1 inline-flex items-center gap-1.5">
           <GitBranch className="h-3 w-3" />
-          {t("Remix this work")}
+          {t("Remix this NFT")}
         </p>
       </div>
     </Link>
@@ -106,7 +106,7 @@ export function RemixBrowsePage() {
         back={<BackButton />}
         icon={<GitBranch />}
         title={t("Remix")}
-        subtitle={t("Pick a work open to remixing.")}
+        subtitle={t("Pick an NFT open to remixing.")}
       />
 
       <section className="space-y-6">
@@ -118,7 +118,7 @@ export function RemixBrowsePage() {
           </div>
         ) : error && tokens.length === 0 ? (
           <div className="panel relative overflow-hidden p-10 flex flex-col items-center gap-3 text-center">
-            <p className="font-semibold">{t("Could not load works")}</p>
+            <p className="font-semibold">{t("Could not load NFTs")}</p>
             <p className="text-sm text-muted-foreground">{t("Check your connection and try again.")}</p>
             <Button variant="soft" size="sm" onClick={() => location.reload()}>{t("Retry")}</Button>
           </div>
@@ -127,9 +127,9 @@ export function RemixBrowsePage() {
             <div className="panel relative overflow-hidden p-10 flex flex-col items-center gap-4 text-center">
               <Inbox className="h-10 w-10 text-muted-foreground/30" />
               <div>
-                <p className="font-semibold">{t("No works open to remixing yet")}</p>
+                <p className="font-semibold">{t("No NFTs open to remixing yet")}</p>
                 <p className="text-sm text-muted-foreground mt-1 max-w-sm">
-                  {t("Remixable works appear here.")}
+                  {t("Remixable NFTs appear here.")}
                 </p>
               </div>
             </div>

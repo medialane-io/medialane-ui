@@ -130,7 +130,7 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
     <ActionButton
       icon={<GitBranch className="h-4 w-4" />}
       onClick={onOpenRemix}
-      helpContent="Create your own attributed derivative of this work."
+      helpContent="Create your own attributed derivative of this NFT."
     >
       {t("Remix")}
     </ActionButton>
@@ -206,7 +206,7 @@ export function AssetMarketplacePanel<T extends ApiOrderLike = ApiOrderLike>({
                   <ActionButton
                     icon={<HandCoins className="h-4 w-4" />}
                     onClick={onProposeDeal}
-                    helpContent="Propose a license deal to the creator to use this work."
+                    helpContent="Propose a license deal to the creator to use this NFT."
                   >
                     {t("License")}
                   </ActionButton>

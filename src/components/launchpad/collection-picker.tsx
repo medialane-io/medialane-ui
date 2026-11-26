@@ -28,7 +28,7 @@ function label(col: ApiCollection) {
 }
 
 function works(col: ApiCollection, t: T, intl: Format) {
-  return col.totalSupply != null ? t.plural("{count} work", "{count} works", col.totalSupply, { count: intl.number(col.totalSupply) }) : t("Empty");
+  return col.totalSupply != null ? t.plural("{count} NFT", "{count} NFTs", col.totalSupply, { count: intl.number(col.totalSupply) }) : t("Empty");
 }
 
 function Thumb({ image, size }: { image: string | null | undefined; size: "sm" | "md" }) {
@@ -88,7 +88,7 @@ export function CollectionPicker({ collections, loading, value, onChange, newCol
           <Thumb image={selected?.image} size="md" />
           <div className="min-w-0 flex-1">
             <p className="text-sm font-semibold truncate">{selected ? label(selected) : t("Choose a collection")}</p>
-            <p className="text-xs text-muted-foreground">{selected ? works(selected, t, intl) : t("Where this work will live")}</p>
+            <p className="text-xs text-muted-foreground">{selected ? works(selected, t, intl) : t("Where this NFT will live")}</p>
           </div>
           <span className="flex items-center gap-1 text-xs font-medium text-muted-foreground shrink-0">
             {t("Change")}

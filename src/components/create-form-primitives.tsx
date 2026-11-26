@@ -20,7 +20,7 @@ const OPTION_LABELS: Record<string, string> = {
   "No end": msg("No end"),
   "No limit": msg("No limit"),
   "Set a limit": msg("Set a limit"),
-  Edition: msg("Edition"),
+  Edition: msg("Limited Edition NFT"),
   Collection: msg("Collection"),
 };
 

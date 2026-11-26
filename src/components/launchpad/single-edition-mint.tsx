@@ -177,19 +177,19 @@ export function SingleEditionMint({ aside }: { aside?: ReactNode }) {
     <WalletRequired
       icon={ImagePlus}
       iconClassName="text-brand-blue"
-      title={t("Secure your account to publish")}
-      description={t("Publish a single-copy work.")}
+      title={t("Secure your account to create")}
+      description={t("Create an immutable NFT with licensing for your content.")}
     >
-      <TransactionDialog tx={tx} title={t("Publish a work")} workingLabel={t("Publishing your work…")} firstStepLabel={t("Saving your work")}>
+      <TransactionDialog tx={tx} title={t("Create Single NFT")} workingLabel={t("Creating your NFT…")} firstStepLabel={t("Saving your NFT")}>
         <TransactionSuccess
-          name={form.getValues("name") || t("Your work")}
+          name={form.getValues("name") || t("Your NFT")}
           image={upload.preview}
-          title={t("Work published")}
-          description={t("License terms are recorded with the work.")}
+          title={t("NFT created")}
+          description={t("License terms are recorded with the NFT.")}
           actions={[
-            ...(mintedHref ? [{ href: mintedHref, label: t("View work") }] : []),
+            ...(mintedHref ? [{ href: mintedHref, label: t("View NFT") }] : []),
             { href: "/portfolio/assets", label: t("View portfolio") },
-            { label: t("Publish another"), onClick: handleAgain },
+            { label: t("Create another"), onClick: handleAgain },
           ]}
         >
           <RewardEarned actionType="mint_asset" />
@@ -198,13 +198,13 @@ export function SingleEditionMint({ aside }: { aside?: ReactNode }) {
 
       <ClaimRouteShell
         icon={<ImagePlus className="h-4 w-4 text-white" />}
-        title={t("Publish a work")}
+        title={t("Create Single NFT")}
         aside={
           <>
             <MedialaneCollectionCard
               image={upload.preview}
               name={form.watch("name")}
-              collection={selectedCollection?.name || t("Work")}
+              collection={selectedCollection?.name || t("NFT")}
               creator={walletAddress ? `${walletAddress.slice(0, 6)}…${walletAddress.slice(-4)}` : undefined}
               creatorHref={walletAddress ? profileHref({ address: walletAddress }) : undefined}
             />
@@ -241,7 +241,7 @@ export function SingleEditionMint({ aside }: { aside?: ReactNode }) {
             <FormField control={form.control} name="description" render={({ field }) => (
               <FormItem>
                 <FormLabel>{t("Description")} <span className="text-muted-foreground font-normal">{t("(optional)")}</span></FormLabel>
-                <FormControl><Textarea placeholder={t("Tell the story behind this work")} rows={4} {...field} /></FormControl>
+                <FormControl><Textarea placeholder={t("Tell the story behind this NFT")} rows={4} {...field} /></FormControl>
                 <FormMessage />
               </FormItem>
             )} />
@@ -320,7 +320,7 @@ export function SingleEditionMint({ aside }: { aside?: ReactNode }) {
             >
               <FormField control={form.control} name="ipType" render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t("Type of work")}</FormLabel>
+                  <FormLabel>{t("Content type")}</FormLabel>
                   <Select onValueChange={field.onChange} value={field.value}>
                     <FormControl><SelectTrigger><SelectValue /></SelectTrigger></FormControl>
                     <SelectContent>{IP_TYPES.map((t) => <SelectItem key={t} value={t}>{t}</SelectItem>)}</SelectContent>
@@ -336,7 +336,7 @@ export function SingleEditionMint({ aside }: { aside?: ReactNode }) {
             </CollapsibleSection>
 
             <ActionButton solid big type="submit" disabled={busy} className="w-full">
-              {t("Publish")}
+              {t("Create NFT")}
             </ActionButton>
           </form>
         </Form>

@@ -131,7 +131,7 @@ function CollectionItems({ items, activeListings, mintHref, soulbound }: { items
 
   if (allTokens.length === 0) {
     return mintHref ? (
-      <EmptyState title={t("Ready for your first work")} body={t("Mint into this collection and it appears here.")} action={{ href: mintHref, label: t("Mint your first work") }} />
+      <EmptyState title={t("Ready for your first NFT")} body={t("NFTs you create in this collection appear here.")} action={{ href: mintHref, label: t("Create your first NFT") }} />
     ) : (
       <EmptyState title={t("No items yet")} body={t("Tokens in this collection will appear here once indexed.")} />
     );
@@ -180,7 +180,7 @@ function OwnerActions({ collection }: { collection: ApiCollection }) {
       <ActionButton solid small asChild className="w-fit">
         <Link href={`/launchpad/tickets/${contract}/mint`}>
           <Ticket className="h-3.5 w-3.5" />
-          {t("Mint tickets")}
+          {t("Create tickets")}
         </Link>
       </ActionButton>
     );

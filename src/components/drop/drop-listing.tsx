@@ -41,10 +41,10 @@ export function DropListing({
           </TabsList>
         </Tabs>
         <div className="flex items-center gap-2">
-          <Button variant="soft" size="sm" asChild><Link href={myDropsHref}>{t("My drops")}</Link></Button>
+          <Button variant="soft" size="sm" asChild><Link href={myDropsHref}>{t("My NFT Drops")}</Link></Button>
           <Link href={createHref} className="inline-flex h-9 items-center gap-1.5 rounded-xl bg-primary px-3 text-sm font-semibold text-primary-foreground hover:brightness-110">
             <Plus className="h-3.5 w-3.5" />
-            {t("Create a drop")}
+            {t("Create NFT Drop")}
           </Link>
         </div>
       </div>

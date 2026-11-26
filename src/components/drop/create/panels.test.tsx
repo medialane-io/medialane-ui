@@ -48,14 +48,14 @@ test("the cover defaults to the first asset and can be reset after choosing one"
   const setDraft = mock((_: Partial<DropDraft>) => {});
   const view = render(<CollectionPanel draft={named({ assets: [asset] })} setDraft={setDraft} errors={noErrors} open onToggle={() => {}} />);
   expect(view.getByAltText("Cover image").getAttribute("src")).toBe(previewUrl(asset.file));
-  expect(view.queryByRole("button", { name: "Use the first work" })).toBeNull();
+  expect(view.queryByRole("button", { name: "Use the first NFT" })).toBeNull();
   const cover = png("cover");
   fireEvent.change(view.getByTestId("cover-input"), { target: { files: [cover] } });
   expect(setDraft.mock.calls[0]![0].collection?.cover).toBe(cover);
   cleanup();
   const chosen = render(<CollectionPanel draft={named({ assets: [asset], collection: { ...named().collection, cover } })} setDraft={setDraft} errors={noErrors} open onToggle={() => {}} />);
   expect(chosen.getByAltText("Cover image").getAttribute("src")).toBe(previewUrl(cover));
-  fireEvent.click(chosen.getByRole("button", { name: "Use the first work" }));
+  fireEvent.click(chosen.getByRole("button", { name: "Use the first NFT" }));
   expect(setDraft.mock.calls[1]![0].collection?.cover).toBeNull();
 });
 

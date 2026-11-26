@@ -18,14 +18,14 @@ interface CollectionType {
 export const COLLECTION_TYPES: readonly CollectionType[] = [
   {
     id: "single",
-    label: msg("Single edition"),
+    label: msg("NFT Collection"),
     description: msg("Each piece is one of a kind"),
     href: "/launchpad/single-editions/collection",
     Icon: Sparkles,
   },
   {
     id: "multi",
-    label: msg("Multi edition"),
+    label: msg("Limited Edition NFT Collection"),
     description: msg("Each piece can have many copies"),
     href: "/launchpad/nfteditions/create",
     Icon: Layers,

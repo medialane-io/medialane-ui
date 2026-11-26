@@ -65,11 +65,11 @@ export function AssetsPanel({ draft, setDraft, errors, open, onToggle }: PanelPr
   return (
     <DropPanel
       icon={<Images />}
-      title={t("Works")}
+      title={t("NFTs")}
       open={open}
       onToggle={onToggle}
       error={errors.assets.list ?? firstAssetError}
-      summary={assets.length === 0 ? t("Add a work") : (
+      summary={assets.length === 0 ? t("Add an NFT") : (
         <span className="flex items-center gap-2.5">
           <span className="flex -space-x-1.5">
             {assets.slice(0, 4).map((a) => {
@@ -193,7 +193,7 @@ export function AssetsPanel({ draft, setDraft, errors, open, onToggle }: PanelPr
           <label className="flex items-center justify-between gap-3 text-sm">
             <span>
               <span className="block font-medium">{t("Shuffle the order")}</span>
-              <span className="block text-muted-foreground">{t("Off: works go out in the order shown.")}</span>
+              <span className="block text-muted-foreground">{t("Off: NFTs go out in the order shown.")}</span>
             </span>
             <Switch checked={draft.mixOrder} onCheckedChange={(mixOrder) => setDraft({ mixOrder })} />
           </label>

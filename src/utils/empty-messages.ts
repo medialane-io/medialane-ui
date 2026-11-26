@@ -35,7 +35,7 @@ export const emptyMessages = {
     description: msg("You receive a license when a bid is accepted."),
   },
   issuedLicenses: {
-    title: msg("Licenses issued on your work appear here"),
+    title: msg("Licenses issued on your NFTs appear here"),
     description: msg("A license you issue appears here when you accept a bid."),
   },
 } satisfies Record<string, EmptyMessage>;

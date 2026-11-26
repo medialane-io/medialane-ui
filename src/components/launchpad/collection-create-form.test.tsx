@@ -82,13 +82,13 @@ test("single-editions links to the new collection by the address its registry ho
       <CollectionCreateForm preset={SINGLE_PRESET} />
     </MedialaneAppProvider>,
   );
-  fireEvent.change(view.getByPlaceholderText("My Creative Works"), { target: { value: "Same name" } });
+  fireEvent.change(view.getByPlaceholderText("My NFT Collection"), { target: { value: "Same name" } });
   fireEvent.change(view.getByPlaceholderText("MCW"), { target: { value: "SAME" } });
   fireEvent.submit(view.container.querySelector("form")!);
   await waitFor(() => expect(view.getByText("View collection")).toBeTruthy());
   expect(view.getByText("View collection").closest("a")?.getAttribute("href")).toEndWith("0bb");
   const links = Array.from(view.container.ownerDocument.querySelectorAll("a")).map((a) => a.textContent);
-  expect(links.indexOf("View collection")).toBeLessThan(links.indexOf("Publish a work"));
+  expect(links.indexOf("View collection")).toBeLessThan(links.indexOf("Create Single NFT"));
 });
 
 function failingUploads() {

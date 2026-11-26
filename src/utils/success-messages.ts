@@ -37,7 +37,7 @@ export const successMessages = {
     title: t("Purchase completed"),
     description:
       quantity > 1
-        ? t("{quantity} editions of {name} are yours.", { quantity, name })
+        ? t("{quantity} copies of {name} are yours.", { quantity, name })
         : t("{name} is yours.", { name }),
   }),
   commented: (t: T = plainT): SuccessMessage => ({

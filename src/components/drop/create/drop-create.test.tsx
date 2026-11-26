@@ -26,15 +26,15 @@ const show = async (value: MedialaneApp = app, store = memoryDraftStore()) => {
 
 test("the page shows the header and three panels, Collection open first", async () => {
   const view = await show();
-  expect(view.getByText("Collection drop")).toBeTruthy();
-  expect(view.getByText("A new collection for people to collect.")).toBeTruthy();
-  for (const title of ["Collection", "Works", "Drop settings"]) expect(view.getByText(title)).toBeTruthy();
+  expect(view.getByText("NFT Drop")).toBeTruthy();
+  expect(view.getByText("Launch a new collection your audience can get directly from you, for free or at your price.")).toBeTruthy();
+  for (const title of ["Collection", "NFTs", "Drop settings"]) expect(view.getByText(title)).toBeTruthy();
   expect(view.getByLabelText("Name")).toBeTruthy();
 });
 
 test("opening one panel closes the other", async () => {
   const view = await show();
-  fireEvent.click(view.getByRole("button", { name: /^Works/ }));
+  fireEvent.click(view.getByRole("button", { name: /^NFTs/ }));
   expect(view.getByTestId("assets-input")).toBeTruthy();
   expect(view.queryByLabelText("Name")).toBeNull();
 });
@@ -48,7 +48,7 @@ test("the launch button names what is missing and opens that panel", async () =>
   const view = await show();
   fireEvent.change(view.getByLabelText("Name"), { target: { value: "Neon" } });
   fireEvent.click(view.getByRole("button", { name: /^Drop settings/ }));
-  fireEvent.click(view.getByRole("button", { name: "Add a work" }));
+  fireEvent.click(view.getByRole("button", { name: "Add an NFT" }));
   expect(view.getByTestId("assets-input")).toBeTruthy();
 });
 
@@ -72,7 +72,7 @@ test("a restored draft offers to start over", async () => {
 
 test("the fixed-at-launch line sits above the button", async () => {
   const view = await show();
-  expect(view.getByText("Fixed at launch: works, price, dates, quantity and the wallet limit.")).toBeTruthy();
+  expect(view.getByText("Fixed at launch: NFTs, price, dates, quantity and the wallet limit.")).toBeTruthy();
 });
 
 test("the symbol comes from the name, with a fallback when the name has no letters to use", () => {

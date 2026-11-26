@@ -62,7 +62,7 @@ export function AccountsPage() {
       </PageHeader>
 
       <section className="space-y-6">
-        <div className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1 sm:mx-0 sm:px-0" role="group" aria-label={t("Type of work")}>
+        <div className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1 sm:mx-0 sm:px-0" role="group" aria-label={t("Content type")}>
           {[{ slug: "", label: t("All") }, ...IP_TYPE_CONFIG].map(({ slug, label }) => (
             <button
               key={slug || "all"}

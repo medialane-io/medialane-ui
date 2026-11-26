@@ -65,7 +65,7 @@ export function CollectionPanel({ draft, setDraft, errors, open, onToggle }: Pan
               </label>
             </Button>
             {collection.cover && (
-              <Button type="button" variant="ghost" size="sm" onClick={() => set({ cover: null })}>{t("Use the first work")}</Button>
+              <Button type="button" variant="ghost" size="sm" onClick={() => set({ cover: null })}>{t("Use the first NFT")}</Button>
             )}
           </div>
           <FieldError message={coverError} />

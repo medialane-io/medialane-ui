@@ -60,10 +60,10 @@ function setup(parent: { owner: string; derivatives: string }) {
 
 test("the owner mints a remix and it is registered against its parent", async () => {
   const { view, intents, confirmed } = setup({ owner: ME, derivatives: "Not Allowed" });
-  await waitFor(() => expect(view.getByText("Publish remix")).toBeTruthy());
+  await waitFor(() => expect(view.getByText("Create remix")).toBeTruthy());
   await waitFor(() => expect((view.getByPlaceholderText("Remix of Original") as HTMLInputElement).value).toBe("Remix of Original"));
   await waitFor(() => expect(view.getAllByText("My art").length).toBeGreaterThan(0));
-  fireEvent.click(view.getByText("Publish remix"));
+  fireEvent.click(view.getByText("Create remix"));
   await waitFor(() => expect(view.getByText("View remix")).toBeTruthy());
   expect(intents[0]).toMatchObject({ owner: ME, collectionId: "3", recipient: ME, tokenUri: "ipfs://remix", royaltyBps: 0 });
   expect(confirmed[0]).toMatchObject({ originalContract: PARENT, originalTokenId: "1", remixContract: MINE, remixTokenId: "9", txHash: "0xabc" });
@@ -90,7 +90,7 @@ test("a remix does not fall back to the original art when the new art failed to 
   await waitFor(() => expect(view.getAllByText("My art").length).toBeGreaterThan(0));
   pickImage(view);
   await waitFor(() => expect(view.getByRole("alert").textContent).toBe("Image upload failed: Storage limit reached"));
-  fireEvent.click(view.getByText("Publish remix"));
+  fireEvent.click(view.getByText("Create remix"));
   await new Promise((r) => setTimeout(r, 30));
   expect(intents).toEqual([]);
   expect(document.activeElement?.getAttribute("data-status")).toBe("failed");

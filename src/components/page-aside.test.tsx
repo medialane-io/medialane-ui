@@ -18,7 +18,7 @@ test("every panel has what's included and the steps", () => {
 
 test("the limited edition panel describes copies, license and authorship", () => {
   const view = render(<PageAside kind="mintEdition" />);
-  for (const text of ["Limited Editions", "Your license terms", "Proof of authorship", "Mint, then sell or send your Limited Editions"]) {
+  for (const text of ["Copies", "Your license terms", "Proof of authorship", "Create, then sell or send your copies"]) {
     expect(view.getByText(text)).toBeTruthy();
   }
 });

@@ -36,7 +36,7 @@ const SORT_OPTIONS: { label: string; value: CollectionSort }[] = [
 const SERVICE_TABS = [
   { label: msg("All"),        value: undefined    },
   { label: msg("POP events"), value: "pop-protocol" },
-  { label: msg("Drops"),      value: "drop-collection" },
+  { label: msg("NFT Drops"),      value: "drop-collection" },
 ] as const;
 
 function useStandardCounts() {
@@ -192,7 +192,7 @@ export function CollectionsPage() {
         <StatPillRow
           items={[
             { label: t("Collections"), value: counts?.single != null && counts.multi != null ? counts.single + counts.multi : undefined },
-            { label: t("Multi editions"), value: counts?.multi ?? undefined },
+            { label: t("Limited Edition NFT"), value: counts?.multi ?? undefined },
           ]}
         />
       </PageHeader>

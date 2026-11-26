@@ -47,9 +47,9 @@ import { IconTile } from "../icon-tile.js";
 
 export const REWARD_ACTION_LABELS: Record<string, string> = {
   complete_profile: msg("Complete profile"),
-  mint_asset: msg("Mint assets"),
+  mint_asset: msg("Create NFTs"),
   create_collection: msg("Create collections"),
-  launch_launchpad: msg("Launch drops / POPs"),
+  launch_launchpad: msg("Launch NFT Drops and POPs"),
   create_remix: msg("Create remixes"),
   list_asset: msg("Sell assets"),
   buy_asset: msg("Buy assets"),
@@ -58,7 +58,7 @@ export const REWARD_ACTION_LABELS: Record<string, string> = {
   offer_accepted_seller: msg("Offers accepted (sold)"),
   offer_accepted_buyer: msg("Offers accepted (bought)"),
   claim_pop: msg("POP claims"),
-  claim_drop: msg("Drop claims"),
+  claim_drop: msg("NFT Drop claims"),
   comment: msg("On-chain comments"),
   create_ticket_collection: msg("Ticketed events created"),
   buy_ticket: msg("Tickets received"),
@@ -86,11 +86,11 @@ const EARN_GROUPS: {
     title: msg("Create"),
     textClass: "text-brand-purple",
     items: [
-      { label: msg("Create a collection"), href: "/launchpad/single-editions/collection", Icon: Layers },
-      { label: msg("Mint an asset"), href: "/launchpad/single-editions", Icon: Palette },
-      { label: msg("Launch a drop or POP"), href: "/launchpad", Icon: Rocket },
+      { label: msg("Create NFT Collection"), href: "/launchpad/single-editions/collection", Icon: Layers },
+      { label: msg("Create an NFT"), href: "/launchpad/single-editions", Icon: Palette },
+      { label: msg("Launch an NFT Drop or POP"), href: "/launchpad", Icon: Rocket },
       { label: msg("Launch a creator coin"), href: "/launchpad/coin/create", Icon: Coins },
-      { label: msg("Remix existing work"), href: "/marketplace", Icon: GitBranch },
+      { label: msg("Remix an NFT"), href: "/marketplace", Icon: GitBranch },
     ],
   },
   {

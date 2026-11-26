@@ -29,7 +29,7 @@ export async function launchDrop(
   });
   const { txHash, receipt } = await executeIntent(deps.signer, deps.client, res);
   const collection = deployedCollectionFromReceipt(receipt, "drop-collection");
-  if (!collection) throw new Error("Check My drops in a minute.");
+  if (!collection) throw new Error("Check My NFT Drops in a minute.");
   return { collection, txHash };
 }
 

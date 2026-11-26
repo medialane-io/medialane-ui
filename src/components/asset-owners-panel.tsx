@@ -39,7 +39,7 @@ export function AssetOwnersPanel({ balances, total = balances.length, editions }
   if (balances.length === 0) return null;
 
   const owners = t.plural("{count} owner", "{count} owners", total, { count: intl.number(total) });
-  const label = editions && editions !== total ? `${t.plural("{count} edition", "{count} editions", editions, { count: intl.number(editions) })} · ${owners}` : owners;
+  const label = editions && editions !== total ? `${t.plural("{count} copy", "{count} copies", editions, { count: intl.number(editions) })} · ${owners}` : owners;
 
   return (
     <Panel className="px-4 py-3 space-y-2">

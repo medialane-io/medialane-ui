@@ -79,7 +79,7 @@ export function CollectionSlugClaimSection({
       <SectionCard className="border-brand-blue/20 bg-brand-blue/[0.02]">
         <SectionHeader
           icon={Gem}
-          title={t("Collection URL")}
+          title={t("Collection Address")}
           description={`medialane.io/collection/${profile.slug}`}
           badge={
             <Badge variant="soft" className="text-2xs h-4 px-1.5 text-brand-blue border-brand-blue/30">
@@ -102,7 +102,7 @@ export function CollectionSlugClaimSection({
       <SectionCard className="border-primary/20 bg-primary/[0.02]">
         <SectionHeader
           icon={Gem}
-          title={t("Claim your collection URL")}
+          title={t("Claim your Collection Address")}
           description={`medialane.io/collection/${pendingSlug}`}
           badge={
             <Badge variant="soft" className="text-2xs h-4 px-1.5 text-brand-orange border-brand-orange/30">
@@ -121,7 +121,7 @@ export function CollectionSlugClaimSection({
     <SectionCard className="border-primary/20 bg-primary/[0.02]">
       <SectionHeader
         icon={Gem}
-        title={t("Claim your collection URL")}
+        title={t("Claim your Collection Address")}
         description={t("Reserve medialane.io/collection/your-name")}
       />
       <div className="pt-3 border-t border-border space-y-3">

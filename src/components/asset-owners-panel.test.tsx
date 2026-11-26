@@ -19,7 +19,7 @@ test("without a total the listed holders are counted", () => {
 });
 
 test("editions lead the header when given", () => {
-  expect(render({ total: 2, editions: 100 })).toContain("100 editions · 2 owners");
+  expect(render({ total: 2, editions: 100 })).toContain("100 copies · 2 owners");
 });
 
 test("shows five owners", () => {

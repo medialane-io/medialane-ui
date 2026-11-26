@@ -58,7 +58,7 @@ test("an edition needs an image before anything is created", async () => {
   await waitFor(() => expect(view.getByPlaceholderText("The title of this digital asset")).toBeTruthy());
   fireEvent.change(view.getByPlaceholderText("The title of this digital asset"), { target: { value: "Track" } });
   fireEvent.submit(view.container.querySelector("form")!);
-  await waitFor(() => expect(view.getByRole("group").textContent).toContain("Upload an image before publishing."));
+  await waitFor(() => expect(view.getByRole("group").textContent).toContain("Upload an image first."));
   expect(intents).toEqual([]);
 });
 
@@ -70,9 +70,9 @@ test("an edition is minted with its quantity and links to the new asset", async 
   fireEvent.change(view.getByPlaceholderText("The title of this digital asset"), { target: { value: "Track" } });
   fireEvent.change(view.getByPlaceholderText("1"), { target: { value: "25" } });
   fireEvent.submit(view.container.querySelector("form")!);
-  await waitFor(() => expect(view.getByText("Publish another")).toBeTruthy());
+  await waitFor(() => expect(view.getByText("Create another")).toBeTruthy());
   expect(intents[0]).toMatchObject({ owner: OWNER, recipient: OWNER, collectionContract: CONTRACT, tokenUri: "ipfs://meta", value: "25", royaltyBps: 0 });
-  expect(view.getByText("View work").closest("a")?.getAttribute("href")).toBe(`/asset/starknet/${CONTRACT}/4`);
+  expect(view.getByText("View NFT").closest("a")?.getAttribute("href")).toBe(`/asset/starknet/${CONTRACT}/4`);
 });
 
 test("the typed royalty is sent with the mint", async () => {

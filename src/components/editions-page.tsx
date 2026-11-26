@@ -97,7 +97,7 @@ function CollectionRow({ col }: { col: ApiCollection }) {
           <ActionButton solid small asChild>
             <Link href={`/launchpad/nfteditions/${col.contractAddress}/mint`}>
               <Sparkles className="h-3.5 w-3.5" />
-              {t("Mint editions")}
+              {t("Create Limited Edition NFT")}
             </Link>
           </ActionButton>
           <Button variant="soft" size="sm" asChild>
@@ -144,8 +144,8 @@ export function EditionsPage() {
       <PageHeader
         back={<BackButton />}
         icon={<Layers />}
-        title={t("Limited Editions")}
-        subtitle={t("Pick one of your editions collections and mint new pieces into it.")}
+        title={t("Limited Edition NFTs")}
+        subtitle={t("Choose a Limited Edition NFT Collection and create new NFTs in it.")}
       >
         <div className="flex items-center gap-3">
           <ActionButton solid asChild>
@@ -176,9 +176,9 @@ export function EditionsPage() {
             <div className="panel relative overflow-hidden p-10 flex flex-col items-center gap-4 text-center">
               <Inbox className="h-10 w-10 text-muted-foreground/30" />
               <div>
-                <p className="font-semibold">{t("No editions collections yet")}</p>
+                <p className="font-semibold">{t("No Limited Edition NFT Collections yet")}</p>
                 <p className="text-sm text-muted-foreground mt-1 max-w-xs">
-                  {t("Create your first editions collection to start minting.")}
+                  {t("Create your first one to start releasing Limited Edition NFTs.")}
                 </p>
               </div>
               <ActionButton solid small asChild>

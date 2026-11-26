@@ -100,7 +100,7 @@ export function AccountPage({ address, useAssetActions, useMarketActions }: Acco
         tokensLoading ? (
           <div className={GRID}>{Array.from({ length: 8 }).map((_, i) => <TokenCardSkeleton key={i} />)}</div>
         ) : tokens.length === 0 ? (
-          <TabEmptyState icon={ImageIcon} heading={t("No assets yet")} body={t("Works this account owns appear here.")} />
+          <TabEmptyState icon={ImageIcon} heading={t("No assets yet")} body={t("NFTs this account owns appear here.")} />
         ) : (
           <>
             <div className={GRID}>
@@ -142,7 +142,7 @@ export function AccountPage({ address, useAssetActions, useMarketActions }: Acco
         ordersLoading ? (
           <div className={GRID}>{Array.from({ length: 4 }).map((_, i) => <ListingCardSkeleton key={i} />)}</div>
         ) : listings.length === 0 ? (
-          <TabEmptyState icon={ShoppingBag} heading={t("No active listings")} body={t("Works this account lists for sale appear here.")} />
+          <TabEmptyState icon={ShoppingBag} heading={t("No active listings")} body={t("NFTs this account lists for sale appear here.")} />
         ) : (
           <div className={GRID}>
             {listings.map((o) => <ListingCard key={o.orderHash} order={o} onBuy={isOwner ? undefined : market.buy} usdValue={orderUsd(o.price, prices)} overflowMenu={<ListingCardMenu order={o} />} />)}

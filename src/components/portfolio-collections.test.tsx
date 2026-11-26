@@ -22,7 +22,7 @@ function renderPage() {
 test("with no collections it offers both types and the claim panel the app passes in", async () => {
   const view = renderPage();
   await waitFor(() => expect(view.getByText("No collections yet")).toBeTruthy());
-  expect(view.getByText("Single edition")).toBeTruthy();
-  expect(view.getByText("Multi edition")).toBeTruthy();
+  expect(view.getByText("NFT Collection")).toBeTruthy();
+  expect(view.getByText("Limited Edition NFT Collection")).toBeTruthy();
   expect(view.getByText("claim panel")).toBeTruthy();
 });

@@ -25,8 +25,8 @@ export function CollectionNameClaim() {
         isEmpty={collections.length === 0}
         onRetry={mutate}
         emptyTitle={t("No collections to name yet")}
-        emptyDescription={t("Create a collection first.")}
-        emptyCta={{ label: t("Create a collection"), href: "/launchpad/single-editions/collection" }}
+        emptyDescription={t("Create an NFT Collection first.")}
+        emptyCta={{ label: t("Create NFT Collection"), href: "/launchpad/single-editions/collection" }}
       />
 
       {collections.map((c) => {

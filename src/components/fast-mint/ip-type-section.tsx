@@ -37,7 +37,7 @@ export function IpTypeSection({
         <CollapsibleContent>
           <div className="px-4 pb-4 space-y-4 border-t border-border/60 pt-4">
             <div className="space-y-1.5">
-              <label className="text-xs font-medium text-muted-foreground">{t("Type of work")}</label>
+              <label className="text-xs font-medium text-muted-foreground">{t("Content type")}</label>
               <Select value={ipType} onValueChange={(v) => onIpTypeChange(v as IPType)}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>

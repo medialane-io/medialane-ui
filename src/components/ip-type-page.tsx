@@ -322,7 +322,7 @@ export function IpTypePage({ slug, useMarketActions }: IpTypePageProps) {
             </p>
           </div>
           <Button asChild variant="soft">
-            <Link href="/launchpad/single-editions">{t("Create asset")}</Link>
+            <Link href="/launchpad/single-editions">{t("Create NFT")}</Link>
           </Button>
         </div>
       ) : (

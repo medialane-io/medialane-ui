@@ -15,7 +15,7 @@ test("each marketplace message names the asset", () => {
 
 test("a purchase says how many editions the wallet owns", () => {
   expect(successMessages.purchased({ name: "GO 01", quantity: 1 }).description).toBe("GO 01 is yours.");
-  expect(successMessages.purchased({ name: "GO 01", quantity: 3 }).description).toContain("3 editions of GO 01");
+  expect(successMessages.purchased({ name: "GO 01", quantity: 3 }).description).toContain("3 copies of GO 01");
 });
 
 test("publishing participants says the list is recorded and each one claims with a link", () => {
