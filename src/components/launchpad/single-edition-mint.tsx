@@ -199,7 +199,6 @@ export function SingleEditionMint({ aside }: { aside?: ReactNode }) {
       <ClaimRouteShell
         icon={<ImagePlus className="h-4 w-4 text-white" />}
         title={t("Publish a work")}
-        subtitle={t("Publish a single-copy work.")}
         aside={
           <>
             <MedialaneCollectionCard
@@ -234,7 +233,7 @@ export function SingleEditionMint({ aside }: { aside?: ReactNode }) {
             <FormField control={form.control} name="name" render={({ field }) => (
               <FormItem>
                 <FormLabel>{t("Name")}</FormLabel>
-                <FormControl><Input placeholder={t("The title people will see")} {...field} /></FormControl>
+                <FormControl><Input placeholder={t("The title of this digital asset")} {...field} /></FormControl>
                 <FormMessage />
               </FormItem>
             )} />
@@ -339,7 +338,6 @@ export function SingleEditionMint({ aside }: { aside?: ReactNode }) {
             <ActionButton solid big type="submit" disabled={busy} className="w-full">
               {t("Publish")}
             </ActionButton>
-            <p className="text-xs text-center text-muted-foreground">{t("Free to publish.")}</p>
           </form>
         </Form>
       </ClaimRouteShell>

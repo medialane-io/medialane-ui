@@ -40,7 +40,6 @@ import { invalidatePortfolioCache } from "../../utils/portfolio-cache.js";
 import { useT } from "../../i18n/provider.js";
 import { msg } from "../../i18n/translate.js";
 import { ActionButton } from "../action-button.js";
-import { panelTint } from "../panel.js";
 
 export function RemixMint({ contract, tokenId }: { contract: string; tokenId: string }) {
   const t = useT();
@@ -348,7 +347,6 @@ export function RemixMint({ contract, tokenId }: { contract: string; tokenId: st
             <ActionButton solid big type="button" disabled={tx.phase !== "idle" || upload.uploading} onClick={handleSubmit} icon={<GitBranch className="h-5 w-5" />} className="w-full">
               {t("Publish remix")}
             </ActionButton>
-            <p className="text-xs text-center text-muted-foreground">{t("Free to publish.")}</p>
           </div>
 
           <div className="space-y-4 lg:sticky lg:top-16">
@@ -373,14 +371,6 @@ export function RemixMint({ contract, tokenId }: { contract: string; tokenId: st
                   </div>
                 )}
               </div>
-            </div>
-            <div className="panel p-4 space-y-3 text-sm" style={panelTint("blue")}>
-              <p className="font-semibold flex items-center gap-2"><Info className="h-4 w-4 text-primary" />{t("What happens next")}</p>
-              <ol className="space-y-2 text-muted-foreground text-xs list-decimal list-inside">
-                <li>{t("Your remix is saved permanently")}</li>
-                <li>{t("It's published in your chosen collection")}</li>
-                <li>{t("Credit to the original stays with it")}</li>
-              </ol>
             </div>
           </div>
         </div>

@@ -19,7 +19,7 @@ export const NAV_ITEMS = {
   settings: { id: "settings", label: msg("Account settings"), icon: Settings, href: "/settings", keywords: ["profile", "username", "preferences", "account"] },
   "mint-ip-asset": { id: "mint-ip-asset", label: msg("Publish a single work"), icon: Plus, href: "/launchpad/single-editions", keywords: ["mint", "upload", "publish", "token", "erc721", "singular", "unique", "original"] },
   "create-collection": { id: "create-collection", label: msg("Create a collection"), icon: LayoutGrid, href: "/launchpad/single-editions/collection", keywords: ["deploy", "series", "erc721", "collection", "branded"] },
-  "mint-editions": { id: "mint-editions", label: msg("Publish a limited edition"), icon: Layers, href: "/launchpad/nfteditions", keywords: ["mint", "edition", "erc1155", "multi", "copies", "limited"] },
+  "mint-editions": { id: "mint-editions", label: msg("Mint Limited Editions"), icon: Layers, href: "/launchpad/nfteditions", keywords: ["mint", "edition", "erc1155", "multi", "copies", "limited"] },
   "create-1155": { id: "create-1155", label: msg("Create an editions collection"), icon: Layers, href: "/launchpad/nfteditions/create", keywords: ["deploy", "erc1155", "edition", "contract", "limited", "multi-edition"] },
   "pop-create": { id: "pop-create", label: msg("Create POP event"), icon: Ticket, href: "/launchpad/pop/create", keywords: ["pop", "proof of participation", "event", "community", "soulbound"] },
   "pop-browse": { id: "pop-browse", label: msg("Browse POP events"), icon: Ticket, href: "/launchpad/pop", keywords: ["pop", "events", "proof of participation"] },

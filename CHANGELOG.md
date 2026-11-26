@@ -1,5 +1,26 @@
 # Changelog
 
+## [0.399.0] — 2026-11-26
+
+### Changed
+
+- Plainer, shorter text on launchpad pages and side panels. Repeated helper lines, subtitles and extra boxes are removed.
+- The limited edition form has a new title, name hint and button label.
+- The collection preview card uses a neutral surface.
+- Launchpad service cards show the title and short description.
+
+### Fixed
+
+- The limited edition form sends the royalty it collects.
+
+### Breaking
+
+- `CreateAside` and `CreateSponsorshipAside` are replaced by `PageAside`, which also covers the claim pages.
+- `ClaimRail` no longer takes `trust`, `trustLead` or `trustIcon`.
+- `TierMintForm` no longer takes `aside`.
+- `ServiceDefinition` no longer has `features`.
+- Collection create presets no longer have `shell.subtitle` or `copy.footnotes`.
+
 ## [0.398.0] — 2026-11-25
 
 ### Added

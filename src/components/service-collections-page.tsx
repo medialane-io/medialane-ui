@@ -23,7 +23,6 @@ const KINDS = {
   tickets: {
     icon: Ticket,
     title: getLaunchpadService("ip-tickets").title,
-    subtitle: msg("Create a tickets collection."),
     createHref: "/launchpad/tickets/create",
     createLabel: msg("Create collection"),
     sectionTitle: msg("Ticket collections"),
@@ -34,7 +33,6 @@ const KINDS = {
   club: {
     icon: Users,
     title: getLaunchpadService("ip-club").title,
-    subtitle: msg("Create a club."),
     createHref: "/launchpad/club/create",
     createLabel: msg("Create club"),
     sectionTitle: msg("Club collections"),
@@ -69,7 +67,7 @@ export function ServiceCollectionsPage({ kind }: { kind: keyof typeof KINDS }) {
 
   return (
     <PageContainer variant="narrow" className="space-y-8">
-      <PageHeader back={<BackButton />} icon={<Icon />} title={t(config.title)} subtitle={t(config.subtitle)}>
+      <PageHeader back={<BackButton />} icon={<Icon />} title={t(config.title)}>
         {createButton}
       </PageHeader>
 

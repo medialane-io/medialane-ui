@@ -117,7 +117,6 @@ export function PopCreate({ aside }: { aside?: ReactNode }) {
       <ClaimRouteShell
         icon={<Award className="h-4 w-4 text-white" />}
         title={t("Create a POP event")}
-        subtitle={t("Certificates free to publish.")}
         aside={
           <>
             <MedialaneCollectionCard

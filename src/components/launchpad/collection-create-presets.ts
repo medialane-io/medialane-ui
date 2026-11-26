@@ -12,7 +12,7 @@ export interface CollectionCreatePreset {
   icon: ElementType;
   iconClass: string;
   signedOut: { title: string; description: string };
-  shell: { title: string; subtitle: string };
+  shell: { title: string };
   dialog: { title: string; workingLabel: string; firstStepLabel: string };
   success: { title: string; description: string; fallbackName: string; reward: string; againLabel: string };
   cardFallbackSymbol: string;
@@ -24,7 +24,6 @@ export interface CollectionCreatePreset {
     symbolHint: string;
     descriptionPlaceholder: string;
     submit: string;
-    footnotes: string[];
   };
   suggestSymbol: boolean;
   registerAfterDeploy: boolean;
@@ -34,14 +33,12 @@ export interface CollectionCreatePreset {
   };
 }
 
-const FREE = "Free to publish.";
-
 export const CLUB_PRESET: CollectionCreatePreset = {
   service: "ip-club",
   icon: Users,
   iconClass: "text-brand-purple",
   signedOut: { title: msg("Secure your account to create a club"), description: msg("Create a club with membership cards.") },
-  shell: { title: msg("Create club"), subtitle: msg("One club with many tiers.") },
+  shell: { title: msg("Create club") },
   dialog: { title: msg("Create club"), workingLabel: msg("Creating your club…"), firstStepLabel: msg("Saving details") },
   success: { title: msg("Club created"), description: msg("Each membership you create is saved permanently as yours."), fallbackName: msg("Your club"), reward: msg("create_club"), againLabel: msg("Create another") },
   cardFallbackSymbol: msg("Club"),
@@ -53,7 +50,6 @@ export const CLUB_PRESET: CollectionCreatePreset = {
     symbolHint: msg("2 to 10 letters."),
     descriptionPlaceholder: msg("What membership unlocks"),
     submit: msg("Create club"),
-    footnotes: [FREE],
   },
   suggestSymbol: false,
   registerAfterDeploy: false,
@@ -65,7 +61,7 @@ export const TICKETS_PRESET: CollectionCreatePreset = {
   icon: Ticket,
   iconClass: "text-brand-blue",
   signedOut: { title: msg("Secure your account to create tickets"), description: msg("Create a tickets collection.") },
-  shell: { title: msg("Create ticket collection"), subtitle: msg("One collection with many tickets.") },
+  shell: { title: msg("Create ticket collection") },
   dialog: { title: msg("Create tickets collection"), workingLabel: msg("Creating your collection…"), firstStepLabel: msg("Saving details") },
   success: { title: msg("Ticket collection created"), description: msg("Each ticket you publish in it is saved permanently as yours."), fallbackName: msg("Your collection"), reward: msg("create_ticket_collection"), againLabel: msg("Create another") },
   cardFallbackSymbol: msg("Tickets"),
@@ -77,7 +73,6 @@ export const TICKETS_PRESET: CollectionCreatePreset = {
     symbolHint: msg("2 to 10 letters."),
     descriptionPlaceholder: msg("What the tickets unlock"),
     submit: msg("Create ticket collection"),
-    footnotes: [FREE],
   },
   suggestSymbol: false,
   registerAfterDeploy: false,
@@ -89,7 +84,7 @@ export const EDITIONS_PRESET: CollectionCreatePreset = {
   icon: Layers,
   iconClass: "text-brand-purple",
   signedOut: { title: msg("Secure your account to create a collection"), description: msg("Create a collection where each piece can have multiple editions.") },
-  shell: { title: msg("Create an edition collection"), subtitle: msg("A collection with many editions per piece.") },
+  shell: { title: msg("Create an edition collection") },
   dialog: { title: msg("Create collection"), workingLabel: msg("Creating your collection…"), firstStepLabel: msg("Saving details") },
   success: { title: msg("Collection created"), description: msg("Each work you publish in it has its own license terms."), fallbackName: msg("Your collection"), reward: msg("create_collection"), againLabel: msg("Create another") },
   cardFallbackSymbol: msg("Editions"),
@@ -101,15 +96,11 @@ export const EDITIONS_PRESET: CollectionCreatePreset = {
     symbolHint: msg("2 to 10 letters."),
     descriptionPlaceholder: msg("What this collection is about"),
     submit: msg("Create collection"),
-    footnotes: [
-      FREE,
-      msg("Next step: publish work in this collection."),
-    ],
   },
   suggestSymbol: true,
   registerAfterDeploy: true,
   actions: ({ address, collectionHref }) => ({
-    primary: address ? { href: `/launchpad/nfteditions/${address}/mint`, label: msg("Publish an edition") } : undefined,
+    primary: address ? { href: `/launchpad/nfteditions/${address}/mint`, label: msg("Mint Limited Editions") } : undefined,
     secondary: collectionHref ? { href: collectionHref, label: msg("View collection") } : undefined,
   }),
 };
@@ -119,7 +110,7 @@ export const SINGLE_PRESET: CollectionCreatePreset = {
   icon: Layers,
   iconClass: "text-brand-blue",
   signedOut: { title: msg("Secure your account to create a collection"), description: msg("Set up a collection for your work.") },
-  shell: { title: msg("Create a collection"), subtitle: msg("A collection for your work.") },
+  shell: { title: msg("Create a collection") },
   dialog: { title: msg("Create collection"), workingLabel: msg("Creating your collection…"), firstStepLabel: msg("Saving details") },
   success: { title: msg("Collection created"), description: msg("Each work you publish in it has its own license terms."), fallbackName: msg("Your collection"), reward: msg("create_collection"), againLabel: msg("Create another") },
   cardFallbackSymbol: msg("Collection"),
@@ -131,7 +122,6 @@ export const SINGLE_PRESET: CollectionCreatePreset = {
     symbolHint: msg("2 to 10 letters."),
     descriptionPlaceholder: msg("What this collection is about"),
     submit: msg("Create collection"),
-    footnotes: [FREE],
   },
   suggestSymbol: false,
   registerAfterDeploy: false,

@@ -128,7 +128,7 @@ export function EditionMint({ contract: rawContract, aside }: { contract: string
           collectionContract: collectionAddress,
           tokenUri: pinned.uri,
           value: values.value,
-          royaltyBps: 0,
+          royaltyBps: Math.round(values.royalty * 100),
         }),
       );
       invalidatePortfolioCache(walletAddress);
@@ -154,8 +154,7 @@ export function EditionMint({ contract: rawContract, aside }: { contract: string
         <>
           <ClaimRouteShell
             icon={<Sparkles className="h-4 w-4 text-white" />}
-            title={t("Publish an edition")}
-            subtitle={t("Add a new piece to the collection.")}
+            title={t("Mint a limited edition NFT")}
             headerAccessory={
               collectionName ? (
                 <div data-testid="collection-name" className="panel flex items-center gap-2 px-3 py-2 max-w-full">
@@ -191,7 +190,7 @@ export function EditionMint({ contract: rawContract, aside }: { contract: string
             </Form>
           </ClaimRouteShell>
 
-          <TransactionDialog tx={tx} title={t("Publish an edition")} workingLabel={t("Publishing your edition…")} firstStepLabel={t("Saving details")}>
+          <TransactionDialog tx={tx} title={t("Mint Limited Editions")} workingLabel={t("Publishing your edition…")} firstStepLabel={t("Saving details")}>
             <TransactionSuccess
               name={form.getValues("name") || t("Your work")}
               image={upload.preview}
