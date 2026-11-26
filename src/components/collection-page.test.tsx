@@ -65,7 +65,7 @@ test("a visitor sees the header, the items and the app's service action", async 
 
 test("the owner of an empty collection gets the mint link and the transfer tool", async () => {
   const { getByText } = renderPage(collection(), [], "0xowner");
-  await waitFor(() => expect(getByText("Mint your first work")).toBeTruthy());
+  await waitFor(() => expect(getByText("Create your first NFT")).toBeTruthy());
   expect(getByText("Transfer ownership")).toBeTruthy();
 });
 

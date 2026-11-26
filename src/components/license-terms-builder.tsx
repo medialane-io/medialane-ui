@@ -296,7 +296,7 @@ export function LicenseTermsBuilder({
             <option key={p} value={p}>{p}</option>
           ))}
         </select>
-        <p className={FIELD_HELP}>{t("Whether this work can be used to train AI models.")}</p>
+        <p className={FIELD_HELP}>{t("Whether this content can be used to train AI models.")}</p>
       </div>
 
       <div className="space-y-1.5">

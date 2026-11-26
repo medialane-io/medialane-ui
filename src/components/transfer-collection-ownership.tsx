@@ -82,7 +82,7 @@ export function TransferCollectionOwnership({ collectionId, currentOwner, collec
                 <p className="font-bold text-lg">{t("Transfer collection ownership")}</p>
               </div>
               <p className="text-sm text-muted-foreground">
-                {t("The new owner controls minting.")}
+                {t("The new owner controls what gets created in it.")}
               </p>
               <div className="space-y-2">
                 <Label htmlFor="new-owner">{t("New owner address")}</Label>

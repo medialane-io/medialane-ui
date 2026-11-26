@@ -139,7 +139,7 @@ export function LicenseFields({ draft, setDraft }: Omit<FieldsProps, "errors">) 
       <Field label={t("AI & data mining")}>
         <ToggleGroup tone="neutral" value={license.aiPolicy} options={AI_POLICIES} onChange={(v) => set({ aiPolicy: v })} />
       </Field>
-      <Field label={t("Type of work")}>
+      <Field label={t("Content type")}>
         <Select value={license.ipType} onValueChange={(v) => set({ ipType: v })}>
           <SelectTrigger><SelectValue /></SelectTrigger>
           <SelectContent>{IP_TYPES.map((type) => <SelectItem key={type} value={type}>{type}</SelectItem>)}</SelectContent>

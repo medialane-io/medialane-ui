@@ -21,8 +21,8 @@ test("shows the app's quick mint first, then a section for each kind of service"
   const view = renderPage();
   expect(view.getByText("Creator Launchpad")).toBeTruthy();
   const text = view.container.textContent ?? "";
-  expect(text.indexOf("app fast mint")).toBeLessThan(text.indexOf("Single work"));
-  for (const title of ["Single works", "Limited Editions", "Coins", "Membership", "Licensing", "Claims"]) {
+  expect(text.indexOf("app fast mint")).toBeLessThan(text.indexOf("Single NFT"));
+  for (const title of ["NFTs", "Collections", "Coins", "Membership", "Licensing", "Claims"]) {
     expect(view.getByRole("heading", { name: title })).toBeTruthy();
   }
 });
@@ -30,7 +30,7 @@ test("shows the app's quick mint first, then a section for each kind of service"
 test("each section can be reached from the jump bar", () => {
   const view = renderPage();
   const nav = view.getByRole("navigation", { name: "Launchpad sections" });
-  for (const title of ["Single works", "Limited Editions", "Coins", "Membership", "Licensing", "Claims"]) {
+  for (const title of ["NFTs", "Collections", "Coins", "Membership", "Licensing", "Claims"]) {
     expect(nav.textContent).toContain(title);
   }
   expect(view.container.querySelector("#launchpad-licensing")).toBeTruthy();
@@ -39,9 +39,9 @@ test("each section can be reached from the jump bar", () => {
 test("the memecoin claim is in Coins and the collection name claim is not on the launchpad", () => {
   const view = renderPage();
   const coins = view.container.querySelector("#launchpad-coins")?.textContent ?? "";
-  expect(coins).toContain("Creator coin");
-  expect(coins).toContain("Claim memecoin");
-  expect(view.container.textContent).not.toContain("Claim collection name");
+  expect(coins).toContain("Creator Coin");
+  expect(coins).toContain("Existing Memecoin");
+  expect(view.container.textContent).not.toContain("Collection Address");
 });
 
 test("an app can hide a whole section", () => {

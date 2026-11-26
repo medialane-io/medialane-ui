@@ -44,7 +44,7 @@ export function SettingsPanel({ draft, setDraft, errors, open, onToggle }: Panel
       <AccessFields {...fields} />
       <CollapsibleSection open={licenseOpen} onOpenChange={setLicenseOpen}
         icon={<ShieldCheck className="h-4 w-4 text-muted-foreground" />}
-        label={t("License terms")} hint={t("For every work")}>
+        label={t("License terms")} hint={t("For every NFT")}>
         <LicenseFields draft={draft} setDraft={setDraft} />
       </CollapsibleSection>
       <CollapsibleSection open={draft.gated.enabled}

@@ -222,7 +222,7 @@ export function MediaWalletHome({
             <RocketIcon />
           </IconTile>
           <span className="text-[15px] font-semibold text-foreground">{t("Creator Launchpad")}</span>
-          <span className="text-xs text-muted-foreground">{t("Protect and monetize your work")}</span>
+          <span className="text-xs text-muted-foreground">{t("Protect and monetize your NFTs")}</span>
         </button>
       )}
 

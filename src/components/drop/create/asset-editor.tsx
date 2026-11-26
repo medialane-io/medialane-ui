@@ -47,7 +47,7 @@ export function AssetEditor({ draft, index, onIndex, onChange, onRemove, errors,
     <Dialog open onOpenChange={(next) => { if (!next) onClose(); }}>
       <DialogContent className="max-h-[90dvh] gap-5 overflow-y-auto">
         <div className="flex items-center justify-between gap-3 pr-8">
-          <DialogTitle className="text-lg font-semibold">{t("Work")}</DialogTitle>
+          <DialogTitle className="text-lg font-semibold">{t("NFT")}</DialogTitle>
           <span className="text-sm text-muted-foreground">{t("{index} of {count}", { index: index + 1, count })}</span>
         </div>
         <DialogDescription className="sr-only">{t("Edit the image and details.")}</DialogDescription>

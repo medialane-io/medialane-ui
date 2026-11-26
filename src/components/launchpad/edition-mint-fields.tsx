@@ -77,7 +77,7 @@ export function EditionMintFields({
           <FormItem>
             <FormLabel>{t("Description")} <span className="text-muted-foreground font-normal">{t("(optional)")}</span></FormLabel>
             <FormControl>
-              <Textarea placeholder={t("Tell the story behind this work")} rows={3} {...field} />
+              <Textarea placeholder={t("Tell the story behind this NFT")} rows={3} {...field} />
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -97,7 +97,7 @@ export function EditionMintFields({
       <FadeIn delay={0.14}>
         <FormField control={form.control} name="value" render={({ field }) => (
           <FormItem>
-            <FormLabel>{t("Limited Editions")}</FormLabel>
+            <FormLabel>{t("Copies")}</FormLabel>
             <FormControl>
               <Input type="number" min={1} placeholder="1" className="max-w-[180px]" {...field} />
             </FormControl>
@@ -227,7 +227,7 @@ export function EditionMintFields({
         >
                 <FormField control={form.control} name="ipType" render={({ field }) => (
                   <FormItem>
-                    <FormLabel>{t("Type of work")}</FormLabel>
+                    <FormLabel>{t("Content type")}</FormLabel>
                     <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
                         <SelectTrigger><SelectValue /></SelectTrigger>
@@ -258,7 +258,7 @@ export function EditionMintFields({
           disabled={mintDisabled}
         >
           <Sparkles className="h-4 w-4 mr-2" />
-          {t("Mint Limited Editions")}
+          {t("Create Limited Edition NFT")}
         </Button>
       </FadeIn>
     </div>

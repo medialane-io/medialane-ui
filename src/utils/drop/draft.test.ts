@@ -13,7 +13,7 @@ const named = (patch: Partial<DropDraft> = {}): DropDraft => ({
 test("an empty draft asks for a collection name and an asset", () => {
   const e = validateDropDraft(EMPTY_DRAFT, NOW);
   expect(e.collection.name).toEqual({ text: "Name the collection" });
-  expect(e.assets.list).toEqual({ text: "Add a work" });
+  expect(e.assets.list).toEqual({ text: "Add an NFT" });
   expect(firstMissing(e)).toEqual({ panel: "collection", message: { text: "Name the collection" } });
   expect(hasErrors(e)).toBe(true);
 });

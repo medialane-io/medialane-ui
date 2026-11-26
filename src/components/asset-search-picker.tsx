@@ -84,7 +84,7 @@ export function AssetSearchPicker({
           ))}
         </div>
       ) : hasSearched && !isLoading ? (
-        <p className="text-xs text-muted-foreground text-center py-4">{t("No works match \"{query}\".", { query: query.trim() })}</p>
+        <p className="text-xs text-muted-foreground text-center py-4">{t("No NFTs match \"{query}\".", { query: query.trim() })}</p>
       ) : null}
     </div>
   );

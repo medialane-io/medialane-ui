@@ -48,21 +48,21 @@ function setup() {
 
 test("an offer needs an asset before anything is created", async () => {
   const { view, intents } = setup();
-  fireEvent.click(view.getByText("Offer my work"));
+  fireEvent.click(view.getByText("Offer my NFT"));
   fireEvent.click(view.getByText("Create offer"));
-  await waitFor(() => expect(view.getByText("Choose the work to offer.")).toBeTruthy());
+  await waitFor(() => expect(view.getByText("Choose the NFT to offer.")).toBeTruthy());
   expect(intents).toEqual([]);
 });
 
 test("an offer is created with the chosen asset, amount and duration", async () => {
   const { view, intents } = setup();
-  fireEvent.click(view.getByText("Offer my work"));
+  fireEvent.click(view.getByText("Offer my NFT"));
   await waitFor(() => expect(view.getByText("My Song")).toBeTruthy());
   fireEvent.click(view.getByText("My Song"));
   fireEvent.change(view.getByPlaceholderText("0.00"), { target: { value: "5" } });
   fireEvent.change(view.getByPlaceholderText("e.g. 30"), { target: { value: "30" } });
   fireEvent.click(view.getByText("Create offer"));
-  await waitFor(() => expect(view.getByText("Back to Sponsorship launchpad")).toBeTruthy());
+  await waitFor(() => expect(view.getByText("View sponsorship offers")).toBeTruthy());
   expect(intents[0]!.kind).toBe("sponsorship-offer");
   expect(intents[0]!.params).toMatchObject({ author: ME, nftContract: C, tokenId: "1", minAmount: "5000000", licenseTermsUri: "ipfs://terms" });
 });

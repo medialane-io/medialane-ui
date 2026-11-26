@@ -178,7 +178,7 @@ export function RemixMint({ contract, tokenId }: { contract: string; tokenId: st
       );
       const receipt = await assertTransactionSucceeded(client.provider, txHash);
       const remixTokenId = mintedTokenIdFromReceipt(receipt, selected.contractAddress);
-      if (!remixTokenId) throw new Error(msg("Published, but the new work's id could not be read."));
+      if (!remixTokenId) throw new Error(msg("Your remix was created, but its id could not be read."));
       await api.remix.confirmSelf({
         originalContract: contract,
         originalTokenId: tokenId,
@@ -199,7 +199,7 @@ export function RemixMint({ contract, tokenId }: { contract: string; tokenId: st
     setRemixHref(null);
   };
 
-  const gate = { icon: GitBranch, title: t("Sign in to create a remix"), description: t("Sign in to remix this work.") };
+  const gate = { icon: GitBranch, title: t("Sign in to create a remix"), description: t("Sign in to remix this NFT.") };
 
   if (tokenLoading) {
     return (
@@ -217,7 +217,7 @@ export function RemixMint({ contract, tokenId }: { contract: string; tokenId: st
 
   if (!token) {
     return (
-      <PageState title={t("Work not found")}>
+      <PageState title={t("NFT not found")}>
         <Button asChild variant="soft"><Link href="/">{t("Go home")}</Link></Button>
       </PageState>
     );
@@ -225,11 +225,11 @@ export function RemixMint({ contract, tokenId }: { contract: string; tokenId: st
 
   return (
     <WalletRequired {...gate}>
-      <TransactionDialog tx={tx} title={t("Publish a remix")} workingLabel={t("Publishing your remix…")} firstStepLabel={t("Saving your work")}>
+      <TransactionDialog tx={tx} title={t("Create NFT Remix")} workingLabel={t("Creating your remix…")} firstStepLabel={t("Saving your NFT")}>
         <TransactionSuccess
           name={name}
           image={upload.preview ?? originalImage ?? null}
-          title={t("Remix published")}
+          title={t("Remix created")}
           description={t("Registered as a remix with its own license.")}
           actions={[
             ...(remixHref ? [{ href: remixHref, label: t("View remix") }] : []),
@@ -243,10 +243,10 @@ export function RemixMint({ contract, tokenId }: { contract: string; tokenId: st
 
       <PageContainer variant="narrow" className="space-y-8">
         <PageHeader
-          back={<BackButton href={assetHref("STARKNET", contract, tokenId)} label={t("Back to work")} />}
+          back={<BackButton href={assetHref("STARKNET", contract, tokenId)} label={t("Back to NFT")} />}
           icon={<GitBranch />}
-          title={t("Publish a remix")}
-          subtitle={t("Remix this work with credit to the original.")}
+          title={t("Create NFT Remix")}
+          subtitle={t("Create a new NFT from this one, with its own license and recorded credit to the original.")}
         />
 
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-8 items-start">
@@ -278,9 +278,9 @@ export function RemixMint({ contract, tokenId }: { contract: string; tokenId: st
                 <Skeleton className="h-10 w-full rounded-xl" />
               ) : eligibleCollections.length === 0 ? (
                 <div className="rounded-2xl border border-dashed border-border p-4 text-center space-y-2">
-                  <p className="text-sm text-muted-foreground">{t("Create a collection first.")}</p>
+                  <p className="text-sm text-muted-foreground">{t("Create an NFT Collection first.")}</p>
                   <Button size="sm" variant="soft" asChild>
-                    <Link href="/launchpad/single-editions/collection"><Plus className="h-3.5 w-3.5 mr-1.5" />{t("Create collection")}</Link>
+                    <Link href="/launchpad/single-editions/collection"><Plus className="h-3.5 w-3.5 mr-1.5" />{t("Create NFT Collection")}</Link>
                   </Button>
                 </div>
               ) : (
@@ -300,7 +300,7 @@ export function RemixMint({ contract, tokenId }: { contract: string; tokenId: st
               )}
             </Section>
 
-            <Section title={t("Type of work")} icon={<Info className="h-4 w-4" />}>
+            <Section title={t("Content type")} icon={<Info className="h-4 w-4" />}>
               <Select value={ipType} onValueChange={setIpType}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>{IP_TYPES.map((t) => <SelectItem key={t} value={t}>{t}</SelectItem>)}</SelectContent>
@@ -345,7 +345,7 @@ export function RemixMint({ contract, tokenId }: { contract: string; tokenId: st
             {formError && <p role="alert" className="text-sm text-destructive">{t(formError)}</p>}
 
             <ActionButton solid big type="button" disabled={tx.phase !== "idle" || upload.uploading} onClick={handleSubmit} icon={<GitBranch className="h-5 w-5" />} className="w-full">
-              {t("Publish remix")}
+              {t("Create remix")}
             </ActionButton>
           </div>
 

@@ -60,8 +60,8 @@ const DEFAULT_SLICE: GroupSlice = {
 };
 
 export const GROUP_SLICES: Record<ServiceGroup, GroupSlice> = {
-  "single-nfts": { tint: "bg-brand-blue/10", text: "text-brand-blue", border: "border-brand-blue/30" },
-  "limited-editions": { tint: "bg-brand-maeve/10", text: "text-brand-maeve", border: "border-brand-maeve/30" },
+  "nfts": { tint: "bg-brand-blue/10", text: "text-brand-blue", border: "border-brand-blue/30" },
+  "collections": { tint: "bg-brand-maeve/10", text: "text-brand-maeve", border: "border-brand-maeve/30" },
   "coins": { tint: "bg-brand-purple/10", text: "text-brand-purple", border: "border-brand-purple/30" },
   "membership": { tint: "bg-brand-rose/10", text: "text-brand-rose", border: "border-brand-rose/30" },
   "licensing": { tint: "bg-brand-orange/10", text: "text-brand-orange", border: "border-brand-orange/30" },
@@ -203,7 +203,7 @@ export function serviceMatchesQuery(def: ServiceDefinition, query: string, trans
   if (query.trim() === "") return true;
   const local = localizeService(translate, def);
   const groupTitle = GROUP_TITLE_BY_KEY[def.group] ?? "";
-  const haystack = `${def.title} ${def.blurb} ${def.subtitle} ${groupTitle} ${local.title} ${local.blurb} ${local.subtitle} ${translate(groupTitle)}`.toLowerCase();
+  const haystack = `${def.title} ${def.blurb} ${groupTitle} ${local.title} ${local.blurb} ${translate(groupTitle)}`.toLowerCase();
   return haystack.includes(query.trim().toLowerCase());
 }
 

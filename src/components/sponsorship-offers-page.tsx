@@ -53,7 +53,7 @@ export function SponsorshipOffersPage() {
         <FadeIn>
           <div className="panel p-5 flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between" style={panelTint("rose")}>
             <div className="space-y-0.5">
-              <p className="text-sm font-semibold">{t("Start a sponsorship deal")}</p>
+              <p className="text-sm font-semibold">{t("Create IP Sponsorship")}</p>
               <p className="text-xs text-muted-foreground">
                 {t("Open an asset to sponsors.")}
               </p>

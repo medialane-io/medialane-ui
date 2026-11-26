@@ -191,7 +191,7 @@ export function FastMint(props: FastMintProps) {
       <Dialog open={open} onOpenChange={(next) => { if (!next) onClose?.(); }}>
         <DialogContent className="gap-0 p-6 sm:max-w-2xl sm:p-8">
           <DialogTitle className="sr-only">{t("Create")}</DialogTitle>
-          <DialogDescription className="sr-only">{t("Publish your work.")}</DialogDescription>
+          <DialogDescription className="sr-only">{t("Create your NFT.")}</DialogDescription>
           {node}
         </DialogContent>
       </Dialog>
@@ -258,7 +258,7 @@ export function FastMint(props: FastMintProps) {
               <Textarea
                 value={description}
                 onChange={(e) => form.setValue("description", e.target.value)}
-                placeholder={t("Tell the story behind this work")}
+                placeholder={t("Tell the story behind this NFT")}
                 rows={3}
               />
             </div>

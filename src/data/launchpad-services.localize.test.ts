@@ -7,8 +7,6 @@ test("localizeService translates every copy field and keeps the ids, icon, statu
   const def = LAUNCHPAD_SERVICE_DEFINITIONS.find((d) => d.key === "nfts")!;
   const out = localizeService(shout, def);
   expect(out.title).toBe(def.title.toUpperCase());
-  expect(out.subtitle).toBe(def.subtitle.toUpperCase());
-  expect(out.description).toBe(def.description.toUpperCase());
   expect(out.blurb).toBe(def.blurb.toUpperCase());
   expect(out.cta).toBe(def.cta.toUpperCase());
   expect(out.example).toBe(def.example?.toUpperCase());
@@ -17,15 +15,14 @@ test("localizeService translates every copy field and keeps the ids, icon, statu
 });
 
 test("localizeService leaves absent optional fields absent", () => {
-  const def = { ...LAUNCHPAD_SERVICE_DEFINITIONS[0]!, example: undefined, format: undefined, browseLinkLabel: undefined };
+  const def = { ...LAUNCHPAD_SERVICE_DEFINITIONS[0]!, example: undefined, format: undefined };
   const out = localizeService(shout, def);
   expect(out.example).toBeUndefined();
   expect(out.format).toBeUndefined();
-  expect(out.browseLinkLabel).toBeUndefined();
 });
 
 test("localizeGroup translates the title, tagline and badge", () => {
-  const group = LAUNCHPAD_SERVICE_GROUPS[0]!;
+  const group = { ...LAUNCHPAD_SERVICE_GROUPS[0]!, tagline: "Soon" };
   const out = localizeGroup(shout, { ...group, badge: "New" });
-  expect(out).toEqual({ ...group, title: group.title.toUpperCase(), tagline: group.tagline.toUpperCase(), badge: "NEW" });
+  expect(out).toEqual({ ...group, title: group.title.toUpperCase(), tagline: "SOON", badge: "NEW" });
 });

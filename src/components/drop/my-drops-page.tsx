@@ -9,7 +9,7 @@ export function MyDropsPage() {
   const t = useT();
   return (
     <PageContainer className="space-y-8">
-      <PageHeader title={t("My drops")} />
+      <PageHeader title={t("My NFT Drops")} />
       <MyDrops />
     </PageContainer>
   );

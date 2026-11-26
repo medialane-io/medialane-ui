@@ -53,5 +53,5 @@ test("the activity page opens with the standard page header", () => {
 
 test("the my drops page opens with the standard page header", () => {
   const view = mount(<MyDropsPage />);
-  expect(view.getByRole("heading", { level: 1 }).textContent).toBe("My drops");
+  expect(view.getByRole("heading", { level: 1 }).textContent).toBe("My NFT Drops");
 });

@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.400.0] — 2026-11-26
+
+### Changed
+
+- New service names, card descriptions and matching wording on forms, buttons, menus, side panels and messages, with Portuguese.
+- Launchpad sections are now grouped by NFTs and collections, without section subtitles.
+- The navigation menu has one entry per launchpad service, named like its card and opening its main page. The POP events browse entry is removed.
+
+### Removed
+
+- `subtitle`, `description` and `browseLinkLabel` on service definitions. Group `tagline` is now optional.
+
 ## [0.399.1] — 2026-11-26
 
 ### Changed

@@ -231,7 +231,7 @@ export function PortfolioSponsorships() {
       </section>
 
       <section className="space-y-3">
-        <SectionHeading title={t("Licenses issued on your work")} />
+        <SectionHeading title={t("Licenses issued on your NFTs")} />
         <LicenseList loading={issuedLoading} empty={emptyMessages.issuedLicenses}>
           {issued.map((l) => (
             <div key={l.id} className="panel relative overflow-hidden p-4">

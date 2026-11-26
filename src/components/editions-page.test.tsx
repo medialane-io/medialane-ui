@@ -26,6 +26,6 @@ test("signed out asks to sign in", () => {
 
 test("signed in with no editions offers to create a collection", async () => {
   const view = renderPage("0xa");
-  await waitFor(() => expect(view.getByText("No editions collections yet")).toBeTruthy());
+  await waitFor(() => expect(view.getByText("No Limited Edition NFT Collections yet")).toBeTruthy());
   expect(Array.from(view.container.querySelectorAll("a")).map((a) => a.getAttribute("href"))).toContain("/launchpad/nfteditions/create");
 });

@@ -27,8 +27,8 @@ export function MyDrops({ createHref = "/launchpad/drop/create" }: { createHref?
   if (drops.length === 0) {
     return (
       <div className="space-y-4">
-        <TabEmptyState icon={Package} heading={t("No drops yet")} body={t("Launch an edition or a collection and it will show here.")} />
-        <div className="text-center"><Link href={createHref} className="text-sm font-semibold text-primary">{t("Create a drop")}</Link></div>
+        <TabEmptyState icon={Package} heading={t("No drops yet")} body={t("Launch an NFT Drop and it will show here.")} />
+        <div className="text-center"><Link href={createHref} className="text-sm font-semibold text-primary">{t("Create NFT Drop")}</Link></div>
       </div>
     );
   }

@@ -319,7 +319,7 @@ export function TierMintForm({ contract: rawContract, preset }: TierMintFormProp
                 <FormItem>
                   <FormLabel>{t("Valid from")} <span className="text-muted-foreground font-normal">{t("(optional)")}</span></FormLabel>
                   <FormControl><Input type="datetime-local" {...field} /></FormControl>
-                  <FormDescription>{t("You can publish and sell before this date.")}</FormDescription>
+                  <FormDescription>{t("You can create and sell before this date.")}</FormDescription>
                   <FormMessage />
                 </FormItem>
               )} />

@@ -98,22 +98,22 @@ const title = (view: ReturnType<typeof render>, value: string) =>
   fireEvent.change(view.getByPlaceholderText("The title of this digital asset"), { target: { value } });
 const button = (view: ReturnType<typeof render>, name: string) => view.getByRole("button", { name: new RegExp(name) }) as HTMLButtonElement;
 
-test("after the upload the creator picks what to make, with Single work chosen", async () => {
+test("after the upload the creator picks what to make, with Single NFT chosen", async () => {
   const { view } = await withFile();
   expect(view.getAllByRole("radio").map((r) => r.getAttribute("aria-checked"))).toEqual(["true", "false", "false", "false", "false"]);
-  for (const label of ["Single work", "Limited Editions", "Permanent certificate", "IP Ticket", "IP Club"]) {
+  for (const label of ["Single NFT", "Limited Edition NFT", "Permanent certificate", "IP Ticket", "IP Club"]) {
     expect(view.getByRole("radio", { name: new RegExp(label) })).toBeTruthy();
   }
-  expect(view.getByRole("button", { name: "Publish" })).toBeTruthy();
+  expect(view.getByRole("button", { name: "Create NFT" })).toBeTruthy();
 });
 
 test("every format keeps the title, description and link, with nothing dropped when switching", async () => {
   const { view } = await withFile();
-  fireEvent.change(view.getByPlaceholderText(/Tell the story behind this work/), { target: { value: "A poster" } });
-  for (const label of [/Permanent certificate/, /IP Ticket/, /IP Club/, /Limited Editions/, /Single work/]) {
+  fireEvent.change(view.getByPlaceholderText(/Tell the story behind this NFT/), { target: { value: "A poster" } });
+  for (const label of [/Permanent certificate/, /IP Ticket/, /IP Club/, /Limited Edition NFT/, /Single NFT/]) {
     pick(view, label);
     expect(view.getByPlaceholderText("The title of this digital asset")).toBeTruthy();
-    expect((view.getByPlaceholderText(/Tell the story behind this work/) as HTMLTextAreaElement).value).toBe("A poster");
+    expect((view.getByPlaceholderText(/Tell the story behind this NFT/) as HTMLTextAreaElement).value).toBe("A poster");
     expect(view.getByPlaceholderText("https://yourwebsite.com")).toBeTruthy();
   }
 });
@@ -121,7 +121,7 @@ test("every format keeps the title, description and link, with nothing dropped w
 test("each format shows its own part of the form", async () => {
   const { view } = await withFile();
   expect(view.getByText("License terms")).toBeTruthy();
-  pick(view, /Limited Editions/);
+  pick(view, /Limited Edition NFT/);
   expect(view.getByText("Copies")).toBeTruthy();
   pick(view, /Permanent certificate/);
   expect(view.getByText("What kind of event is this?")).toBeTruthy();
@@ -137,7 +137,7 @@ test("a certificate is created in place, with its metadata, symbol and deadline"
   const { view, intents, uploads } = await withFile();
   pick(view, /Permanent certificate/);
   title(view, "Rio Summit");
-  fireEvent.change(view.getByPlaceholderText(/Tell the story behind this work/), { target: { value: "Conference poster" } });
+  fireEvent.change(view.getByPlaceholderText(/Tell the story behind this NFT/), { target: { value: "Conference poster" } });
   await waitFor(() => expect(button(view, "Create certificate").disabled).toBe(false));
   fireEvent.click(button(view, "Create certificate"));
   await waitFor(() => expect(view.getByText("Certificate created")).toBeTruthy());
@@ -176,7 +176,7 @@ test("tickets: a new collection is created, then the tickets are minted, in one 
   title(view, "Summer Concert");
   await waitFor(() => expect(button(view, "Create tickets").disabled).toBe(false));
   fireEvent.click(button(view, "Create tickets"));
-  await waitFor(() => expect(view.getByText("Tickets published")).toBeTruthy());
+  await waitFor(() => expect(view.getByText("Tickets created")).toBeTruthy());
 
   expect(executed()).toBe(2);
   expect(intents.map((i) => i.kind)).toEqual(["create-collection", "create-tier", "mint"]);
@@ -200,7 +200,7 @@ test("if the second step fails, the collection is kept and the retry only finish
   expect(button(view, "Create tickets").disabled).toBe(false);
 
   fireEvent.click(button(view, "Create tickets"));
-  await waitFor(() => expect(view.getByText("Tickets published")).toBeTruthy());
+  await waitFor(() => expect(view.getByText("Tickets created")).toBeTruthy());
   expect(intents.filter((i) => i.kind === "create-collection")).toHaveLength(1);
   expect(executed()).toBe(3);
 });
@@ -227,25 +227,25 @@ test("a single NFT in a new collection reads the new collection from the receipt
   const { view, intents } = await withFile({ receipts: { 1: [created], 2: [minted] } });
   fireEvent.click(view.getByRole("button", { name: "New" }));
   title(view, "Sunset");
-  await waitFor(() => expect(button(view, "Publish").disabled).toBe(false));
-  fireEvent.click(button(view, "Publish"));
-  await waitFor(() => expect(view.getByText("Work published")).toBeTruthy());
+  await waitFor(() => expect(button(view, "Create NFT").disabled).toBe(false));
+  fireEvent.click(button(view, "Create NFT"));
+  await waitFor(() => expect(view.getByText("NFT created")).toBeTruthy());
 
   expect(intents.map((i) => i.kind)).toEqual(["create-collection", "mint"]);
   expect(intents[1]!.params).toMatchObject({ collectionId: "5", owner: ME, recipient: ME });
-  expect(view.getByText("View work").closest("a")?.getAttribute("href")).toBe(`/asset/STARKNET/${normalizeAddress("STARKNET", "0xbb")}/7`);
+  expect(view.getByText("View NFT").closest("a")?.getAttribute("href")).toBe(`/asset/STARKNET/${normalizeAddress("STARKNET", "0xbb")}/7`);
 });
 
 test("limited editions mint the number of copies into a new editions collection", async () => {
   const deployed = { from_address: getService("mip-erc1155")?.onchain?.STARKNET?.factoryAddress ?? "0x1", keys: [selector("CollectionDeployed"), "0xed17"] };
   const { view, intents } = await withFile({ receipts: { 1: [deployed] } });
-  pick(view, /Limited Editions/);
+  pick(view, /Limited Edition NFT/);
   fireEvent.click(view.getByRole("button", { name: "New" }));
   title(view, "Prints");
   fireEvent.change(view.getByLabelText("Copies") as HTMLInputElement, { target: { value: "50" } });
-  await waitFor(() => expect(button(view, "Mint Limited Editions").disabled).toBe(false));
-  fireEvent.click(button(view, "Mint Limited Editions"));
-  await waitFor(() => expect(view.getByText("Work published")).toBeTruthy());
+  await waitFor(() => expect(button(view, "Create Limited Edition NFT").disabled).toBe(false));
+  fireEvent.click(button(view, "Create Limited Edition NFT"));
+  await waitFor(() => expect(view.getByText("NFT created")).toBeTruthy());
   expect(intents[1]!.params).toMatchObject({ value: "50", collectionContract: normalizeAddress("STARKNET", "0xed17") });
 });
 
@@ -254,8 +254,8 @@ test("a link that is not http or https is refused before anything is sent", asyn
   fireEvent.click(view.getByRole("button", { name: "New" }));
   title(view, "Sunset");
   fireEvent.change(view.getByPlaceholderText("https://yourwebsite.com"), { target: { value: "ftp://x" } });
-  await waitFor(() => expect(button(view, "Publish").disabled).toBe(false));
-  fireEvent.click(button(view, "Publish"));
+  await waitFor(() => expect(button(view, "Create NFT").disabled).toBe(false));
+  fireEvent.click(button(view, "Create NFT"));
   await waitFor(() => expect(view.getByText("Link must start with http:// or https://")).toBeTruthy());
   expect(intents).toEqual([]);
 });
@@ -271,9 +271,9 @@ test("a single NFT is minted into a collection the creator already has, with one
   const { view, intents, executed } = await withFile({ collections: [mine], receipts: { 1: [minted] } });
   choose(view, "My Photos");
   title(view, "Sunset");
-  await waitFor(() => expect(button(view, "Publish").disabled).toBe(false));
-  fireEvent.click(button(view, "Publish"));
-  await waitFor(() => expect(view.getByText("Work published")).toBeTruthy());
+  await waitFor(() => expect(button(view, "Create NFT").disabled).toBe(false));
+  fireEvent.click(button(view, "Create NFT"));
+  await waitFor(() => expect(view.getByText("NFT created")).toBeTruthy());
   expect(executed()).toBe(1);
   expect(intents.map((i) => i.kind)).toEqual(["mint"]);
   expect(intents[0]!.params).toMatchObject({ collectionId: "42", owner: ME, recipient: ME });
@@ -290,7 +290,7 @@ test("tickets are minted into a ticket collection the creator already has, and o
   title(view, "Day pass");
   await waitFor(() => expect(button(view, "Create tickets").disabled).toBe(false));
   fireEvent.click(button(view, "Create tickets"));
-  await waitFor(() => expect(view.getByText("Tickets published")).toBeTruthy());
+  await waitFor(() => expect(view.getByText("Tickets created")).toBeTruthy());
   expect(executed()).toBe(1);
   expect(intents.map((i) => i.kind)).toEqual(["create-tier", "mint"]);
   expect(intents[0]!.params).toMatchObject({ collection: "0x71c", service: "ip-tickets" });

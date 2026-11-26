@@ -43,7 +43,7 @@ test("shows the total collections and how many are multi editions", async () => 
   const { view, queries } = setup();
   await waitFor(() => expect(view.getByText("Collections")).toBeTruthy());
   expect(view.getByText("2")).toBeTruthy();
-  expect(view.getByText("Multi editions")).toBeTruthy();
+  expect(view.getByText("Limited Edition NFT")).toBeTruthy();
   expect(queries).toContainEqual(expect.objectContaining({ standard: "ERC721", hideEmpty: true, limit: 1 }));
   expect(queries).toContainEqual(expect.objectContaining({ standard: "ERC1155", hideEmpty: true, limit: 1 }));
 });
@@ -75,7 +75,7 @@ test("the Drops filter asks for drop collections", async () => {
   const { view, queries } = setup();
   await waitFor(() => expect(view.getAllByText("Rio Drummers").length).toBeGreaterThan(0));
   fireEvent.click(view.getByLabelText("Filters"));
-  fireEvent.click(await view.findByText("Drops"));
+  fireEvent.click(await view.findByText("NFT Drops"));
   await waitFor(() => expect(queries.some((q) => q.service === "drop-collection")).toBe(true));
   expect(queries.find((q) => q.service === "drop-collection")).toMatchObject({ standard: "ERC721,ERC1155" });
 });

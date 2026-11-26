@@ -120,7 +120,7 @@ export function SponsorshipCreate({ aside }: { aside?: ReactNode }) {
   const onSubmit = () => {
     setFormError(null);
     if (!walletAddress) return setFormError(msg("Refresh to continue."));
-    if (!chosen) return setFormError(mode === "offer" ? msg("Choose the work to offer.") : msg("Pick the work to sponsor."));
+    if (!chosen) return setFormError(mode === "offer" ? msg("Choose the NFT to offer.") : msg("Pick the NFT to sponsor."));
     if (!terms.amount || Number(terms.amount) <= 0) return setFormError(msg("Add an amount before continuing."));
     const token = getTokenBySymbol(terms.paymentTokenSymbol);
     if (!token) return setFormError(msg("Pick a currency."));
@@ -164,8 +164,8 @@ export function SponsorshipCreate({ aside }: { aside?: ReactNode }) {
     >
       <ClaimRouteShell
         icon={<Handshake className="h-4 w-4 text-white" />}
-        title={t("Set up a sponsorship")}
-        subtitle={t("Sponsor a work or open one to sponsors.")}
+        title={t("Create IP Sponsorship")}
+        subtitle={t("Offer your NFT to sponsors, or propose to sponsor another creator's NFT.")}
         aside={aside}
       >
         <div className="space-y-6">
@@ -181,14 +181,14 @@ export function SponsorshipCreate({ aside }: { aside?: ReactNode }) {
                     : "px-4 py-1.5 rounded-full text-sm font-semibold text-muted-foreground"
                 }
               >
-                {m === "offer" ? t("Offer my work") : t("Propose to sponsor")}
+                {m === "offer" ? t("Offer my NFT") : t("Propose to sponsor")}
               </button>
             ))}
           </div>
 
           {mode === "offer" ? (
             <div className="space-y-2">
-              <p className="text-sm font-semibold">{t("Pick a work you own")}</p>
+              <p className="text-sm font-semibold">{t("Pick an NFT you own")}</p>
               <AssetPicker
                 assets={ownedAssets}
                 isLoading={assetsLoading}
@@ -201,7 +201,7 @@ export function SponsorshipCreate({ aside }: { aside?: ReactNode }) {
             </div>
           ) : (
             <div className="space-y-2">
-              <p className="text-sm font-semibold">{t("Which work do you want to sponsor?")}</p>
+              <p className="text-sm font-semibold">{t("Which NFT do you want to sponsor?")}</p>
               <AssetSearchPicker search={searchAssets} selected={proposeAsset} onSelect={setProposeAsset} placeholder={t("Search by title or creator")} />
             </div>
           )}
@@ -236,10 +236,10 @@ export function SponsorshipCreate({ aside }: { aside?: ReactNode }) {
           title={mode === "offer" ? t("Offer created") : t("Proposal sent")}
           description={
             mode === "offer"
-              ? t("Your offer is saved with the work and terms you chose.")
+              ? t("Your offer is saved with the NFT and terms you chose.")
               : t("Your proposal is saved.")
           }
-          actions={[{ href: "/launchpad/sponsorship", label: t("Back to Sponsorship launchpad") }, { label: t("Create another"), onClick: handleAgain }]}
+          actions={[{ href: "/launchpad/sponsorship", label: t("View sponsorship offers") }, { label: t("Create another"), onClick: handleAgain }]}
         >
           {mode === "offer" && <RewardEarned actionType="create_sponsorship_offer" />}
         </TransactionSuccess>

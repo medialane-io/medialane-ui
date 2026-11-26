@@ -17,7 +17,7 @@ export function DropsPage() {
       <PageHeader
         back={<BackButton />}
         icon={<Package />}
-        title={t("Drops")}
+        title={t("NFT Drops")}
         subtitle={t("Timed releases with a fixed supply.")}
       />
 

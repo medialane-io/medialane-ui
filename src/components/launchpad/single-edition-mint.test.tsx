@@ -66,9 +66,9 @@ test("a work is minted into the chosen collection and links to the new asset", a
   await waitFor(() => expect(view.getByText("✓ Uploaded")).toBeTruthy());
   fireEvent.change(view.getByPlaceholderText("The title of this digital asset"), { target: { value: "Starry Night" } });
   fireEvent.submit(view.container.querySelector("form")!);
-  await waitFor(() => expect(view.getByText("Work published")).toBeTruthy());
+  await waitFor(() => expect(view.getByText("NFT created")).toBeTruthy());
   expect(intents[0]).toMatchObject({ owner: OWNER, collectionId: "3", recipient: OWNER, tokenUri: "ipfs://meta", royaltyBps: 0 });
-  expect(view.getByText("View work").closest("a")?.getAttribute("href")).toBe(`/asset/starknet/${CONTRACT}/9`);
+  expect(view.getByText("View NFT").closest("a")?.getAttribute("href")).toBe(`/asset/starknet/${CONTRACT}/9`);
 });
 
 const OTHER_CONTRACT = "0x00000000000000000000000000000000000000000000000000000000000000d7";

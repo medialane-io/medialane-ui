@@ -100,7 +100,7 @@ export function EditionMint({ contract: rawContract, aside }: { contract: string
   };
 
   const onSubmit = (values: EditionMintValues) => {
-    if (!upload.confirm(msg("Upload an image before publishing."))) return;
+    if (!upload.confirm(msg("Upload an image first."))) return;
     if (!walletAddress) return;
     void tx.run(async (signer) => {
       await app.ensureSignedIn?.();
@@ -141,11 +141,11 @@ export function EditionMint({ contract: rawContract, aside }: { contract: string
     <WalletRequired
       icon={Sparkles}
       iconClassName="text-brand-purple"
-      title={t("Secure your account to publish")}
-      description={t("Secure your account to publish editions.")}
+      title={t("Secure your account to create")}
+      description={t("Secure your account to create Limited Edition NFTs.")}
     >
       {ownerCheck === "denied" ? (
-        <PageState icon={Sparkles} title={t("Owner only")} description={t("Publishing is open to the collection owner.")}>
+        <PageState icon={Sparkles} title={t("Owner only")} description={t("Only the collection owner can create here.")}>
           <Button asChild variant="soft">
             <Link href="/launchpad">{t("Back to Launchpad")}</Link>
           </Button>
@@ -154,7 +154,7 @@ export function EditionMint({ contract: rawContract, aside }: { contract: string
         <>
           <ClaimRouteShell
             icon={<Sparkles className="h-4 w-4 text-white" />}
-            title={t("Mint a limited edition NFT")}
+            title={t("Create Limited Edition NFT")}
             headerAccessory={
               collectionName ? (
                 <div data-testid="collection-name" className="panel flex items-center gap-2 px-3 py-2 max-w-full">
@@ -167,8 +167,8 @@ export function EditionMint({ contract: rawContract, aside }: { contract: string
                 <MedialaneCollectionCard
                   image={upload.preview}
                   name={form.watch("name")}
-                  collection={t("Edition")}
-                  serial={Number(form.watch("value")) > 1 ? t("{count} editions", { count: form.watch("value") }) : undefined}
+                  collection={t("Limited Edition NFT")}
+                  serial={Number(form.watch("value")) > 1 ? t("{count} copies", { count: form.watch("value") }) : undefined}
                   creator={walletAddress ? `${walletAddress.slice(0, 6)}…${walletAddress.slice(-4)}` : undefined}
                   creatorHref={walletAddress ? profileHref({ address: walletAddress }) : undefined}
                 />
@@ -190,16 +190,16 @@ export function EditionMint({ contract: rawContract, aside }: { contract: string
             </Form>
           </ClaimRouteShell>
 
-          <TransactionDialog tx={tx} title={t("Mint Limited Editions")} workingLabel={t("Publishing your edition…")} firstStepLabel={t("Saving details")}>
+          <TransactionDialog tx={tx} title={t("Create Limited Edition NFT")} workingLabel={t("Creating your Limited Edition NFT…")} firstStepLabel={t("Saving details")}>
             <TransactionSuccess
-              name={form.getValues("name") || t("Your work")}
+              name={form.getValues("name") || t("Your NFT")}
               image={upload.preview}
-              title={t("Edition published")}
-              description={t("Your Limited Editions are saved permanently with their license terms.")}
+              title={t("Limited Edition NFT created")}
+              description={t("Your copies are saved permanently with their license terms.")}
               actions={[
-                ...(mintedTokenId ? [{ href: assetHref("STARKNET", collectionAddress, mintedTokenId), label: t("View work") }] : []),
+                ...(mintedTokenId ? [{ href: assetHref("STARKNET", collectionAddress, mintedTokenId), label: t("View NFT") }] : []),
                 { href: "/portfolio/assets", label: t("View portfolio") },
-                { label: t("Publish another"), onClick: handleAgain },
+                { label: t("Create another"), onClick: handleAgain },
               ]}
             >
               <RewardEarned actionType="mint_asset" />

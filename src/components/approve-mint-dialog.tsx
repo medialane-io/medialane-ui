@@ -71,22 +71,22 @@ export function ApproveMintDialog({ offer, open, onOpenChange, collections, foot
       <DialogContent className="w-full max-w-sm p-0 overflow-hidden gap-0 flex flex-col max-h-[90svh]">
         <div className="flex items-center gap-2 pr-10 pl-5 py-4 border-b border-border/60">
           <GitBranch className="h-4 w-4 text-primary shrink-0" />
-          <DialogTitle className="text-base font-bold">{t("Grant license and publish")}</DialogTitle>
+          <DialogTitle className="text-base font-bold">{t("Grant license and create")}</DialogTitle>
         </div>
-        <DialogDescription className="sr-only">{t("Publish the remix and sell it to the person who asked.")}</DialogDescription>
+        <DialogDescription className="sr-only">{t("Create the remix and sell it to the person who asked.")}</DialogDescription>
 
         <TransactionDialogStates
           phase={phase}
           asset={{ name: effectiveName }}
-          statusMessage={t("Publishing and listing…")}
+          statusMessage={t("Creating and listing…")}
           txHash={txHash}
           error={error}
           success={successMessages.licenseGranted({ price: priceDisplay }, t)}
           successActions={[
             { label: t("Done"), onClick: close },
-            ...(newAssetHref ? [{ label: t("View new work"), href: newAssetHref }] : []),
+            ...(newAssetHref ? [{ label: t("View new NFT"), href: newAssetHref }] : []),
           ]}
-          errorTitle={t("Publishing didn't finish")}
+          errorTitle={t("The remix wasn't created")}
           errorDescription={t("The remix did not complete.")}
           onRetry={retryable ? reset : undefined}
           onDone={close}
@@ -138,7 +138,7 @@ export function ApproveMintDialog({ offer, open, onOpenChange, collections, foot
           <div className="px-5 pt-3 pb-5 border-t border-border/60 space-y-3">
             <ActionButton solid onClick={() => { if (selected) onApprove(selected, effectiveName); }} disabled={busy || !selected} className="w-full">
               {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <GitBranch className="h-4 w-4" />}
-              {t("Grant license and publish")}
+              {t("Grant license and create")}
             </ActionButton>
             <p className="text-2xs text-center text-muted-foreground">{footerNote}</p>
           </div>

@@ -61,7 +61,7 @@ export function CollectionPicker({
               {selected ? collectionDisplayLabel(selected) : collections.length ? t("Choose a collection") : t("No collections yet")}
             </p>
             <p className="text-xs text-muted-foreground">
-              {selected ? t.plural("{count} work", "{count} works", selected.totalSupply ?? 0) : t("Where this work will live")}
+              {selected ? t.plural("{count} NFT", "{count} NFTs", selected.totalSupply ?? 0) : t("Where this NFT will live")}
             </p>
           </div>
           <ChevronDown className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
@@ -86,7 +86,7 @@ export function CollectionPicker({
                   <CollectionThumb image={col.image} />
                   <div className="min-w-0 flex-1">
                     <p className="text-sm font-medium truncate">{collectionDisplayLabel(col)}</p>
-                    <p className="text-xs text-muted-foreground">{t.plural("{count} work", "{count} works", col.totalSupply ?? 0)}</p>
+                    <p className="text-xs text-muted-foreground">{t.plural("{count} NFT", "{count} NFTs", col.totalSupply ?? 0)}</p>
                   </div>
                   {isSelected && <Check className="h-4 w-4 text-brand-blue shrink-0" />}
                 </button>

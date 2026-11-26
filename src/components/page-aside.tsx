@@ -8,9 +8,9 @@ import { ClaimRail, type ClaimRailProps } from "./claim-rail.js";
 import { useT } from "../i18n/provider.js";
 import { msg } from "../i18n/translate.js";
 
-const LICENSE = { icon: Scale, title: msg("Your license terms"), desc: msg("Set how others can use your work.") };
+const LICENSE = { icon: Scale, title: msg("Your license terms"), desc: msg("Set how others can use your NFT.") };
 const AUTHORSHIP = { icon: FileCheck, title: msg("Proof of authorship"), desc: msg("A permanent, dated record shows you created it.") };
-const SHARE_PAGE = { icon: LayoutGrid, title: msg("A page to share"), desc: msg("Every work in the collection in one place.") };
+const SHARE_PAGE = { icon: LayoutGrid, title: msg("A page to share"), desc: msg("Every NFT in the collection in one place.") };
 const COLLECTION_STEPS = [msg("Add a cover, name and short code"), msg("Create the collection")];
 
 const ASIDES = {
@@ -24,27 +24,27 @@ const ASIDES = {
   },
   mintEdition: {
     included: [
-      { icon: Layers, title: msg("Limited Editions"), desc: msg("Choose how many to mint.") },
+      { icon: Layers, title: msg("Copies"), desc: msg("Choose how many to create.") },
       LICENSE,
       AUTHORSHIP,
     ],
-    steps: [msg("Add your image, name and story"), msg("Choose how many Limited Editions and your license terms"), msg("Mint, then sell or send your Limited Editions")],
+    steps: [msg("Add your image, name and story"), msg("Choose the number of copies and your license terms"), msg("Create, then sell or send your copies")],
   },
   collection: {
     included: [
-      { icon: Layers, title: msg("A home for your work"), desc: msg("Your cover, name and description bring it together.") },
+      { icon: Layers, title: msg("A home for your NFTs"), desc: msg("Your cover, name and description bring it together.") },
       SHARE_PAGE,
-      { icon: ShieldCheck, title: msg("Yours to manage"), desc: msg("Only you can add works to it.") },
+      { icon: ShieldCheck, title: msg("Yours to manage"), desc: msg("Only you can add NFTs to it.") },
     ],
-    steps: [...COLLECTION_STEPS, msg("Add works to it whenever you like")],
+    steps: [...COLLECTION_STEPS, msg("Add NFTs to it whenever you like")],
   },
   editions: {
     included: [
-      { icon: Layers, title: msg("Limited Editions"), desc: msg("Choose how many to mint for each work.") },
+      { icon: Layers, title: msg("Copies"), desc: msg("Choose how many for each NFT.") },
       SHARE_PAGE,
-      { icon: ShieldCheck, title: msg("Yours to manage"), desc: msg("Only you can add works to it.") },
+      { icon: ShieldCheck, title: msg("Yours to manage"), desc: msg("Only you can add NFTs to it.") },
     ],
-    steps: [...COLLECTION_STEPS, msg("Mint limited editions into it")],
+    steps: [...COLLECTION_STEPS, msg("Create Limited Edition NFTs in it")],
   },
   club: {
     included: [
@@ -84,14 +84,14 @@ const ASIDES = {
     included: [
       { icon: Handshake, title: msg("Paid directly"), desc: msg("Funds go from the sponsor to the author.") },
       { icon: FileCheck, title: msg("A license in return"), desc: msg("The sponsor receives it on the agreed terms.") },
-      { icon: Plus, title: msg("Start from either side"), desc: msg("Offer your own work or propose to sponsor one.") },
+      { icon: Plus, title: msg("Start from either side"), desc: msg("Offer your own NFT or propose to sponsor another.") },
     ],
-    steps: [msg("Choose the work and set the terms"), msg("The other side responds"), msg("License and payment settle together")],
+    steps: [msg("Choose the NFT and set the terms"), msg("The other side responds"), msg("License and payment settle together")],
   },
   claimCollection: {
     included: [
       { icon: LayoutGrid, title: msg("A page for your collection"), desc: msg("Edit its name and cover.") },
-      { icon: UserCircle, title: msg("On your profile"), desc: msg("Shown with the rest of your work.") },
+      { icon: UserCircle, title: msg("On your profile"), desc: msg("Shown with your NFTs.") },
       { icon: ShieldCheck, title: msg("Stays where it is"), desc: msg("Assets remain in the collection contract.") },
     ],
     steps: [msg("Paste the contract address"), msg("Ownership check on Starknet"), msg("Live on your profile")],
@@ -106,7 +106,7 @@ const ASIDES = {
   claimMemecoin: {
     included: [
       { icon: Coins, title: msg("Listed on the Coins page"), desc: msg("Where people find and trade coins.") },
-      { icon: UserCircle, title: msg("On your profile"), desc: msg("Shown with the rest of your work.") },
+      { icon: UserCircle, title: msg("On your profile"), desc: msg("Shown with your NFTs.") },
       { icon: TrendingUp, title: msg("Linked to your account"), desc: msg("Claiming only links the coin to the account.") },
     ],
     steps: [msg("Paste the coin contract address"), msg("Ownership check on Starknet"), msg("Live once confirmed")],
@@ -114,7 +114,7 @@ const ASIDES = {
   claimUsername: {
     included: [
       { icon: AtSign, title: msg("Your own creator address"), desc: msg("Like medialane.io/creator/yourname.") },
-      { icon: UserCircle, title: msg("One public profile"), desc: msg("All your work in one place.") },
+      { icon: UserCircle, title: msg("One public profile"), desc: msg("Everything you create in one place.") },
     ],
     steps: [msg("Pick a username"), msg("Availability check"), msg("Yours after DAO review")],
   },

@@ -54,7 +54,7 @@ export function PortfolioAssets({ address, useActions }: { address: string; useA
         onRetry={() => void mutate()}
         emptyTitle={t("No assets yet")}
         emptyDescription={t("Create your first asset to get started.")}
-        emptyCta={{ label: t("Create your first asset"), href: "/launchpad/single-editions" }}
+        emptyCta={{ label: t("Create your first NFT"), href: "/launchpad/single-editions" }}
         emptyIcon={<ImageIcon className="h-7 w-7 text-muted-foreground" />}
         skeletonNode={
           <div className={GRID}>

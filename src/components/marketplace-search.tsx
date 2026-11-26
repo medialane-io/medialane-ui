@@ -74,7 +74,7 @@ export function MarketplaceSearch() {
   return (
     <div className="relative w-full sm:max-w-sm">
       <SearchInput
-        placeholder={t("Search creative works")}
+        placeholder={t("Search NFTs")}
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         onKeyDown={handleKeyDown}
