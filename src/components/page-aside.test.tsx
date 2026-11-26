@@ -18,12 +18,12 @@ test("every panel has what's included and the steps", () => {
 
 test("the limited edition panel describes copies, license and authorship", () => {
   const view = render(<PageAside kind="mintEdition" />);
-  for (const text of ["Copies to collect", "Your license, attached", "Proof of authorship", "Mint, then sell or send your copies"]) {
+  for (const text of ["Limited Editions", "Your license terms", "Proof of authorship", "Mint, then sell or send your Limited Editions"]) {
     expect(view.getByText(text)).toBeTruthy();
   }
 });
 
 test("the panel is shown in Portuguese", () => {
   const view = render(<I18nProvider locale="pt" messages={messages}><PageAside kind="mintEdition" /></I18nProvider>);
-  expect(view.getByText("Cópias para colecionar")).toBeTruthy();
+  expect(view.getByText("O que você recebe")).toBeTruthy();
 });

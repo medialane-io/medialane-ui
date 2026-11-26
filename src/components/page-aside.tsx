@@ -8,8 +8,8 @@ import { ClaimRail, type ClaimRailProps } from "./claim-rail.js";
 import { useT } from "../i18n/provider.js";
 import { msg } from "../i18n/translate.js";
 
-const LICENSE = { icon: Scale, title: msg("Your license, attached"), desc: msg("The terms you choose are saved with the work.") };
-const AUTHORSHIP = { icon: FileCheck, title: msg("Proof of authorship"), desc: msg("A permanent, dated record links the work to your account.") };
+const LICENSE = { icon: Scale, title: msg("Your license terms"), desc: msg("Set how others can use your work.") };
+const AUTHORSHIP = { icon: FileCheck, title: msg("Proof of authorship"), desc: msg("A permanent, dated record shows you created it.") };
 const SHARE_PAGE = { icon: LayoutGrid, title: msg("A page to share"), desc: msg("Every work in the collection in one place.") };
 const COLLECTION_STEPS = [msg("Add a cover, name and short code"), msg("Create the collection")];
 
@@ -24,11 +24,11 @@ const ASIDES = {
   },
   mintEdition: {
     included: [
-      { icon: Layers, title: msg("Copies to collect"), desc: msg("Each copy can be owned, sent or sold separately.") },
+      { icon: Layers, title: msg("Limited Editions"), desc: msg("Choose how many to mint.") },
       LICENSE,
       AUTHORSHIP,
     ],
-    steps: [msg("Add your image, name and story"), msg("Choose the number of copies and license terms"), msg("Mint, then sell or send your copies")],
+    steps: [msg("Add your image, name and story"), msg("Choose how many Limited Editions and your license terms"), msg("Mint, then sell or send your Limited Editions")],
   },
   collection: {
     included: [
@@ -40,7 +40,7 @@ const ASIDES = {
   },
   editions: {
     included: [
-      { icon: Layers, title: msg("Copies for every work"), desc: msg("Choose how many copies each work has.") },
+      { icon: Layers, title: msg("Limited Editions"), desc: msg("Choose how many to mint for each work.") },
       SHARE_PAGE,
       { icon: ShieldCheck, title: msg("Yours to manage"), desc: msg("Only you can add works to it.") },
     ],

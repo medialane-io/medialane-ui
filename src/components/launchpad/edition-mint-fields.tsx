@@ -97,7 +97,7 @@ export function EditionMintFields({
       <FadeIn delay={0.14}>
         <FormField control={form.control} name="value" render={({ field }) => (
           <FormItem>
-            <FormLabel>{t("Copies")}</FormLabel>
+            <FormLabel>{t("Limited Editions")}</FormLabel>
             <FormControl>
               <Input type="number" min={1} placeholder="1" className="max-w-[180px]" {...field} />
             </FormControl>
