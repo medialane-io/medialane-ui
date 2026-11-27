@@ -15,9 +15,9 @@ function localizeHref(href: LinkProps["href"], locale: string): LinkProps["href"
   return href;
 }
 
-const Link = forwardRef<HTMLAnchorElement, LinkProps>(function Link({ href, ...props }, ref) {
+const Link = forwardRef<HTMLAnchorElement, LinkProps>(function Link({ href, prefetch = false, ...props }, ref) {
   const locale = useLocale();
-  return <NextLink ref={ref} href={localizeHref(href, locale)} {...props} />;
+  return <NextLink ref={ref} href={localizeHref(href, locale)} prefetch={prefetch} {...props} />;
 });
 
 export default Link;

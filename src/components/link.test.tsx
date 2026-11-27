@@ -58,3 +58,23 @@ test("Link passes its ref and extra props to the anchor", () => {
   expect(anchors[0]).toBe(container.querySelector("a"));
   expect(container.querySelector("a")?.className).toBe("c");
 });
+
+function nextLinkProps(props: { href: string; prefetch?: boolean }) {
+  const inner = (Link as unknown as { render: (p: object, r: null) => { props: { prefetch?: boolean } } }).render;
+  let seen: { prefetch?: boolean } = {};
+  function Probe() {
+    const element = inner(props, null);
+    seen = element.props;
+    return element as unknown as React.ReactElement;
+  }
+  render(<Probe />);
+  return seen;
+}
+
+test("Link does not prefetch unless asked", () => {
+  expect(nextLinkProps({ href: "/asset/starknet/0x1/1" }).prefetch).toBe(false);
+});
+
+test("Link keeps an explicit prefetch choice", () => {
+  expect(nextLinkProps({ href: "/marketplace", prefetch: true }).prefetch).toBe(true);
+});
