@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.401.0] — 2026-11-27
+
+### Changed
+
+- `Link` defaults to `prefetch={false}`. Pass `prefetch` to opt in.
+- `DropDetailPage` reads the address query inside a `Suspense` boundary.
+
 ## [0.400.0] — 2026-11-26
 
 ### Changed
