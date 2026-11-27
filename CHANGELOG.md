@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.402.0] — 2026-11-27
+
+### Added
+
+- `createServerReads`, `ServerReadCache` and `ServerReadsOptions` from `@medialane/ui/utils/server-reads`.
+
 ## [0.401.0] — 2026-11-27
 
 ### Changed
