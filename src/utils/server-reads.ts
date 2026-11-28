@@ -15,8 +15,6 @@ export type ServerReadCache = <T extends (...args: any[]) => Promise<any>>(
 export interface ServerReadsOptions {
   api: () => ApiClient;
   cache: ServerReadCache;
-  backendUrl: string;
-  absoluteUrl: (path: string) => string;
 }
 
 const isAbsent = (error: unknown) => ABSENT_STATUSES.has((error as { status?: unknown } | null)?.status);
@@ -30,8 +28,7 @@ function isAddress(value: string): boolean {
   }
 }
 
-export function createServerReads({ api, cache, backendUrl, absoluteUrl }: ServerReadsOptions) {
-  const backendOrigin = new URL(backendUrl).origin;
+export function createServerReads({ api, cache }: ServerReadsOptions) {
   const expireSoon = cache(async () => null, ["failed-read"], { revalidate: FAILED_READ_REVALIDATE_SECONDS });
 
   function cached<A extends (string | number)[], T>(
@@ -64,10 +61,7 @@ export function createServerReads({ api, cache, backendUrl, absoluteUrl }: Serve
     async (...args: A): Promise<T | null> => (isAddress(args[0]) ? read(...args) : null);
 
   return {
-    ipfsToHttpServer(uri: string | null | undefined): string {
-      const url = toAbsoluteImageUrl(uri);
-      return url.startsWith(`${backendOrigin}/`) ? absoluteUrl(`/api/img?url=${encodeURIComponent(url)}`) : url;
-    },
+    ipfsToHttpServer: toAbsoluteImageUrl,
     fetchTokenMeta: cached("token-meta", atAddress((contract: string, tokenId: string) => api().tokens.get(contract, tokenId))),
     fetchCollectionMeta: cached("collection-meta", atAddress((contract: string) => api().collections.get(contract))),
     fetchCollectionBySlug: cached("collection-by-slug", (slug: string) => api().collections.findBySlug(slug)),

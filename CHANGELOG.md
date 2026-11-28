@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.403.0] — 2026-11-28
+
+### Removed
+
+- `ServerReadsOptions` `backendUrl` and `absoluteUrl`. `ipfsToHttpServer` returns the absolute image URL for every link.
+
 ## [0.402.0] — 2026-11-27
 
 ### Added
