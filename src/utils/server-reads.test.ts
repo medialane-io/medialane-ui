@@ -29,8 +29,6 @@ function setup(get: (contract: string, tokenId: string) => Promise<unknown>) {
   const reads = createServerReads({
     api: () => api as never,
     cache: memory.cache,
-    backendUrl: "https://backend.test",
-    absoluteUrl: (path) => `https://app.test${path}`,
   });
   return { reads, calls, ...memory };
 }
@@ -78,8 +76,8 @@ test("lists are cached for the shorter list window", async () => {
   expect(used).toEqual([60, 60]);
 });
 
-test("images served by the backend go through the app, others stay as they are", () => {
+test("image links are returned as absolute URLs as they are", () => {
   const { reads } = setup(async () => null);
-  expect(reads.ipfsToHttpServer("https://backend.test/media/a/image")).toBe(`https://app.test/api/img?url=${encodeURIComponent("https://backend.test/media/a/image")}`);
   expect(reads.ipfsToHttpServer("https://elsewhere.test/a.png")).toBe("https://elsewhere.test/a.png");
+  expect(reads.ipfsToHttpServer(null)).toBe("");
 });
